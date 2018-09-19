@@ -11,6 +11,7 @@ import com.itsight.service.UsuarioService;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,14 @@ public class UsuarioController {
         return new ModelAndView(ViewConstant.MAIN_USUARIO);
     }
 
+    @GetMapping(value = "/micuenta")
+    public ModelAndView miUsuario(Model model) {
+        model.addAttribute("lstTipoDocumento", tipoDocumentoService.findAll());
+        model.addAttribute("lstTipoUsuario", perfilService.listAll());
+        model.addAttribute("lstRol", rolService.findAll());
+        return new ModelAndView(ViewConstant.MI_USUARIO);
+    }
+
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
     List<Usuario> listarConFiltro(
@@ -68,6 +77,13 @@ public class UsuarioController {
     public @ResponseBody
     Usuario obtenerPorId(@RequestParam(value = "id") int usuarioId) {
         return usuarioService.findOneWithFT(usuarioId);
+    }
+
+    @GetMapping(value = "/obtenerUsuarioSession")
+    public @ResponseBody
+    Usuario obtenerUsuarioSession() {
+        String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioService.findByUsername(nameuser);
     }
 
     @PostMapping(value = "/agregar")
@@ -120,4 +136,6 @@ public class UsuarioController {
     public @ResponseBody String validarUsernameUnico(@RequestParam String username){
         return usuarioService.validarUsername(username);
     }
+
+
 }

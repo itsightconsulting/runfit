@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-user fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Mi Usuario</b>
+										</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false"
+                             data-widget-custombutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-ge"></i> </span>
+                                <!-- Tittle form -->
+                                <h2><strong><span id="Operacion">Actualizar Datos</span></strong></h2>
+                            </header>
+                            <div>
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <form id="frm_registro" class="smart-form">
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <section class="">
+                                                        <label class="label">Nombres: </label>
+                                                        <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                            <input id="Nombres" name="Nombres" type="text"
+                                                                   placeholder="Nombres" class="" maxlength="44"
+                                                                   autocomplete="off"/>
+                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                            <input id="Id" name="Id" type="hidden" value="0"/>
+                                                        </label>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Apellido Paterno: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="ApellidoPaterno" name="ApellidoPaterno" type="text"
+                                                               placeholder="Apellido paterno" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Apellido Materno: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="ApellidoMaterno" name="ApellidoMaterno" type="text"
+                                                               placeholder="Apellido materno" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-2">
+                                                    <label class="label">Código País: </label>
+                                                    <label class="input"><i class="icon-prepend fa fa-globe"></i>
+                                                        <input id="CodPais" name="CodPais" type="text"
+                                                               placeholder="Código país" maxlength="3"
+                                                               required="required"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-2">
+                                                    <label class="label">Teléfono Móvil: </label>
+                                                    <label class="input"><i class="icon-append fa fa-mobile"></i>
+                                                        <input id="Movil" name="Movil" type="text"
+                                                               placeholder="Teléfono Móvil" maxlength="12"
+                                                               required="required"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-2">
+                                                    <label class="label">Teléfono Fijo: </label>
+                                                    <label class="input"><i class="icon-append fa fa-phone"></i>
+                                                        <input id="TelefonoFijo" name="TelefonoFijo" type="text"
+                                                               placeholder="Teléfono Fijo" maxlength="12"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Correo Electrónico: </label>
+                                                    <label class="input"><i class="icon-append fa fa-envelope-o"></i>
+                                                        <input id="Correo" name="Correo" type="text"
+                                                               placeholder="Correo electrónico" class=""
+                                                               maxlength="44"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Tipo Documento: </label>
+                                                    <label class="input">
+                                                        <select id="TipoDocumentoId" name="TipoDocumentoId" class="form-control">
+                                                            <option value="">-- Seleccione --</option>
+                                                            <option th:each="td : ${lstTipoDocumento}" th:value="${td.id}"
+                                                                    th:text="${td.nombre}"/>
+                                                        </select>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Numero de Documento: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="NumeroDocumento" name="NumeroDocumento" type="text"
+                                                               placeholder="Número de documento" class="" maxlength="11"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Nombre de usuario: </label>
+                                                    <label class="input"><i class="icon-append fa fa-user"></i>
+                                                        <input id="Username" name="Username" type="text"
+                                                               placeholder="Nombre de usuario" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Perfil: </label>
+                                                    <label class="input">
+                                                        <select id="PerfilId" name="PerfilId" class="form-control">
+                                                            <option value="">-- Seleccione --</option>
+                                                            <option th:each="p : ${lstTipoUsuario}" th:value="${p.id}"
+                                                                    th:text="${p.nombre}"/>
+                                                        </select>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row" id="PassUser">
+                                                <section class="col col-6">
+                                                    <label class="label margin txt-color">Password: </label>
+                                                    <label class="input"><i class="icon-append fa fa-lock"></i>
+                                                        <input id="Password" name="Password" type="password"
+                                                               placeholder="Password" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Confirmar Password: </label>
+                                                    <label class="input"><i class="icon-append fa fa-lock"></i>
+                                                        <input id="CheckPassword" name="CheckPassword" type="password"
+                                                               placeholder="Confirmar password" class=""
+                                                               maxlength="24"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Roles:</label>
+                                                    <div class="col">
+                                                        <div class="col col-4 padding-5"
+                                                             th:each="r : ${lstRol}">
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" name="checkbox"
+                                                                       th:attr="data-id=${r.id}"/>
+                                                                <i></i> <span
+                                                                    th:text="${r.nombre}"></span></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col txt-color-redLight">
+                                                        <input type="hidden" name="CheckRoles"/>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <div class="inline-group">
+                                                        <label class="label">Estado Inicial: </label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivo" name="FlagActivo"
+                                                                   checked="checked"/>
+                                                            <i></i>Activo</label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivoOff" name="FlagActivo"/>
+                                                            <i></i>Inactivo</label>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                        <footer class="">
+                                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar
+                                            </button>
+                                        </footer>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<input type="hidden" id="userSession" value="" />
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#Id');
+
+    $(function () {
+
+        pageSetUp();
+
+        ObtenerUsuarioSession();
+
+        //V A L I D A T E
+        validarRegistros();
+
+        $("#btnGuardar").click(function () {
+            ActualizarDatosSolicitud();
+        });
+
+    });
+
+    function ObtenerUsuarioSession() {
+        $('#Username').attr('readonly', 'readonly');
+        $('#Username').css('background-color', '#eee');
+        $('#Correo').attr('readonly', 'readonly');
+        $('#Correo').css('background-color', '#eee');
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/usuario/obtenerUsuarioSession',
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+
+                    $("#Id").val(data.id);
+                    $("#PerfilId").val(data.tipoUsuario.id);
+                    $("#TipoDocumentoId").val(data.tipoDocumento.id);
+                    $("#Correo").val(data.correo);
+                    $("#Movil").val(data.movil.split(" ")[1]);
+                    $("#CodPais").val(data.movil.split(" ")[0]);
+                    $("#Username").val(data.username);
+                    $("#ApellidoPaterno").val(data.apellidoPaterno);
+                    $("#ApellidoMaterno").val(data.apellidoMaterno);
+                    $("#NumeroDocumento").val(data.numeroDocumento);
+                    $("#TelefonoFijo").val(data.telefonoFijo);
+                    $("#Nombres").val(data.nombres);
+                    data.roles.forEach(v=>{
+                        Array.from($('.checkbox input[type="checkbox"]'))[v.id-1].click();//se le resta menos uno para igualarlo ya que el array comienza desde 0
+                    })
+
+                    data.flagActivo === true ?
+                        $('#FlagActivo').prop('checked', true)
+                        :
+                        $('#FlagActivoOff').prop('checked', true);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                $('#PassUser').css('display', 'none');
+            }
+        });
+    }
+
+    $.validator.addMethod("pwcheck", function (value) {
+        if (value != "") {
+            return value.match(/^(?=.*\d)(?=.*[a-z])[0-9a-zA-Z!@#\$%\^\&*\)\(+=._-]{8,}$/)
+        }
+        return true;
+    });
+
+    $.validator.addMethod("emailAddress", function (value) {
+        if (value.trim() != "") {
+            return regexMail.test(value.trim());
+        }
+        return true;
+    });
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombres: {
+                    required: true,
+                    maxlength: $("#Nombres").prop("maxlength"),
+                },
+                ApellidoPaterno: {
+                    required: true,
+                    maxlength: $("#ApellidoPaterno").prop("maxlength"),
+                },
+                ApellidoMaterno: {
+                    required: true,
+                    maxlength: $("#ApellidoMaterno").prop("maxlength"),
+                },
+                Correo: {
+                    required: true,
+                    emailAddress: true,
+                    maxlength: $("#Correo").prop("maxlength"),
+                },
+                Movil: {
+                    number: true,
+                },
+                NumeroDocumento:{
+                    required: true,
+                    maxlength: $("#NumeroDocumento").prop("maxlength"),
+                },
+                CodPais: {
+                    number: true,
+                },
+                Username: {
+                    required: true,
+                    maxlength: $("#Username").prop("maxlength"),
+                },
+                Password: {
+                    required: () => {
+                        return $('#Id').val() > 0 ? false : true
+                    },
+                    maxlength: $("#Password").prop("maxlength"),
+                    pwcheck: true,
+                },
+                CheckPassword: {
+                    equalTo: '#Password',
+                },
+                PerfilId: {
+                    required: true,
+                    digits: true,
+                },
+                TipoDocumentoId:{
+                    required: true,
+                    digits: true,
+                },
+                CheckRoles: {
+                    required: () => {
+                        rs = $('input:checkbox:checked').length > 0 ? false : true;
+                        if (rs) {
+                            $('.checkbox').addClass('state-error');
+                            return true
+                        } else return false;
+                    }
+                }
+            },
+            messages: {
+                Nombres: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                ApellidoPaterno: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                ApellidoMaterno: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Correo: {
+                    required: "El campo es obligatorio",
+                    emailAddress: "Formato inválido",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                Movil: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    number: "Este campo solo permite números"
+                },
+                NumeroDocumento: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                CodPais: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    number: "Este campo solo permite números"
+                },
+                Username: {
+                    required: "<i class='form-control-feedback glyphicon glyphicon-remove'></i>El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Password: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    pwcheck: 'Password inválida, revisar <a style="color:#dd4814;" href="javascript:MostrarRequisitosPassword();">requisitos</a>'
+                },
+                CheckPassword: {
+                    equalTo: "Por favor ingresar la misma password nuevamente",
+                },
+                PerfilId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un perfil válido",
+                },
+                TipoDocumentoId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un tipo de documento válido",
+                },
+                CheckRoles: {
+                    required: "Debe seleccionar por lo menos un rol",
+                }
+            },
+            submitHandler: function () {
+                ActualizarDatosSolicitud();
+            }
+        }); 
+    }
+ 
+    function  ActualizarDatosSolicitud() {
+        if ($("#frm_registro").valid()) {
+            let params = getFormData($('#frm_registro'));
+            const roles = [];
+            params.flagActivo = $('#FlagActivo').is(':checked');
+            params.movil = $('#CodPais').val().trim() + ' ' + params.movil;
+            Array.from($('.checkbox input[type="checkbox"]')).forEach((v)=>{
+                if(v.checked) roles.push(v.getAttribute('data-id'));
+            })
+            params.rols = roles.join();
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/usuario/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-150") {
+                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de usuario ya existe en el sistema...</i>",});
+                        } else {
+                            $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
+                            window.location.reload();
+                        }
+                    }
+                },
+                error: function (xhr) {
+                },
+                complete: function () {
+                }
+            });
+        }
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

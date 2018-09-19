@@ -93,6 +93,10 @@ public class Usuario extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<UsuarioFitness> lstUsuarioFitness;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    private List<UsuarioPlan> lstUsurioPlan;
+
     @Transient
     @JsonSerialize
     private String nombreCompleto;
@@ -134,6 +138,14 @@ public class Usuario extends AuditingEntity implements Serializable {
         return this.apellidoPaterno + " " + this.apellidoMaterno + ", " + this.nombres;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombres='" + nombres + '\'' +
+                ", apellidoPaterno='" + apellidoPaterno + '\'' +
+                ", apellidoMaterno='" + apellidoMaterno + '\'' +
+                ", numeroDocumento='" + numeroDocumento + '\'' +
+                '}';
+    }
 }

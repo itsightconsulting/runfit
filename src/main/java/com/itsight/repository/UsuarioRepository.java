@@ -47,4 +47,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
 
     @Query(value = "SELECT NEW Usuario(codigoTrainer, nombres, apellidoPaterno, apellidoMaterno) FROM Usuario U WHERE U.tipoUsuario.id = 2")
     List<Usuario> findAllTrainers();
+
+    @Query(value = "SELECT U FROM Usuario U WHERE U.username = ?1")
+    Usuario findByUsername(String username);
+
 }

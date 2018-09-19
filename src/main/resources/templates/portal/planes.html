@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+    <style>
+        .pricing-table {
+            margin-top: 0px;
+        }
+        .pricing-table {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .pricing-table .pricing-table-item {
+            border-bottom: 0px;
+        }
+        .pricing-table .item-header {
+            background-color: #696969;
+            color: #ffffff;
+            text-align: center;
+            line-height: 50px;
+        }
+        h2, .header-two {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 19px;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+        .pricing-table .item-cta-block {
+            background-color: #D3D3D3;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        .pricing-table .block-price {
+            color: #000000;
+            font-size: 45px;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
+        .pricing-table .block-sub-text {
+            text-transform: uppercase;
+            font-size: 15px;
+            color: #000000;
+            line-height: 26px;
+            margin-bottom: 10px;
+        }
+        .pricing-table .pricing-toggle-holder {
+            display: none;
+        }
+        .pricing-table .pricing-toggle-holder button {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .item-cta-block .button.orange-button {
+            display: inline-block;
+        }
+        button.orange-button, input[type="button"].orange-button, input[type="reset"].orange-button, input[type="submit"].orange-button, a.button.orange-button {
+            background-color: #d2282e;
+            color: #ffffff;
+            padding: 12px 20px;
+            box-shadow: 0 3px 0 0 rgba(24, 24, 25, 0.1);
+            -webkit-transition: all .75s;
+            transition: all .75s;
+            margin-bottom: 6px;
+        }
+        button .glyphicon-menu-right, input[type="button"] .glyphicon-menu-right, input[type="reset"] .glyphicon-menu-right, input[type="submit"] .glyphicon-menu-right, a.button .glyphicon-menu-right {
+            top: -1px;
+            margin-left: 5px;
+            font-size: 9px;
+        }
+        .pricing-table .item-details-block {
+            background-color: #f7f7f7;
+            padding: 38px 30px;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        .pricing-table .plus-header {
+            text-align: center;
+            font-size: 18px;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
+        .pricing-table .separator {
+            margin-bottom: 38px;
+        }
+        .separator {
+            background-color: #d2282e;
+            height: 3px;
+            width: 100px;
+            margin: 0 auto;
+            margin-top: 27px;
+            margin-bottom: 48px;
+        }
+
+        .pricing-table .item-details-block ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .pricing-table .item-details-block ul li {
+            line-height: 2;
+        }
+
+        .separator-type, .title-type, .intro-type, .content-type .intro-type p {
+            position: relative;
+        }
+        .intro-type .container {
+            padding: 107px 0px 102px 0px !important;
+        }
+        .company-heading h1 {
+            margin-bottom: 40px;
+            line-height: 80px;
+            color: #fff;
+            font-weight: 700 !important;
+            text-align: center;
+        }
+        .seo-header, .product-header, .intro-type .container h1.white, .company-heading h1 {
+            font-weight: 100 !important;
+            text-transform: capitalize;
+            font-size: 55px;
+            margin-bottom: 20px;
+        }
+        .parallax {
+            background-attachment: inherit !important;
+        }
+        .parallax {
+            background-attachment: inherit !important;
+        }
+        .parallax {
+            background-attachment: inherit !important;
+            background-repeat: repeat;
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            width: 100%;
+            z-index: -10;
+        }
+    </style>
+
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="pricing-table row" id="divPlanes">
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootbox.min.js}+'?'+${version}"></script>
+<script th:inline="javascript">
+
+    $(function () {
+
+        pageSetUp();
+
+        ListarPlanes();
+
+    });
+
+    function ListarPlanes(){
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/plan/listarTodosPlanes',
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                   if(data != null) {
+                        console.log(data);
+                       var $div = $("#divPlanes");
+                       $.each(data, function (i, item) {
+                           var descripcion = item.descripcion == null ? "" : item.descripcion;
+                           var div = '<div class="col-sm-4 pricing-container">\
+                       <div class="pricing-table-item">\
+                       <h2 class="item-header">'+ item.nombre + '</h2>\
+                       <div class="item-cta-block" style="height: 213px;">\
+                       <div id="js_block-price1" class="block-price currency-container" style="display: inline-block;" data-country="usd">S/ '+ item.precioSoles +'</div>\
+                       <div class="block-sub-text"><div id="js_block-price2" class="currency-container" style="display: none;" data-country="cad">USD</div> '+ item.cantidadMeses + '  Mes</div>\
+                       <div class="pricing-toggle-holder">\
+                       <button class="pricing-toggle">\
+                       <span class="pricing-toggle-open">See Standard Features <span class="glyphicon glyphicon-plus"></span></span>\
+                       <span class="pricing-toggle-close">Hide Standard Features <span class="glyphicon glyphicon-minus"></span></span>\
+                       </button>\
+                       </div>\
+                       <a class="button orange-button outbound" href="javascript:EjecutarPlan(' + item.id + ')" target="_blank">Comprar plan '+ item.nombre + '</a>\
+                       </div>\
+                       <div class="item-details-block">\
+                       <div class="plus-header">El plan incluye:</div>\
+                       <div class="separator"></div>\
+                       <ul>\
+                       <li><i class="fa fa-check" aria-hidden="true"></i> '+ descripcion + ' </li>\
+                       </ul>\
+                       </div>\
+                       </div>\
+                       </div>'
+                           $div.append(div);
+                       });
+
+                   }
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {}
+        });
+    }
+
+    function EjecutarPlan(id) {
+        bootbox.setLocale("es");
+        bootbox.confirm("¿Estás seguro que deseas <strong>comprar el PLAN </strong> seleccionado?",
+            function (result) {
+            if (result) {
+                var params = new Object();
+                params.id = id;
+
+                $("#load_pace").show();
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/plan/comprarPlan',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            console.log(data);
+                            bootbox.alert("Plan Comprado");
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

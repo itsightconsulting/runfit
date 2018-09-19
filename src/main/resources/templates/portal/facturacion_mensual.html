@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<style>
+    .padding-top-7{
+        padding-top: 7px;
+    }
+
+    .tiempo-dia{
+        border: none; !important;
+        width: 100%;
+        background: #fff !important;
+    }
+
+    .dias-descanso:hover{
+        background: #89AD45 !important;
+        font-weight: bold;
+    }
+
+    #TablaDetalle input.included{
+        border: none;
+        width: 100%;
+        background: #fff !important;
+        text-align: center;
+        box-shadow:0 4px 2px -2px #aadeb3;
+    }
+    #TablaDetalle input.ignored{
+        width: 100%;
+        text-align: center;
+        box-shadow:0 4px 2px -2px #aadeb3;
+    }
+    #TablaDetalle input:hover{
+        border-color: #5D98CC ;
+    }
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+        font-size: 11px;
+    }
+
+    .amcharts-pie-slice {
+        transform: scale(1);
+        transform-origin: 50% 50%;
+        transition-duration: 0.3s;
+        transition: all .3s ease-out;
+        -webkit-transition: all .3s ease-out;
+        -moz-transition: all .3s ease-out;
+        -o-transition: all .3s ease-out;
+        cursor: pointer;
+        box-shadow: 0 0 30px 0 #000;
+    }
+
+    .amcharts-pie-slice:hover {
+        transform: scale(1.1);
+        filter: url(#shadow);
+    }
+
+</style>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div id="chartdiv"></div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+<script>
+    var chart = AmCharts.makeChart("chartdiv", {
+        "type": "pie",
+        "startDuration": 0,
+        "theme": "light",
+        "addClassNames": true,
+        "legend":{
+            "position":"right",
+            "marginRight":100,
+            "autoMargins":false
+        },
+        "innerRadius": "30%",
+        "defs": {
+            "filter": [{
+                "id": "shadow",
+                "width": "200%",
+                "height": "200%",
+                "feOffset": {
+                    "result": "offOut",
+                    "in": "SourceAlpha",
+                    "dx": 0,
+                    "dy": 0
+                },
+                "feGaussianBlur": {
+                    "result": "blurOut",
+                    "in": "offOut",
+                    "stdDeviation": 5
+                },
+                "feBlend": {
+                    "in": "SourceGraphic",
+                    "in2": "blurOut",
+                    "mode": "normal"
+                }
+            }]
+        },
+        "dataProvider": [{
+            "country": "Lithuania",
+            "litres": 501.9
+        }, {
+            "country": "Czech Republic",
+            "litres": 301.9
+        }, {
+            "country": "Ireland",
+            "litres": 201.1
+        }, {
+            "country": "Germany",
+            "litres": 165.8
+        }, {
+            "country": "Australia",
+            "litres": 139.9
+        }, {
+            "country": "Austria",
+            "litres": 128.3
+        }, {
+            "country": "UK",
+            "litres": 99
+        }, {
+            "country": "Belgium",
+            "litres": 60
+        }, {
+            "country": "The Netherlands",
+            "litres": 50
+        }],
+        "valueField": "litres",
+        "titleField": "country",
+        "export": {
+            "enabled": true
+        }
+    });
+
+    chart.addListener("init", handleInit);
+
+    chart.addListener("rollOverSlice", function(e) {
+        handleRollOver(e);
+    });
+
+    function handleInit(){
+        chart.legend.addListener("rollOverItem", handleRollOver);
+    }
+
+    function handleRollOver(e){
+        var wedge = e.dataItem.wedge.node;
+        wedge.parentNode.appendChild(wedge);
+    }
+
+</script>
+</body>
+</html>

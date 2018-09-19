@@ -5,9 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Plan;
+import com.itsight.domain.Usuario;
+import com.itsight.domain.UsuarioPlan;
 import com.itsight.service.PlanService;
+import com.itsight.service.UsuarioService;
+import com.itsight.service.UsuarioPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,11 +35,19 @@ public class PlanController {
 
     private PlanService planService;
 
+    private UsuarioService usuarioService;
+
+    private UsuarioPlanService usuarioplanService;
+
+
     @Autowired
-    public PlanController(ServletContext context, PlanService planService) {
+    public PlanController(ServletContext context, PlanService planService, UsuarioService us, UsuarioPlanService ups) {
         // TODO Auto-generated constructor stub
+
         this.context = context;
         this.planService = planService;
+        this.usuarioService = us;
+        this.usuarioplanService = ups;
     }
 
     @GetMapping(value = "")
@@ -186,4 +199,29 @@ public class PlanController {
             System.out.println("> Isn't a file");
         }
     }
+
+    @GetMapping(value = "/listarTodosPlanes")
+    public @ResponseBody
+    List<Plan> getAllPlans() throws JsonProcessingException {
+        return planService.findAllByFlagActivo(true);
+    }
+
+    @PostMapping(value = "/comprarPlan")
+    public @ResponseBody
+    UsuarioPlan strComprarplan(@ModelAttribute Plan splan) {
+
+        Plan plan = planService.getPlanById(splan.getId());
+        String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usu = usuarioService.findByUsername(nameuser);
+
+        UsuarioPlan usuarioplan = new UsuarioPlan();
+        usuarioplan.setPlan(plan);
+        usuarioplan.setUsuario(usu);
+        usuarioplan.setMes(plan.getCantidadMeses());
+
+        usuarioplanService.add(usuarioplan);
+
+        return usuarioplan;
+    }
+
 }

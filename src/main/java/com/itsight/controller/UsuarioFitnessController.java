@@ -1,21 +1,17 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.Usuario;
+import com.itsight.domain.Plan;
 import com.itsight.domain.UsuarioFitness;
 import com.itsight.domain.dto.UsuarioFitnessDto;
-import com.itsight.domain.jsonb.CompetenciaRunner;
 import com.itsight.service.*;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -31,6 +27,8 @@ public class UsuarioFitnessController {
     private TipoDocumentoService tipoDocumentoService;
 
     private UsuarioService usuarioService;
+
+    private PlanService planService;
 
     @Autowired
     public UsuarioFitnessController(UsuarioFitnessService usuarioFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService, UsuarioService usuarioService) {
@@ -70,5 +68,9 @@ public class UsuarioFitnessController {
         return usuarioFitnessService.registrar(usuarioFitDto);
     }
 
-    //edicionUsuarioId
+    @GetMapping(value = "/planes")
+    public ModelAndView principalplanes(Model model) {
+        return new ModelAndView(ViewConstant.MAIN_PLANES);
+    }
+
 }

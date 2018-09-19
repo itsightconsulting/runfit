@@ -358,4 +358,10 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     public List<Usuario> listarEntrenadores() {
         return repository.findAllTrainers();
     }
+
+    @Override
+    public Usuario findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
 }

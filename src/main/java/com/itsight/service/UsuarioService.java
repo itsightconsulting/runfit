@@ -23,4 +23,6 @@ public interface UsuarioService extends BaseService<Usuario> {
     List<Usuario> listarEntrenadores();
 
     String validarUsername(String username);
+
+    Usuario findByUsername(String username);
 }
