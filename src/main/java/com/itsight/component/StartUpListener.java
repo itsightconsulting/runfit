@@ -105,31 +105,34 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
-        //Main Seeders
-        addingObjectivesTable();
-        addingCategoriaTable();
-        addingImageTypeTable();
-        addingProfilesToTable();
-        addingRolToTable();
-        addingPlanToTable();
-        addingToTipoDescuentoTable();
-        addingTipoAudioToTable();
-        addingMusculoToTable();
-        addingCondicionMejoraToTable();
-        addingTipoDocumentoToTable();
-        addingAudiosDemo();
+        //Nos aseguramos que si los seeders ya han sido ejecutados nos saltemos su registro
+        if(tipoDocumentoService.findOne(1) == null){
+            //Main Seeders
+            addingObjectivesTable();
+            addingCategoriaTable();
+            addingImageTypeTable();
+            addingProfilesToTable();
+            addingRolToTable();
+            addingPlanToTable();
+            addingToTipoDescuentoTable();
+            addingTipoAudioToTable();
+            addingMusculoToTable();
+            addingCondicionMejoraToTable();
+            addingTipoDocumentoToTable();
+            addingAudiosDemo();
 
-        if(bagForestRepository.findOne(1) == null) {
-            insertACategoriaEjercicio();
-            insertASubCategoriaEjercicio();
-            insertAEspecificacionSubCategoriaEjercicio();
-        }
+            if(bagForestRepository.findOne(1) == null) {
+                insertACategoriaEjercicio();
+                insertASubCategoriaEjercicio();
+                insertAEspecificacionSubCategoriaEjercicio();
+            }
 
-        if(bagForestRepository.findOne(2) == null) {
-            insertAGrupoVideo();
-            insertACategoriaVideo();
-            insertASubCategoriaVideo();
-            insertAVideo();
+            if(bagForestRepository.findOne(2) == null) {
+                insertAGrupoVideo();
+                insertACategoriaVideo();
+                insertASubCategoriaVideo();
+                insertAVideo();
+            }
         }
 
         addingApplicationParameters();
@@ -661,7 +664,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 "/Productos/Presentacion",
         };
         Utilitarios.createDirectoryStartUp(context.getAttribute("MAIN_ROUTE").toString(), childPaths);
-
     }
 
    /* public void testingRutinaRaw() {
