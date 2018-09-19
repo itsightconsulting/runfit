@@ -1,0 +1,62 @@
+<div th:fragment="fg-js">
+    <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+    <script th:src="@{/js/plugin/pace/pace.min.js}+'?'+${version}"></script>
+    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if (!window.jQuery) {
+            document.write('<script src="/js/libs/jquery-3.2.1.min.js"><\/script>');
+        }
+        /*]]>*/
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if (!window.jQuery.ui) {
+            document.write('<script src="/js/libs/jquery-ui.min.js"><\/script>');
+        }
+        /*]]>*/
+    </script>
+
+    <!-- IMPORTANT: APP CONFIG -->
+    <script th:src="@{/js/app.config.js}+'?'+${version}"></script>
+
+    <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+    <script th:src="@{/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js}+'?'+${version}"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script th:src="@{/js/bootstrap/bootstrap.min.js}+'?'+${version}"></script>
+
+    <!-- CUSTOM NOTIFICATION -->
+    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
+
+    <!-- JARVIS WIDGETS -->
+    <script th:src="@{/js/smartwidgets/jarvis.widget.min.js}+'?'+${version}"></script>
+
+    <!-- JQUERY VALIDATE -->
+    <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+
+    <!-- JQUERY UI + Bootstrap Slider -->
+    <script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}+'?'+${version}"></script>
+
+    <!-- browser msie issue fix -->
+    <script th:src="@{/js/plugin/msie-fix/jquery.mb.browser.min.js}+'?'+${version}"></script>
+
+    <!-- FastClick: For mobile devices -->
+    <script th:src="@{/js/plugin/fastclick/fastclick.min.js}+'?'+${version}"></script>
+
+    <!-- MAIN APP JS FILE -->
+    <script th:src="@{/js/app.min.js}+'?'+${version}"></script>
+
+    <!-- Bootsrap validator -->
+
+    <!-- PAGE RELATED PLUGIN(S) -->
+    <script th:src="@{/js/plugin/bootstrap-duallistbox/jquery.bootstrap-duallistbox.min.js}+'?'+${version}"></script>
+
+
+    <!-- JS ITS -->
+    <script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
+
+</div>

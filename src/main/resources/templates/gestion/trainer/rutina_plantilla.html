@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en-us"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-user fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Rutina Plantilla</b>
+										</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <form id="frm_busqueda">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-1 control-label-right"><b>Estado:</b></label>
+                                    <div class="col-md-2 mrg">
+                                        <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                            <option value="-1"> -- Todos --</option>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
+                                                class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblRegistros" data-mobile-responsive="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="20" data-title="Código"></th>
+                                <th data-field="anios" data-formatter="linkFormatter" data-halign="center" data-valign="middle" data-align="center">Años
+                                </th>
+                                <th data-field="totalSemanas" data-halign="center" data-valign="middle" data-align="center">Semanas
+                                </th>
+                                <th data-field="fechaCreacion" data-halign="center" data-valign="middle" data-align="center">Fecha Creación
+                                </th>
+                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="60" data-class="td-status">Estado
+                                </th>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="90">Acciones
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#Id');
+
+    $(function () {
+
+        pageSetUp();
+        listarRegistros();
+
+        //V A L I D A T E
+        validarRegistros();
+
+        $("#btnNuevo").click(function () {
+            irRegistro();
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+
+    });
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                url: _ctx + 'gestion/rutina-plantilla/trainer/obtenerListado',
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: d => {
+                    console.log(d);
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function registroRutinarioCe(id){
+        let params = {};
+        params.id = id;
+
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/usuario/agregar/rutinario-ce',
+            dataType: "json",
+            data: params,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == "-9") {
+                        $.smallBox({color: "alert", content: "<i> La operación ha fallado, comuníquese con el administrador...</i>"});
+                    } else {
+                        $.smallBox({});
+                    }
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                irListado($index);
+                listarRegistros();
+            }
+        });
+    }
+
+    function desactivar(id, ix, username) {
+        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>¿Quieres activar o desactivar el registro?",
+            buttons: '[No][Si]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Si") {
+                var params = {};
+                params.id = id;
+                params.flagActivo = actualStatus == "Activo" ? false : true;
+                params.username = username;
+
+                $.ajax({
+                    type: 'PUT',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/usuario/desactivar',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            $.smallBox({
+                                content: "<i> Se actualizó el registro...</i>",
+                            });
+
+                            actualStatus == "Activo" ?
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                :
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function() {
+                        limpiarBusqueda();
+                    }
+                });
+            } else {
+            }
+        });
+    }
+
+    function validarCorreo(e, resolve, reject){
+        const correo = document.querySelector('#Correo');
+        if(!correo.readOnly) {//Para obviar esta validación en las actualizaciones
+
+            if (correo.parentElement.classList.contains('state-success') && regexMail.test(correo.value.trim())) {
+                let params = {};
+                params.correo = correo.value.trim();
+                $.ajax({
+                    type: 'GET',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/usuario/validacion-correo',
+                    dataType: "json",
+                    data: params,
+                    success: function (data) {
+                        if (data == "1" ? true : false) {
+                            correo.parentElement.classList.add('state-success');
+                            correo.parentElement.classList.remove('state-error');
+                            if(document.querySelector('#Correo-error') != null){document.querySelector('#Correo-error').style.display = 'none';}
+                            if (resolve != undefined) resolve('success');//Se ejecuta cuando una prosema fue hecha
+                        } else {
+                            correo.parentElement.classList.remove('state-success');
+                            correo.parentElement.classList.add('state-error');
+                            if(document.querySelector('#Correo-error') != null){
+                                document.querySelector('#Correo-error').innerHTML = '<b>El correo ingresado ya se encuentra registrado</b>';
+                                document.querySelector('#Correo-error').style.display = '';
+                            }else{
+                                $.smallBox({color: "alert", content: "<b><i>El correo ingresado ya se encuentra registrado...</i></b>"});
+                            }
+
+                            if (reject != undefined) reject('fail');//Se ejecuta cuando una prosema fue hecha
+                        }
+                    },
+                    error: function (xhr) {
+                        if (resolve != undefined) resolve('fail-success')//Nos saltamos la validación en caso de error
+                        exception(xhr);
+                    },
+                    complete: function () {
+                    }
+                })
+            }
+        }else{
+            if(resolve != undefined) resolve('success');//Para cumplir la promesa y que la actualización siga su curso
+        }
+    }
+
+    function cambiarContrasena(id, username) {
+        $('#DatosCambioPass').val(id + '|' + username);
+    }
+
+    function confirmarCambio() {
+
+        if ($("#frm_cambio").valid()) {
+            $('#spCambio').html(spinnerHTMLRaw());
+            $('#btnCambioContrasena').attr('disabled', 'disabled');
+            $('#btnCambioContrasena').text('Cargando...');
+            var params = getFormData($('#frm_cambio'));
+            params.userId = $('#DatosCambioPass').val().split('|')[0]
+            params.username = $('#DatosCambioPass').val().split('|')[1];
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/usuario/cambio-contrasena',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-9") {
+                            $.smallBox({
+                                content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                                timeout: 4500,
+                                color: "alert",
+                            });
+                        } else {
+                            $.smallBox({content: "<i>La contraseña se actualizó con éxito</i>"});
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    $('#btnCambioContrasena').removeAttr('disabled');
+                    $('#btnCambioContrasena').text('Confirmar');
+                    $('#spCambio').html('');
+                    $('#CambioContrasena.modal').modal('hide');
+                    $('#frm_cambio').trigger("reset");
+                    $("#frm_cambio").validate().resetForm();
+                }
+            });
+        }
+    }
+
+    function linkFormatter(value, row) {
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.anios + '</a>', value);
+    }
+
+    function Opciones(value, row, index) {
+        return desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp`
+    }
+
+    function isActived(value, row) {
+        if (row.flagActivo) {
+            return '<span class="label label-success">Activo</span>';
+        } else {
+            return '<span class="label label-danger">Inactivo</span>';
+        }
+    }
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombres: {
+                    required: true,
+                    maxlength: $("#Nombres").prop("maxlength"),
+                },
+                ApellidoPaterno: {
+                    required: true,
+                    maxlength: $("#ApellidoPaterno").prop("maxlength"),
+                },
+                ApellidoMaterno: {
+                    required: true,
+                    maxlength: $("#ApellidoMaterno").prop("maxlength"),
+                },
+                Correo: {
+                    required: true,
+                    emailAddress: true,
+                    maxlength: $("#Correo").prop("maxlength"),
+                },
+                Movil: {
+                    number: true,
+                },
+                CodPais: {
+                    number: true,
+                },
+                Username: {
+                    required: true,
+                    maxlength: $("#Username").prop("maxlength"),
+                },
+                Password: {
+                    required: () => {
+                        return $('#Id').val() > 0 ? false : true
+                    },
+                    maxlength: $("#Password").prop("maxlength"),
+                    pwcheck: true,
+                },
+                CheckPassword: {
+                    equalTo: '#Password',
+                },
+                PerfilId: {
+                    required: true,
+                    digits: true,
+                },
+                CheckRoles: {
+                    required: () => {
+                        rs = $('input:checkbox:checked').length > 0 ? false : true;
+                        if (rs) {
+                            $('.checkbox').addClass('state-error');
+                            return true
+                        } else return false;
+                    }
+                }
+            },
+            messages: {
+                Nombres: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                ApellidoPaterno: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                ApellidoMaterno: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Correo: {
+                    required: "El campo es obligatorio",
+                    emailAddress: "Formato inválido",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                Movil: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    number: "Este campo solo permite números"
+                },
+                CodPais: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    number: "Este campo solo permite números"
+                },
+                Username: {
+                    required: "<i class='form-control-feedback glyphicon glyphicon-remove'></i>El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Password: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    pwcheck: 'Password inválida, revisar <a style="color:#dd4814;" href="javascript:MostrarRequisitosPassword();">requisitos</a>'
+                },
+                CheckPassword: {
+                    equalTo: "Por favor ingresar la misma password nuevamente",
+                },
+                PerfilId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un perfil válido",
+                },
+                CheckRoles: {
+                    required: "Debe seleccionar por lo menos un rol",
+                }
+            },
+            submitHandler: function () {
+                registro();
+            }
+        });
+
+        $("#frm_cambio").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                NuevaPassword: {
+                    required: true,
+                    pwcheck: true
+                },
+                NuevaPasswordRe: {
+                    equalTo: '#NuevaPassword',
+                }
+            },
+            messages: {
+                NuevaPassword: {
+                    required: "El campo es obligatorio",
+                    pwcheck: 'Password inválida, revisar <a style="color:#dd4814;" href="javascript:MostrarRequisitosPassword();">requisitos</a>'
+                },
+                NuevaPasswordRe: {
+                    equalTo: "Por favor ingresar la misma password nuevamente",
+                }
+            },
+            submitHandler: function () {
+
+            }
+        })
+    }
+
+    function MostrarRequisitosPassword() {
+
+        var mjeValidaciones = "";
+        mjeValidaciones = mjeValidaciones + "La contraseña debe cumplir con las siguientes condiciones:" + "</br></br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> Tener mínimo 8 caracteres." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> Tener mínimo un dígito." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> Tener mínimo un caracter en minúscula o mayúscula." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> No debe contar con espacios." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-clock-o'></i> <bold style=\"color:#dd4814\">Ejemplo: pAblo24rio</bold> ";
+
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>" + mjeValidaciones,
+            buttons: '[Aceptar]',
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+            }
+
+        });
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

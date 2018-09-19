@@ -1,0 +1,167 @@
+<aside id="left-panel" th:fragment="fg-left-panel">
+    <!-- User info -->
+    <div class="login-info">
+				<span> <!-- User image size is adjusted inside CSS, it should stay as it -->
+					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+						<img th:src="@{/img/avatars/sunny.png}" alt="me" class="online"/>
+						<span style="text-transform:uppercase;" th:if="${#authentication != null}" th:text="${#authentication.name}">
+						</span>
+						<i class="fa fa-angle-down"></i>
+					</a>
+				</span>
+    </div>
+    <!-- end user info -->
+
+    <!-- NAVIGATION : This navigation is also responsive-->
+    <nav>
+        <!--
+        NOTE: Notice the gaps after each icon usage <i></i>..
+        Please note that these links work a bit different than
+        traditional href="" links. See documentation for details.
+        -->
+
+        <ul>
+            <li class="top-menu-invisible" sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')">
+                <a href="#" title="GestionRunFit"><i class="fa fa-lg fa-fw fa-th txt-color-blueLight"></i> <span class="menu-item-parent">Gestión RunFit</span></a>
+                <ul>
+                    <li>
+                        <a th:href="@{/gestion/usuario/}" title=" Usuarios"><i class="fa fa-user"></i><span class="menu-item-parent"> Usuarios</span></a>
+                    </li>
+                    <li class="top-menu-invisible">
+                        <a href="#" title="Home"><i class="fa fa-pagelines fa-fw fa-th txt-color-blueLight"></i> <span class="menu-item-parent">Home</span></a>
+                        <ul>
+                            <li class="">
+                                <a th:href="@{/gestion/categoria/}" title="Categorias"><i class="fa fa-tasks"></i><span
+                                        class="menu-item-parent"> Categorías</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/plan/}" title="Planes"><i class="fa fa-paper-plane"></i><span
+                                        class="menu-item-parent"> Planes</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/paquete/}" title="Paquetes Plan"><i class="fa fa-suitcase"></i><span
+                                        class="menu-item-parent"> Paquetes Plan</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="top-menu-invisible">
+                        <a href="#" title="Tienda"><i class="fa fa-shopping-cart fa-fw txt-color-blueLight"></i> <span class="menu-item-parent">Tienda</span></a>
+                        <ul>
+                            <li>
+                                <a th:href="@{/gestion/producto/}" title="Productos"><i class="fa fa-gift"></i><span
+                                        class="menu-item-parent"> Productos</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/documento/}" title="PDF's"><i class="fa fa-file"></i><span
+                                        class="menu-item-parent"> PDF's</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="top-menu-invisible">
+                        <a href="#" title="Rutinario C"><i class="fa fa-sticky-note fa-fw fa-th txt-color-blueLight"></i> <span class="menu-item-parent">Rutinario C</span></a>
+                        <ul>
+                            <li class="">
+                                <a th:href="@{/gestion/categoria-ejercicio/}" title="Rutinario CE"><i
+                                        class="fa fa-book"></i><span class="menu-item-parent"> Categoría Ejercicios</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/sub-categoria-ejercicio/}" title="Rutinario SCE"><i
+                                        class="fa fa-book"></i><span
+                                        class="menu-item-parent"> Sub Categoría Ejercicios</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/especificacion-sub-categoria-ejercicio/}" title="Rutinario SCE"><i
+                                        class="fa fa-book"></i><span
+                                        class="menu-item-parent"> Especificación Sub Categoría Ejercicios</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="top-menu-invisible">
+                        <a href="#" title="Grupo Audios"><i class="fa fa-music fa-fw txt-color-blueLight"></i> <span class="menu-item-parent">Grupos Audio</span></a>
+                        <ul>
+                            <li class="">
+                                <a th:href="@{/gestion/tipo-audio/}" title="Tipos de Audio"><i
+                                        class="fa fa-file-zip-o"></i><span class="menu-item-parent"> Tipos de Audio</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/audio/}" title="Audios"><i class="fa fa-file-sound-o"></i><span
+                                        class="menu-item-parent"> Audios</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="top-menu-invisible">
+                        <a href="#" title="Grupo Videos"><i class="fa fa-music fa-video-camera txt-color-blueLight"></i> <span class="menu-item-parent">Grupos Videos</span></a>
+                        <ul>
+                            <li class="">
+                                <a th:href="@{/gestion/grupo-video/}" title="Grupo Principal de Video"><i
+                                        class="fa fa-video-camera"></i><span class="menu-item-parent"> Grupo Principal</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/categoria-video/}" title="Tipos de Video"><i
+                                        class="fa fa-video-camera"></i><span class="menu-item-parent"> Categoría</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/sub-categoria-video/}" title="Tipos de Video"><i
+                                        class="fa fa-video-camera"></i><span class="menu-item-parent"> Sub Categoría</span></a>
+                            </li>
+                            <li class="">
+                                <a th:href="@{/gestion/video/}" title="Video"><i
+                                        class="fa fa-video-camera"></i><span class="menu-item-parent"> Video</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="top-menu-invisible">
+                        <a href="#" title="Inscripción"><i class="fa fa-fighter-jet txt-color-blueLight"></i> <span class="menu-item-parent">Inscripción</span></a>
+                        <ul>
+                            <li>
+                                <a th:href="@{/gestion/objetivo/}" title="Objetivos"><i class="fa fa-star"></i><span
+                                        class="menu-item-parent"> Objetivos</span></a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{/gestion/capacidad-mejora}" title="Capacidad Mejora"><i class="fa fa-ellipsis-h"></i><span
+                                        class="menu-item-parent"> Capacidades Mejora</span></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/gestion/tipo-documento}" title="Tipo Documento"><i class="fa fa-ellipsis-v"></i><span
+                                        class="menu-item-parent"> Tipo Documento</span></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/gestion/usuario-fitness}" title="Ficha Inscripción"><i class="fa fa-facebook-square txt-color-blueLight"></i><span
+                                        class="menu-item-parent"> Ficha Inscripción</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a th:href="@{/gestion/musculo}" title="Músculos"><i class="fa fa-male"></i><span
+                                class="menu-item-parent"> Músculos</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class="top-menu-invisible" sec:authorize="hasRole('ROLE_TRAINER')">
+                <a href="#" title="GestionRutinasRunFit"><i class="fa fa-lg fa-fw fa-child txt-color-orange"></i> <span
+                        class="menu-item-parent">Entrenadores</span></a>
+                <ul>
+                    <li>
+                        <a th:href="@{/gestion/rutina-plantilla/nuevo}" title="Nueva rutina"><i class="fa fa-openid"></i><span class="menu-item-parent"> Generar Plantilla</span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/gestion/rutina-plantilla/trainer}" title="Mis Plantillas"><i class="fa fa-road"></i><span class="menu-item-parent"> Mis Plantillas </span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/gestion/trainer/red}" title="Gestión de Red"><i class="fa fa-group"></i><span class="menu-item-parent"> Red Fitness </span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/gestion/trainer/red/clientes/pagos}" title="Pagos"><i class="fa fa-money"></i><span class="menu-item-parent"> Pagos</span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/gestion/trainer/red/estadisticas}" title="Estadísticas"><i class="fa fa-bar-chart-o"></i><span class="menu-item-parent"> Estadísticas</span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <span class="minifyme" data-action="minifyMenu">
+				<i class="fa fa-arrow-circle-left hit"></i> 
+			</span>
+</aside>

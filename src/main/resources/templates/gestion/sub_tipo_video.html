@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-video-camera fa-fw "></i>
+                                    Gestión
+                                    <span>>
+													<b>Sub Tipo Video</b>
+												</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12">
+                        <div id="accordion" class="panel-group">
+                            <form id="frm_busqueda">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-md-1  control-label-left"
+                                               for="txtFiltro"><b>Nombre:</b></label>
+                                        <div class="col-md-3">
+                                            <input id="txtFiltro" type="text" placeholder="Búsqueda por nombre"
+                                                   class="form-control"/></div>
+                                        <label class="col-md-1 control-label-left"
+                                               ><b>Estado:</b></label>
+                                        <div class="col-md-2 mrg">
+                                            <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                                <option value="-1"> -- Todos --</option>
+                                                <option value="true">Activo</option>
+                                                <option value="false">Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
+                                                    class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <table id="tblRegistros" data-mobile-responsive="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center">
+                                    Código
+                                </th>
+                                <th data-field="nombre" data-formatter="linkFormatter" data-halign="left"
+                                    data-valign="middle" data-align="left">Nombre
+                                </th>
+                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                    data-align="center" data-class="td-status">Estado
+                                </th>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center">Acciones
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" id="view_register">
+                    <div class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false"
+                             data-widget-custombutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-ge"></i> </span>
+                                <!-- Tittle form -->
+                                <h2><strong><span id="Operacion">Registrar</span></strong></h2>
+                            </header>
+                            <div>
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <form id="frm_registro" class="smart-form">
+                                        <fieldset>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Nombre: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="Nombre" name="Nombre" type="text"
+                                                               placeholder="Nombre" class="" maxlength="38"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                        <input id="Id" name="Id" type="hidden" value="0"/>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Descripción: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="Descripcion" name="Descripcion" type="text"
+                                                               placeholder="Descripción" class="" maxlength="140"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                </section>
+                                                <section class="col col-6">
+                                                    <div class="inline-group">
+                                                        <label class="label">Estado Inicial: </label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivo" name="FlagActivo"
+                                                                   checked="checked"/>
+                                                            <i></i>Activo</label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivoOff" name="FlagActivo"/>
+                                                            <i></i>Inactivo</label>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                        <footer class="">
+                                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar
+                                            </button>
+                                            <button id="btnCancelar" type="button" class="btn btn-danger">Cancelar
+                                            </button>
+                                        </footer>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+
+<!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+Note: These tiles are completely responsive,
+you can add as many as you like
+-->
+<div id="shortcut">
+    <ul>
+        <li>
+            <a href="inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i
+                    class="fa fa-envelope fa-4x"></i> <span>Mail <span
+                    class="label pull-right bg-color-darken">14</span></span> </span> </a>
+        </li>
+        <li>
+            <a href="calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i
+                    class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+        </li>
+        <li>
+            <a href="gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i
+                    class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+        </li>
+        <li>
+            <a href="invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i
+                    class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i
+                    class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+        </li>
+        <li>
+            <a href="profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i
+                    class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+        </li>
+    </ul>
+</div>
+<!-- END SHORTCUT AREA -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#Id');
+
+    var pageNumber = 0;
+    var pageSize = 0;
+
+    $(function () {
+
+        pageSetUp();
+        listarRegistros();
+
+        //V A L I D A T E
+        validarRegistros();
+
+        $("#btnNuevo").click(function () {
+            $('#Operacion').text('Registrar');
+            irRegistro();
+        });
+
+        $("#btnGuardar").click(function () {
+            registro();
+        });
+
+        $("#btnCancelar").click(function () {
+            irListado($index);
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+
+    });
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+
+            $table.bootstrapTable('destroy');
+
+            var comodin = $("#txtFiltro").val();
+            var estado = $("#Estado").val();
+
+            if (comodin == null || comodin == "") {
+                comodin = "0";
+            }
+            if (estado == null) {
+                estado = "-1";
+            }
+
+            $table.bootstrapTable({
+                url: _ctx + 'gestion/sub-tipo-video/obtenerListado/' + comodin + '/' + estado,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: d => {
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function registro() {
+        if ($("#frm_registro").valid()) {
+
+            var params = getFormData($("#frm_registro"))
+            params.flagActivo = $('#FlagActivo').is(':checked');
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: '/gestion/sub-tipo-video/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-9") {
+                            $.smallBox({
+                                content: "<i> La operación ha fallado, por favor comuniquese con el administrador...</i>",
+                                timeout: 4500,
+                                color: "alert",
+                            });
+                        } else if (data == "2") {
+                            $.smallBox({
+                                content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
+                            });
+                        } else {
+                            $.smallBox({});
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    limpiarBusqueda();
+                    irListado($index);
+                    listarRegistros();
+                }
+            });
+        }
+    }
+
+    function editar(id) {
+        $('#Operacion').text('Actualizar');
+        irRegistro();
+        var param = new Object();
+        param.id = id;
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: '/gestion/sub-tipo-video/obtener',
+            dataType: "json",
+            data: param,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    $("#Id").val(data.id);
+                    $("#Nombre").val(data.nombre);
+                    $("#Descripcion").val(data.descripcion);
+                    data["flagActivo"] === true ?
+                        $('#FlagActivo').prop('checked', true)
+                        :
+                        $('#FlagActivoOff').prop('checked', true);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                limpiarBusqueda();
+            }
+        });
+    }
+
+    function desactivar(id, ix) {
+        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>¿Quieres activar o desactivar el registro?",
+            buttons: '[No][Si]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Si") {
+                var params = {};
+                params.id = id;
+                params.flagActivo = actualStatus == "Activo" ? false : true;
+
+                $.ajax({
+                    type: 'PUT',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/sub-tipo-video/desactivar',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            $.smallBox({
+                                content: "<i> Se actualizó el registro...</i>",
+                            });
+                            actualStatus == "Activo" ?
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                :
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function () {
+                        limpiarBusqueda();
+                    }
+                });
+            } else {
+            }
+        })
+    }
+
+    function linkFormatter(value, row, index) {
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombre + '</a>', value);
+    }
+
+    function Opciones(value, row, index) {
+        var desactivar = '';
+        if (row.id > 0) {
+            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a>`;
+        }
+        return desactivar;
+    }
+
+    function isActived(value, row, index) {
+        if (row.flagActivo) {
+            return '<span class="label label-success">Activo</span>';
+        } else {
+            return '<span class="label label-danger">Inactivo</span>';
+        }
+    }
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombre: {
+                    required: true,
+                    maxlength: $("#Nombre").prop("maxlength"),
+                },
+                Descripcion: {
+                    required: true,
+                    maxlength: $("#Descripcion").prop("maxlength"),
+                },
+                TipoVideoId: {
+                    required: true,
+                    digits: true,
+                },
+            },
+            messages: {
+                Nombre: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                Descripcion: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                TipoVideoId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un tipo de video válido",
+                },
+            },
+            submitHandler: function () {
+            }
+        });
+    }
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

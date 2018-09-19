@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-video-camera fa-fw"></i>
+                                    Gestión
+                                    <span>>
+													<b>Video</b>
+												</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <form id="frm_busqueda" class="smart-form">
+                            <fieldset class="" style="padding-top: 0px !important;">
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label"><b>Nombre: </b></label>
+                                        <label class="input">
+                                            <input id="txtFiltro" name="txtFiltro" type="text"
+                                                   placeholder="Ingresa nombre" class="" maxlength="30"
+                                                   autocomplete="off"/>
+                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                        </label>
+                                    </section>
+                                    <section class="col col-2">
+                                        <label class="label"><b>Estado: </b></label>
+                                        <select name="Estado" id="Estado" class="form-control">
+                                            <option value="-1"> -- Todos --</option>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                    </section>
+                                    <section class="col col-2">
+                                        <label class="label"><b>Categoría: </b></label>
+                                        <select style="width:100%" class="select2 form-control" id="CategoriaVideo">
+                                            <option value="" selected="selected"> -- Seleccione -- </option>
+                                            <optgroup th:each="c: ${lstGrupoVideo}" th:label="${c.nombre}">
+                                                <option th:each="sb : ${c.lstCategoriaVideo}" th:value="${sb.id}" th:text="${sb.nombre}">Alaska</option>
+                                            </optgroup>
+                                        </select>
+                                    </section>
+                                    <section class="col col-2">
+                                        <label class="label"><b>Sub Categoría:</b> </label>
+                                        <select name="SubTipo" id="SubCategoriaVideo" class="form-control">
+                                            <option value="" selected="selected"> -- Seleccione -- </option>
+                                        </select>
+                                    </section>
+                                    <section class="col col-1">
+                                        <h1 class="" style="color:transparent !important;">s</h1>
+                                        <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><label
+                                                class="button" style="margin: 0px !important;"><i
+                                                class="fa fa-search"></i></label></a>
+                                    </section>
+                                </div>
+                            </fieldset>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblRegistros" data-mobile-responsive="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="20" data-title="Código"></th>
+                                <th data-field="nombre" data-formatter="linkFormatter" data-halign="left"
+                                    data-valign="middle" data-align="left" data-title="Nombre"></th>
+                                <th data-field="duracion" data-halign="left" data-valign="middle" data-align="left"
+                                    data-title="Duración"></th>
+                                <th data-field="nombreSubCat" data-halign="left" data-valign="middle"
+                                    data-align="left" data-title="Sub Categoría"></th>
+                                <th data-field="peso" data-halign="left" data-valign="middle" data-align="left"
+                                    data-title="Peso"></th>
+                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="60" data-class="td-status" data-title="Estado"></th>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="120" data-title="Acciones"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" id="view_register">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false"
+                             data-widget-custombutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-ge"></i> </span>
+                                <!-- Tittle form -->
+                                <h2><strong><span id="Operacion"></span></strong></h2>
+                            </header>
+                            <div>
+                                <!-- widget content -->
+                                <div class="widget-body no-padding ">
+                                    <form id="frm_registro" class="smart-form">
+                                        <fieldset class="">
+                                            <section class="">
+                                                <label class="label">Nombre: </label>
+                                                <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                    <input id="Nombre" name="Nombre" type="text" placeholder="Nombre"
+                                                           class="" maxlength="30" autocomplete="off"/>
+                                                    <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    <input id="Id" name="Id" type="hidden" value="0"/>
+                                                    <input id="NombreMedia" type="hidden" value=""/>
+                                                </label>
+                                            </section>
+                                            <section class="">
+                                                <label class="label">Categoría: </label>
+                                                <label class="input">
+                                                    <select class="form-control" id="CategoriaVideoId" name="CategoriaVideoId">
+                                                        <option value="" selected="selected"> -- Seleccione -- </option>
+                                                        <optgroup th:each="c: ${lstGrupoVideo}" th:label="${c.nombre}">
+                                                            <option th:each="sb : ${c.lstCategoriaVideo}" th:value="${sb.id}" th:text="${sb.nombre}">Alaska</option>
+                                                        </optgroup>
+                                                    </select>
+                                                    <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    <div class="alert alert-success" id="MsgActualizarSubCat" display="">
+                                                            <em style="color: #666; font-weight: bold;">Seleccionar solo en caso se vaya a cambiar de sub categoría al video</em>
+                                                    </div>
+                                                </label>
+
+                                            </section>
+                                            <section class="">
+                                                <label class="label">Sub Categoría: </label>
+                                                <label class="input">
+                                                    <select id="SubCategoriaVideoId" name="SubCategoriaVideoId"
+                                                            class="form-control">
+                                                        <option value="">-- Seleccione --</option>
+                                                    </select>
+                                                    <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                </label>
+                                            </section>
+                                            <section class="">
+                                                <label class="label">Video: <span id="Archivo"
+                                                                                  class="pull-right margin-right-5 hidden"><a
+                                                        data-toggle="modal" data-target="#myModalVideo"
+                                                        title="Reproducir" href="#" onclick="reproducirVideoModal();"
+                                                        data-route=""><i
+                                                        class="fa fa-play-circle fa-15x"></i></a></span></label>
+                                                <div class="input input-file">
+                                                    <label class="input"><i class="icon-append fa fa-film"></i>
+                                                        <input id="Video" name="Video" type="file"
+                                                               accept=".mp4,.mpeg4,.mpg,.mpeg,.wmv" class="form-control"
+                                                               data-show-preview="false" data-language="es"
+                                                               data-show-upload="false"/>
+                                                        <div class="alert alert-success hidden" id="MsgEditarArchivo">
+                                                            <em style="color: #666; font-weight: bold;">Seleccionar
+                                                                archivo solo en caso se quiera reemplazar el actual</em>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </section>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Peso: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="Peso" name="Peso" type="text" maxlength="8"
+                                                               class="form-control" data-show-preview="false"
+                                                               data-language="es" data-show-upload="false"
+                                                               readonly="readonly"/>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Duración: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="Duracion" name="Duracion" type="text" maxlength="8"
+                                                               class="form-control" data-show-preview="false"
+                                                               data-language="es" data-show-upload="false"
+                                                               readonly="readonly"/>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <section class="">
+                                                <div class="inline-group">
+                                                    <label class="radio">
+                                                        <input type="radio" id="FlagActivo" name="FlagActivo"
+                                                               checked="checked"/>
+                                                        <i></i>Activo</label>
+                                                    <label class="radio">
+                                                        <input type="radio" id="FlagActivoOff" name="FlagActivo"/>
+                                                        <i></i>Inactivo</label>
+                                                </div>
+                                            </section>
+                                            <audio id="Tiempo"></audio>
+                                            <section class="text-align-center">
+                                            </section>
+                                        </fieldset>
+                                        <footer class="">
+                                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar
+                                            </button>
+                                            <button id="btnCancelar" type="button" class="btn btn-danger">Cancelar
+                                            </button>
+                                        </footer>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- MODALS -->
+                <!-- MODAL VISUALIZACION DE VIDEO -->
+                <div class="modal fade" id="myModalVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="">
+                            <div class="">
+                                <video id="somevid" controls="" autoplay="" controlsList="nodownload" width="100%"
+                                       height="100%">
+                                    <source id="VideoReproduccion" src="" type="video/mp4"/>
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FINAL MODAL VISUALIZACION DE VIDEO -->
+                <!-- FIN MODALS -->
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#Id');
+
+    $(function () {
+
+        pageSetUp();
+        listarRegistros();
+        subirVideoChangeEvent();
+
+        //V A L I D A T E
+        validarRegistros();
+        agregarModalParaVisualizacionImagen();
+
+        $("#btnNuevo").click(function () {
+            $('#Operacion').text('Registrar');
+            $('#Archivo').addClass('hidden');
+            $('#MsgEditarArchivo').addClass('hidden');
+            $('#MsgActualizarSubCat').addClass('hidden');
+            $('#CategoriaVideoId').removeClass('ignore');
+            irRegistro();
+        });
+
+        $("#btnGuardar").click(function () {
+            registro();
+        });
+
+        $("#CategoriaVideo").change(function () {
+            cargarSubCategorias(1);
+        });
+
+        $("#CategoriaVideoId").change(function () {
+            cargarSubCategorias(2);
+        });
+
+        $("#btnCancelar").click(function () {
+            irListado($index);
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+
+        $('#Tiempo').on('canplaythrough', function (e) {
+            document.getElementById('Duracion').value = String(Math.round(e.currentTarget.duration)).toHHMMSS();
+        });
+
+        $('#myModalVideo').on('hidden.bs.modal', ()=> {
+            $("#VideoReproduccion").parent().get(0).pause();
+        })
+
+    });
+
+    function cargarSubCategorias(cond){
+        let params = {};
+        params.catVideoId = cond == 1 ? $('#CategoriaVideo').val() : $('#CategoriaVideoId').val();
+        if(params.catVideoId != undefined && params.catVideoId >0)
+            $.ajax({
+                type: 'GET',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/sub-categoria-video/listarPorCategoria',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-9") {
+                            $.smallBox({
+                                content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                                timeout: 4500,
+                                color: "alert",
+                            });
+                        }else{
+                            let subCatName = cond == 1 ? 'SubCategoriaVideo' : 'SubCategoriaVideoId', htmlRaw='';
+                            $('#'+subCatName).html('');
+                                htmlRaw = `<option value="" selected="selected"> -- Seleccione -- </option>`;
+                                data.forEach(v => {
+                                    htmlRaw +=`<option value="${v.id}">${v.nombre}</option>`;
+                                });
+                            $('#'+subCatName).html(htmlRaw);
+                            $('#'+subCatName).parent().addClass('state-success');
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {}
+            });
+    }
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+            $table.bootstrapTable('destroy');
+
+            var comodin = $("#txtFiltro").val();
+            var estado = $("#Estado").val();
+            var subCatVideo = $("#SubCategoriaVideo").val();
+
+
+            if (comodin == null || comodin == "") {
+                comodin = "0";
+            }
+            if (estado == null) {
+                estado = "-1";
+            }
+            if (subCatVideo == null || subCatVideo == "") {
+                subCatVideo = "0";
+            }
+
+            $table.bootstrapTable({
+                url: _ctx + 'gestion/video/obtenerListado/' + comodin + '/' + estado + '/' + subCatVideo,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: function (data) {
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function registro() {
+        if ($("#frm_registro").valid()) {
+            var params = getFormData($('#frm_registro'));
+            params.flagActivo = $('#FlagActivo').is(':checked');
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/video/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data) {
+                    if (params.id > 0) {
+                        $.smallBox({
+                            content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
+                        });
+                    }
+                    subirVideo(data, params.id);
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    limpiarBusqueda();
+                }
+            });
+        }
+    }
+
+    function editar(id) {
+        $('#MsgEditarArchivo').removeClass('hidden');
+        $('#MsgActualizarSubCat').removeClass('hidden');
+        irRegistro();
+        $('#Operacion').text('Actualizar');
+        var param = new Object();
+        param.id = id;
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/video/obtener',
+            dataType: "json",
+            data: param,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    $("#Id").val(data.id);
+                    $("#Nombre").val(data.nombre);
+                    $("#Descripcion").val(data.descripcion);
+                    $("#Duracion").val(data.duracion);
+                    $("#Peso").val(data.peso);
+
+                    $("#SubCategoriaVideoId").append(`<option value=${data.subCatVideoId}>${data.nombreSubCat}</option>`);
+                    $("#SubCategoriaVideoId").val(data.subCatVideoId);
+                    $('#CategoriaVideoId').addClass('ignore');
+
+                    data.flagActivo === true ?
+                        $('#FlagActivo').prop('checked', true)
+                        :
+                        $('#FlagActivoOff').prop('checked', true);
+
+                    $('#MsgEditarArchivo').attr('display', '');
+                    $('#MsgActualizarSubCat').attr('display', '');
+                    $('#Archivo').attr('data-route', data.rutaWeb);
+                    $('#Archivo').removeClass('hidden');
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                limpiarBusqueda();
+            }
+        });
+    }
+
+    function desactivar(id, ix) {
+        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>¿Quieres activar o desactivar el registro?",
+            buttons: '[No][Si]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Si") {
+                var params = {};
+                params.id = id;
+                params.flagActivo = actualStatus == "Activo" ? false : true;
+
+                $.ajax({
+                    type: 'PUT',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/video/desactivar',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            $.smallBox({
+                                content: "<i> Se actualizó el registro...</i>",
+                            });
+
+                            actualStatus == "Activo" ?
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                :
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function () {
+                        limpiarBusqueda();
+                    }
+                });
+            } else {
+            }
+        })
+    }
+
+    function reproducirVideo(rutaWeb) {
+        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${rutaWeb}`;
+        $("#VideoReproduccion").parent().get(0).load();
+    }
+
+    function reproducirVideoModal() {
+        let route = $('#Archivo').attr('data-route');
+        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+        $("#VideoReproduccion").parent().get(0).load();
+    }
+
+    function subirVideo(id, initId) {
+        var video = $("#Video").get(0);
+
+        var files = video.files;
+        if (files[0] != null) {
+
+            var data = new FormData();
+            data.append("video", video.files[0]);
+            data.append("videoId", id);
+
+            $.ajax({
+                type: 'POST',
+                url: _ctx + 'gestion/video/upload',
+                data: data,
+                contentType: false,
+                processData: false,
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', progress, false);
+                    }
+
+                    return myXhr;
+                },
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-99") {
+                            $.smallBox({content: "El archivo no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
+                        }
+                        if (initId <= 0)
+                            $.smallBox({});
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    listarRegistros();
+                    irListado($index);
+                }
+            });
+
+        }else {
+            irListado($index);
+            listarRegistros();
+        }
+    }
+
+    function subirVideoChangeEvent() {
+
+        $("#Video").change(function () {
+            //submit the form here
+            var file;
+            if ((file = this.files[0])) {
+                if (file.name.match(/\.(avi|mp3|mp4|mpeg|ogg|mpeg4|mpg|wmv)$/i)) {
+                    objUrl = URL.createObjectURL(file);
+                    document.getElementById('Tiempo').setAttribute('src', objUrl);
+                    $('#Peso').val(formatBytes(file.size, 2));
+                }
+            }
+        });
+    }
+
+    function linkFormatter(value, row) {
+        return String(`<a class='' href='#' onclick='editar(${row.id})' title='Editar'>${row.nombre}</a>`);
+    }
+
+    function Opciones(value, row, index) {
+        var opciones =
+            `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
+		            		 <a href='#' onclick='javascript:reproducirVideo("${row.rutaWeb}");' data-toggle='modal' data-target='#myModalVideo' title='Reproducir video'><i class='fa fa-play fa-2x'></i></a> &nbsp
+		            		 <a class='font-sx' href='${_ctx}workout/media/file/video/gt/0${row.rutaWeb}' title='Descargar video'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
+        return opciones;
+    }
+
+    function isActived(value, row) {
+
+        if (row.flagActivo) {
+            return '<span class="label label-success">Activo</span>';
+        } else {
+            return '<span class="label label-danger">Inactivo</span>';
+        }
+    }
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombre: {
+                    required: true,
+                    maxlength: $("#Nombre").prop("maxlength"),
+                },
+                CategoriaVideoId: {
+                    required: true,
+                    digits: true,
+                },
+                SubCategoriaVideoId: {
+                    required: true,
+                    digits: true,
+                },
+                Video: {
+                    required: function () {
+                        if ($('#Id').val() > 0) {
+                            return false;
+                        }
+                        return true;
+                    }
+                },
+                Peso: {
+                    required: true,
+                }
+            },
+            messages: {
+                Nombre: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                CategoriaVideoId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione una categoría válida",
+                },
+                SubCategoriaVideoId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione una sub categoría válida",
+                },
+                Video: {
+                    required: "La subida del video es obligatoria",
+                },
+                Peso: {
+                    required: "Adjunte el video y el campo se llenará",
+                }
+            },
+            submitHandler: function () {
+                registro();
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

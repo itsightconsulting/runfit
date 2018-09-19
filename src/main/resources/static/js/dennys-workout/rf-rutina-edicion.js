@@ -1,0 +1,2359 @@
+//Variables requeridas
+let indexGlobal = 0;
+let $body = $("html,body");
+let $rutina;
+let $inFocus;
+let $diaPlantilla;
+let $diaPlantillas;
+let $yelmo = '';
+let $nombreActualizar = '';
+let $memoriaAudio = '';
+let $mediaAudio = '';
+let $mediaNombre = '';
+let $memoriaVideo = '';
+let $mediaVideo = '';
+let $semanaInicial = {};
+let $tiempoActualizar = '';
+let $kmsActualizar = '';
+let $gIndex = '';
+let $tipoMedia = '';
+let $eleFromMiniElegidos = [];
+let $eleListas = [];
+let $eleListasElegidos = [];
+let $audiosElegidos = [];
+let $videosElegidos = [];
+let $refIxsSemCalendar = [];
+let $fechasCompetencia = [];
+let $eleGenerico;
+
+
+//Contenedores y constantes
+const $semActual = document.querySelector('#SemanaActual');
+const $semanario = document.querySelector('#RutinaSemana');
+const rutinarioCe = document.querySelector('#tabRutinarioCe');
+const cboSubCategoriaId = document.querySelector('#SubCategoriaId');
+const cboSubCategoriaIdSec = document.querySelector('#SubCategoriaIdSec');
+const cboEspSubCategoriaIdSec = document.querySelector('#EspecificacionSubCategoriaIdSec');
+const btnGuardarMini = document.querySelector('#btnGuardarMini');
+const btnCopiarMini = document.querySelector('#btnCopiarMini');
+const tabRutina = document.querySelector('#myTabRutina');
+const semLineal = document.querySelector('#SemanasLineal');
+const tabGrupoAudios = document.querySelector('#tabGrupoAudios');
+const tabGrupoVideos = document.querySelector('#tabGrupoVideos');
+const modalMini = document.querySelector('#modalMiniPlantilla');
+const catRutinasDiaIndex = document.querySelector('#CatRutinasDiaIndex');
+const catMisRutinas = document.querySelector('#CatMisRutinas');
+const shortcutRutinario = document.querySelector('#ShortcutRutinario');
+const mainTabs = document.querySelector('#PrincipalesTabs');
+const miniEditor = document.querySelector('#MiniEditor');
+
+$(function () {
+    init();
+})
+
+
+function init(){
+
+    obtenerSemanaInicialRutina().then((semana)=>{
+        //Esconder la opcion de collapse del menú principal
+        document.querySelector('#left-panel .minifyme').classList.toggle('hidden');
+        //Importante mantener el orden para el correcto funcionamiento
+        $rutina = new Rutina(semana.rutina);
+        $rutina.init(semana);
+        validators();
+        instanciarMiniPlantillas();
+        instanciarGrupoVideos();
+        instanciarDatosFitnessCliente();
+        tabRutina.addEventListener('click', principalesEventosTabRutina);
+        tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
+        tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
+        $semanario.addEventListener('click', principalesEventosClickRutina);
+        $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
+        rutinarioCe.addEventListener('click', genericoRutinarioCe);
+        cboSubCategoriaId.addEventListener('change', cargarListaSubCategoriaEjercicio);
+        cboSubCategoriaIdSec.addEventListener('change', cargarListaSubCategoriaEjercicio);
+        cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla)
+        btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
+        shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
+        mainTabs.addEventListener('click', principalesAlCambiarTab);
+        miniEditor.addEventListener('click', principalesMiniEditor);
+        //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
+        window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
+        instanciarMarcoEditor();
+        instanciaMediaBD();
+        instanciaPerfectScrollBar();
+        instanciarTooltips();
+        modalEventos();
+        setFechaActual(document.querySelectorAll('input[type="date"]'));
+    });
+}
+
+function avanzarRetrocederSemana(numSem, action){
+    obtenerEspecificaSemana(numSem, action).then((semana)=> {
+        $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
+        //Importante mantener el orden para el correcto funcionamiento
+        $rutina = new Rutina(semana.rutina);
+        $rutina.initEspecifico(semana, numSem);
+    })
+    instanciarTooltips();
+}
+
+async function obtenerSemanaInicialRutina(){
+    let promesa = new Promise((resolve, reject)=>{
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'gestion/rutina/primera-semana/edicion',
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == "-9") {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    } else {
+                        //Semana
+                        console.log(data);
+                        $semanaInicial = data;
+                        resolve(data);
+                    }
+                }
+            },
+            error: function (xhr) {
+                reject("-1");
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    })
+    return promesa;
+}
+
+async function obtenerEspecificaSemana(semanaIndex, action){
+    let promesa = new Promise((resolve, reject)=>{
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'gestion/rutina/semana/obtener/'+semanaIndex,
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == "-9") {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    } else {
+                        //Semana
+                        if(action == 1)//Avanzar
+                            $semActual.textContent = Number($semActual.textContent.trim()) +1;
+                        else if(action == 2)//Semana elegida desde el calendario
+                            $semActual.textContent = Number(semanaIndex) +1;
+                        else
+                            $semActual.textContent = Number($semActual.textContent.trim()) -1;
+                        $semanaInicial = data;
+                        resolve(data);
+                    }
+                }
+            },
+            error: function (xhr) {
+                reject("-1");
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    })
+    return promesa;
+}
+
+function validators(){
+    DiaOpc.validarGuardaMiniPlantilla();
+}
+
+function modalEventos(){
+
+    $('#modalCategoriasRutinas').click(e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        const clases = e.target.classList;
+        const input = e.target;
+        if(clases.contains('img-cat-rutina')){
+            DiaOpc.guardarMisPlantillas(input);
+        }
+    })
+
+    $('#modalPreGuardarMini').click((e)=>{
+        const clases = e.target.classList;
+        if(clases.contains('elegir-mis-rutinas')){
+            $('#modalCategoriasRutinas').modal('show');
+            $('#modalPreGuardarMini').modal('hide');
+        }else if(clases.contains('elegir-rutinario')){
+            $('#modalGuardarMini').modal('show');
+            $('#modalPreGuardarMini').modal('hide');
+        }
+    })
+
+    $('#modalMiniPlantilla').on('show.bs.modal', ()=> {
+        $eleListasElegidos = [];
+    })
+
+    $('#modalCategoriasRutinas').on('hidden.bs.modal', ()=> {
+        document.body.style = "";
+    })
+
+    $('#modalGuardarMini').on('hidden.bs.modal', ()=> {
+        document.body.style = "";
+    })
+
+    $('#modalMiniPlantilla').on('hidden.bs.modal', ()=> {
+        $eleListas = [];
+    })
+
+    $('#modalPickRutina').on('hidden.bs.modal', (e)=> {
+        $('#SubCategoriaIdSec').val('');
+        $('#EspecificacionSubCategoriaIdSec').val('');
+        $('#EspecificacionSubCategoriaIdSec').parent().removeClass('state-success');
+        const body = e.target.querySelector('fieldset');
+        body.children.length==4? body.children[2].remove(): '';
+    })
+
+
+
+    $('#myModalMini').on('hidden.bs.modal', ()=> {
+        $('#MiniPlantilla').html('');
+        nombreListaMini.value = '';
+        nombreListaMini.parentElement.classList.remove('hidden');
+    })
+
+
+
+    $('#modalGuardarMini').on('hidden.bs.modal', ()=>{
+        $('#SubCategoriaId').val('');
+        $('#EspecificacionSubCategoriaId').val('');
+        $('#EspecificacionSubCategoriaId').parent().removeClass('state-success');
+    })
+
+    $('#myModalVideo').on('hidden.bs.modal', ()=> {
+        $("#VideoReproduccion").parent().get(0).pause();
+    })
+
+    $('#myTabRutina').on('hidden.bs.popover', function (e) {
+        $(e.target).data("bs.popover").inState.click = false;
+    });
+
+    modalMini.addEventListener('click', principalesEventosModalMini);
+}
+
+function principalesEventosModalMini(e){
+    const input = e.target;
+    const clases = e.target.classList;
+    if(clases.contains('rf-pl-dia-copy')){
+        DiaOpc.copiarMiniPlantillaDia(input);
+    }
+    else if(clases.contains('rf-pl-eles-copy')){
+        DiaOpc.copiarElementosCompuestosMiniPlantilla((diaPos = input.getAttribute('data-pos')));
+    }
+    else if(clases.contains('rf-dia-elemento-nombre')){
+        e.preventDefault();
+        e.stopPropagation();
+        const posDia = Number(input.getAttribute('data-dia-pos'));
+        const posDiaEle = Number(input.getAttribute('data-pos'));
+
+        if(clases.contains('txt-color-greenIn')){
+            $eleListas = $eleListas.filter(e=> {return !(e[1]==posDiaEle && e[0]==posDia)});
+        }else{
+            $eleListas.push([posDia, posDiaEle]);
+            $eleListas = $eleListas.sort();
+        }
+        input.classList.toggle('txt-color-greenIn');
+    }
+}
+
+function instanciarMarcoEditor(){
+    $('.summernote').summernote({
+        height: 0,
+        width: 120,
+        toolbar: [
+            ['font', ['bold', 'italic']],
+        ]
+    });
+    document.querySelector('.note-frame').addEventListener('click', guardarAccionEditor);
+    //ocultarBordeDeEditor
+    document.querySelector('.note-editing-area').setAttribute('hidden','hidden');
+    document.querySelector('.note-toolbar').classList.add('text-align-center');
+    document.querySelector('.note-statusbar').setAttribute('hidden','hidden');
+}
+
+function instanciaMediaBD(){
+    $("#demo-setting").click(function () {
+        $(".demo").toggleClass("activate")
+    });
+}
+
+function instanciaPerfectScrollBar(){
+    new PerfectScrollbar('#scrollRutina');
+}
+
+function instanciarElementoTooltips(input){
+    input.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+
+function instanciarElementoPopovers(input){
+    input.querySelectorAll('[data-toggle="popover"]').forEach(v=>$(v).popover());
+}
+
+function instanciarTooltips(){
+    $('[rel="tooltip"]').tooltip();
+}
+
+function instanciarEspecificosTooltip(input){
+    input.nextElementSibling.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+
+function instanciarSubElementoTooltip(subEle){
+    subEle.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+
+function instanciarSubElementoPopover(subEle){
+    subEle.querySelectorAll('i[data-toggle="popover"]').forEach(v=>$(v).popover());
+}
+
+function instanciarSubElementosTooltip(elemento){
+    elemento.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+
+function instanciarEspecificosTooltip2(input){
+    input.previousElementSibling.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+
+function instanciarSubElementoPopover(input){
+    input.previousElementSibling.querySelectorAll('i[data-toggle="popover"]').forEach(v=>$(v).popover());
+}
+
+function instanciarElementosDiaTooltip(elementos){
+    elementos.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+function instanciarElementosDiaPopover(elementos){
+    elementos.querySelectorAll('[data-toggle="popover"]').forEach(v=>$(v).popover());
+}
+
+function obtenerObjetoMiniPlantilla(e){
+    let index = e.target.getAttribute('data-index');//Indice comun para todas las listas
+    const mini = document.querySelector(`#MiniPlantilla .rf-dia-elemento[data-index="${index}"]`);
+
+    let nombre = document.querySelector(`.rf-dia-elemento[data-index="${index}"] .rf-dia-elemento-nombre`).textContent.trim();
+    //Instanciamos un objecto DiaLista
+    let lista = new DiaLista(nombre, index, '');//3er Param Fecha, solo en caso la lista sea proveniente de un día de rutina
+
+    //Añadiendo a la instancia de diaLista sus elementos(hijos)
+
+
+    mini.querySelectorAll('ol li').forEach(v=>{
+        let tipo = v.getAttribute('data-type')
+        //Tipo x representa una lista inicial comodin sin valores
+        if(tipo != 'x'){
+            let media = '';
+            let nombre =  v.querySelector('.rf-sub-elemento-nombre').textContent.trim();
+            if(tipo == TipoElemento.AUDIO || tipo == TipoElemento.VIDEO){
+                media = v.querySelector('.rf-sub-elemento-media').getAttribute('data-id-uuid').trim();
+            }
+            lista.elementos.push(new SubElemento({nombre: nombre, tipo: tipo, mediaAudio: media}));
+        }
+    })
+    return lista;
+}
+
+function generandoNuevaMiniPlantilla(subCatId){
+    let especificacion = document.querySelector(`#ArbolRutinario a[data-especificacion-id="${subCatId}"]`).parentElement;
+    let cantHijos = especificacion.children.length;//Como el icon plus representa un hijo ya no le aumentamos +1
+    var a = document.createElement('a');
+    a.href = 'javascript:void(0)';
+    a.innerHTML = `<span onclick="obtenerMiniPlantilla(${subCatId}, ${--cantHijos});" class="badge bg-color-greenLight font-md mini">${++cantHijos}</span>`;
+    especificacion.append(a);
+    setTimeout(()=>{especificacion.children[cantHijos].children[0].classList.remove('bg-color-greenLight');
+        especificacion.children[cantHijos].children[0].classList.add('bg-color-darken');} ,4000);
+}
+
+function guardarMiniPlantilla(e){
+    e.preventDefault();
+    const params = {};
+    params.diaIndice = e.target.getAttribute('data-dia-index');
+    params.numeroSemana = $semActual.textContent - 1;
+    params.especificacionSubCategoriaId = document.querySelector('#EspecificacionSubCategoriaId').value;
+    const valId = Number(params.especificacionSubCategoriaId);
+    if($("#frm_nueva_mini").valid() && !isNaN(valId) && valId > 0){
+        $('#spRaw').html(spinnerHTMLRaw());
+        $('#btnGuardarMini').attr('disabled', 'disabled');
+        $('#btnGuardarMini').text('Cargando...');
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            url: _ctx + 'gestion/mini-plantilla/agregar/dia-rutinario',
+            dataType: "json",
+            data: params,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == ResponseCode.EX_GENERIC) {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    }
+                    if (data == ResponseCode.EX_NUMBER_FORMAT) {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    } else {
+                        $.smallBox({content: "<i>La mini plantilla se ha guardado satisfactoriamente...</i>"});
+                        generandoNuevaMiniPlantilla(params.especificacionSubCategoriaId);
+                    }
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                $('#btnGuardarMini').removeAttr('disabled');
+                $('#btnGuardarMini').text('Confirmar');
+                $('#spRaw').html('');
+                $('#modalGuardarMini').modal('hide');
+                $('#EspecificacionSubCategoriaId').val('');
+            }
+        });
+    } else{}
+}
+
+function abrirAtajoRutinario(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $('#modalPickRutina').modal('show');
+}
+
+function guardarEnMisRutinas(e){
+    const params = {};
+    params.diaIndice = catRutinasDiaIndex.getAttribute('data-dia-index');
+    params.numeroSemana = $semActual.textContent - 1;
+    params.categoriaId = e.getAttribute('data-index');
+
+    const valId = Number(params.categoriaId);
+    if(!isNaN(valId) && valId > 0){
+        catRutinasDiaIndex.innerHTML = spinnerHTMLRawCsMessage("Cargando... Por favor espere...");
+        catMisRutinas.classList.toggle('hidden');
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            url: _ctx + 'gestion/mini-rutina/agregar/dia-rutinario',
+            dataType: "json",
+            data: params,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == ResponseCode.EX_GENERIC) {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    }
+                    if (data == ResponseCode.EX_NUMBER_FORMAT) {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    } else {
+                        $.smallBox({content: "<i>El día se ha guardado en mis rutinas satisfactoriamente...</i>"});
+                    }
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                catRutinasDiaIndex.innerHTML = '';
+                catMisRutinas.classList.toggle('hidden');
+                $('#modalCategoriasRutinas').modal('hide');
+            }
+        });
+    } else{}
+}
+
+function cargarListaSubCategoriaEjercicio(e){
+    let subCatId = e.target.value;
+    let params = {};
+    params.subCatId = subCatId;
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/especificacion-sub-categoria-ejercicio/listarPorSubCategoria',
+        dataType: "json",
+        data: params,
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    $('#EspecificacionSubCategoriaId').html('');
+                    //El 3 de la divisón representa los niveles fijos que tiene cada especificación de alguna sub categoría
+                    len = data.length/3;
+                    nData = [data.slice(0, data.length/3),data.slice(len, len*2),data.slice(len*2, data.length)];//Guardo el arreglo inicial como uno multidimensional
+                    niveles = ["Básico", "Intermedio", "Avanzado"];
+                    let htmlRaw = '<option value="">-- Seleccione --</option>';
+                    //Genero un for con la cantidad de iteraciones igual a los niveles( para el caso 3)
+                    for(let i=0;i<3;i++) {
+                        let nv = niveles[i];
+                        htmlRaw += `<optgroup label="${nv}">`
+                        nData[i].forEach(v => {
+                            htmlRaw +=`<option value="${v.id}">${v.nombre}</option>`;
+                        });
+                        htmlRaw += `</optgroup>`
+                    }
+                    $('#EspecificacionSubCategoriaId').html(htmlRaw);
+                    $('#EspecificacionSubCategoriaId').parent().addClass('state-success');
+                    $('#EspecificacionSubCategoriaIdSec').html(htmlRaw);
+                    $('#EspecificacionSubCategoriaIdSec').parent().addClass('state-success');
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
+function cargarReferenciasMiniPlantilla(e){
+    let params = {espSubCatId: e.target.value};
+
+    $('#spRaw4').html(spinnerHTMLRaw());
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/mini-plantilla/obtener/referencias',
+        dataType: "json",
+        data: params,
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    let raw = '<div class="text-align-center">';
+                    for(let i=0;i<data;i++){
+                        raw+=`<a href="javascript:void(0);"><span onclick="obtenerMiniPlantilla(${params.espSubCatId}, ${i});" class="badge bg-color-darken font-md mini">${i+1}</span></a>`;
+                    }
+                    raw+= '</div>';
+                    const sameLevel = e.target.parentElement;
+                    sameLevel.parentElement.children.length == 3 ? sameLevel.insertAdjacentElement('afterend', htmlStringToElement(raw)): sameLevel.parentElement.replaceChild(htmlStringToElement(raw), sameLevel.nextElementSibling);
+
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+            $('#spRaw4').html('');
+        }
+    });
+}
+
+function guardarAccionEditor(e){
+    e.preventDefault();
+    if($inFocus != undefined) {
+        if (e.target.classList.contains('note-btn-italic') || e.target.classList.contains('note-icon-italic')) {
+            $inFocus.focus();
+            $inFocus.style.fontStyle = 'italic';
+        }
+        if (e.target.classList.contains('note-btn-bold') || e.target.classList.contains('note-icon-bold')) {
+            $inFocus.focus();
+            $inFocus.style.fontWeight = 'bold';
+        }
+    }
+}
+
+function scrollGlobal() {
+    //Se evidencia en la pestaña Rutinario C
+    if (document.body.scrollTop > 1000 || document.documentElement.scrollTop > 1000) {
+        document.getElementById("myBtn").style.display = "block";
+        document.getElementById("myBtn2").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+        document.getElementById("myBtn2").style.display = "none";
+
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    $body.animate({scrollTop: 0},300);
+}
+
+function obtenerIconoRepetido(cant, icon){
+    let raw = '';
+    for(var i=0; i<cant;i++){
+        raw+=icon;
+    }
+    return raw;
+}
+
+function instanciarDatosFitnessCliente(){
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/usuario-fitness/obtener/secundario',
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    $fechasCompetencia = data.competencias.map(v=>{return parseFromStringToDate(v.fecha)});
+                    $('#Nombres').text(data.nombres);
+                    $('#ApellidoPaterno').text(data.apellidoPaterno);
+                    $('#ApellidoMaterno').text(data.apellidoMaterno);
+                    $('#TipoDocumentoId').text(data.tipoDocumentoId);
+                    $('#NumeroDocumento').text(data.numeroDocumento);
+                    $('#Correo').text(data.correo);
+                    //$('#CodPais').val(data.movil.split(" ")).t $('#Movil').val(data.movil);
+                    $('#TelefonoFijo').text(data.telefonoFijo);
+                    $('#Direccion').text(data.direccion);
+                    $('#FechaNacimiento').text(data.fechaNacimiento);
+                    $('#Username').text(data.username);
+                    //UsuarioFitness
+                    $('#CorreoSecundario').text(data.correoSecundario);
+                    $('#EstadoCivil').text(data.estadoCivil);
+                    $('#Sexo').text(data.sexo);
+                    $('#Imc').text(data.imc);
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
+
+function instanciarGrupoVideos(){
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/video/obtener/arbol',
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    let rawHTMLCabecera = '';
+
+                    rawHTMLCabecera +='<div class="container-fluid padding-0">'
+                    JSON.parse(data).forEach(grupoVideo => {
+                        /*<h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="/workout/media/image/grupo-video/gt/1${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>*/
+                        rawHTMLCabecera +=
+                            `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="container-fluid padding-0">
+                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://image.flaticon.com/icons/png/512/983/983544.png">${grupoVideo.nombre}</h1>
+                                    </div>
+                                    ${generandoCategoriaVideos(grupoVideo)}
+                                 </div>`;
+
+
+                    });
+                    rawHTMLCabecera +='</div>'
+
+                    document.querySelector('#ArbolGrupoVideo').appendChild(htmlStringToElement(rawHTMLCabecera));
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
+function generandoCategoriaVideos(catsVideo){
+    let rawSubCategoriasHTML = '',
+        rawGruposAElegirHTML = '<div class="container-fluid">';
+
+    catsVideo.lstCategoriaVideo.forEach(catVideo=> {
+        rawSubCategoriasHTML += `<div class="col col-xs-6 col-sm-3 col-md-2 col-lg-2 padding-10">
+                                    <h6 class="txt-color-grayDark font-md"><a href="javascript:void(0);" class="cat-video" data-id="${catVideo.id}">${catVideo.nombre}</a></h6>
+                                    <div class="container-fluid padding-0">
+                                        ${generandoSubCategoriaVideos(catVideo)}
+                                    </div>  
+                                </div>`;
+
+        rawGruposAElegirHTML +=`<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 cat-video${catVideo.id} padding-0">
+                                    <h1 class="text-align-center txt-color-white bg-color-blue-sl padding-10">${catVideo.nombre}</h1>
+                                    <div class="container-fluid">
+                                        ${generandoSubCategoriaVideosCuerpo(catVideo)}
+                                    </div>
+                                </div>`;
+
+    })
+
+    rawGruposAElegirHTML+='</div>';
+
+
+    document.querySelector('#ArbolGrupoVideoDetalle').appendChild(htmlStringToElement(rawGruposAElegirHTML));
+
+    return rawSubCategoriasHTML;
+}
+
+function generandoSubCategoriaVideos(catVideo){
+    let rawSubCategoriasHTML = '';
+    catVideo.subCategoriasVideo.forEach(subCatVideo=> {
+        rawSubCategoriasHTML += `<span style="display: block">${subCatVideo.nombre}</span>`;
+    })
+    return rawSubCategoriasHTML;
+}
+
+function generandoSubCategoriaVideosCuerpo(catVideo){
+    let rawHTML = ''
+
+    catVideo.subCategoriasVideo.forEach(subCatVideo=> {
+        rawHTML += `
+                   <div class="col col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                       <h6 class="txt-color-grayDark font-md" data-id="${subCatVideo.id}">${subCatVideo.nombre}</h6>
+                            ${generandoVideosCuerpo(subCatVideo)}
+                   </div>
+                  `;
+    })
+    return rawHTML;
+}
+
+function generandoVideosCuerpo(subCatVideo){
+    let rawVideosHTML = '';
+    subCatVideo.videos.forEach(v=> {
+        rawVideosHTML += `<a class="elegir-video padding-7-no-left" href="javascript:void(0);"><i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i><i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="${v.rutaWeb}" data-index="${v.id}"></i>${v.nombre}</a>`;
+    })
+    return rawVideosHTML;
+
+}
+
+function instanciarMiniPlantillas(){
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/especificacion-sub-categoria-ejercicio/v2',
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    let rawHTML = '';
+                    rawHTML = '<div class="container-fluid padding-0">';
+                    JSON.parse(data).forEach(cat => {
+                        rawHTML +=
+                            `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                             <h1 class="text-align-center txt-color-white padding-7 bg-color-blue">${cat.nombre}</h1>
+                                             ${generandoSubCategoriasRutinarioCe(cat)}
+                                         </div>`;
+                    });
+                    rawHTML += '</div>'
+                    document.querySelector('#ArbolRutinario').appendChild(htmlStringToElement(rawHTML));
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
+function generandoSubCategoriasRutinarioCe(cat){
+
+    let rawSubCategoriasHTML = '';
+    cat.lstSubCategoriaEjercicio.forEach(subCat=> {
+        rawSubCategoriasHTML += `<h6 class="txt-color-grayDark font-lg" style="padding-left: 67px;" > ${subCat.nombre}</h6>
+                                <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 sub-cat${subCat.id}">
+                                    ${separandoEspecificacionesSubCategoriaPorNivel(subCat)}
+                                </div>`;
+    })
+    return rawSubCategoriasHTML;
+}
+
+function separandoEspecificacionesSubCategoriaPorNivel(subCat){
+    let n1=[],n2=[],n3=[];//Niveles de especificacion
+    let generalNiveles = [];
+    subCat.especificacionSubCategorias.forEach(esp=>{
+        switch (esp.nivel){case 1:n1.push(esp);break;case 2:n2.push(esp);break;default:n3.push(esp);break;}
+    });
+    generalNiveles.push(n1, n2, n3);
+    return generandoEspecificacionesPorNiveles(generalNiveles);
+
+}
+
+function generandoEspecificacionesPorNiveles(generalEspSubCat){
+    let htmlRaw = '';
+    generalEspSubCat.forEach((nivel, i)=>{
+        let iconoRepetido = obtenerIconoRepetido(i+1,'<i class="text-warning fa fa-star"></i>');
+        //lvl-${i} de acuerdo al nivel cambia el color del icono
+        htmlRaw += `
+                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-bottom-10">
+                            <span class="pull-left text-align-center lvl-${i+1}" style="margin-left: -40px;padding-left: 20px"><i class="fa fa-child fa-3x"></i><br>${iconoRepetido}</i></span>
+                            <div class="row" style="padding-left: 40px;">
+                                ${nivel.map(esp=>`
+                                    <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 linea padding-bottom-10 font-md">
+                                        <a class="pull-left" href="#">
+                                            <strong>${esp.nombre}</strong>
+                                        </a>
+                                        <span class="pull-left padding-left-10">
+                                            <a data-target="#myModalMini" data-toggle="modal" data-especificacion-id="${esp.id}" onclick="setEspecificacionId(${esp.id});" title="Agregar nueva plantilla"><span class="badge bg-color-redLight mini font-md">+</span></a>
+                                                ${esp.lstMiniPlantilla[0].diaRutinarioIds!=null?esp.lstMiniPlantilla[0].diaRutinarioIds.map((v,i)=>`
+                                                    <a href="javascript:void(0);"><span onclick="obtenerMiniPlantilla('${esp.id}',${i});" class="badge bg-color-darken font-md mini">${++i}</span></a>
+                                                `).join(''):''}
+                                        </span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                      `;
+    })
+    return htmlRaw;
+}
+
+function obtenerMiniPlantilla(subCatId, index){
+    //Sirve cuando se busca desde shortcut rutinario
+    $('#modalPickRutina').modal('hide');
+
+    $('#modalMiniPlantilla').modal('show');
+    let params = {};
+    params.subCatId = subCatId;
+    params.index = index;
+    let numAdicionales = 1;++numAdicionales;//Le sumamos uno para obviar el icono fa fa plus que se encuentra como un hijo más
+    if(document.querySelector(`#ArbolRutinario a[data-especificacion-id="${subCatId}"]`).parentElement.children[Number(index)+numAdicionales] != undefined){
+        params.subCatId+="|1";
+    }else{
+        params.subCatId+="|0";
+    }
+    const contenidoMini = document.querySelector('#ContenidoMini');
+    contenidoMini.innerHTML = spinnerHTMLRawCsMessage('Cargando...');
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/mini-plantilla/obtener/dia-rutinario',
+        dataType: "json",
+        data: params,
+        success: function (data, textStatus) {
+            $diaPlantillas = data;
+            if (textStatus == "success") {
+                if (data == ResponseCode.EX_GENERIC) {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }
+                else if (data == ResponseCode.EX_NUMBER_FORMAT) {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else {
+                    contenidoMini.innerHTML = '';
+                    const onlyOne = data.length==1?true:false;
+                    data.forEach((dia, ix)=>{
+                        dia.arrIx = ++index;
+                        document.querySelector('#ContenidoMini').appendChild(htmlStringToElement(RutinaSeccion.newDiaPlantilla(dia, ix, onlyOne)));
+                    })
+                    Array.from(contenidoMini.querySelectorAll('.widget-body .rf-listas')).forEach(c=>{
+                        c.style.height = window.outerHeight * 0.665 + 'px';
+                        c.style.overflowY = 'auto';
+                    })
+                    instanciarPopovers();
+                    instanciarTooltips();
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
+function copiarMiniPlantilla(){
+    $('#modalMiniPlantilla').modal('hide');
+    document.querySelector('a[href="#tabRutina"]').click();
+}
+
+function principalesEventosClickRutina(e) {
+    const clases = e.target.classList;
+    let input = e.target;
+    if(clases.contains('in-ele-dia-1')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
+            const ixs = RutinaIx.getIxsForDia(input);
+            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
+        }
+    }
+    else if(clases.contains('in-ele-dia-2')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
+            const ixs = RutinaIx.getIxsForDia(input);
+            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.COMPUESTO)
+        }
+    }
+    else if(clases.contains('in-sub-elemento')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            clases.toggle('hidden');
+            const obj = {};
+            obj.nombre = $mediaNombre;
+            $tipoMedia == TipoElemento.AUDIO?obj.mediaAudio = $mediaAudio:obj.mediaVideo = $mediaVideo;
+            obj.tipo = 3;
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, obj.nombre);
+            ixs.subEleIndex = nuevoIx;
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let i = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
+            agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0*/
+
+            const iconoOpc = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.sub-ele-ops');
+            if($tipoMedia == TipoElemento.AUDIO){
+                iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
+            }else{
+                iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
+            }
+
+            $mediaAudio = '';
+            $mediaVideo = '';
+        }
+
+    }
+    else if (clases.contains('trash-elemento')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        ElementoOpc.eliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
+    }
+    else if(clases.contains('trash-audio')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        ElementoOpc.eliminarMediaAudio(ixs);
+    }
+    else if(clases.contains('trash-video')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        ElementoOpc.eliminarMediaVideo(ixs);
+    }
+    else if(clases.contains('trash-audio-sub')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        SubEleOpc.eliminarMediaAudio(ixs);
+    }
+    else if(clases.contains('trash-video-sub')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        SubEleOpc.eliminarMediaVideo(ixs);
+    }
+    else if(clases.contains('trash-sub-elemento')){
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+    }
+    else if(clases.contains('agregar-kms')){
+        e.preventDefault();
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        ElementoOpc.verDistanciaElemento(ixs, input);
+    }
+
+    else if(clases.contains('agregar-tiempo')){
+        //Sirve para comparar el valor inicial del elemento con el valor que retorna en el evento focusout con el fin de evitar actualizaciones innecesarias
+        e.preventDefault();
+        e.stopPropagation();
+        e.target.select();
+        $tiempoActualizar = e.target.value.trim();
+        $gIndex = e.target.getAttribute('data-index');
+    }
+    else if(clases.contains('pre-guardar-dia')) {
+        e.stopPropagation();
+        const ixs = RutinaIx.getIxsForDia(input);
+        DiaOpc.preGuardarDiaPlantilla(ixs);
+    }
+    else if(clases.contains('marcar-descanso')){
+        const ixs = RutinaIx.getIxsForDia(input);
+        DiaOpc.cambiarFlagDescanso(ixs.numSem, ixs.diaIndex);
+    }
+    else if(clases.contains('rf-sub-elemento-media')){
+        const route = e.target.getAttribute('data-id-uuid');
+        const tipoMedia = e.target.getAttribute('data-type');
+        if(tipoMedia == TipoElemento.VIDEO){
+            $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+            $("#VideoReproduccion").parent().get(0).load();
+        }else{
+            $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
+            $("#AudioReproduccion").parent().get(0).load();
+        }
+    }
+    else if(clases.contains('rf-dia-elemento-nombre')){
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            const ixs = RutinaIx.getIxsForElemento(input);
+            ElementoOpc.agregarMediaToElemento2(ixs, input);
+        }
+        //Sirve para despues de guardar el valor del input en el onclick validar que este haya sido o no modificado para conforme a eso actualizar en el focusout
+        //o evitar actualizaciones innecesarias
+        $nombreActualizar = input.textContent.trim();
+        $eleGenerico = input;
+    }
+    else if(clases.contains('rf-sub-elemento-nombre')){
+        e.preventDefault();
+        e.stopPropagation();
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            const ixs = RutinaIx.getIxsForSubElemento(input);
+            SubEleOpc.agregarMediaToSubElemento2(ixs, input);
+        }
+        //Sirve para despues de guardar el valor del input en el onclick validar que este haya sido o no modificado para conforme a eso actualizar en el focusout
+        //o evitar actualizaciones innecesarias
+        $nombreActualizar = e.target.textContent.trim();
+    }
+    else if(clases.contains('reprod-audio')){
+        e.preventDefault();
+        e.stopPropagation();
+        if(clases.contains('fa-pause-circle')){
+            document.querySelector('#someaud').pause();
+            e.target.setAttribute('data-original-title','Reproducir');
+        }else{
+            const route = e.target.getAttribute('data-media');
+            $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
+            $("#AudioReproduccion").parent().get(0).load();
+            e.target.setAttribute('data-original-title','Pausar');
+        }
+        clases.toggle('fa-music');
+        clases.toggle('fa-pause-circle');
+    }
+    else if(clases.contains('reprod-video')){
+        e.stopPropagation();
+        e.preventDefault();
+
+        ElementoOpc.reproducirVideo(input);
+    }
+    else if(clases.contains('ele-ops')){
+        e.preventDefault();
+        e.stopPropagation();
+        instanciarEspecificosTooltip(input);
+
+    }
+    else if(clases.contains('sub-ele-ops')){
+        e.stopPropagation();
+        instanciarEspecificosTooltip(input);
+    }
+    else if(clases.contains('agregar-nota')) {
+        const ixs = RutinaIx.getIxsForElemento(input);
+        let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        if(elemento.children.length != 3) {
+            let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
+            let notaInput = document.createElement('div');
+            notaInput.className = 'panel-heading';
+            notaInput.backgroundColor = '#ebf1fd';
+            notaInput.innerHTML = `
+                    <div class="container-fluid">
+                        <textarea class="nueva-nota w-100" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${elementoNota==undefined?'':elementoNota}</textarea>
+                    </div >`
+            elemento.append(notaInput);
+        }
+    }
+    else if(clases.contains('agregar-nota-sbe')) {
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
+        if(subEle.children.length != 2) {
+            let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
+            let notaInput = document.createElement('div');
+            notaInput.className = 'panel-heading';
+            notaInput.backgroundColor = '#ebf1fd';
+            notaInput.innerHTML = `
+                    <div class="container-fluid">
+                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota!=undefined?subEleNota:''}</textarea>
+                    </div >`
+            subEle.append(notaInput);
+        }
+    }
+    else if(clases.contains('insertar-encima')){
+        e.stopPropagation();
+        let ixs = RutinaIx.getIxsForElemento(input);
+        let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        let ix = ++indexGlobal;
+        let refIndex = ixs.eleIndex;
+
+        if(elemento.nextElementSibling != undefined){
+            if(elemento.nextElementSibling.classList.contains('ne-esp')){
+                elemento.nextElementSibling.remove();
+            }
+        }
+
+        if(elemento.previousElementSibling != undefined){
+            if(elemento.previousElementSibling.classList.contains('ne-esp')) {
+
+            }else{
+                elemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-6 padding-0"><input type="text" class="w-100 border-rg-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div><div class="col-md-6 padding-0"><input type="text" class="w-100 border-lf-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div></div>`);
+            }
+        }else{
+            elemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-6 padding-0"><input type="text" class="w-100 border-rg-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div><div class="col-md-6 padding-0"><input type="text" class="w-100 border-lf-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div></div>`);
+        }
+    }
+    else if(clases.contains('insertar-debajo')){
+        e.preventDefault();
+        e.stopPropagation();
+        let ixs = RutinaIx.getIxsForElemento(input);
+        let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        let ix = ++indexGlobal;
+        let refIndex = ixs.eleIndex;
+        elemento.insertAdjacentHTML('afterend', `<div class="container-fluid padding-o-top-1 ne-esp rf-dia-pre-elemento" data-dia-index="${ixs.diaIndex}" data-index="${ix}"><div class="col-md-6 padding-0"><input type="text" class="w-100 border-rg-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="afterend"/></div><div class="col-md-6 padding-0" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}"><input type="text" class="w-100 border-lf-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="afterend"/></div></div>`);
+        let i=0;
+        while((elemento = elemento.previousElementSibling))i++;
+        RutinaAdd.nuevoElemento(ixs.numSem, ixs.diaIndex, i, '');
+        agregarElementoEnBlancoBD(ixs.numSem, ixs.diaIndex, ElementoTP.NO_DEFINIDO, (posRefElemento = i), Estrategia.INSERT_DESPUES);
+    }
+    else if(clases.contains('insertar-encima-sub')){
+        e.stopPropagation();
+        let ixs = RutinaIx.getIxsForSubElemento(input);
+        let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
+
+        if(subElemento.nextElementSibling != undefined){
+            if(subElemento.nextElementSibling.classList.contains('ne-esp')){
+                subElemento.nextElementSibling.remove();
+            }
+        }
+
+        if(subElemento.previousElementSibling != undefined){
+            if(subElemento.previousElementSibling.classList.contains('ne-esp')) {
+
+            }else{
+                subElemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-12 padding-0"><input type="text" class="w-100 cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}" data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}" data-strategy="beforebegin"/></div></div>`);
+            }
+        }else{
+            subElemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-12 padding-0"><input type="text" class="w-100 cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}" data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}" data-strategy="beforebegin"/></div></div>`);
+        }
+
+    }
+    else if(clases.contains('insertar-debajo-sub')){
+        e.stopPropagation();
+        let ixs = RutinaIx.getIxsForSubElemento(input);
+        let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
+        let ix = ++indexGlobal;
+        subElemento.insertAdjacentHTML('afterend', `<div class="container-fluid padding-0 ne-esp rf-pre-sub-elemento" data-dia-index="${ixs.diaIndex}" data-ele-index="${ixs.eleIndex}" data-index="${ix}"><div class="col-md-12 padding-0"><input type="text" class="w-100 cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}" data-ele-index="${ixs.eleIndex}" data-index="${ix}" data-strategy="afterend"/></div></div>`);
+        let i=0,k=0;
+        while((elemento = elemento.previousElementSibling))i++;
+        while((subElemento = subElemento.previousElementSibling))k++;
+        RutinaAdd.nuevoSubElemento(ixs.numSem, ixs.diaIndex, i, k, '');
+        agregarSubElementoEnBlancoBD(ixs.numSem, ixs.diaIndex, ElementoTP.NO_DEFINIDO, i, (posRefSubEle = k), Estrategia.INSERT_DESPUES);
+    }
+    else if(clases.contains('pegar-mini')) {
+        const diaIndex = input.getAttribute('data-index');
+        DiaOpc.pegarMiniPlantillaDia(diaIndex);
+    }
+    else if(clases.contains('copiar-dia')){
+        e.preventDefault();
+        const ixs = RutinaIx.getIxsForDia(input);
+        $diaPlantilla = $rutina.semanas[ixs.numSem].dias[ixs.diaIndex];
+    }
+    else if(clases.contains('pegar-mini-listas')) {
+        const diaIndex = input.getAttribute('data-index');
+        DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
+    }
+    else if(clases.contains('in-ele-dia-esp-pos')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            const valor = $mediaNombre;
+            let ixs = RutinaIx.getIxsForElemento(input);
+            let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
+            let tipo = input.getAttribute('data-ele-tipo');
+            let initTempElementoRef = tempElemento;
+            let i = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            const nuevoIx = RutinaSeccion.newElementoPosEspecifica(ixs.diaIndex, tipo, valor, 'afterend', initTempElementoRef);
+            ixs.eleIndex = nuevoIx;
+            ElementoOpc.agregarMediaElemento(ixs, RutinaDOMQueries.getElementoByIxs(ixs).querySelector('.rf-dia-elemento-nombre'), tipo, (posEle = i));
+            initTempElementoRef.remove();
+        }
+    }
+    else if(clases.contains('in-sub-ele-esp-pos')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            const valor = $mediaNombre;
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
+            let initTempSubEleRef = tempSubEle;
+            let i = 0, k=0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            while((tempSubEle = tempSubEle.previousElementSibling))k++;
+            const nuevoIx = RutinaSeccion.newSubElementoPosEspecifica(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor, 'afterend', initTempSubEleRef);
+            ixs.subEleIndex = nuevoIx;
+            SubEleOpc.agregarMediaSubElemento(ixs, RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.rf-sub-elemento-nombre'), i, k);
+            initTempSubEleRef.remove();
+        }
+    }
+    else if(clases.contains('varios-media')){
+        e.preventDefault();
+        e.stopPropagation();
+
+        if($videosElegidos != undefined && typeof $videosElegidos == 'object' && $videosElegidos.length >0){
+            const ixs = RutinaIx.getIxsForElemento(input);
+            RutinaElementoHTML.adjuntarSubElementos(ixs);
+        }
+    }
+}
+
+function principalesEventosFocusOutSemanario(e) {
+    const clases = e.target.classList;
+    let input = e.target;
+
+    if(clases.contains('in-ele-dia-1')){
+        e.preventDefault();
+        const valor = input.value.trim();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        if (valor.length > 2 && listaNoRepetida(ixs.diaIndex, valor)) {
+            const nuevoIx = RutinaSeccion.newElementoSimple(ixs.diaIndex, ElementoTP.SIMPLE, valor);
+            ixs.eleIndex = nuevoIx;
+            $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento({nombre: valor}));
+            agregarElementoBD(ixs.numSem, ixs.diaIndex, ElementoTP.SIMPLE);
+            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector('.inputs-init').classList.toggle('hidden');
+            const nuevoEle = RutinaDOMQueries.getElementoByIxs(ixs);
+            instanciarElementoTooltips(nuevoEle);
+            instanciarElementoPopovers(nuevoEle);
+        } else {
+            if (e.target.value.length == 0) {
+            } else {
+                if (e.target.value.length > 2) {
+                    $(`#msg-val-${diaIndex}`).text('No puede crear una lista con un nombre repetido');
+                } else {
+                    $(`#msg-val-${diaIndex}`).text('Se requiere mínimo 3 letras');
+                }
+                setTimeout(() => $(`#msg-val-${diaIndex}`).text(''), 3500);
+            }
+        }
+        input.value = "";
+    }
+    else if(clases.contains('in-ele-dia-2')){
+        e.preventDefault();
+        const valor = input.value.trim();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        const diaIndex = e.target.getAttribute('data-dia-index');
+        if (valor.length > 2 && listaNoRepetida(ixs.diaIndex, valor)) {
+            const nuevoIx = RutinaSeccion.newElementoLista(ixs.diaIndex, ElementoTP.COMPUESTO, valor);
+            ixs.eleIndex = nuevoIx;
+            $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento({nombre: valor}));
+            agregarElementoBD(ixs.numSem, ixs.diaIndex, ElementoTP.COMPUESTO);
+            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector('.inputs-init').classList.toggle('hidden');
+            const nuevoEle = RutinaDOMQueries.getElementoByIxs(ixs);
+            instanciarElementoTooltips(nuevoEle);
+            instanciarElementoPopovers(nuevoEle);
+        } else {
+            if (valor.length == 0) {
+            } else {
+                if (valor.length > 2) {
+                    $(`#msg-val-${diaIndex}`).text('No puede crear una lista con un nombre repetido');
+                } else {
+                    $(`#msg-val-${diaIndex}`).text('Se requiere mínimo 3 letras');
+                }
+                setTimeout(() => $(`#msg-val-${diaIndex}`).text(''), 3500);
+            }
+        }
+        input.value = "";
+    }
+    else if(clases.contains('in-ele-dia-esp-pos')){
+        const valor = input.value.trim();
+        if(valor.length > 2){
+            let ixs = RutinaIx.getIxsForElemento(input);
+            let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
+            let tipo = input.getAttribute('data-ele-tipo');
+            let initTempElementoRef = tempElemento;
+            let i = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            const nuevoIx = RutinaSeccion.newElementoPosEspecifica(ixs.diaIndex, tipo, valor, 'afterend', initTempElementoRef);
+            ixs.eleIndex = nuevoIx;
+            RutinaSet.setElementoNombre(ixs.numSem, ixs.diaIndex, (posEle = i), valor, tipo);
+            actualizarElementoStrategyBD2(ixs.numSem, ixs.diaIndex, (posEle = i), tipo);
+            initTempElementoRef.remove();
+            const nueEle = RutinaDOMQueries.getElementoByIxs(ixs).querySelector('.panel-heading').children[0];
+            instanciarElementoTooltips(nueEle);
+            instanciarElementoPopovers(nueEle);
+        }
+    }
+    else if(clases.contains('in-sub-elemento')) {
+        const valor = input.value.trim();
+        if (valor.length > 2) {
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+            //
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let i = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[i].subElementos.push(new SubElemento({nombre: valor}));
+            RutinaDOMQueries.getElementoByIxs(ixs).querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+            agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
+            input.value = '';
+        } else {
+            if (valor.length == 0) {
+            } else {
+                $.smallBox({color: "alert", content: "Debe ingresar más de 2 caracteres..."})
+            }
+        }
+    }
+    else if(clases.contains('in-sub-ele-esp-pos')) {
+        const valor = input.value.trim();
+        if (valor.length > 2) {
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
+            let initTempSubEleRef = tempSubEle;
+            let i = 0, k=0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            while((tempSubEle = tempSubEle.previousElementSibling))k++;
+
+            const nuevoIx = RutinaSeccion.newSubElementoPosEspecifica(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor, 'afterend', initTempSubEleRef);
+            ixs.subEleIndex = nuevoIx;
+            RutinaSet.setSubElementoNombre(ixs.numSem, ixs.diaIndex, i, k, valor);
+            const subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
+            instanciarSubElementoTooltip(subEle);
+            instanciarSubElementoPopover(subEle);
+            actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
+            initTempSubEleRef.remove();
+        }
+    }
+    else if(clases.contains('rf-dia-elemento-nombre')){
+        const valor = input.textContent.trim();
+        if($nombreActualizar != valor){
+            const ixs = RutinaIx.getIxsForElemento(input);
+            if(valor.length == 0){
+                ElementoOpc.confirmarEliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
+            }else{
+                //1. Buscamos la posicion de la lista y con ello cambiamos el nombre en el programa general
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                RutinaSet.setElementoNombre(ixs.numSem, ixs.diaIndex, (posEle = i), valor);
+                //Indices con respecto a la posicion en la que se encuentran con respecto a su contenedor padre y sus hermanos
+                actualizarElementoNombreBD(ixs.numSem, ixs.diaIndex, (eleIndex = i));
+            }
+        }else{
+            console.log("No es necesario actualizar");
+        }
+
+    }
+    else if(clases.contains('rf-sub-elemento-nombre')){
+        const valor = input.textContent.trim();
+        if($nombreActualizar != valor) {
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            if(valor.length == 0){
+                SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+            }else {
+                let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+                let i = 0, k = 0;
+                //
+                while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+                let tempSubElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
+
+                while ((tempSubElemento = tempSubElemento.previousElementSibling) != null) k++;
+                RutinaSet.setSubElementoNombre(ixs.numSem, ixs.diaIndex, i, k, valor);
+                actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
+            }
+        }
+    }
+    else if(clases.contains('nueva-nota')){
+        const nota = input.value.trim();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        const divNota = e.target.parentElement.parentElement;
+
+        let anteriorNota = tempElemento.querySelector(`.rf-dia-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
+        if(anteriorNota.trim() != nota){
+
+            if(tempElemento.querySelector('i.check-nota')==undefined){
+                tempElemento.querySelector('.panel-title').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT()));
+            }else{
+                if(nota.length == 0){
+                    tempElemento.querySelector('i.check-nota').remove();
+                    tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', '');
+                }
+            }
+            tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', nota);
+            let i=0;
+            while((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            RutinaSet.setElementoNota(ixs.numSem, ixs.diaIndex, (posEle = i), nota);
+            actualizarNotaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i));
+            divNota.remove();
+        }else{
+            divNota.remove();
+        }
+    }
+    else if(clases.contains('nueva-nota-sbe')){
+        const nota = input.value.trim();
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
+        const divNota = e.target.parentElement.parentElement;
+
+        let anteriorNota = tempSubEle.querySelector(`.rf-sub-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
+        if(anteriorNota.trim() != nota){
+
+            if(tempSubEle.querySelector('i.check-nota')==undefined){
+                tempSubEle.querySelector('.col-md-12').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT()));
+            }else{
+                if(nota.length == 0){
+                    tempSubEle.querySelector('i.check-nota').remove();
+                    tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', '');
+                }
+            }
+            tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', nota);
+
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let i = 0, k = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+
+            while ((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
+            RutinaSet.setSubElementoNota(ixs.numSem, ixs.diaIndex, i, k, nota);
+            actualizarSubElementoNotaBD(nota, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
+            divNota.remove();
+        }else{
+            divNota.remove();
+        }
+    }
+    else if(clases.contains('agregar-kms')){
+        let kms = Number(e.target.textContent);
+        if($kmsActualizar != kms){
+            if(!kms.isNaN && kms>=0){
+                kms = Math.floor(kms);
+                const ixs = RutinaIx.getIxsForElemento(input);
+                ElementoOpc.actualizarDistanciaElemento(ixs, kms);
+            }
+        }
+    }
+    else if(clases.contains('agregar-tiempo')){
+        //$tiempoActualizar: Sirve para comparar el valor inicial del elemento con el valor que retorna cuando se activa este evento(focusout) con el fin de evitar actualizaciones innecesarias
+        const tiempo = Number(e.target.value.trim());
+        let gIx = e.target.getAttribute('data-index');
+        if($tiempoActualizar != tiempo && gIx == $gIndex && !isNaN(tiempo)){
+            let ixs = RutinaIx.getIxsForElemento(input)
+            ElementoOpc.actualizarTiempoElemento(ixs, tiempo);
+        }else{
+            console.log("No es necesario actualizar");
+        }
+    }
+}
+
+function principalesEventosTabRutina(e){
+    const input = e.target;
+    const clases = input.classList;
+    if(clases.contains('numero-semana')){
+        e.preventDefault();
+        const index = e.target.getAttribute('data-index');
+        avanzarRetrocederSemana(Number(index));
+        $semActual.textContent = 2+Number(index);
+    }
+    else if(clases.contains('retroceder-semana')){
+        e.preventDefault();
+        let numSem = Number($semActual.textContent);
+        if(numSem != 1){
+            avanzarRetrocederSemana(numSem-2, 2);
+        }else{
+            $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
+        }
+
+    }
+    else if(clases.contains('adelantar-semana')){
+        e.preventDefault();
+        const numSem = $('#SemanaActual').text();
+        if($rutina.totalSemanas == numSem){
+            //Se agregará una semana nueva en BD
+            $.smallBox({content: "<i class='fa fa-spinner fa-spin fa-2x fa-fw'></i> <i>Cargando...<i>", timeout: 10000});
+            $rutina.agregarNuevaSemana();
+            const promesa = new Promise((res,rej)=>{
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/json",
+                    url: _ctx + 'gestion/rutina/agregar/semana',
+                    data: JSON.stringify($rutina.semanas[$rutina.semanas.length-1]),
+                    dataType: "json",
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            if (data == ResponseCode.EX_GENERIC) {
+                                rej(ResponseCode.EX_GENERIC);
+                            }else if(data == ResponseCode.EX_NULL_POINTER){
+                                rej(ResponseCode.EX_NULL_POINTER);
+                            } else {
+                                res(numSem);
+                                if($rutina.totalSemanas < 5)
+                                    document.querySelector('#SemanasLineal').appendChild(htmlStringToElement(`<a href="javascript:void(0);"><span class="badge bg-color-darken font-md numero-semana" data-index="${numSem}">${Number(numSem)+1}</span></a>`))
+                                else{
+                                    document.querySelector('#SemanasLineal').innerHTML = `<a href="javascript:void(0);"><i id="CalendarioRf" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-calendar abrir-calendario" data-original-title="" title=""></i></a>`;
+                                }
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        rej(xhr);
+                        $rutina.semanas.splice($rutina.semanas.length-1, 1);
+                        --$rutina.totalSemanas;
+                        $('#SemanaActual').text(Number($('#SemanaActual').text())-1);
+                    },
+                    complete: function () {
+                        document.querySelectorAll('#divSmallBoxes')[0].innerHTML = '';
+                    }
+                });
+            })
+
+            promesa.then((numSem)=>{
+                $rutina.initEspecificoDesdeRutina(numSem);
+            }).catch((ex)=>{
+                exception(ex);
+            })
+        }else{
+            //No es necesario crear la semana, pues no es una nueva semana
+            avanzarRetrocederSemana(numSem, 1);
+        }
+    }
+    else if(clases.contains('abrir-calendario')){
+        e.preventDefault();
+        e.stopPropagation();
+        const qFechaInicio = RutinaGet.getFechaInicioSemanaEdicion();
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), false, qFechaInicio.mes);
+    }
+    else if(clases.contains('mes-calendar')){
+        const mes = input.getAttribute('data-mes');
+        const anio = input.parentElement.getAttribute('data-anio');
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(anio, mes), true);
+    }
+    else if(clases.contains('cal-retroceder-sem')){
+        const qFechaInicio = RutinaGet.getFechaInicioSemanaEspecifica($refIxsSemCalendar[0] - 1);
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
+    }
+    else if(clases.contains('cal-adelantar-sem')){
+        const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length-1];
+        let qFecha;
+        if($rutina.semanas[semIxRef+1] != undefined)
+            qFecha = RutinaGet.getFechaInicioSemanaEspecifica(semIxRef + 1);
+        else
+            qFecha = RutinaGet.getFechaFinSemanaEspecifica(semIxRef);
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
+    }
+    else if(clases.contains('fechas-calendar')){
+        avanzarRetrocederSemana($refIxsSemCalendar[input.getAttribute('data-index')], 2);
+        $('#CalendarioRf').popover('show');
+    }
+    else if(clases.contains('abrir-indicador-1')){
+        Indicadores.abrirIndicador1();
+    }
+}
+
+function principalesEventosTabGrupoVideos(e){
+    const input = e.target;
+    const clases = input.classList;
+
+    if(clases.contains('reprod-video')){
+        e.preventDefault();
+        $('#myModalVideo').modal('show');
+        const route = input.getAttribute('data-media');
+        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+        $("#VideoReproduccion").parent().get(0).load();
+    }
+    else if(clases.contains('elegir-video')){
+        e.stopPropagation();
+        const li = input;
+        const eleVideo = li.querySelector('.reprod-video');
+        const ix = eleVideo.getAttribute('data-index');
+        if(!clases.contains('txt-color-greenIn')){
+            clases.add('txt-color-greenIn');
+            const media = eleVideo.getAttribute('data-media');
+            const nombreMedia = li.textContent.trim();
+            $videosElegidos.push([ix, nombreMedia, media]);
+        }else{
+            clases.remove('txt-color-greenIn');
+            $videosElegidos = $videosElegidos.filter(e=>{return e[0]!=ix});
+        }
+    }
+    else if(clases.contains('cat-video')){
+        e.preventDefault();
+        const clase = '.cat-video'+ input.getAttribute('data-id');
+        const div = document.querySelector(clase);
+        $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0}, 300);
+        if(div != undefined){
+            div.classList.toggle('rut-ce-separador');
+            setTimeout(()=>{div.classList.toggle('rut-ce-separador');},4000)
+            $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0},300);
+        }else{
+
+        }
+    }
+    else if(clases.contains('ck-video')){
+        e.preventDefault();
+        e.stopPropagation();
+        parent = input.parentElement;
+        $memoriaVideo = input;
+        $mediaVideo = parent.querySelector('.reprod-video').getAttribute('data-media');
+        $mediaNombre = parent.textContent.trim();
+        $mediaAudio = '';
+        $tipoMedia = TipoElemento.VIDEO;
+        cambiarATabRutina();
+    }
+}
+
+function principalesEventosTabGrupoAudios(e){
+    const input = e.target;
+    const clases = input.classList;
+
+    if(clases.contains('reprod-audio')){
+        e.preventDefault();
+        if(clases.contains('fa-pause-circle')){
+            document.querySelector('#someaud').pause();
+            input.setAttribute('data-original-title','Reproducir');
+        }else{
+            const route = e.target.getAttribute('data-media');
+            $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
+            $("#AudioReproduccion").parent().get(0).load();
+            input.setAttribute('data-original-title','Pausar');
+        }
+        clases.toggle('fa-music');
+        clases.toggle('fa-pause-circle');
+    }
+    else if(clases.contains('elegir-audio')){
+        e.preventDefault();
+        e.stopPropagation();
+        $memoriaAudio != ''?$memoriaAudio.classList.remove('txt-color-greenIn'):'';
+        clases.add('txt-color-greenIn');
+        $memoriaAudio = input;
+        $mediaNombre = input.textContent.trim();
+        $mediaAudio = input.querySelector('.reprod-audio').getAttribute('data-media');
+        $mediaVideo = '';
+        $tipoMedia = TipoElemento.AUDIO;
+        cambiarATabRutina();
+    }
+    else if(clases.contains('ck')){
+        const li = input.parentElement;
+        const eleAudio = li.querySelector('.reprod-audio');
+        const ix = eleAudio.getAttribute('data-index');
+        const media = eleAudio.getAttribute('data-media');
+        const nombreMedia = li.textContent.trim();
+        $audiosElegidos.push([ix, media, nombreMedia]);
+    }
+}
+
+function listaNoRepetida(ix, nombre) {
+    let val = true;
+    document.querySelectorAll(`.rf-dia[data-index="${ix}"] .panel-default .lista-title`).forEach((v) => {
+        if (v.textContent.trim() === nombre) {
+            val = false;
+        }
+    });
+    return val;
+}
+
+function genericoRutinarioCe(e){
+    e.preventDefault();
+    //Útil para mover el scroll a una sub categoría específica
+    if(e.target.classList.contains('sub-categoria')){
+        const clase = '.sub-cat'+ e.target.getAttribute('data-id');
+        const div = document.querySelector(clase);
+        if(div != undefined){
+            div.classList.toggle('rut-ce-separador');
+            setTimeout(()=>{div.classList.toggle('rut-ce-separador');},4000)
+            $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0},300);
+        }else {
+            $.smallBox({color: "info", content: "<i>La sub categoría elegida aún no cuenta <br/> con especificaciones. Para mayor información <br/> comuníquese con el administrador.</i>"})
+        }
+    }
+}
+
+function focoARutina() {
+    $('#scrollRutina').animate({
+        scrollLeft: $('.jarviswidget[tabindex="0"]').parent().offset().left - 40
+    }, 500);
+}
+
+function moverAFinal(){
+    $('#scrollRutina').animate({
+        scrollLeft: $('.jarviswidget[tabindex]').last().parent().offset().left
+    }, 500);
+}
+
+function moverAInicio(){
+    $('#scrollRutina').animate({
+        scrollLeft: $('.jarviswidget[tabindex]').parent().offset().left
+    }, 500);
+}
+
+function agregarElementoBD(numSem, diaIndex, tipoElemento){
+    const listaLenght = $rutina.semanas[numSem].dias[diaIndex].elementos.length -1;
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaLenght];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.tipo = tipoElemento;
+    tipoElemento==2?params.subElementos = []:'';//Importante para la actualizacion de los subElementos jsonb
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarElementoStrategyBD2(numSem, diaIndex, eleIndex, tipoElemento){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
+
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.tipo = tipoElemento;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/modificar/2",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarElementoStrategyBD(numSem, diaIndex, eleIndex, tipoMedia, tipoElemento){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].mediaVideo;
+    }
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.tipo = tipoElemento;
+    params.tipoMedia = tipoMedia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/media/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarSubElementoStrategyBD(numSem, diaIndex, eleIndex, subEleIndex, tipoMedia){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex];
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].mediaVideo;
+    }
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.subElementoIndice = subEleIndex;
+    params.tipo = 3;
+    params.tipoMedia = tipoMedia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/media/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function agregarElementoEnBlancoBD(numSem, diaIndex, tipoElemento, posRefElemento, strategy){
+    const listaLenght = (strategy==Estrategia.INSERT_DESPUES?posRefElemento+1:posRefElemento);
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaLenght];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.tipo = tipoElemento;
+    params.refElementoIndice = posRefElemento;
+    params.insertarDespues = strategy==Estrategia.INSERT_DESPUES?true:false;
+    tipoElemento==2?params.subElementos = []:'';//Importante para la actualizacion de los subElementos jsonb
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/agregar/pos-especifica",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function agregarSubElementoEnBlancoBD(numSem, diaIndex, tipoSubEle, eleIndex, posRefSubEle, strategy){
+    const listaLenght = (strategy==Estrategia.INSERT_DESPUES?posRefSubEle+1:posRefSubEle);
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[listaLenght];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.tipo = tipoSubEle;
+    params.refSubElementoIndice = posRefSubEle;
+    params.insertarDespues = strategy==Estrategia.INSERT_DESPUES?true:false;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/agregar/pos-especifica",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function removerElementoBD(numSem, diaIndex, elementoIndex, minutos, distancia){
+    let params = {}
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndex;
+    params.minutos = minutos;
+    params.distancia = distancia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/eliminar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function removerSubElementoBD(numSem, diaIndex, eleIndex, subEleIndex){
+    let params = {}
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.subElementoIndice = subEleIndex;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/eliminar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarDiaCompletoBD(numSem, diaIndex){
+    let params = RutinaGet.dia(numSem, diaIndex);
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/from-plantilla/actualizar/full",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarDiaParcialBD(numSem, diaIndex, cantUltimos){
+    let refDia = RutinaGet.dia(numSem, diaIndex);
+    let params = {};
+    params.minutos = refDia.minutos;
+    params.distancia = refDia.distancia;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementos = refDia.elementos.filter((e,i,k)=>{return i>=k.length-cantUltimos});
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/from-plantilla/actualizar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarElementoParcialBD(numSem, diaIndex, eleIndex, cantUltimos){
+    let refEle = RutinaGet.elemento(numSem, diaIndex, eleIndex);
+    let params = {};
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.subElementos = refEle.subElementos.filter((e,i,k)=>{return i>=k.length-cantUltimos});
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/multiple/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIndex){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaIndex].subElementos[elementoIndex]
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = listaIndex;
+    params.subElementoIndice = elementoIndex;
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarElementoNombreBD(numSem, diaIndex, eleIndex) {
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/modificar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) {
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.minutosDia = totalMin;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/tiempo/modificar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarDistanciaElementoBD(numSem, diaIndex, elementoIndice, totalKms) {
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.distanciaDia = totalKms;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/distancia/modificar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarNotaElementoBD(numSem, diaIndex, elementoIndice) {
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/nota/modificar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
+    let params = {};
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaVideo;
+    }
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.tipoMedia = tipoMedia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/media/modificar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarMediaElementoBD2(numSem, diaIndex, elementoIndice, tipoMedia, nombre){
+    let params = {};
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaVideo;
+    }
+
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.tipoMedia = tipoMedia;
+    params.nombre = nombre;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/media/modificar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarMediaSubElementoBD(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.tipo = tipoMedia;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/media/modificar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+            instanciarTooltips();
+        }
+    })
+}
+
+function actualizarMediaSubElementoBD2(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.tipo = 3;
+    params.tipoMedia = tipoMedia;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/media/modificar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElemento, postSubElemento) {
+    let params = {};
+    params.nombre = nuevoNombre;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = posElemento;
+    params.subElementoIndice = postSubElemento;
+    $.ajax({
+        type: "PUT",
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: _ctx + "gestion/rutina/sub-elemento/modificar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarSubElementoNotaBD(nota, numSem, diaIndex, posElemento, postSubElemento) {
+    let params = {};
+    params.nota = nota;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = posElemento;
+    params.subElementoIndice = postSubElemento;
+    $.ajax({
+        type: "PUT",
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: _ctx + "gestion/rutina/sub-elemento/nota/modificar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+        }
+    })
+}
+
+function modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso){
+    let params = {};
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.flagDescanso = flagDescanso;
+
+    $.ajax({
+        type: 'PUT',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: _ctx + 'gestion/rutina/dia/actualizar/flag-descanso',
+        data: params,
+        dataType: 'json',
+        success: function(data){
+            notificacionesRutinaSegunResponseCode(data);
+        }, error: function(xhr){
+            exception(xhr);
+        }, complete: function(){}
+    })
+}
+
+function cambiarATabRutina(){
+    document.querySelector('a[href="#tabRutina"]').click();
+}
+
+function principalesAlCambiarTab(e){
+    const input = e.target;
+
+    if(e.target.classList.contains('main-tab')){
+        document.querySelector('#OpsAdic').classList.remove('hidden');
+    }
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos'){
+        e.preventDefault();
+        document.querySelector('#OpsAdic').classList.add('hidden');
+        $videosElegidos = [];
+        Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e=>e.classList.remove('txt-color-greenIn'));
+    }
+    else if(e.target.tagName === "A"){
+        document.querySelector('#OpsAdic').classList.add('hidden');
+    }
+}
+
+function principalesMiniEditor(e){
+    e.stopPropagation()
+    const input = e.target;
+    const clases = input.classList;
+    const ix = e.target.getAttribute('data-index')
+
+    if(clases.contains('note-icon-bold')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix);
+        }else{
+
+        }
+    }else if(clases.contains('note-icon-italic')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix);
+        }else{
+
+        }
+    }else if(clases.contains('note-icon-underline')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix);
+        }else{
+
+        }
+    }else if(clases.contains('note-icon-font')){
+        const raw = `
+        <div class="container-fluid padding-0 its-indicador-1">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="row padding-5 text-align-center">
+                    <div class="btn-group">
+                                <div class="note-palette-title">Foreground Color</div>
+                                    <div>
+                                        <button type="button" class="note-color-reset btn btn-default" data-event="removeFormat" data-value="foreColor">Aplicar <i class="fa fa-check-circle-o txt-color-blue"></i></button>
+                                    </div>
+                                    <div class="note-holder" data-event="foreColor">
+                                    <div class="note-color-palette">
+                                    <div class="note-color-row">
+                                    <button type="button" class="note-color-btn" style="background-color:red" data-index="12" data-class="rf-ct-red" data-event="foreColor" data-value="#000000" title="" data-toggle="button" tabindex="-1" data-original-title="#000000"></button>
+                                    <button type="button" class="note-color-btn" style="background-color:blue" data-index="13" data-class="rf-ct-blue" data-event="foreColor" data-value="#424242" title="" data-toggle="button" tabindex="-1" data-original-title="#424242"></button>
+                                    <button type="button" class="note-color-btn" style="background-color:yellow" data-index="14" data-class="rf-ct-yellow" data-event="foreColor" data-value="#636363" title="" data-toggle="button" tabindex="-1" data-original-title="#636363"></button>
+                                    <button type="button" class="note-color-btn" style="background-color:brown" data-index="15" data-class="rf-ct-brown" data-event="foreColor" data-value="#9C9C94" title="" data-toggle="button" tabindex="-1" data-original-title="#9C9C94"></button>
+                                    <button type="button" class="note-color-btn" style="background-color:orange" data-index="16" data-class="rf-ct-orange" data-event="foreColor" data-value="#CEC6CE" title="" data-toggle="button" tabindex="-1" data-original-title="#CEC6CE"></button>
+                                    <button type="button" class="note-color-btn" style="background-color:green" data-index="17"  data-class="rf-ct-green" data-event="foreColor" data-value="#EFEFEF" title="" data-toggle="button" tabindex="-1" data-original-title="#EFEFEF"></button><button type="button" class="note-color-btn" style="background-color:#FFFFFF" data-event="foreColor" data-value="#FFFFFF" title="" data-toggle="button" tabindex="-1" data-original-title="#FFFFFF"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#FF0000" data-event="foreColor" data-value="#FF0000" title="" data-toggle="button" tabindex="-1" data-original-title="#FF0000"></button><button type="button" class="note-color-btn" style="background-color:#FF9C00" data-event="foreColor" data-value="#FF9C00" title="" data-toggle="button" tabindex="-1" data-original-title="#FF9C00"></button><button type="button" class="note-color-btn" style="background-color:#FFFF00" data-event="foreColor" data-value="#FFFF00" title="" data-toggle="button" tabindex="-1" data-original-title="#FFFF00"></button><button type="button" class="note-color-btn" style="background-color:#00FF00" data-event="foreColor" data-value="#00FF00" title="" data-toggle="button" tabindex="-1" data-original-title="#00FF00"></button><button type="button" class="note-color-btn" style="background-color:#00FFFF" data-event="foreColor" data-value="#00FFFF" title="" data-toggle="button" tabindex="-1" data-original-title="#00FFFF"></button><button type="button" class="note-color-btn" style="background-color:#0000FF" data-event="foreColor" data-value="#0000FF" title="" data-toggle="button" tabindex="-1" data-original-title="#0000FF"></button><button type="button" class="note-color-btn" style="background-color:#9C00FF" data-event="foreColor" data-value="#9C00FF" title="" data-toggle="button" tabindex="-1" data-original-title="#9C00FF"></button><button type="button" class="note-color-btn" style="background-color:#FF00FF" data-event="foreColor" data-value="#FF00FF" title="" data-toggle="button" tabindex="-1" data-original-title="#FF00FF"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#F7C6CE" data-event="foreColor" data-value="#F7C6CE" title="" data-toggle="button" tabindex="-1" data-original-title="#F7C6CE"></button><button type="button" class="note-color-btn" style="background-color:#FFE7CE" data-event="foreColor" data-value="#FFE7CE" title="" data-toggle="button" tabindex="-1" data-original-title="#FFE7CE"></button><button type="button" class="note-color-btn" style="background-color:#FFEFC6" data-event="foreColor" data-value="#FFEFC6" title="" data-toggle="button" tabindex="-1" data-original-title="#FFEFC6"></button><button type="button" class="note-color-btn" style="background-color:#D6EFD6" data-event="foreColor" data-value="#D6EFD6" title="" data-toggle="button" tabindex="-1" data-original-title="#D6EFD6"></button><button type="button" class="note-color-btn" style="background-color:#CEDEE7" data-event="foreColor" data-value="#CEDEE7" title="" data-toggle="button" tabindex="-1" data-original-title="#CEDEE7"></button><button type="button" class="note-color-btn" style="background-color:#CEE7F7" data-event="foreColor" data-value="#CEE7F7" title="" data-toggle="button" tabindex="-1" data-original-title="#CEE7F7"></button><button type="button" class="note-color-btn" style="background-color:#D6D6E7" data-event="foreColor" data-value="#D6D6E7" title="" data-toggle="button" tabindex="-1" data-original-title="#D6D6E7"></button><button type="button" class="note-color-btn" style="background-color:#E7D6DE" data-event="foreColor" data-value="#E7D6DE" title="" data-toggle="button" tabindex="-1" data-original-title="#E7D6DE"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#E79C9C" data-event="foreColor" data-value="#E79C9C" title="" data-toggle="button" tabindex="-1" data-original-title="#E79C9C"></button><button type="button" class="note-color-btn" style="background-color:#FFC69C" data-event="foreColor" data-value="#FFC69C" title="" data-toggle="button" tabindex="-1" data-original-title="#FFC69C"></button><button type="button" class="note-color-btn" style="background-color:#FFE79C" data-event="foreColor" data-value="#FFE79C" title="" data-toggle="button" tabindex="-1" data-original-title="#FFE79C"></button><button type="button" class="note-color-btn" style="background-color:#B5D6A5" data-event="foreColor" data-value="#B5D6A5" title="" data-toggle="button" tabindex="-1" data-original-title="#B5D6A5"></button><button type="button" class="note-color-btn" style="background-color:#A5C6CE" data-event="foreColor" data-value="#A5C6CE" title="" data-toggle="button" tabindex="-1" data-original-title="#A5C6CE"></button><button type="button" class="note-color-btn" style="background-color:#9CC6EF" data-event="foreColor" data-value="#9CC6EF" title="" data-toggle="button" tabindex="-1" data-original-title="#9CC6EF"></button><button type="button" class="note-color-btn" style="background-color:#B5A5D6" data-event="foreColor" data-value="#B5A5D6" title="" data-toggle="button" tabindex="-1" data-original-title="#B5A5D6"></button><button type="button" class="note-color-btn" style="background-color:#D6A5BD" data-event="foreColor" data-value="#D6A5BD" title="" data-toggle="button" tabindex="-1" data-original-title="#D6A5BD"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#E76363" data-event="foreColor" data-value="#E76363" title="" data-toggle="button" tabindex="-1" data-original-title="#E76363"></button><button type="button" class="note-color-btn" style="background-color:#F7AD6B" data-event="foreColor" data-value="#F7AD6B" title="" data-toggle="button" tabindex="-1" data-original-title="#F7AD6B"></button><button type="button" class="note-color-btn" style="background-color:#FFD663" data-event="foreColor" data-value="#FFD663" title="" data-toggle="button" tabindex="-1" data-original-title="#FFD663"></button><button type="button" class="note-color-btn" style="background-color:#94BD7B" data-event="foreColor" data-value="#94BD7B" title="" data-toggle="button" tabindex="-1" data-original-title="#94BD7B"></button><button type="button" class="note-color-btn" style="background-color:#73A5AD" data-event="foreColor" data-value="#73A5AD" title="" data-toggle="button" tabindex="-1" data-original-title="#73A5AD"></button><button type="button" class="note-color-btn" style="background-color:#6BADDE" data-event="foreColor" data-value="#6BADDE" title="" data-toggle="button" tabindex="-1" data-original-title="#6BADDE"></button><button type="button" class="note-color-btn" style="background-color:#8C7BC6" data-event="foreColor" data-value="#8C7BC6" title="" data-toggle="button" tabindex="-1" data-original-title="#8C7BC6"></button><button type="button" class="note-color-btn" style="background-color:#C67BA5" data-event="foreColor" data-value="#C67BA5" title="" data-toggle="button" tabindex="-1" data-original-title="#C67BA5"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#CE0000" data-event="foreColor" data-value="#CE0000" title="" data-toggle="button" tabindex="-1" data-original-title="#CE0000"></button><button type="button" class="note-color-btn" style="background-color:#E79439" data-event="foreColor" data-value="#E79439" title="" data-toggle="button" tabindex="-1" data-original-title="#E79439"></button><button type="button" class="note-color-btn" style="background-color:#EFC631" data-event="foreColor" data-value="#EFC631" title="" data-toggle="button" tabindex="-1" data-original-title="#EFC631"></button><button type="button" class="note-color-btn" style="background-color:#6BA54A" data-event="foreColor" data-value="#6BA54A" title="" data-toggle="button" tabindex="-1" data-original-title="#6BA54A"></button><button type="button" class="note-color-btn" style="background-color:#4A7B8C" data-event="foreColor" data-value="#4A7B8C" title="" data-toggle="button" tabindex="-1" data-original-title="#4A7B8C"></button><button type="button" class="note-color-btn" style="background-color:#3984C6" data-event="foreColor" data-value="#3984C6" title="" data-toggle="button" tabindex="-1" data-original-title="#3984C6"></button><button type="button" class="note-color-btn" style="background-color:#634AA5" data-event="foreColor" data-value="#634AA5" title="" data-toggle="button" tabindex="-1" data-original-title="#634AA5"></button><button type="button" class="note-color-btn" style="background-color:#A54A7B" data-event="foreColor" data-value="#A54A7B" title="" data-toggle="button" tabindex="-1" data-original-title="#A54A7B"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#9C0000" data-event="foreColor" data-value="#9C0000" title="" data-toggle="button" tabindex="-1" data-original-title="#9C0000"></button><button type="button" class="note-color-btn" style="background-color:#B56308" data-event="foreColor" data-value="#B56308" title="" data-toggle="button" tabindex="-1" data-original-title="#B56308"></button><button type="button" class="note-color-btn" style="background-color:#BD9400" data-event="foreColor" data-value="#BD9400" title="" data-toggle="button" tabindex="-1" data-original-title="#BD9400"></button><button type="button" class="note-color-btn" style="background-color:#397B21" data-event="foreColor" data-value="#397B21" title="" data-toggle="button" tabindex="-1" data-original-title="#397B21"></button><button type="button" class="note-color-btn" style="background-color:#104A5A" data-event="foreColor" data-value="#104A5A" title="" data-toggle="button" tabindex="-1" data-original-title="#104A5A"></button><button type="button" class="note-color-btn" style="background-color:#085294" data-event="foreColor" data-value="#085294" title="" data-toggle="button" tabindex="-1" data-original-title="#085294"></button><button type="button" class="note-color-btn" style="background-color:#311873" data-event="foreColor" data-value="#311873" title="" data-toggle="button" tabindex="-1" data-original-title="#311873"></button><button type="button" class="note-color-btn" style="background-color:#731842" data-event="foreColor" data-value="#731842" title="" data-toggle="button" tabindex="-1" data-original-title="#731842"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#630000" data-event="foreColor" data-value="#630000" title="" data-toggle="button" tabindex="-1" data-original-title="#630000"></button><button type="button" class="note-color-btn" style="background-color:#7B3900" data-event="foreColor" data-value="#7B3900" title="" data-toggle="button" tabindex="-1" data-original-title="#7B3900"></button><button type="button" class="note-color-btn" style="background-color:#846300" data-event="foreColor" data-value="#846300" title="" data-toggle="button" tabindex="-1" data-original-title="#846300"></button><button type="button" class="note-color-btn" style="background-color:#295218" data-event="foreColor" data-value="#295218" title="" data-toggle="button" tabindex="-1" data-original-title="#295218"></button><button type="button" class="note-color-btn" style="background-color:#083139" data-event="foreColor" data-value="#083139" title="" data-toggle="button" tabindex="-1" data-original-title="#083139"></button><button type="button" class="note-color-btn" style="background-color:#003163" data-event="foreColor" data-value="#003163" title="" data-toggle="button" tabindex="-1" data-original-title="#003163"></button><button type="button" class="note-color-btn" style="background-color:#21104A" data-event="foreColor" data-value="#21104A" title="" data-toggle="button" tabindex="-1" data-original-title="#21104A"></button><button type="button" class="note-color-btn" style="background-color:#4A1031" data-event="foreColor" data-value="#4A1031" title="" data-toggle="button" tabindex="-1" data-original-title="#4A1031"></button></div></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="row padding-5 text-align-center">
+                    <div class="btn-group">
+                                <div class="note-palette-title">Background Color</div>
+                                    <div>
+                                        <button type="button" class="note-color-reset btn btn-default" data-event="removeFormat" data-value="foreColor">Aplicar <i class="fa fa-check-circle-o txt-color-blue"></i></button>
+                                    </div>
+                                    <div class="note-holder" data-event="foreColor">
+                                    <div class="note-color-palette">
+                                    <div class="note-color-row">
+                                    <button type="button" class="note-color-btn" style="background-color:#000000" data-event="foreColor" data-value="#000000" title="" data-toggle="button" tabindex="-1" data-original-title="#000000"></button><button type="button" class="note-color-btn" style="background-color:#424242" data-event="foreColor" data-value="#424242" title="" data-toggle="button" tabindex="-1" data-original-title="#424242"></button><button type="button" class="note-color-btn" style="background-color:#636363" data-event="foreColor" data-value="#636363" title="" data-toggle="button" tabindex="-1" data-original-title="#636363"></button><button type="button" class="note-color-btn" style="background-color:#9C9C94" data-event="foreColor" data-value="#9C9C94" title="" data-toggle="button" tabindex="-1" data-original-title="#9C9C94"></button><button type="button" class="note-color-btn" style="background-color:#CEC6CE" data-event="foreColor" data-value="#CEC6CE" title="" data-toggle="button" tabindex="-1" data-original-title="#CEC6CE"></button><button type="button" class="note-color-btn" style="background-color:#EFEFEF" data-event="foreColor" data-value="#EFEFEF" title="" data-toggle="button" tabindex="-1" data-original-title="#EFEFEF"></button><button type="button" class="note-color-btn" style="background-color:#F7F7F7" data-event="foreColor" data-value="#F7F7F7" title="" data-toggle="button" tabindex="-1" data-original-title="#F7F7F7"></button><button type="button" class="note-color-btn" style="background-color:#FFFFFF" data-event="foreColor" data-value="#FFFFFF" title="" data-toggle="button" tabindex="-1" data-original-title="#FFFFFF"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#FF0000" data-event="foreColor" data-value="#FF0000" title="" data-toggle="button" tabindex="-1" data-original-title="#FF0000"></button><button type="button" class="note-color-btn" style="background-color:#FF9C00" data-event="foreColor" data-value="#FF9C00" title="" data-toggle="button" tabindex="-1" data-original-title="#FF9C00"></button><button type="button" class="note-color-btn" style="background-color:#FFFF00" data-event="foreColor" data-value="#FFFF00" title="" data-toggle="button" tabindex="-1" data-original-title="#FFFF00"></button><button type="button" class="note-color-btn" style="background-color:#00FF00" data-event="foreColor" data-value="#00FF00" title="" data-toggle="button" tabindex="-1" data-original-title="#00FF00"></button><button type="button" class="note-color-btn" style="background-color:#00FFFF" data-event="foreColor" data-value="#00FFFF" title="" data-toggle="button" tabindex="-1" data-original-title="#00FFFF"></button><button type="button" class="note-color-btn" style="background-color:#0000FF" data-event="foreColor" data-value="#0000FF" title="" data-toggle="button" tabindex="-1" data-original-title="#0000FF"></button><button type="button" class="note-color-btn" style="background-color:#9C00FF" data-event="foreColor" data-value="#9C00FF" title="" data-toggle="button" tabindex="-1" data-original-title="#9C00FF"></button><button type="button" class="note-color-btn" style="background-color:#FF00FF" data-event="foreColor" data-value="#FF00FF" title="" data-toggle="button" tabindex="-1" data-original-title="#FF00FF"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#F7C6CE" data-event="foreColor" data-value="#F7C6CE" title="" data-toggle="button" tabindex="-1" data-original-title="#F7C6CE"></button><button type="button" class="note-color-btn" style="background-color:#FFE7CE" data-event="foreColor" data-value="#FFE7CE" title="" data-toggle="button" tabindex="-1" data-original-title="#FFE7CE"></button><button type="button" class="note-color-btn" style="background-color:#FFEFC6" data-event="foreColor" data-value="#FFEFC6" title="" data-toggle="button" tabindex="-1" data-original-title="#FFEFC6"></button><button type="button" class="note-color-btn" style="background-color:#D6EFD6" data-event="foreColor" data-value="#D6EFD6" title="" data-toggle="button" tabindex="-1" data-original-title="#D6EFD6"></button><button type="button" class="note-color-btn" style="background-color:#CEDEE7" data-event="foreColor" data-value="#CEDEE7" title="" data-toggle="button" tabindex="-1" data-original-title="#CEDEE7"></button><button type="button" class="note-color-btn" style="background-color:#CEE7F7" data-event="foreColor" data-value="#CEE7F7" title="" data-toggle="button" tabindex="-1" data-original-title="#CEE7F7"></button><button type="button" class="note-color-btn" style="background-color:#D6D6E7" data-event="foreColor" data-value="#D6D6E7" title="" data-toggle="button" tabindex="-1" data-original-title="#D6D6E7"></button><button type="button" class="note-color-btn" style="background-color:#E7D6DE" data-event="foreColor" data-value="#E7D6DE" title="" data-toggle="button" tabindex="-1" data-original-title="#E7D6DE"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#E79C9C" data-event="foreColor" data-value="#E79C9C" title="" data-toggle="button" tabindex="-1" data-original-title="#E79C9C"></button><button type="button" class="note-color-btn" style="background-color:#FFC69C" data-event="foreColor" data-value="#FFC69C" title="" data-toggle="button" tabindex="-1" data-original-title="#FFC69C"></button><button type="button" class="note-color-btn" style="background-color:#FFE79C" data-event="foreColor" data-value="#FFE79C" title="" data-toggle="button" tabindex="-1" data-original-title="#FFE79C"></button><button type="button" class="note-color-btn" style="background-color:#B5D6A5" data-event="foreColor" data-value="#B5D6A5" title="" data-toggle="button" tabindex="-1" data-original-title="#B5D6A5"></button><button type="button" class="note-color-btn" style="background-color:#A5C6CE" data-event="foreColor" data-value="#A5C6CE" title="" data-toggle="button" tabindex="-1" data-original-title="#A5C6CE"></button><button type="button" class="note-color-btn" style="background-color:#9CC6EF" data-event="foreColor" data-value="#9CC6EF" title="" data-toggle="button" tabindex="-1" data-original-title="#9CC6EF"></button><button type="button" class="note-color-btn" style="background-color:#B5A5D6" data-event="foreColor" data-value="#B5A5D6" title="" data-toggle="button" tabindex="-1" data-original-title="#B5A5D6"></button><button type="button" class="note-color-btn" style="background-color:#D6A5BD" data-event="foreColor" data-value="#D6A5BD" title="" data-toggle="button" tabindex="-1" data-original-title="#D6A5BD"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#E76363" data-event="foreColor" data-value="#E76363" title="" data-toggle="button" tabindex="-1" data-original-title="#E76363"></button><button type="button" class="note-color-btn" style="background-color:#F7AD6B" data-event="foreColor" data-value="#F7AD6B" title="" data-toggle="button" tabindex="-1" data-original-title="#F7AD6B"></button><button type="button" class="note-color-btn" style="background-color:#FFD663" data-event="foreColor" data-value="#FFD663" title="" data-toggle="button" tabindex="-1" data-original-title="#FFD663"></button><button type="button" class="note-color-btn" style="background-color:#94BD7B" data-event="foreColor" data-value="#94BD7B" title="" data-toggle="button" tabindex="-1" data-original-title="#94BD7B"></button><button type="button" class="note-color-btn" style="background-color:#73A5AD" data-event="foreColor" data-value="#73A5AD" title="" data-toggle="button" tabindex="-1" data-original-title="#73A5AD"></button><button type="button" class="note-color-btn" style="background-color:#6BADDE" data-event="foreColor" data-value="#6BADDE" title="" data-toggle="button" tabindex="-1" data-original-title="#6BADDE"></button><button type="button" class="note-color-btn" style="background-color:#8C7BC6" data-event="foreColor" data-value="#8C7BC6" title="" data-toggle="button" tabindex="-1" data-original-title="#8C7BC6"></button><button type="button" class="note-color-btn" style="background-color:#C67BA5" data-event="foreColor" data-value="#C67BA5" title="" data-toggle="button" tabindex="-1" data-original-title="#C67BA5"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#CE0000" data-event="foreColor" data-value="#CE0000" title="" data-toggle="button" tabindex="-1" data-original-title="#CE0000"></button><button type="button" class="note-color-btn" style="background-color:#E79439" data-event="foreColor" data-value="#E79439" title="" data-toggle="button" tabindex="-1" data-original-title="#E79439"></button><button type="button" class="note-color-btn" style="background-color:#EFC631" data-event="foreColor" data-value="#EFC631" title="" data-toggle="button" tabindex="-1" data-original-title="#EFC631"></button><button type="button" class="note-color-btn" style="background-color:#6BA54A" data-event="foreColor" data-value="#6BA54A" title="" data-toggle="button" tabindex="-1" data-original-title="#6BA54A"></button><button type="button" class="note-color-btn" style="background-color:#4A7B8C" data-event="foreColor" data-value="#4A7B8C" title="" data-toggle="button" tabindex="-1" data-original-title="#4A7B8C"></button><button type="button" class="note-color-btn" style="background-color:#3984C6" data-event="foreColor" data-value="#3984C6" title="" data-toggle="button" tabindex="-1" data-original-title="#3984C6"></button><button type="button" class="note-color-btn" style="background-color:#634AA5" data-event="foreColor" data-value="#634AA5" title="" data-toggle="button" tabindex="-1" data-original-title="#634AA5"></button><button type="button" class="note-color-btn" style="background-color:#A54A7B" data-event="foreColor" data-value="#A54A7B" title="" data-toggle="button" tabindex="-1" data-original-title="#A54A7B"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#9C0000" data-event="foreColor" data-value="#9C0000" title="" data-toggle="button" tabindex="-1" data-original-title="#9C0000"></button><button type="button" class="note-color-btn" style="background-color:#B56308" data-event="foreColor" data-value="#B56308" title="" data-toggle="button" tabindex="-1" data-original-title="#B56308"></button><button type="button" class="note-color-btn" style="background-color:#BD9400" data-event="foreColor" data-value="#BD9400" title="" data-toggle="button" tabindex="-1" data-original-title="#BD9400"></button><button type="button" class="note-color-btn" style="background-color:#397B21" data-event="foreColor" data-value="#397B21" title="" data-toggle="button" tabindex="-1" data-original-title="#397B21"></button><button type="button" class="note-color-btn" style="background-color:#104A5A" data-event="foreColor" data-value="#104A5A" title="" data-toggle="button" tabindex="-1" data-original-title="#104A5A"></button><button type="button" class="note-color-btn" style="background-color:#085294" data-event="foreColor" data-value="#085294" title="" data-toggle="button" tabindex="-1" data-original-title="#085294"></button><button type="button" class="note-color-btn" style="background-color:#311873" data-event="foreColor" data-value="#311873" title="" data-toggle="button" tabindex="-1" data-original-title="#311873"></button><button type="button" class="note-color-btn" style="background-color:#731842" data-event="foreColor" data-value="#731842" title="" data-toggle="button" tabindex="-1" data-original-title="#731842"></button></div><div class="note-color-row"><button type="button" class="note-color-btn" style="background-color:#630000" data-event="foreColor" data-value="#630000" title="" data-toggle="button" tabindex="-1" data-original-title="#630000"></button><button type="button" class="note-color-btn" style="background-color:#7B3900" data-event="foreColor" data-value="#7B3900" title="" data-toggle="button" tabindex="-1" data-original-title="#7B3900"></button><button type="button" class="note-color-btn" style="background-color:#846300" data-event="foreColor" data-value="#846300" title="" data-toggle="button" tabindex="-1" data-original-title="#846300"></button><button type="button" class="note-color-btn" style="background-color:#295218" data-event="foreColor" data-value="#295218" title="" data-toggle="button" tabindex="-1" data-original-title="#295218"></button><button type="button" class="note-color-btn" style="background-color:#083139" data-event="foreColor" data-value="#083139" title="" data-toggle="button" tabindex="-1" data-original-title="#083139"></button><button type="button" class="note-color-btn" style="background-color:#003163" data-event="foreColor" data-value="#003163" title="" data-toggle="button" tabindex="-1" data-original-title="#003163"></button><button type="button" class="note-color-btn" style="background-color:#21104A" data-event="foreColor" data-value="#21104A" title="" data-toggle="button" tabindex="-1" data-original-title="#21104A"></button><button type="button" class="note-color-btn" style="background-color:#4A1031" data-event="foreColor" data-value="#4A1031" title="" data-toggle="button" tabindex="-1" data-original-title="#4A1031"></button></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+        input.setAttribute('data-content', raw);
+        $(input).popover('show');
+    }else if(clases.contains('note-color-btn')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 1);
+        }else{}
+    }
+}

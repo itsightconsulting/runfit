@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+
+<body class="">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+
+    <!-- RIBBON -->
+    <div id="ribbon">
+
+				<span class="ribbon-button-alignment">
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"
+                          rel="tooltip" data-html="true">
+						<i class="fa fa-refresh"></i>
+					</span>
+				</span>
+
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Dashboard</li>
+        </ol>
+        <!-- end breadcrumb -->
+
+        <!-- You can also add more buttons to the
+        ribbon for further usability
+
+        Example below:
+
+        <span class="ribbon-button-alignment pull-right">
+        <span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
+        <span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
+        <span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
+        </span> -->
+
+    </div>
+    <!-- END RIBBON -->
+
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row" id="view_list">
+                    <div class="col-xs-12">
+                        <h1 class="page-title txt-color-blueDark">
+                            <i class="fa fa-edit fa-fw "></i>
+                            Gestión
+                            <span>>
+												Paquete Plan
+											</span>
+                        </h1>
+                    </div>
+                    <div class="col-sm-12">
+                        <div id="accordion" class="panel-group">
+                            <form id="frm_busqueda">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-md-1  control-label-left" for="txtFiltro">Criterio</label>
+                                        <div class="col-md-3">
+                                            <input name="Filtro" id="txtFiltro" type="text"
+                                                   class="form-control input-sm ignore" maxlength="24"
+                                                   placeholder="Ingresa un criterio de búsqueda"/>
+                                        </div>
+                                        <label class="col-md-1 control-label-left" for="ddlEstado">Estado</label>
+                                        <div class="col-md-2 mrg">
+                                            <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                                <option value="-1">TODOS</option>
+                                                <option value="true">Activo</option>
+                                                <option value="false">Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 control-label-left" for="ddlPlan">Plan</label>
+                                        <div class="col-md-2 mrg">
+                                            <select name="Plan" id="Plan" class="form-control input-sm ignore"></select>
+                                        </div>
+                                        <div class="col-md-1 col-xs-5 col-sm-4">
+                                            <button id="btnFiltrar" type="button" class="btn btn-primary   pull-right">
+                                                Buscar
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2 col-xs-6 col-sm-6 col-lg-1 ">
+                                            <button id="btnNuevo" type="button"
+                                                    class="add_elements btn btn-primary pull-right">
+                                                Nuevo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <table id="tblRegistros" data-mobile-responsive="true"
+                               class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="30">Código
+                                </th>
+                                <th data-field="nombre" data-formatter="linkFormatter" data-halign="left"
+                                    data-valign="middle" data-align="left">Nombre
+                                </th>
+                                <th data-field="plan.nombre" data-halign="left" data-valign="middle" data-align="left"
+                                    data-width="120">Plan
+                                </th>
+                                <th data-field="precio" data-halign="left" data-valign="middle" data-align="left"
+                                    data-width="140">Precio
+                                </th>
+                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="80">Estado
+                                </th>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center">Acciones
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row" id="view_register">
+                    <div class="col-xs-12">
+                        <h1 class="page-title txt-color-blueDark">
+                            <i class="fa fa-edit fa-fw "></i>
+                            Gestión
+                            <span>>
+										Paquete
+									</span>
+                        </h1>
+                    </div>
+                    <form id="frm_registro">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="Nombre">Nombre</label>
+                                <input id="Nombre" name="Nombre" type="text" placeholder="Ingresa nombre"
+                                       class="form-control" maxlength="30" autocomplete="off"/>
+                                <input id="hIdPaquete" name="hIdPaquete" type="hidden" value="0"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="Descripcion">Descripción</label>
+                                <input id="Descripcion" name="Descripcion" type="text" placeholder="Ingresa descripcion"
+                                       class="form-control" maxlength="24" autocomplete="off"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="Precio">Precio</label>
+                                <input id="Precio" name="Precio" type="text" placeholder="Ingresa precio"
+                                       class="form-control" maxlength="9" autocomplete="off"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Ahorro">Ahorro</label>
+                                <input id="Ahorro" name="Ahorro" type="text" placeholder="Ingresa monto de ahorro"
+                                       class="form-control" maxlength="9" autocomplete="off"/>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="PlanId">Plan</label>
+                                <select id="PlanId" name="PlanId" class="form-control">
+                                    <option> -- Seleccione --</option>
+                                    <option value="1"> Administrador</option>
+                                    <option value="2"> Entrenador</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Contrato">Contrato </label>
+                                <input id="Contrato" name="Contrato" accept=".pdf" type="file" class="form-control"
+                                       data-show-preview="false" data-language="es" data-show-upload="false"/>
+                            </div>
+                            <div class="form-group">
+                                <label><input id="FlagActivo" type="checkbox" name="FlagActivo"
+                                              checked="checked"/><i></i>Activo</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="Artificio"></label>
+                            </div>
+                            <div class="form-group">
+                                <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+                            </div>
+                            <div class="form-group">
+                                <button id="btnCancelar" type="button" class="btn btn-danger">Cancelar</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+
+<!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+Note: These tiles are completely responsive,
+you can add as many as you like
+-->
+<div id="shortcut">
+    <ul>
+        <li>
+            <a href="inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i
+                    class="fa fa-envelope fa-4x"></i> <span>Mail <span
+                    class="label pull-right bg-color-darken">14</span></span> </span> </a>
+        </li>
+        <li>
+            <a href="calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i
+                    class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+        </li>
+        <li>
+            <a href="gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i
+                    class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+        </li>
+        <li>
+            <a href="invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i
+                    class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i
+                    class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+        </li>
+        <li>
+            <a href="profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i
+                    class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+        </li>
+    </ul>
+</div>
+<!-- END SHORTCUT AREA -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#hIdPaquete');
+
+    var pageNumber = 0;
+    var pageSize = 0;
+
+    $(function () {
+
+        pageSetUp();
+        listarRegistros();
+        listarPlanes();
+
+        //V A L I D A T E
+        validarRegistros();
+
+        $("#btnNuevo").click(function () {
+            irRegistro();
+        });
+
+        $("#btnGuardar").click(function () {
+            registro();
+        });
+
+        $("#btnCancelar").click(function () {
+            irListado($index);
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+    });
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+
+            $table.bootstrapTable('destroy');
+            var dataRpta;
+
+            var comodin = $("#txtFiltro").val();
+            var estado = $("#Estado").val();
+            var plan = $("#Plan").val();
+
+            if (comodin == null || comodin == "") {
+                comodin = "0";
+            }
+            if (estado == null) {
+                estado = "-1";
+            }
+            if (plan == null || plan == "") {
+                plan = "0";
+            }
+            $table.bootstrapTable({
+
+                url: '/gestion/paquete/obtenerListado/' + comodin + '/' + estado + '/' + plan,
+                method: 'GET',
+                pagination: true,
+                sidePagination: 'local',
+                queryParamsType: 'Else',
+                pageSize: 10,
+                queryParams: function (p) {
+                    pageNumber = p.pageNumber;
+                    pageSize = p.pageSize;
+                    return {
+                        pageNumber: p.pageNumber,
+                        pageSize: p.pageSize
+                    };
+                },
+                responseHandler: function (res) {
+                    $(document).ajaxStop(function () {
+                        $("#load_pace").hide();
+                    })
+                    return res.rows;
+                }
+            });
+        }
+    }
+
+    function registro() {
+        if ($("#frm_registro").valid()) {
+            var $btn = $("#btnGuardar");
+            $btn.button('loading');
+            if ($("#Ahorro").val() == null || $("#Ahorro").val() == "") {
+                $("#Ahorro").val(0);
+            }
+
+            var params = new Object();
+            params.id = $("#hIdPaquete").val();
+            params.nombre = $("#Nombre").val();
+            params.descripcion = $("#Descripcion").val();
+            params.precio = $("#Precio").val();
+            params.ahorro = $("#Ahorro").val();
+            params.fkPlan = $("#PlanId").val();
+            params.flagActivo = $('#FlagActivo').is(':checked');
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: '/gestion/paquete/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    addFiles(data);
+                    if (textStatus == "success") {
+                        if (data > 0) {
+                            bootbox.alert("Operación exitosa.")
+                        } else {
+                            bootbox.alert("Ha ocurrido un fallo, por favor comunicate con el area de sistemas.")
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr["status"], xhr["responseJSON"]["error"]);
+                },
+                complete: function () {
+                    $('#hIdPaquete').val(0);
+                    limpiarBusqueda();
+                    irListado($index);
+                    listarRegistros();
+                    $btn.button('reset');
+                }
+            });
+        }
+    }
+
+    function editar(id) {
+
+        var param = new Object();
+        param.id = id;
+
+        $("#load_pace").show();
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: '/gestion/paquete/obtenerPaquete',
+            dataType: "json",
+            data: param,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    $("#hIdPaquete").val(data["id"]);
+                    $("#PlanId").val(data["plan"]["id"]);
+                    $("#Descripcion").val(data["descripcion"]);
+                    $("#Nombre").val(data["nombre"]);
+                    $("#Ahorro").val(data["ahorro"]);
+                    $("#Precio").val(data["precio"]);
+// 				                $("#Contrato").val(data["nombreContrato"]);
+                    $('#FlagActivo').prop('checked', data["flagActivo"]);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr["status"], xhr["responseJSON"]["error"]);
+            },
+            complete: function () {
+                limpiarBusqueda();
+                $('#Ahorro-error').attr('hidden', 'hidden');
+                $('#Ahorro-error').attr('style', 'display:none');
+                $('#Password-error').attr('hidden', 'hidden');
+                $('#Password-error').attr('style', 'display:none');
+                irRegistro();
+                $("#load_pace").show();
+            }
+        });
+    }
+
+    function desactivar(id) {
+
+        bootbox.setLocale("es");
+        bootbox.confirm("¿Estás seguro que deseas <strong>cambiar el estado </strong> del registro seleccionado?", function (result) {
+            if (result) {
+                var param = new Object();
+                param.id = id;
+
+                $("#load_pace").show();
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: '/gestion/paquete/desactivarPaquete',
+                    dataType: "json",
+                    data: param,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr["status"], xhr["responseJSON"]["error"]);
+                    },
+                    complete: function () {
+                        limpiarBusqueda();
+                        listarRegistros();
+                    }
+                });
+            }
+        });
+    }
+
+    function listarPlanes() {
+        var combo = $("#PlanId");
+        var combo2 = $("#Plan");
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: '/gestion/plan/listarTodos',
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    combo.html('');
+                    combo.append($("<option />").text("  -- Seleccione -- "));
+                    combo2.append($("<option />").val("").text("TODOS"));
+                    $.each(data, function () {
+                        combo.append($("<option />").val(this.id).text(this.nombre));
+                        combo2.append($("<option />").val(this.id).text(this.nombre));
+                    });
+                }
+            },
+            async: false
+        });
+    }
+
+    function addFiles(paqueteId) {
+
+        var fileContrato = $("#Contrato").get(0);
+        var data = new FormData();
+
+        var files = fileContrato.files;
+        if (files[0] != null) {
+            data.append("fileContrato", files[0]);
+            data.append("paqueteId", paqueteId);
+// 			                data.append("nombre", $("#Nombre").val());
+// 			                data.append("precio", $("#Precio").val());
+
+            $.ajax({
+                type: 'POST',
+                url: '/gestion/paquete/cargarContrato',
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-99") {
+                            bootbox.alert("El archivo no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador.");
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr["status"], xhr["responseJSON"]["error"]);
+                },
+                async: false
+            });
+        } else {
+            console.log("file is null");
+        }
+    }
+
+    function linkFormatter(value, row, index) {
+        return String('<a class="editable editable-click" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombre + '</a>', value);
+    }
+
+    function Opciones(value, row, index) {
+
+        if (row.id > 0) {
+            desactivar = "<a href='#' onclick='javascript:desactivar(" + row.id + ");' title='Actualizar status'><i class='glyphicon glyphicon-refresh'></i></a>";
+            var visualizar = "<a target='_blank' href='/workout/media/file/paquete/gt/1/" + row.nombreContrato + "' title='Descargar contrato'><i class='glyphicon glyphicon-eye-open'></i></a>";
+            var filedown = "<a href='/workout/media/file/paquete/gt/0/" + row.nombreContrato + "' title='Descargar contrato'><i class='glyphicon glyphicon-download'></i></a>";
+
+            return desactivar + "&nbsp;&nbsp;" + visualizar + "&nbsp;&nbsp;" + filedown;
+        }
+
+    }
+
+    function isActived(value, row, index) {
+
+        if (row.flagActivo) {
+            return '<i class="glyphicon glyphicon-ok"></i>';
+        } else {
+            return '<i class="glyphicon glyphicon-remove"></i>';
+        }
+    }
+
+    $.validator.addMethod("extension", function (value, element, param) {
+        param = typeof param === "string" ? param.replace(/,/g, "|") : "pdf";
+        return this.optional(element) || value.match(new RegExp("\\.(" + param + ")$", "i"));
+    }, $.validator.format("Solo se permiten archivos pdf"));
+
+    $.validator.addMethod("numberFormat", function (value) {
+        return /^\d{1,8}(\.\d{2})?$/.test(value) ? true : false;
+    });
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            ignore: ".ignore",
+            errorClass: "glyphicon glyphicon-remove",
+            validClass: "glyphicon glyphicon-ok",
+            rules: {
+                Nombre: {
+                    required: true,
+                    maxlength: $("#Nombre").prop("maxlength"),
+                },
+                Descripcion: {
+                    required: true,
+                    maxlength: $("#Descripcion").prop("maxlength"),
+                },
+                Precio: {
+                    required: true,
+                    number: true,
+                    range: [0, 999999.99],
+                    numberFormat: true,
+                },
+                Ahorro: {
+                    number: true,
+                    range: [0, 999999.99],
+                    numberFormat: true,
+                },
+                Contrato: {
+                    required: function () {
+                        if ($('#hIdPaquete').val() > 0) {
+                            return false;
+                        }
+                        return true;
+                    },
+                    extension: "pdf",
+                },
+                PlanId: {
+                    required: true,
+                    digits: true,
+                },
+            },
+            messages: {
+                Nombre: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Descripcion: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Precio: {
+                    required: "El campo es obligatorio",
+                    number: "Ingresa un número válido",
+                    range: "Válido entre {0} y {1}.",
+                    numberFormat: "Solo se admiten 2 decimales.",
+                },
+                Ahorro: {
+                    number: "Ingresa un número válido",
+                    range: "Válido entre {0} y {1}.",
+                    numberFormat: "Solo se admiten 2 decimales.",
+                },
+                Contrato: {
+                    required: "La subida del contrato es obligatorio",
+                },
+                PlanId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un plan válido",
+                }
+            },
+            submitHandler: function () {
+                registro();
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

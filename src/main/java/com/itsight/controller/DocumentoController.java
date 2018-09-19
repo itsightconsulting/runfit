@@ -1,0 +1,144 @@
+package com.itsight.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.constants.ViewConstant;
+import com.itsight.domain.Documento;
+import com.itsight.service.DocumentoService;
+import com.itsight.util.Utilitarios;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.List;
+import java.util.UUID;
+
+@Controller
+@RequestMapping("/gestion/documento")
+public class DocumentoController {
+
+    @Value("${main.repository}")
+    private String mainRoute;
+
+    private DocumentoService documentoService;
+
+    public static final Logger LOGGER = LogManager.getLogger(DocumentoController.class);
+
+    @Autowired
+    public DocumentoController(
+            DocumentoService documentoService) {
+        // TODO Auto-generated constructor stub
+        this.mainRoute = mainRoute;
+        this.documentoService = documentoService;
+    }
+
+    @GetMapping(value = "")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView principal(Model model) {
+        return new ModelAndView(ViewConstant.MAIN_DOCUMENTO);
+    }
+
+    @GetMapping(value = "/listarTodos")
+    public @ResponseBody
+    List<Documento> listar() throws JsonProcessingException {
+        return documentoService.findAll();
+    }
+
+    @GetMapping(value = "/obtenerListado/{comodin}/{estado}")
+    public @ResponseBody
+    List<Documento> listarConFiltro(
+            @PathVariable("comodin") String comodin,
+            @PathVariable("estado") String estado) throws JsonProcessingException {
+        return documentoService.listarPorFiltro(comodin, estado, null);
+    }
+
+    @GetMapping(value = "/obtener")
+    public @ResponseBody
+    Documento obtenerPorId(@RequestParam(value = "id") int documentoId) {
+        return documentoService.findOne(documentoId);
+    }
+
+    @PostMapping(value = "/agregar")
+    public @ResponseBody
+    String nuevo(
+            @ModelAttribute Documento documento) {
+
+        if (documento.getId() == 0) {
+            documentoService.save(documento);
+            return String.valueOf(documento.getId());
+        }
+        Documento qDocumento = documentoService.findOne(documento.getId());
+        qDocumento.setNombre(documento.getNombre());
+        qDocumento.setRutaWeb(documento.getRutaWeb());
+        qDocumento.setRutaReal(documento.getRutaReal());
+        documentoService.update(qDocumento);
+        return String.valueOf(qDocumento.getId());
+    }
+
+    @PutMapping(value = "/desactivar")
+    public @ResponseBody
+    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
+        try {
+            documentoService.actualizarFlagActivoById(id, flagActivo);
+            return "1";
+        } catch (Exception e) {
+            return "-9";
+        }
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public @ResponseBody
+    String guardarArchivo(
+            @RequestPart(value = "documento", required = true) MultipartFile documento,
+            @RequestParam(value = "documentoId", required = true) Integer documentoId, HttpServletRequest request) {
+
+        if (documento != null) {
+            guardarFile(documento, documentoId);
+        }
+        return "1";
+    }
+
+    private void guardarFile(MultipartFile file, int id) {
+        if (!file.isEmpty()) {
+            try {
+
+                UUID uuid = UUID.randomUUID();
+                String[] splitNameFile = file.getOriginalFilename().split("\\.");
+                String extension = "." + splitNameFile[splitNameFile.length - 1];
+                String fullPath = "";
+                String rutaBase = mainRoute;
+                fullPath = rutaBase + "/Documentos/" + id;
+                Utilitarios.createDirectory(fullPath);
+                fullPath += "/" + uuid + extension;
+
+                File nuevoFile = new File(fullPath);
+
+                // Agregando la ruta a la base de datos
+
+                Documento qDocumento = documentoService.findOne(id);//findOneWithFT para este caso aplica a todas las ForeignKeys
+                qDocumento.setRutaReal(fullPath);
+                qDocumento.setRutaWeb("/" + id + "/" + uuid + extension);
+                qDocumento.setUuid(uuid);
+
+                // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
+                file.transferTo(nuevoFile);
+
+                documentoService.update(qDocumento);
+                LOGGER.info("> ROUTE: " + fullPath);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            LOGGER.info("> Isn't a file");
+        }
+    }
+}

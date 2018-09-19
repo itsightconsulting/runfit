@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en-us"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-user fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Usuario</b>
+										</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <form id="frm_busqueda">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-1  control-label-left" for="txtFiltro"><b>Nombre:</b></label>
+                                    <div class="col-md-3">
+                                        <input id="txtFiltro" type="text" placeholder="Búsqueda por nombre"
+                                               class="form-control"/>
+                                    </div>
+                                    <label class="col-md-1 control-label-right"><b>Estado:</b></label>
+                                    <div class="col-md-2 mrg">
+                                        <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                            <option value="-1"> -- Todos --</option>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-md-1 control-label-left"><b>Perfil:</b></label>
+                                    <div class="col-md-2 mrg">
+                                        <select name="Perfil" id="Perfil" class="form-control input-sm ignore">
+                                            <option value="">-- Todos --</option>
+                                            <option th:each="p : ${lstTipoUsuario}" th:value="${p.id}"
+                                                    th:text="${p.nombre}"/>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
+                                                class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblRegistros" data-mobile-responsive="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="20" data-title="Código"></th>
+                                <th data-field="nombreCompleto" data-formatter="linkFormatter" data-halign="left"
+                                    data-valign="middle" data-align="left">Nombre
+                                </th>
+                                <th data-field="correo" data-halign="left" data-valign="middle" data-align="left"
+                                    data-width="140">Correo
+                                </th>
+                                <th data-field="username" data-halign="left" data-valign="middle" data-align="left"
+                                    data-width="120">Usuario
+                                </th>
+                                <th data-field="tipoUsuario.nombre" data-halign="left" data-valign="middle"
+                                    data-align="left" data-width="120">Perfil
+                                </th>
+                                <th data-field="fechaCreacion" data-halign="left" data-valign="middle"
+                                    data-align="left">Fecha Creación
+                                </th>
+                                <th data-field="fechaUltimoAcceso" data-halign="left" data-valign="middle"
+                                    data-align="left">Último Acceso
+                                </th>
+                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="60" data-class="td-status">Estado
+                                </th>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="90">Acciones
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" id="view_register">
+                    <div class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false"
+                             data-widget-custombutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-ge"></i> </span>
+                                <!-- Tittle form -->
+                                <h2><strong><span id="Operacion">Registrar</span></strong></h2>
+                            </header>
+                            <div>
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <form id="frm_registro" class="smart-form">
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <section class="">
+                                                        <label class="label">Nombres: </label>
+                                                        <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                            <input id="Nombres" name="Nombres" type="text"
+                                                                   placeholder="Nombres" class="" maxlength="44"
+                                                                   autocomplete="off"/>
+                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                            <input id="Id" name="Id" type="hidden" value="0"/>
+                                                        </label>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Apellido Paterno: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="ApellidoPaterno" name="ApellidoPaterno" type="text"
+                                                               placeholder="Apellido paterno" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Apellido Materno: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="ApellidoMaterno" name="ApellidoMaterno" type="text"
+                                                               placeholder="Apellido materno" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-2">
+                                                    <label class="label">Código País: </label>
+                                                    <label class="input"><i class="icon-prepend fa fa-globe"></i>
+                                                        <input id="CodPais" name="CodPais" type="text"
+                                                               placeholder="Código país" maxlength="3"
+                                                               required="required"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-2">
+                                                    <label class="label">Teléfono Móvil: </label>
+                                                    <label class="input"><i class="icon-append fa fa-mobile"></i>
+                                                        <input id="Movil" name="Movil" type="text"
+                                                               placeholder="Teléfono Móvil" maxlength="12"
+                                                               required="required"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-2">
+                                                    <label class="label">Teléfono Fijo: </label>
+                                                    <label class="input"><i class="icon-append fa fa-phone"></i>
+                                                        <input id="TelefonoFijo" name="TelefonoFijo" type="text"
+                                                               placeholder="Teléfono Fijo" maxlength="12"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Correo Electrónico: </label>
+                                                    <label class="input"><i class="icon-append fa fa-envelope-o"></i>
+                                                        <input id="Correo" name="Correo" type="text"
+                                                               placeholder="Correo electrónico" class=""
+                                                               maxlength="44"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Tipo Documento: </label>
+                                                    <label class="input">
+                                                        <select id="TipoDocumentoId" name="TipoDocumentoId" class="form-control">
+                                                            <option value="">-- Seleccione --</option>
+                                                            <option th:each="td : ${lstTipoDocumento}" th:value="${td.id}"
+                                                                    th:text="${td.nombre}"/>
+                                                        </select>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Numero de Documento: </label>
+                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                        <input id="NumeroDocumento" name="NumeroDocumento" type="text"
+                                                               placeholder="Número de documento" class="" maxlength="11"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Nombre de usuario: </label>
+                                                    <label class="input"><i class="icon-append fa fa-user"></i>
+                                                        <input id="Username" name="Username" type="text"
+                                                               placeholder="Nombre de usuario" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Perfil: </label>
+                                                    <label class="input">
+                                                        <select id="PerfilId" name="PerfilId" class="form-control">
+                                                            <option value="">-- Seleccione --</option>
+                                                            <option th:each="p : ${lstTipoUsuario}" th:value="${p.id}"
+                                                                    th:text="${p.nombre}"/>
+                                                        </select>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row" id="PassUser">
+                                                <section class="col col-6">
+                                                    <label class="label margin txt-color">Password: </label>
+                                                    <label class="input"><i class="icon-append fa fa-lock"></i>
+                                                        <input id="Password" name="Password" type="password"
+                                                               placeholder="Password" class="" maxlength="24"
+                                                               autocomplete="off"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <label class="label">Confirmar Password: </label>
+                                                    <label class="input"><i class="icon-append fa fa-lock"></i>
+                                                        <input id="CheckPassword" name="CheckPassword" type="password"
+                                                               placeholder="Confirmar password" class=""
+                                                               maxlength="24"/>
+                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col col-6">
+                                                    <label class="label">Roles:</label>
+                                                    <div class="col">
+                                                        <div class="col col-4 padding-5"
+                                                             th:each="r : ${lstRol}">
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" name="checkbox"
+                                                                       th:attr="data-id=${r.id}"/>
+                                                                <i></i> <span
+                                                                    th:text="${r.nombre}"></span></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col txt-color-redLight">
+                                                        <input type="hidden" name="CheckRoles"/>
+                                                    </div>
+                                                </section>
+                                                <section class="col col-6">
+                                                    <div class="inline-group">
+                                                        <label class="label">Estado Inicial: </label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivo" name="FlagActivo"
+                                                                   checked="checked"/>
+                                                            <i></i>Activo</label>
+                                                        <label class="radio">
+                                                            <input type="radio" id="FlagActivoOff" name="FlagActivo"/>
+                                                            <i></i>Inactivo</label>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                        <footer class="">
+                                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar
+                                            </button>
+                                            <button id="btnCancelar" type="button" class="btn btn-danger">Cancelar
+                                            </button>
+                                        </footer>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- MODAL CAMBIO DE CONTRASENA-->
+<div class="modal fade" id="CambioContrasena" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="">
+
+            <form class="smart-form" id="frm_cambio">
+                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Cambio de
+                    contraseña</h6>
+                <fieldset>
+                    <section class="">
+                        <label class="label">Nueva contraseña:</label>
+                        <label class="input"><i class="icon-prepend fa fa-lock"></i>
+                            <input id="NuevaPassword" name="NuevaPassword" type="password" maxlength="24"/>
+                            <input id="DatosCambioPass" type="hidden"/>
+                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                        </label>
+                    </section>
+                    <section class="">
+                        <label class="label">Repetir contraseña:</label>
+                        <label class="input"><i class="icon-prepend fa fa-lock"></i>
+                            <input id="NuevaPasswordRe" name="NuevaPasswordRe" type="password" maxlength="24"/>
+                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                        </label>
+                    </section>
+                    <section id="spCambio">
+                    </section>
+                </fieldset>
+                <footer>
+                    <button id="btnCambioContrasena" type="submit" class="btn btn-primary">Confirmar</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- FINAL MODAL CAMBIO DE CONTRASENA -->
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#Id');
+
+    $(function () {
+
+        pageSetUp();
+        listarRegistros();
+
+        //V A L I D A T E
+        validarRegistros();
+
+        $("#btnNuevo").click(function () {
+            $('#Operacion').text('Registrar');
+            $('#Username').removeAttr('readonly');
+            $('#Username').removeAttr('style');
+            $('#Correo').removeAttr('readonly');
+            $('#Correo').removeAttr('style');
+            $('#PassUser').css('display', '');
+            irRegistro();
+        });
+
+        $("#btnGuardar").click(function () {
+            registro();
+        });
+
+        $("#btnCambioContrasena").click(function () {
+            confirmarCambio();
+        });
+
+        $("#btnCancelar").click(function () {
+            irListado($index);
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+
+        $('#Correo').on('focusout', validarCorreo);
+
+        modalsEventos();
+
+    });
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+
+            $table.bootstrapTable('destroy');
+
+            var comodin = $("#txtFiltro").val();
+            var estado = $("#Estado").val();
+            var perfil = $("#Perfil").val();
+
+
+            if (comodin == null || comodin == "") {
+                comodin = "0";
+            }
+            if (estado == null) {
+                estado = "-1";
+            }
+            if (perfil == null || perfil == "") {
+                perfil = "0";
+            }
+
+            $table.bootstrapTable({
+                url: _ctx + 'gestion/usuario/obtenerListado/' + comodin + '/' + estado + '/' + perfil,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: d => {
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function registro() {
+        if ($("#frm_registro").valid()) {
+            let params = getFormData($('#frm_registro'));
+            const roles = [];
+            params.flagActivo = $('#FlagActivo').is(':checked');
+            params.movil = $('#CodPais').val().trim() + ' ' + params.movil;
+            Array.from($('.checkbox input[type="checkbox"]')).forEach((v)=>{
+                if(v.checked) roles.push(v.getAttribute('data-id'));
+            })
+            params.rols = roles.join();
+            //validarCorreo al ser un metodo de un eventListener, por defecto envia el elemento como parametro en la primera posicion y
+            // para hacer el metodo reutilizable es necesario enviarle en el primer argumento un valor cualsea(para el caso null)
+            const promise = new Promise((resolve, reject) => validarCorreo(null, resolve, reject));
+
+            //Luego esperamos que la promesa se cumpla con resolve para finalmente registrar
+            promise.then(()=>{
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/usuario/agregar',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            if (data == "-150") {
+                                $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de usuario ya existe en el sistema...</i>",});
+                            } else if (data == "-2") {
+                                $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
+                                irListado($index);
+                                listarRegistros();
+                            } else if(data.split(',')[0] == "-1"){//0: Codigo response | 1: Id del nuevo registro
+                                //if(data.split(',')[2] == 1){//Split[2]: registramos el rutinarioCe al usuario
+                                    //registroRutinarioCe(data.split(',')[1]);
+                                    //$.smallBox({});
+                                //}else{//data.split(',')[2] == 0
+                                    //$.smallBox({});
+                                //}
+                                $.smallBox({});
+                                irListado($index);
+                                listarRegistros();
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function () {
+                        limpiarBusqueda();
+                    }
+                });
+            }).catch((e)=>{})//En caso la validación de correo sea incorrecta hacemos algo más(para el caso ya no es necesario)
+        }
+    }
+
+    function registroRutinarioCe(id){
+        let params = {};
+        params.id = id;
+
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/usuario/agregar/rutinario-ce',
+            dataType: "json",
+            data: params,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == "-9") {
+                        $.smallBox({color: "alert", content: "<i> La operación ha fallado, comuníquese con el administrador...</i>"});
+                    } else {
+                        $.smallBox({});
+                    }
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                irListado($index);
+                listarRegistros();
+            }
+        });
+    }
+
+    function editar(id) {
+        irRegistro();
+        $('#Operacion').text('Actualizar');
+        $('#Username').attr('readonly', 'readonly');
+        $('#Username').css('background-color', '#eee');
+        $('#Correo').attr('readonly', 'readonly');
+        $('#Correo').css('background-color', '#eee');
+
+        var param = new Object();
+        param.id = id;
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/usuario/obtener',
+            dataType: "json",
+            data: param,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    $("#Id").val(data.id);
+                    $("#PerfilId").val(data.tipoUsuario.id);
+                    $("#TipoDocumentoId").val(data.tipoDocumento.id);
+                    $("#Correo").val(data.correo);
+                    $("#Movil").val(data.movil.split(" ")[1]);
+                    $("#CodPais").val(data.movil.split(" ")[0]);
+                    $("#Username").val(data.username);
+                    $("#ApellidoPaterno").val(data.apellidoPaterno);
+                    $("#ApellidoMaterno").val(data.apellidoMaterno);
+                    $("#NumeroDocumento").val(data.numeroDocumento);
+                    $("#TelefonoFijo").val(data.telefonoFijo);
+                    $("#Nombres").val(data.nombres);
+                    data.roles.forEach(v=>{
+                        Array.from($('.checkbox input[type="checkbox"]'))[v.id-1].click();//se le resta menos uno para igualarlo ya que el array comienza desde 0
+                    })
+                    data.flagActivo === true ?
+                        $('#FlagActivo').prop('checked', true)
+                        :
+                        $('#FlagActivoOff').prop('checked', true);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                $('#PassUser').css('display', 'none');
+                limpiarBusqueda();
+            }
+        });
+    }
+
+    function desactivar(id, ix, username) {
+        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>¿Quieres activar o desactivar el registro?",
+            buttons: '[No][Si]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Si") {
+                var params = {};
+                params.id = id;
+                params.flagActivo = actualStatus == "Activo" ? false : true;
+                params.username = username;
+
+                $.ajax({
+                    type: 'PUT',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/usuario/desactivar',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            $.smallBox({
+                                content: "<i> Se actualizó el registro...</i>",
+                            });
+
+                            actualStatus == "Activo" ?
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                :
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function() {
+                        limpiarBusqueda();
+                    }
+                });
+            } else {
+            }
+        });
+    }
+
+    function validarCorreo(e, resolve, reject){
+        const correo = document.querySelector('#Correo');
+        if(!correo.readOnly) {//Para obviar esta validación en las actualizaciones
+
+            if (correo.parentElement.classList.contains('state-success') && regexMail.test(correo.value.trim())) {
+                let params = {};
+                params.correo = correo.value.trim();
+                $.ajax({
+                    type: 'GET',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/usuario/validacion-correo',
+                    dataType: "json",
+                    data: params,
+                    success: function (data) {
+                        if (data == "1" ? true : false) {
+                            correo.parentElement.classList.add('state-success');
+                            correo.parentElement.classList.remove('state-error');
+                            if(document.querySelector('#Correo-error') != null){document.querySelector('#Correo-error').style.display = 'none';}
+                            if (resolve != undefined) resolve('success');//Se ejecuta cuando una prosema fue hecha
+                        } else {
+                            correo.parentElement.classList.remove('state-success');
+                            correo.parentElement.classList.add('state-error');
+                            if(document.querySelector('#Correo-error') != null){
+                                document.querySelector('#Correo-error').innerHTML = '<b>El correo ingresado ya se encuentra registrado</b>';
+                                document.querySelector('#Correo-error').style.display = '';
+                            }else{
+                                $.smallBox({color: "alert", content: "<b><i>El correo ingresado ya se encuentra registrado...</i></b>"});
+                            }
+
+                            if (reject != undefined) reject('fail');//Se ejecuta cuando una prosema fue hecha
+                        }
+                    },
+                    error: function (xhr) {
+                        if (resolve != undefined) resolve('fail-success')//Nos saltamos la validación en caso de error
+                        exception(xhr);
+                    },
+                    complete: function () {
+                    }
+                })
+            }
+        }else{
+            if(resolve != undefined) resolve('success');//Para cumplir la promesa y que la actualización siga su curso
+        }
+    }
+
+    function cambiarContrasena(id, username) {
+        $('#DatosCambioPass').val(id + '|' + username);
+    }
+
+    function confirmarCambio() {
+
+        if ($("#frm_cambio").valid()) {
+            $('#spCambio').html(spinnerHTMLRaw());
+            $('#btnCambioContrasena').attr('disabled', 'disabled');
+            $('#btnCambioContrasena').text('Cargando...');
+            var params = getFormData($('#frm_cambio'));
+            params.userId = $('#DatosCambioPass').val().split('|')[0]
+            params.username = $('#DatosCambioPass').val().split('|')[1];
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/usuario/cambio-contrasena',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-9") {
+                            $.smallBox({
+                                content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                                timeout: 4500,
+                                color: "alert",
+                            });
+                        } else {
+                            $.smallBox({content: "<i>La contraseña se actualizó con éxito</i>"});
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    $('#btnCambioContrasena').removeAttr('disabled');
+                    $('#btnCambioContrasena').text('Confirmar');
+                    $('#spCambio').html('');
+                    $('#CambioContrasena.modal').modal('hide');
+                    $('#frm_cambio').trigger("reset");
+                    $("#frm_cambio").validate().resetForm();
+                }
+            });
+        }
+    }
+
+    function modalsEventos(){
+        $('#CambioContrasena').on('hide.bs.modal', ()=>{
+            $('#frm_cambio').trigger('reset');
+            $('#frm_cambio').validate().resetForm();
+        })
+    }
+
+    function linkFormatter(value, row) {
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombreCompleto + '</a>', value);
+    }
+
+    function Opciones(value, row, index) {
+        var desactivar = '';
+
+        if (row.id > 0) {
+            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
+									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id},"${row.username}");' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
+        }
+
+        return desactivar;
+    }
+
+    function isActived(value, row) {
+        if (row.flagActivo) {
+            return '<span class="label label-success">Activo</span>';
+        } else {
+            return '<span class="label label-danger">Inactivo</span>';
+        }
+    }
+
+    $.validator.addMethod("pwcheck", function (value) {
+        if (value != "") {
+            return value.match(/^(?=.*\d)(?=.*[a-z])[0-9a-zA-Z!@#\$%\^\&*\)\(+=._-]{8,}$/)
+        }
+        return true;
+    });
+
+    $.validator.addMethod("emailAddress", function (value) {
+        if (value.trim() != "") {
+            return regexMail.test(value.trim());
+        }
+        return true;
+    });
+
+
+
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombres: {
+                    required: true,
+                    maxlength: $("#Nombres").prop("maxlength"),
+                },
+                ApellidoPaterno: {
+                    required: true,
+                    maxlength: $("#ApellidoPaterno").prop("maxlength"),
+                },
+                ApellidoMaterno: {
+                    required: true,
+                    maxlength: $("#ApellidoMaterno").prop("maxlength"),
+                },
+                Correo: {
+                    required: true,
+                    emailAddress: true,
+                    maxlength: $("#Correo").prop("maxlength"),
+                },
+                Movil: {
+                    number: true,
+                },
+                NumeroDocumento:{
+                    required: true,
+                    maxlength: $("#NumeroDocumento").prop("maxlength"),
+                },
+                CodPais: {
+                    number: true,
+                },
+                Username: {
+                    required: true,
+                    maxlength: $("#Username").prop("maxlength"),
+                },
+                Password: {
+                    required: () => {
+                        return $('#Id').val() > 0 ? false : true
+                    },
+                    maxlength: $("#Password").prop("maxlength"),
+                    pwcheck: true,
+                },
+                CheckPassword: {
+                    equalTo: '#Password',
+                },
+                PerfilId: {
+                    required: true,
+                    digits: true,
+                },
+                TipoDocumentoId:{
+                    required: true,
+                    digits: true,
+                },
+                CheckRoles: {
+                    required: () => {
+                        rs = $('input:checkbox:checked').length > 0 ? false : true;
+                        if (rs) {
+                            $('.checkbox').addClass('state-error');
+                            return true
+                        } else return false;
+                    }
+                }
+            },
+            messages: {
+                Nombres: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                ApellidoPaterno: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                ApellidoMaterno: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Correo: {
+                    required: "El campo es obligatorio",
+                    emailAddress: "Formato inválido",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                Movil: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    number: "Este campo solo permite números"
+                },
+                NumeroDocumento: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                },
+                CodPais: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    number: "Este campo solo permite números"
+                },
+                Username: {
+                    required: "<i class='form-control-feedback glyphicon glyphicon-remove'></i>El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Password: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    pwcheck: 'Password inválida, revisar <a style="color:#dd4814;" href="javascript:MostrarRequisitosPassword();">requisitos</a>'
+                },
+                CheckPassword: {
+                    equalTo: "Por favor ingresar la misma password nuevamente",
+                },
+                PerfilId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un perfil válido",
+                },
+                TipoDocumentoId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un tipo de documento válido",
+                },
+                CheckRoles: {
+                    required: "Debe seleccionar por lo menos un rol",
+                }
+            },
+            submitHandler: function () {
+                registro();
+            }
+        });
+
+        $("#frm_cambio").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                NuevaPassword: {
+                    required: true,
+                    pwcheck: true
+                },
+                NuevaPasswordRe: {
+                    equalTo: '#NuevaPassword',
+                }
+            },
+            messages: {
+                NuevaPassword: {
+                    required: "El campo es obligatorio",
+                    pwcheck: 'Password inválida, revisar <a style="color:#dd4814;" href="javascript:MostrarRequisitosPassword();">requisitos</a>'
+                },
+                NuevaPasswordRe: {
+                    equalTo: "Por favor ingresar la misma password nuevamente",
+                }
+            },
+            submitHandler: function () {
+
+            }
+        })
+    }
+
+    function MostrarRequisitosPassword() {
+
+        var mjeValidaciones = "";
+        mjeValidaciones = mjeValidaciones + "La contraseña debe cumplir con las siguientes condiciones:" + "</br></br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> Tener mínimo 8 caracteres." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> Tener mínimo un dígito." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> Tener mínimo un caracter en minúscula o mayúscula." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-check'></i> No debe contar con espacios." + "</br>";
+        mjeValidaciones = mjeValidaciones + "<i class='fa fa-clock-o'></i> <bold style=\"color:#dd4814\">Ejemplo: pAblo24rio</bold> ";
+
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>" + mjeValidaciones,
+            buttons: '[Aceptar]',
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+            }
+
+        });
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

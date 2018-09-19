@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+    <style type="text/css">
+
+        .modulo-detalle {
+            padding: 15px;
+        }
+
+    </style>
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-gift fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Producto</b>
+										</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <form id="frm_busqueda">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-1  control-label-left" for="txtFiltro"><b>Nombre:</b></label>
+                                    <div class="col-md-3">
+                                        <input id="txtFiltro" type="text" name="Filtro"
+                                               placeholder="Búsqueda por nombre" class="form-control"/>
+                                    </div>
+                                    <label class="col-md-1 control-label-right" for="ddlEstado"><b>Estado:</b></label>
+                                    <div class="col-md-2 mrg">
+                                        <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                            <option value="-1"> -- Todos --</option>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-md-1 control-label-left"
+                                           for="ddlCategoria"><b>Categoria:</b></label>
+                                    <div class="col-md-2 mrg">
+                                        <select name="Categoria" id="Categoria" class="form-control input-sm ignore">
+                                            <option value="">-- Todos --</option>
+                                            <option th:each="c : ${lstCategoria}" th:value="${c.id}"
+                                                    th:text="${c.nombre}"/>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button id="btnFiltrar" type="button" class="btn btn-primary" title="Buscar"><i
+                                                class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblRegistros" data-mobile-responsive="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="20">Código
+                                </th>
+                                <th data-field="nombre" data-formatter="linkFormatter" data-halign="left"
+                                    data-valign="middle" data-align="left">Nombre
+                                </th>
+                                <th data-field="informacion" data-halign="left" data-valign="middle" data-align="left"
+                                    data-width="140">Descrición
+                                </th>
+                                <th data-field="precioFinal" data-halign="left" data-valign="middle" data-align="left"
+                                    data-width="120">Precio (S/.)
+                                </th>
+                                <th data-field="categoria.nombre" data-halign="left" data-valign="middle"
+                                    data-align="left" data-width="120">Categoria
+                                </th>
+                                <th data-field="fechaCreacion" data-halign="left" data-valign="middle"
+                                    data-align="left">Fecha Creación
+                                </th>
+                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="60">Estado
+                                </th>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="120" data-title="Acciones"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <section th:each="p : ${productos}">
+                        <div th:text="${p.nombre}"></div>
+                        <div th:each="v : ${p.video}">
+                            <div class="padding-10" th:text="'- '+${v.rutaWeb}">
+                            </div>
+                            <div style="padding-left: 20px;" th:each="c : ${v.lstCalificacion}">
+                                <div class="form-group">
+                                    <span th:text="${c.id}"></span>|<span th:text="${#lists.size(v.lstCalificacion)}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>-->
+                <div class="row" id="view_register">
+                    <!-- 				    <div class="row" id=""> -->
+                    <div class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div>
+                            <!-- widget content -->
+                            <div class="widget-body">
+                                <!-- EMPIEZA EL CONTENIDO PRINCIPAL DEL WIDGET REGISTRO/ACTUALIZADOR -->
+                                <!--COMIENZA EL CONTENEDOR CON PESTANAS-->
+                                <div class="jarviswidget well" id="wid-id-2" data-widget-colorbutton="false"
+                                     data-widget-editbutton="false" data-widget-togglebutton="false"
+                                     data-widget-deletebutton="false" data-widget-fullscreenbutton="false"
+                                     data-widget-custombutton="false" data-widget-sortable="false">
+                                    <!-- This area used as dropdown edit box -->
+                                    <div class="jarviswidget-editbox">
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- CABECERA PESTANAS-->
+                                    <ul id="myTab1" class="nav nav-tabs bordered">
+                                        <li class="active principalD">
+                                            <a href="#tabGeneral" data-toggle="tab" class="principalD">
+                                                <i class="fa fa-fw fa-lg fa-info principalD"></i> General
+                                            </a>
+                                        </li>
+                                        <li class="secundarios">
+                                            <a href="#tabDescuentos" class="secundarios">
+                                                <i class="fa fa-fw fa-lg fa-percent secundarios"></i> Descuentos
+                                            </a>
+                                        </li>
+                                        <li class="secundarios">
+                                            <a href="#tabMultimedia" class="secundarios" onclick="javascript:void(0);">
+                                                <i class="fa fa-fw fa-lg fa-film secundarios"></i> Multimedia
+                                            </a>
+                                        </li>
+                                        <li class="secundarios">
+                                            <a href="#tabDocumentos" class="secundarios" onclick="javascript:void(0);">
+                                                <i class="fa fa-fw fa-lg fa-folder-open secundarios"></i> Documentos</a>
+                                        </li>
+                                    </ul>
+                                    <!-- FIN CABECERA PESTAÑAS-->
+                                    <div id="myTabContent1" class="tab-content padding-10">
+                                        <div class="tab-pane fade in active" id="tabGeneral">
+                                            <form id="frm_registro" class="smart-form">
+                                                <fieldset>
+                                                    <div class="row">
+                                                        <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                            <section class="">
+                                                                <label class="label">Nombre: </label>
+                                                                <label class="input">
+                                                                    <i class="icon-append fa fa-asterisk"></i>
+                                                                    <input id="Nombre" name="Nombre" type="text"
+                                                                           placeholder="Nombre" class="" maxlength="44"
+                                                                           autocomplete="off"/>
+                                                                    <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                                    <input id="Id" name="Id" type="hidden" value="0"/>
+                                                                </label>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                            <section class="">
+                                                                <label class="label">Información: </label>
+                                                                <label class="input">
+                                                                    <i class="icon-append fa fa-asterisk"></i>
+                                                                    <textarea id="Informacion" name="Informacion"
+                                                                              type="text" placeholder="Información"
+                                                                              class="form-control" maxlength="255"
+                                                                              autocomplete="off" rows="2"
+                                                                              style="padding-left: 7px;"></textarea>
+                                                                    <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                                </label>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-6">
+                                                            <label class="label">Precio
+                                                                <b>(S/.)</b>: </label>
+                                                            <label class="input">
+                                                                <i class="icon-append fa fa-money"></i>
+                                                                <input id="Precio" name="Precio" type="number" min="1"
+                                                                       placeholder="Precio inicial" class=""
+                                                                       maxlength="8"
+                                                                       autocomplete="off"/>
+                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-6">
+                                                            <label class="label">Imagen de Presentación: </label>
+                                                            <div class="input input-file">
+                                                                <label class="input">
+                                                                    <i class="icon-append fa fa-image"></i>
+                                                                    <input id="ImagenPresentacion"
+                                                                           name="ImagenPresentacion" type="file"
+                                                                           accept=".jpg,.jpeg,.png" class="form-control"
+                                                                           data-show-preview="false"
+                                                                           data-language="es" data-show-upload="false"/>
+                                                                </label>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-6">
+                                                            <label class="label">Categoria: </label>
+                                                            <label class="input">
+                                                                <select id="CategoriaId" name="CategoriaId"
+                                                                        class="form-control">
+                                                                    <option value="">-- Seleccione --</option>
+                                                                    <option th:each="c : ${lstCategoria}"
+                                                                            th:value="${c.id}" th:text="${c.nombre}"/>
+                                                                </select>
+                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-6">
+                                                            <label class="label">Video de Presentación: </label>
+                                                            <div class="input input-file">
+                                                                <label class="input">
+                                                                    <i class="icon-append fa fa-film"></i>
+                                                                    <input id="VideoPresentacion"
+                                                                           name="VideoPresentacion" type="file"
+                                                                           accept=".mp4,.mpeg4,.mpg,.mpeg,.wmv"
+                                                                           class="form-control"
+                                                                           data-show-preview="false" data-language="es"
+                                                                           data-show-upload="false"
+                                                                           disabled="disabled"/>
+                                                                </label>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                    <div class="row">
+                                                        <section class="col col-6">
+                                                            <div class="inline-group">
+                                                                <label class="label">Presentación: </label>
+                                                                <label class="radio">
+                                                                    <input type="radio" id="FlagSimple"
+                                                                           name="FlagSimple" checked="checked"/>
+                                                                    <i></i>Imagen</label>
+                                                                <label class="radio">
+                                                                    <input type="radio" id="FlagSimpleOff"
+                                                                           name="FlagSimple"/>
+                                                                    <i></i>Imagen y video</label>
+                                                            </div>
+                                                        </section>
+                                                        <section class="col col-6">
+                                                            <div class="inline-group">
+                                                                <label class="label">Estado Inicial: </label>
+                                                                <label class="radio">
+                                                                    <input type="radio" id="FlagActivo"
+                                                                           name="FlagActivo" checked="checked"/>
+                                                                    <i></i>Activo</label>
+                                                                <label class="radio">
+                                                                    <input type="radio" id="FlagActivoOff"
+                                                                           name="FlagActivo"/>
+                                                                    <i></i>Inactivo</label>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </fieldset>
+                                                <footer class="">
+                                                    <button id="btnGuardar" type="button" class="btn btn-primary">
+                                                        Guardar
+                                                    </button>
+                                                    <button id="btnCancelar" type="button" class="btn btn-danger">
+                                                        Cancelar
+                                                    </button>
+                                                </footer>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade in" id="tabDescuentos">
+                                            <div class="">
+                                                <div class="row form-group">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <form id="frm_descuento" class="smart-form">
+                                                            <fieldset>
+                                                                <div class="row">
+                                                                    <section class="col col-2">
+                                                                        <label class="label">Tipo: </label>
+                                                                        <label class="input">
+                                                                            <select id="TipoDescuentoId"
+                                                                                    name="TipoDescuentoId"
+                                                                                    class="form-control">
+                                                                                <option value="">-- Seleccione --
+                                                                                </option>
+                                                                                <option th:each="td : ${lstTipoDescuento}"
+                                                                                        th:value="${td.id}"
+                                                                                        th:text="${td.nombre}"/>
+                                                                            </select>
+                                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                                        </label>
+                                                                    </section>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <section class="col col-2">
+                                                                        <label class="label">Precio Inicial
+                                                                            <b>(S/.)</b>: </label>
+                                                                        <label class="input">
+                                                                            <i class="icon-append fa fa-money"></i>
+                                                                            <input id="PrecioInicial"
+                                                                                   name="PrecioInicial" type="number"
+                                                                                   min="1" placeholder="Precio inicial"
+                                                                                   class="" maxlength="8"
+                                                                                   readonly="readonly"
+                                                                                   autocomplete="off"/>
+                                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                                        </label>
+                                                                    </section>
+                                                                    <section class="col col-2">
+                                                                        <label class="label">Descuento:</label>
+                                                                        <label class="input"><i
+                                                                                class="icon-append fa fa-asterisk"></i>
+                                                                            <input id="Dscto" name="Dscto" type="number"
+                                                                                   placeholder="Descuento" min="1"
+                                                                                   maxlength="6"/>
+                                                                        </label>
+                                                                    </section>
+                                                                    <section class="col col-2">
+                                                                        <label class="label">Precio Final
+                                                                            <b>(S/.)</b>: </label>
+                                                                        <label class="input">
+                                                                            <i class="icon-append fa fa-money"></i>
+                                                                            <input id="PrecioFinal" name="PrecioFinal"
+                                                                                   type="text"
+                                                                                   placeholder="Precio final" class=""
+                                                                                   maxlength="8" autocomplete="off"
+                                                                                   readonly="readonly"/>
+                                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                                        </label>
+                                                                    </section>
+                                                                    <section class="col col-5">
+                                                                        <section class="col col-6">
+                                                                            <label class="label">Fecha Inicio:</label>
+                                                                            <label class="input"><i
+                                                                                    class="icon-append fa fa-calendar"></i>
+                                                                                <input id="FechaInicio"
+                                                                                       name="FechaInicio" type="date"/>
+                                                                            </label>
+                                                                        </section>
+                                                                        <section class="col col-6">
+                                                                            <label class="label">Fecha Fin:</label>
+                                                                            <label class="input"><i
+                                                                                    class="icon-append fa fa-calendar"></i>
+                                                                                <input id="FechaFin" name="FechaFin"
+                                                                                       type="date"/>
+                                                                            </label>
+                                                                        </section>
+                                                                    </section>
+                                                                    <section class="col col-1 padding-top-15">
+                                                                        <label class="label"></label>
+                                                                        <button type="button" id="btnNuevoDescuento"
+                                                                                class="btn btn-primary btn-circle"
+                                                                                title="Registrar descuento"><i
+                                                                                class="fa fa-plus"></i></button>
+                                                                    </section>
+                                                                </div>
+                                                            </fieldset>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <table id="tblDescuentos" data-mobile-responsive="true"
+                                                               class="">
+                                                            <thead>
+                                                            <tr>
+                                                                <th data-field="id" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-width="20" data-title="Codigo"></th>
+                                                                <th data-formatter="tipoDescuentoFormatter"
+                                                                    data-halign="center" data-valign="middle"
+                                                                    data-align="center" data-title="Tipo"></th>
+                                                                <th data-formatter="descuentoPorTipoFormatter"
+                                                                    data-halign="center" data-valign="middle"
+                                                                    data-align="center" data-title="Descuento"></th>
+                                                                <th data-field="precioInicial" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-title="Precio Inicial (S/.)"></th>
+                                                                <th data-field="precioFinal" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-title="Precio con dscto (S/.)"></th>
+                                                                <th data-field="fechaInicio" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-title="Fecha Inicio"></th>
+                                                                <th data-field="fechaFin" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-title="Fecha Fin"></th>
+                                                                <th data-formatter="Opciones" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-width="90" data-title="Acciones"></th>
+                                                            </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade in" id="tabMultimedia">
+                                            <div class="">
+                                                <div class="row form-group">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <form id="" class="smart-form">
+                                                            <fieldset>
+                                                                <section class="col col-2">
+                                                                    <label class="label" style="padding-top: 7px;"><b>Nombre
+                                                                        Módulo:</b></label>
+                                                                </section>
+                                                                <section class="col col-5">
+                                                                    <label class="input">
+                                                                        <input id="NombreModulo" name="NombreModulo"
+                                                                               type="text" placeholder="Nombre módulo"
+                                                                               maxlength="100"/>
+                                                                    </label>
+                                                                </section>
+                                                                <section class="col col-1 text-align-right">
+                                                                    <button type="button" id="btnNuevoModulo"
+                                                                            class="btn btn-warning btn-circle"
+                                                                            title="Agregar módulo"><i
+                                                                            class="fa fa-plus"></i></button>
+                                                                </section>
+                                                            </fieldset>
+                                                            <fieldset>
+                                                                <!-- NEW WIDGET START -->
+                                                                <article class="col-sm-7 col-md-7 col-lg-7">
+                                                                    <!-- Widget ID (each widget will need unique ID)-->
+                                                                    <div class="jarviswidget well transparent"
+                                                                         id="wid-id-9" data-widget-colorbutton="false"
+                                                                         data-widget-editbutton="false"
+                                                                         data-widget-togglebutton="false"
+                                                                         data-widget-deletebutton="false"
+                                                                         data-widget-fullscreenbutton="false"
+                                                                         data-widget-custombutton="false"
+                                                                         data-widget-sortable="false">
+                                                                        <header>
+                                                                            <span class="widget-icon"> <i
+                                                                                    class="fa fa-comments"></i> </span>
+                                                                            <h2>Accordions </h2>
+
+                                                                        </header>
+
+                                                                        <!-- widget div-->
+                                                                        <div>
+
+                                                                            <!-- widget edit box -->
+                                                                            <div class="jarviswidget-editbox">
+                                                                                <!-- This area used as dropdown edit box -->
+
+                                                                            </div>
+                                                                            <!-- end widget edit box -->
+
+                                                                            <!-- widget content -->
+                                                                            <div class="widget-body">
+                                                                                <!-- 																							smart-accordion-default -->
+                                                                                <div class="panel-group smart-accordion-default"
+                                                                                     id="AccordionMultimedia">
+                                                                                    <!-- MODULOS DEL PRODUCTO -->
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <!-- end widget content -->
+
+                                                                        </div>
+                                                                        <!-- end widget div -->
+
+                                                                    </div>
+                                                                    <!-- end widget -->
+                                                                </article>
+                                                                <article class="col-sm-1 col-md-1 col-lg-1">
+                                                                </article>
+                                                                <article class="col-sm-4 col-md-4 col-lg-4">
+
+                                                                    <!-- Widget ID (each widget will need unique ID)-->
+                                                                    <div class="jarviswidget well transparent"
+                                                                         id="wid-id-10" data-widget-colorbutton="false"
+                                                                         data-widget-editbutton="false"
+                                                                         data-widget-togglebutton="false"
+                                                                         data-widget-deletebutton="false"
+                                                                         data-widget-fullscreenbutton="true"
+                                                                         data-widget-custombutton="false"
+                                                                         data-widget-sortable="false">
+                                                                        <header>
+                                                                            <span class="widget-icon"> <i
+                                                                                    class="fa fa-comments"></i> </span>
+                                                                            <h2>Accordions </h2>
+                                                                        </header>
+
+                                                                        <!-- widget div-->
+                                                                        <div>
+
+                                                                            <!-- widget edit box -->
+                                                                            <div class="jarviswidget-editbox">
+                                                                                <!-- This area used as dropdown edit box -->
+
+                                                                            </div>
+                                                                            <!-- end widget edit box -->
+
+                                                                            <!-- widget content -->
+                                                                            <div class="widget-body">
+                                                                                <!-- 																							smart-accordion-default -->
+                                                                                <div class="panel-group smart-accordion-default"
+                                                                                     id="BaseDatosVideo">
+                                                                                    <!-- VIDEOS -->
+                                                                                    <div class="panel panel-default"
+                                                                                         data-index="-1">
+                                                                                        <div class="panel-heading">
+                                                                                            <h4 class="panel-title">
+                                                                                                <a data-toggle="collapse"
+                                                                                                   data-parent="#accordion"
+                                                                                                   href="#collapseVideos">
+                                                                                                    <i class="fa fa-lg fa-angle-down pull-right"></i>
+                                                                                                    <i class="fa fa-lg fa-angle-up pull-right"></i>
+                                                                                                    <span class="txt-color-blue">
+																														<i class="fa fa-chevron-right fa-fw"
+                                                                                                                           style="color:skyblue;"></i> Base de Datos:
+																													</span><span
+                                                                                                        class="txt-color-blueDark">Videos</span>
+                                                                                                    <i class="fa fa-video-camera pull-right trash-modulo"
+                                                                                                       data-index="${moduloId}"
+                                                                                                       style="color: rgb(196, 106, 105); padding-right:10px;font-size: 1.35em;"></i>
+                                                                                                </a>
+                                                                                            </h4>
+                                                                                        </div>
+                                                                                        <div id="collapseVideos"
+                                                                                             class="panel-collapse collapse in">
+                                                                                            <div class="panel-body">
+                                                                                                <div class="modulo-detalle">
+                                                                                                    <div class="smart-form">
+                                                                                                        <div style="display: none;">
+                                                                                                            <section>
+                                                                                                                <label class="input">
+                                                                                                                    <select name="TipoVideoId"
+                                                                                                                            id="TipoVideoId"
+                                                                                                                            class="form-control">
+                                                                                                                        <option value="">
+                                                                                                                            --
+                                                                                                                            Tipo
+                                                                                                                            Video
+                                                                                                                            --
+                                                                                                                        </option>
+                                                                                                                        <option th:each="t : ${lstTipoVideo}"
+                                                                                                                                th:value="${t.id}"
+                                                                                                                                th:text="${t.nombre}"/>
+                                                                                                                    </select>
+                                                                                                                </label>
+                                                                                                            </section>
+                                                                                                            <section>
+                                                                                                                <label class="input">
+                                                                                                                    <select name="SubTipoVideoId"
+                                                                                                                            id="SubTipoVideoId"
+                                                                                                                            class="form-control">
+                                                                                                                        <option value="">
+                                                                                                                            --
+                                                                                                                            Sub
+                                                                                                                            Tipo
+                                                                                                                            --
+                                                                                                                        </option>
+                                                                                                                        <option th:each="t : ${lstSubTipoVideo}"
+                                                                                                                                th:value="${t.id}"
+                                                                                                                                th:text="${t.nombre}"/>
+                                                                                                                    </select>
+                                                                                                                </label>
+                                                                                                            </section>
+                                                                                                        </div>
+                                                                                                        <section>
+                                                                                                            <a id="btnVideoPopOver"
+                                                                                                               class="btn btn-primary text-align-center"
+                                                                                                               style="width: 100%;padding: 7px 0px;"
+                                                                                                               rel="popover"
+                                                                                                               data-placement="top"
+                                                                                                               data-original-title=""
+                                                                                                               data-content=""
+                                                                                                               data-html="true"><i
+                                                                                                                    class="fa fa-search"></i></a>
+                                                                                                        </section>
+                                                                                                    </div>
+                                                                                                    <hr/>
+                                                                                                    <h4 class="text-center form-group">
+                                                                                                        <b>Resultados</b>
+                                                                                                    </h4>
+                                                                                                    <!--EMPIEZA LA LISTA DRAGGEABLE-->
+                                                                                                    <div class="dd"
+                                                                                                         id="nestable0"
+                                                                                                         style="max-height: 300px; overflow-y: auto;">
+                                                                                                        <ol class="dd-list"
+                                                                                                            id="NestableVideos">
+                                                                                                            <!-- RESULTADO DE BUSQUEDA -->
+                                                                                                        </ol>
+                                                                                                    </div>
+                                                                                                    <!--FINALIZA LA LISTA DRAGGEABLE-->
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- EN VIDEOS -->
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <!-- end widget content -->
+
+                                                                        </div>
+                                                                        <!-- end widget div -->
+
+                                                                    </div>
+                                                                    <!-- end widget -->
+
+                                                                </article>
+                                                                <!-- WIDGET END -->
+                                                            </fieldset>
+                                                            <!-- 																		<fieldset id="Modulos"> -->
+                                                            <!-- 																			MODULOS BY JS -->
+                                                            <!-- 																		</fieldset> -->
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade in" id="tabDocumentos">
+                                            <div class="">
+                                                <div class="row form-group">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <form id="frm_busqueda_estudio">
+                                                            <div class="form-group alert alert-info" id="filesInfo">
+                                                                <!-- MESSAGE ACCORDING TO THE SELECTION -->
+                                                            </div>
+                                                            <div class="form-group">
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <table id="tblArchivos" data-mobile-responsive="true"
+                                                               class="table table-condensed">
+                                                            <thead>
+                                                            <tr>
+                                                                <th data-field="id" data-halign="center"
+                                                                    data-valign="middle" data-align="center"
+                                                                    data-width="20" data-title="Codigo"></th>
+                                                                <th data-field="nombreMedia" data-halign="center"
+                                                                    data-valign="middle" data-align="left">Nombre
+                                                                </th>
+                                                                <th data-field="peso" data-halign="center"
+                                                                    data-valign="middle" data-align="left">Peso
+                                                                </th>
+                                                                <th data-formatter="opcionesArchivos"
+                                                                    data-halign="center" data-valign="middle"
+                                                                    data-align="center" data-width="90">Acciones
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end widget content -->
+                                    <!-- end widget div -->
+                                </div>
+                                <!--TERMINA EL CONTENEDOR CON PESTANAS-->
+                                <!-- EMPIEZA EL CONTENIDO PRINCIPAL DEL WIDGET REGISTRO/ACTUALIZADOR -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- MODALS -->
+    <!-- MODAL VISUALIZACION DE VIDEO -->
+    <div class="modal fade" id="myModalVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" title="Close"><span
+                            class="glyphicon glyphicon-remove"></span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel"><strong>Reproducción</strong></h4>
+                </div>
+                <div class="modal-body text-center" style="background: #2C3742; !important; max-width: 100%;">
+                    <video id="somevid" controls="" width="70%">
+                        <source id="VideoReproduccion" src="https://www.w3schools.com/html/mov_bbb.mp4"
+                                type="video/mp4"/>
+                    </video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FINAL MODAL VISUALIZACION DE VIDEO -->
+    <!-- FIN MODALS -->
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/jquery-nestable/jquery.nestable.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $tableD = $('#tblDescuentos');
+    var $index = $('#Id');
+
+    $(function () {
+
+        var updateOutput = function (e) {
+            try {
+                var list = e.length ? e : $(e.target), output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));
+                    //, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            } catch (e) {
+                // TODO: handle exception
+            }
+        };
+
+        // activate Nestable for list 2
+        $('#nestable0').nestable({
+            group: 1
+        }).on('change', updateOutput);
+
+        // output initial serialised data
+// 					updateOutput($('#nestable0').data('output', $('#nestable0-output')));
+        updateOutput();
+        //Popover and others configurations
+        pageSetUp();
+        listarRegistros();
+
+        //V A L I D A T E
+        validarRegistros();
+        validarRegistrosDescuento();
+
+        $("#btnNuevo").click(function () {
+            $('#Operacion').text('Registrar');
+            irRegistro();
+        });
+
+        $("#btnNuevoDescuento").click(function () {
+            registroDescuento();
+        });
+
+        $("#btnGuardar").click(function () {
+            registro();
+        });
+
+        $('#FlagSimple').click(function () {
+            $("#VideoPresentacion").val('');
+            $('#VideoPresentacion').attr('disabled', 'disabled');
+        });
+
+        $('#FlagSimpleOff').click(function () {
+            $('#VideoPresentacion').removeAttr('disabled');
+        });
+
+        $("#btnCancelar").click(function () {
+            irListado($index);
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $("#TipoDescuentoId").change(function () {
+            obtenerPrecioFinal($('#PrecioInicial').val(), this.value);
+        });
+
+        $('#btnNuevoModulo').click(agregarNuevoModulo);
+
+        $('#PrecioInicial').on("focusout", function () {
+            obtenerPrecioFinal(this.value, $('#TipoDescuentoId').val());
+        });
+
+        $('#Dscto').on("focusout", function () {
+            obtenerPrecioFinal($('#PrecioInicial').val(), $('#TipoDescuentoId').val());
+        });
+
+        $('#AccordionMultimedia').click(eliminarModuloMultimedia);
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+
+        popOverBusquedaVideos();
+        setFechaActual(document.querySelectorAll('input[type="date"]'));
+
+        document.body.querySelector('#myTab1').addEventListener('click', verificacionRegistro);
+
+    });
+
+    function popOverBusquedaVideos() {
+        let lstTipoVideo = $('#TipoVideoId').clone().html().trim();
+        let lstSubTipoVideo = $('#SubTipoVideoId').clone().html().trim();
+        $('#btnVideoPopOver').attr('data-original-title', '<h4 class="text-center" style="padding:10px 5px;"><strong>Búsqueda de videos</strong></h4>');
+        $('#btnVideoPopOver').attr('data-content', `
+							<div class="smart-form" style="padding:10px;">
+								<section class="">
+									<label class="label"></label>
+									<label class="input">
+										<input id="ComodinVideo" type="text" max="24" placeholder="Nombre video"/>
+									</label>
+								</section>
+								<section>
+									<select id="TipoVideo" class="form-control">${lstTipoVideo}</select>
+								</section>
+								<section>
+									<select id="SubTipoVideo" class="form-control">${lstSubTipoVideo}</select>
+								</section>
+								<section>
+								<a onclick="javascript:consultarVideos();" id="btnBuscarVideos" class="btn btn-primary" style="width: 100%;padding: 7px 0px;">Buscar</a>
+								</section>
+							</div>`);
+    }
+
+    function agregarNuevoModulo() {
+        let nombre = $('#NombreModulo').val();
+        let moduloId = 0;
+        $('#AccordionMultimedia').children().length == 0 ?
+            moduloId++
+            :
+            moduloId = $('#AccordionMultimedia').children().length + 1;
+// 					class="btn btn-default btn-circle pull-right"
+        if (nombre.trim().length > 2) {
+            var modulo =
+                `<div class="panel panel-default" data-index="${moduloId}">
+									    <div class="panel-heading">
+											<h4 class="panel-title">
+													<a data-toggle="collapse" data-parent="#accordion" href="#collapse${moduloId}">
+														<i class="fa fa-lg fa-angle-down pull-right"></i> 
+														<i class="fa fa-lg fa-angle-up pull-right"></i>
+														<span class="txt-color-blue">
+															<i class="fa fa-chevron-right fa-fw text-primary"></i> Módulo ${moduloId}: 
+														</span><span class="txt-color-blueDark">${nombre}</span>
+														<i class="fa fa-trash pull-right txt-color-redLight trash-modulo" data-index="${moduloId}" style="padding-right:10px;font-size: 1.35em;"></i>
+													</a>
+											</h4>
+										</div>
+										<div id="collapse${moduloId}" class="panel-collapse collapse in">
+											<div class="panel-body">
+												<div class="modulo-detalle">
+													<div class="dd" id="nestable${moduloId}">
+														<ol class="dd-list">
+															<li class="dd-item">
+																
+															</li>
+														</ol>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>`;
+            $('#AccordionMultimedia').append(modulo);
+            $(`#nestable${moduloId}`).nestable({
+                group: 1
+            });
+            $('#NombreModulo').val('');
+        } else {
+            $.smallBox({
+                color: "alert",
+                content: "<i>Se requiere por lo menos 3 letras como título del módulo para que este sea agregado...</i>"
+            });
+        }
+    }
+
+    function eliminarModuloMultimedia(e) {
+        e.preventDefault();
+        if (e.target.classList.contains('trash-modulo')) {
+            e.stopPropagation();
+            inModulo = e.target.getAttribute('data-index');
+            if (this.children.length == Number(inModulo))
+                $.smallBox({
+                    content: "¿Estás seguro de querer eliminar el modulo " + inModulo + "? <p class='text-align-right'><a href='javascript:confirmarBajaModulo(" + inModulo + ");' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+                    color: "#296191",
+                    timeout: 10000,
+                    icon: "fa fa-bell swing animated",
+                    iconSmall: "",
+                });
+            else
+                $.smallBox({
+                    color: "alert",
+                    content: "<i>No se puede eliminar un modulo intermedio, <br/>solo esta permitido eliminar el último módulo...</i>"
+                })
+
+        }
+    }
+
+    function confirmarBajaModulo(inModulo) {
+        document.querySelector(`#AccordionMultimedia div[data-index="${inModulo}"]`).remove();
+    }
+
+    function verificacionRegistro(e) {
+        e.preventDefault();
+        if (e.target.classList.contains('secundarios') && $('#Id').val() > 0) {
+            e.target.setAttribute('data-toggle', 'tab');
+            if (e.target.innerHTML.includes('Descuentos')) {
+                listarDescuentos();
+            }
+        } else {
+            if (!e.target.classList.contains('principalD')) {
+                $.smallBox({
+                    color: "alert",
+                    content: "<i>Antes de agregar descuentos, multimedia o documentos al producto es necesario registrar este... </i>"
+                })
+            }
+        }
+    }
+
+    function consultarVideos() {
+        let params = {};
+        params.comodin = $('#ComodinVideo').val();
+        params.tipo = $('#TipoVideo').val();
+        params.subTipo = $('#SubTipoVideo').val();
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/video/obtenerListadoSecundario',
+            dataType: "json",
+            data: params,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    if (data == "-9") {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    }
+
+                    //Listando los videos
+                    let rawHTML = '';
+                    data.forEach((v, i) => {
+                        rawHTML +=
+                            `<li class="dd-item" data-id="${v.id}">
+												<div class="dd-handle">
+													${v.nombre}
+													<span class="dd-nodrag" style="float:right;">
+														${v.duracion}
+														<a data-toggle="modal" data-target="#myModalVideo" onclick="reproducirVideoModulo('${v.rutaWeb}');" type="button">
+															<i class="fa fa-play"></i>
+														</a>
+													</span>
+												</div>																								
+											 </li>`
+                    });
+                    $('#NestableVideos').html(rawHTML);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function() {
+                limpiarBusqueda();
+            }
+        });
+    }
+
+    function obtenerPrecioFinal(precioInicial, tipoDscto) {
+        if (tipoDscto == '') {
+
+        } else if (tipoDscto == 1) {
+            if (precioInicial != null) {
+                parseFloat(precioInicial).toFixed(2);
+                if (Number($('#Dscto').val()) > 0 && precioInicial != '')
+                    $('#Dscto').val(Number($('#Dscto').val()).toFixed(0));
+                $('#PrecioFinal').val(parseFloat(precioInicial - Number($('#Dscto').val()) / 100 * precioInicial).toFixed(2));
+            }
+        } else {
+            if (precioInicial != null) {
+                parseFloat(precioInicial).toFixed(2);
+                if (Number($('#Dscto').val()) > 0 && precioInicial != '')
+                    $('#PrecioFinal').val(parseFloat(precioInicial - Number($('#Dscto').val())).toFixed(2));
+            }
+        }
+
+    }
+
+    function listarDescuentos() {
+        if ($("#frm_busqueda").valid()) {
+
+            $tableD.bootstrapTable('destroy');
+
+            var id = $("#Id").val();
+
+            $tableD.bootstrapTable({
+                url: _ctx + 'gestion/descuento/obtenerListado/producto/' + id,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: d => {
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+
+            $table.bootstrapTable('destroy');
+
+            var comodin = $("#txtFiltro").val();
+            var estado = $("#Estado").val();
+            var categoria = $("#Categoria").val();
+
+
+            if (comodin == null || comodin == "") {
+                comodin = "0";
+            }
+            if (estado == null) {
+                estado = "-1";
+            }
+            if (categoria == null || categoria == "") {
+                categoria = "0";
+            }
+
+            $table.bootstrapTable({
+                url: _ctx + 'gestion/producto/obtenerListado/' + comodin + '/' + estado + '/' + categoria,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: d => {
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function registro() {
+        if ($("#frm_registro").valid()) {
+            var $btn = $("#btnGuardar");
+            $btn.button('loading');
+            var params = getFormData($('#frm_registro'));
+            params.precioFinal = params.precio;
+            params.flagSimple = $('#FlagSimple').is(':checked');
+            params.flagActivo = $('#FlagActivo').is(':checked');
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/producto/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        let d = JSON.parse(data);
+                        if (d.code == "-9") {
+                            $.smallBox({
+                                content: "<i> La operación ha fallado debido a que el nombre de producto ya existe en el sistema...</i>",
+                                timeout: 4500,
+                                color: "alert",
+                            });
+                        } else if (d.code == "2" && $('#Id').val() > 0) {
+                            $.smallBox({
+                                content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
+                            });
+                        }
+                        subirArchivos(d.id, params.id);//El segundo parametro id es usado para saber si se ha actualizado
+                        $('#Id').val(d.id);
+                        $('#PrecioInicial').val($('#Precio').val());
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function() {
+                    limpiarBusqueda();
+                    $btn.button('reset');
+                }
+            });
+        }
+    }
+
+    function registroDescuento() {
+        let precioInicial = 0;
+        obtenerPrecioFinal($('#PrecioInicial').val(), $('#TipoDescuentoId').val());
+        if ($("#frm_descuento").valid()) {
+            var params = getFormData($('#frm_descuento'));
+            params.flagActivo = true;
+            params.precioInicial = Number(params.precioInicial).toFixed(2);
+            params.precioFinal = Number(params.precioFinal).toFixed(2);
+            if (params.tipoDescuentoId == 1) {//Porcentaje
+                params.porcentaje = params.dscto;
+                params.dscto = params.precioInicial - params.precioFinal;
+            } else {							//Monto especifico
+                params.dscto = params.precioInicial - params.precioFinal;
+            }
+            params.fechaInicio = parseFromStringToDate($('#FechaInicio').val());
+            params.fechaFin = parseFromStringToDate($('#FechaFin').val());
+
+            //FK
+            params.productoId = $('#Id').val();
+
+            precioInicial = params.precioInicial;
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/descuento/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-9") {
+                            $.smallBox({
+                                content: "<i> La operación ha fallado...comuniquesé con el administrador del sistema...</i>",
+                                timeout: 4500,
+                                color: "alert",
+                            });
+                        } else if (data == "2" && $('#DsctoId').val() > 0) {
+                            $.smallBox({
+                                content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
+                            });
+                        }
+                        listarDescuentos();
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function() {
+                    limpiarBusqueda();
+                    limpiarDescuentoForm();
+                    $('#PrecioInicial').val(precioInicial);
+                }
+            });
+        }
+    }
+
+    function editar(id) {
+        irRegistro();
+        $('#Operacion').text('Actualizar');
+
+        var param = new Object();
+        param.id = id;
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/producto/obtener',
+            dataType: "json",
+            data: param,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    $("#Id").val(data.id);
+                    $("#Nombre").val(data.nombre);
+                    $("#Informacion").val(data.informacion);
+                    $("#Precio").val(parseFloat(data.productoPresentacion.precioFinal).toFixed(2));
+                    $("#CategoriaId").val(data.categoria.id);
+                    //SET FLAG PRESENTACION SIMPLE
+                    data.flagSimple === true ?
+                        $('#FlagSimple').prop('checked', true)
+                        :
+                        $('#FlagSimpleOff').prop('checked', true);
+                    //SET FLAG ACTIVO SIMPLE
+                    data.flagActivo === true ?
+                        $('#FlagActivo').prop('checked', true)
+                        :
+                        $('#FlagActivoOff').prop('checked', true);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function() {
+                limpiarBusqueda();
+            }
+        });
+    }
+
+    function subirArchivos(id, initId) {
+        var imagen = $('#ImagenPresentacion').get(0).files[0];
+        var video = $('#VideoPresentacion').get(0).files[0];
+        var data = new FormData();
+        let hasElements = false;
+
+        if (imagen != null) {
+            hasElements = true;
+            data.append("imagenPresentacion", imagen);
+        }
+
+        if (video != null) {
+            hasElements = true;
+            data.append("videoPresentacion", video);
+        }
+
+        if (hasElements) {
+            data.append("productoId", id);
+
+            $.ajax({
+                type: 'POST',
+                url: _ctx + 'gestion/producto/upload/presentacion',
+                data: data,
+                contentType: false,
+                processData: false,
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', progress, false);
+                    }
+                    return myXhr;
+                },
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-99") {
+                            $.smallBox({content: "El archivo no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
+                        }
+                        if (initId <= 0)
+                            $.smallBox({});//Mensaje de registro
+                    }
+                    $('#Id').val(id);
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    listarRegistros();
+                }
+            });
+        }
+    }
+
+    function desactivar(id, ix) {
+        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').children[6].children[0].textContent;
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "<br/>¿Quieres activar o desactivar el registro?",
+            buttons: '[No][Si]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Si") {
+                var params = {};
+                params.id = id;
+                params.flagActivo = actualStatus == "Activo" ? false : true;
+
+                $.ajax({
+                    type: 'PUT',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + 'gestion/producto/desactivar',
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            $.smallBox({
+                                content: "<i> Se actualizó el registro...</i>",
+                            });
+
+                            actualStatus === "Activo" ?
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').children[6].innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                :
+                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').children[6].innerHTML = '<span class="label label-success">Activo</span>';
+
+                        }
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function() {
+                        limpiarBusqueda();
+                    }
+                });
+            } else {
+            }
+        });
+    }
+
+    function reproducirVideoModulo(route) {
+        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+        $("#VideoReproduccion").parent().get(0).load();
+    }
+
+    function reproducirVideoPresentacion(id) {
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/producto/presentacion/video/' + id,
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    console.log("En progreso...");
+                    //$('#VideoReproduccion').get(0).src =`${_ctx}workout/media/file/video/gt/1${data}`;
+                    //$("#VideoReproduccion").parent().get(0).load();
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                limpiarBusqueda();
+            }
+        });
+    }
+
+
+    function linkFormatter(value, row, index) {
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombre + '</a>', value);
+    }
+
+    function Opciones(value, row, index) {
+        var opciones = '';
+        if (row.flagSimple) {
+            opciones = `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
+		            				   <a href='javascript:void(0);' title='Este producto no cuenta con una presentación en video'><i class='fa fa-play fa-2x txt-color-grayDark'></i></a> &nbsp`;
+        } else {
+            opciones = `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
+		            				   <a href='#' onclick='javascript:reproducirVideoPresentacion("${row.id}");' data-toggle='modal' data-target='#myModalVideo' title='Reproducir video presentación'><i class='fa fa-play fa-2x'></i></a> &nbsp`;
+        }
+        return opciones;
+    }
+
+    function isActived(value, row, index) {
+        if (row.flagActivo) {
+            return '<span class="label label-success">Activo</span>';
+        } else {
+            return '<span class="label label-danger">Inactivo</span>';
+        }
+    }
+
+    function tipoDescuentoFormatter(value, row, index) {
+        if (row.tipoDescuento.id == 1)
+            return '<span class="label label-primary">%</span>';
+        return '<span class="label label-success">S/.</span>';
+    }
+
+    function descuentoPorTipoFormatter(value, row, index) {
+        if (row.tipoDescuento.id == 1)
+            return row.porcentaje;
+        return row.dscto;
+    }
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombre: {
+                    required: true,
+                    maxlength: $("#Nombre").prop("maxlength"),
+                },
+                Informacion: {
+                    required: true,
+                    maxlength: $("#Informacion").prop("maxlength"),
+                },
+                Precio: {
+                    required: true,
+                    number: true,
+                    maxlength: $("#PrecioInicial").prop("maxlength"),
+                },
+                CategoriaId: {
+                    required: true,
+                    digits: true,
+                },
+                ImagenPresentacion: {
+                    required: true,
+                },
+                VideoPresentacion: {
+                    required: () => {
+                        if ($('#FlagSimpleOff').is(':checked') && $('#Id').val() <= 0) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                }
+            },
+            messages: {
+                Nombre: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Informacion: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Precio: {
+                    required: "El campo es obligatorio",
+                    number: "Este campo solo admite números decimales",
+                    min: "Mínimo valor: {0}",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                CategoriaId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un categoria válido",
+                },
+                ImagenPresentacion: {
+                    required: "La subida de la imagen es obligatoria",
+                },
+                VideoPresentacion: {
+                    required: "La subida del video es obligatoria",
+                }
+            },
+            submitHandler: function () {
+            }
+        });
+    }
+
+    function validarRegistrosDescuento() {
+        $("#frm_descuento").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                TipoDescuentoId: {
+                    required: true,
+                    number: true,
+                },
+                PrecioInicial: {
+                    required: true,
+                },
+                Dscto: {
+                    required: true,
+                    max: function () {
+                        if ($('#TipoDescuentoId').val() == 1)
+                            return 99;
+                        else if ($('#TipoDescuentoId').val() == 2)
+                            return Number($('#PrecioInicial').val()) - 1;
+                        else
+                            return 999999;
+                    },
+                    maxlength: $("#Dscto").prop("maxlength"),
+                },
+                PrecioFinal: {
+                    required: true,
+                },
+                FechaInicio: {
+                    required: true,
+                },
+                FechaFin: {
+                    required: true,
+                }
+            },
+            messages: {
+                TipoDescuentoId: {
+                    required: "El campo es obligatorio",
+                    digits: "Seleccione un categoria válido",
+                },
+                PrecioInicial: {
+                    required: "El campo es obligatorio",
+                    number: "Este campo solo admite números decimales",
+                    min: "Mínimo valor: {0}",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                Dscto: {
+                    required: "El campo es obligatorio",
+                    min: "Mínimo valor: {0} o de no considerar descuento, dejar el campo vacío",
+                    max: "Máximo valor: {0}",
+                    number: "Solo se permiten números",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                PrecioFinal: {
+                    required: "El campo es obligatorio",
+                    number: "Este campo solo admite números decimales",
+                    min: "Mínimo valor: {0}",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+                FechaInicio: {
+                    required: "El campo es obligatorio dia/mes/año",
+                },
+                FechaFin: {
+                    required: "El campo es obligatorio dia/mes/año",
+                }
+            },
+            submitHandler: function () {
+            }
+        });
+    }
+
+    function limpiarDescuentoForm() {
+        $('#frm_descuento').trigger("reset");
+        $('#Precio').val($('#PrecioInicial').val());
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

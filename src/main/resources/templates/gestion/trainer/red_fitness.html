@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en-us"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<style>
+    .elegir-plantilla h6{
+        font-size: 11px;
+    }
+
+    .elegir-plantilla:hover{
+        background: #feff8c !important;
+    }
+
+    .br-sp{
+        border-radius: 60% !important;
+        padding: 4px;
+    }
+
+</style>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2 minified">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-group fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Red Fitness</b>
+										</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <div class="container-fluid text-align-right">
+                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                        <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-redLight"><i class="fa fa-phone fa-15x txt-color-white"></i></a>
+                                        <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-orange"><i class="fa fa-cloud-download fa-15x txt-color-white"></i></a>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                        <a href="javascript:void(0);" class="btn btn-success text-align-center" style="width: 100%">
+                                            <i class="fa fa-money fa-fw txt-color-green"></i> Pagos
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                        <a href="javascript:void(0);" class="btn btn-primary text-align-center" style="width: 100%">
+                                            <i class="fa fa-database fa-fw txt-color-redLight"></i> Base de Datos
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                        <a href="javascript:void(0);" class="btn btn-default" style="width: 100%">
+                                            <i class="fa fa-bar-chart-o fa-fw txt-color-darken"></i> Estadísticas
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                        <a href="javascript:void(0);" class="btn btn-danger" style="width: 100%">
+                                            <i class="fa fa-male fa-fw txt-color-white"></i>Consejos
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2  col-xs-12 padding-5">
+                                        <a href="javascript:void(0);" class="btn btn-primary" style="width: 100%">
+                                            <i class="fa fa-calendar fa-fw txt-color-lighten"></i>Mis Rutinas
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <form id="frm_busqueda">
+                            <div class="form-horizontal">
+                                <div class="row margin-bottom-10">
+                                    <div class="col col-md-6 col-sm-12 col-xs-12">
+                                        <div class="col-md-3 col-xs-12">
+                                        <label class="col-md-1 control-label-right"><b>Estado:</b></label>
+                                        </div>
+                                        <div class="col-md-5 col-xs-10">
+                                            <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                                <option value="-1"> -- Todos --</option>
+                                                <option value="true">Activo</option>
+                                                <option value="false">Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-xs-2">
+                                            <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
+                                                    class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-6 col-sm-12 col-xs-12 text-align-right">
+                                        <h6><span class="padding-7">Pendientes Por Plan: <span class="txt-color-white bg-color-orange br-sp total-pp">0</span></span><span class="padding-7">Pendientes por enviar: <span class="txt-color-white bg-color-orange br-sp total-pe">0</span></span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table id="tblRegistros" data-mobile-responsive="true" class="table-no-bordered">
+                            <thead>
+                            <tr>
+                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                    data-align="center" data-width="165">Acciones
+                                </th>
+                                <th data-formatter="estadoPlan" data-halign="center" data-valign="middle"
+                                         data-align="center" data-width="70">Plan Status
+                                </th>
+                                <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="80">Fecha Fin Planificación
+                                </th>
+                                <th data-field="integrante.nombreCompleto" data-class="nombre-integrante" data-formatter="linkFormatter" data-halign="left" data-valign="middle" data-align="left">Nombre
+                                </th>
+                                <th data-field="integrante.movil" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="115">Móvil
+                                </th>
+                                <th data-field="integrante.fechaUltimoAcceso" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="140">Último Acceso
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- MODALS -->
+<!-- MODAL MOSTRAR RUTINAS PLANTILLA -->
+<div class="modal fade" id="myModalPlantillas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header txt-color-white bg-color-teal">
+                <button type="button" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong>Mis Plantillas Rutina</strong></h4>
+                <span id="CorreoCliente" hidden="hidden"></span>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <div id="Plantillas" class="row">
+                    <!-- CONTENIDO DE LA MINI PLANTILLA -->
+                </div>
+                <div id="spRaw3" class="form-group">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL CREAR MINI RUTINA -->
+<!-- END MODALS -->
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/programa-entrenamiento.js}+'?'+${version}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let $table = $('#tblRegistros');
+    let $index = $('#Id');
+    let $nota = '';
+    const modalPlantillas = document.querySelector('#myModalPlantillas');
+
+    $(function () {
+        $countSinPlan = 0;
+        $countPendientesEnvio = 0;
+
+        pageSetUp();
+        listarRegistros();
+
+        modalPlantillas.addEventListener('click', eventosClickModalPlantillas);
+
+        $table[0].addEventListener('focusout', eventosGeneralesFocusOut);
+
+        $("#btnNuevo").click(function () {
+            irRegistro();
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+
+    });
+
+    function eventosGeneralesFocusOut(e){
+
+        if(e.target.classList.contains('nota-integrante')){
+            let id = e.target.getAttribute('data-id');
+            let nota = e.target.value.trim();
+            let params = {};
+            params.id = id;
+            params.nota = nota;
+            if($nota != nota){
+                $.ajax({
+                    type: 'PUT',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    url: _ctx+'gestion/trainer/red/anadir-nota',
+                    data: params,
+                    dataType: 'json',
+                    success: (d)=>{
+                        if(d=="-2"){
+
+                            if($nota != ""){
+                                if(nota == ""){
+                                    e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-grayDark');
+                                    e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-yellow');
+                                }
+                            }else{
+                                e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-grayDark');
+                                e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-yellow');
+                            }
+                            //Actualizando campo nota popover
+                            e.target.parentElement.parentElement.querySelector('.ico-nota').setAttribute('data-content', nota);
+                            e.target.parentElement.remove();
+
+
+                        }
+                    },error: (xhr)=>{
+                        exception(xhr);
+                    }
+                    ,complete: ()=>{}
+                })
+            }else{
+                e.target.parentElement.remove();
+            }
+
+        }
+    }
+
+    function listarRegistros() {
+
+        if ($("#frm_busqueda").valid()) {
+
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                url: _ctx + 'gestion/trainer/red/obtenerListado',
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 10,
+                onLoadSuccess: d => {
+                    //Activando los popover y tooltips
+                    d.forEach(r=>{
+                        r.estadoPlan == 1 ? ++$countSinPlan : '';
+                        r.estadoPlan == 2 ? ++$countPendientesEnvio : '';
+                    })
+                    $('[data-toggle="popover"]').popover();
+                    $('[rel="tooltip"]').tooltip();
+                    $('.total-pe').text($countPendientesEnvio);
+                    $('.total-pp').text($countSinPlan);
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+        }
+    }
+
+    function noCuentaConPrograma(){
+        $.smallBox({color: "info", content: "<i>El atleta aún no cuenta con ninguna rutina asignada...</i>"})
+    }
+
+    function linkFormatter(value, row) {
+        if(row.contadorRutinas == 0){
+            return String('<a class="" href="#" onclick="javascript:noCuentaConPrograma()" title="El atleta aún no cuenta con ninguna rutina asignada">' + row.integrante.nombreCompleto + '</a>', value);
+        }else{
+            return String('<a class="" href="#" onclick="javascript:verUltimoPrograma(' + row.id +','+ row.integrante.id+ ')" title="Ir al último programa">' + row.integrante.nombreCompleto + '</a>', value);
+        }
+    }
+
+    function Opciones(value, row, index) {
+        let opciones = '';
+        let nota = row.nota == null?"":row.nota;
+        if(nota == ""){
+            opciones = `<a href='#' onclick='preAgregarNota(${row.id}, ${index}, this);' class="ico-nota" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover"><i class='fa fa-sticky-note fa-2x txt-color-grayDark'></i></a> &nbsp &nbsp`;
+        }else{
+            opciones = `<a href='#' onclick='preAgregarNota(${row.id}, ${index}, this);' class="ico-nota" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover"><i class='fa fa-sticky-note fa-2x txt-color-yellow'></i></a> &nbsp &nbsp`;
+        }
+
+        switch(row.estadoPlan) {
+            case EstadoPlan.SIN_PLAN:
+                opciones += `<a data-toggle="modal" data-target="#myModalPlantillas"  onclick='javascript:asignarPlantilla(${row.id}, ${row.integrante.id},"${row.integrante.correo}",${index});' title='Asignar Rutina'><i class='fa fa-file-text fa-2x'></i></a> &nbsp &nbsp
+                             <a href='#' onclick='javascript:crearNuevaRutina(${row.id},${row.integrante.id},${index}, ${row.contadorRutinas});' title='Crear Rutina'><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`
+                break;
+            case EstadoPlan.EN_REVISION:
+                opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
+                            <a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`;
+                break;
+            case EstadoPlan.POR_ENVIAR:
+                opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
+                            <a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`;
+                break;
+            case EstadoPlan.INICIADO:
+                opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
+                            <a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`;
+                break;
+            default://EstadoPlan.COLMINADO
+                opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
+                            <a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`;
+                break;
+        }
+        opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="La revisión de la rutina aún no ha sido aprobada" rel="tooltip"><i class="fa fa-send-o fa-2x"></i></a> &nbsp &nbsp`;
+        return opciones;
+    }
+
+    function crearNuevaRutina(id, integranteId, index, contadorRutinas){
+        let hoy = new Date();
+        let mes = Number(hoy.getMonth()+1)<10?"0"+Number(hoy.getMonth()+1):Number(hoy.getMonth()+1);
+        let dia = hoy.getDate()<10?"0"+hoy.getDate():hoy.getDate();
+        let fechaString = hoy.getFullYear() + '-' + mes + '-' + dia;
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "" +
+                "<br/><h6>Debe seleccionar un día de inicio del plan de entrenamiento:</h6><br/>" +
+                "<div class='row txt-color-blueDark prompt-init'><div class='smart-form'><fieldset><section class='col col-3'></section><section class='col col-6'><div class='col col-2'></div><div class='col col-8 text-align-center'><label class='label'><b>Fecha Inicial:</b></label><label class='input'><i style='color: #67d1ff !important;' class=\"icon-append fa fa-calendar\" for='PromptFecha'></i><input id='PromptFecha' class='prompt-fecha' type='date' name='Demo' min=\""+fechaString+"\" value=\"\"></label></div></section><section class='col col-3'></section></fieldset></div></div>",
+            buttons: '[Generar]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "Generar") {
+                document.querySelector('.MessageBoxButtonSection button').setAttribute('disabled','disabled');
+                const prompt = document.querySelectorAll('.prompt-init')[document.querySelectorAll('.prompt-init').length-1];
+                let fechaInit = prompt.querySelectorAll('.prompt-fecha')[prompt.querySelectorAll('.prompt-fecha').length-1].value;
+                let parseFechaInit = parseFromStringToDate(fechaInit);
+                let rutina = new ProgramaEntrenamiento(parseFechaInit, 1);
+                rutina.init(1);
+                let now = getOnlyDate();
+                rutina.clienteId = integranteId;
+                rutina.redFitnessId = id;
+                rutina.contadorRutinas = 1+contadorRutinas;
+                if(parseFechaInit>=now && parseFechaInit.getFullYear()< now.getFullYear()+2){
+                    $.smallBox({color: "info", content: "<i class='fa fa-spinner fa-spin fa-2x fa-fw'></i> <i>Cargando... Por favor espere...<i>", timeout: 10000});
+                    $.ajax({
+                        type: "POST",
+                        contentType: 'application/json',
+                        url: _ctx + "gestion/trainer/red/pre-asignar-rutina",
+                        dataType: "json",
+                        data: JSON.stringify(rutina),
+                        success: function (data) {
+                            res = getResponseCodeWithId(data);
+                            if(res.code == "-1"){
+                                document.querySelectorAll('#divSmallBoxes')[0].innerHTML = '';
+                                $.smallBox({color: "rgb(131, 186, 40)", content: "<i>La nueva rutina ha sido creada <br/> y esta lista para ser modificada...<br/>En breve será redireccionado a la rutina...</i>"});
+                                setTimeout(()=>{
+                                    window.location.href = _ctx+'gestion/rutina/trainer/red/ver/ultima-rutina/'+res.id+'/'+integranteId;//res.id para el caso = redFitnessId;
+                                }, 2500);
+                            }
+                        },
+                        error: function (xhr) {
+                            exception(xhr);
+                        },
+                        complete: function () {}
+                    })
+                }else{
+                    $.smallBox({color: "alert", content: "<i>Ha seleccionado una fecha inválida... <br/> La fecha debe ser mayor igual al día de hoy <br/> y como máximo 1 año y medio posterior a la fecha actual</i>", timeout: "10000"});
+                }
+            }
+        });
+
+        setFechaActual(document.querySelectorAll('input[type="date"]'));
+
+    }
+
+    function verUltimoPrograma(redFitnessId, integranteId){
+       window.location.href = _ctx+'gestion/rutina/trainer/red/ver/ultima-rutina/'+redFitnessId+ '/' + integranteId;
+    }
+
+    function estadoPlan(value, row){
+        let icon = '';
+        switch(row.estadoPlan){
+            case EstadoPlan.SIN_PLAN:
+                icon = `<span href="#" class="label label-danger"><i class="fa fa-warning fa-fw"></i> Sin Plan</span>`;
+                break;
+            case EstadoPlan.EN_REVISION:
+                icon = `<span href="#" class="label label-info"><i class="fa fa-dot-circle-o fa-fw"></i> En Revisión</span>`;
+                break;
+            case EstadoPlan.POR_ENVIAR:
+                icon = `<span href="#" class="label label-warning"><i class="fa fa-send fa-fw"></i> Pendiente de Envío</span>`;
+                break;
+            case EstadoPlan.INICIADO:
+                icon = `<span href="#" class="label label-default bg-color-orange"><i class="fa fa-bolt fa-fw"></i> Plan Iniciado</span>`;
+                break;
+            default://EstadoPlan.COLMINADO
+                icon = `<span href="#" class="label label-success"><i class="fa fa-check fa-fw"></i> Plan Finalizado</span>`;
+                break;
+        }
+        return icon;
+    }
+
+    function formatterFechaFinalPlanificacion(value){
+        if(value != undefined){
+            let fecha = parseFromStringToDate2(value);
+            let diasParaUltimaFecha = moment(fecha).diff(new Date(), 'days');
+            if(diasParaUltimaFecha <8){
+                return `<span href="#" class="label txt-color-red">${value}</span>`
+            }else if(diasParaUltimaFecha <15){
+                return `<span href="#" class="label txt-color-orangeDark">${value}</span>`
+            }else{
+                return `<span href="#" class="label txt-color-greenLight">${value}</span>`
+            }
+        }
+        return "-";
+    }
+
+    function asignarPlantilla(redId, integranteId, correo , index){
+        let plantillas = document.querySelector('#Plantillas');
+        document.querySelector('#spRaw3').innerHTML = spinnerHTMLRawCsMessage('Cargando...');
+        let params = {};
+        params.usuarioId = integranteId;
+        params.redFitnessId = redId;
+        $('#CorreoCliente').text(correo);
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/rutina-plantilla/trainer/red/obtenerListado',
+            dataType: 'json',
+            data: params,
+            success: function(data){
+                if(data.length>0){
+                    let htmlRaw = '';
+                    data.forEach((plantilla,i)=>{
+                        htmlRaw += `    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <div class="row" style="border-radius: 5%;margin:5px;background: #cae6b9 !important;">
+                                                <a href="#" onclick="javascript:elegirPlantillaParaIntegrante(${plantilla.id}, ${index});" class="elegir-plantilla" data-plantilla-id="${plantilla.id}" >
+                                                    <h6 class="text-align-center bg-color-lighten txt-color-orangeDark">${i+1}</h6>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
+                                                        <h6>Años: </h6>
+                                                        <h6>Meses: </h6>
+                                                        <h6>Semanas: </h6>
+                                                        <h6>Dias: </h6>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <h6 class="text-align-center">${plantilla.anios} </h6>
+                                                        <h6 class="text-align-center">${plantilla.meses} </h6>
+                                                        <h6 class="text-align-center">${plantilla.totalSemanas} </h6>
+                                                        <h6 class="text-align-center">${plantilla.dias}  </h6>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>`
+                    })
+
+                    plantillas.innerHTML = htmlRaw;
+                }else{
+                    plantillas.innerHTML = '<h6 class="text-align-center"><b>No se encontraron plantillas registradas...</b></h6>'
+                }
+            },
+            error: function(xhr){
+            },
+            complete: function(){
+                document.querySelector('#spRaw3').innerHTML = '';
+            }
+        })
+    }
+
+    function elegirPlantillaParaIntegrante(rutinaPlantillaId, ix){
+        document.querySelector('#myModalPlantillas #Plantillas').innerHTML = spinnerHTMLRawCsMessage('Notificando a cliente... Espere por favor...');
+        //ix: Nos servira para actualizar en el dom el flagEnActividad
+        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
+        let params = {};
+        params.rutinaPlantillaId = rutinaPlantillaId;
+        params.correo = document.querySelector('#CorreoCliente').textContent.trim();
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/rutina/agregar',
+            dataType: 'json',
+            data: params,
+            success: function(){
+                $.smallBox({content: '<i>Se le ha asignado exitosamente la rutina al cliente...</i>'})
+                actualStatus == "Activo" ?
+                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-success">Activo</span>'
+                    :
+                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                //Removiendo la accion al boton de asignar
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].removeAttribute('onclick');
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].removeAttribute('data-toggle');
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].removeAttribute('data-target');
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].style.color="gray";
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].title="Ya se ha asignado una rutina al cliente";
+                //2.
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[1].removeAttribute('onclick');
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[1].style.color="gray";
+                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[1].title="Ya se ha asignado una rutina al cliente";
+                $('#myModalPlantillas').modal('hide');
+            },
+            error: function(xhr){
+            },
+            complete: function(){
+            }
+        })
+    }
+
+    function preAgregarNota(integranteId, ix, e){
+        let nota = e.getAttribute('data-content');
+        var d1 = document.createElement('div');
+        d1.className = 'row';
+        d1.innerHTML = `<textarea class="nota-integrante" data-index="${ix}" data-id="${integranteId}" type="text" class="form-control" rows="3">${nota}</textarea>`;
+        d1.style.margin = '4px 0 0';
+        //Agregando el textarea para modificar la nota
+        $table[0].querySelector('tbody').children[ix].children[0].appendChild(d1);
+        $nota = nota.trim();
+        //Pasando el foco al textarea creado
+        $table[0].querySelector('tbody').children[ix].children[0].lastElementChild.children[0].focus()
+    }
+
+    function eventosClickModalPlantillas(e){}//No implemetada
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

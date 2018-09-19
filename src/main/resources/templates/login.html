@@ -1,0 +1,232 @@
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <meta name="_csrf" th:attr="content=${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:attr="content=${_csrf.headerName}"/>
+    <meta name="_ctx" th:content="@{/}"/>
+    <meta charset="utf-8"/>
+    <title> Dennys Workout</title>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- #CSS Links -->
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/font-awesome.min.css}"/>
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/smartadmin-production-plugins.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/smartadmin-production.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/smartadmin-skins.min.css}"/>
+
+    <!-- SmartAdmin RTL Support -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/smartadmin-rtl.min.css}"/>
+
+    <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+    <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
+
+    <!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/demo.min.css}"/>
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" th:href="@{/img/favicon/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/img/favicon/favicon.ico}" type="image/x-icon"/>
+
+    <!-- #GOOGLE FONT -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"/>
+
+
+</head>
+
+<body class="animated fadeInDown">
+
+<header id="header">
+    <div id="logo-group">
+        <span id="logo"> <img th:src="@{/img/logo.png}" alt="Dennys Workout"/> </span>
+    </div>
+
+    <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs"></span> <a href="register.html"
+                                                                                        class="btn btn-danger">Ir al Carrito</a> </span>
+
+</header>
+
+<div id="main" role="main">
+
+    <!-- MAIN CONTENT -->
+    <div id="content" class="container">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+                <h1 class="txt-color-red login-header-big">Dennys Workout</h1>
+                <div class="hero">
+
+                    <div class="pull-left login-desc-box-l">
+                        <h4 class="paragraph-header"> Plataforma de entrenamiento </h4>
+                        <div class="login-app-icons">
+                        </div>
+                    </div>
+                    <img th:src="@{/img/demo/iphoneview.png}" class="pull-right display-image" alt=""
+                         style="width:210px"/>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <h5 class="about-heading"></h5>
+                        <p>
+
+                        </p>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <h5 class="about-heading"></h5>
+                        <p>
+
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="well no-padding">
+                    <form id="login-form" class="smart-form client-form" action="#" th:action="@{/loginCheck}"
+                          method="post">
+                        <header>
+                            Login
+                        </header>
+
+                        <fieldset>
+                            <section>
+                                <label class="label">Username</label>
+                                <label class="input"> <i class="icon-append fa fa-user"></i>
+                                    <input type="text" name="username" placeholder="Username"/>
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>
+                                        Ingresa tu nombre de usuario</b></label>
+                            </section>
+
+                            <section>
+                                <label class="label">Password</label>
+                                <label class="input"> <i class="icon-append fa fa-lock"></i>
+                                    <input type="password" name="password" placeholder="Password"/>
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i>
+                                        Ingresa tu password</b> </label>
+                                <div class="note">
+                                    <a th:href="@{/}">Olvidaste tu password?</a>
+                                </div>
+                            </section>
+                            <div th:if="${error =='error'}" class="alert alert-danger" role="alert"><i
+                                    class="fa fa-warning"></i> Inválido usuario o password o cuenta inactiva
+                            </div>
+                            <div th:if="${error =='expired'}" class="alert alert-danger" role="alert"><i
+                                    class="fa fa-warning"></i> Inválido usuario o password
+                            </div>
+                            <section>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="remember" checked=""/>
+                                    <i></i>Mantenerme logeado</label>
+                            </section>
+                        </fieldset>
+                        <footer>
+                            <button type="submit" class="btn btn-primary">
+                                Entrar
+                            </button>
+                        </footer>
+                    </form>
+
+                </div>
+
+                <h5 class="text-center"></h5>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--================================================== -->
+
+<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+<script th:src="@{/js/plugin/pace/pace.min.js}+'?'+${version}"></script>
+
+<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- 		<script> if (!window.jQuery) { document.write('<script src="js/libs/jquery-3.2.1.min.js"><\/script>');} </script> -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<!-- 		<script> if (!window.jQuery.ui) { document.write('<script src="js/libs/jquery-ui.min.js"><\/script>');} </script> -->
+
+<!-- IMPORTANT: APP CONFIG -->
+<script th:src="@{/js/app.config.js}+'?'+${version}"></script>
+
+<!-- JS TOUCH : include this plugin for mobile drag / drop touch events
+<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
+
+<!-- BOOTSTRAP JS -->
+<script th:src="@{/js/bootstrap/bootstrap.min.js}+'?'+${version}"></script>
+
+<!-- JQUERY VALIDATE -->
+<script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+
+<!-- JQUERY MASKED INPUT -->
+<script th:src="@{/js/plugin/masked-input/jquery.maskedinput.min.js}+'?'+${version}"></script>
+
+<!--[if IE 8]>
+
+<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+
+<![endif]-->
+
+<!-- MAIN APP JS FILE -->
+<script th:src="@{/js/app.min.js}+'?'+${version}"></script>
+
+<script>
+    runAllForms();
+
+    $(function () {
+        // Validation
+        $("#login-form").validate({
+            // Rules for form validation}
+            ignore: ".ignore",
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            rules: {
+                username: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20
+                }
+            },
+
+            // Messages for form validation
+            messages: {
+                username: {
+                    required: 'Please enter your username',
+                },
+                password: {
+                    required: 'Please enter your password'
+                }
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

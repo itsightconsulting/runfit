@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-file-zip-o fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Músculos</b>
+										</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12">
+                        <div id="accordion" class="panel-group">
+                            <form id="frm_busqueda">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-md-1  control-label-left"
+                                               for="txtFiltro"><b>Nombre:</b></label>
+                                        <div class="col-md-3">
+                                            <input name="Filtro" id="txtFiltro" type="text"
+                                                   class="form-control input-sm ignore" maxlength="24"
+                                                   placeholder="Ingresa un nombre"/>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button id="btnFiltrar" type="button" class="btn btn-primary"
+                                                    title="Buscar"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <table id="tblRegistros" data-mobile-responsive="true" class="">
+                            <thead>
+                            <tr>
+                                <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
+                                    data-width="30" data-title="Código"></th>
+                                <th data-field="nombre" data-formatter="linkFormatter" data-halign="left"
+                                    data-valign="middle" data-align="left" data-title="Nombre"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" id="view_register">
+                    <div class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false"
+                             data-widget-custombutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-ge"></i> </span>
+                                <!-- Tittle form -->
+                                <h2><strong><span id="Operacion">Registrar</span></strong></h2>
+                            </header>
+                            <div>
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <form id="frm_registro" class="smart-form">
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <section class="">
+                                                        <label class="label">Nombre: </label>
+                                                        <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                            <input id="Nombre" name="Nombre" type="text"
+                                                                   placeholder="Nombre" class="" maxlength="144"
+                                                                   autocomplete="off"/>
+                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                            <input id="Id" name="Id" type="hidden" value="0"/>
+                                                        </label>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <footer class="">
+                                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar
+                                            </button>
+                                            <button id="btnCancelar" type="button" class="btn btn-danger">Cancelar
+                                            </button>
+                                        </footer>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- MODALS -->
+<!-- MODAL REPRODUCCION DE AUDIO -->
+<div class="modal fade" id="myModalAudio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="">
+            <div class="text-align-center" style="padding-top: 200px;">
+                <audio id="someaud" controls="" controlsList="nodownload" autoplay="" width="100%" height="100%">
+                    <source id="AudioReproduccion" src="" type="audio/mpeg"/>
+                </audio>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FINAL MODAL REPRODUCCION DE AUDIO -->
+<!-- END MODALS -->
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+
+<!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+Note: These tiles are completely responsive,
+you can add as many as you like
+-->
+<div id="shortcut">
+    <ul>
+        <li>
+            <a href="inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i
+                    class="fa fa-envelope fa-4x"></i> <span>Mail <span
+                    class="label pull-right bg-color-darken">14</span></span> </span> </a>
+        </li>
+        <li>
+            <a href="calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i
+                    class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+        </li>
+        <li>
+            <a href="gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i
+                    class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+        </li>
+        <li>
+            <a href="invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i
+                    class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span>
+            </a>
+        </li>
+        <li>
+            <a href="gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i
+                    class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+        </li>
+        <li>
+            <a href="profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i
+                    class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+        </li>
+    </ul>
+</div>
+
+<!-- END SHORTCUT AREA -->
+
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var $table = $('#tblRegistros');
+    var $index = $('#Id');
+
+    $(function () {
+
+        pageSetUp();
+        listarRegistros();
+
+        //V A L I D A T E
+        validarRegistros();
+
+        $("#btnNuevo").click(function () {
+            $('#Operacion').text('Registrar');
+            irRegistro();
+        });
+
+        $("#btnGuardar").click(function () {
+            registro();
+        });
+
+        $("#btnCancelar").click(function () {
+            irListado($index);
+        });
+
+        $("#btnFiltrar").click(function () {
+            listarRegistros();
+        });
+
+        $('#frm_busqueda').submit(function (e) {
+            e.preventDefault();
+        });
+    });
+
+    function listarRegistros() {
+
+        $table.bootstrapTable('destroy');
+        let comodin = $("#txtFiltro").val();
+
+        if (comodin == null || comodin == "") {
+            comodin = "0";
+        }
+        //Dem
+        $table.bootstrapTable({
+            url: _ctx + 'gestion/musculo/obtenerListado/' + comodin,
+            pagination: true,
+            sidePagination: 'client',
+            pageSize: 10,
+            onLoadSuccess: d => {
+            },
+            onLoadError: function (xhr) {
+                exception(xhr);
+            },
+        });
+    }
+
+    function registro() {
+        if ($("#frm_registro").valid()) {
+            let params = getFormData($('#frm_registro'));
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/musculo/agregar',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        let res = getResponseCodeWithId(data);
+                        if (res.code  == "-150") {
+                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de usuario ya existe en el sistema...</i>",});
+                        } else if (res.code == "-2") {
+                            $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
+                        } else if(res.code == "-1"){
+                            $.smallBox({});
+                        }
+                    }
+                },
+                error: xhr=> {
+                    exception(xhr);
+                },
+                complete: ()=> {
+                    irListado($index);
+                    listarRegistros();
+                    limpiarBusqueda();
+                }
+            });
+        }
+    }
+
+    function editar(id) {
+        irRegistro();
+        $('#Operacion').text('Actualizar');
+        var param = new Object();
+        param.id = id;
+
+        $("#load_pace").show();
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'gestion/musculo/obtener',
+            dataType: "json",
+            data: param,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    $("#Id").val(data.id);
+                    $("#Nombre").val(data.nombre);
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                limpiarBusqueda();
+            }
+        });
+    }
+
+    function linkFormatter(value, row) {
+        return `<a href="javascript:void(0);" onclick="javascript:editar(${row.id})" title="Editar">${row.nombre}</a>`;
+    }
+
+    function validarRegistros() {
+        $("#frm_registro").validate({
+            errorClass: errorClass,
+            errorElement: errorElement,
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            ignore: ".ignore",
+            rules: {
+                Nombre: {
+                    required: true,
+                    maxlength: $("#Nombre").prop("maxlength"),
+                },
+            },
+            messages: {
+                Nombre: {
+                    required: "El campo es obligatorio",
+                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                },
+            },
+            submitHandler: function () {
+                registro();
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+
+</html>
