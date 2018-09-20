@@ -300,11 +300,19 @@ public class RutinaController {
     }
 
     @PutMapping(value = "/elemento/modificar")
-    public @ResponseBody String modificarElementoDia(
-            @RequestBody Elemento elemento, HttpSession session){
+    public @ResponseBody String modificarElementoDia(@RequestBody Elemento elemento, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
         diaService.actualizarNombreElementoByListaIndexAndId(elemento.getNombre(), elemento.getElementoIndice(), diaId);
+        return ResponseCode.ACTUALIZACION.get();
+    }
+
+    @PutMapping(value = "/elemento/estilos/modificar")
+    public @ResponseBody String modificarEstilosElementoDia(
+            @RequestBody Elemento elemento, HttpSession session) throws JsonProcessingException {
+        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
+        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
+        diaService.actualizarElementosEstilosFull(new ObjectMapper().writeValueAsString(elemento.getEstilos()), elemento.getElementoIndice(), diaId);
         return ResponseCode.ACTUALIZACION.get();
     }
 

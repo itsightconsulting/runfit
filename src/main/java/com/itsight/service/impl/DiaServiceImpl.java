@@ -335,6 +335,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     @Override
     public void actualizarDiaRaizDesdePlantilla(int id, int distancia, int minutos, String elementos) {
         repository.updateDiaRootFromTemplate(id, distancia, minutos, elementos);
+    }
 
+    @Override
+    public void actualizarElementosEstilosFull(String estilos, int elementoIndice, int id) {
+        String texto = "{"+elementoIndice+",\"estilos\""+"}";
+        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndIdInt(id, estilos, texto);
     }
 }

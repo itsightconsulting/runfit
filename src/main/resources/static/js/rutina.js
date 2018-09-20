@@ -294,9 +294,9 @@ class ElementoLista{
 }
 
 class Estilo{
-    constructor(id, claseCss){
+    constructor(id, clase){
         this.id = id;
-        this.claseCss = claseCss;
+        this.clase = clase;
     }
 }
 
@@ -688,35 +688,212 @@ RutinaDelete = (function(){
             const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
             estilos.forEach((v,i,k)=>{v.id==id ? k.splice(i, 1):''});
         },
-        eliminarEstilosColor: (numSem, diaIndex, eleIndex)=>{
+        eliminarEstilosColor: (numSem, diaIndex, eleIndex, tipo)=>{
             const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
-            estilos.forEach((v,i,k)=>{if(v.id>11 && v.id<18){k.splice(i, 1)}});
+            if(tipo == 1){//font color
+                estilos.forEach((v,i,k)=>{if(v.id>11 && v.id<20){k.splice(i, 1)}});
+            }else{//background color
+                estilos.forEach((v,i,k)=>{if(v.id>19 && v.id<28){k.splice(i, 1)}});
+            }
         },
+        eliminarEstilosAlineacion: (numSem, diaIndex, eleIndex)=>{
+            const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
+            estilos.forEach((v,i,k)=>{if(v.id>27 && v.id<31){k.splice(i, 1)}});
+        }
     }
 })();
 
 RutinaEditor = (function(){
     return {
         agregarOeliminarEstiloToElemento: (estiloId, tipo)=>{
-            const objEditor = ClaseEditor[estiloId-1];
             //1. Agregando a el objeto general de la rutina el nuevo estilo
+            if(tipo == 0){
+                const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                const objEditor = ClaseEditor[estiloId-1];
+                if($eleGenerico.classList.contains(objEditor.clase)){
+                    RutinaDelete.eliminarEstiloElemento(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId);
+                }else{
+                    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                }
+
+                $eleGenerico.classList.toggle(objEditor.clase);
+                guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+            }else if(tipo == 1){
+                const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                const objEditor = ClaseEditor[estiloId-1];
+                RutinaDelete.eliminarEstilosColor(ixs.numSem, ixs.diaIndex, (posEle = i), 1);
+                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-ct')?k.remove(v):''});
+                $eleGenerico.classList.add(objEditor.clase);
+                guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+            } else if(tipo == 2){
+                const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                const objEditor = ClaseEditor[estiloId-1];
+                RutinaDelete.eliminarEstilosColor(ixs.numSem, ixs.diaIndex, (posEle = i), 2);
+                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                const headerElemento = $eleGenerico.parentElement.parentElement;
+                headerElemento.classList.forEach((v,i,k)=>{v.includes('rf-bg')?k.remove(v):''});
+                headerElemento.classList.add(objEditor.clase);
+                guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+            } else if(tipo == 3){
+                const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                const objEditor = ClaseEditor[estiloId-1];
+                RutinaDelete.eliminarEstilosAlineacion(ixs.numSem, ixs.diaIndex, (posEle = i));
+                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                const headerElemento = $eleGenerico.parentElement.parentElement;
+                headerElemento.classList.forEach((v,i,k)=>{v.includes('text-align')?k.remove(v):''});
+                headerElemento.classList.add(objEditor.clase);
+                guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+            }
+        },
+        instanciarPaletaColores: (input)=>{
+            const raw = `
+                    <div class="container-fluid padding-0 its-indicador-1">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="row padding-5 text-align-center">
+                                <div class="btn-group">
+                                    <div class="note-palette-title"><b>Color fuente</b></div>
+                                        <div>
+                                            <button type="button" class="note-color-reset btn btn-default" data-event="removeFormat" data-value="foreColor">Aplicar <i class="fa fa-check-circle-o txt-color-blue"></i></button>
+                                        </div>
+                                        <div class="note-holder" data-event="foreColor">
+                                            <div class="note-color-palette">
+                                                    <div class="note-color-row"><button type="button" class="note-color-btn note-color-fuente" style="background-color:#FF0000"
+                                                            data-event="foreColor" data-value="#FF0000" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FF0000" data-index="12" data-class="rf-ct-red"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#FF9C00"
+                                                            data-event="foreColor" data-value="#FF9C00" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FF9C00" data-index="13" data-class="rf-ct-orange"></button><button type="button" class="note-color-btn note-color-fuente"
+                                                style="background-color:#FFFF00"
+                                                            data-event="foreColor" data-value="#FFFF00" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FFFF00" data-index="14" data-class="rf-ct-yellow"></button><button type="button" class="note-color-btn note-color-fuente"
+                                            style="background-color:#295218"
+                                                            data-event="foreColor" data-value="#00FF00" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#00FF00" data-index="15" data-class="rf-ct-green"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#00FFFF"
+                                                            data-event="foreColor" data-value="#00FFFF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#00FFFF" data-index="16" data-class="rf-ct-aqua"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#0000FF"
+                                                            data-event="foreColor" data-value="#0000FF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#0000FF" data-index="17" data-class="rf-ct-blue"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#9C00FF"
+                                                            data-event="foreColor" data-value="#9C00FF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#9C00FF" data-index="18" data-class="rf-ct-lila"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#FF00FF"
+                                                            data-event="foreColor" data-value="#FF00FF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FF00FF" data-index="19" data-class="rf-ct-pink"></button></div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="row padding-5 text-align-center">
+                                <div class="btn-group">
+                                    <div class="note-palette-title"><b>Color fondo</b></div>
+                                        <div>
+                                            <button type="button" class="note-color-reset btn btn-default" data-event="removeFormat" data-value="foreColor">Aplicar <i class="fa fa-check-circle-o txt-color-blue"></i></button>
+                                        </div>
+                                        <div class="note-holder" data-event="foreColor">
+                                            <div class="note-color-palette">
+                                                    <div class="note-color-row"><button type="button" class="note-color-btn note-bg-color" style="background-color:#FF0000"
+                                                            data-event="foreColor" data-value="#FF0000" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FF0000" data-index="20" data-class="rf-ct-red"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#FF9C00"
+                                                            data-event="foreColor" data-value="#FF9C00" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FF9C00" data-index="21" data-class="rf-ct-orange"></button><button type="button" class="note-color-btn note-bg-color"
+                                                style="background-color:#FFFF00"
+                                                            data-event="foreColor" data-value="#FFFF00" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FFFF00" data-index="22" data-class="rf-ct-yellow"></button><button type="button" class="note-color-btn note-bg-color"
+                                            style="background-color:#295218"
+                                                            data-event="foreColor" data-value="#00FF00" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#00FF00" data-index="23" data-class="rf-ct-green"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#00FFFF"
+                                                            data-event="foreColor" data-value="#00FFFF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#00FFFF" data-index="24" data-class="rf-ct-aqua"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#0000FF"
+                                                            data-event="foreColor" data-value="#0000FF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#0000FF" data-index="25" data-class="rf-ct-blue"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#9C00FF"
+                                                            data-event="foreColor" data-value="#9C00FF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#9C00FF" data-index="26" data-class="rf-ct-lila"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#FF00FF"
+                                                            data-event="foreColor" data-value="#FF00FF" title="" data-toggle="button" tabindex="-1"
+                                            data-original-title="#FF00FF" data-index="27" data-class="rf-ct-pink"></button></div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            if(input.tagName == "I") {
+                input.parentElement.setAttribute('data-content', raw)
+                $(input.parentElement).popover('show');
+            } else{
+                input.setAttribute('data-content', raw);
+                $(input).popover('show');
+            }
+        },
+        instanciarGrupoAlineacion: (input)=>{
+            const raw = `<div class="note-btn-group btn-group note-align">
+                            <button type="button" data-index="28" class="note-btn btn btn-default btn-sm" title="" data-original-title="Align left (CTRL+SHIFT+L)"><i data-index="28" class="note-icon-align-left note-alineacion"></i></button>
+                            <button type="button" data-index="29" class="note-btn btn btn-default btn-sm" title="" data-original-title="Align center (CTRL+SHIFT+E)"><i data-index="29" class="note-icon-align-center note-alineacion"></i></button>
+                            <button type="button" data-index="30" class="note-btn btn btn-default btn-sm" title="" data-original-title="Align right (CTRL+SHIFT+R)"><i data-index="30" class="note-icon-align-right note-alineacion"></i></button>
+                            </div>`;
+            if(input.tagName == "I") {
+                input.parentElement.setAttribute('data-content', raw)
+                $(input.parentElement).popover('show');
+            } else{
+                input.setAttribute('data-content', raw);
+                $(input).popover('show');
+            }
+        },
+        copiarFormato: ()=>{
             const ixs = RutinaIx.getIxsForElemento($eleGenerico);
             let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
             while((tempEle = tempEle.previousElementSibling) != null) i++;
-            //Solo para estilos de color de texto y color de fondo(background)
-            if(tipo != undefined){
-                RutinaDelete.eliminarEstilosColor(ixs.numSem, ixs.diaIndex, (posEle = i));
-                $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-ct')?k[i].remove():''})
+            $estilosCopiados = RutinaGet.elemento(ixs.numSem, ixs.diaIndex, (eleIndex = i)).estilos;
+            $statusCopy = true;
+        },
+        obtenerEstilos: (ess)=>{
+            let  estHeader = "", estElem = "";
+            for(let i=0; i<ess.length;i++){
+                if(ess[i].id<20)
+                    estElem += ess[i].clase + " ";
+                else
+                    estHeader += ess[i].clase + " ";
             }
-            if($eleGenerico.classList.contains(objEditor.clase)){
-                RutinaDelete.eliminarEstiloElemento(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId);
+            return {header: estHeader, base: estElem};
+        },
+        pegarFormato: (input)=>{
+            const ixs = RutinaIx.getIxsForElemento(input);
+            let eleIndex = 0;
+            if($estilosCopiados.length > 0){
+                $estilosCopiados.forEach(v => {
+                    if(v.id>19)
+                        input.parentElement.parentElement.classList.add(v.clase);
+                    else {
+                        input.classList.add(v.clase);
+                    }
+                });
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                eleIndex = i;
+                RutinaGet.elemento(ixs.numSem, ixs.diaIndex, eleIndex).estilos = JSON.parse(JSON.stringify($estilosCopiados));
+                $estilosCopiados = [];
             }else{
-                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                //1
+                Array.from(input.classList).map((v,i)=>{
+                    if(i>1)
+                        return v;
+                }).forEach(v=>input.classList.remove(v));
+                input.parentElement.parentElement.className = "";
+                //2
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                eleIndex = i;
+                RutinaGet.elemento(ixs.numSem, ixs.diaIndex, eleIndex).estilos = [];
             }
-            $eleGenerico.classList.toggle(objEditor.clase);
-            //2. Agregando al atributo HTML la clase
-
-            //3. Enviar las actualizaciones a BD
+            guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, eleIndex);
+            $statusCopy = false;
         }
     }
 })();
@@ -1715,12 +1892,13 @@ RutinaElementoHTML = (function(){
             return subElementosHTML;
         },
         elementoSimplePaste:(ele, diaIndex)=>{
+            const ess = RutinaEditor.obtenerEstilos(ele.estilos);
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             return `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
-                                <a href="javascrip:void(0);">
+                                <a href="javascrip:void(0);" class="${ess.header}">
                                     <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                     <span class="txt-color-black lista-title">
                                         <span class="pull-left">
@@ -1729,7 +1907,7 @@ RutinaElementoHTML = (function(){
                                             <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                             <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                         </span>
-                                        <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
+                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
                                         <input value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>  
                                     </span>
                                 </a>
@@ -1740,13 +1918,14 @@ RutinaElementoHTML = (function(){
                     `;
         },
         elementoCompuestoPaste:(ele, diaIndex)=>{
+            const ess = RutinaEditor.obtenerEstilos(ele.estilos);
             let classInputsInitSubEle = ele.subElementos.length == 0?'':'hidden';
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             return `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}" class="${ess.header}">
                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                         <span class="txt-color-blue lista-title">
@@ -1756,7 +1935,7 @@ RutinaElementoHTML = (function(){
                                                 <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                                 <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento2(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                             </span>
-                                            <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover">${ele.nombre}</span>
+                                            <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover">${ele.nombre}</span>
                                             <input value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                         </span>
                                     </a>
@@ -1856,8 +2035,8 @@ RutinaPS = (function () {
             return `
                 <div class='row ops-r'>
                     <i rel='tooltip' data-original-title='Agregar nota' data-trigger='hover' class='fa fa-sticky-note agregar-nota txt-color-yellow padding-5' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
-                    <i rel='tooltip' data-original-title='Eliminar audio' data-trigger='hover' class='fa fa-music txt-color-grayDark padding-5 trash-audio' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
-                    <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-blue padding-5 trash-video' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
+                    <i rel='tooltip' data-original-title='Eliminar audio' data-trigger='hover' class='fa fa-music txt-color-red padding-5 trash-audio' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
+                    <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-red padding-5 trash-video' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Insertar encima del elemento' data-trigger='hover' class='fa fa-arrow-up txt-color-black padding-5 insertar-encima' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Reemplazar elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-index='${eleIndex}'></i>
                     <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}' contenteditable='true'>KM</span>
@@ -1869,8 +2048,8 @@ RutinaPS = (function () {
             return `
                 <div class='row ops-r'>
                     <i rel='tooltip' data-original-title='Agregar nota' data-trigger='hover' class='fa fa-sticky-note agregar-nota txt-color-yellow padding-5' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
-                    <i rel='tooltip' data-original-title='Eliminar audio' data-trigger='hover' class='fa fa-music txt-color-grayDark padding-5 trash-audio' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
-                    <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-blue padding-5 trash-video' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
+                    <i rel='tooltip' data-original-title='Eliminar audio' data-trigger='hover' class='fa fa-music txt-color-red padding-5 trash-audio' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
+                    <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-red padding-5 trash-video' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Insertar encima del elemento' data-trigger='hover' class='fa fa-arrow-up txt-color-black padding-5 insertar-encima' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Reemplazar elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-index='${eleIndex}'></i>
                     <i rel='tooltip' data-original-title='Agregar varios' data-trigger='hover' class='fa fa-angle-double-down padding-5 varios-media' data-dia-index='${diaIndex}' data-index='${eleIndex}'></i>
@@ -1883,8 +2062,8 @@ RutinaPS = (function () {
             return `
                 <div class='row'>
                     <i rel='tooltip' data-original-title='Agregar nota' data-trigger='hover' class='fa fa-sticky-note agregar-nota-sbe txt-color-yellow padding-5' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
-                    <i rel='tooltip' data-original-title='Eliminar audio' data-trigger='hover' class='fa fa-music txt-color-grayDark padding-5 trash-audio-sub' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
-                    <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-blue padding-5 trash-video-sub' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
+                    <i rel='tooltip' data-original-title='Eliminar audio' data-trigger='hover' class='fa fa-music txt-color-red padding-5 trash-audio-sub' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
+                    <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-red padding-5 trash-video-sub' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
                     <i rel='tooltip' data-original-title='Insertar encima del sub elemento' data-trigger='hover' class='fa fa-arrow-up txt-color-black padding-5 insertar-encima-sub' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
                     <i rel='tooltip' data-original-title='Reemplazar sub elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>
                     <i rel='tooltip' data-original-title='Eliminar sub elemento' data-trigger='hover' class='fa fa-trash-o txt-color-redLight padding-5 trash-sub-elemento' data-dia-index='${diaIndex}' data-ele-index='${eleIndex}' data-index='${subEleIndex}'></i>

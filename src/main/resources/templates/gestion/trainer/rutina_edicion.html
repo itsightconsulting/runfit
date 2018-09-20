@@ -485,6 +485,31 @@
         button.note-color-btn{
             padding: 6px;
         }
+
+        .rf-bg-red{
+            background: red;
+        }
+        .rf-bg-blue{
+            background: blue;
+        }
+        .rf-bg-yellow{
+            background: yellow;
+        }
+        .rf-bg-orange{
+            background: orange;
+        }
+        .rf-bg-green {
+            background: green;
+        }
+        .rf-bg-aqua{
+            background: aqua;
+        }
+        .rf-bg-lila{
+            color: mediumpurple;
+        }
+        .rf-bg-pink{
+            color: pink;
+        }
         
         .rf-ct-red{
             color: red;
@@ -495,14 +520,20 @@
         .rf-ct-yellow{
             color: yellow;
         }
-        .rf-ct-brown{
-            color: brown;
-        }
         .rf-ct-orange{
             color: orange;
         }
         .rf-ct-green{
             color: green;
+        }
+        .rf-ct-aqua{
+            color: #00FFFF;
+        }
+        .rf-ct-lila{
+            color: mediumpurple;
+        }
+        .rf-ct-pink{
+            color: pink;
         }
 
     </style>
@@ -634,10 +665,15 @@
                                             <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-comment-o fa-2x txt-color-green"></i></a></div>
                                         </div>
                                         <div class="container-fluid note-btn-group btn-group note-font text-align-center padding-10" id="MiniEditor">
-                                            <button type="button" class="note-btn btn btn-default btn-md note-btn-bold" title="" data-original-title="Bold (CTRL+B)"><i class="note-icon-bold" data-index="1"></i></button>
-                                            <button type="button" class="note-btn btn btn-default btn-md note-btn-italic" title="" data-original-title="Italic (CTRL+I)"><i class="note-icon-italic" data-index="2"></i></button>
-                                            <button type="button" class="note-btn btn btn-default btn-md note-btn-underline" title="" data-original-title="Underline (CTRL+U)"><i class="note-icon-underline" data-index="3"></i></button>
-                                            <button type="button" class="note-btn btn btn-default btn-md note-current-color-button" title="" data-original-title="Recent Color" data-backcolor="#FFE79C"><i id="IconEditorColor" data-toggle="popover" data-placement="right" data-content="" data-html="true" class="note-icon-font note-recent-color" style="background-color: rgb(255, 231, 156);"></i></button>
+                                            <button type="button" data-index="1" class="note-btn btn btn-default btn-md note-btn-bold btn-bold" title="" data-original-title="Bold (CTRL+B)"><i class="note-icon-bold btn-bold" data-index="1"></i></button>
+                                            <button type="button" data-index="2" class="note-btn btn btn-default btn-md note-btn-italic btn-italic" title="" data-original-title="Italic (CTRL+I)"><i class="note-icon-italic btn-italic" data-index="2"></i></button>
+                                            <button type="button" data-index="3" class="note-btn btn btn-default btn-md note-btn-underline btn-underline" title="" data-original-title="Underline (CTRL+U)"><i class="note-icon-underline btn-underline" data-index="3"></i></button>
+                                            <button type="button" class="note-btn btn btn-default btn-md note-btn-copy-format" title="" data-original-title="Style"><i class="note-icon-magic note-btn-copy-format"></i></button>
+                                            <div class="note-btn-group btn-group note-color open">
+                                                <button type="button" class="note-btn btn btn-default btn-md note-current-color-button" title="" data-original-title="Recent Color"><i class="note-icon-font note-recent-color" style="background-color: darkseagreen;color: black;"></i></button>
+                                                <button type="button" class="note-btn btn btn-default btn-xs note-btn-font" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true" style="padding: 6px;"><i class="fa fa-caret-down note-btn-font"></i></button>
+                                            </div>
+                                            <button type="button" class="note-btn btn btn-default btn-sm note-btn-alinea" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true"><i class="note-icon-align-left note-btn-alinea"></i> <span class="note-icon-caret"></span></button>
                                         </div>
                                     </div>
                                     <div class="col-md-11 padding-0">

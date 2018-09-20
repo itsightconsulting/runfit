@@ -70,4 +70,6 @@ public interface DiaService extends BaseService<Dia> {
     void actualizarSubElementos(int id, int elementoIndice, String subEles);
 
     void actualizarDiaRaizDesdePlantilla(int diaId, int distancia, int minutos, String writeValueAsString);
+
+    void actualizarElementosEstilosFull(String estilos, int elementoIndice, int diaId);
 }

@@ -19,11 +19,24 @@ const ClaseEditor = Object.freeze([
     {id: 10, clase: "rf-fs-15"},
     {id: 11, clase: "rf-fs-16"},
     {id: 12, clase: "rf-ct-red"},
-    {id: 13, clase: "rf-ct-blue"},
+    {id: 13, clase: "rf-ct-orange"},
     {id: 14, clase: "rf-ct-yellow"},
-    {id: 15, clase: "rf-ct-brown"},
-    {id: 16, clase: "rf-ct-orange"},
-    {id: 17, clase: "rf-ct-green"},
+    {id: 15, clase: "rf-ct-green"},
+    {id: 16, clase: "rf-ct-aqua"},
+    {id: 17, clase: "rf-ct-blue"},
+    {id: 18, clase: "rf-ct-lila"},
+    {id: 19, clase: "rf-ct-pink"},
+    {id: 20, clase: "rf-bg-red"},
+    {id: 21, clase: "rf-bg-orange"},
+    {id: 22, clase: "rf-bg-yellow"},
+    {id: 23, clase: "rf-bg-green"},
+    {id: 24, clase: "rf-bg-aqua"},
+    {id: 25, clase: "rf-bg-blue"},
+    {id: 26, clase: "rf-bg-lila"},
+    {id: 27, clase: "rf-bg-pink"},
+    {id: 28, clase: "text-align-left"},
+    {id: 29, clase: "text-align-center"},
+    {id: 30, clase: "text-align-right"},
 ]);
 const Estrategia = Object.freeze({
     INSERT_ANTES:   1,
@@ -392,7 +405,7 @@ function notificacionesRutinaSegunResponseCode(resCode){
         case -2:
             break;
         case -3:
-            $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({content: "Eliminación satisfactoria"});
             break;
         case -10:
             $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
