@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface DiaRutinarioRepository extends JpaRepository<DiaRutinario, Integer> {
 
-    List<DiaRutinario> findAllByIdIn(List<Integer> ids);
+    List<DiaRutinario> findAllByIdInOrderById(List<Integer> ids);
 }

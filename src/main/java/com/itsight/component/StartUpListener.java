@@ -92,6 +92,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private RedFitnessService redFitnessService;
 
+    @Autowired
+    private KilometrajeBaseService kilometrajeBaseService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -119,6 +122,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingMusculoToTable();
             addingCondicionMejoraToTable();
             addingTipoDocumentoToTable();
+            addingKilometrajBase();
             addingAudiosDemo();
 
             if(bagForestRepository.findOne(1) == null) {
@@ -519,6 +523,54 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(tipoDocumentoService.findOne(2) == null) tipoDocumentoService.save(new TipoDocumento("CE"));
     }
 
+    public void addingKilometrajBase(){
+        if(kilometrajeBaseService.findOne(1) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,1,30.67));
+        if(kilometrajeBaseService.findOne(2) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,2,41.14));
+        if(kilometrajeBaseService.findOne(3) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,3,34.41));
+        if(kilometrajeBaseService.findOne(4) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,4,11.22));
+
+        if(kilometrajeBaseService.findOne(5) == null) kilometrajeBaseService.save(new KilometrajeBase(21,1,1,38.15));
+        if(kilometrajeBaseService.findOne(6) == null) kilometrajeBaseService.save(new KilometrajeBase(21,1,2,52.36));
+        if(kilometrajeBaseService.findOne(7) == null) kilometrajeBaseService.save(new KilometrajeBase(21,1,3,40.39));
+        if(kilometrajeBaseService.findOne(8) == null) kilometrajeBaseService.save(new KilometrajeBase(21,1,4,22.44));
+
+        if(kilometrajeBaseService.findOne(9) == null) kilometrajeBaseService.save(new KilometrajeBase(42,1,1,59.84));
+        if(kilometrajeBaseService.findOne(10) == null) kilometrajeBaseService.save(new KilometrajeBase(42,1,2,101.00));
+        if(kilometrajeBaseService.findOne(11) == null) kilometrajeBaseService.save(new KilometrajeBase(42,1,3,74.80));
+        if(kilometrajeBaseService.findOne(12) == null) kilometrajeBaseService.save(new KilometrajeBase(42,1,4,29.92));
+
+        if(kilometrajeBaseService.findOne(13) == null) kilometrajeBaseService.save(new KilometrajeBase(10,2,1,34.85));
+        if(kilometrajeBaseService.findOne(14) == null) kilometrajeBaseService.save(new KilometrajeBase(10,2,2,46.75));
+        if(kilometrajeBaseService.findOne(15) == null) kilometrajeBaseService.save(new KilometrajeBase(10,2,3,39.10));
+        if(kilometrajeBaseService.findOne(16) == null) kilometrajeBaseService.save(new KilometrajeBase(10,2,4,12.75));
+
+        if(kilometrajeBaseService.findOne(17) == null) kilometrajeBaseService.save(new KilometrajeBase(21,2,1,43.35));
+        if(kilometrajeBaseService.findOne(18) == null) kilometrajeBaseService.save(new KilometrajeBase(21,2,2,59.50));
+        if(kilometrajeBaseService.findOne(19) == null) kilometrajeBaseService.save(new KilometrajeBase(21,2,3,45.90));
+        if(kilometrajeBaseService.findOne(20) == null) kilometrajeBaseService.save(new KilometrajeBase(21,2,4,25.50));
+
+        if(kilometrajeBaseService.findOne(21) == null) kilometrajeBaseService.save(new KilometrajeBase(42,2,1,68.00));
+        if(kilometrajeBaseService.findOne(22) == null) kilometrajeBaseService.save(new KilometrajeBase(42,2,2,114.80));
+        if(kilometrajeBaseService.findOne(23) == null) kilometrajeBaseService.save(new KilometrajeBase(42,2,3,85.00));
+        if(kilometrajeBaseService.findOne(24) == null) kilometrajeBaseService.save(new KilometrajeBase(42,2,4,34.00));
+
+        if(kilometrajeBaseService.findOne(25) == null) kilometrajeBaseService.save(new KilometrajeBase(10,3,1,41.00));
+        if(kilometrajeBaseService.findOne(26) == null) kilometrajeBaseService.save(new KilometrajeBase(10,3,2,55.00));
+        if(kilometrajeBaseService.findOne(27) == null) kilometrajeBaseService.save(new KilometrajeBase(10,3,3,46.00));
+        if(kilometrajeBaseService.findOne(28) == null) kilometrajeBaseService.save(new KilometrajeBase(10,3,4,15.00));
+
+        if(kilometrajeBaseService.findOne(29) == null) kilometrajeBaseService.save(new KilometrajeBase(21,3,1,51.00));
+        if(kilometrajeBaseService.findOne(30) == null) kilometrajeBaseService.save(new KilometrajeBase(21,3,2,70.00));
+        if(kilometrajeBaseService.findOne(31) == null) kilometrajeBaseService.save(new KilometrajeBase(21,3,3,54.00));
+        if(kilometrajeBaseService.findOne(32) == null) kilometrajeBaseService.save(new KilometrajeBase(21,3,4,30.00));
+
+        if(kilometrajeBaseService.findOne(33) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,1,80.00));
+        if(kilometrajeBaseService.findOne(34) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,2,135.00));
+        if(kilometrajeBaseService.findOne(35) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,3,100.00));
+        if(kilometrajeBaseService.findOne(36) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,4,40.00));
+
+    }
+
     public void addingApplicationParameters() {
         if (parametroService.findByClave("MAIN_ROUTE") == null) {
             parametroService.add(new Parametro("MAIN_ROUTE", mainRoute));
@@ -665,43 +717,4 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         };
         Utilitarios.createDirectoryStartUp(context.getAttribute("MAIN_ROUTE").toString(), childPaths);
     }
-
-   /* public void testingRutinaRaw() {
-        Rutina rutina = new Rutina();
-
-        //Semana
-        Semana semana = new Semana();
-        semana.setFechaInicio(new Date());
-        semana.setFechaFin(new Date());
-        semana.setFlagFull(true);
-        //Dia
-        Dia dia = new Dia();
-        dia.setDia(1);
-        dia.setLiteral("Lunes");
-        //Lista
-        Lista lista = new Lista();
-        lista.setNombre("DemoLista");
-        //Elemento
-        ElementoLista elemento = new ElementoLista();
-        elemento.setNombre("DemoElemento");
-
-        //Creando Listas de objetos demo
-        List<Semana> semanas = new ArrayList<>();
-        semanas.add(semana);
-        List<Dia> dias = new ArrayList<>();
-        dias.add(dia);
-        List<Lista> listas = new ArrayList<>();
-        listas.add(lista);
-        List<ElementoLista> elementos = new ArrayList<>();
-        elementos.add(elemento);
-
-        //Asociando objetos al padre de la jerarquia
-        lista.setElementos(elementos);
-        dia.setListas(listas);
-        semana.setDias(dias);
-        rutina.setSemanas(semanas);
-
-        rutina.setUsuario(new Usuario(2));
-        rutinaService.save(rutina);
-    }*/
 }

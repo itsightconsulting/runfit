@@ -12,6 +12,9 @@
 
     <!-- END CSS FILES -->
     <style type="text/css">
+        #header, .page-footer {
+            background-color: #73f194 !important;
+        }
 
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
@@ -37,6 +40,14 @@
 
         #OpsLaterales .cal-acordeon-query .smart-accordion-default .panel-heading{
             background-color: #E5EEC1 !important;
+        }
+
+        .bg-green-rf{
+            background: #73f194 !important;;
+        }
+
+        .bg-black-rf{
+            background: #4a4e3b !important;
         }
 
         .its-calendar{
@@ -105,6 +116,10 @@
 
         .padding-o-bottom-10{
             padding: 0px 0px 10px !important;
+        }
+
+        .padding-o-bottom-40{
+            padding: 0px 0px 40px !important;
         }
 
         .padding-o-bottom-5{
@@ -390,7 +405,7 @@
         }
 
         .bg-color-blue-sl{
-            background-color: #63a8c1 !important;
+            background-color: #73f194 !important;
         }
 
         .btn-plus-ele:hover{
@@ -482,58 +497,72 @@
             text-decoration: underline !important;
         }
 
-        button.note-color-btn{
+        button.note-color-fuente, button.note-bg-color {
             padding: 6px;
         }
 
-        .rf-bg-red{
-            background: red;
+        .rf-ct-white{color:white}
+        .rf-ct-black{color:black}
+        .rf-ct-gray{color:gray}
+        .rf-ct-navyblue{color:#003366}
+        .rf-ct-skyblue{color:skyblue}
+        .rf-ct-orange{color:yellow}
+        .rf-ct-yellow{color:green}
+        .rf-ct-green{color:pink}
+        .rf-ct-m-pink{color:#F67280}
+        .rf-ct-m-blue{color:#355C7D}
+        .rf-ct-m-gray{color:#474747}
+        .rf-ct-m-navyblue{color:#2A363B}
+        .rf-ct-m-skyblue{color:#A8E6CE}
+        .rf-ct-m-orange{color:#FC913A}
+        .rf-ct-m-yellow{color:#F9D423}
+        .rf-ct-m-green{color:#99B898}
+
+        .rf-bg-white{background-color:white}
+        .rf-bg-black{background-color:black}
+        .rf-bg-gray{background-color:gray}
+        .rf-bg-navyblue{background-color:#000080}
+        .rf-bg-skyblue{background-color:skyblue}
+        .rf-bg-orange{background-color:yellow}
+        .rf-bg-yellow{background-color:green}
+        .rf-bg-green{background-color:pink}
+        .rf-bg-m-pink{background-color:#F67280}
+        .rf-bg-m-blue{background-color:#355C7D}
+        .rf-bg-m-gray{background-color:#474747}
+        .rf-bg-m-navyblue{background-color:#2A363B}
+        .rf-bg-m-skyblue{background-color:#A8E6CE}
+        .rf-bg-m-orange{background-color:#FC913A}
+        .rf-bg-m-yellow{background-color:#F9D423}
+        .rf-bg-m-green{background-color:#99B898}
+
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-8{font-size: 8px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-9{font-size: 9px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-10{font-size: 10px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-11{font-size: 11px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-12{font-size: 12px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-13{font-size: 13px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-14{font-size: 14px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-15{font-size: 15px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-16{font-size: 16px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-17{font-size: 17px !important;}
+        #RutinaSemana .rf-dia .rf-listas .rf-fs-18{font-size: 18px !important;}
+
+        .rf-align-l{text-align:left}
+        .rf-align-c{text-align:center}
+        .rf-align-r{text-align:right}
+        .rf-align-j{text-align:justify}
+
+
+        .rf-mg-1{
+            margin-bottom: 10px !important;
         }
-        .rf-bg-blue{
-            background: blue;
+
+        .rf-mg-2{
+            margin-bottom: 20px !important;
         }
-        .rf-bg-yellow{
-            background: yellow;
-        }
-        .rf-bg-orange{
-            background: orange;
-        }
-        .rf-bg-green {
-            background: green;
-        }
-        .rf-bg-aqua{
-            background: aqua;
-        }
-        .rf-bg-lila{
-            color: mediumpurple;
-        }
-        .rf-bg-pink{
-            color: pink;
-        }
-        
-        .rf-ct-red{
-            color: red;
-        }
-        .rf-ct-blue{
-            color: blue;
-        }
-        .rf-ct-yellow{
-            color: yellow;
-        }
-        .rf-ct-orange{
-            color: orange;
-        }
-        .rf-ct-green{
-            color: green;
-        }
-        .rf-ct-aqua{
-            color: #00FFFF;
-        }
-        .rf-ct-lila{
-            color: mediumpurple;
-        }
-        .rf-ct-pink{
-            color: pink;
+
+        .rf-mg-3{
+            margin-bottom: 30px !important;
         }
 
     </style>
@@ -556,38 +585,25 @@
     <div id="content">
         <fieldset>
             <div class="row">
-                <!--<div class="col-sm-12 col-md-12 col-lg-12">
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <h1 class="page-title txt-color-blueDark">
-                                <i class="fa fa-openid fa-fw"></i>
-                                Generar
-                                <span>>
-											<b>Rutina</b>
-										</span>
-                            </h1>
-                        </div>
-                    </div>
-                </div>-->
             </div>
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <!-- Reemplaza a los botones para cambiar de ventana-->
                 <article class="col-sm-12 col-md-12 col-lg-12">
                     <div class="container-fluid padding-0" id="PrincipalesTabs">
-                        <a href="#tabRutina" class="btn btn-default btn-md bg-color-redLight txt-color-white main-tab" style="width: 12.33%; !important" data-toggle="tab">Rutina</a>
-                        <a href="#tabRutinarioCe" class="btn btn-default btn-md bg-color-redLight txt-color-white" style="width: 12.33%; !important" data-toggle="tab">Rutinario<i id="ShortcutRutinario" class="fa fa-lg fa-fw fa-hand-o-up txt-color-white"></i></a>
-                        <a href="#tabGrupoVideos" class="btn btn-default btn-md bg-color-redLight txt-color-white" style="width: 12.33%; !important" data-toggle="tab">G. Videos</a>
-                        <a href="#tabGrupoAudios" class="btn btn-default btn-md bg-color-redLight txt-color-white" style="width: 12.33%; !important" data-toggle="tab">G. Audios</a>
-                        <a href="#tabMacro" class="btn btn-default btn-md bg-color-redLight txt-color-white" style="width: 12.33%; !important" data-toggle="tab">Macro</a>
-                        <a href="#tabFichaTecnica" class="btn btn-default btn-md bg-color-redLight txt-color-white" style="width: 12.33%; !important" data-toggle="tab">Ficha Técnica</a>
+                        <a href="#tabRutina" class="btn btn-default btn-md bg-black-rf txt-color-white main-tab" style="width: 10.83%; !important" data-toggle="tab">Rutina</a>
+                        <a href="#tabRutinarioCe" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 10.83%; !important" data-toggle="tab">Rutinario<i id="ShortcutRutinario" class="fa fa-lg fa-fw fa-hand-o-up txt-color-white"></i></a>
+                        <a href="#tabGrupoVideos" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 10.83%; !important" data-toggle="tab">G. Videos</a>
+                        <a href="#tabGrupoAudios" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 10.83%; !important" data-toggle="tab">G. Audios</a>
+                        <a href="#tabMacro" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 10.83%; !important" data-toggle="tab">Macro</a>
+                        <a href="#tabFichaTecnica" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 10.83%; !important" data-toggle="tab">Ficha Técnica</a>
                         <a id="OpsAdic">
                             <div class="widget-toolbar borderless">
-                                <span class="label label-primary" id="MesAnio"></span>
+                                <span class="label label-primary bg-green-rf" id="MesAnio"></span>
                             </div>
                             <div class="widget-toolbar borderless">
-                                <span class="label label-primary" onclick="moverAInicio();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el primer día de este semana"><i class="fa fa-mail-reply"></i></span>
-                                <span class="label label-primary" onclick="moverAFinal();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el último dia de este semana"><i class="fa fa-mail-forward"></i></span>
+                                <span class="label label-primary bg-green-rf" onclick="moverAInicio();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el primer día de este semana"><i class="fa fa-mail-reply"></i></span>
+                                <span class="label label-primary bg-green-rf" onclick="moverAFinal();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el último dia de este semana"><i class="fa fa-mail-forward"></i></span>
                             </div>
                         </a>
 
@@ -642,19 +658,19 @@
                                     <div class="col-md-1" id="OpsLaterales">
                                         <div class="container-fluid padding-o-bottom-10 text-align-center">
                                             <div>
-                                                <span class="label label-primary" onclick="RutinaOpc.comprimirAll();" rel="tooltip" data-placement="bottom" data-original-title="Comprimir elementos lista"><i class="fa fa-angle-up"></i></span>
-                                                <span class="label label-primary" onclick="RutinaOpc.colapsarAll();" rel="tooltip" data-placement="bottom" data-original-title="Colapsar elementos lista"><i class="fa fa-angle-down"></i></span>
+                                                <span class="label label-primary bg-green-rf" onclick="RutinaOpc.comprimirAll();" rel="tooltip" data-placement="bottom" data-original-title="Comprimir elementos lista"><i class="fa fa-angle-up"></i></span>
+                                                <span class="label label-primary bg-green-rf" onclick="RutinaOpc.colapsarAll();" rel="tooltip" data-placement="bottom" data-original-title="Colapsar elementos lista"><i class="fa fa-angle-down"></i></span>
                                             </div>
                                         </div>
                                         <div class="container-fluid padding-o-bottom-10 text-align-center">
                                             <div class="">
-                                                <a href="javascript:void(0);" class="label label-warning" id="Semanas"><span class="label label-warning font-sm">Semana <span id="SemanaActual">1</span></span></a>
+                                                <a href="javascript:void(0);" class="label label-warning bg-black-rf" id="Semanas"><span class="label label-warning font-sm bg-black-rf">Semana <span id="SemanaActual">1</span></span></a>
                                             </div>
                                         </div>
                                         <div class="container-fluid padding-o-bottom-10 text-align-center">
                                             <div class="">
-                                                <span class="label label-success retroceder-semana" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana"><i class="fa fa-chevron-left retroceder-semana"></i></span>
-                                                <span class="label label-success adelantar-semana" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana"><i class="fa fa-chevron-right adelantar-semana"></i></span>
+                                                <span class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana"><i class="fa fa-chevron-left retroceder-semana"></i></span>
+                                                <span class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana"><i class="fa fa-chevron-right adelantar-semana"></i></span>
                                             </div>
                                         </div>
                                         <div class="container-fluid text-align-center rut-ce-separador padding-10">
@@ -665,15 +681,30 @@
                                             <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-comment-o fa-2x txt-color-green"></i></a></div>
                                         </div>
                                         <div class="container-fluid note-btn-group btn-group note-font text-align-center padding-10" id="MiniEditor">
-                                            <button type="button" data-index="1" class="note-btn btn btn-default btn-md note-btn-bold btn-bold" title="" data-original-title="Bold (CTRL+B)"><i class="note-icon-bold btn-bold" data-index="1"></i></button>
-                                            <button type="button" data-index="2" class="note-btn btn btn-default btn-md note-btn-italic btn-italic" title="" data-original-title="Italic (CTRL+I)"><i class="note-icon-italic btn-italic" data-index="2"></i></button>
-                                            <button type="button" data-index="3" class="note-btn btn btn-default btn-md note-btn-underline btn-underline" title="" data-original-title="Underline (CTRL+U)"><i class="note-icon-underline btn-underline" data-index="3"></i></button>
-                                            <button type="button" class="note-btn btn btn-default btn-md note-btn-copy-format" title="" data-original-title="Style"><i class="note-icon-magic note-btn-copy-format"></i></button>
+                                            <button type="button" data-index="1" class="note-btn btn btn-default btn-sm note-btn-bold btn-bold" title="" data-original-title="Bold (CTRL+B)"><i class="note-icon-bold btn-bold" data-index="1"></i></button>
+                                            <button type="button" data-index="2" class="note-btn btn btn-default btn-sm note-btn-italic btn-italic" title="" data-original-title="Italic (CTRL+I)"><i class="note-icon-italic btn-italic" data-index="2"></i></button>
+                                            <button type="button" data-index="3" class="note-btn btn btn-default btn-sm note-btn-underline btn-underline" title="" data-original-title="Underline (CTRL+U)"><i class="note-icon-underline btn-underline" data-index="3"></i></button>
+                                            <button type="button" class="note-btn btn btn-default btn-sm note-btn-copy-format" title="" data-original-title="Style"><i class="note-icon-magic note-btn-copy-format"></i></button>
                                             <div class="note-btn-group btn-group note-color open">
-                                                <button type="button" class="note-btn btn btn-default btn-md note-current-color-button" title="" data-original-title="Recent Color"><i class="note-icon-font note-recent-color" style="background-color: darkseagreen;color: black;"></i></button>
+                                                <button type="button" class="note-btn btn btn-default btn-sm note-current-color-button" title="" data-original-title="Recent Color"><i class="note-icon-font note-recent-color" style="background-color: darkseagreen;color: black;"></i></button>
                                                 <button type="button" class="note-btn btn btn-default btn-xs note-btn-font" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true" style="padding: 6px;"><i class="fa fa-caret-down note-btn-font"></i></button>
                                             </div>
-                                            <button type="button" class="note-btn btn btn-default btn-sm note-btn-alinea" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true"><i class="note-icon-align-left note-btn-alinea"></i> <span class="note-icon-caret"></span></button>
+                                            <button type="button" class="note-btn btn btn-default btn-sm note-btn-alinea" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true"><i class="note-icon-align-left note-btn-alinea"></i> <span class="note-icon-caret note-btn-alinea"></span></button>
+                                            <select class="note-btn btn btn-default" id="SelectorFzEditor">
+                                                <option value="">- N -</option>
+                                                <option value="50">8</option>
+                                                <option value="51">9</option>
+                                                <option value="52">10</option>
+                                                <option value="53">11</option>
+                                                <option value="54">12</option>
+                                                <option value="55">13</option>
+                                                <option value="56">14</option>
+                                                <option value="57">15</option>
+                                                <option value="58">16</option>
+                                                <option value="59">17</option>
+                                                <option value="60">18</option>
+                                            </select>
+                                            <button type="button" data-index="9" class="note-btn btn btn-default btn-sm note-btn-margen" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true"><i data-index="9" class="fa fa-indent note-btn-margen"></i></button>
                                         </div>
                                     </div>
                                     <div class="col-md-11 padding-0">
@@ -768,9 +799,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="padding-bottom-10 col col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                                                    <!--<img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}" style="max-width: 100%" height="100px" />-->
-                                                    <img src="https://image.flaticon.com/icons/png/512/817/817271.png" style="max-width: 100%" height="100px" />
-
+                                                    <img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}" style="max-width: 100%" height="100px" />
                                                     <h6 class="font-lg" th:text="${c.nombre}"></h6>
                                                     <ul style="padding-left:20px" th:each="sb : ${c.lstSubCategoriaEjercicio}">
                                                         <li class="font-md"><a class="sub-categoria" href="javascript:void();" th:attr="data-id=${sb.id}" th:text="${sb.nombre}"></a></li>

@@ -9,8 +9,9 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Estilo implements Serializable {
 
-    private String id;
+    private int id;
     private String clase;
+    private int tipo;
 
     public Estilo() { }
 }

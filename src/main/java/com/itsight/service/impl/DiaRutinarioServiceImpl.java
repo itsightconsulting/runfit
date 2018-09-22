@@ -79,7 +79,7 @@ public class DiaRutinarioServiceImpl extends BaseServiceImpl<DiaRutinarioReposit
 
     @Override
     public List<DiaRutinario> findByIdsIn(List<Integer> ids) {
-        return repository.findAllByIdIn(ids);
+        return repository.findAllByIdInOrderById(ids);
     }
 
     @Override

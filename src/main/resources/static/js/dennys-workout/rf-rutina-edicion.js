@@ -48,6 +48,7 @@ const catMisRutinas = document.querySelector('#CatMisRutinas');
 const shortcutRutinario = document.querySelector('#ShortcutRutinario');
 const mainTabs = document.querySelector('#PrincipalesTabs');
 const miniEditor = document.querySelector('#MiniEditor');
+const selectorFzEditor = document.querySelector('#SelectorFzEditor');
 
 $(function () {
     init();
@@ -74,7 +75,8 @@ function init(){
         rutinarioCe.addEventListener('click', genericoRutinarioCe);
         cboSubCategoriaId.addEventListener('change', cargarListaSubCategoriaEjercicio);
         cboSubCategoriaIdSec.addEventListener('change', cargarListaSubCategoriaEjercicio);
-        cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla)
+        cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla);
+        selectorFzEditor.addEventListener('change', ajustarFuenteElemento);
         btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
         shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
@@ -210,6 +212,7 @@ function modalEventos(){
     })
 
     $('#modalMiniPlantilla').on('hidden.bs.modal', ()=> {
+        document.body.style = "";
         $eleListas = [];
     })
 
@@ -298,16 +301,20 @@ function instanciaPerfectScrollBar(){
     new PerfectScrollbar('#scrollRutina');
 }
 
+function instanciarTooltips(){
+    $('[rel="tooltip"]').tooltip();
+}
+function instanciarPopAndToolDeMiniPlantillas() {
+    document.querySelectorAll('#modalMiniPlantilla #ContenidoMini [rel="tooltip"]').forEach(v => $(v).tooltip());
+    document.querySelectorAll('#modalMiniPlantilla #ContenidoMini [data-toggle="popover"]').forEach(v => $(v).popover());
+}
+
 function instanciarElementoTooltips(input){
     input.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
 }
 
 function instanciarElementoPopovers(input){
     input.querySelectorAll('[data-toggle="popover"]').forEach(v=>$(v).popover());
-}
-
-function instanciarTooltips(){
-    $('[rel="tooltip"]').tooltip();
 }
 
 function instanciarEspecificosTooltip(input){
@@ -318,12 +325,12 @@ function instanciarSubElementoTooltip(subEle){
     subEle.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
 }
 
-function instanciarSubElementoPopover(subEle){
-    subEle.querySelectorAll('i[data-toggle="popover"]').forEach(v=>$(v).popover());
-}
-
 function instanciarSubElementosTooltip(elemento){
     elemento.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
+}
+
+function instanciarSubElementosPopover(elemento){
+    elemento.querySelectorAll('[data-toggle="popover"]').forEach(v=>$(v).popover());
 }
 
 function instanciarEspecificosTooltip2(input){
@@ -331,7 +338,7 @@ function instanciarEspecificosTooltip2(input){
 }
 
 function instanciarSubElementoPopover(input){
-    input.previousElementSibling.querySelectorAll('i[data-toggle="popover"]').forEach(v=>$(v).popover());
+    input.querySelectorAll('[data-toggle="popover"]').forEach(v=>$(v).popover());
 }
 
 function instanciarElementosDiaTooltip(elementos){
@@ -339,32 +346,6 @@ function instanciarElementosDiaTooltip(elementos){
 }
 function instanciarElementosDiaPopover(elementos){
     elementos.querySelectorAll('[data-toggle="popover"]').forEach(v=>$(v).popover());
-}
-
-function obtenerObjetoMiniPlantilla(e){
-    let index = e.target.getAttribute('data-index');//Indice comun para todas las listas
-    const mini = document.querySelector(`#MiniPlantilla .rf-dia-elemento[data-index="${index}"]`);
-
-    let nombre = document.querySelector(`.rf-dia-elemento[data-index="${index}"] .rf-dia-elemento-nombre`).textContent.trim();
-    //Instanciamos un objecto DiaLista
-    let lista = new DiaLista(nombre, index, '');//3er Param Fecha, solo en caso la lista sea proveniente de un día de rutina
-
-    //Añadiendo a la instancia de diaLista sus elementos(hijos)
-
-
-    mini.querySelectorAll('ol li').forEach(v=>{
-        let tipo = v.getAttribute('data-type')
-        //Tipo x representa una lista inicial comodin sin valores
-        if(tipo != 'x'){
-            let media = '';
-            let nombre =  v.querySelector('.rf-sub-elemento-nombre').textContent.trim();
-            if(tipo == TipoElemento.AUDIO || tipo == TipoElemento.VIDEO){
-                media = v.querySelector('.rf-sub-elemento-media').getAttribute('data-id-uuid').trim();
-            }
-            lista.elementos.push(new SubElemento({nombre: nombre, tipo: tipo, mediaAudio: media}));
-        }
-    })
-    return lista;
 }
 
 function generandoNuevaMiniPlantilla(subCatId){
@@ -552,14 +533,17 @@ function cargarReferenciasMiniPlantilla(e){
                         color: "alert",
                     });
                 }else{
-                    let raw = '<div class="text-align-center">';
-                    for(let i=0;i<data;i++){
-                        raw+=`<a href="javascript:void(0);"><span onclick="obtenerMiniPlantilla(${params.espSubCatId}, ${i});" class="badge bg-color-darken font-md mini">${i+1}</span></a>`;
+                    if(data != "0"){
+                        let raw = '<div class="text-align-center">';
+                        for(let i=0;i<data;i++){
+                            raw+=`<a href="javascript:void(0);"><span onclick="obtenerMiniPlantilla(${params.espSubCatId}, ${i});" class="badge bg-color-darken font-md mini">${i+1}</span></a>`;
+                        }
+                        raw+= '</div>';
+                        const sameLevel = e.target.parentElement;
+                        sameLevel.parentElement.children.length == 3 ? sameLevel.insertAdjacentElement('afterend', htmlStringToElement(raw)): sameLevel.parentElement.replaceChild(htmlStringToElement(raw), sameLevel.nextElementSibling);
+                    }else{
+                        $.smallBox({color: "info", content: "<i>No se encontraron concidencias...</i>"})
                     }
-                    raw+= '</div>';
-                    const sameLevel = e.target.parentElement;
-                    sameLevel.parentElement.children.length == 3 ? sameLevel.insertAdjacentElement('afterend', htmlStringToElement(raw)): sameLevel.parentElement.replaceChild(htmlStringToElement(raw), sameLevel.nextElementSibling);
-
                 }
             }
         },
@@ -570,6 +554,21 @@ function cargarReferenciasMiniPlantilla(e){
             $('#spRaw4').html('');
         }
     });
+}
+
+function ajustarFuenteElemento(e){
+    const input = e.target;
+    const estiloId = input.value;
+    const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+    let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+    while((tempEle = tempEle.previousElementSibling) != null) i++;
+    const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
+    RutinaDelete.eliminarEstilosFuente(ixs.numSem, ixs.diaIndex, (posEle = i), 1);
+    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
+    $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-fs')?k.remove(v):''});
+    $eleGenerico.classList.add(objEditor.clase);
+    guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+    input.value = "";
 }
 
 function guardarAccionEditor(e){
@@ -626,23 +625,25 @@ function instanciarDatosFitnessCliente(){
                         color: "alert",
                     });
                 }else{
-                    $fechasCompetencia = data.competencias.map(v=>{return parseFromStringToDate(v.fecha)});
-                    $('#Nombres').text(data.nombres);
-                    $('#ApellidoPaterno').text(data.apellidoPaterno);
-                    $('#ApellidoMaterno').text(data.apellidoMaterno);
-                    $('#TipoDocumentoId').text(data.tipoDocumentoId);
-                    $('#NumeroDocumento').text(data.numeroDocumento);
-                    $('#Correo').text(data.correo);
-                    //$('#CodPais').val(data.movil.split(" ")).t $('#Movil').val(data.movil);
-                    $('#TelefonoFijo').text(data.telefonoFijo);
-                    $('#Direccion').text(data.direccion);
-                    $('#FechaNacimiento').text(data.fechaNacimiento);
-                    $('#Username').text(data.username);
-                    //UsuarioFitness
-                    $('#CorreoSecundario').text(data.correoSecundario);
-                    $('#EstadoCivil').text(data.estadoCivil);
-                    $('#Sexo').text(data.sexo);
-                    $('#Imc').text(data.imc);
+                    if(data.id != 0){
+                        $fechasCompetencia = data.competencias.map(v=>{return parseFromStringToDate(v.fecha)});
+                        $('#Nombres').text(data.nombres);
+                        $('#ApellidoPaterno').text(data.apellidoPaterno);
+                        $('#ApellidoMaterno').text(data.apellidoMaterno);
+                        $('#TipoDocumentoId').text(data.tipoDocumentoId);
+                        $('#NumeroDocumento').text(data.numeroDocumento);
+                        $('#Correo').text(data.correo);
+                        //$('#CodPais').val(data.movil.split(" ")).t $('#Movil').val(data.movil);
+                        $('#TelefonoFijo').text(data.telefonoFijo);
+                        $('#Direccion').text(data.direccion);
+                        $('#FechaNacimiento').text(data.fechaNacimiento);
+                        $('#Username').text(data.username);
+                        //UsuarioFitness
+                        $('#CorreoSecundario').text(data.correoSecundario);
+                        $('#EstadoCivil').text(data.estadoCivil);
+                        $('#Sexo').text(data.sexo);
+                        $('#Imc').text(data.imc);
+                    }
                 }
             }
         },
@@ -674,11 +675,10 @@ function instanciarGrupoVideos(){
 
                     rawHTMLCabecera +='<div class="container-fluid padding-0">'
                     JSON.parse(data).forEach(grupoVideo => {
-                        /*<h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="/workout/media/image/grupo-video/gt/1${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>*/
                         rawHTMLCabecera +=
                             `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="container-fluid padding-0">
-                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://image.flaticon.com/icons/png/512/983/983544.png">${grupoVideo.nombre}</h1>
+                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="/workout/media/image/grupo-video/gt/1${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>
                                     </div>
                                     ${generandoCategoriaVideos(grupoVideo)}
                                  </div>`;
@@ -778,8 +778,8 @@ function instanciarMiniPlantillas(){
                     rawHTML = '<div class="container-fluid padding-0">';
                     JSON.parse(data).forEach(cat => {
                         rawHTML +=
-                            `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                             <h1 class="text-align-center txt-color-white padding-7 bg-color-blue">${cat.nombre}</h1>
+                                        `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                             <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl">${cat.nombre}</h1>
                                              ${generandoSubCategoriasRutinarioCe(cat)}
                                          </div>`;
                     });
@@ -862,7 +862,6 @@ function obtenerMiniPlantilla(subCatId, index){
     }
     const contenidoMini = document.querySelector('#ContenidoMini');
     contenidoMini.innerHTML = spinnerHTMLRawCsMessage('Cargando...');
-
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -896,8 +895,7 @@ function obtenerMiniPlantilla(subCatId, index){
                         c.style.height = window.outerHeight * 0.665 + 'px';
                         c.style.overflowY = 'auto';
                     })
-                    instanciarPopovers();
-                    instanciarTooltips();
+                    instanciarPopAndToolDeMiniPlantillas();
                 }
             }
         },
@@ -927,7 +925,7 @@ function principalesEventosClickRutina(e) {
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
             input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
             const ixs = RutinaIx.getIxsForDia(input);
-            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.COMPUESTO)
+            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.COMPUESTO);
         }
     }
     else if(clases.contains('in-sub-elemento')){
@@ -941,11 +939,11 @@ function principalesEventosClickRutina(e) {
             const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, obj.nombre);
             ixs.subEleIndex = nuevoIx;
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let nSubEle = tempElemento.querySelector(`li[data-index="${nuevoIx}"]`);
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
             agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0*/
-
             const iconoOpc = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.sub-ele-ops');
             if($tipoMedia == TipoElemento.AUDIO){
                 iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
@@ -953,10 +951,12 @@ function principalesEventosClickRutina(e) {
                 iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
             }
 
+            instanciarSubElementoTooltip(nSubEle);
+            instanciarSubElementoPopover(nSubEle);
+
             $mediaAudio = '';
             $mediaVideo = '';
         }
-
     }
     else if (clases.contains('trash-elemento')) {
         e.preventDefault();
@@ -1072,7 +1072,6 @@ function principalesEventosClickRutina(e) {
     else if(clases.contains('reprod-video')){
         e.stopPropagation();
         e.preventDefault();
-
         ElementoOpc.reproducirVideo(input);
     }
     else if(clases.contains('ele-ops')){
@@ -1086,8 +1085,19 @@ function principalesEventosClickRutina(e) {
         instanciarEspecificosTooltip(input);
     }
     else if(clases.contains('agregar-nota')) {
+        e.stopPropagation();
         const ixs = RutinaIx.getIxsForElemento(input);
         let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        const type = elemento.getAttribute('data-type');
+        if(type == 2) {
+            const collapsable = elemento.querySelector('a[data-toggle="collapse"]');
+            const panelCollapsable = elemento.querySelector('.panel-collapse');
+            collapsable.classList.add('collapsed');
+            collapsable.setAttribute('aria-expanded', "false");
+            panelCollapsable.classList.remove('in');
+            panelCollapsable.setAttribute('aria-expanded', "false");
+        }
+
         if(elemento.children.length != 3) {
             let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
             let notaInput = document.createElement('div');
@@ -1321,13 +1331,16 @@ function principalesEventosFocusOutSemanario(e) {
         const valor = input.value.trim();
         if (valor.length > 2) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
-            RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
-            //
+            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let initEle = tempElemento;
+            const nSubEle = initEle.querySelector(`li[data-index="${nuevoIx}"]`);
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
             $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[i].subElementos.push(new SubElemento({nombre: valor}));
-            RutinaDOMQueries.getElementoByIxs(ixs).querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+            initEle.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+            instanciarSubElementoTooltip(nSubEle);
+            instanciarSubElementoPopover(nSubEle);
             agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
             input.value = '';
         } else {
@@ -1415,12 +1428,14 @@ function principalesEventosFocusOutSemanario(e) {
             }
             tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', nota);
             let i=0;
+            ElementoOpc.descomprimirDetalle(tempElemento);
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaSet.setElementoNota(ixs.numSem, ixs.diaIndex, (posEle = i), nota);
             actualizarNotaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i));
             divNota.remove();
         }else{
             divNota.remove();
+            ElementoOpc.descomprimirDetalle(tempElemento);
         }
     }
     else if(clases.contains('nueva-nota-sbe')){
@@ -2273,6 +2288,7 @@ function modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso){
 function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     let ele = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
     let params = {};
+    console.log(ele.estilos);
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;
@@ -2364,5 +2380,10 @@ function principalesMiniEditor(e){
         e.preventDefault();
         e.stopPropagation();
         RutinaEditor.instanciarGrupoAlineacion(input);
+    }
+    else if(clases.contains('note-btn-margen')){
+        e.preventDefault();
+        e.stopPropagation();
+        RutinaEditor.agregarOeliminarEstiloToElemento(ix, 4);
     }
 }

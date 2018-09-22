@@ -60,7 +60,7 @@ class Rutina {
 										<header role="heading">
 								            <h2>${v.literal} ${v.dia}</h2>
 								            ${!semana.flagFull ?
-                        `<div class="widget-toolbar borderless" onclick="focoARutina();">
+                                    `<div class="widget-toolbar borderless" onclick="focoARutina();">
 								            			<a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Avanzar hasta la rutina del primer día"><i class="fa fa-arrow-right fa-15x"></i></a>
 								            		 </div>` : ''}
                                                      </header>
@@ -294,9 +294,10 @@ class ElementoLista{
 }
 
 class Estilo{
-    constructor(id, clase){
+    constructor(id, clase, tipo){
         this.id = id;
         this.clase = clase;
+        this.tipo = tipo;
     }
 }
 
@@ -673,11 +674,8 @@ RutinaAdd = (function(){
         nuevoSubElementoMedia: (numSem, diaIndex, eleIndex, objSubEle)=>{
             return $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos.splice(0, 1, new SubElemento(objSubEle));
         },
-        nuevoSubElementoMediaPosEsp: (numSem, diaIndex, eleIndex, posSubEle ,objSubEle)=>{
-            return $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos.splice(posSubEle, 1, new SubElemento(objSubEle));
-        },
-        nuevoEstilo: (numSem, diaIndex, eleIndex, id, claseCss)=>{
-            return $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos.push(new Estilo(id, claseCss));
+        nuevoEstilo: (numSem, diaIndex, eleIndex, id, claseCss, tipo)=>{
+            return $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos.push(new Estilo(id, claseCss, tipo));
         },
     }
 })();
@@ -691,15 +689,23 @@ RutinaDelete = (function(){
         eliminarEstilosColor: (numSem, diaIndex, eleIndex, tipo)=>{
             const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
             if(tipo == 1){//font color
-                estilos.forEach((v,i,k)=>{if(v.id>11 && v.id<20){k.splice(i, 1)}});
+                estilos.forEach((v,i,k)=>{if(v.id>=100 && v.id<=199){k.splice(i, 1)}});
             }else{//background color
-                estilos.forEach((v,i,k)=>{if(v.id>19 && v.id<28){k.splice(i, 1)}});
+                estilos.forEach((v,i,k)=>{if(v.id>=200 && v.id<=299){k.splice(i, 1)}});
             }
         },
         eliminarEstilosAlineacion: (numSem, diaIndex, eleIndex)=>{
             const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
-            estilos.forEach((v,i,k)=>{if(v.id>27 && v.id<31){k.splice(i, 1)}});
-        }
+            estilos.forEach((v,i,k)=>{if(v.id>=4 && v.id<=7){k.splice(i, 1)}});
+        },
+        eliminarEstilosFuente: (numSem, diaIndex, eleIndex)=>{
+            const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
+            estilos.forEach((v,i,k)=>{if(v.id>49 && v.id<100){k.splice(i, 1)}});
+        },
+        eliminarEstiloMargen:  (numSem, diaIndex, eleIndex)=>{
+            const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
+            estilos.forEach((v,i,k)=>{if(v.id>=8 && v.id<=10){k.splice(i, 1)}});
+        },
     }
 })();
 
@@ -711,22 +717,21 @@ RutinaEditor = (function(){
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
-                const objEditor = ClaseEditor[estiloId-1];
+                const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
                 if($eleGenerico.classList.contains(objEditor.clase)){
                     RutinaDelete.eliminarEstiloElemento(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId);
                 }else{
-                    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
                 }
-
                 $eleGenerico.classList.toggle(objEditor.clase);
                 guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
             }else if(tipo == 1){
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
-                const objEditor = ClaseEditor[estiloId-1];
+                const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
                 RutinaDelete.eliminarEstilosColor(ixs.numSem, ixs.diaIndex, (posEle = i), 1);
-                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
                 $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-ct')?k.remove(v):''});
                 $eleGenerico.classList.add(objEditor.clase);
                 guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
@@ -734,9 +739,9 @@ RutinaEditor = (function(){
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
-                const objEditor = ClaseEditor[estiloId-1];
+                const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
                 RutinaDelete.eliminarEstilosColor(ixs.numSem, ixs.diaIndex, (posEle = i), 2);
-                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
                 const headerElemento = $eleGenerico.parentElement.parentElement;
                 headerElemento.classList.forEach((v,i,k)=>{v.includes('rf-bg')?k.remove(v):''});
                 headerElemento.classList.add(objEditor.clase);
@@ -745,13 +750,30 @@ RutinaEditor = (function(){
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
-                const objEditor = ClaseEditor[estiloId-1];
+                const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
                 RutinaDelete.eliminarEstilosAlineacion(ixs.numSem, ixs.diaIndex, (posEle = i));
-                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase);
+                RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
                 const headerElemento = $eleGenerico.parentElement.parentElement;
-                headerElemento.classList.forEach((v,i,k)=>{v.includes('text-align')?k.remove(v):''});
+                headerElemento.classList.forEach((v,i,k)=>{v.includes('rf-align')?k.remove(v):''});
                 headerElemento.classList.add(objEditor.clase);
                 guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+            } else if(tipo == 4){
+                const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                let initEle = tempEle;
+                while((tempEle = tempEle.previousElementSibling) != null) i++;
+                if(initEle.classList.contains('rf-mg-2')){
+                    RutinaDelete.eliminarEstiloMargen(ixs.numSem, ixs.diaIndex, (posEle = i));
+                    initEle.classList.remove('rf-mg-2');
+                    guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+                }else{
+                    const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
+                    RutinaDelete.eliminarEstiloMargen(ixs.numSem, ixs.diaIndex, (posEle = i));
+                    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
+                    initEle.classList.forEach((v,i,k)=>{v.includes('rf-mg')?k.remove(v):''});
+                    initEle.classList.add(objEditor.clase);
+                    guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+                }
             }
         },
         instanciarPaletaColores: (input)=>{
@@ -766,25 +788,26 @@ RutinaEditor = (function(){
                                         </div>
                                         <div class="note-holder" data-event="foreColor">
                                             <div class="note-color-palette">
-                                                    <div class="note-color-row"><button type="button" class="note-color-btn note-color-fuente" style="background-color:#FF0000"
-                                                            data-event="foreColor" data-value="#FF0000" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FF0000" data-index="12" data-class="rf-ct-red"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#FF9C00"
-                                                            data-event="foreColor" data-value="#FF9C00" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FF9C00" data-index="13" data-class="rf-ct-orange"></button><button type="button" class="note-color-btn note-color-fuente"
-                                                style="background-color:#FFFF00"
-                                                            data-event="foreColor" data-value="#FFFF00" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FFFF00" data-index="14" data-class="rf-ct-yellow"></button><button type="button" class="note-color-btn note-color-fuente"
-                                            style="background-color:#295218"
-                                                            data-event="foreColor" data-value="#00FF00" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#00FF00" data-index="15" data-class="rf-ct-green"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#00FFFF"
-                                                            data-event="foreColor" data-value="#00FFFF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#00FFFF" data-index="16" data-class="rf-ct-aqua"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#0000FF"
-                                                            data-event="foreColor" data-value="#0000FF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#0000FF" data-index="17" data-class="rf-ct-blue"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#9C00FF"
-                                                            data-event="foreColor" data-value="#9C00FF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#9C00FF" data-index="18" data-class="rf-ct-lila"></button><button type="button" class="note-color-btn note-color-fuente" style="background-color:#FF00FF"
-                                                            data-event="foreColor" data-value="#FF00FF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FF00FF" data-index="19" data-class="rf-ct-pink"></button></div>
+                                                <div class="note-color-row">
+                                                    <button type="button" class="note-color-fuente" style="background-color:white" data-index="100" data-class="rf-ct-white"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:black" data-index="101" data-class="rf-ct-black"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:gray" data-index="102" data-class="rf-ct-gray"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#003366" data-index="103" data-class="rf-ct-navyblue"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:skyblue" data-index="104" data-class="rf-ct-skyblue"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:orange" data-index="105" data-class="rf-ct-orange"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:yellow" data-index="106" data-class="rf-ct-yellow"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:green" data-index="107" data-class="rf-ct-green"></button>
+                                                </div>
+                                                <div class="note-color-row">
+                                                    <button type="button" class="note-color-fuente" style="background-color:#F67280" data-index="108" data-class="rf-ct-m-pink"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#355C7D" data-index="109" data-class="rf-ct-m-blue"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#474747" data-index="110" data-class="rf-ct-m-gray"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#2A363B" data-index="111" data-class="rf-ct-m-navyblue"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#A8E6CE" data-index="112" data-class="rf-ct-m-skyblue"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#FC913A" data-index="113" data-class="rf-ct-m-orange"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#F9D423" data-index="114" data-class="rf-ct-m-yellow"></button><!--
+                                                 --><button type="button" class="note-color-fuente" style="background-color:#99B898" data-index="115" data-class="rf-ct-m-green"></button>
+                                                </div>
                                             </div>
                                         </div>
                                 </div>
@@ -799,25 +822,26 @@ RutinaEditor = (function(){
                                         </div>
                                         <div class="note-holder" data-event="foreColor">
                                             <div class="note-color-palette">
-                                                    <div class="note-color-row"><button type="button" class="note-color-btn note-bg-color" style="background-color:#FF0000"
-                                                            data-event="foreColor" data-value="#FF0000" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FF0000" data-index="20" data-class="rf-ct-red"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#FF9C00"
-                                                            data-event="foreColor" data-value="#FF9C00" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FF9C00" data-index="21" data-class="rf-ct-orange"></button><button type="button" class="note-color-btn note-bg-color"
-                                                style="background-color:#FFFF00"
-                                                            data-event="foreColor" data-value="#FFFF00" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FFFF00" data-index="22" data-class="rf-ct-yellow"></button><button type="button" class="note-color-btn note-bg-color"
-                                            style="background-color:#295218"
-                                                            data-event="foreColor" data-value="#00FF00" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#00FF00" data-index="23" data-class="rf-ct-green"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#00FFFF"
-                                                            data-event="foreColor" data-value="#00FFFF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#00FFFF" data-index="24" data-class="rf-ct-aqua"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#0000FF"
-                                                            data-event="foreColor" data-value="#0000FF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#0000FF" data-index="25" data-class="rf-ct-blue"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#9C00FF"
-                                                            data-event="foreColor" data-value="#9C00FF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#9C00FF" data-index="26" data-class="rf-ct-lila"></button><button type="button" class="note-color-btn note-bg-color" style="background-color:#FF00FF"
-                                                            data-event="foreColor" data-value="#FF00FF" title="" data-toggle="button" tabindex="-1"
-                                            data-original-title="#FF00FF" data-index="27" data-class="rf-ct-pink"></button></div>
+                                                <div class="note-color-row">
+                                                    <button type="button" class="note-bg-color" style="background-color:white" data-index="200" data-class="rf-ct-white"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:black" data-index="201" data-class="rf-ct-black"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:gray" data-index="202" data-class="rf-ct-gray"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#003366" data-index="203" data-class="rf-ct-navyblue"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:skyblue" data-index="204" data-class="rf-ct-skyblue"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:orange" data-index="205" data-class="rf-ct-orange"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:yellow" data-index="206" data-class="rf-ct-yellow"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:green" data-index="207" data-class="rf-ct-green"></button>
+                                                </div>
+                                                <div class="note-color-row">
+                                                    <button type="button" class="note-bg-color" style="background-color:#F67280" data-index="208" data-class="rf-ct-m-pink"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#355C7D" data-index="209" data-class="rf-ct-m-blue"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#474747" data-index="210" data-class="rf-ct-m-gray"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#2A363B" data-index="211" data-class="rf-ct-m-navyblue"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#A8E6CE" data-index="212" data-class="rf-ct-m-skyblue"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#FC913A" data-index="213" data-class="rf-ct-m-orange"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#F9D423" data-index="214" data-class="rf-ct-m-yellow"></button><!--
+                                                 --><button type="button" class="note-bg-color" style="background-color:#99B898" data-index="215" data-class="rf-ct-m-green"></button>
+                                                </div>
                                             </div>
                                         </div>
                                 </div>
@@ -834,11 +858,11 @@ RutinaEditor = (function(){
         },
         instanciarGrupoAlineacion: (input)=>{
             const raw = `<div class="note-btn-group btn-group note-align">
-                            <button type="button" data-index="28" class="note-btn btn btn-default btn-sm" title="" data-original-title="Align left (CTRL+SHIFT+L)"><i data-index="28" class="note-icon-align-left note-alineacion"></i></button>
-                            <button type="button" data-index="29" class="note-btn btn btn-default btn-sm" title="" data-original-title="Align center (CTRL+SHIFT+E)"><i data-index="29" class="note-icon-align-center note-alineacion"></i></button>
-                            <button type="button" data-index="30" class="note-btn btn btn-default btn-sm" title="" data-original-title="Align right (CTRL+SHIFT+R)"><i data-index="30" class="note-icon-align-right note-alineacion"></i></button>
-                            </div>`;
-            if(input.tagName == "I") {
+                            <button type="button" data-index="4" class="note-btn btn btn-default btn-sm note-alineacion" title="" data-original-title="Align left (CTRL+SHIFT+L)"><i data-index="4" class="note-icon-align-left note-alineacion"></i></button>
+                            <button type="button" data-index="5" class="note-btn btn btn-default btn-sm note-alineacion" title="" data-original-title="Align center (CTRL+SHIFT+E)"><i data-index="5" class="note-icon-align-center note-alineacion"></i></button>
+                            <button type="button" data-index="6" class="note-btn btn btn-default btn-sm note-alineacion" title="" data-original-title="Align right (CTRL+SHIFT+R)"><i data-index="6" class="note-icon-align-right note-alineacion"></i></button>
+                         </div>`;
+            if(input.tagName == "I" || input.tagName == "SPAN") {
                 input.parentElement.setAttribute('data-content', raw)
                 $(input.parentElement).popover('show');
             } else{
@@ -854,46 +878,63 @@ RutinaEditor = (function(){
             $statusCopy = true;
         },
         obtenerEstilos: (ess)=>{
-            let  estHeader = "", estElem = "";
+            let  estHeader = "", estElem = "", margen = "";
             for(let i=0; i<ess.length;i++){
-                if(ess[i].id<20)
-                    estElem += ess[i].clase + " ";
-                else
-                    estHeader += ess[i].clase + " ";
+                switch(ess[i].tipo) {
+                    case 1:
+                        estElem += ess[i].clase + " ";
+                        break;
+                    case 2:
+                        estHeader += ess[i].clase + " ";
+                        break;
+                    default:
+                        margen += ess[i].clase + " "
+                }
             }
-            return {header: estHeader, base: estElem};
+            return {header: estHeader, base: estElem, margen: margen};
         },
         pegarFormato: (input)=>{
             const ixs = RutinaIx.getIxsForElemento(input);
             let eleIndex = 0;
+
+            //1
+            Array.from(input.classList).map((v,i)=>{
+                if(i>1)
+                    return v;
+            }).forEach(v=>input.classList.remove(v));
+            input.parentElement.parentElement.className = "";
+            let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+            tempEle.classList.contains('rf-mg-2') ? tempEle.classList.remove('rf-mg-2') : '';
+
+            let margenBottom = '';
             if($estilosCopiados.length > 0){
                 $estilosCopiados.forEach(v => {
-                    if(v.id>19)
-                        input.parentElement.parentElement.classList.add(v.clase);
-                    else {
+                    if(v.tipo == 1)
                         input.classList.add(v.clase);
-                    }
+                    else if(v.tipo == 2)
+                        input.parentElement.parentElement.classList.add(v.clase);
+                    else
+                        margenBottom = v.clase;
                 });
-                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+                //2
+                margenBottom != "" ? tempEle.classList.add(margenBottom):'';
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
                 eleIndex = i;
                 RutinaGet.elemento(ixs.numSem, ixs.diaIndex, eleIndex).estilos = JSON.parse(JSON.stringify($estilosCopiados));
                 $estilosCopiados = [];
             }else{
-                //1
-                Array.from(input.classList).map((v,i)=>{
-                    if(i>1)
-                        return v;
-                }).forEach(v=>input.classList.remove(v));
-                input.parentElement.parentElement.className = "";
-                //2
-                let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
                 eleIndex = i;
                 RutinaGet.elemento(ixs.numSem, ixs.diaIndex, eleIndex).estilos = [];
             }
             guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, eleIndex);
             $statusCopy = false;
+        },
+        obtenerEstiloById: (id) =>{
+            return ClaseEditor.filter(v=>{
+                if(v.id == id)
+                    return v.clase;
+            })[0];
         }
     }
 })();
@@ -981,7 +1022,7 @@ DiaOpc = (function(){
             let temp = document.querySelector(`.rf-dia[data-index="${diaIndex}"] div[role="heading"]`);
             if (!flagDescanso) {//1. Cuando el flag sea cambiado a false: Recrearemos la estructura base
                 let base = `
-                        <div class="widget-body">
+                        <div class="widget-body padding-o-bottom-40">
 								                <div class="container-fluid form-group margin-bottom-10 padding-5 inputs-init">
                                                     <div class="smart-form">
                                                         <div class="form-group">
@@ -1334,7 +1375,7 @@ ElementoOpc = (function(){
                 $mediaVideo = '';
             }
             instanciarEspecificosTooltip2(input);
-            instanciarSubElementoPopover(input);//Vale para ambos casos(subEle/ele)
+            instanciarElementoPopovers(assetsElemento);
         },
         agregarInitMediaElemento: (ixs, tipo)=>{
             const nuevoIx = ElementoTP.SIMPLE == tipo? RutinaSeccion.newElementoSimple(ixs.diaIndex, tipo, $mediaNombre) : RutinaSeccion.newElementoLista(ixs.diaIndex, tipo, $mediaNombre);
@@ -1353,35 +1394,67 @@ ElementoOpc = (function(){
 
             $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento(ele));
             agregarElementoBD(ixs.numSem, ixs.diaIndex, tipo);
+            const nueEle = RutinaDOMQueries.getElementoByIxs(ixs);
+            instanciarElementoTooltips(nueEle);
+            instanciarElementoPopovers(nueEle);
             $mediaAudio = "";
             $mediaVideo = "";
         },
         reproducirVideo: (input)=>{
+            const mediaVideo = input.getAttribute('data-media');
             input.classList.toggle('fa-video-camera');
             input.classList.toggle('fa-close');
             input.classList.toggle('txt-color-redLight');
             const mainContainerSub = input.parentElement.parentElement.parentElement;
-            //SUB ELEMENTOS
-            if(mainContainerSub.children.length == 2){
-                $("#VideoReproduccion").parent().get(0).pause();
-                $(mainContainerSub.children[1].children[0]).slideUp('slow', ()=> {
-                    mainContainerSub.children[1].remove();
-                });
-            }else {
-                if(mainContainerSub.nodeName == "A"){
-
-                }else
-                    mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura()));
-            }
-            //ELEMENTOS
-            if(mainContainerSub.nodeName == "A"){
-                if(mainContainerSub.children.length == 4){
-                    $(mainContainerSub.children[3].children[0]).slideUp('slow', ()=> {
-                        mainContainerSub.children[3].remove();
+            const tipoContent = mainContainerSub.parentElement.parentElement.parentElement.getAttribute('data-type');
+            if(tipoContent == undefined){
+                //SUB ELEMENTOS
+                if(mainContainerSub.children.length == 2){
+                    $("#VideoReproduccion").parent().get(0).pause();
+                    $(mainContainerSub.children[1].children[0]).slideUp('slow', ()=> {
+                        mainContainerSub.children[1].remove();
                     });
-                }else{
-                    mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura()));
+                }else {
+                    if(mainContainerSub.nodeName == "A"){
+
+                    }else
+                        mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
                 }
+            }else{
+                //ELEMENTOS
+                if(tipoContent == 1){//Simple
+                    if(mainContainerSub.nodeName == "A"){
+                        if(mainContainerSub.children.length == 3){
+                            $(mainContainerSub.children[2].children[0]).slideUp('slow', ()=> {
+                                mainContainerSub.children[2].remove();
+                            });
+                        }else{
+                            mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+                        }
+                    }
+                }else{//Compuesto(Lista)
+                    if(mainContainerSub.nodeName == "A"){
+                        if(mainContainerSub.children.length == 4){
+                            $(mainContainerSub.children[3].children[0]).slideUp('slow', ()=> {
+                                mainContainerSub.children[3].remove();
+                            });
+                        }else{
+                            mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+                        }
+                    }
+                }
+            }
+        },
+        descomprimirDetalle: (ele)=>{
+            const type = ele.getAttribute('data-type');
+            if(type == 2) {
+                const collapsable = ele.querySelector('a[data-toggle="collapse"]');
+                const panelCollapsable = ele.querySelector('.panel-collapse');
+                collapsable.classList.remove('collapsed');
+                collapsable.setAttribute('aria-expanded', "true");
+                panelCollapsable.classList.add('in');
+                panelCollapsable.setAttribute('aria-expanded', "false");
+                panelCollapsable.style = '';
             }
         }
     }
@@ -1521,8 +1594,8 @@ SubEleOpc = (function(){
                 actualizarSubElementoStrategyBD(ixs.numSem, ixs.diaIndex, eleIndex, subEleIndex, TipoElemento.VIDEO);
                 $mediaVideo = '';
             }
-            instanciarEspecificosTooltip2(input);
-            instanciarSubElementoPopover(input);
+            instanciarSubElementoTooltip(assetsElemento);
+            instanciarSubElementoPopover(assetsElemento);
         },
     }
 })();
@@ -1628,27 +1701,27 @@ RutinaSeccion = (function (){
             let elementoHTML = '';
             if(tipo == ElementoTP.SIMPLE){
                 elementoHTML = `
-                         <div class="panel panel-default rf-dia-elemento" data-index="${ix}">
+                         <div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="1">
                               <div class="panel-heading">
                                   <h4 class="panel-title txt-color-blue">
-                                          <a href="javascrip:void(0);">
-                                              <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
-                                              <span class="txt-color-black lista-title">
-                                                  <span class="pull-left">
-                                                    <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                                                    <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
-                                                  </span>
-                                                  <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
-                                                  <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>                                                                              
+                                      <a href="javascrip:void(0);">
+                                          <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
+                                          <span class="txt-color-black lista-title">
+                                              <span class="pull-left">
+                                                <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                                                <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                               </span>
-                                          </a>
+                                              <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
+                                              <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>                                                                              
+                                          </span>
+                                      </a>
                                   </h4>
                               </div>
                          </div>
                          `;
             } else if(tipo == ElementoTP.COMPUESTO){
                 elementoHTML =
-                    `<div class="panel panel-default rf-dia-elemento" data-index="${ix}">
+                    `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="2">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
                                                              <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}">
@@ -1716,7 +1789,7 @@ RutinaSeccion = (function (){
             return ix;
         },
         newDiaPlantilla: (objDia, posDia, onlyOne)=>{
-            const resClass = onlyOne ? 'en-progreso' : 'en-progreso';
+            const resClass = onlyOne ? 'en-progreso' : 'en-progreso';//No afecta en nada
             const ix = ++indexGlobal;
             return `<article class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ${resClass}" data-index="${ix}">   
                       <article class="col-xs-12 col-sm-11 col-md-11 col-lg-11 padding-10" data-index="${ix}">         
@@ -1740,7 +1813,7 @@ RutinaSeccion = (function (){
                             </div>
                             <!-- widget div-->
                             <div class="padding-0">
-                                <div class="widget-body">
+                                <div class="widget-body padding-o-bottom-40">
                                     <div class="panel-group smart-accordion-default rf-listas padding-5">
                                         <!-- LISTAS DEL DIA DE SEMANA -->
                                             ${RutinaSeccion.newElementosForDiaPlantilla(objDia.elementos, posDia)}
@@ -1816,20 +1889,22 @@ RutinaElementoHTML = (function(){
             actualizarElementoParcialBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), lenNuevos);
             $videosElegidos = [];
             instanciarSubElementosTooltip(divSubEle);
+            instanciarSubElementosPopover(divSubEle);
         },
         elementoSimple:(ele, posDia, posEle)=>{
+            const ess = RutinaEditor.obtenerEstilos(ele.estilos);
             let ix = ++indexGlobal;
-            return `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}">
+            return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}">
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
-                                <a href="javascrip:void(0);">
+                                <a href="javascrip:void(0);" class="${ess.header}">
                                     <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                     <span class="txt-color-black lista-title">
                                         <span class="pull-left">
                                             ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
                                             ${ele.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                         </span>
-                                        <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>
+                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>
                                         <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" data-placement="top" rel="tooltip" data-original-title="Tiempo en minutos"/>  
                                     </span>
                                 </a>
@@ -1840,11 +1915,12 @@ RutinaElementoHTML = (function(){
                     `;
         },
         elementoCompuesto:(ele, posDia, posEle)=>{
+            const ess = RutinaEditor.obtenerEstilos(ele.estilos);
             let ix = ++indexGlobal;
-            return `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}">
+            return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}">
+                                    <a data-toggle="collapse" class="${ess.header}" data-parent="#accordion" href="#collapse${ix}">
                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                         <span class="txt-color-blue lista-title">
@@ -1852,7 +1928,7 @@ RutinaElementoHTML = (function(){
                                                 ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}    
                                                 ${ele.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                             </span>
-                                            <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>
+                                            <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>
                                             <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                         </span>
                                     </a>
@@ -1895,7 +1971,7 @@ RutinaElementoHTML = (function(){
             const ess = RutinaEditor.obtenerEstilos(ele.estilos);
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-            return `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
+            return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
                                 <a href="javascrip:void(0);" class="${ess.header}">
@@ -1922,7 +1998,7 @@ RutinaElementoHTML = (function(){
             let classInputsInitSubEle = ele.subElementos.length == 0?'':'hidden';
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-            return `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
+            return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}" class="${ess.header}">
@@ -2000,9 +2076,9 @@ RutinaDiaHTML = (function(){
     return {
         full: (elementos, diaIndex, init, flagDescanso)=>{//init se usa para cuando se recrea la semana desde la instancia del objeto Rutina
             if(flagDescanso){
-                return `<div class="widget-body"><img src="${_ctx}img/dia-libre.png" style="max-width: 90%; text-align: center;"></div>`;
+                return `<div class="widget-body padding-o-bottom-40"><img src="${_ctx}img/dia-libre.png" style="max-width: 90%; text-align: center;"></div>`;
             }else {
-                return `<div class="widget-body">
+                return `<div class="widget-body padding-o-bottom-40">
                             <div class="container-fluid form-group margin-bottom-10 padding-5 inputs-init ${init == undefined ? 'hidden' : ''}">
                                 <div class="smart-form">
                                     <div class="form-group">
@@ -2070,7 +2146,7 @@ RutinaPS = (function () {
                 </div>
             `
         },
-        videoMiniatura: ()=>{
+        videoMiniatura: (mediaVideo)=>{
             return `
                 <div class="" style="text-align: center;">
                         <video id="somevid" preload="none" controls="controls" autoplay="" controlslist="nodownload" width="100%" height="100%" style="
@@ -2078,7 +2154,7 @@ RutinaPS = (function () {
                             margin: 15px;
                             border: 5px solid #e8f2f3;
                             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <source id="VideoReproduccion" src="http://52.186.67.112:8080/media/file/gt/0/182/a48ddb2e-ed61-4a39-9551-b0ae36d196cb.mp4" type="video/mp4">
+                            <source id="VideoReproduccion" src="${_ctx}workout/media/file/video/gt/1${mediaVideo}" type="video/mp4">
                         </video>
                 </div>`
         }
