@@ -134,5 +134,10 @@ public class RestDemoController {
     public List<Video> obtenerAllVideos(){
         return videoService.findAll();
     }
+	
+	@GetMapping("/video/chelmo")
+    public List<Video> metodoChelmo(){
+        return videoService.findAll();
+    }
 
 }
