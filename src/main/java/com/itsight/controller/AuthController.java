@@ -1,6 +1,7 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.RutinaPlantilla;
 import com.itsight.service.RutinaPlantillaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -63,10 +65,10 @@ public class AuthController {
         return "lock";
     }
 
-    /*@GetMapping(value = "/jsonb/rutina/{id}")
+    @GetMapping(value = "/jsonb/rutina/{id}")
     public @ResponseBody
     RutinaPlantilla jsonBResponseRutina(@PathVariable int id){
         RutinaPlantilla obj = new RutinaPlantilla();
         return rutinaService.findOne(new Integer(id));
-    }*/
+    }
 }
