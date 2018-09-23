@@ -25,6 +25,8 @@ public class AuthController {
                             Model model
     ) {
         if (error != null) {
+            System.out.println("YES SIR");
+            //She wanna...
             if (error.equals("session-expired")) {
                 model.addAttribute("expired", "expired");
             } else {
