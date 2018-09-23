@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,6 +136,11 @@ public class RestDemoController {
 	@GetMapping("/video/chelmo")
     public List<Video> metodoChelmo(){
         return videoService.findAll();
+    }
+
+    @GetMapping(value = "/rutina/get/primera-semana/{semanaId}")
+    public @ResponseBody Semana obtenerPrimeraSemanaRutina(@PathVariable int semanaId, HttpSession session) {
+        return semanaService.findOneWithDaysById(semanaId);
     }
 
 }
