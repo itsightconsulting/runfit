@@ -695,7 +695,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             userRepository.save(secUserCliente);
             //Guardando al cliente en la red del entrenador creado anteriormente
             redFitnessService.save( new RedFitness(usuario.getUsername(), usuario1.getId()));
-
         } else {
             System.out.println("> Record already exist <");
         }
