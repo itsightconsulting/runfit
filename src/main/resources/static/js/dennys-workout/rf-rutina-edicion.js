@@ -1685,7 +1685,7 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     if(clases.contains('periodizacion-calc')){
         if(tipo == 1){
             const calc = valor*Number($('#MacroTotalSemanas').text())/100;
-            document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
+            document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix+3}"]`).value = calc.toFixed(2);
         }else {
             const calc = valor*100/Number($('#MacroTotalSemanas').text());
             document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);

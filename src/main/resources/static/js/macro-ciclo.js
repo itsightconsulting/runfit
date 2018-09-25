@@ -46,19 +46,19 @@ MacroCiclo = (function(){
             const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val()), fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
             const diasPrimeraSemana = fechaInicio.getDay() == 0? 1 :7 - fechaInicio.getDay() + 1;
+            const diasUltimaSemana = (totDias - diasPrimeraSemana) % 7 == 0 ? 7 : (totDias - diasPrimeraSemana) % 7;
             let semanas = diasPrimeraSemana == 7 ? Math.ceil(totDias/7) : 1+Math.ceil((totDias-diasPrimeraSemana)/7);
-            const etiqueta = document.querySelector('#MacroTotalSemanas');
-            etiqueta.textContent = semanas;
-
-            const padre = etiqueta.parentElement;
-            if(padre.children.length == 1){
-                const bodyPopover = `<div class='container-fluid'>
-                                       <div class='col-md-12'><label> Semana Inicial: ${diasPrimeraSemana}</label></div>
-                                       <div class='col-md-12'><label> Semana Final: In progress</label></div>
-                                   </div>`;
-                padre.appendChild(htmlStringToElement(`<i data-original-title="Resumen" data-trigger="hover" data-toggle="popover" data-html="true" data-placement="top" data-content="${bodyPopover}" class="fa fa-bell swing animated txt-color-redLight"></i>`));
-                $(padre.children[1]).popover();
-            }
+            let totSemNonFull = diasPrimeraSemana != 7 ? 1 : 0;totSemNonFull += diasUltimaSemana != 7 ? 1 : 0;
+            const raw = `
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas full: <b>${semanas - totSemNonFull}</b></label></div>
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas no-full: <b>${totSemNonFull == 2 ? totSemNonFull +' (S.1 & S.'+semanas+')': totSemNonFull } </b></label></div>
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas totales: <b>${semanas}</b></label></div>
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de primera semana: <b>${diasPrimeraSemana}</b></label></div>
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de última semana: <b>${diasUltimaSemana}</b></label></div>
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días restantes: <b>${totDias - diasPrimeraSemana - diasUltimaSemana}</b></label></div>
+                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales: <b>${totDias}</b></label></div>`
+            $.smallBox({timeout: 15000, content: `${raw}`, color: "#4a4e3b"});
+            document.querySelector('#MacroTotalSemanas').textContent = semanas;
         },
         calcularTotalesDistribucion: (tipoCat, tipoCalc)=>{
             let acum = 0;
