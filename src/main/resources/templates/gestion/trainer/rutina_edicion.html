@@ -12,8 +12,15 @@
 
     <!-- END CSS FILES -->
     <style type="text/css">
+        .v-center{
+            padding-top: 23% !important;
+        }
         #header, .page-footer {
             background-color: #73f194 !important;
+        }
+
+        .padding-5-10{
+            padding: 5px 10px !important;
         }
 
         input[type="number"]::-webkit-outer-spin-button,
@@ -501,6 +508,10 @@
             padding: 6px;
         }
 
+        .padding-left-20{
+            padding-left: 20px !important;
+        }
+
         .rf-ct-white{color:white}
         .rf-ct-black{color:black}
         .rf-ct-gray{color:gray}
@@ -855,796 +866,611 @@
                                 Macro
                             </div>
                             <div class="tab-pane fade in" id="tabFichaTecnica">
-                                <form id="frm_registro" class="smart-form">
+                                <form class="smart-form">
                                     <fieldset>
                                         <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">1. Datos Generales</h6>
                                         <div class="row">
-                                            <section class="col col-6">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su nombre?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Nombres"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su apellido paterno?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="ApellidoPaterno"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su apellido materno?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="ApellidoMaterno"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su tipo de documento?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="TipoDocumentoId"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su número de documento?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="NumeroDocumento"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su correo electrónico?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Correo"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su correo alternativo?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="CorreoSecundario"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">Ingrese su nombre de usuario</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Username"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su teléfono móvil?</label>
-                                                        </div>
-                                                        <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-4">
-                                                            <label class="input" id="CodPais"></label>
-                                                        </div>
-                                                        <div class="col col-lg-6 col-md-6 col-sm-8 col-xs-8">
-                                                            <label class="input" id="Movil"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su teléfono de casa?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="TelefonoFijo"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
+                                            <section class="col col-4">
+                                                <label class="label">Nombres:</label>
+                                                <label class="input">
+                                                    <input type="text" id="Nombres" readonly="readonly"/>
+                                                </label>
                                             </section>
-                                            <section class="col col-6">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su dirección actual?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Direccion"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su estado cívil?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="EstadoCivil"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su fecha de nacimiento?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="FechaNacimiento"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su sexo?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Sexo"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su peso?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Peso"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su talla?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                                                <label class="input" id="TallaPP"></label>
-                                                            </div>
-                                                            <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
-                                                            </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                                <label class="input" id="TallaSP"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuál es su IMC?</label>
-                                                        </div>
-                                                        <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                                                            <label class="input" id="Imc"></label>
-                                                        </div>
-                                                    </div>
-                                                </section>
+                                            <section class="col col-2">
+                                                <label class="label">Primer apellido:</label>
+                                                <label class="input">
+                                                    <input type="text" id="ApellidoPaterno" readonly="readonly"/>
+                                                </label>
+                                            </section>
+                                            <section class="col col-2">
+                                                <label class="label">Fecha nacimiento:</label>
+                                                <label class="input">
+                                                    <input type="text" id="FechaNacimiento" readonly="readonly"/>
+                                                </label>
+                                            </section>
+                                            <section class="col col-2">
+                                                <label class="label">Edad:</label>
+                                                <label class="input">
+                                                    <input type="text" id="Edad" readonly="readonly"/>
+                                                </label>
+                                            </section>
+                                            <section class="col col-2">
+                                                    <label class="label">Sexo:</label>
+                                                <label class="input">
+                                                    <input type="text" readonly="readonly" id="Sexo"/>
+                                                </label>
                                             </section>
                                         </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">2. Condición Anatómica</h6>
                                         <div class="row">
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">¿Padece actualmente un dolor?</label>
-                                                        </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10">
-                                                            <div class="inline-group text-align-center">
-                                                                <label class="radio" style="margin-left: 30%;">
-                                                                    <input type="radio" id="FlagPadeceDolor" name="FlagPadeceDolor"/>
-                                                                    <i></i>SI</label>
-                                                                <label class="radio">
-                                                                    <input type="radio" id="FlagPadeceDolorOff" name="FlagPadeceDolor" checked="checked"/>
-                                                                    <i></i>NO</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <label class="textarea">
-                                                                    <textarea rows="3" id="DescripcionDolor" name="DescripcionDolor" type="text"
-                                                                              placeholder="Descripción del dolor" class="form-control" maxlength="200"
-                                                                              autocomplete="off"/>
-                                                                <b class="tooltip tooltip-bottom-right">Opcional</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">¿Cuando el dolor se hace presente? </label>
-                                                        </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 momento-dolor" style="margin-left: 30%;">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Siempre"/>
-                                                                <i></i> <span>Siempre</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Al correr"/>
-                                                                <i></i> <span>Al correr</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Después de correr"/>
-                                                                <i></i> <span>Después de correr</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="En reposo"/>
-                                                                <i></i> <span>En reposo</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">¿En qué momento de la carrera inicia? </label>
-                                                        </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 momento-dolor-2" style="margin-left: 30%;">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox"/>
-                                                                <i></i> <span>Al empezar</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox"/>
-                                                                <i></i> <span>A la mitad</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox"/>
-                                                                <i></i> <span>Al final</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                        </div>
-                                        <hr/>
-                                        <div class="row padding-top-10">
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Ha tenido usted alguna lesión o condición especial en los últimos 6 meses que le afecto al correr?</label>
-                                                        </div>
-                                                        <div class="col col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                            <label class="radio">
-                                                                <input type="radio" id="FlagLesionSeisUltimosMeses" name="FlagLesionSeisUltimosMeses"/>
-                                                                <i></i>SI</label>
-                                                            <label class="radio">
-                                                                <input type="radio" id="FlagLesionSeisUltimosMesesOff" name="FlagLesionSeisUltimosMeses" checked="checked"/>
-                                                                <i></i>NO</label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                            <section class="col col-8">
-                                                <section class="container-fluid">
-                                                    <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <label class="textarea">
-                                                                    <textarea rows="3" id="DescripcionLesion" name="DescripcionLesion" type="text"
-                                                                              placeholder="Descripción de la lesión" class="form-control" maxlength="200"
-                                                                              autocomplete="off"/>
-                                                            <b class="tooltip tooltip-bottom-right">Opcional</b>
+                                            <section class="col col-1 margin-0"></section>
+                                            <section class="col col-2 text-align-center">
+                                                <div class="container-fluid v-center">
+                                                    <div class="col-md-6">
+                                                        <label class="input padding-left-20">
+                                                            <input type="number" id="FrecuenciaCardiacaMinima" class="text-align-center"/>
                                                         </label>
                                                     </div>
-                                                </section>
-                                            </section>
-                                        </div>
-                                        <div class="row padding-top-10">
-                                            <section class="col col-md-12">
-                                                <section class="col col-md-12">
-                                                    <section class="container-fluid">
-                                                        <label class="textarea">
-                                                                <textarea rows="2" id="RecomendacionesMedicas" name="RecomendacionesMedicas" type="text"
-                                                                          placeholder="Escriba las recomendaciones médicas que tenga" class="form-control" maxlength="200"
-                                                                          autocomplete="off"/>
-                                                        </label>
-                                                    </section>
-                                                </section>
-                                            </section>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">3. Otros datos</h6>
-                                        <div class="row">
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">Paso por kilómetro promedio actual</label>
-                                                        </div>
-                                                        <div class="col col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding: 0px;">
-                                                            <label class="input"><i class="icon-append fa fa-clock-o"></i>
-                                                                <input id="TiempoUnKilometro" name="TiempoUnKilometro" type="time"
-                                                                       placeholder="" class="form-control"
-                                                                       autocomplete="off"/>
-                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                            </label>
-                                                        </div>
+                                                    <div class="col-md-6">
+                                                        <label class="label padding-5 text-align-center"><i class="fa fa-heartbeat fa-15x txt-color-grayDark"></i></label>
                                                     </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">Kilometraje promedio semanal</label>
-                                                        </div>
-                                                        <div class="col col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding-right: 0px;">
-                                                            <label class="input">
-                                                                <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" type="number" min="0" max="300"
-                                                                       placeholder="" class="form-control"
-                                                                       autocomplete="off"/>
-                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Cuántos días corre a la semana?</label>
-                                                        </div>
-                                                        <div class="col col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding-right: 0px;">
-                                                            <label class="input">
-                                                                <input id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" type="number" min="0" max="7"
-                                                                       placeholder="" class="form-control"
-                                                                       autocomplete="off"/>
-                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Realiza ejercicios de calentamiento?</label>
-                                                        </div>
-                                                        <div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                            <div class="inline-group text-align-center pull-right">
-                                                                <label class="radio">
-                                                                    <input type="radio" id="FlagHaceCalentamiento" name="FlagHaceCalentamiento"/>
-                                                                    <i></i>SI</label>
-                                                                <label class="radio" style="margin-right: 0px">
-                                                                    <input type="radio" id="FlagHaceCalentamientoOff" name="FlagHaceCalentamiento" checked="checked"/>
-                                                                    <i></i>NO</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Realiza ejercicios de estiramientos?</label>
-                                                        </div>
-                                                        <div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                            <div class="inline-group text-align-center pull-right">
-                                                                <label class="radio">
-                                                                    <input type="radio" id="FlagHaceEstiramientos" name="FlagHaceEstiramientos"/>
-                                                                    <i></i>SI</label>
-                                                                <label class="radio" style="margin-right: 0px">
-                                                                    <input type="radio" id="FlagHaceEstiramientosOff" name="FlagHaceEstiramientos" checked="checked"/>
-                                                                    <i></i>NO</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid hidden" id="PreguntaEmbarazo">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">¿Se encuentra embarazada?</label>
-                                                        </div>
-                                                        <div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                            <div class="inline-group text-align-center pull-right">
-                                                                <label class="radio">
-                                                                    <input type="radio" id="FlagEmbarazo" name="FlagEmbarazo"/>
-                                                                    <i></i>SI</label>
-                                                                <label class="radio" style="margin-right: 0px">
-                                                                    <input type="radio" id="FlagEmbarazoOff" name="FlagEmbarazo" checked="checked"/>
-                                                                    <i></i>NO</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">¿En donde presenta mayor desgate su zapatilla? </label>
-                                                        </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 desgaste-zapatilla" style="margin-left: 30%;">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Punta"/>
-                                                                <i></i> <span>Punta</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Dedo interno"/>
-                                                                <i></i> <span>Dedo interno</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Dedo externo"/>
-                                                                <i></i> <span>Dedo externo</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Tolón interno"/>
-                                                                <i></i> <span>Tolón interno</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Tolón externo"/>
-                                                                <i></i> <span>Tolón externo</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Otro"/>
-                                                                <i></i> <span>Otro</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">Terreno predominante de entrenamiento </label>
-                                                        </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 terreno-predominante" style="margin-left: 30%;">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Asalto"/>
-                                                                <i></i> <span>Asalto</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Trail/Trocha"/>
-                                                                <i></i> <span>Trail/Trocha</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Cemento"/>
-                                                                <i></i> <span>Cemento</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Cinta de correr"/>
-                                                                <i></i> <span>Cinta de correr</span>
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="Otro"/>
-                                                                <i></i> <span>Otro</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                        </div>
-                                        <hr/>
-                                        <div class="row padding-top-10">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="col">
-                                                        <div class="col">
-                                                            <h6 class="text-align-left padding-bottom-10">Especifique el tiempo en minutos con el que cuenta para entrenar diariamente</h6>
-                                                        </div>
-                                                    </div>
+                                                    <label class="label text-align-center">Frecuencia cardíaca mínima</label>
                                                 </div>
-                                            </div>
-                                            <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-top-10">
-                                                <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <section class="container-fluid">
-                                                        <div class="agenda" id="AgendaDisponibilidad">
-                                                            <div class="table-responsive">
-                                                                <table class="table table-condensed table-bordered">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th></th>
-                                                                        <th>Lunes</th>
-                                                                        <th>Martes</th>
-                                                                        <th>Miercoles</th>
-                                                                        <th>Jueves</th>
-                                                                        <th>Viernes</th>
-                                                                        <th>Sábado</th>
-                                                                        <th>Domingo</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <!-- Single event in a single day -->
-                                                                    <tr>
-                                                                        <td class="agenda-date active" rowspan="1">
-                                                                            <div class=""><h6>Mañana</h6></div>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    <!-- Multiple events in a single day (note the rowspan) -->
-                                                                    <tr>
-                                                                        <td class="agenda-date active" rowspan="1">
-                                                                            <div class=""><h6>Tarde</h6></div>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="agenda-date active" rowspan="1">
-                                                                            <div class=""><h6>Noche</h6></div>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <input class="text-align-center tiempo-dia" min="0" max="180" type="number"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="agenda-date active" rowspan="1">
-                                                                            <div class=""><h6>Total</h6></div>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                        <td style="background: #eee;">
-                                                                            <input class="text-align-center tiempo-dia"  type="text" readonly="readonly"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </section>
-                                                </section>
                                             </section>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="col">
-                                                        <div class="col">
-                                                            <h6 class="text-align-left padding-bottom-10">Objetivos personales de la preparación:</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row padding-top-10">
-                                            <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <section class="container-fluid">
-                                                        <label class="textarea">
-                                                                <textarea rows="2" id="ObjetivosDescripcion" name="ObjetivosDescripcion" type="text"
-                                                                          placeholder="Escriba sus objetivos personales" class="form-control" maxlength="200"
-                                                                          autocomplete="off"/>
+                                            <section class="col col-2 text-align-center">
+                                                <div class="container-fluid v-center">
+                                                    <div class="col-md-6">
+                                                        <label class="input padding-left-20">
+                                                            <input type="number" id="FrecuenciaCardiacaMaxima" class="text-align-center"/>
                                                         </label>
-                                                    </section>
-                                                </section>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="label padding-5 text-align-center"><i class="fa fa-heartbeat fa-15x txt-color-red txt-color-red"></i></label>
+                                                    </div>
+                                                    <label class="label text-align-center">Frecuencia cardíaca máxima</label>
+                                                </div>
                                             </section>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">4. Entrenamiento</h6>
-                                        <div class="row">
-                                            <section class="col col-4">
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">Frecuencia cardiaca basal</label>
-                                                        </div>
-                                                        <div class="col col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding-right: 0px;">
-                                                            <label class="input">
-                                                                <input id="FrecuenciaCardiaca" name="FrecuenciaCardiaca" type="number" min="0" max="300"
-                                                                       placeholder="" class="form-control"
-                                                                       autocomplete="off"/>
-                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                                <section class="container-fluid">
-                                                    <div class="form-group">
-                                                        <div class="col col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                            <label class="control-label padding-top-5">Frecuencia cardiaca máxima</label>
-                                                        </div>
-                                                        <div class="col col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding-right: 0px;">
-                                                            <label class="input">
-                                                                <input id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" type="number" min="0" max="300"
-                                                                       placeholder="" class="form-control"
-                                                                       autocomplete="off"/>
-                                                                <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </section>
+                                            <section class="col col-2">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">¿Qué tan activo eres? </label>
+                                                            <label class="label padding-top-5">Nivel del atleta:</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 momento-dolor-2" style="margin-left: 30%;">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12" id="NivelAtleta">
                                                             <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox"/>
+                                                                <input type="checkbox" name="checkbox" class="chkNivel"/>
                                                                 <i></i> <span>Básico</span>
                                                             </label>
                                                             <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox"/>
+                                                                <input type="checkbox" name="checkbox" class="chkNivel"/>
                                                                 <i></i> <span>Intermedio</span>
                                                             </label>
                                                             <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox"/>
+                                                                <input type="checkbox" name="checkbox" class="chkNivel"/>
                                                                 <i></i> <span>Avanzado</span>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-4">
+                                            <section class="col col-2">
+                                                <section class="container-fluid text-align-center">
+                                                    <label class="label text-align-center padding-top-5">Fecha inicio:</label>
+                                                    <label class="input"><input type="date" id="MacroFechaInicio"/></label>
+                                                    <label class="label text-align-center padding-top-5">Fecha fin:</label>
+                                                    <label class="input"><input type="date" id="MacroFechaFin"/></label>
+                                                </section>
+                                            </section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid v-center">
+                                                    <h1 class="text-align-center"><b>Semanas</b></h1>
+                                                    <h1 class="text-align-center"><span id="MacroTotalSemanas">0</span></h1>
+                                                </section>
+                                                <section class="container-fluid text-align-center">
+                                                    <a href="javascript:void(0);" class="btn btn-success padding-5" id="btnCalcularSemanas">Calcular semanas</a>
+                                                </section>
+                                            </section>
+                                            <section class="col col-1 margin-0"></section>
+                                        </div>
+                                        <hr/>
+                                        <div class="row padding-o-top-10">
+                                            <section class="col col-1 margin-0"></section>
+                                            <section class="col col-2">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">De los siguientes puntos ¿Cuál cree usted que debe mejorar? </label>
+                                                            <label class="control-label padding-top-5">Distancia de control</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 objetivos" style="margin-left: 30%;">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="1" data-txt="Fuerza"/>
-                                                                <i></i> <span>Fuerza</span>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="2"/>
+                                                                <i></i> <span>2K</span>
                                                             </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="2" data-txt="Velocidad"/>
-                                                                <i></i> <span>Velocidad</span>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="4"/>
+                                                                <i></i> <span>4K</span>
                                                             </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="3" data-txt="Resistencia"/>
-                                                                <i></i> <span>Resistencia</span>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="10"/>
+                                                                <i></i> <span>10K</span>
                                                             </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" value="4" data-txt="Flexibilidad"/>
-                                                                <i></i> <span>Flexibilidad</span>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="21"/>
+                                                                <i></i> <span>21K</span>
+                                                            </label>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="42"/>
+                                                                <i></i> <span>42K</span>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
+                                            </section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Tiempo de control</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-1">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Cadencia</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-1">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">T.C.S.</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid v-center">
+                                                    <label class="label text-align-center padding-top-5">Fecha de desentrenamiento:</label>
+                                                    <label class="input"><input type="text"/></label>
+                                                </section>
+                                                <section class="container-fluid">
+                                                    <label class="label text-align-center padding-top-5">Tiempo por Desentrenamiento:</label>
+                                                    <label class="input"><input type="text"/></label>
+                                                </section>
+                                            </section>
+                                            <section class="col col-3 margin-0"></section>
+                                        </div>
+                                        <hr/>
+                                        <div class="row padding-o-top-10">
+                                            <section class="col col-1 margin-0"></section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Distancia de competencia</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="2"/>
+                                                                <i></i> <span>2K</span>
+                                                            </label>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="4"/>
+                                                                <i></i> <span>4K</span>
+                                                            </label>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="10"/>
+                                                                <i></i> <span>10K</span>
+                                                            </label>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="21"/>
+                                                                <i></i> <span>21K</span>
+                                                            </label>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="42"/>
+                                                                <i></i> <span>42K</span>
+                                                            </label>
+                                                            <label class="checkbox padding-5-10">
+                                                                <input type="checkbox" name="checkbox" value="0"/>
+                                                                <i></i> <span>Otra</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Proyectado</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-1">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Cadencia</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-1">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">T.C.S.</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                            <label class="input padding-top-5">
+                                                                <input type="text"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid v-center">
+                                                    <label class="label text-align-center padding-top-5">F. de mejoría:</label>
+                                                    <label class="input"><input type="text"/></label>
+                                                </section>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">2. Mejoras proyectadas</h6>
+                                        <div class="row padding-top-10">
+                                            <section class="col col-1"></section>
+                                            <section class="col col-5">
+                                                <label class="label text-align-center"><b>Periodización del entrenamiento</b></label>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>%</b></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>Semanas</b></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación general:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="0" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="3" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación específica:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="1" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="4" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="2" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="5" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalPeriodizacion1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalPeriodizacion2"/></label>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-5">
+                                                <label class="label text-align-center"><b>Mejoría de la velocidad</b></label>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>%</b></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>Semanas</b></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación general:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="0" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="3" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación específica:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="1" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="4" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="2" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="5" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalVelocidad1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalVelocidad2"/></label>
+                                                    </div>
+                                                </div>
                                             </section>
                                         </div>
                                         <div class="row padding-top-10">
-                                            <div class="row">
-                                                <h6 class="text-align-center padding-bottom-10">¿Cuáles son los músculos que más le fatigan cuando corre?</h6>
-                                            </div>
+                                            <section class="col col-1"></section>
+                                            <section class="col col-5">
+                                                <label class="label text-align-center"><b>Mejoría de la cadencia</b></label>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>%</b></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>Semanas</b></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación general:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="0" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="3" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación específica:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="1" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="4" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="2" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="5" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalCadencia1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalCadencia2"/></label>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-5">
+                                                <label class="label text-align-center"><b>Mejoría del T.C.S</b></label>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>%</b></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="label padding-top-5 text-align-center"><b>Semanas</b></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación general:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="0" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="3" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación específica:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="1" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="4" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6">
+                                                        <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="2" data-type="1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="5" data-type="2"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalTcs1"/></label>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalTcs2"/></label>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
-                                        <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-top-10">
-                                            <h6>En construcción...</h6>
-                                        </section>
                                     </fieldset>
                                     <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">5. Competencias a participar</h6>
-                                        <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-top-10">
-                                            <section class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <section class="container-fluid">
-                                                    <div id="table" class="table-editable">
-                                                        <table id="TablaDetalle" class="table table-bordered table-responsive-md table-striped text-center">
-                                                            <tr>
-                                                                <th class="text-center">N° <a id="PopDescripcion" href="javascript:void(0);" data-toggle="popover" title="Información" data-content="Por favor completa el campo, no puede estar vacio y debe ingresar un mínimo de 10 letras y un máximo de 100" data-placement="top" data-trigger="hover"><i class="fa fa-fw fa-info"></i></a></th>
-                                                                <th class="text-center">Fecha <a id="PopCantidad" href="javascript:void(0);" data-toggle="popover" title="Información" data-content="Por favor este campo solo puede contener valores enteros mayores a 0" data-placement="top"  data-trigger="hover"><i class="fa fa-fw fa-info"></i></a></th>
-                                                                <th class="text-center">Distancia(En KM) <a id="PopUND" href="javascript:void(0);" data-toggle="popover" title="Información" data-content="Por favor completa el campo, no puede estar vacio" data-placement="top"  data-trigger="hover"><i class="fa fa-fw fa-info"></i></a></th>
-                                                                <th class="text-center">Nombre <a id="PopCantidad2" href="javascript:void(0);" data-toggle="popover" title="Información" data-content="Por favor este campo solo puede contener valores enteros mayores a 0" data-placement="top"  data-trigger="hover"><i class="fa fa-fw fa-info"></i></a></th>
-                                                                <th class="text-center">Tiempo Objetivo<a id="PopCantidad3" href="javascript:void(0);" data-toggle="popover" title="Información" data-content="Por favor este campo solo puede contener valores enteros mayores a 0" data-placement="top"  data-trigger="hover"><i class="fa fa-fw fa-info"></i></a></th>
-                                                                <th class="text-center">Prioridad <a id="PopCantidad33" href="javascript:void(0);" data-toggle="popover" title="Información" data-content="Por favor este campo solo puede contener valores enteros mayores a 0" data-placement="top"  data-trigger="hover"><i class="fa fa-fw fa-info"></i></a></th>
-                                                                <th class="text-center">Opciones </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="pt-3-half">1</td>
-                                                                <td class="padding-7"><input type="date" maxlength="144" minlength="2" data-item="descripcion" class="included fecha-competencia" name="DescripcionDetalle"/></td>
-                                                                <td class="padding-7"><input type="number" maxlength="9" minlength="1" data-item="cantidad" class="included distancia-competencia input-cantidad" value="1" name="CantidadDetalle"/></td>
-                                                                <td class="padding-7"><input type="text" maxlength="99" minlength="1" data-item="unitario" class="included nombre-competencia input-und" name="UNDetalle"/></td>
-                                                                <td class="padding-7"><input type="time" maxlength="5" data-item="unitario" class="included tiempo-objetivo input-und" name="UNDetalle22"/></td>
-                                                                <td class="padding-7"><select class="form-control text-align-center prioridad-competencia"><option class="text-align-center" value="1" selected="selected">Prioritario</option><option value="2" selected="selected">No Prioritario</option></select></td>
-                                                                <td>
-                                                                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0"><i class="fa fa-trash"></i></button></span>
-                                                                </td>
-                                                            </tr>
-                                                            <!-- This is our clonable table line -->
-                                                            <tr class="hide">
-                                                                <td class="pt-3-half">1</td>
-                                                                <td class="padding-7"><input type="date" maxlength="144" minlength="2" data-item="descripcion" class="included fecha-competencia" name="DescripcionDetalle"/></td>
-                                                                <td class="padding-7"><input type="number" maxlength="9" minlength="1" data-item="cantidad" class="included distancia-competencia input-cantidad" value="1" name="CantidadDetalle"/></td>
-                                                                <td class="padding-7"><input type="text" maxlength="99" minlength="1" data-item="unitario" class="included nombre-competencia input-und" name="UNDetalle"/></td>
-                                                                <td class="padding-7"><input type="time" maxlength="5" data-item="unitario" class="included tiempo-objetivo input-und" name="UNDetalle22"/></td>
-                                                                <td class="padding-7"><select class="form-control text-align-center prioridad-competencia"><option class="text-align-center" value="1" selected="selected">Prioritario</option><option value="2" selected="selected">No Prioritario</option></select></td>
-                                                                <td>
-                                                                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0"><i class="fa fa-trash"></i></button></span>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </section>
-                                            </section>
-                                        </section>
+                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">3. Competiciones a participar</h6>
+                                        <div class="row padding-top-10">
+                                            <div class="col col-md-12">
+                                                <table id="TablaCompetencias" class="table table-bordered table-responsive-md table-striped text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">N° <a id="PopDescripcion" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                            <th class="text-center">Fecha <a id="PopCantidad" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                            <th class="text-center">Distancia(KM) <a id="PopUND" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                            <th class="text-center">Nombre <a id="PopCantidad2" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                            <th class="text-center">Tiempo Objetivo<a id="PopCantidad3" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                            <th class="text-center">Prioridad <a id="PopCantidad33" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </fieldset>
                                 </form>
                             </div>
@@ -2003,6 +1829,7 @@ you can add as many as you like
 <script th:src="@{/js/bootbox.min.js}+'?'+${version}"></script>
 <!--<script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>-->
 <script th:src="@{/js/rutina.js}+'?'+${version}"></script>
+<script th:src="@{/js/macro-ciclo.js}+'?'+${version}"></script>
 <script th:src="@{/js/dennys-workout/rf-rutina-edicion.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/

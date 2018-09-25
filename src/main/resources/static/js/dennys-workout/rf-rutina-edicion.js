@@ -42,6 +42,7 @@ const tabRutina = document.querySelector('#myTabRutina');
 const semLineal = document.querySelector('#SemanasLineal');
 const tabGrupoAudios = document.querySelector('#tabGrupoAudios');
 const tabGrupoVideos = document.querySelector('#tabGrupoVideos');
+const tabFichaTecnica = document.querySelector('#tabFichaTecnica');
 const modalMini = document.querySelector('#modalMiniPlantilla');
 const catRutinasDiaIndex = document.querySelector('#CatRutinasDiaIndex');
 const catMisRutinas = document.querySelector('#CatMisRutinas');
@@ -49,6 +50,8 @@ const shortcutRutinario = document.querySelector('#ShortcutRutinario');
 const mainTabs = document.querySelector('#PrincipalesTabs');
 const miniEditor = document.querySelector('#MiniEditor');
 const selectorFzEditor = document.querySelector('#SelectorFzEditor');
+const tablaCompetencias = document.querySelector('#TablaCompetencias');
+const btnCalcularSemanas = document.querySelector('#btnCalcularSemanas');
 
 $(function () {
     init();
@@ -70,6 +73,8 @@ function init(){
         tabRutina.addEventListener('click', principalesEventosTabRutina);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
+        //tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
+        tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         rutinarioCe.addEventListener('click', genericoRutinarioCe);
@@ -81,6 +86,7 @@ function init(){
         shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         miniEditor.addEventListener('click', principalesMiniEditor);
+        btnCalcularSemanas.addEventListener('click', MacroCiclo.calcularSemanas);
         //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
         window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
         instanciarMarcoEditor();
@@ -625,25 +631,9 @@ function instanciarDatosFitnessCliente(){
                         color: "alert",
                     });
                 }else{
-                    if(data.id != 0){
-                        $fechasCompetencia = data.competencias.map(v=>{return parseFromStringToDate(v.fecha)});
-                        $('#Nombres').text(data.nombres);
-                        $('#ApellidoPaterno').text(data.apellidoPaterno);
-                        $('#ApellidoMaterno').text(data.apellidoMaterno);
-                        $('#TipoDocumentoId').text(data.tipoDocumentoId);
-                        $('#NumeroDocumento').text(data.numeroDocumento);
-                        $('#Correo').text(data.correo);
-                        //$('#CodPais').val(data.movil.split(" ")).t $('#Movil').val(data.movil);
-                        $('#TelefonoFijo').text(data.telefonoFijo);
-                        $('#Direccion').text(data.direccion);
-                        $('#FechaNacimiento').text(data.fechaNacimiento);
-                        $('#Username').text(data.username);
-                        //UsuarioFitness
-                        $('#CorreoSecundario').text(data.correoSecundario);
-                        $('#EstadoCivil').text(data.estadoCivil);
-                        $('#Sexo').text(data.sexo);
-                        $('#Imc').text(data.imc);
-                    }
+                    if(data.id != 0)
+                        Ficha.instanciar(data);
+                        MacroCiclo.calcularSemanas();
                 }
             }
         },
@@ -1685,6 +1675,56 @@ function principalesEventosTabGrupoAudios(e){
         const media = eleAudio.getAttribute('data-media');
         const nombreMedia = li.textContent.trim();
         $audiosElegidos.push([ix, media, nombreMedia]);
+    }
+}
+
+function principalesEventosFocusOutTabFichaTecnica(e){
+    const input = e.target;
+    const clases = input.classList;
+    const ix = Number(input.getAttribute('data-index')), tipo = input.getAttribute('data-type'), valor = input.value;
+    if(clases.contains('periodizacion-calc')){
+        if(tipo == 1){
+            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
+            document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
+        }else {
+            const calc = valor*100/Number($('#MacroTotalSemanas').text());
+            document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
+        }
+        document.querySelector(`#tabFichaTecnica #TotalPeriodizacion1`).value = MacroCiclo.calcularTotalesDistribucion(1, 1);
+        document.querySelector(`#tabFichaTecnica #TotalPeriodizacion2`).value = MacroCiclo.calcularTotalesDistribucion(1, 2);
+    }
+    else if(clases.contains('velocidad-calc')){
+        if(tipo == 1){
+            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
+            document.querySelector(`#tabFichaTecnica .velocidad-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
+        }else {
+            const calc = valor*100/Number($('#MacroTotalSemanas').text());
+            document.querySelector(`#tabFichaTecnica .velocidad-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
+        }
+        document.querySelector(`#tabFichaTecnica #TotalVelocidad1`).value = MacroCiclo.calcularTotalesDistribucion(2, 1);
+        document.querySelector(`#tabFichaTecnica #TotalVelocidad2`).value = MacroCiclo.calcularTotalesDistribucion(2, 2);
+    }
+    else if(clases.contains('cadencia-calc')){
+        if(tipo == 1){
+            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
+            document.querySelector(`#tabFichaTecnica .cadencia-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
+        }else {
+            const calc = valor*100/Number($('#MacroTotalSemanas').text());
+            document.querySelector(`#tabFichaTecnica .cadencia-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
+        }
+        document.querySelector(`#tabFichaTecnica #TotalCadencia1`).value = MacroCiclo.calcularTotalesDistribucion(3, 1);
+        document.querySelector(`#tabFichaTecnica #TotalCadencia2`).value = MacroCiclo.calcularTotalesDistribucion(3, 2);
+    }
+    else if(clases.contains('tcs-calc')){
+        if(tipo == 1){
+            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
+            document.querySelector(`#tabFichaTecnica .tcs-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
+        }else {
+            const calc = valor*100/Number($('#MacroTotalSemanas').text());
+            document.querySelector(`#tabFichaTecnica .tcs-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
+        }
+        document.querySelector(`#tabFichaTecnica #TotalTcs1`).value = MacroCiclo.calcularTotalesDistribucion(4, 1);
+        document.querySelector(`#tabFichaTecnica #TotalTcs2`).value = MacroCiclo.calcularTotalesDistribucion(4, 2);
     }
 }
 

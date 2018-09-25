@@ -341,6 +341,10 @@ String.prototype.toHHMMSS = function () {
     return hours + ':' + minutes + ':' + seconds;
 }
 
+function getFechaFormatoString(d) {
+    return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
+}
+
 function setFechaActual(array) {
     let dateToString = d => `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
     array.forEach(v => {
@@ -449,4 +453,17 @@ function notificacionesRutinaSegunResponseCode(resCode){
         default:
             break;
     }
+}
+
+function calcularEdadPorFechaNacimiento(fechaNac){
+    const actual = new Date();
+    const atleta = parseFromStringToDate2(fechaNac);
+    let edad = actual.getFullYear() - atleta.getFullYear();
+    if(actual.getMonth()>atleta.getMonth()){}
+    else if(actual.getMonth()==atleta.getMonth()){
+        if(actual.getDate()>=atleta.getDate()){}else{--edad;}
+    }else{
+        --edad;
+    }
+    return edad;
 }

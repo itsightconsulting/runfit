@@ -15,6 +15,7 @@ public interface UsuarioFitnessRepository extends JpaRepository<UsuarioFitness, 
     @EntityGraph(value = "usuarioFitness.usuario")
     List<UsuarioFitness> findAll();
 
-    @Query("SELECT UF FROM UsuarioFitness UF WHERE UF.usuario.id = ?1")
+    //@Query("SELECT UF FROM UsuarioFitness UF WHERE UF.usuario.id = ?1")
+    @EntityGraph(value = "usuarioFitness.usuario")
     UsuarioFitness findByUsuarioId(int usuarioId);
 }
