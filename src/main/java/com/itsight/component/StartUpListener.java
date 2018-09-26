@@ -1,6 +1,8 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
+import com.itsight.domain.jsonb.PorcKiloTipo;
+import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TipoDescuentoRepository;
@@ -94,6 +96,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private KilometrajeBaseService kilometrajeBaseService;
+
+    @Autowired
+    private PorcentajesKilometrajeService porcentajesKilometrajeService;
 
     @Value("${main.repository}")
     private String mainRoute;
@@ -695,6 +700,39 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             userRepository.save(secUserCliente);
             //Guardando al cliente en la red del entrenador creado anteriormente
             redFitnessService.save( new RedFitness(usuario.getUsername(), usuario1.getId()));
+
+            //Agregando sus porcentajes base para la creación de macro-ciclos
+            if(porcentajesKilometrajeService.findOne(1) == null){
+                PorcentajesKilometraje porcentajes;
+                Integer[] maratonDistancias = {10, 21, 42};
+
+                for(int i=0; i<3; i++){
+                    porcentajes = new PorcentajesKilometraje();
+                    porcentajes.setDistancia(maratonDistancias[i]);
+                    porcentajes.setTrainer(new Usuario(2));
+                    List<PorcKiloTipo> lstPorcKiloTipo = new ArrayList<>();
+                    for(int k=1; k<4; k++){
+                        PorcKiloTipo porcKiloTipo = new PorcKiloTipo();
+                        porcKiloTipo.setTipo(k);
+                        List<PorcKiloTipoSema> lstPorcKiloTipoSema = new ArrayList<>();
+                        for(int y=4; y<21; y++) {
+                            PorcKiloTipoSema porcKiloTipoSema = new PorcKiloTipoSema();
+                            porcKiloTipoSema.setTotalSemanas(y);
+                            List<Integer> porcents = new ArrayList<>(y);
+                            for(int s=0; s<y;s++){
+                                porcents.add(70-s);
+                            }
+                            porcKiloTipoSema.setPorcentajes(porcents);
+                            lstPorcKiloTipoSema.add(porcKiloTipoSema);
+                        }
+                        porcKiloTipo.setSemanas(lstPorcKiloTipoSema);
+                        lstPorcKiloTipo.add(porcKiloTipo);
+                    }
+                    porcentajes.setPorcKiloTipos(lstPorcKiloTipo);
+                    porcentajesKilometrajeService.save(porcentajes);
+                }
+            }
+
         } else {
             System.out.println("> Record already exist <");
         }

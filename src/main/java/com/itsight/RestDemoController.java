@@ -52,6 +52,9 @@ public class RestDemoController {
     @Autowired
     private RedFitnessService redFitnessService;
 
+    @Autowired
+    private PorcentajesKilometrajeService porcentajesKilometrajeService;
+
     @GetMapping("/presentacion")
     public @ResponseBody
     List<ProductoPresentacion> listaPP() {
@@ -141,6 +144,11 @@ public class RestDemoController {
     @GetMapping(value = "/rutina/get/primera-semana/{semanaId}")
     public @ResponseBody Semana obtenerPrimeraSemanaRutina(@PathVariable int semanaId, HttpSession session) {
         return semanaService.findOneWithDaysById(semanaId);
+    }
+
+    @GetMapping(value = "/porcentajes/kilometro/{trainerId}")
+    public @ResponseBody List<PorcentajesKilometraje> obtenerPorceKiloByTrainerId(@PathVariable int trainerId, HttpSession session) {
+        return porcentajesKilometrajeService.findAllByUsuarioId(trainerId);
     }
 
 }

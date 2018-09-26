@@ -52,6 +52,7 @@ const miniEditor = document.querySelector('#MiniEditor');
 const selectorFzEditor = document.querySelector('#SelectorFzEditor');
 const tablaCompetencias = document.querySelector('#TablaCompetencias');
 const btnCalcularSemanas = document.querySelector('#btnCalcularSemanas');
+const btnGenerarMacroCiclo = document.querySelector('#btnGenerarMacroCiclo');
 
 $(function () {
     init();
@@ -87,6 +88,7 @@ function init(){
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         miniEditor.addEventListener('click', principalesMiniEditor);
         btnCalcularSemanas.addEventListener('click', MacroCiclo.calcularSemanas);
+        btnGenerarMacroCiclo.addEventListener('click', MacroCiclo.generar);
         //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
         window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
         instanciarMarcoEditor();
@@ -631,9 +633,10 @@ function instanciarDatosFitnessCliente(){
                         color: "alert",
                     });
                 }else{
-                    if(data.id != 0)
+                    if(data.id != 0) {
                         Ficha.instanciar(data);
                         MacroCiclo.calcularSemanas();
+                    }
                 }
             }
         },
@@ -1681,50 +1684,18 @@ function principalesEventosTabGrupoAudios(e){
 function principalesEventosFocusOutTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
-    const ix = Number(input.getAttribute('data-index')), tipo = input.getAttribute('data-type'), valor = input.value;
+
     if(clases.contains('periodizacion-calc')){
-        if(tipo == 1){
-            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
-            document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix+3}"]`).value = calc.toFixed(2);
-        }else {
-            const calc = valor*100/Number($('#MacroTotalSemanas').text());
-            document.querySelector(`#tabFichaTecnica .periodizacion-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
-        }
-        document.querySelector(`#tabFichaTecnica #TotalPeriodizacion1`).value = MacroCiclo.calcularTotalesDistribucion(1, 1);
-        document.querySelector(`#tabFichaTecnica #TotalPeriodizacion2`).value = MacroCiclo.calcularTotalesDistribucion(1, 2);
+        MacroCiclo.calcularProyecciones(input, 1);
     }
     else if(clases.contains('velocidad-calc')){
-        if(tipo == 1){
-            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
-            document.querySelector(`#tabFichaTecnica .velocidad-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
-        }else {
-            const calc = valor*100/Number($('#MacroTotalSemanas').text());
-            document.querySelector(`#tabFichaTecnica .velocidad-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
-        }
-        document.querySelector(`#tabFichaTecnica #TotalVelocidad1`).value = MacroCiclo.calcularTotalesDistribucion(2, 1);
-        document.querySelector(`#tabFichaTecnica #TotalVelocidad2`).value = MacroCiclo.calcularTotalesDistribucion(2, 2);
+        MacroCiclo.calcularProyecciones(input, 2);
     }
     else if(clases.contains('cadencia-calc')){
-        if(tipo == 1){
-            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
-            document.querySelector(`#tabFichaTecnica .cadencia-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
-        }else {
-            const calc = valor*100/Number($('#MacroTotalSemanas').text());
-            document.querySelector(`#tabFichaTecnica .cadencia-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
-        }
-        document.querySelector(`#tabFichaTecnica #TotalCadencia1`).value = MacroCiclo.calcularTotalesDistribucion(3, 1);
-        document.querySelector(`#tabFichaTecnica #TotalCadencia2`).value = MacroCiclo.calcularTotalesDistribucion(3, 2);
+        MacroCiclo.calcularProyecciones(input, 3);
     }
     else if(clases.contains('tcs-calc')){
-        if(tipo == 1){
-            const calc = valor*Number($('#MacroTotalSemanas').text())/100;
-            document.querySelector(`#tabFichaTecnica .tcs-calc[data-index="${ix+3}"]`).value = Math.floor(calc);
-        }else {
-            const calc = valor*100/Number($('#MacroTotalSemanas').text());
-            document.querySelector(`#tabFichaTecnica .tcs-calc[data-index="${ix-3}"]`).value = calc.toFixed(2);
-        }
-        document.querySelector(`#tabFichaTecnica #TotalTcs1`).value = MacroCiclo.calcularTotalesDistribucion(4, 1);
-        document.querySelector(`#tabFichaTecnica #TotalTcs2`).value = MacroCiclo.calcularTotalesDistribucion(4, 2);
+        MacroCiclo.calcularProyecciones(input, 4);
     }
 }
 

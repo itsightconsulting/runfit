@@ -936,16 +936,16 @@
                                                             <label class="label padding-top-5">Nivel del atleta:</label>
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12" id="NivelAtleta">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" class="chkNivel"/>
+                                                            <label class="radio">
+                                                                <input type="radio" name="checkbox" class="chkNivel"/>
                                                                 <i></i> <span>Básico</span>
                                                             </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" class="chkNivel"/>
+                                                            <label class="radio">
+                                                                <input type="radio" name="checkbox" class="chkNivel"/>
                                                                 <i></i> <span>Intermedio</span>
                                                             </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" name="checkbox" class="chkNivel"/>
+                                                            <label class="radio">
+                                                                <input type="radio" name="checkbox" class="chkNivel"/>
                                                                 <i></i> <span>Avanzado</span>
                                                             </label>
                                                         </div>
@@ -967,6 +967,7 @@
                                                 </section>
                                                 <section class="container-fluid text-align-center">
                                                     <a href="javascript:void(0);" class="btn btn-success padding-5" id="btnCalcularSemanas">Calcular semanas</a>
+                                                    <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5" id="btnGenerarMacroCiclo">Generar Macro</a>
                                                 </section>
                                             </section>
                                             <section class="col col-1 margin-0"></section>
@@ -1104,7 +1105,7 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Distancia de competencia</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center" id="DistanciaMainCompetencia">
                                                             <label class="checkbox padding-5-10">
                                                                 <input type="checkbox" name="checkbox" value="2"/>
                                                                 <i></i> <span>2K</span>
@@ -1228,11 +1229,11 @@
                                             </section>
                                         </div>
                                     </fieldset>
-                                    <fieldset>
+                                    <fieldset id="Proyecciones">
                                         <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">2. Mejoras proyectadas</h6>
-                                        <div class="row padding-top-10">
+                                        <div class="row padding-top-10" style="border-bottom: 1px solid grey; !important">
                                             <section class="col col-1"></section>
-                                            <section class="col col-5">
+                                            <section class="col col-5" style="border-right: 1px solid grey; !important">
                                                 <label class="label text-align-center"><b>Periodización del entrenamiento</b></label>
                                                 <div class="container-fluid">
                                                     <div class="col col-md-6"></div>
@@ -1343,8 +1344,7 @@
                                         </div>
                                         <div class="row padding-top-10">
                                             <section class="col col-1"></section>
-                                            <section class="col col-5">
-                                                <label class="label text-align-center"><b>Mejoría de la cadencia</b></label>
+                                            <section class="col col-5" style="border-right: 1px solid grey; !important">                                                <label class="label text-align-center"><b>Mejoría de la cadencia</b></label>
                                                 <div class="container-fluid">
                                                     <div class="col col-md-6"></div>
                                                     <div class="col col-md-3">

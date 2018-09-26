@@ -1,8 +1,11 @@
 package com.itsight.service.impl;
 
+import com.itsight.domain.PorcentajesKilometraje;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
 import com.itsight.domain.Usuario;
+import com.itsight.domain.jsonb.PorcKiloTipo;
+import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
@@ -10,6 +13,7 @@ import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.UsuarioRepository;
 import com.itsight.service.EmailService;
+import com.itsight.service.PorcentajesKilometrajeService;
 import com.itsight.service.RolService;
 import com.itsight.service.UsuarioService;
 import com.itsight.util.MailContents;
@@ -38,6 +42,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
 
     private EmailService emailService;
 
+    private PorcentajesKilometrajeService porcentajesKilometrajeService;
+
     @Value("${domain.name}")
     private String domainName;
 
@@ -47,7 +53,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
             SecurityRoleRepository securityRoleRepository,
             EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository,
             RolService rolService,
-            EmailService emailService) {
+            EmailService emailService,
+            PorcentajesKilometrajeService porcentajesKilometrajeService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
@@ -55,6 +62,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
         this.especificacionSubCategoriaRepository = especificacionSubCategoriaRepository;
         this.rolService = rolService;
         this.emailService = emailService;
+        this.porcentajesKilometrajeService = porcentajesKilometrajeService;
     }
 
     @Override
@@ -214,7 +222,11 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
             //Generando las mini_plantillas al entrenador en caso lo sea
             if(flagTrainer == 1){
                 cargarRutinarioCe(usuario.getId());
+                //Generando los porcentajes kilometricos para macro-ciclo
+                agregandoPorcentajesK(usuario);
             }
+
+
             //Enviando correo al nuevo usuario
             StringBuilder sb = MailContents.contenidoNuevoUsuario(usuario.getUsername(), originalPassword, usuario.getTipoUsuario().getId(), domainName);
             emailService.enviarCorreoInformativo("Dennys Workout Platform", usuario.getCorreo(), sb.toString());
@@ -362,6 +374,37 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     @Override
     public Usuario findByUsername(String username) {
         return repository.findByUsername(username);
+    }
+
+    public void agregandoPorcentajesK(Usuario trainer){
+        PorcentajesKilometraje porcentajes;
+        Integer[] maratonDistancias = {10, 21, 42};
+
+        for(int i=0; i<3; i++){
+            porcentajes = new PorcentajesKilometraje();
+            porcentajes.setDistancia(maratonDistancias[i]);
+            porcentajes.setTrainer(trainer);
+            List<PorcKiloTipo> lstPorcKiloTipo = new ArrayList<>();
+            for(int k=1; k<4; k++){
+                PorcKiloTipo porcKiloTipo = new PorcKiloTipo();
+                porcKiloTipo.setTipo(k);
+                List<PorcKiloTipoSema> lstPorcKiloTipoSema = new ArrayList<>();
+                for(int y=4; y<21; y++) {
+                    PorcKiloTipoSema porcKiloTipoSema = new PorcKiloTipoSema();
+                    porcKiloTipoSema.setTotalSemanas(y);
+                    List<Integer> porcents = new ArrayList<>(y);
+                    for(int s=0; s<y;s++){
+                        porcents.add(70-s);
+                    }
+                    porcKiloTipoSema.setPorcentajes(porcents);
+                    lstPorcKiloTipoSema.add(porcKiloTipoSema);
+                }
+                porcKiloTipo.setSemanas(lstPorcKiloTipoSema);
+                lstPorcKiloTipo.add(porcKiloTipo);
+            }
+            porcentajes.setPorcKiloTipos(lstPorcKiloTipo);
+            porcentajesKilometrajeService.save(porcentajes);
+        }
     }
 
 }

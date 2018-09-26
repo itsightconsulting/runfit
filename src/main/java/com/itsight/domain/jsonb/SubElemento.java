@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeName("subelementos")
+@JsonTypeName("subElementos")
 public class SubElemento implements Serializable {
 
     private String nombre;
