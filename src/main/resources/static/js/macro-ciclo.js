@@ -73,6 +73,18 @@ MacroCiclo = (function(){
                 if(!v.parentElement.classList.contains('state-success'))
                     validado = false;
             })
+            const mainContainer = document.querySelector('#PorcentajesKilometraje');
+            mainContainer.appendChild(htmlStringToElement(`<input id="W" type="text" class="slider slider-danger padding-5" value=""
+                                                               data-slider-min="100"
+                                                               data-slider-max="0"
+                                                               data-slider-step="2"
+                                                               data-slider-value="50"
+                                                               data-slider-orientation="vertical"
+                                                               data-slider-selection="after"
+                                                               data-slider-handle="square"
+                                                               data-slider-tooltip="hide" data-index="KT3"/>`));
+                $('#W').slider();
+
             if(validado && Ficha.obtenerNivelAtleta() != undefined) {
                 $.smallBox({color: "success", content: "<b>Se ha generado con éxito</b>", color: "#73f194"});
             }else{

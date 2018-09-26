@@ -972,6 +972,43 @@
                                             </section>
                                             <section class="col col-1 margin-0"></section>
                                         </div>
+                                        <div class="row">
+                                            <div class="container-fluid" id="PorcentajesKilometraje2">
+                                                <div class="">
+                                                    <span class="padding-5">
+                                                                <input type="text" class="slider slider-danger" value=""
+                                                                       data-slider-min="0"
+                                                                       data-slider-max="100"
+                                                                       data-slider-step="2"
+                                                                       data-slider-value="25"
+                                                                       data-slider-orientation="vertical"
+                                                                       data-slider-selection="after"
+                                                                       data-slider-handle="square"
+                                                                       data-slider-tooltip="hide" data-index="KT1"/>
+</span>
+                                                    <span class="padding-5">
+
+                                                        <input type="text" class="slider slider-danger" value=""
+                                                               data-slider-min="0"
+                                                               data-slider-max="100"
+                                                               data-slider-step="2"
+                                                               data-slider-value="50"
+                                                               data-slider-orientation="vertical"
+                                                               data-slider-selection="after"
+                                                               data-slider-handle="square"
+                                                               data-slider-tooltip="hide" data-index="KT2"/>
+                                                    </span>
+                                                    <span id="PorcentajesKilometraje" class="padding-5">
+
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <label id="KT1" class="padding-5">75%</label>
+                                                    <label id="KT2" class="padding-5">50%</label>
+                                                    <label id="KT3" class="padding-5">50%</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <hr/>
                                         <div class="row padding-o-top-10">
                                             <section class="col col-1 margin-0"></section>
@@ -1824,9 +1861,8 @@ you can add as many as you like
 <script th:replace="html-commons/js :: fg-js"/>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/perfect-sb/perfect-scrollbar.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/plugin/jquery-nestable/jquery.nestable.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/summernote/summernote.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/bootbox.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}+'?'+${version}"></script>
 <!--<script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>-->
 <script th:src="@{/js/rutina.js}+'?'+${version}"></script>
 <script th:src="@{/js/macro-ciclo.js}+'?'+${version}"></script>
