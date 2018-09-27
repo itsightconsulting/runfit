@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.KilometrajeBase;
+import com.itsight.domain.PorcentajesKilometraje;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.KilometrajeBaseRepository;
 import com.itsight.service.KilometrajeBaseService;
@@ -101,5 +102,10 @@ public class KilometrajeBaseServiceImpl extends BaseServiceImpl<KilometrajeBaseR
     @Override
     public void actualizarFlagActivoById(int id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public List<KilometrajeBase> findAllByNivelAndDistancia(int nivel, int distancia) {
+        return repository.findAllByNivelAndDistancia(nivel, distancia);
     }
 }

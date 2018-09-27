@@ -41,7 +41,6 @@ public class KilometrajeBase implements Serializable {
     @Column(updatable = false)
     private int etapa;
     @Column(precision = 5, scale = 2)
-    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     private double kilometraje;
 
     public KilometrajeBase() {}

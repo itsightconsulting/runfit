@@ -578,8 +578,26 @@
 
         #GraficoTemporada {
             width: 100%;
-            height: 500px;
+            height: 300px;
             text-align: center;
+        }
+
+        .slider-handle{
+            background: #8CE2A3 !important;
+        }
+
+        .slider.slider-vertical{
+            height: 160px;
+        }
+
+        .slider-warning+.slider-track>.slider-selection{
+            background: #9cd1ff !important;
+        }
+        .slider-danger+.slider-track>.slider-selection{
+            background: #ed8989 !important;
+        }
+        .slider-success+.slider-track>.slider-selection{
+            background: #b6f9a6 !important;
         }
 
     </style>
@@ -908,7 +926,6 @@
                                             </section>
                                         </div>
                                         <div class="row">
-                                            <section class="col col-1 margin-0"></section>
                                             <section class="col col-2 text-align-center">
                                                 <div class="container-fluid v-center">
                                                     <div class="col-md-6">
@@ -943,16 +960,39 @@
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12" id="NivelAtleta">
                                                             <label class="radio">
-                                                                <input type="radio" name="checkbox" class="chkNivel"/>
+                                                                <input type="radio" name="checkbox1" class="chkNivel" value="1"/>
                                                                 <i></i> <span>Básico</span>
                                                             </label>
                                                             <label class="radio">
-                                                                <input type="radio" name="checkbox" class="chkNivel"/>
+                                                                <input type="radio" name="checkbox1" class="chkNivel" value="2"/>
                                                                 <i></i> <span>Intermedio</span>
                                                             </label>
                                                             <label class="radio">
-                                                                <input type="radio" name="checkbox" class="chkNivel"/>
+                                                                <input type="radio" name="checkbox1" class="chkNivel" value="3"/>
                                                                 <i></i> <span>Avanzado</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                            <section class="col col-2">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="label padding-top-5">Distancia:</label>
+                                                        </div>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12" id="DistanciaRutina">
+                                                            <label class="radio">
+                                                                <input type="radio" name="checkbox" class="chkDistancia" value="10"/>
+                                                                <i></i> <span>10 KM</span>
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="checkbox" class="chkDistancia" value="21"/>
+                                                                <i></i> <span>21 KM</span>
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="checkbox" class="chkDistancia" value="42"/>
+                                                                <i></i> <span>42 KM</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -976,10 +1016,36 @@
                                                     <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5" id="btnGenerarMacroCiclo">Generar Macro</a>
                                                 </section>
                                             </section>
-                                            <section class="col col-1 margin-0"></section>
                                         </div>
                                         <!-- GRAFICO TEMPORADA-->
-                                        <div id="GraficoTemporada"></div>
+                                        <div class="row hidden" id="InicialMacro">
+                                            <div class="container-fluid">
+                                                <section class="col col-4">
+                                                </section>
+                                                <section class="col col-8">
+                                                    <div class="panel-group smart-accordion-default ">
+                                                        <div class="panel panel-default rf-dia-elemento " data-index="1" data-type="2" data-kms="0">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse33" class="" aria-expanded="true">
+                                                                        <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
+                                                                        <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
+                                                                        <span class="rf-dia-elemento-nombre padding-10">
+                                                                            <i class="fa fa-lg fa-bar-chart-o pull-left text-primary padding-top-5"></i>
+                                                                            <i class="fa fa-lg fa-fw fa-refresh pull-right text-primary padding-top-5 refrescar-grafico"></i>
+                                                                            Distribución de volumen de kilómetros por semana
+                                                                        </span>
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapse33" class="panel-collapse collapse in" aria-expanded="true">
+                                                                <div class="panel-body" id="GraficoTemporada" style="padding: 3px 0px !important"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
                                         <!-- END GRAFICO TEMPORADA-->
                                         <div class="row">
                                             <div class="container-fluid" id="PorcentajesKilometraje">

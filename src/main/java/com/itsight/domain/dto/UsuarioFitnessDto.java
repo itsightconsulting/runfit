@@ -21,6 +21,7 @@ public class UsuarioFitnessDto implements Serializable {
     private BigDecimal peso;
     private int talla;
     private int imc;
+    private int nivel;
     private List<CondicionMejora> mejoras;
     private String tiempoUnKilometro;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)

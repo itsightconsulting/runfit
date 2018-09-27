@@ -57,6 +57,8 @@ public class UsuarioFitness implements Serializable {
     private int talla;
     @Column(nullable = false)
     private int imc;
+    @Column(nullable = false)
+    private int nivel;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<CondicionMejora> mejoras;

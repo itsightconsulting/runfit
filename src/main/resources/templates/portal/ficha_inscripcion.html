@@ -893,17 +893,17 @@
                                                             <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                                 <label class="control-label padding-top-5">¿Qué tan activo eres? </label>
                                                             </div>
-                                                            <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 momento-dolor-2" style="margin-left: 30%;">
+                                                            <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 nivel-atleta" style="margin-left: 30%;">
                                                                 <label class="checkbox">
-                                                                    <input type="checkbox" name="checkbox"/>
+                                                                    <input type="checkbox" name="checkbox" value="1"/>
                                                                     <i></i> <span>Básico</span>
                                                                 </label>
                                                                 <label class="checkbox">
-                                                                    <input type="checkbox" name="checkbox"/>
+                                                                    <input type="checkbox" name="checkbox" value="2"/>
                                                                     <i></i> <span>Intermedio</span>
                                                                 </label>
                                                                 <label class="checkbox">
-                                                                    <input type="checkbox" name="checkbox"/>
+                                                                    <input type="checkbox" name="checkbox" value="3"/>
                                                                     <i></i> <span>Avanzado</span>
                                                                 </label>
                                                             </div>
@@ -1181,8 +1181,6 @@
 
     function registro() {
         if ($("#frm_registro").valid()) {
-
-
             let params = {};
             params.usuario = {};
             params.condicionAnatomica = {};
@@ -1219,6 +1217,7 @@
             params.mejoras = obtenerObjetivos(document.querySelector('.objetivos'));
             params.frecuenciaComunicacion = obtenerFrecuenciaComunicacion(document.querySelectorAll('.frecuencia-comunicacion input'));
             params.viaConexion = obtenerMedioDescubridor(document.querySelectorAll('.via-descubrimiento input'));
+            params.nivel = obtenerValorFromChecksGenerico(document.querySelectorAll('.nivel-atleta input'));
             params.competencias = obtenerCompetencias();
             //UsuarioFitness->CondicionAnatomica
             params.condicionAnatomica.flagPadeceDolor = $('#FlagPadeceDolor').is(':checked');
@@ -1436,6 +1435,14 @@
             k = i;
         }});
         return ++k;
+    }
+
+    function obtenerValorFromChecksGenerico(checks){
+        let k=0;
+        Array.from(checks).forEach((v,i)=>{if(v.checked){
+            k = v.value;
+        }});
+        return k;
     }
 
     function obtenerCompetencias(){

@@ -27,6 +27,8 @@ let $fechasCompetencia = [];
 let $eleGenerico;
 let $estilosCopiados = [];
 let $statusCopy = false;
+let $kilometrajeBase = [];
+let $semCalculoMacro = {};
 
 
 //Contenedores y constantes
@@ -53,6 +55,8 @@ const selectorFzEditor = document.querySelector('#SelectorFzEditor');
 const tablaCompetencias = document.querySelector('#TablaCompetencias');
 const btnCalcularSemanas = document.querySelector('#btnCalcularSemanas');
 const btnGenerarMacroCiclo = document.querySelector('#btnGenerarMacroCiclo');
+const nivelAtletaRdBtn = document.querySelector('#NivelAtleta');
+const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
 
 $(function () {
     init();
@@ -74,7 +78,7 @@ function init(){
         tabRutina.addEventListener('click', principalesEventosTabRutina);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
-        //tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
+        tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
         tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
@@ -89,6 +93,8 @@ function init(){
         miniEditor.addEventListener('click', principalesMiniEditor);
         btnCalcularSemanas.addEventListener('click', MacroCiclo.calcularSemanas);
         btnGenerarMacroCiclo.addEventListener('click', MacroCiclo.generar);
+        Array.from(nivelAtletaRdBtn.querySelectorAll('.chkNivel')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
+        Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
         //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
         window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
         instanciarMarcoEditor();
@@ -711,6 +717,28 @@ async function instanciarPorcentajesKilometraje(distancia){
             complete: function () {}
         });
     })
+}
+
+function instanciarKilometrajeBase(distancia, nivel){
+    const o  = {};
+    o.distancia = distancia;
+    o.nivelAtleta = nivel;
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'calculo/kilometraje/base/obtener',
+        dataType: "json",
+        data: o,
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                $kilometrajeBase = data;
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
 }
 
 function generandoCategoriaVideos(catsVideo){
@@ -1702,7 +1730,16 @@ function principalesEventosTabGrupoAudios(e){
         $audiosElegidos.push([ix, media, nombreMedia]);
     }
 }
+function principalesEventosTabFichaTecnica(e){
+    const input = e.target;
+    const clases = input.classList;
 
+    if(clases.contains('refrescar-grafico')) {
+        e.stopPropagation();
+        const base = MacroCiclo.obtenerDatosMacroBase();
+        MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));
+    }
+}
 function principalesEventosFocusOutTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
@@ -2360,6 +2397,12 @@ function principalesAlCambiarTab(e){
     }
     else if(e.target.tagName === "A"){
         document.querySelector('#OpsAdic').classList.add('hidden');
+        if(input.getAttribute('href') == '#tabFichaTecnica'){
+            if($kilometrajeBase.length == 0){
+                const base = MacroCiclo.obtenerDatosMacroBase();
+                instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+            }
+        }
     }
 }
 
