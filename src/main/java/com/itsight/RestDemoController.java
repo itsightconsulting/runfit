@@ -146,9 +146,9 @@ public class RestDemoController {
         return semanaService.findOneWithDaysById(semanaId);
     }
 
-    @GetMapping(value = "/porcentajes/kilometro/{trainerId}")
-    public @ResponseBody List<PorcentajesKilometraje> obtenerPorceKiloByTrainerId(@PathVariable int trainerId, HttpSession session) {
-        return porcentajesKilometrajeService.findAllByUsuarioId(trainerId);
+    @GetMapping(value = "/porcentajes/kilometro")
+    public @ResponseBody List<PorcentajesKilometraje> obtenerPorceKiloByTrainerId(HttpSession session) {
+        return porcentajesKilometrajeService.findAllByUsuarioId((int) session.getAttribute("id"));
     }
 
 }

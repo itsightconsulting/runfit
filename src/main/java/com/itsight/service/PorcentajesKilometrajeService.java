@@ -8,4 +8,6 @@ import java.util.List;
 public interface PorcentajesKilometrajeService extends BaseService<PorcentajesKilometraje> {
 
     List<PorcentajesKilometraje> findAllByUsuarioId(int trainerId);
+
+    PorcentajesKilometraje findByTrainerIdAndDistancia(int trainerId, int parseInt);
 }

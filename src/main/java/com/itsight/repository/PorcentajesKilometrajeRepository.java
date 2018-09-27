@@ -10,4 +10,6 @@ import java.util.List;
 public interface PorcentajesKilometrajeRepository extends JpaRepository<PorcentajesKilometraje, Integer> {
 
     List<PorcentajesKilometraje> findAllByTrainerId(int trainerId);
+
+    PorcentajesKilometraje findByTrainerIdAndDistancia(int trainerId, int distancia);
 }

@@ -691,6 +691,28 @@ function instanciarGrupoVideos(){
     });
 }
 
+async function instanciarPorcentajesKilometraje(distancia){
+    return new Promise((res, rej)=>{
+        $.ajax({
+            type: 'GET',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + 'calculo/porcentajes-kilo/obtener/'+distancia,
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    notificacionesRutinaSegunResponseCode(data);
+                    res(data);
+                }
+            },
+            error: function (xhr) {
+                rej("fail");
+                exception(xhr);
+            },
+            complete: function () {}
+        });
+    })
+}
+
 function generandoCategoriaVideos(catsVideo){
     let rawSubCategoriasHTML = '',
         rawGruposAElegirHTML = '<div class="container-fluid">';

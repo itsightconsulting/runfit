@@ -106,4 +106,9 @@ public class PorcentajesKilometrajeServiceImpl extends BaseServiceImpl<Porcentaj
     public List<PorcentajesKilometraje> findAllByUsuarioId(int trainerId) {
         return repository.findAllByTrainerId(trainerId);
     }
+
+    @Override
+    public PorcentajesKilometraje findByTrainerIdAndDistancia(int trainerId, int distancia) {
+        return repository.findByTrainerIdAndDistancia(trainerId, distancia);
+    }
 }

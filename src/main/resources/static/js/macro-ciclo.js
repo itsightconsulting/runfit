@@ -73,23 +73,68 @@ MacroCiclo = (function(){
                 if(!v.parentElement.classList.contains('state-success'))
                     validado = false;
             })
-            const mainContainer = document.querySelector('#PorcentajesKilometraje');
-            mainContainer.appendChild(htmlStringToElement(`<input id="W" type="text" class="slider slider-danger padding-5" value=""
-                                                               data-slider-min="100"
-                                                               data-slider-max="0"
-                                                               data-slider-step="2"
-                                                               data-slider-value="50"
-                                                               data-slider-orientation="vertical"
-                                                               data-slider-selection="after"
-                                                               data-slider-handle="square"
-                                                               data-slider-tooltip="hide" data-index="KT3"/>`));
-                $('#W').slider();
 
-            if(validado && Ficha.obtenerNivelAtleta() != undefined) {
+            const mainContainer = document.querySelector('#PorcentajesKilometraje');
+            if(mainContainer.children.length == 1){
+                mainContainer.children[0].remove();
+            }
+            const base = MacroCiclo.obtenerDatosMacroBase();
+            instanciarPorcentajesKilometraje(base.distancia).then(porcentajes=>{
+                //Filtrando porcentajes
+                const porcentajesTrainer = [{},{},{}];
+                for(let i=0; i<porcentajesTrainer.length;i++){
+                    porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[base.periodizacion[i]-4];//1+ por que el index comienza en 0
+                }
+                mainContainer.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo(base, porcentajesTrainer)));
+                $('.slider').slider();
+                MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada());
+            })
+            /*if(validado && Ficha.obtenerNivelAtleta() != undefined) {
                 $.smallBox({color: "success", content: "<b>Se ha generado con éxito</b>", color: "#73f194"});
             }else{
                 $.smallBox({color: "alert", content: "Error..."});
-            }
+            }*/
+        },
+        getObjParaGraficoTemporada: ()=>{
+            return Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
+                return {numSem: i+1, kms: Number(v.textContent)}
+            });
+        },
+        instanciarGraficoTemporada: (temporada)=>{
+
+            var chart = AmCharts.makeChart( "GraficoTemporada", {
+                "type": "serial",
+                "theme": "light",
+                "dataProvider": temporada,
+                "valueAxes": [ {
+                    "gridColor": "#FFFFFF",
+                    "gridAlpha": 0.2,
+                    "dashLength": 0,
+                    "capMaximum": 100,
+                    "capMinimum": 0,
+                } ],
+                "gridAboveGraphs": true,
+                "startDuration": 1,
+                "graphs": [ {
+                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "fillAlphas": 0.8,
+                    "lineAlpha": 0.2,
+                    "type": "column",
+                    "valueField": "kms"
+                } ],
+                "chartCursor": {
+                    "categoryBalloonEnabled": false,
+                    "cursorAlpha": 0,
+                    "zoomable": false
+                },
+                "categoryField": "numSem",
+                "categoryAxis": {
+                    "gridPosition": "start",
+                    "gridAlpha": 0,
+                    "tickPosition": "start",
+                    "tickLength": 20
+                },
+            })
         },
         calcularSimulacionSemanas: () => {
             const obj = {};
@@ -110,6 +155,15 @@ MacroCiclo = (function(){
             else
                 obj.tipoCalculo = 4;
             return obj;
+        },
+        obtenerDatosMacroBase: ()=>{
+            const basico = {};
+            basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
+            const proy = FichaDOMQueries.getProyecciones();
+            //basico.periodizacion = Array.from(proy.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{return Number(v.value)});
+            basico.periodizacion = [8, 6, 4];
+            basico.distancia = Number(document.querySelector('#DistanciaMainCompetencia input:checked').value);
+            return basico;
         }
         , calcularSemanas: () => {
             const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val()),
@@ -232,7 +286,7 @@ MacroCiclo = (function(){
                 if(index == 0){
                     return (
                         ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasPrimeraSemana/7
-                        ).toFixed(2);
+                    ).toFixed(2);
                 }else
                     return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
             } else if (situacion == 2){
@@ -257,6 +311,42 @@ MacroCiclo = (function(){
                 }else
                     return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
             }
+        },
+        mostrarPorcentajesKilo: (base, pTrainer)=>{
+            //HTML R A W
+            const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva"];
+            const colorClass = ["bg-color-teal", "bg-color-redLight", "bg-color-greenLight"];
+            let html = `<section class="">`;
+            html += base.periodizacion.map((v,i,k)=>{
+                return `<div class="col col-4 padding-0">
+                            <h6 class="${colorClass[i]} txt-color-white font-md margin-bottom-10 padding-10">${nombresEtapa[i]}</h6>
+                            ${MacroCicloSeccion.bodyPorcentajesKilo(k, pTrainer[i], i)}
+                        </div>`
+            }).join('');
+            html+=`</section>`
+            return html;
+        }
+    }
+})();
+
+MacroCicloSeccion = (function(){
+    return {
+        bodyPorcentajesKilo: (arrCant, pTrainer, ix)=>{
+            const colorClass = ["bg-color-teal", "slider-danger", "slider-success"];
+            let prefix = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">`
+            let html = `<div class="col <col>-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">`;
+            let porcents = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">`
+            let kms = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">`
+            for(let i=0; i<arrCant[ix];i++){
+                const fixVal = 100 - pTrainer.porcentajes[i];
+                const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
+                prefix+= `<label class="padding-10">${windx}</label>`;
+                html+= `<span class="padding-5"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="square" data-slider-tooltip="hide" data-index="${windx}"></span>`;
+                porcents+=`<label class="padding-5 perc" data-index="${windx}">${pTrainer.porcentajes[i]}%</label>`;
+                kms+=`<label class="padding-5 kms" data-index="${windx}">${(60*pTrainer.porcentajes[i])/100}</label>`;
+            }
+            prefix+=`</div>`,porcents+=`</div>`, html+=`</div>`, kms+=`</div>`;
+            return prefix+html+porcents+kms;
         }
     }
 })();
