@@ -582,7 +582,6 @@ function ajustarFuenteElemento(e){
     $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-fs')?k.remove(v):''});
     $eleGenerico.classList.add(objEditor.clase);
     guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
-    input.value = "";
 }
 
 function guardarAccionEditor(e){
@@ -1735,6 +1734,7 @@ function principalesEventosTabFichaTecnica(e){
     const clases = input.classList;
 
     if(clases.contains('refrescar-grafico')) {
+        e.preventDefault();
         e.stopPropagation();
         const base = MacroCiclo.obtenerDatosMacroBase();
         MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));

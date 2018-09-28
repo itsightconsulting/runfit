@@ -1,13 +1,17 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
-import com.itsight.domain.jsonb.PorcKiloTipo;
-import com.itsight.domain.jsonb.PorcKiloTipoSema;
+import com.itsight.domain.Musculo;
+import com.itsight.domain.Objetivo;
+import com.itsight.domain.Rol;
+import com.itsight.domain.jsonb.*;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TipoDescuentoRepository;
 import com.itsight.service.*;
+import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -16,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Component
@@ -99,6 +104,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private PorcentajesKilometrajeService porcentajesKilometrajeService;
+
+    @Autowired
+    private UsuarioFitnessService usuarioFitnessService;
 
     @Value("${main.repository}")
     private String mainRoute;
@@ -694,6 +702,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             lstRolCli.add(rolCliJson);
             usuario1.setRoles(lstRolCli);
             usuario1.setTipoDocumento(1);
+            usuario1.setFechaNacimiento(Parseador.fromStringToDate("1987-01-01"));
             usuario1.setTipoUsuario(3);
             usuario1.setFlagActivo(true);
             secUserCliente.addUsuario(usuario1);
@@ -733,6 +742,41 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 }
             }
 
+            //Agregando su información fitness básica
+            UsuarioFitness usuarioFitness1 = new UsuarioFitness();
+            usuarioFitness1.setNivel(3);
+            usuarioFitness1.setEstadoCivil(1);
+            usuarioFitness1.setImc(15);
+            usuarioFitness1.setPeso(BigDecimal.valueOf(66));
+            usuarioFitness1.setSexo(1);
+            usuarioFitness1.setDesgasteZapatilla("Inicio");
+            usuarioFitness1.setObjetivosDescripcion("Demo");
+            usuarioFitness1.setTerrenoPredominante("Asfalto");
+            usuarioFitness1.setDiaDescanso(1);
+            usuarioFitness1.setCondicionAnatomica(new CondicionAnatomica());
+            usuarioFitness1.setTiemposDisponibles(new ArrayList<>());
+            usuarioFitness1.setObjetivos(new ArrayList<>());
+            usuarioFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
+            usuarioFitness1.setMejoras(new ArrayList<>());
+            usuarioFitness1.setFrecuenciaComunicacion(1);
+            usuarioFitness1.setViaConexion("Demo");
+            usuarioFitness1.setTalla(166);
+            List<CompetenciaRunner> comps = new ArrayList<>();
+            Integer[] tiempos = {10,21,42};
+            String[] fechas = {"2018-11-10","2018-12-10","2019-01-27"};
+            for(int i=0; i<3;i++){
+                CompetenciaRunner cr = new CompetenciaRunner();
+                cr.setDistancia(tiempos[i]);
+                cr.setFecha(fechas[i]);
+                cr.setNombre("Maratón "+i);
+                cr.setPrioridad(2);
+                cr.setTiempoObjetivo("01:55");
+                comps.add(cr);
+            }
+            comps.get(2).setPrioridad(1);
+            usuarioFitness1.setCompetencias(comps);
+            usuarioFitness1.setUsuario(3);
+            usuarioFitnessService.save(usuarioFitness1);
         } else {
             System.out.println("> Record already exist <");
         }

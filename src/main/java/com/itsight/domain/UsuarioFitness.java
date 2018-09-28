@@ -99,8 +99,16 @@ public class UsuarioFitness implements Serializable {
     private String viaConexion;
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, optional = false)
-    @JoinColumn(name = "UsuarioId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UsuarioId", updatable = false)
     private Usuario usuario;
+
+    public void setUsuario(Usuario usuario){
+        this.usuario = usuario;
+    }
+
+    public void setUsuario(int usuarioId){
+        this.usuario = new Usuario(usuarioId);
+    }
 
 }
