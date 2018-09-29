@@ -753,7 +753,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             usuarioFitness1.setObjetivosDescripcion("Demo");
             usuarioFitness1.setTerrenoPredominante("Asfalto");
             usuarioFitness1.setDiaDescanso(1);
-            usuarioFitness1.setCondicionAnatomica(new CondicionAnatomica());
+            CondicionAnatomica ca = new CondicionAnatomica();
+            ca.setFrecuenciaCardiaca(65);
+            ca.setFrecuenciaCardiacaMaxima(200);
+            usuarioFitness1.setCondicionAnatomica(ca);
             usuarioFitness1.setTiemposDisponibles(new ArrayList<>());
             usuarioFitness1.setObjetivos(new ArrayList<>());
             usuarioFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(20));

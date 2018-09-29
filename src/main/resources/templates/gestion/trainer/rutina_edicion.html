@@ -581,7 +581,11 @@
             height: 300px;
             text-align: center;
         }
-
+        #MiniGraficoDistribucion{
+            width: 100%;
+            height: 100px;
+            text-align: center;
+        }
         .slider-handle{
             background: #8CE2A3 !important;
         }
@@ -598,6 +602,10 @@
         }
         .slider-success+.slider-track>.slider-selection{
             background: #b6f9a6 !important;
+        }
+
+        .amcharts-main-div a{
+            color:transparent !important;
         }
 
     </style>
@@ -782,13 +790,13 @@
                                                                 <i class="fa fa-minus fa-fw txt-color-blue"></i> <i
                                                                     class="fa fa-heart fa-fw txt-color-redLight"></i> <i
                                                                     class="fa fa-plus fa-fw txt-color-blue"></i><br/>
-                                                                <i class="">140</i> <i class="fa fa-fw"></i><i class="">156</i>
+                                                                <i class="">140</i><i class="fa fa-fw"></i><i class="">156</i>
                                                             </div>
                                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                                 <i class="fa fa-minus fa-fw txt-color-blue"></i> <i
                                                                     class="fa fa-clock-o fa-fw txt-color-teal"></i> <i
                                                                     class="fa fa-plus fa-fw txt-color-blue"></i><br/>
-                                                                <i class="">148</i> <i class="fa fa-fw"></i><i class="">152</i>
+                                                                <i class="">148</i><i class="fa fa-fw"></i><i class="">152</i>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1014,17 +1022,15 @@
                                                     <h1 class="text-align-center"><span id="MacroTotalSemanas">0</span></h1>
                                                 </section>
                                                 <section class="container-fluid text-align-center">
-                                                    <a href="javascript:void(0);" class="btn btn-success padding-5" id="btnCalcularSemanas">Calcular semanas</a>
+                                                    <a href="javascript:void(0);" class="btn btn-success padding-5" id="btnVerDetalleSemanas">Información detallada</a>
                                                     <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5" id="btnGenerarMacroCiclo">Generar Macro</a>
                                                 </section>
                                             </section>
                                         </div>
                                         <!-- GRAFICO TEMPORADA-->
-                                        <div class="row hidden" id="InicialMacro">
+                                        <div class="row hidden padding-o-bottom-10" id="InicialMacro">
                                             <div class="container-fluid">
-                                                <section class="col col-4">
-                                                </section>
-                                                <section class="col col-8">
+                                                <section class="">
                                                     <div class="panel-group smart-accordion-default ">
                                                         <div class="panel panel-default rf-dia-elemento " data-index="1" data-type="2" data-kms="0">
                                                             <div class="panel-heading">
@@ -1047,6 +1053,40 @@
                                                     </div>
                                                 </section>
                                             </div>
+                                            <div class="container-fluid" id="DistribucionDetallado">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center" id="KilometrajeTotal">
+                                                        <h5 class="text-align-center txt-color-orange">Kilometraje total</h5>
+                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
+                                                        <span class="text-align-center">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center">Kilometraje(P. General)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
+                                                        <span class="text-align-center">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center">Kilometraje(P. Específica)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
+                                                        <span class="text-align-center">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center">Kilometraje(P. Competitiva)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
+                                                        <span class="text-align-center">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center">
+                                                        <h5 class="text-align-center">Kilometraje(P. Tránsito)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400">2</h1>
+                                                        <span class="text-align-center">2 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center">
+                                                        <h5 class="text-align-center txt-color-blueLight"><b>Distribución</b></h5>
+                                                        <div id="MiniGraficoDistribucion"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- END GRAFICO TEMPORADA-->
                                         <div class="row">
@@ -1055,35 +1095,26 @@
                                         </div>
                                         <hr/>
                                         <div class="row padding-o-top-10">
-                                            <section class="col col-1 margin-0"></section>
                                             <section class="col col-2">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Distancia de control</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="2"/>
-                                                                <i></i> <span>2K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="4"/>
-                                                                <i></i> <span>4K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="10"/>
-                                                                <i></i> <span>10K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="21"/>
-                                                                <i></i> <span>21K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="42"/>
-                                                                <i></i> <span>42K</span>
+                                                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center">
+                                                            <label class="label">
+                                                                <select class="select2 form-control" id="DistanciaControl">
+                                                                    <option value="">-- Seleccione --</option>
+                                                                    <option value="2">2 KM</option>
+                                                                    <option value="4">4 KM</option>
+                                                                    <option value="10">10 KM</option>
+                                                                    <option value="21">21 KM</option>
+                                                                    <option value="42">42 KM</option>
+                                                                </select>
                                                             </label>
                                                         </div>
+                                                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
                                                     </div>
                                                 </section>
                                             </section>
@@ -1094,20 +1125,8 @@
                                                             <label class="control-label padding-top-5">Tiempo de control</label>
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
+                                                            <label class="input">
+                                                                <input value="00:00:00" type="time" id="TiempoControl" step="1"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1119,21 +1138,10 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Cadencia</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
+                                                            <label class="input">
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>PPS</h6></i>
+                                                                <input type="number" id="CadenciaControl"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1146,72 +1154,69 @@
                                                             <label class="control-label padding-top-5">T.C.S.</label>
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
+                                                            <label class="input">
                                                                 <input type="text"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-2">
-                                                <section class="container-fluid v-center">
-                                                    <label class="label text-align-center padding-top-5">Fecha de desentrenamiento:</label>
-                                                    <label class="input"><input type="text"/></label>
-                                                </section>
+                                            <section class="col col-3">
                                                 <section class="container-fluid">
-                                                    <label class="label text-align-center padding-top-5">Tiempo por Desentrenamiento:</label>
-                                                    <label class="input"><input type="text"/></label>
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Factor de desentrenamiento</label>
+                                                        </div>
+                                                        <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                                                        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                            <label class="input">
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>%</h6></i>
+                                                                <input type="number" id="FactorDesentrenamientoControl"/>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                                                    </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3 margin-0"></section>
+                                            <section class="col col-3">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Tiempo por Desentrenamiento</label>
+                                                        </div>
+                                                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                            <label class="input padding-top-5">
+                                                                <input value="00:00:00" type="time" id="TiempoDesentrControl" step="1"/>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                                                    </div>
+                                                </section>
+                                            </section>
                                         </div>
                                         <hr/>
                                         <div class="row padding-o-top-10">
-                                            <section class="col col-1 margin-0"></section>
                                             <section class="col col-2">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Distancia de competencia</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center" id="DistanciaMainCompetencia">
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="2"/>
-                                                                <i></i> <span>2K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="4"/>
-                                                                <i></i> <span>4K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="10"/>
-                                                                <i></i> <span>10K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="21"/>
-                                                                <i></i> <span>21K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="42"/>
-                                                                <i></i> <span>42K</span>
-                                                            </label>
-                                                            <label class="checkbox padding-5-10">
-                                                                <input type="checkbox" name="checkbox" value="0"/>
-                                                                <i></i> <span>Otra</span>
+                                                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center">
+                                                            <label class="label">
+                                                                <select class="select2 form-control" id="DistanciaCompetencia">
+                                                                    <option value="">-- Seleccione --</option>
+                                                                    <option value="2">2 KM</option>
+                                                                    <option value="4">4 KM</option>
+                                                                    <option value="10">10 KM</option>
+                                                                    <option value="21">21 KM</option>
+                                                                    <option value="42">42 KM</option>
+                                                                </select>
                                                             </label>
                                                         </div>
+                                                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
                                                     </div>
                                                 </section>
                                             </section>
@@ -1219,26 +1224,11 @@
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
-                                                            <label class="control-label padding-top-5">Proyectado</label>
+                                                            <label class="control-label padding-top-5">Tiempo de competencia</label>
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
                                                             <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
+                                                                <input value="00:00:00" type="time" id="TiempoCompetencia" step="1"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1250,24 +1240,10 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Cadencia</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
+                                                            <label class="input">
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>PPS</h6></i>
+                                                                <input type="number" id="CadenciaCompetencia"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1283,29 +1259,25 @@
                                                             <label class="input padding-top-5">
                                                                 <input type="text"/>
                                                             </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
-                                                            <label class="input padding-top-5">
-                                                                <input type="text"/>
-                                                            </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-2">
-                                                <section class="container-fluid v-center">
-                                                    <label class="label text-align-center padding-top-5">F. de mejoría:</label>
-                                                    <label class="input"><input type="text"/></label>
+                                            <section class="col col-3">
+                                                <section class="container-fluid">
+                                                    <div class="form-group">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
+                                                            <label class="control-label padding-top-5">Factor de Mejoría</label>
+                                                        </div>
+                                                        <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                                                        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                            <label class="input">
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>%</h6></i>
+                                                                <input type="number"/>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                                                    </div>
                                                 </section>
                                             </section>
                                         </div>
@@ -1384,10 +1356,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" readonly="readonly" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" readonly="readonly" data-index="3" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1395,10 +1367,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" readonly="readonly" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" readonly="readonly" data-index="4" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1406,10 +1378,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" readonly="readonly" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" readonly="readonly" data-index="5" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1425,7 +1397,8 @@
                                         </div>
                                         <div class="row padding-top-10">
                                             <section class="col col-1"></section>
-                                            <section class="col col-5" style="border-right: 1px solid grey; !important">                                                <label class="label text-align-center"><b>Mejoría de la cadencia</b></label>
+                                            <section class="col col-5" style="border-right: 1px solid grey; !important">
+                                                <label class="label text-align-center"><b>Mejoría de la cadencia</b></label>
                                                 <div class="container-fluid">
                                                     <div class="col col-md-6"></div>
                                                     <div class="col col-md-3">
@@ -1440,10 +1413,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" readonly="readonly" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" readonly="readonly" data-index="3" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1451,10 +1424,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" readonly="readonly" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" readonly="readonly" data-index="4" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1462,10 +1435,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" readonly="readonly" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" readonly="readonly" data-index="5" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1494,10 +1467,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" readonly="readonly" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" readonly="readonly" data-index="3" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1505,10 +1478,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" readonly="readonly" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" readonly="readonly" data-index="4" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1516,10 +1489,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" readonly="readonly" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" readonly="readonly" data-index="5" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">

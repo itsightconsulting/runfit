@@ -25,8 +25,10 @@ Ficha = (function(){
             //
             let distanciaMax = comps[0].distancia;
             comps.forEach((v,i)=>{ if(i!=0) distanciaMax = v.distancia > distanciaMax ? v.distancia: distanciaMax;})
-            document.querySelectorAll('#DistanciaMainCompetencia input').forEach(v=>{v.value == distanciaMax ? v.checked=true : '';})
+            document.querySelector('#DistanciaCompetencia').value = distanciaMax;
             document.querySelectorAll('#DistanciaRutina input').forEach(v=>{v.value == distanciaMax ? v.checked=true : '';})
+
+            Ficha.instanciarValoresDemo();
         }
         ,instanciarCompetencias : (comp)=>{
             comp = comp.sort((a, b) => parseFromStringToDate(b.fecha).getTime() - parseFromStringToDate(a.fecha).getTime());
@@ -58,6 +60,18 @@ Ficha = (function(){
                     ix = i;
             })
             return ix;
+        },
+        instanciarValoresDemo: ()=>{
+            const tiempoControl = document.querySelector('#TiempoControl');
+            const factorDesentrenamientoControl = document.querySelector('#FactorDesentrenamientoControl');
+            document.querySelector('#DistanciaControl').value = 4;
+            tiempoControl.value = "00:21:00";
+            document.querySelector('#CadenciaControl').value = 174;
+            factorDesentrenamientoControl.value = 3;
+
+            document.querySelector('#TiempoCompetencia').value = "04:10:00";
+            document.querySelector('#CadenciaCompetencia').value = 185;
+            document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
         }
     }
 })();
@@ -73,17 +87,21 @@ FichaDOMQueries = (function(){
 MacroCiclo = (function(){
     return {
         generar: ()=>{
-            let validado = true;
-            FichaDOMQueries.getProyecciones().querySelectorAll('div>label>input[readonly]').forEach(v=>{
-                if(!v.parentElement.classList.contains('state-success'))
-                    validado = false;
-            })
-
+            let validado = false;
+            if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
+                validado = true;
             const mainContainer = document.querySelector('#PorcentajesKilometraje');
-            if(mainContainer.children.length == 1){
+            if(mainContainer.children.length == 1) {
                 mainContainer.children[0].remove();
             }
-            const base = MacroCiclo.obtenerDatosMacroBase();
+
+            const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
+            const totSemPerio = Number(document.querySelector('#TotalPeriodizacion2').value.trim());
+            if(validado && Ficha.obtenerNivelAtleta() != undefined && totSem == totSemPerio) {
+                const base = MacroCiclo.obtenerDatosMacroBase();
+                if($kilometrajeBase.length == 0){
+                    instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+                }
                 instanciarPorcentajesKilometraje(base.distancia).then(porcentajes=>{
                     //Filtrando porcentajes
                     const porcentajesTrainer = [{},{},{}];
@@ -104,19 +122,18 @@ MacroCiclo = (function(){
                         const y = document.querySelectorAll('#PorcentajesKilometraje label.kms')[document.querySelectorAll('#PorcentajesKilometraje label.kms').length-1];
                         const p = Number(document.querySelectorAll('#PorcentajesKilometraje label.perc')[document.querySelectorAll('#PorcentajesKilometraje label.perc').length-1].textContent.substr(0,2))/100;
                         const t = (($kilometrajeBase[2].kilometraje) * ((($semCalculoMacro.diasUltimaSemana * 100) / 7)) / 100)
-                        console.log(y, p, t);
                         y.textContent = parseFloat(t*p, 2).toFixed(1);
                         document.querySelectorAll('#PorcentajesKilometraje input')[document.querySelectorAll('#PorcentajesKilometraje input').length-1].setAttribute('data-kms', t);
                     }
                     $('.slider').slider();
+                    //Graficos - Información relacionada
+                    MacroCiclo.instanciarInformacionTemporada(base);
                     MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));
                 })
-
-            /*if(validado && Ficha.obtenerNivelAtleta() != undefined) {
-                $.smallBox({color: "success", content: "<b>Se ha generado con éxito</b>", color: "#73f194"});
             }else{
-                $.smallBox({color: "alert", content: "Error..."});
-            }*/
+                $.smallBox({color: "alert", content: "Validación fallida"});
+            }
+
         },
         getObjParaGraficoTemporada: (baseDistribucion)=>{
             const dis1 = baseDistribucion.periodizacion[0];
@@ -163,6 +180,41 @@ MacroCiclo = (function(){
             })
             document.querySelector('#InicialMacro').classList.remove('hidden');
         },
+        instanciarMiniGraficoDis: (porcentajes)=>{
+            const data = [{title: "General", value: porcentajes[0], color: "#83c5ff"}, {title: "Específica", value: porcentajes[1], color: "#e86b6b"}, {title: "Precompetitiva", value: porcentajes[2], color: "#a4f790"}];
+            var chart = AmCharts.makeChart( "MiniGraficoDistribucion", {
+                "type": "pie",
+                "theme": "light",
+                "dataProvider": data,
+                "titleField": "title",
+                "valueField": "value",
+                "labelRadius": -10,
+                "radius": "42%",
+                "innerRadius": "60%",
+                "labelText": "[[percents]]%",
+                "colorField": "color",
+            });
+        },
+        instanciarInformacionTemporada: (base)=>{
+            const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
+            const sumKms = allKms.reduce((a,b)=>{return a+b});
+            const kmsParts = base.periodizacion.map((v)=>{
+                return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
+            });
+            base.porcentajesKms = [];
+
+            const kiloTotal = document.querySelector('#KilometrajeTotal')
+            kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
+            kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
+            document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
+                const kmsEsp = parseFloat(kmsParts[i].reduce((a,b)=>{return a+b}))
+                v.querySelector('h1').textContent = kmsEsp.toFixed(1);
+                v.querySelector('span').textContent = base.periodizacion[i] +" semanas";
+                base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
+            });
+
+            MacroCiclo.instanciarMiniGraficoDis(base.porcentajesKms);
+        },
         calcularSimulacionSemanas: () => {
             const obj = {};
             obj.fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
@@ -204,16 +256,16 @@ MacroCiclo = (function(){
             o.lwFull = o.diasUltimaSemana == 7? true:false;
             return o;
         },
-        calcularSemanas: () => {
+        infoSemanas: () => {
             const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val()),
                 fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
             const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
             const diasUltimaSemana = (totDias - diasPrimeraSemana) % 7 == 0 ? 7 : (totDias - diasPrimeraSemana) % 7;
             let semanas = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
-            let totSemNonFull = diasPrimeraSemana != 7 ? 1 : 0;
-            totSemNonFull += diasUltimaSemana != 7 ? 1 : 0;
-            const raw = `
+                let totSemNonFull = diasPrimeraSemana != 7 ? 1 : 0;
+                totSemNonFull += diasUltimaSemana != 7 ? 1 : 0;
+                const raw = `
                         <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas full: <b>${semanas - totSemNonFull}</b></label></div>
                         <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas no-full: <b>${totSemNonFull == 2 ? totSemNonFull + ' (S.1 & S.' + semanas + ')' : totSemNonFull } </b></label></div>
                         <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas totales: <b>${semanas}</b></label></div>
@@ -221,7 +273,15 @@ MacroCiclo = (function(){
                         <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de última semana: <b>${diasUltimaSemana}</b></label></div>
                         <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días restantes: <b>${totDias - diasPrimeraSemana - diasUltimaSemana}</b></label></div>
                         <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales: <b>${totDias}</b></label></div>`
-            $.smallBox({timeout: 15000, content: `${raw}`, color: "#4a4e3b"});
+                $.smallBox({timeout: 15000, content: `${raw}`, color: "#4a4e3b"});
+        },
+        calcularSemanas: () => {
+            const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val()),
+                fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
+            const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
+            const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
+            const diasUltimaSemana = (totDias - diasPrimeraSemana) % 7 == 0 ? 7 : (totDias - diasPrimeraSemana) % 7;
+            let semanas = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
             document.querySelector('#MacroTotalSemanas').textContent = semanas;
         },
         calcularProyecciones: (input, tipoProyeccion) => {
@@ -229,10 +289,11 @@ MacroCiclo = (function(){
                 valor = input.value;
             const contProyecciones = FichaDOMQueries.getProyecciones();
             const totSem = document.querySelector('#MacroTotalSemanas').textContent;
-            let identificadores;
+            let identificadores, identificadoresOtros;
             switch (tipoProyeccion) {
                 case 1:
                     identificadores = [".periodizacion-calc", "#TotalPeriodizacion1", "#TotalPeriodizacion2"];
+                    identificadoresOtros = [[".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"],[".cadencia-calc", "#TotalCadencia1", "#TotalCadencia2"],[".tcs-calc", "#TotalTcs1", "#TotalTcs2"]];
                     break;
                 case 2:
                     identificadores = [".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"];
@@ -245,10 +306,23 @@ MacroCiclo = (function(){
             }
 
             if (tipo == 1) {
-                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix + 3}"]`).value = MacroCiclo.calcularNumSemByPorcentaje(valor, ix);
+                const totSems = MacroCiclo.calcularNumSemByPorcentaje(valor, ix);
+                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix + 3}"]`).value = totSems;
+                //V2 - Adicional
+                identificadoresOtros.forEach(v=>{
+                    contProyecciones.querySelector(`${v[0]}[data-index="${ix + 3}"]`).value = totSems;
+                    contProyecciones.querySelector(`${v[0]}[data-index="${ix}"]`).value = valor;
+                })
             } else {
-                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix - 3}"]`).value = MacroCiclo.calcularPorcentajeByNumSem(valor, ix);
+                const totPorc = MacroCiclo.calcularPorcentajeByNumSem(valor, ix);
+                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix - 3}"]`).value = totPorc;
+                //V2 - Adicional
+                identificadoresOtros.forEach(v=>{
+                    contProyecciones.querySelector(`${v[0]}[data-index="${ix - 3}"]`).value = totPorc;
+                    contProyecciones.querySelector(`${v[0]}[data-index="${ix}"]`).value = valor;
+                })
             }
+
             const tot1 = MacroCiclo.calcularTotalesDistribucion(tipoProyeccion, 1), tot2 = MacroCiclo.calcularTotalesDistribucion(tipoProyeccion, 2);
             const eleTot1 = contProyecciones.querySelector(` ${identificadores[1]}`), eleTot2 = contProyecciones.querySelector(` ${identificadores[2]}`);
             eleTot1.value = tot1;
@@ -263,6 +337,13 @@ MacroCiclo = (function(){
             }else{
                 eleTot2.parentElement.classList.add('state-error');eleTot2.parentElement.classList.remove('state-success');
             }
+
+            //V2 - Adicional
+            identificadoresOtros.forEach(v=>{
+                contProyecciones.querySelector(`${v[1]}`).value = tot1;
+                contProyecciones.querySelector(`${v[2]}`).value = tot2;
+            })
+
         },
         calcularTotalesDistribucion: (tipoCat, tipoCalc) => {
             let acum = 0;
@@ -370,6 +451,25 @@ MacroCiclo = (function(){
         instanciarKilometrajeBase: ()=>{
             const base = MacroCiclo.obtenerDatosMacroBase();
             instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+        },
+        getSemanasSimulacion: ()=>{
+            const $chelmoMacro = [];
+            const totalSemanas = MacroCiclo.obtenerDatosMacroBase().numSem;
+            const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
+            const fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
+            for(let i=0; i<totalSemanas;i++){
+                const refDia = fIni.getDay();
+                let diasParaFull = refDia==0?0:7-refDia;
+                if(i == 0){
+                    $chelmoMacro.push(new Semana(undefined,
+                        parseFromStringToDate(moment(fIni).add((i*7), 'd').format('YYYY-MM-DD')),
+                        parseFromStringToDate(moment(fIni).add((i*7)+diasParaFull, 'd').format('YYYY-MM-DD'))));
+                }else{
+                    $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
+                }
+            }
+            return $chelmoMacro;
+
         }
     }
 })();

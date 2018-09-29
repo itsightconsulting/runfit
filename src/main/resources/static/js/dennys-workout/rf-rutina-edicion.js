@@ -30,7 +30,6 @@ let $statusCopy = false;
 let $kilometrajeBase = [];
 let $semCalculoMacro = {};
 
-
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
 const $semanario = document.querySelector('#RutinaSemana');
@@ -53,10 +52,12 @@ const mainTabs = document.querySelector('#PrincipalesTabs');
 const miniEditor = document.querySelector('#MiniEditor');
 const selectorFzEditor = document.querySelector('#SelectorFzEditor');
 const tablaCompetencias = document.querySelector('#TablaCompetencias');
-const btnCalcularSemanas = document.querySelector('#btnCalcularSemanas');
+const btnVerDetSemanas = document.querySelector('#btnVerDetalleSemanas');
 const btnGenerarMacroCiclo = document.querySelector('#btnGenerarMacroCiclo');
 const nivelAtletaRdBtn = document.querySelector('#NivelAtleta');
 const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
+const fInitMacro = document.querySelector('#MacroFechaInicio');
+const fFinMacro = document.querySelector('#MacroFechaFin');
 
 $(function () {
     init();
@@ -91,10 +92,12 @@ function init(){
         shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         miniEditor.addEventListener('click', principalesMiniEditor);
-        btnCalcularSemanas.addEventListener('click', MacroCiclo.calcularSemanas);
+        btnVerDetSemanas.addEventListener('click', MacroCiclo.infoSemanas);
         btnGenerarMacroCiclo.addEventListener('click', MacroCiclo.generar);
         Array.from(nivelAtletaRdBtn.querySelectorAll('.chkNivel')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
         Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
+        fInitMacro.addEventListener('change', () => MacroCiclo.calcularSemanas(1));
+        fFinMacro.addEventListener('change', () => MacroCiclo.calcularSemanas(1));
         //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
         window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
         instanciarMarcoEditor();
@@ -1738,6 +1741,7 @@ function principalesEventosTabFichaTecnica(e){
         e.stopPropagation();
         const base = MacroCiclo.obtenerDatosMacroBase();
         MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));
+        MacroCiclo.instanciarInformacionTemporada(base);
     }
 }
 function principalesEventosFocusOutTabFichaTecnica(e){
@@ -1748,13 +1752,13 @@ function principalesEventosFocusOutTabFichaTecnica(e){
         MacroCiclo.calcularProyecciones(input, 1);
     }
     else if(clases.contains('velocidad-calc')){
-        MacroCiclo.calcularProyecciones(input, 2);
+        //MacroCiclo.calcularProyecciones(input, 2);
     }
     else if(clases.contains('cadencia-calc')){
-        MacroCiclo.calcularProyecciones(input, 3);
+        //MacroCiclo.calcularProyecciones(input, 3);
     }
     else if(clases.contains('tcs-calc')){
-        MacroCiclo.calcularProyecciones(input, 4);
+        //MacroCiclo.calcularProyecciones(input, 4);
     }
 }
 

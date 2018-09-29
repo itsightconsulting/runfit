@@ -328,7 +328,6 @@ String.prototype.toHHMMSS = function () {
     var hours = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
     var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
     if (hours < 10) {
         hours = "0" + hours;
     }
@@ -340,6 +339,27 @@ String.prototype.toHHMMSS = function () {
     }
     return hours + ':' + minutes + ':' + seconds;
 }
+
+String.prototype.toHHMMSSM = function () {
+    var sec_num = Math.round(this); // don't forget the second param
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return hours + ':' + minutes + ':' + seconds;
+}
+
+String.prototype.toSeconds = function () { if (!this) return null; var hms = this.split(':'); return (+hms[0]) * 60 * 60 + (+hms[1]) * 60 + (+hms[2] || 0); }
+
+Number.prototype.toPercentage = function(){ return this/100;};
 
 function getFechaFormatoString(d) {
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
