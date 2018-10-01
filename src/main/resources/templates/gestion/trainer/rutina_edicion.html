@@ -608,6 +608,10 @@
             color:transparent !important;
         }
 
+        .padding-right-22{
+            padding-right: 22px !important;
+        }
+
     </style>
 </head>
 
@@ -1208,8 +1212,6 @@
                                                             <label class="label">
                                                                 <select class="select2 form-control" id="DistanciaCompetencia">
                                                                     <option value="">-- Seleccione --</option>
-                                                                    <option value="2">2 KM</option>
-                                                                    <option value="4">4 KM</option>
                                                                     <option value="10">10 KM</option>
                                                                     <option value="21">21 KM</option>
                                                                     <option value="42">42 KM</option>
@@ -1227,7 +1229,7 @@
                                                             <label class="control-label padding-top-5">Tiempo de competencia</label>
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="input padding-top-5">
+                                                            <label class="input">
                                                                 <input value="00:00:00" type="time" id="TiempoCompetencia" step="1"/>
                                                             </label>
                                                         </div>
@@ -1256,7 +1258,7 @@
                                                             <label class="control-label padding-top-5">T.C.S.</label>
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-                                                            <label class="input padding-top-5">
+                                                            <label class="input">
                                                                 <input type="text"/>
                                                             </label>
                                                         </div>
@@ -1281,13 +1283,122 @@
                                                 </section>
                                             </section>
                                         </div>
+                                        <hr/>
+                                        <div class="row padding-o-top-10" id="EstadisticasAdicionales">
+                                            <section class="col col-5">
+                                                <label class="label text-align-center"><b>Estadísticas</b></label>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Ritmo por kilómetro proyectado para la competencia:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoXKilometro" step="1"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Ritmo de competencia actual:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoCompetenciaActual" step="1"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Ritmo de entrenamiento aeróbico actual:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoActual" step="1"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Ritmo de entrenamiento aeróbico precompetitivo:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoPreComp" step="1"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Longitud de paso de competencia actual:</label>
+                                                    </div>
+                                                    <div class="col col-md-4 padding-top-5">
+                                                        <label class="input">
+                                                            <i class="icon-append txt-color-blue" style="font-style: normal"><h6>m</h6></i>
+                                                        <input type="number" id="LongitudPasoCA"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Kilometraje total de la temporada:</label>
+                                                    </div>
+                                                    <div class="col col-md-4 padding-top-5">
+                                                        <label class="input">
+                                                            <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
+                                                            <input type="number" id="KilometrajeTotalTemporada"/>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Kilometraje promedio semanal:</label>
+                                                    </div>
+                                                    <div class="col col-md-4 padding-top-5">
+                                                        <label class="input">
+                                                            <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
+                                                            <input type="number" id="KilometrajePromedioSemanal"/>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col col-2">
+                                                <div class="col col-md-12 padding-top-5">
+                                                    <label class="label text-align-center">Preparación General</label>
+                                                    <label class="input">
+                                                        <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
+                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                </div>
+                                                <div class="col col-md-12 padding-top-5">
+                                                    <label class="input">
+                                                        <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
+                                                        <input type="time" class="text-align-right raps"/></label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-2">
+                                                <div class="col col-md-12 padding-top-5">
+                                                    <label class="label text-align-center">Preparación Específica</label>
+                                                    <label class="input">
+                                                        <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
+                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                </div>
+                                                <div class="col col-md-12 padding-top-5">
+                                                    <label class="input">
+                                                        <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
+                                                        <input type="time" class="text-align-right raps"/></label>
+                                                </div>
+                                            </section>
+                                            <section class="col col-2">
+                                                <div class="col col-md-12 padding-top-5">
+                                                    <label class="label text-align-center">Preparación Competitiva</label>
+                                                    <label class="input">
+                                                        <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
+                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                </div>
+                                                <div class="col col-md-12 padding-top-5">
+                                                    <label class="input">
+                                                        <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
+                                                        <input type="time" class="text-align-right raps"/></label>
+                                                </div>
+                                            </section>
+                                        </div>
                                     </fieldset>
                                     <fieldset id="Proyecciones">
                                         <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">2. Mejoras proyectadas</h6>
                                         <div class="row padding-top-10" style="border-bottom: 1px solid grey; !important">
                                             <section class="col col-1"></section>
                                             <section class="col col-5" style="border-right: 1px solid grey; !important">
-                                                <label class="label text-align-center"><b>Periodización del entrenamiento</b></label>
+                                                <label class="label text-align-center"><b>Periodización del entrenamiento(Ingresar mínimo 4 semanas por etapa)</b></label>
                                                 <div class="container-fluid">
                                                     <div class="col col-md-6"></div>
                                                     <div class="col col-md-3">
@@ -1883,6 +1994,7 @@ you can add as many as you like
 <!--<script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>-->
 <script th:src="@{/js/rutina.js}+'?'+${version}"></script>
 <script th:src="@{/js/macro-ciclo.js}+'?'+${version}"></script>
+<script th:src="@{/js/tablas-calculo.js}+'?'+${version}"></script>
 <script th:src="@{/js/dennys-workout/rf-rutina-edicion.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/

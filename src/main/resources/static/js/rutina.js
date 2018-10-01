@@ -439,13 +439,13 @@ RutinaOpc = (function(){
             $refIxsSemCalendar = semanasIxs;
             //Pitando en el calendario de otro color los días que el atleta tendrá una competicion
             const matches =  $fechasCompetencia.filter(v=>{
-                return v.getMonth() == mesFechaReferencial && v.getFullYear() == anioFechaReferencial;
+                return v.fecha.getMonth() == mesFechaReferencial && v.fecha.getFullYear() == anioFechaReferencial;
             })
             //Se espera 100ms para que se renderice completamente el calendario y así las queries del for no fallen
             if(matches.length>0)
                 setTimeout(() => {
                     matches.forEach(v=>{
-                        const diaCalendario = document.querySelector('#CalendarioRf').nextElementSibling.querySelector(`div[data-dia="${v.getDate()}"]`);
+                        const diaCalendario = document.querySelector('#CalendarioRf').nextElementSibling.querySelector(`div[data-dia="${v.fecha.getDate()}"]`);
                         diaCalendario.children[0].classList.toggle('event-calendar');
                         diaCalendario.children[0].classList.toggle('event-calendar-c');
                     })

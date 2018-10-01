@@ -1,8 +1,7 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-            console.log(ficha);
-            $fechasCompetencia = ficha.competencias.map(v=>{return parseFromStringToDate(v.fecha)});
+            $fechasCompetencia = ficha.competencias.map(v=>{return {prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}});
             $('#Nombres').val(ficha.usuario.nombres);
             $('#ApellidoPaterno').val(ficha.usuario.apellidoPaterno);
             $('#FechaNacimiento').val(ficha.usuario.fechaNacimiento);
@@ -19,7 +18,6 @@ Ficha = (function(){
                     v.checked = true;
                 }
             })
-
             const comps = ficha.competencias;
             tablaCompetencias.appendChild(Ficha.instanciarCompetencias(ficha.competencias));
             //
@@ -27,8 +25,11 @@ Ficha = (function(){
             comps.forEach((v,i)=>{ if(i!=0) distanciaMax = v.distancia > distanciaMax ? v.distancia: distanciaMax;})
             document.querySelector('#DistanciaCompetencia').value = distanciaMax;
             document.querySelectorAll('#DistanciaRutina input').forEach(v=>{v.value == distanciaMax ? v.checked=true : '';})
-
             Ficha.instanciarValoresDemo();
+            const calc = Calc.getAll();
+            $('#RitmoCompetenciaActual').val(calc.ritmoCompetenciaActual);
+            $('#RitmoXKilometro').val(calc.ritmoXkilometro);
+            $('#LongitudPasoCA').val(calc.longitudPasoCompActual);
         }
         ,instanciarCompetencias : (comp)=>{
             comp = comp.sort((a, b) => parseFromStringToDate(b.fecha).getTime() - parseFromStringToDate(a.fecha).getTime());
@@ -45,10 +46,10 @@ Ficha = (function(){
             return comp;
         },
         obtenerMaximaFechaCompeticiones: ()=>{
-            let maxFecha  = $fechasCompetencia[0];
+            let maxFecha  = $fechasCompetencia[0].fecha;
             $fechasCompetencia.forEach((v,i)=>{
                 if(i != 0){
-                    maxFecha = v.getTime() > maxFecha.getTime() ? v : maxFecha;
+                    maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
                 }
             })
             return maxFecha;
@@ -87,6 +88,12 @@ FichaDOMQueries = (function(){
 MacroCiclo = (function(){
     return {
         generar: ()=>{
+            //Actualizando tiempos
+            const calc = Calc.getAll();
+            $('#RitmoCompetenciaActual').val(calc.ritmoCompetenciaActual);
+            $('#RitmoXKilometro').val(calc.ritmoXkilometro);
+            $('#LongitudPasoCA').val(calc.longitudPasoCompActual);
+
             let validado = false;
             if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
                 validado = true;
@@ -126,6 +133,20 @@ MacroCiclo = (function(){
                         document.querySelectorAll('#PorcentajesKilometraje input')[document.querySelectorAll('#PorcentajesKilometraje input').length-1].setAttribute('data-kms', t);
                     }
                     $('.slider').slider();
+                    //Calculando las mejoras de velocidades segun semana
+                    const arrTiempos = Calc.getDistribucionTiempoPlanificado(base);
+                    const copyArrTiempos = JSON.parse(JSON.stringify(arrTiempos));
+                    const RCPs = [];
+                    //Separando máximo y mínimos por etapa de preparación
+                    base.periodizacion.forEach(v=>{
+                        RCPs.push({first: copyArrTiempos[0], last: copyArrTiempos[v-1]});
+                        copyArrTiempos.splice(0, v);
+                    });
+
+                    document.querySelectorAll('#EstadisticasAdicionales .rcps').forEach((v,i)=>{
+                        v.value = RCPs[i].last.substring(3);
+                    });
+
                     //Graficos - Información relacionada
                     MacroCiclo.instanciarInformacionTemporada(base);
                     MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));
@@ -133,18 +154,21 @@ MacroCiclo = (function(){
             }else{
                 $.smallBox({color: "alert", content: "Validación fallida"});
             }
-
         },
         getObjParaGraficoTemporada: (baseDistribucion)=>{
+            const comps = MacroCiclo.getSemanasSimulacion();
             const dis1 = baseDistribucion.periodizacion[0];
             const dis2 = dis1 + baseDistribucion.periodizacion[1];
-            return Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
+            const objs = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
                 const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
                 return {numSem: i+1, kms: Number(v.textContent), color: c}
             });
+            comps.forEach(v=>{//v: Representa el numero de semana de competencia
+                objs[v.semIndex - 1].bullet = v.prioridad == 1 ? `${_ctx}img/gold-medal.png` : `${_ctx}img/silver-medal.png`;
+            })
+            return objs;
         },
         instanciarGraficoTemporada: (temporada)=>{
-
             var chart = AmCharts.makeChart( "GraficoTemporada", {
                 "type": "serial",
                 "theme": "light",
@@ -163,7 +187,9 @@ MacroCiclo = (function(){
                     "fillAlphas": 0.8,
                     "lineAlpha": 0.2,
                     "type": "column",
-                    "valueField": "kms"
+                    "valueField": "kms",
+                    "bulletSize": 52,
+                    "customBulletField": "bullet",
                 } ],
                 "chartCursor": {
                     "categoryBalloonEnabled": false,
@@ -175,7 +201,7 @@ MacroCiclo = (function(){
                     "gridPosition": "start",
                     "gridAlpha": 0,
                     "tickPosition": "start",
-                    "tickLength": 20
+                    "tickLength": 20,
                 },
             })
             document.querySelector('#InicialMacro').classList.remove('hidden');
@@ -212,7 +238,8 @@ MacroCiclo = (function(){
                 v.querySelector('span').textContent = base.periodizacion[i] +" semanas";
                 base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
             });
-
+            document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
+            document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
             MacroCiclo.instanciarMiniGraficoDis(base.porcentajesKms);
         },
         calcularSimulacionSemanas: () => {
@@ -240,7 +267,8 @@ MacroCiclo = (function(){
             basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
             const proy = FichaDOMQueries.getProyecciones();
             basico.periodizacion = Array.from(proy.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{return Number(v.value)});
-            //basico.periodizacion = [10, 8, 4];
+            //basico.periodizacion = [8, 5, 4];
+            basico.distribucionPorcentaje = Array.from(document.querySelectorAll('.periodizacion-calc[data-type="1"')).map(v=>{return Number(v.value);});
             basico.distancia = Number(document.querySelector('#DistanciaRutina input:checked').value);
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             return basico;
@@ -448,9 +476,13 @@ MacroCiclo = (function(){
             html+=`</section>`
             return html;
         },
-        instanciarKilometrajeBase: ()=>{
+        instanciarKilometrajeBase: (e)=>{
             const base = MacroCiclo.obtenerDatosMacroBase();
             instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+            //Cambiando del cbo
+            const rdbVal = e.target.value;
+            if( rdbVal == 10 || rdbVal == 21 || rdbVal == 42)
+                document.querySelector('#DistanciaCompetencia').value = rdbVal;
         },
         getSemanasSimulacion: ()=>{
             const $chelmoMacro = [];
@@ -468,8 +500,17 @@ MacroCiclo = (function(){
                     $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
                 }
             }
-            return $chelmoMacro;
+            //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
+            $chelmoMacro[totalSemanas-1].fechaFin = fFin;
 
+            let sems = [];
+            $chelmoMacro.forEach((v,i)=>{
+                $fechasCompetencia.forEach(w=>{
+                    if(v.fechaInicio<=w.fecha && v.fechaFin>=w.fecha)
+                        sems.push({semIndex: i, prioridad: w.prioridad});
+                })
+            });
+            return sems;
         }
     }
 })();
