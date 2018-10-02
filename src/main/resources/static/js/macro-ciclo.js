@@ -93,6 +93,16 @@ MacroCiclo = (function(){
             $('#RitmoCompetenciaActual').val(calc.ritmoCompetenciaActual);
             $('#RitmoXKilometro').val(calc.ritmoXkilometro);
             $('#LongitudPasoCA').val(calc.longitudPasoCompActual);
+            const metricasZc = Calc.getMetricasZonasCardiacas();
+            const Z3 = metricasZc[2].indicadores;
+            const ZELength = Z3.length - 1;
+            const Z3Max = Z3[0].max.toSeconds() > Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
+            const Z3Min = Z3[0].min.toSeconds() > Z3[ZELength].min.toSeconds() ? Z3[0].min : Z3[ZELength].min;
+            $('#RitmoAerobicoActual').val(String(((Z3Max.toSeconds() + Z3Min.toSeconds())/2)).toHHMMSSM());//Siempre va ser Z3 == index 2
+            const Z33Max = Z3[0].max.toSeconds() < Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
+            const Z33Min = Z3[0].min.toSeconds() < Z3[ZELength].min.toSeconds() ? Z3[0].min : Z3[ZELength].min;
+            console.log(Z33Max, Z33Min);
+            $('#RitmoAerobicoPreComp').val(String(((Z33Max.toSeconds() + Z33Min.toSeconds()) / 2)).toHHMMSSM());//Siempre va ser Z3 == index 2
 
             let validado = false;
             if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))

@@ -7,7 +7,6 @@ var header = $("meta[name='_csrf_header']").attr("content");
 var _ctx = $('meta[name="_ctx"]').attr('content');
 $('#view_register').attr('hidden', 'hidden');
 const ClaseEditor = Object.freeze([
-
     {id: 1, clase: 'rf-n', tipo: 1},
     {id: 2, clase: 'rf-k', tipo: 1},
     {id: 3, clase: 'rf-s', tipo: 1},
@@ -60,7 +59,6 @@ const ClaseEditor = Object.freeze([
     {id: 213, clase: 'rf-bg-m-orange', tipo: 2},
     {id: 214, clase: 'rf-bg-m-yellow', tipo: 2},
     {id: 215, clase: 'rf-bg-m-green', tipo: 2},
-
 ]);
 const Estrategia = Object.freeze({
     INSERT_ANTES:   1,

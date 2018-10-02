@@ -35,6 +35,29 @@ FactorRitmosCompetenciaByNivel = [
     {nivel: 3, factor: 0.995},
 ]
 
+FactorZonasCardiacas = [
+    {nivel: 1, factor: 1.140},
+    {nivel: 2, factor: 1.290},
+    {nivel: 3, factor: 1.060},
+    {nivel: 4, factor: 1.135},
+    {nivel: 5, factor: 0.990},
+    {nivel: 6, factor: 1.055},
+    {nivel: 7, factor: 0.970},
+    {nivel: 8, factor: 0.985},
+    {nivel: 9, factor: 0.850},
+    {nivel: 10, factor: 0.965},
+];
+
+PorcentajesZonaCardiaca = [
+    {min: 48, max: 59},
+    {min: 60, max: 70},
+    {min: 71, max: 80},
+    {min: 81, max: 89},
+    {min: 90, max: 92},
+    {min: 93, max: 95},
+    {min: 96, max: 100},
+];
+
 Calc = (function(){
     return {
         getAll: ()=>{
@@ -78,7 +101,102 @@ Calc = (function(){
                }
             });
             return finales;
+        },
+        getMetricasBaseZonasCardiacas: ()=>{
+            const fcm = Number(document.querySelector('#FrecuenciaCardiacaMaxima').value);
+            const fcmin = Number(document.querySelector('#FrecuenciaCardiacaMinima').value);
+            const diff = fcm - fcmin;
+            return PorcentajesZonaCardiaca.map(v=>{
+                return {min: Math.round((diff * (v.min/100)) + fcmin), max: Math.round((diff * (v.max/100)) + fcmin)};
+            })
+        },
+        getParametroInicial: ()=>{//REF MACRO!F161
+            const factorManual = 1.03//REF MACRO!E162
+            const disControl = document.querySelector('#DistanciaControl').value;
+            const metrosDisControl = OficialesMedidasKms.filter(v=>{return v.dist == disControl})[0].medida * 1000;
+            const factDesen = document.querySelector('#TiempoDesentrControl').value.toSeconds();
+            const vo2max = (0.8+0.1894393 * Math.exp(-0.012778 * factDesen / 60)+0.2989558* Math.exp(-0.1932605*factDesen / 60));//REF T.D!D9
+            const p1 = (metrosDisControl/factDesen) * 60;
+            const p2 = Math.pow((metrosDisControl/factDesen) * 60, 2);
+            const vdot = roundNumber(((-4.6 + 0.182258 * (p1) + 0.000104 *p2)/(vo2max)), 1);
+            const millas = (1/(29.54 + 5.000663 * (vdot*0.88) - 0.007546 * Math.pow((vdot*0.88),2))*1609.344*60);
+            return String((millas * 0.621371192) * factorManual).toHHMMSSM();//tiempo por kilometro
+        },
+        getParametroCompetencia: ()=>{//REF MACRO!J161
+            const factorManual = 1.03//REF MACRO!E162
+            const disControl = document.querySelector('#DistanciaCompetencia').value;
+            const metrosDisControl = OficialesMedidasKms.filter(v=>{return v.dist == disControl})[0].medida * 1000;
+            const factDesen = document.querySelector('#TiempoCompetencia').value.toSeconds();
+            const vo2max = (0.8+0.1894393 * Math.exp(-0.012778 * factDesen / 60)+0.2989558* Math.exp(-0.1932605*factDesen / 60));//REF T.D!D9
+            const p1 = (metrosDisControl/factDesen) * 60;
+            const p2 = Math.pow((metrosDisControl/factDesen) * 60, 2);
+            const vdot = roundNumber(((-4.6 + 0.182258 * (p1) + 0.000104 *p2)/(vo2max)), 1);
+            const millas = (1/(29.54 + 5.000663 * (vdot*0.88) - 0.007546 * Math.pow((vdot*0.88),2))*1609.344*60);
+            return String((millas * 0.621371192) * factorManual).toHHMMSSM();//tiempo por kilometro
+        },
+        getMetricasZonasCardiacas: ()=>{
+            const base = MacroCiclo.obtenerDatosMacroBase();
+            const paramInit = Calc.getParametroInicial().toSeconds();
+            const paramComp = Calc.getParametroCompetencia().toSeconds();
+            const diffInitComp = paramInit - paramComp;
+            const metriBase = Calc.getMetricasBaseZonasCardiacas();
+            const porcentajes = base.distribucionPorcentaje;
+            const matriz = [];
+            //Temp por conveniencia ya que tiene 7 elementos el array
+            let artifical = 0;
+            metriBase.forEach((v,fix, k)=>{
+               matriz.push({nombre: "Z"+(fix+1), indicadores: []});
+               let artifical2 = -1;
+               base.periodizacion.forEach((p,six)=>{
+                    for(let i=0; i<p; i++){
+                        artifical2++;
+                        if(i==0 && six==0){
+                            if(fix == 0)
+                                matriz[fix].indicadores.push({max: String(FactorZonasCardiacas[1].factor * paramInit).toHHMMSSM()});//+1 desde el inicio
+                            else if(fix == k.length-1)
+                                matriz[fix].indicadores.push({min: String(FactorZonasCardiacas[FactorZonasCardiacas.length-2].factor * paramInit).toHHMMSSM()});//-1 desde el final(se resta 2 por el comienzo del index en 0)
+                            else{
+                                matriz[fix].indicadores.push({min: String(FactorZonasCardiacas[artifical].factor * paramInit).toHHMMSSM(),
+                                                              max: String(FactorZonasCardiacas[artifical+1].factor * paramInit).toHHMMSSM()});
+                                artifical+=2;
+                            }
+                        }else{
+                            let ref;
+                            if(fix == 0){
+                                ref = matriz[fix].indicadores[artifical2 - 1].max.toSeconds();
+                                const x1 = (porcentajes[six]/100)/p;
+                                const x2 = FactorZonasCardiacas[1].factor;
+                                const valor = String((ref - ((diffInitComp * x2) * x1))).toHHMMSSM();
+                                matriz[fix].indicadores.push({max: valor});
+                            } else if(fix == k.length-1){
+                                ref = matriz[fix].indicadores[artifical2 - 1].min;
+                                matriz[fix].indicadores.push({min: ref});
+                            } else {
+                                const ref1 = matriz[fix].indicadores[artifical2 - 1].max.toSeconds();
+                                const ref2 = matriz[fix].indicadores[artifical2 - 1].min.toSeconds();
+                                const v1 = String((ref1 - ((diffInitComp) * FactorZonasCardiacas[1].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
+                                const v2 = String((ref2 - ((diffInitComp) * FactorZonasCardiacas[FactorZonasCardiacas.length-2].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
+                                matriz[fix].indicadores.push({min: v2, max: v1});
+                            }
+                        }
+                    }
+               })
+            })
+            return matriz;
         }
     }
 })();
+
+function roundNumber(num, scale) {
+    if(!("" + num).includes("e")) {
+        return +(Math.round(num + "e+" + scale)  + "e-" + scale);
+    } else {
+        var arr = ("" + num).split("e");
+        var sig = ""
+        if(+arr[1] + scale > 0) {
+            sig = "+";
+        }
+        return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
+    }
+}
 
