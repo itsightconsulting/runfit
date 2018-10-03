@@ -321,7 +321,6 @@ RutinaOpc = (function(){
             let ixUltimaSemana = semanasIxs[semanasIxs.length-1];
             let ultimaSemana = $rutina.semanas[ixUltimaSemana];
             let fechaReferencial = primeraSemana.fechaInicio.getMonth() == mes ? primeraSemana.fechaInicio: primeraSemana.fechaFin;
-
             const anioFechaReferencial = fechaReferencial.getFullYear();
             const mesFechaReferencial = fechaReferencial.getMonth();
 
@@ -423,15 +422,15 @@ RutinaOpc = (function(){
             const iconCalendar = document.querySelector('#CalendarioRf');
             if(edicion){
                 if(iconCalendar.getAttribute('data-content') == ''){
-                    iconCalendar.setAttribute('data-content', RutinaOpc.recontruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial]));
+                    iconCalendar.setAttribute('data-content', RutinaOpc.reconstruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial]));
                     $('#CalendarioRf').popover('show');
                 }else{
                     const popContent = iconCalendar.nextElementSibling.querySelector('.popover-content');
-                    popContent.appendChild(htmlStringToElement(RutinaOpc.recontruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial])));
+                    popContent.appendChild(htmlStringToElement(RutinaOpc.reconstruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial])));
                     setTimeout(() => popContent.children[0].remove(), 1);
                 }
             }else{
-                iconCalendar.setAttribute('data-content', RutinaOpc.recontruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial]));
+                iconCalendar.setAttribute('data-content', RutinaOpc.reconstruirCalendario(calendarBody, anioFechaReferencial, mesFechaReferencial, meses[mesFechaReferencial]));
                 $('#CalendarioRf').popover('show');
             }
 
@@ -452,9 +451,9 @@ RutinaOpc = (function(){
 
                 }, 100);
         },
-        recontruirCalendario: (dias, anio, mesInt, mesString)=>{
+        reconstruirCalendario: (dias, anio, mesInt, mesString)=>{
             const mesFechaInicio = $rutina.fechaInicio.getMonth(), anioFi = $rutina.fechaInicio.getFullYear();
-            const mesFechaFin = $rutina.fechaFin.getMonth(), anioFf = $rutina.fechaFin.getFullYear();;
+            const mesFechaFin = $rutina.fechaFin.getMonth(), anioFf = $rutina.fechaFin.getFullYear();
             let classFini = "", classFfin = "";
 
             //Para la ocultación de las opciones de adelanto y atras en 1 mes del calendario

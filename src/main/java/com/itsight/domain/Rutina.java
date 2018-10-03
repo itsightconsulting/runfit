@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
@@ -85,6 +86,10 @@ public class Rutina extends AuditingEntity {
     @Type(type = "int-array")
     @Column(name="SemanaIds", columnDefinition = "integer[]")
     private int[] semanaIds;
+    @Type(type = "jsonb")
+    @Column(name = "control", columnDefinition = "jsonb")
+    private RutinaControl control;
+
 
     public Rutina(){}
 

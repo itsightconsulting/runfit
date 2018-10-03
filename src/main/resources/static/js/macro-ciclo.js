@@ -9,7 +9,7 @@ Ficha = (function(){
             $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
             $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
             //$('#MacroFechaFin').val(getFechaFormatoString(Ficha.obtenerMaximaFechaCompeticiones()));
-            $('#MacroFechaFin').val("2019-03-16");
+            $('#MacroFechaFin').val("2019-03-17");
             //UsuarioFitness
             $('#EstadoCivil').text(ficha.estadoCivil);
             $('#Sexo').val(ficha.sexo == 1 ? "Masculino" : "Femenino");
@@ -99,11 +99,12 @@ MacroCiclo = (function(){
             const ZELength = Z3.length - 1;
             const Z3Max = Z3[0].max.toSeconds() > Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
             const Z3Min = Z3[0].min.toSeconds() > Z3[ZELength].min.toSeconds() ? Z3[0].min : Z3[ZELength].min;
-            $('#RitmoAerobicoActual').val(String(((Z3Max.toSeconds() + Z3Min.toSeconds())/2)).toHHMMSSM());//Siempre va ser Z3 == index 2
+            const ritmoAerobicoActual = ((Z3Max.toSeconds() + Z3Min.toSeconds())/2);
+            $('#RitmoAerobicoActual').val(String(ritmoAerobicoActual).toHHMMSSM());//Siempre va ser Z3 == index 2
             const Z33Max = Z3[0].max.toSeconds() < Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
             const Z33Min = Z3[0].min.toSeconds() < Z3[ZELength].min.toSeconds() ? Z3[0].min : Z3[ZELength].min;
-            console.log(Z33Max, Z33Min);
-            $('#RitmoAerobicoPreComp').val(String(((Z33Max.toSeconds() + Z33Min.toSeconds()) / 2)).toHHMMSSM());//Siempre va ser Z3 == index 2
+            const ritmoAerobicoPreComp = ((Z33Max.toSeconds() + Z33Min.toSeconds()) / 2);
+            $('#RitmoAerobicoPreComp').val(String(ritmoAerobicoPreComp).toHHMMSSM());//Siempre va ser Z3 == index 2
 
             let validado = false;
             if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
@@ -157,6 +158,16 @@ MacroCiclo = (function(){
                     document.querySelectorAll('#EstadisticasAdicionales .rcps').forEach((v,i)=>{
                         v.value = RCPs[i].last.substring(3);
                     });
+                    const ritmosEntreAero = Calc.getRitmosEntrenamientoAerobico(ritmoAerobicoActual, ritmoAerobicoPreComp, base);
+                    let acc = 0;
+                    document.querySelectorAll('#EstadisticasAdicionales .raps').forEach((v,i)=>{
+                        v.value = ritmosEntreAero[(acc+base.periodizacion[i])-1].factor.substring(3);
+                        acc+=base.periodizacion[i];
+                    });
+
+                    const cadenciaActual = document.querySelector('#CadenciaControl').value;
+                    const cadenciaCompetencia = document.querySelector('#CadenciaCompetencia').value;
+                    console.log(Calc.getRitmosCadenciaCompetencia(cadenciaActual, cadenciaCompetencia, base));
 
                     //Graficos - Información relacionada
                     MacroCiclo.instanciarInformacionTemporada(base);
@@ -504,16 +515,22 @@ MacroCiclo = (function(){
                 const refDia = fIni.getDay();
                 let diasParaFull = refDia==0?0:7-refDia;
                 if(i == 0){
-                    $chelmoMacro.push(new Semana(undefined,
-                        parseFromStringToDate(moment(fIni).add((i*7), 'd').format('YYYY-MM-DD')),
-                        parseFromStringToDate(moment(fIni).add((i*7)+diasParaFull, 'd').format('YYYY-MM-DD'))));
+                    const objFirtsWeek = {};
+                    objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
+                    objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
+                    objFirtsWeek.flagFull = diasParaFull == 1 ? true : false;
+                    const dias = [];
+                    for(let i=0; i<diasParaFull+1; i++){
+                        dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY')});
+                    }
+                    objFirtsWeek.lstDia = dias;
+                    $chelmoMacro.push(new Semana(objFirtsWeek))
                 }else{
                     $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
                 }
             }
             //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
             $chelmoMacro[totalSemanas-1].fechaFin = fFin;
-
             let sems = [];
             $chelmoMacro.forEach((v,i)=>{
                 $fechasCompetencia.forEach(w=>{
@@ -522,6 +539,66 @@ MacroCiclo = (function(){
                 })
             });
             return sems;
+        },
+        generarRutinaCompleta: (e)=>{
+            if($('#KilometrajePromedioSemanal').val() != ""){
+                const $chelmoMacro = [];
+                //Semanas
+                const totalSemanas = MacroCiclo.obtenerDatosMacroBase().numSem;
+                const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
+                const fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
+                for(let i=0; i<totalSemanas;i++){
+                    const refDia = fIni.getDay();
+                    let diasParaFull = refDia==0?0:7-refDia;
+                    if(i == 0){
+                        const objFirtsWeek = {};
+                        objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
+                        objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
+                        objFirtsWeek.flagFull = diasParaFull == 1 ? true : false;
+                        const literales = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
+                        const dias = [];
+                        for(let i=0; i<diasParaFull+1; i++){
+                            const fechaParse = parseFromStringToDate2(moment(fIni).add((i), 'd').format('DD/MM/YYYY'));
+                            dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY'), dia: fechaParse.getDate(), flagDescanso: false, literal: literales[fechaParse.getDate()], diaLiteral: fechaParse.getDate() + " "+ literales[fechaParse.getDay()]});
+                        }
+                        objFirtsWeek.lstDia = dias;
+                        $chelmoMacro.push(new Semana(objFirtsWeek))
+                    }else{
+                        $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
+                    }
+                }
+                //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
+                $chelmoMacro[totalSemanas-1].fechaFin = fFin;
+                //Rutina
+                const r = {};
+                r.fechaInicio = fIni;
+                r.fechaFin = fFin;
+                r.meses = 4;
+                r.anios = 0;
+                r.totalSemanas = 24;
+                r.dias = 200;
+                r.semanas = $chelmoMacro;
+                r.tipoRutina = 1;
+                r.control = {};
+                r.control.kilometrajeTotal = document.querySelector('#KilometrajeTotal h1').textContent.trim();
+                r.control.kilometrajeActual = 0;
+                const baseDistribucion = MacroCiclo.obtenerDatosMacroBase();
+                const comps = MacroCiclo.getSemanasSimulacion();
+                const dis1 = baseDistribucion.periodizacion[0];
+                const dis2 = dis1 + baseDistribucion.periodizacion[1];
+                const objs = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
+                    const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
+                    return {numSem: i+1, kms: Number(v.textContent), color: c}
+                });
+                r.semanas.forEach((v,i)=>{
+                    v.kilometrajeTotal = objs[i].kms;
+                })
+
+                guardarRutina(r, (btn = e.target));
+            }else{
+                $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
+            }
+
         }
     }
 })();

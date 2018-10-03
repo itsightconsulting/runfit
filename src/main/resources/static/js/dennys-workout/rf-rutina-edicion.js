@@ -54,6 +54,7 @@ const selectorFzEditor = document.querySelector('#SelectorFzEditor');
 const tablaCompetencias = document.querySelector('#TablaCompetencias');
 const btnVerDetSemanas = document.querySelector('#btnVerDetalleSemanas');
 const btnGenerarMacroCiclo = document.querySelector('#btnGenerarMacroCiclo');
+const btnGenerarRutinaCompleta = document.querySelector('#btnGenerarRutina');
 const nivelAtletaRdBtn = document.querySelector('#NivelAtleta');
 const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
 const fInitMacro = document.querySelector('#MacroFechaInicio');
@@ -94,6 +95,7 @@ function init(){
         miniEditor.addEventListener('click', principalesMiniEditor);
         btnVerDetSemanas.addEventListener('click', MacroCiclo.infoSemanas);
         btnGenerarMacroCiclo.addEventListener('click', MacroCiclo.generar);
+        btnGenerarRutinaCompleta.addEventListener('click', MacroCiclo.generarRutinaCompleta);
         Array.from(nivelAtletaRdBtn.querySelectorAll('.chkNivel')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
         Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
         fInitMacro.addEventListener('change', () => MacroCiclo.calcularSemanas(1));
@@ -2375,6 +2377,24 @@ function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
         data: JSON.stringify(params),
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function guardarRutina(rutina, btn){
+    $(btn).button('loading');
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/generar/rutina/macro/demo",
+        dataType: "json",
+        data: JSON.stringify(rutina),
+        success: function (data) {
+            window.location.href = _ctx;
         },
         error: function (xhr) {
             exception(xhr);

@@ -132,4 +132,9 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     public void actualizarUltimaFechaPlanificacionById(int id, Date ultimaFecha) {
         repository.updateUltimaFechaPlanificacionById(id, ultimaFecha);
     }
+
+    @Override
+    public RedFitness findByTrainerCodigoTrainer(String codTrainer) {
+        return repository.findByTrainerCodigoTrainer(codTrainer);
+    }
 }

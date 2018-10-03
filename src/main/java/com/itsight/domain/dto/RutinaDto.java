@@ -3,6 +3,7 @@ package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -34,6 +35,8 @@ public class RutinaDto implements Serializable {
     private Date fechaFin;
 
     private List<SemanaPlantillaDto> semanas;
+
+    private RutinaControl control;
 
     public RutinaDto(){}
 

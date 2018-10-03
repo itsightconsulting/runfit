@@ -37,4 +37,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @Modifying
     @Query("UPDATE RedFitness R SET R.fechaFinalPlanificacion = ?2 WHERE R.id = ?1")
     void updateUltimaFechaPlanificacionById(int id, Date fechaFinalPlanificacion );
+
+    @EntityGraph(value = "redFitness.integrante")
+    RedFitness findByTrainerCodigoTrainer(String codTrainer);
 }

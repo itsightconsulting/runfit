@@ -19,6 +19,7 @@ public class SemanaPlantillaDto {
     private Date fechaFin;
     private boolean flagFull;
     private int totalSemanas;
+    private double kilometrajeTotal;
 
     private List<DiaPlantillaDto> dias;
 

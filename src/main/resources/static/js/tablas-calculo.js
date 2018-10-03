@@ -190,6 +190,44 @@ Calc = (function(){
                })
             })
             return matriz;
+        },
+        getRitmosEntrenamientoAerobico: (ritmoAerobicoActual, ritmoAerobicoPreComp, base)=>{
+            let ritmoBase = ritmoAerobicoActual - ritmoAerobicoPreComp;
+            const arrRitmos = [];
+            let it = 0;
+            base.periodizacion.forEach((v,i)=>{
+                for(let k=0; k<v; k++){
+                    if(it == 0){
+                        arrRitmos.push({factor: String(ritmoAerobicoActual).toHHMMSSM(), preciso: Math.round(ritmoAerobicoActual)})
+                    } else {
+                        const preciso = arrRitmos[it-1].preciso;
+                        const x1 = (base.distribucionPorcentaje[i]/100)/v;
+                        const final = preciso - ritmoBase * x1;
+                        arrRitmos.push({factor: String(final).toHHMMSSM(), preciso: final})
+                    }
+                    it++;
+                }
+            });
+            return arrRitmos;
+        },
+        getRitmosCadenciaCompetencia: (cadActual, cadCompetencia, base)=>{
+            let ritmoBase = cadActual - cadCompetencia;
+            const arrRitmos = [];
+            let it = 0;
+            base.periodizacion.forEach((v,i)=>{
+                for(let k=0; k<v; k++){
+                    if(it == 0){
+                        arrRitmos.push({factor: cadActual, preciso: Math.round(cadActual)})
+                    } else {
+                        const preciso = arrRitmos[it-1].preciso;
+                        const x1 = (base.distribucionPorcentaje[i]/100)/v;
+                        const final = preciso - ritmoBase * x1;
+                        arrRitmos.push({factor: final, preciso: final})
+                    }
+                    it++;
+                }
+            });
+            return arrRitmos;
         }
     }
 })();

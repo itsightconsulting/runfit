@@ -1,18 +1,19 @@
 package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,15 @@ public class Semana {
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "semana", cascade = CascadeType.ALL)
     private List<Dia> lstDia;
+
+    @Column(nullable = false)
+    private double kilometrajeTotal;
+
+    @Column(nullable = false)
+    private double kilometrajeActual;
+
+    @Column(nullable = false)
+    private double horas;
 
     public Semana(){}
 
