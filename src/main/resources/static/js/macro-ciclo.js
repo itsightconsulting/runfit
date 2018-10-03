@@ -8,7 +8,8 @@ Ficha = (function(){
             $('#Edad').val(calcularEdadPorFechaNacimiento(ficha.usuario.fechaNacimiento));
             $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
             $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
-            $('#MacroFechaFin').val(getFechaFormatoString(Ficha.obtenerMaximaFechaCompeticiones()));
+            //$('#MacroFechaFin').val(getFechaFormatoString(Ficha.obtenerMaximaFechaCompeticiones()));
+            $('#MacroFechaFin').val("2019-03-16");
             //UsuarioFitness
             $('#EstadoCivil').text(ficha.estadoCivil);
             $('#Sexo').val(ficha.sexo == 1 ? "Masculino" : "Femenino");

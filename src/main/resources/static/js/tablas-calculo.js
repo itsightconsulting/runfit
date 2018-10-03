@@ -152,31 +152,38 @@ Calc = (function(){
                         artifical2++;
                         if(i==0 && six==0){
                             if(fix == 0)
-                                matriz[fix].indicadores.push({max: String(FactorZonasCardiacas[1].factor * paramInit).toHHMMSSM()});//+1 desde el inicio
+                                matriz[fix].indicadores.push({max: String(FactorZonasCardiacas[1].factor * paramInit).toHHMMSSM(), preciso: Math.round(FactorZonasCardiacas[1].factor * paramInit)});//+1 desde el inicio
                             else if(fix == k.length-1)
                                 matriz[fix].indicadores.push({min: String(FactorZonasCardiacas[FactorZonasCardiacas.length-2].factor * paramInit).toHHMMSSM()});//-1 desde el final(se resta 2 por el comienzo del index en 0)
                             else{
                                 matriz[fix].indicadores.push({min: String(FactorZonasCardiacas[artifical].factor * paramInit).toHHMMSSM(),
-                                                              max: String(FactorZonasCardiacas[artifical+1].factor * paramInit).toHHMMSSM()});
+                                                              max: String(FactorZonasCardiacas[artifical+1].factor * paramInit).toHHMMSSM(),
+                                                              preMin:  Math.round(FactorZonasCardiacas[artifical].factor * paramInit),
+                                                              preMax:  Math.round(FactorZonasCardiacas[artifical+1].factor * paramInit)});
                                 artifical+=2;
                             }
                         }else{
                             let ref;
                             if(fix == 0){
-                                ref = matriz[fix].indicadores[artifical2 - 1].max.toSeconds();
+                                ref = matriz[fix].indicadores[artifical2 - 1].preciso;
                                 const x1 = (porcentajes[six]/100)/p;
                                 const x2 = FactorZonasCardiacas[1].factor;
-                                const valor = String((ref - ((diffInitComp * x2) * x1))).toHHMMSSM();
-                                matriz[fix].indicadores.push({max: valor});
+                                const precisoValor = (ref - ((diffInitComp * x2) * x1));
+                                const valor = String(precisoValor).toHHMMSSM();
+                                matriz[fix].indicadores.push({max: valor, preciso: precisoValor});
                             } else if(fix == k.length-1){
                                 ref = matriz[fix].indicadores[artifical2 - 1].min;
                                 matriz[fix].indicadores.push({min: ref});
                             } else {
-                                const ref1 = matriz[fix].indicadores[artifical2 - 1].max.toSeconds();
-                                const ref2 = matriz[fix].indicadores[artifical2 - 1].min.toSeconds();
-                                const v1 = String((ref1 - ((diffInitComp) * FactorZonasCardiacas[1].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
-                                const v2 = String((ref2 - ((diffInitComp) * FactorZonasCardiacas[FactorZonasCardiacas.length-2].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
-                                matriz[fix].indicadores.push({min: v2, max: v1});
+                                const ref1 = matriz[fix].indicadores[artifical2 - 1].preMin;
+                                const ref2 = matriz[fix].indicadores[artifical2 - 1].preMax;
+                                const precisoValor =  FactorZonasCardiacas[1].factor;
+                                const v1 = String((ref1 - ((diffInitComp) * precisoValor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
+                                //const v1 = String((ref1 - ((diffInitComp) * FactorZonasCardiacas[FactorZonasCardiacas.length-2].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
+                                const v2 = String((ref2 - ((diffInitComp) * FactorZonasCardiacas[1].factor) * (((porcentajes[six])/100))/p)).toHHMMSSM();
+                                matriz[fix].indicadores.push({min: v1, max: v2,
+                                                preMin: (ref1 - ((diffInitComp) * precisoValor) * (((porcentajes[six])/100))/p),
+                                                preMax: (ref2 - ((diffInitComp) * FactorZonasCardiacas[1].factor) * (((porcentajes[six])/100))/p)});
                             }
                         }
                     }
