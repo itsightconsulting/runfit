@@ -67,17 +67,14 @@ Calc = (function(){
             const m1 = OficialesMedidasKms.filter(v=>{return d1 == v.dist})[0].medida;
             const d2 = Number(document.querySelector('#DistanciaControl').value)
             const m2 = OficialesMedidasKms.filter(v=>{return d2 == v.dist})[0].medida;
-            const m3 = FactorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor
+            const m3 = FactorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
             const m4 = FactorVelocidadByKms.filter(v=>{return d1 == v.dist})[0].factor;
-            obj.ritmoCompetenciaActual = String(m0 * Math.pow(
-                (m1/m2) * (m3), m4) / m1).toHHMMSSM();
+            obj.ritmoCompetenciaActual = String(m0 * Math.pow((m1/m2) * (m3), m4) / m1).toHHMMSSM();
             obj.ritmoXkilometro = String(document.querySelector('#TiempoCompetencia').value.toSeconds()/m1).toHHMMSSM();
             const cadencia = Number(document.querySelector('#CadenciaControl').value);
             obj.longitudPasoCompActual = ((3600*24*1000)/(String(obj.ritmoCompetenciaActual).toSeconds()*24*60*cadencia)).toFixed(2);
             return obj;
-
             //Logintud de paso de competencia actual
-
         },
         getDistribucionTiempoPlanificado: (base)=>{
             const meta = document.querySelector('#RitmoXKilometro').value.toSeconds()
@@ -145,7 +142,7 @@ Calc = (function(){
             //Temp por conveniencia ya que tiene 7 elementos el array
             let artifical = 0;
             metriBase.forEach((v,fix, k)=>{
-               matriz.push({nombre: "Z"+(fix+1), indicadores: []});
+               matriz.push({nombre: "Z"+(fix+1),pMin: metriBase[fix].min, pMax: metriBase[fix].max, indicadores: []});
                let artifical2 = -1;
                base.periodizacion.forEach((p,six)=>{
                     for(let i=0; i<p; i++){
@@ -217,17 +214,39 @@ Calc = (function(){
             base.periodizacion.forEach((v,i)=>{
                 for(let k=0; k<v; k++){
                     if(it == 0){
-                        arrRitmos.push({factor: cadActual, preciso: Math.round(cadActual)})
+                        arrRitmos.push({factor: Math.round(cadActual), preciso: Math.round(cadActual)})
                     } else {
                         const preciso = arrRitmos[it-1].preciso;
                         const x1 = (base.distribucionPorcentaje[i]/100)/v;
                         const final = preciso - ritmoBase * x1;
-                        arrRitmos.push({factor: final, preciso: final})
+                        arrRitmos.push({factor: Math.round(final), preciso: final})
                     }
                     it++;
                 }
             });
             return arrRitmos;
+        },
+        getLongitudesDePaso: (ritmosCompetencia, ritmosCadencia, base)=>{
+            //TEMP
+            const meta = document.querySelector('#RitmoXKilometro').value.toSeconds()
+            const inicial = document.querySelector('#RitmoCompetenciaActual').value.toSeconds();
+            const segundos =  inicial - meta;
+            const constantes = base.distribucionPorcentaje.map(v=>{
+                return ((Number(v)/100)*segundos).toFixed(2);
+            }).map((v,i)=>{
+                return {etapa: i, c: v/base.periodizacion[i]};
+            });
+            const mainBase = ritmosCompetencia[0].toSeconds();
+            let k=0;
+            let acc=base.periodizacion[k];
+            //END TEMP
+            return ritmosCompetencia.map((v,i)=>{
+                if(i==acc){
+                    k++;
+                    acc+=acc[k];
+                }
+                return roundNumber(1000/(((mainBase - (constantes[k].c*i))/60)*ritmosCadencia[i].preciso),2);
+            })
         }
     }
 })();

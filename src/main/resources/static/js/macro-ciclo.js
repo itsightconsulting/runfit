@@ -158,6 +158,7 @@ MacroCiclo = (function(){
                     document.querySelectorAll('#EstadisticasAdicionales .rcps').forEach((v,i)=>{
                         v.value = RCPs[i].last.substring(3);
                     });
+
                     const ritmosEntreAero = Calc.getRitmosEntrenamientoAerobico(ritmoAerobicoActual, ritmoAerobicoPreComp, base);
                     let acc = 0;
                     document.querySelectorAll('#EstadisticasAdicionales .raps').forEach((v,i)=>{
@@ -167,7 +168,20 @@ MacroCiclo = (function(){
 
                     const cadenciaActual = document.querySelector('#CadenciaControl').value;
                     const cadenciaCompetencia = document.querySelector('#CadenciaCompetencia').value;
-                    console.log(Calc.getRitmosCadenciaCompetencia(cadenciaActual, cadenciaCompetencia, base));
+                    const ritmosCadencia = Calc.getRitmosCadenciaCompetencia(cadenciaActual, cadenciaCompetencia, base);
+
+                    acc = 0;
+                    document.querySelectorAll('#EstadisticasAdicionales .cdcs').forEach((v,i)=>{
+                        v.value = ritmosCadencia[(acc+base.periodizacion[i])-1].factor;
+                        acc+=base.periodizacion[i];
+                    });
+
+                    acc = 0;
+                    const longitudesPaso = Calc.getLongitudesDePaso(arrTiempos, ritmosCadencia, base);
+                    document.querySelectorAll('#EstadisticasAdicionales .lpcs').forEach((v,i)=>{
+                        v.value = longitudesPaso[(acc+base.periodizacion[i])-1];
+                        acc+=base.periodizacion[i];
+                    });
 
                     //Graficos - Información relacionada
                     MacroCiclo.instanciarInformacionTemporada(base);
@@ -567,6 +581,7 @@ MacroCiclo = (function(){
                         $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
                     }
                 }
+
                 //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
                 $chelmoMacro[totalSemanas-1].fechaFin = fFin;
                 //Rutina
@@ -594,6 +609,16 @@ MacroCiclo = (function(){
                     v.kilometrajeTotal = objs[i].kms;
                 })
 
+
+                //Modificando indicadores de pulso y de tiempos
+                Calc.getMetricasZonasCardiacas().forEach((v,i)=>{
+                    const indi = v.indicadores.map(v=>{
+                        return {max: v.max, min: v.min}
+                    })
+                    v.indicadores = indi;
+                    r.semanas[i].metricas = JSON.stringify(v);
+                });
+                console.log(r);
                 guardarRutina(r, (btn = e.target));
             }else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});

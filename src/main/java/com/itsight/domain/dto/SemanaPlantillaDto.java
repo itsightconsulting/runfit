@@ -20,6 +20,7 @@ public class SemanaPlantillaDto {
     private boolean flagFull;
     private int totalSemanas;
     private double kilometrajeTotal;
+    private String metricas;
 
     private List<DiaPlantillaDto> dias;
 

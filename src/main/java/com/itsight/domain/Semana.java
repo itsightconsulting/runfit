@@ -77,6 +77,10 @@ public class Semana {
     @Column(nullable = false)
     private double horas;
 
+    @Lob
+    @Column
+    private String metricas;
+
     public Semana(){}
 
 
