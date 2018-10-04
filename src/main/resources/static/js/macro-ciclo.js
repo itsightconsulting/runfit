@@ -605,19 +605,14 @@ MacroCiclo = (function(){
                     const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
                     return {numSem: i+1, kms: Number(v.textContent), color: c}
                 });
-                r.semanas.forEach((v,i)=>{
-                    v.kilometrajeTotal = objs[i].kms;
+                const mZC = Calc.getMetricasZonasCardiacas();
+                r.semanas.forEach((v,fix)=>{
+                    v.kilometrajeTotal = objs[fix].kms;
+                    //Modificando indicadores de pulso y de tiempos
+                    r.semanas[fix].metricas = JSON.stringify(mZC.map(v=>{
+                        return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
+                    }));
                 })
-
-
-                //Modificando indicadores de pulso y de tiempos
-                Calc.getMetricasZonasCardiacas().forEach((v,i)=>{
-                    const indi = v.indicadores.map(v=>{
-                        return {max: v.max, min: v.min}
-                    })
-                    v.indicadores = indi;
-                    r.semanas[i].metricas = JSON.stringify(v);
-                });
                 console.log(r);
                 guardarRutina(r, (btn = e.target));
             }else{

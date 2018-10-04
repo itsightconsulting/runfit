@@ -1639,7 +1639,9 @@ function principalesEventosTabRutina(e){
         $('#CalendarioRf').popover('show');
     }
     else if(clases.contains('abrir-indicador-1')){
-        Indicadores.abrirIndicador1();
+        const semIndex = Number(document.querySelector('#SemanaActual').textContent)-1;
+        const metricas = $rutina.semanas[semIndex].metricas;
+        Indicadores.abrirIndicador1(metricas);
     }
 }
 

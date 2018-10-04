@@ -189,11 +189,15 @@ class Semana{
             this.fechaFin = parseFromStringToDate2(obj.fechaFin);
             this.flagFull = obj.flagFull;
             this.dias = this.instanciarDias(obj.lstDia);
+            this.metricas = obj.metricas != undefined ? JSON.parse(obj.metricas) : "";
+            this.kilometrajeTotal = obj.kilometrajeActual;
         }else{
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             this.flagFull = true;
             this.dias = this.instanciarDiasNuevaSemana();
+            this.metricas = "";
+            this.kilometrajeTotal = 0;
         }
     }
 
@@ -2167,7 +2171,7 @@ Indicadores = (function(){
             const raw = `<a href="javascript:void(0);"><i id="IconIndicador1" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-heartbeat txt-color-red fa-2x abrir-indicador-1"></i></a>`;
             document.querySelector('#Indicadores1').innerHTML = raw;
         },
-        abrirIndicador1: ()=>{
+        abrirIndicador1: (metricas)=>{
             const iconIndi1 = document.querySelector('#IconIndicador1');
             const raw = `
                 <div class="container-fluid padding-0 its-indicador-1">
@@ -2175,33 +2179,37 @@ Indicadores = (function(){
                         <div class="row padding-5 text-align-center">
                             <span class="txt-color-blue"><b>Paso</b></span>
                         </div>
-                        ${Indicadores.indicador1Body(7, 1)}
+                        ${Indicadores.indicador1Body(metricas, 1)}
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6">
                         <div class="row padding-5 text-align-center">
                             <span class="txt-color-red"><b>Pulso</b></span>
                         </div>
-                        ${Indicadores.indicador1Body(7, 2)}
+                        ${Indicadores.indicador1Body(metricas, 2)}
                     </div>
                 </div>
             `
             iconIndi1.setAttribute('data-content', raw);
             $('#IconIndicador1').popover('show');
         },
-        indicador1Body: (iteraciones, t)=>{
+        indicador1Body: (metricas, t)=>{
+            const iteraciones = metricas.length;
             let raw = '';
             const claseTipo = t == 2 ? 'txt-color-red':'';
             const bOpacidad = 1/iteraciones;
             for(let i=0; i<iteraciones;i++){
                 raw += `<div class="col-md-12 col-sm-12 col-xs-12 padding-o-bottom-5 text-align-center">
                             <div class="col-md-3 col-sm-3 col-xs-3 padding-0">
-                                <a href="javascript:void(0);">Z${i+1}</a>
+                                <a href="javascript:void(0);">${metricas[i].nombre}</a>
                             </div>
                             <div class="col-md-2 col-sm-2 col-xs-2 padding-0">
                                 <a href="javascript:void(0);"><i class="fa fa-long-arrow-up ${claseTipo}" style="opacity: ${bOpacidad*(i+1)}"></i></a>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-7 padding-0">
-                                <b> 6:25 - 6:00</b>
+                                ${t == 1 ?
+                                    `<b> ${i == 0 ? metricas[i].indicadores.max.substr(3) : i == 6 ? metricas[i].indicadores.min.substr(3): metricas[i].indicadores.max.substr(3) +' - '+ metricas[i].indicadores.min.substr(3)}</b>`
+                                    :`<b> ${metricas[i].min} - ${metricas[i].max}</b>`
+                                }
                             </div>                            
                         </div>`
             }
