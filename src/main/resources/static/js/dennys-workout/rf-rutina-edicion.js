@@ -160,6 +160,7 @@ async function obtenerEspecificaSemana(semanaIndex, action){
             url: _ctx + 'gestion/rutina/semana/obtener/'+semanaIndex,
             dataType: "json",
             success: function (data, textStatus) {
+                console.log(data);
                 if (textStatus == "success") {
                     if (data == "-9") {
                         $.smallBox({
@@ -768,9 +769,7 @@ function generandoCategoriaVideos(catsVideo){
 
     rawGruposAElegirHTML+='</div>';
 
-
     document.querySelector('#ArbolGrupoVideoDetalle').appendChild(htmlStringToElement(rawGruposAElegirHTML));
-
     return rawSubCategoriasHTML;
 }
 

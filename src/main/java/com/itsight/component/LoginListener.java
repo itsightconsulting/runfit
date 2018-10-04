@@ -31,10 +31,9 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             int id = securityUserRepository.findIdByUsername(userName);
             session.setAttribute("id", id);
             String codTrainer = usuarioService.findCodigoTrainerById(id);
-            if(codTrainer != null){
+            if(codTrainer != null) {
                 session.setAttribute("codTrainer", codTrainer);
             }
-
             usuarioService.actualizarFechaUltimoAcceso(new Date(), userName);
         }catch (Exception e){
             e.printStackTrace();

@@ -189,7 +189,7 @@ class Semana{
             this.fechaFin = parseFromStringToDate2(obj.fechaFin);
             this.flagFull = obj.flagFull;
             this.dias = this.instanciarDias(obj.lstDia);
-            this.metricas = obj.metricas != undefined ? JSON.parse(obj.metricas) : "";
+            this.metricas = obj.metricas != undefined ? obj.metricas != "" ? JSON.parse(obj.metricas) : "" : "";
             this.kilometrajeTotal = obj.kilometrajeActual;
         }else{
             this.fechaInicio = fechaInicio;
@@ -662,6 +662,29 @@ RutinaGet = (function(){
                     return i;
             })
             return coincidencias.filter(v=>{return v!=undefined});
+        },
+        getRegeneracionSemanas: (ini, fin, numSemanas)=>{
+            const semanas = [];
+            const totalSemanas = numSemanas;
+            const fIni = parseFromStringToDate2(ini);
+            const fFin = parseFromStringToDate2(fin);
+            for(let i=0; i<totalSemanas;i++){
+                const refDia = fIni.getDay();
+                let diasParaFull = refDia==0?0:7-refDia;
+                if(i == 0){
+                    const objFirtsWeek = {};
+                    const semFini = parseFromStringToDate2(moment(fIni).add((i*7), 'd').format('DD/MM/YYYY'));
+                    const semFfin = parseFromStringToDate2(moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY'));
+
+                    objFirtsWeek.lstDia = dias;
+                    semanas.push({fechaInicio: semFini, fechaFin: semFfin});
+                }else{
+                    semanas.push({fechaInicio: parseFromStringToDate(moment(semanas[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')), fechaFin: parseFromStringToDate(moment(semanas[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))});
+                }
+            }
+            //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
+            semanas[totalSemanas-1].fechaFin = fFin;
+            return semanas;
         }
     }
 })();
