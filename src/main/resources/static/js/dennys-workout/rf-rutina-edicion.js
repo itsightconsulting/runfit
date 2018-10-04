@@ -51,9 +51,9 @@ const shortcutRutinario = document.querySelector('#ShortcutRutinario');
 const mainTabs = document.querySelector('#PrincipalesTabs');
 const miniEditor = document.querySelector('#MiniEditor');
 const selectorFzEditor = document.querySelector('#SelectorFzEditor');
-const tablaCompetencias = document.querySelector('#TablaCompetencias');
+const tbCompetencias = document.querySelector('#TablaCompetencias');
 const btnVerDetSemanas = document.querySelector('#btnVerDetalleSemanas');
-const btnGenerarMacroCiclo = document.querySelector('#btnGenerarMacroCiclo');
+const btnComprobarMacro = document.querySelector('#btnComprobar');
 const btnGenerarRutinaCompleta = document.querySelector('#btnGenerarRutina');
 const nivelAtletaRdBtn = document.querySelector('#NivelAtleta');
 const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
@@ -73,10 +73,12 @@ function init(){
         //Importante mantener el orden para el correcto funcionamiento
         $rutina = new Rutina(semana.rutina);
         $rutina.init(semana);
+
         validators();
         instanciarMiniPlantillas();
         instanciarGrupoVideos();
         instanciarDatosFitnessCliente();
+
         tabRutina.addEventListener('click', principalesEventosTabRutina);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
@@ -93,13 +95,13 @@ function init(){
         shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         miniEditor.addEventListener('click', principalesMiniEditor);
-        btnVerDetSemanas.addEventListener('click', MacroCiclo.infoSemanas);
-        btnGenerarMacroCiclo.addEventListener('click', MacroCiclo.generar);
+        btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
+        btnComprobarMacro.addEventListener('click', MacroCiclo.comprobar);
         btnGenerarRutinaCompleta.addEventListener('click', MacroCiclo.generarRutinaCompleta);
         Array.from(nivelAtletaRdBtn.querySelectorAll('.chkNivel')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
         Array.from(distAtletaRdBtn.querySelectorAll('.chkDistancia')).forEach(v=>v.addEventListener('change', MacroCiclo.instanciarKilometrajeBase));
-        fInitMacro.addEventListener('change', () => MacroCiclo.calcularSemanas(1));
-        fFinMacro.addEventListener('change', () => MacroCiclo.calcularSemanas(1));
+        fInitMacro.addEventListener('change', FichaSet.setTotalSemanas);
+        fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
         //btnCopiarMini.addEventListener('click', copiarMiniPlantilla);
         window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
         instanciarMarcoEditor();
@@ -646,7 +648,7 @@ function instanciarDatosFitnessCliente(){
                 }else{
                     if(data.id != 0) {
                         Ficha.instanciar(data);
-                        MacroCiclo.calcularSemanas();
+                        FichaSet.setTotalSemanas();
                     }
                 }
             }
@@ -724,7 +726,7 @@ async function instanciarPorcentajesKilometraje(distancia){
     })
 }
 
-function instanciarKilometrajeBase(distancia, nivel){
+function obtenerKilometrajeBaseBD(distancia, nivel){
     const o  = {};
     o.distancia = distancia;
     o.nivelAtleta = nivel;
@@ -1742,8 +1744,8 @@ function principalesEventosTabFichaTecnica(e){
     if(clases.contains('refrescar-grafico')) {
         e.preventDefault();
         e.stopPropagation();
-        const base = MacroCiclo.obtenerDatosMacroBase();
-        MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));
+        const base = FichaGet.obtenerBase();
+        MCGrafico.temporada(MCGraficoData.paraTemporada(base));
         MacroCiclo.instanciarInformacionTemporada(base);
     }
 }
@@ -1752,16 +1754,16 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     const clases = input.classList;
 
     if(clases.contains('periodizacion-calc')){
-        MacroCiclo.calcularProyecciones(input, 1);
+        CalcProyecciones.calcular(input, 1);
     }
     else if(clases.contains('velocidad-calc')){
-        //MacroCiclo.calcularProyecciones(input, 2);
+        CalcProyecciones.calcular(input, 2);
     }
     else if(clases.contains('cadencia-calc')){
-        //MacroCiclo.calcularProyecciones(input, 3);
+        CalcProyecciones.calcular(input, 3);
     }
     else if(clases.contains('tcs-calc')){
-        //MacroCiclo.calcularProyecciones(input, 4);
+        CalcProyecciones.calcular(input, 4);
     }
 }
 
@@ -2424,8 +2426,8 @@ function principalesAlCambiarTab(e){
         document.querySelector('#OpsAdic').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($kilometrajeBase.length == 0){
-                const base = MacroCiclo.obtenerDatosMacroBase();
-                instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+                const base = FichaGet.obtenerBase();
+                obtenerKilometrajeBaseBD(base.distancia, base.nivelAtleta);
             }
         }
     }

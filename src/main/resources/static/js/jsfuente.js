@@ -473,7 +473,7 @@ function notificacionesRutinaSegunResponseCode(resCode){
     }
 }
 
-function calcularEdadPorFechaNacimiento(fechaNac){
+function calcularEdadByFechaNacimiento(fechaNac){
     const actual = new Date();
     const atleta = parseFromStringToDate2(fechaNac);
     let edad = actual.getFullYear() - atleta.getFullYear();

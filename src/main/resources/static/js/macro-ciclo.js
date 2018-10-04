@@ -1,38 +1,65 @@
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
-            $fechasCompetencia = ficha.competencias.map(v=>{return {prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}});
+            const comps = ficha.competencias;
+            $fechasCompetencia = comps.map(v=>{return {prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}});
             $('#Nombres').val(ficha.usuario.nombres);
             $('#ApellidoPaterno').val(ficha.usuario.apellidoPaterno);
             $('#FechaNacimiento').val(ficha.usuario.fechaNacimiento);
-            $('#Edad').val(calcularEdadPorFechaNacimiento(ficha.usuario.fechaNacimiento));
+            $('#Edad').val(calcularEdadByFechaNacimiento(ficha.usuario.fechaNacimiento));
             $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
             $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
-            //$('#MacroFechaFin').val(getFechaFormatoString(Ficha.obtenerMaximaFechaCompeticiones()));
-            $('#MacroFechaFin').val("2019-03-17");
-            //UsuarioFitness
+            $('#MacroFechaFin').val(getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia)));
             $('#EstadoCivil').text(ficha.estadoCivil);
             $('#Sexo').val(ficha.sexo == 1 ? "Masculino" : "Femenino");
             $('#Imc').text(ficha.imc);
-            document.querySelectorAll('#NivelAtleta input').forEach((v,i)=>{
-                if(i==ficha.nivel-1){
-                    v.checked = true;
+            FichaSet.nivelAtleta(ficha.nivel);
+            FichaSet.setMaximoDistanciaCompetencia(comps);
+            FichaSeeder.instanciarValoresDemo();
+            Calc.setRestantes();
+            //Recreando tabla de listado de competencias
+            tbCompetencias.appendChild(FichaSeccion.newListadoCompetencias(comps));//global variable
+        }
+    }
+})();
+
+FichaGet = (function(){
+    return {
+        obtenerMaximaFechaCompeticiones: (fechas)=>{
+            let maxFecha  = fechas[0].fecha;
+            fechas.forEach((v,i)=>{
+                if(i != 0){
+                    maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
                 }
             })
-            const comps = ficha.competencias;
-            tablaCompetencias.appendChild(Ficha.instanciarCompetencias(ficha.competencias));
-            //
-            let distanciaMax = comps[0].distancia;
-            comps.forEach((v,i)=>{ if(i!=0) distanciaMax = v.distancia > distanciaMax ? v.distancia: distanciaMax;})
-            document.querySelector('#DistanciaCompetencia').value = distanciaMax;
-            document.querySelectorAll('#DistanciaRutina input').forEach(v=>{v.value == distanciaMax ? v.checked=true : '';})
-            Ficha.instanciarValoresDemo();
-            const calc = Calc.getAll();
-            $('#RitmoCompetenciaActual').val(calc.ritmoCompetenciaActual);
-            $('#RitmoXKilometro').val(calc.ritmoXkilometro);
-            $('#LongitudPasoCA').val(calc.longitudPasoCompActual);
-        }
-        ,instanciarCompetencias : (comp)=>{
+            return maxFecha;
+        },
+        obtenerNivelAtleta:()=>{
+            let ix = 0;
+            document.querySelectorAll('#NivelAtleta input').forEach((v,i)=>{
+                if(v.checked)
+                    ix = i;
+            })
+            return ix;
+        },
+        obtenerBase: ()=>{
+            const basico = {};
+            const proyecciones = FichaDOMQueries.getProyecciones();
+            basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
+            basico.periodizacion = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{return Number(v.value)});
+            basico.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
+            basico.distancia = Number(document.querySelector('#DistanciaRutina input:checked').value);
+            basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
+            basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;
+            basico.fechaFin = document.querySelector('#MacroFechaFin').value;
+            return basico;
+        },
+    }
+})();
+
+FichaSeccion = (function(){
+    return {
+        newListadoCompetencias : (comp)=>{
             comp = comp.sort((a, b) => parseFromStringToDate(b.fecha).getTime() - parseFromStringToDate(a.fecha).getTime());
             return htmlStringToElement('<tbody>'+comp.map((v,i) => {
                 return `<tr>
@@ -46,35 +73,43 @@ Ficha = (function(){
             }).join('')+'</tbody>');
             return comp;
         },
-        obtenerMaximaFechaCompeticiones: ()=>{
-            let maxFecha  = $fechasCompetencia[0].fecha;
-            $fechasCompetencia.forEach((v,i)=>{
-                if(i != 0){
-                    maxFecha = v.fecha.getTime() > maxFecha.getTime() ? v.fecha : maxFecha;
+        newAlertaInfoSemanas: () => {
+            const info = CalcProyecciones.informacionSemanas();
+            const raw = `
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas full: <b>${info.semanas - info.totSemNonFull}</b></label></div>
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas no-full: <b>${info.totSemNonFull == 2 ? info.totSemNonFull + ' (S.1 & S.' + info.semanas + ')' : info.totSemNonFull } </b></label></div>
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas totales: <b>${info.semanas}</b></label></div>
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de primera semana: <b>${info.diasPrimeraSemana}</b></label></div>
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de última semana: <b>${info.diasUltimaSemana}</b></label></div>
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días restantes: <b>${info.totDias - info.diasPrimeraSemana - info.diasUltimaSemana}</b></label></div>
+                    <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales: <b>${info.totDias}</b></label></div>`
+            $.smallBox({timeout: 15000, content: `${raw}`, color: "#4a4e3b"});
+        },
+    }
+})();
+
+FichaSet = (function(){
+    return {
+        nivelAtleta: (nivel)=>{
+            document.querySelectorAll('#NivelAtleta input').forEach((v,i)=>{
+                if(i==nivel-1){
+                    v.checked = true;
                 }
             })
-            return maxFecha;
         },
-        obtenerNivelAtleta:()=>{
-            let ix;
-            document.querySelectorAll('#NivelAtleta input').forEach((v,i)=>{
-                if(v.checked)
-                    ix = i;
-            })
-            return ix;
+        setMaximoDistanciaCompetencia: (comps)=>{
+            let maxDistancia = comps[0].distancia;
+            comps.forEach((v,i)=>{ if(i!=0) maxDistancia = v.distancia > maxDistancia ? v.distancia: maxDistancia;})
+            document.querySelector('#DistanciaCompetencia').value = maxDistancia;
+            document.querySelectorAll('#DistanciaRutina input').forEach(v=>{v.value == maxDistancia ? v.checked=true : '';})
         },
-        instanciarValoresDemo: ()=>{
-            const tiempoControl = document.querySelector('#TiempoControl');
-            const factorDesentrenamientoControl = document.querySelector('#FactorDesentrenamientoControl');
-            document.querySelector('#DistanciaControl').value = 4;
-            tiempoControl.value = "00:21:00";
-            document.querySelector('#CadenciaControl').value = 174;
-            factorDesentrenamientoControl.value = 3;
-
-            document.querySelector('#TiempoCompetencia').value = "04:10:00";
-            document.querySelector('#CadenciaCompetencia').value = 185;
-            document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
-        }
+        setTotalSemanas: () => {
+            const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
+            const fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
+            const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
+            const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
+            document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+        },
     }
 })();
 
@@ -88,13 +123,10 @@ FichaDOMQueries = (function(){
 
 MacroCiclo = (function(){
     return {
-        generar: ()=>{
-            //Actualizando tiempos
-            const calc = Calc.getAll();
-            $('#RitmoCompetenciaActual').val(calc.ritmoCompetenciaActual);
-            $('#RitmoXKilometro').val(calc.ritmoXkilometro);
-            $('#LongitudPasoCA').val(calc.longitudPasoCompActual);
-            const metricasZc = Calc.getMetricasZonasCardiacas();
+        comprobar: ()=>{
+            //Actualizando calculos bases en caso se hayan modificado algunos otros parametros
+            Calc.setRestantes();
+            const metricasZc = RitmosSZC.getMetricasZonasCardiacas();
             const Z3 = metricasZc[2].indicadores;
             const ZELength = Z3.length - 1;
             const Z3Max = Z3[0].max.toSeconds() > Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
@@ -116,10 +148,10 @@ MacroCiclo = (function(){
 
             const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
             const totSemPerio = Number(document.querySelector('#TotalPeriodizacion2').value.trim());
-            if(validado && Ficha.obtenerNivelAtleta() != undefined && totSem == totSemPerio) {
-                const base = MacroCiclo.obtenerDatosMacroBase();
+            if(validado && FichaGet.obtenerNivelAtleta() != undefined && totSem == totSemPerio) {
+                const base = FichaGet.obtenerBase();
                 if($kilometrajeBase.length == 0){
-                    instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+                    obtenerKilometrajeBaseBD(base.distancia, base.nivelAtleta);
                 }
                 instanciarPorcentajesKilometraje(base.distancia).then(porcentajes=>{
                     //Filtrando porcentajes
@@ -129,15 +161,15 @@ MacroCiclo = (function(){
                     }
                     mainContainer.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo(base, porcentajesTrainer)));
                     //ModificandoBase en caso semana inicial y final no esten completas
-                    $semCalculoMacro = MacroCiclo.obtenerObjSemana();
-                    if(!$semCalculoMacro.fwFull) {
+                    $semCalculoMacro = CalcProyecciones.informacionSemanas();
+                    if($semCalculoMacro.diasPrimeraSemana < 7) {
                         const y = document.querySelector('#PorcentajesKilometraje label.kms');
                         const p = Number(document.querySelector('#PorcentajesKilometraje label.perc').textContent.substr(0,2))/100;
                         const t = (($kilometrajeBase[0].kilometraje) * ((($semCalculoMacro.diasPrimeraSemana * 100) / 7)) / 100);
                         y.textContent = parseFloat(t*p, 2).toFixed(1);
                         document.querySelector('#PorcentajesKilometraje input').setAttribute('data-kms', t);
                     }
-                    if(!$semCalculoMacro.lwFull){
+                    if($semCalculoMacro.diasUltimaSemana < 7) {
                         const y = document.querySelectorAll('#PorcentajesKilometraje label.kms')[document.querySelectorAll('#PorcentajesKilometraje label.kms').length-1];
                         const p = Number(document.querySelectorAll('#PorcentajesKilometraje label.perc')[document.querySelectorAll('#PorcentajesKilometraje label.perc').length-1].textContent.substr(0,2))/100;
                         const t = (($kilometrajeBase[2].kilometraje) * ((($semCalculoMacro.diasUltimaSemana * 100) / 7)) / 100)
@@ -151,7 +183,7 @@ MacroCiclo = (function(){
                     const RCPs = [];
                     //Separando máximo y mínimos por etapa de preparación
                     base.periodizacion.forEach(v=>{
-                        RCPs.push({first: copyArrTiempos[0], last: copyArrTiempos[v-1]});
+                        RCPs.push({first: copyArrTiempos[0].factor, last: copyArrTiempos[v-1].factor});
                         copyArrTiempos.splice(0, v);
                     });
 
@@ -177,7 +209,7 @@ MacroCiclo = (function(){
                     });
 
                     acc = 0;
-                    const longitudesPaso = Calc.getLongitudesDePaso(arrTiempos, ritmosCadencia, base);
+                    const longitudesPaso = Calc.getLongitudesDePaso(arrTiempos, ritmosCadencia);
                     document.querySelectorAll('#EstadisticasAdicionales .lpcs').forEach((v,i)=>{
                         v.value = longitudesPaso[(acc+base.periodizacion[i])-1];
                         acc+=base.periodizacion[i];
@@ -185,77 +217,11 @@ MacroCiclo = (function(){
 
                     //Graficos - Información relacionada
                     MacroCiclo.instanciarInformacionTemporada(base);
-                    MacroCiclo.instanciarGraficoTemporada(MacroCiclo.getObjParaGraficoTemporada(base));
+                    MCGrafico.temporada(MCGraficoData.paraTemporada(base));
                 })
             }else{
                 $.smallBox({color: "alert", content: "Validación fallida"});
             }
-        },
-        getObjParaGraficoTemporada: (baseDistribucion)=>{
-            const comps = MacroCiclo.getSemanasSimulacion();
-            const dis1 = baseDistribucion.periodizacion[0];
-            const dis2 = dis1 + baseDistribucion.periodizacion[1];
-            const objs = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
-                const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
-                return {numSem: i+1, kms: Number(v.textContent), color: c}
-            });
-            comps.forEach(v=>{//v: Representa el numero de semana de competencia
-                objs[v.semIndex - 1].bullet = v.prioridad == 1 ? `${_ctx}img/gold-medal.png` : `${_ctx}img/silver-medal.png`;
-            })
-            return objs;
-        },
-        instanciarGraficoTemporada: (temporada)=>{
-            var chart = AmCharts.makeChart( "GraficoTemporada", {
-                "type": "serial",
-                "theme": "light",
-                "dataProvider": temporada,
-                "valueAxes": [ {
-                    "gridColor": "#FFFFFF",
-                    "minimum": 0,
-                    "gridAlpha": 0.2,
-                    "dashLength": 0,
-                } ],
-                "gridAboveGraphs": true,
-                "startDuration": 1,
-                "graphs": [ {
-                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                    "fillColorsField": "color",
-                    "fillAlphas": 0.8,
-                    "lineAlpha": 0.2,
-                    "type": "column",
-                    "valueField": "kms",
-                    "bulletSize": 52,
-                    "customBulletField": "bullet",
-                } ],
-                "chartCursor": {
-                    "categoryBalloonEnabled": false,
-                    "cursorAlpha": 0,
-                    "zoomable": false
-                },
-                "categoryField": "numSem",
-                "categoryAxis": {
-                    "gridPosition": "start",
-                    "gridAlpha": 0,
-                    "tickPosition": "start",
-                    "tickLength": 20,
-                },
-            })
-            document.querySelector('#InicialMacro').classList.remove('hidden');
-        },
-        instanciarMiniGraficoDis: (porcentajes)=>{
-            const data = [{title: "General", value: porcentajes[0], color: "#83c5ff"}, {title: "Específica", value: porcentajes[1], color: "#e86b6b"}, {title: "Precompetitiva", value: porcentajes[2], color: "#a4f790"}];
-            var chart = AmCharts.makeChart( "MiniGraficoDistribucion", {
-                "type": "pie",
-                "theme": "light",
-                "dataProvider": data,
-                "titleField": "title",
-                "valueField": "value",
-                "labelRadius": -10,
-                "radius": "42%",
-                "innerRadius": "60%",
-                "labelText": "[[percents]]%",
-                "colorField": "color",
-            });
         },
         instanciarInformacionTemporada: (base)=>{
             const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
@@ -276,231 +242,11 @@ MacroCiclo = (function(){
             });
             document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
             document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
-            MacroCiclo.instanciarMiniGraficoDis(base.porcentajesKms);
-        },
-        calcularSimulacionSemanas: () => {
-            const obj = {};
-            obj.fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
-            obj.fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
-            obj.totDias = moment(obj.fechaFin).diff(obj.fechaInicio, 'days') + 1;
-            obj.diasPrimeraSemana = obj.fechaInicio.getDay() == 0 ? 1 : 7 - obj.fechaInicio.getDay() + 1;
-            obj.diasUltimaSemana = (obj.totDias - obj.diasPrimeraSemana) % 7 == 0 ? 7 : (obj.totDias - obj.diasPrimeraSemana) % 7;
-            obj.semanas = obj.diasPrimeraSemana == 7 ? Math.ceil(obj.totDias / 7) : 1 + Math.ceil((obj.totDias - obj.diasPrimeraSemana) / 7);
-            obj.totSemNonFull = obj.diasPrimeraSemana != 7 ? 1 : 0;
-            obj.totSemNonFull += obj.diasUltimaSemana != 7 ? 1 : 0;
-            if(obj.diasPrimeraSemana != 7 && obj.diasUltimaSemana == 7)
-                obj.tipoCalculo = 1;
-            else if(obj.totSemNonFull == 0)
-                obj.tipoCalculo = 2;
-            else if(obj.diasPrimeraSemana == 7 && obj.diasUltimaSemana != 7)
-                obj.tipoCalculo = 3;
-            else
-                obj.tipoCalculo = 4;
-            return obj;
-        },
-        obtenerDatosMacroBase: ()=>{
-            const basico = {};
-            basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
-            const proy = FichaDOMQueries.getProyecciones();
-            basico.periodizacion = Array.from(proy.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{return Number(v.value)});
-            //basico.periodizacion = [8, 5, 4];
-            basico.distribucionPorcentaje = Array.from(document.querySelectorAll('.periodizacion-calc[data-type="1"')).map(v=>{return Number(v.value);});
-            basico.distancia = Number(document.querySelector('#DistanciaRutina input:checked').value);
-            basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
-            return basico;
-        },
-        obtenerObjSemana:()=>{
-            const o = {};
-            o.fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
-            o.fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
-            o.totDias = moment(o.fechaFin).diff(o.fechaInicio, 'days') + 1;
-            o.diasPrimeraSemana = o.fechaInicio.getDay() == 0 ? 1 : 7 - o.fechaInicio.getDay() + 1;
-            o.diasUltimaSemana = (o.totDias - o.diasPrimeraSemana) % 7 == 0 ? 7 : (o.totDias - o.diasPrimeraSemana) % 7;
-            o.fwFull = o.diasPrimeraSemana == 7? true:false;
-            o.lwFull = o.diasUltimaSemana == 7? true:false;
-            return o;
-        },
-        infoSemanas: () => {
-            const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val()),
-                fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
-            const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
-            const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
-            const diasUltimaSemana = (totDias - diasPrimeraSemana) % 7 == 0 ? 7 : (totDias - diasPrimeraSemana) % 7;
-            let semanas = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
-                let totSemNonFull = diasPrimeraSemana != 7 ? 1 : 0;
-                totSemNonFull += diasUltimaSemana != 7 ? 1 : 0;
-                const raw = `
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas full: <b>${semanas - totSemNonFull}</b></label></div>
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas no-full: <b>${totSemNonFull == 2 ? totSemNonFull + ' (S.1 & S.' + semanas + ')' : totSemNonFull } </b></label></div>
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Semanas totales: <b>${semanas}</b></label></div>
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de primera semana: <b>${diasPrimeraSemana}</b></label></div>
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales de última semana: <b>${diasUltimaSemana}</b></label></div>
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días restantes: <b>${totDias - diasPrimeraSemana - diasUltimaSemana}</b></label></div>
-                        <div class='col-md-12 padding-0'><label class="padding-0"> <i class="fa fa-angle-right font-xs fa-fw"></i>Días totales: <b>${totDias}</b></label></div>`
-                $.smallBox({timeout: 15000, content: `${raw}`, color: "#4a4e3b"});
-        },
-        calcularSemanas: () => {
-            const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val()),
-                fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
-            const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
-            const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
-            const diasUltimaSemana = (totDias - diasPrimeraSemana) % 7 == 0 ? 7 : (totDias - diasPrimeraSemana) % 7;
-            let semanas = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
-            document.querySelector('#MacroTotalSemanas').textContent = semanas;
-        },
-        calcularProyecciones: (input, tipoProyeccion) => {
-            const ix = Number(input.getAttribute('data-index')), tipo = input.getAttribute('data-type'),
-                valor = input.value;
-            const contProyecciones = FichaDOMQueries.getProyecciones();
-            const totSem = document.querySelector('#MacroTotalSemanas').textContent;
-            let identificadores, identificadoresOtros;
-            switch (tipoProyeccion) {
-                case 1:
-                    identificadores = [".periodizacion-calc", "#TotalPeriodizacion1", "#TotalPeriodizacion2"];
-                    identificadoresOtros = [[".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"],[".cadencia-calc", "#TotalCadencia1", "#TotalCadencia2"],[".tcs-calc", "#TotalTcs1", "#TotalTcs2"]];
-                    break;
-                case 2:
-                    identificadores = [".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"];
-                    break;
-                case 3:
-                    identificadores = [".cadencia-calc", "#TotalCadencia1", "#TotalCadencia2"];
-                    break;
-                default:
-                    identificadores = [".tcs-calc", "#TotalTcs1", "#TotalTcs2"];
-            }
-
-            if (tipo == 1) {
-                const totSems = MacroCiclo.calcularNumSemByPorcentaje(valor, ix);
-                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix + 3}"]`).value = totSems;
-                //V2 - Adicional
-                identificadoresOtros.forEach(v=>{
-                    contProyecciones.querySelector(`${v[0]}[data-index="${ix + 3}"]`).value = totSems;
-                    contProyecciones.querySelector(`${v[0]}[data-index="${ix}"]`).value = valor;
-                })
-            } else {
-                const totPorc = MacroCiclo.calcularPorcentajeByNumSem(valor, ix);
-                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix - 3}"]`).value = totPorc;
-                //V2 - Adicional
-                identificadoresOtros.forEach(v=>{
-                    contProyecciones.querySelector(`${v[0]}[data-index="${ix - 3}"]`).value = totPorc;
-                    contProyecciones.querySelector(`${v[0]}[data-index="${ix}"]`).value = valor;
-                })
-            }
-
-            const tot1 = MacroCiclo.calcularTotalesDistribucion(tipoProyeccion, 1), tot2 = MacroCiclo.calcularTotalesDistribucion(tipoProyeccion, 2);
-            const eleTot1 = contProyecciones.querySelector(` ${identificadores[1]}`), eleTot2 = contProyecciones.querySelector(` ${identificadores[2]}`);
-            eleTot1.value = tot1;
-            eleTot2.value = tot2;
-            if(tot1>=99.99 && tot1<=100.01){
-                eleTot1.parentElement.classList.add('state-success');eleTot1.parentElement.classList.remove('state-error');
-            }else{
-                eleTot1.parentElement.classList.add('state-error');eleTot1.parentElement.classList.remove('state-success');
-            }
-            if(Number(tot2)==Number(totSem)){
-                eleTot2.parentElement.classList.add('state-success');eleTot2.parentElement.classList.remove('state-error');
-            }else{
-                eleTot2.parentElement.classList.add('state-error');eleTot2.parentElement.classList.remove('state-success');
-            }
-
-            //V2 - Adicional
-            identificadoresOtros.forEach(v=>{
-                contProyecciones.querySelector(`${v[1]}`).value = tot1;
-                contProyecciones.querySelector(`${v[2]}`).value = tot2;
-            })
-
-        },
-        calcularTotalesDistribucion: (tipoCat, tipoCalc) => {
-            let acum = 0;
-            switch (tipoCat) {
-                case 1:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .periodizacion-calc[data-type="${tipoCalc}"]`)).forEach(v => {
-                        acum += !isNaN(v.value) ? Number(v.value) : 0;
-                    });
-                    break;
-                case 2:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .velocidad-calc[data-type="${tipoCalc}"]`)).forEach(v => {
-                        acum += !isNaN(v.value) ? Number(v.value) : 0;
-                    });
-                    break;
-                case 3:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .cadencia-calc[data-type="${tipoCalc}"]`)).forEach(v => {
-                        acum += !isNaN(v.value) ? Number(v.value) : 0;
-                    });
-                    break;
-                default:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .tcs-calc[data-type="${tipoCalc}"]`)).forEach(v => {
-                        acum += !isNaN(v.value) ? Number(v.value) : 0;
-                    });
-            }
-
-            return acum.toFixed(2);
-        },
-        calcularPorcentajeByNumSem: (numSem, index) => {
-            const estadisticas = MacroCiclo.calcularSimulacionSemanas();
-            let situacion = estadisticas.tipoCalculo;
-            if (situacion == 1) {
-                if(index == 3){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
-                }else
-                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
-            } else if (situacion == 2){
-                return (numSem * 100 / estadisticas.semanas).toFixed(2);
-            } else if (situacion == 3) {
-                if(index == 5){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
-                }else
-                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
-            } else if (situacion == 4) {
-                if(index == 3){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
-                }else if(index == 5){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
-                }else
-                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
-            }
-        },
-        calcularNumSemByPorcentaje: (porcentaje, index)=>{
-            const estadisticas = MacroCiclo.calcularSimulacionSemanas();
-            let situacion = estadisticas.tipoCalculo;
-            if (situacion == 1) {
-                if(index == 0){
-                    return (
-                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasPrimeraSemana/7
-                    ).toFixed(2);
-                }else
-                    return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
-            } else if (situacion == 2){
-                return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
-            } else if (situacion == 3) {
-                if(index == 2){
-                    return (
-                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasUltimaSemana/7
-                    ).toFixed(2);
-                }else
-                    return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
-            } else if (situacion == 4) {
-                if(index == 0){
-                    return (
-                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasPrimeraSemana/7
-                    ).toFixed(2);
-                }
-                else if(index == 2){
-                    return (
-                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasUltimaSemana/7
-                    ).toFixed(2);
-                }else
-                    return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
-            }
+            MCGrafico.miniPorcentual(base.porcentajesKms);
         },
         mostrarPorcentajesKilo: (base, pTrainer)=>{
-            //HTML R A W
             const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva"];
             const colorClass = ["bg-color-teal", "bg-color-redLight", "bg-color-greenLight"];
-
             let html = `<section class="">`;
             html += base.periodizacion.map((v,i,k)=>{
                 const kmsRef = $kilometrajeBase[i].kilometraje;
@@ -510,55 +256,22 @@ MacroCiclo = (function(){
                         </div>`
             }).join('');
             html+=`</section>`
+            console.log(html);
             return html;
         },
         instanciarKilometrajeBase: (e)=>{
-            const base = MacroCiclo.obtenerDatosMacroBase();
-            instanciarKilometrajeBase(base.distancia, base.nivelAtleta);
+            const base = FichaGet.obtenerBase();
+            obtenerKilometrajeBaseBD(base.distancia, base.nivelAtleta);
             //Cambiando del cbo
             const rdbVal = e.target.value;
             if( rdbVal == 10 || rdbVal == 21 || rdbVal == 42)
                 document.querySelector('#DistanciaCompetencia').value = rdbVal;
         },
-        getSemanasSimulacion: ()=>{
-            const $chelmoMacro = [];
-            const totalSemanas = MacroCiclo.obtenerDatosMacroBase().numSem;
-            const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
-            const fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
-            for(let i=0; i<totalSemanas;i++){
-                const refDia = fIni.getDay();
-                let diasParaFull = refDia==0?0:7-refDia;
-                if(i == 0){
-                    const objFirtsWeek = {};
-                    objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
-                    objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
-                    objFirtsWeek.flagFull = diasParaFull == 1 ? true : false;
-                    const dias = [];
-                    for(let i=0; i<diasParaFull+1; i++){
-                        dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY')});
-                    }
-                    objFirtsWeek.lstDia = dias;
-                    $chelmoMacro.push(new Semana(objFirtsWeek))
-                }else{
-                    $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
-                }
-            }
-            //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
-            $chelmoMacro[totalSemanas-1].fechaFin = fFin;
-            let sems = [];
-            $chelmoMacro.forEach((v,i)=>{
-                $fechasCompetencia.forEach(w=>{
-                    if(v.fechaInicio<=w.fecha && v.fechaFin>=w.fecha)
-                        sems.push({semIndex: i, prioridad: w.prioridad});
-                })
-            });
-            return sems;
-        },
         generarRutinaCompleta: (e)=>{
             if($('#KilometrajePromedioSemanal').val() != ""){
                 const $chelmoMacro = [];
                 //Semanas
-                const totalSemanas = MacroCiclo.obtenerDatosMacroBase().numSem;
+                const totalSemanas = FichaGet.obtenerBase().numSem;
                 const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
                 const fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
                 for(let i=0; i<totalSemanas;i++){
@@ -597,15 +310,14 @@ MacroCiclo = (function(){
                 r.control = {};
                 r.control.kilometrajeTotal = document.querySelector('#KilometrajeTotal h1').textContent.trim();
                 r.control.kilometrajeActual = 0;
-                const baseDistribucion = MacroCiclo.obtenerDatosMacroBase();
-                const comps = MacroCiclo.getSemanasSimulacion();
+                const baseDistribucion = FichaGet.obtenerBase();
                 const dis1 = baseDistribucion.periodizacion[0];
                 const dis2 = dis1 + baseDistribucion.periodizacion[1];
                 const objs = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
                     const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
                     return {numSem: i+1, kms: Number(v.textContent), color: c}
                 });
-                const mZC = Calc.getMetricasZonasCardiacas();
+                const mZC = RitmosSZC.getMetricasZonasCardiacas();
                 r.semanas.forEach((v,fix)=>{
                     v.kilometrajeTotal = objs[fix].kms;
                     //Modificando indicadores de pulso y de tiempos
@@ -613,13 +325,90 @@ MacroCiclo = (function(){
                         return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
                     }));
                 })
-                console.log(r);
                 guardarRutina(r, (btn = e.target));
             }else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
+        },
+    }
+})();
 
-        }
+MCGraficoData = (function(){
+    return {
+        paraTemporada: (objBase)=>{
+            const dis1 = objBase.periodizacion[0];
+            const dis2 = dis1 + objBase.periodizacion[1];
+            const data = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
+                const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
+                return {numSem: i+1, kms: Number(v.textContent), color: c};
+            });
+
+            //Reconstruyendo Semanas
+            RutinaGet.getRegeneracionSemanas(moment(objBase.fechaInicio).format('DD/MM/YYYY'), moment(objBase.fechaFin).format('DD/MM/YYYY'), objBase.numSem).forEach((v,i)=>{
+                $fechasCompetencia.forEach(w=>{
+                    if(v.fechaInicio<=w.fecha && v.fechaFin>=w.fecha)
+                        data[i].bullet = w.prioridad == 1 ? `${_ctx}img/gold-medal.png` : `${_ctx}img/silver-medal.png`;
+                })
+            })
+            return data;
+        },
+    }
+})();
+MCGrafico = (function(){
+    return {
+        temporada: (kms)=>{
+            AmCharts.makeChart( "GraficoTemporada", {
+                "type": "serial",
+                "theme": "light",
+                "dataProvider": kms,
+                "valueAxes": [ {
+                    "gridColor": "#FFFFFF",
+                    "minimum": 0,
+                    "gridAlpha": 0.2,
+                    "dashLength": 0,
+                } ],
+                "gridAboveGraphs": true,
+                "startDuration": 1,
+                "graphs": [ {
+                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "fillColorsField": "color",
+                    "fillAlphas": 0.8,
+                    "lineAlpha": 0.2,
+                    "type": "column",
+                    "valueField": "kms",
+                    "bulletSize": 52,
+                    "customBulletField": "bullet",
+                } ],
+                "chartCursor": {
+                    "categoryBalloonEnabled": false,
+                    "cursorAlpha": 0,
+                    "zoomable": false
+                },
+                "categoryField": "numSem",
+                "categoryAxis": {
+                    "gridPosition": "start",
+                    "gridAlpha": 0,
+                    "tickPosition": "start",
+                    "tickLength": 20,
+                },
+            })
+            document.querySelector('#InicialMacro').classList.remove('hidden');
+        },
+        miniPorcentual: (porcentajes)=>{
+            const data = [{title: "General", value: porcentajes[0], color: "#83c5ff"}, {title: "Específica", value: porcentajes[1], color: "#e86b6b"}, {title: "Precompetitiva", value: porcentajes[2], color: "#a4f790"}];
+            AmCharts.makeChart( "MiniGraficoDistribucion", {
+                "type": "pie",
+                "theme": "light",
+                "dataProvider": data,
+                "titleField": "title",
+                "valueField": "value",
+                "labelRadius": -10,
+                "radius": "42%",
+                "innerRadius": "60%",
+                "labelText": "[[percents]]%",
+                "colorField": "color",
+            });
+        },
     }
 })();
 
@@ -642,5 +431,176 @@ MacroCicloSeccion = (function(){
             prefix+=`</div>`,porcents+=`</div>`, html+=`</div>`, kms+=`</div>`;
             return prefix+html+porcents+kms;
         }
+    }
+})();
+
+FichaSeeder = (function(){
+    return {
+        instanciarValoresDemo: ()=>{
+            const tiempoControl = document.querySelector('#TiempoControl');
+            const factorDesentrenamientoControl = document.querySelector('#FactorDesentrenamientoControl');
+            document.querySelector('#DistanciaControl').value = 4;
+            tiempoControl.value = "00:21:00";
+            document.querySelector('#CadenciaControl').value = 174;
+            factorDesentrenamientoControl.value = 3;
+
+            document.querySelector('#TiempoCompetencia').value = "04:10:00";
+            document.querySelector('#CadenciaCompetencia').value = 185;
+            document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
+        }
+    }
+})();
+
+CalcProyecciones = (function(){
+    return {
+        calcular: (input, tipoProyeccion) => {
+            const ix = Number(input.getAttribute('data-index')), tipo = input.getAttribute('data-type'),
+                valor = input.value;
+            const contProyecciones = FichaDOMQueries.getProyecciones();
+            const totSem = document.querySelector('#MacroTotalSemanas').textContent;
+            let identificadores;
+            switch (tipoProyeccion) {
+                case 1:
+                    identificadores = [".periodizacion-calc", "#TotalPeriodizacion1", "#TotalPeriodizacion2"];
+                    break;
+                case 2:
+                    identificadores = [".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"];
+                    break;
+                case 3:
+                    identificadores = [".cadencia-calc", "#TotalCadencia1", "#TotalCadencia2"];
+                    break;
+                default:
+                    identificadores = [".tcs-calc", "#TotalTcs1", "#TotalTcs2"];
+            }
+
+            if (tipo == 1) {
+                const totSems = CalcProyecciones.calcularNumSemByPorcentaje(valor, ix);
+                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix + 3}"]`).value = totSems;
+            } else {
+                const totPorc = CalcProyecciones.calcularPorcentajeByNumSem(valor, ix);
+                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix - 3}"]`).value = totPorc;
+            }
+
+            const tot1 = CalcProyecciones.calcularTotalesDistribucion(tipoProyeccion, 1), tot2 = CalcProyecciones.calcularTotalesDistribucion(tipoProyeccion, 2);
+            const eleTot1 = contProyecciones.querySelector(` ${identificadores[1]}`), eleTot2 = contProyecciones.querySelector(` ${identificadores[2]}`);
+            eleTot1.value = tot1;
+            eleTot2.value = tot2;
+            if(tot1>=99.99 && tot1<=100.01){
+                eleTot1.parentElement.classList.add('state-success');eleTot1.parentElement.classList.remove('state-error');
+            }else{
+                eleTot1.parentElement.classList.add('state-error');eleTot1.parentElement.classList.remove('state-success');
+            }
+            if(Number(tot2)==Number(totSem)){
+                eleTot2.parentElement.classList.add('state-success');eleTot2.parentElement.classList.remove('state-error');
+            }else{
+                eleTot2.parentElement.classList.add('state-error');eleTot2.parentElement.classList.remove('state-success');
+            }
+        },
+        informacionSemanas: () => {
+            const obj = {};
+            obj.fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
+            obj.fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
+            obj.totDias = moment(obj.fechaFin).diff(obj.fechaInicio, 'days') + 1;
+            obj.diasPrimeraSemana = obj.fechaInicio.getDay() == 0 ? 1 : 7 - obj.fechaInicio.getDay() + 1;
+            obj.diasUltimaSemana = (obj.totDias - obj.diasPrimeraSemana) % 7 == 0 ? 7 : (obj.totDias - obj.diasPrimeraSemana) % 7;
+            obj.semanas = obj.diasPrimeraSemana == 7 ? Math.ceil(obj.totDias / 7) : 1 + Math.ceil((obj.totDias - obj.diasPrimeraSemana) / 7);
+            obj.totSemNonFull = obj.diasPrimeraSemana != 7 ? 1 : 0;
+            obj.totSemNonFull += obj.diasUltimaSemana != 7 ? 1 : 0;
+            if(obj.diasPrimeraSemana != 7 && obj.diasUltimaSemana == 7)
+                obj.tipoCalculo = 1;//Las semanas 1 y ultima no son full(cuentan con menos de 7 días)
+            else if(obj.totSemNonFull == 0)
+                obj.tipoCalculo = 2;
+            else if(obj.diasPrimeraSemana == 7 && obj.diasUltimaSemana != 7)
+                obj.tipoCalculo = 3;
+            else
+                obj.tipoCalculo = 4;//Semanas regulares, todas con 7 días
+            return obj;
+        },
+        calcularPorcentajeByNumSem: (numSem, index) => {
+            const estadisticas = CalcProyecciones.informacionSemanas();
+            let situacion = estadisticas.tipoCalculo;
+            if (situacion == 1) {
+                if(index == 3){
+                    --numSem;
+                    return ((((numSem*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
+                }else
+                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
+            } else if (situacion == 2){
+                return (numSem * 100 / estadisticas.semanas).toFixed(2);
+            } else if (situacion == 3) {
+                if(index == 5){
+                    --numSem;
+                    return ((((numSem*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
+                }else
+                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
+            } else if (situacion == 4) {
+                if(index == 3){
+                    --numSem;
+                    return ((((numSem*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
+                }else if(index == 5){
+                    --numSem;
+                    return ((((numSem*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
+                }else
+                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
+            }
+        },
+        calcularNumSemByPorcentaje: (porcentaje, index)=>{
+            const estadisticas = CalcProyecciones.informacionSemanas();
+            let situacion = estadisticas.tipoCalculo;
+            if (situacion == 1) {
+                if(index == 0){
+                    return (
+                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasPrimeraSemana/7
+                    ).toFixed(2);
+                }else
+                    return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
+            } else if (situacion == 2){
+                return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
+            } else if (situacion == 3){
+                if(index == 2){
+                    return (
+                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasUltimaSemana/7
+                    ).toFixed(2);
+                }else
+                    return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
+            } else if (situacion == 4){
+                if(index == 0){
+                    return (
+                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasPrimeraSemana/7
+                    ).toFixed(2);
+                }
+                else if(index == 2){
+                    return (
+                        ((porcentaje * estadisticas.totDias / 100) / 7) + 1 - estadisticas.diasUltimaSemana/7
+                    ).toFixed(2);
+                }else
+                    return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
+            }
+        },
+        calcularTotalesDistribucion: (tipoCat, tipoCalc) => {
+            let acum = 0;
+            switch (tipoCat) {
+                case 1:
+                    Array.from(document.querySelectorAll(`#tabFichaTecnica .periodizacion-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                        acum += !isNaN(v.value) ? Number(v.value) : 0;
+                    });
+                    break;
+                case 2:
+                    Array.from(document.querySelectorAll(`#tabFichaTecnica .velocidad-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                        acum += !isNaN(v.value) ? Number(v.value) : 0;
+                    });
+                    break;
+                case 3:
+                    Array.from(document.querySelectorAll(`#tabFichaTecnica .cadencia-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                        acum += !isNaN(v.value) ? Number(v.value) : 0;
+                    });
+                    break;
+                default:
+                    Array.from(document.querySelectorAll(`#tabFichaTecnica .tcs-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                        acum += !isNaN(v.value) ? Number(v.value) : 0;
+                    });
+            }
+            return acum.toFixed(2);
+        },
     }
 })();
