@@ -37,8 +37,8 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void updateTiemposDia(@Param("id") int id, @Param("valor") String valor, @Param(value = "texto") String texto,@Param(value = "minutos") int totalMinutos);
 
     @Modifying
-    @Query(value = "UPDATE dia SET distancia = :distancia, elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:valor as jsonb), false) WHERE dia_id = :id", nativeQuery = true)
-    void updateDistanciasDia(@Param("id") int id, @Param("valor") String valor, @Param(value = "texto") String texto,@Param(value = "distancia") int totalDistancia);
+    @Query(value = "UPDATE dia SET calorias = calorias + :calorias, distancia = :distancia, elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:valor as jsonb), false) WHERE dia_id = :id", nativeQuery = true)
+    void updateDistanciasDia(@Param("id") int id, @Param("valor") String valor, @Param(value = "texto") String texto,@Param(value = "distancia") double totalDistancia, @Param(value = "calorias") double calorias);
 
     //COALESCE retorna el primer valor not null(en caso no haya ninguna lista se guarde una lista vacia)
     @Modifying

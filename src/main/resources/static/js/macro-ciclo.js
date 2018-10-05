@@ -263,7 +263,7 @@ MacroCiclo = (function(){
                         const dias = [];
                         for(let i=0; i<diasParaFull+1; i++){
                             const fechaParse = parseFromStringToDate2(moment(fIni).add((i), 'd').format('DD/MM/YYYY'));
-                            dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY'), dia: fechaParse.getDate(), flagDescanso: false, literal: literales[fechaParse.getDate()], diaLiteral: fechaParse.getDate() + " "+ literales[fechaParse.getDay()]});
+                            dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY'), dia: fechaParse.getDate(), flagDescanso: false, literal: literales[fechaParse.getDay()], diaLiteral: fechaParse.getDate() + " "+ literales[fechaParse.getDay()]});
                         }
                         objFirtsWeek.lstDia = dias;
                         $chelmoMacro.push(new Semana(objFirtsWeek))

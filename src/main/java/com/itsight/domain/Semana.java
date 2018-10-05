@@ -75,7 +75,13 @@ public class Semana {
     private double kilometrajeActual;
 
     @Column(nullable = false)
+    private double calorias;
+
+    @Column(nullable = false)
     private double horas;
+
+    @Column
+    private String objetivos;
 
     @Lob
     @Column

@@ -34,7 +34,7 @@ public class MiMiniRutina implements Serializable {
     private int minutos;
 
     @Column
-    private int distancia;
+    private double distancia;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

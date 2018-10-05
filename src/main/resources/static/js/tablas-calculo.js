@@ -55,6 +55,15 @@ BaseCalculo = (function(){
             {min: .90, max: .92},
             {min: .93, max: .95},
             {min: .96, max: .100},
+        ],
+        factoresCaloricos: [
+            {zona: "Z1", factor: 1.0700},
+            {zona: "Z2", factor: 1.0650},
+            {zona: "Z3", factor: 1.0350},
+            {zona: "Z4", factor: 1.0300},
+            {zona: "Z5", factor: 1.0035},
+            {zona: "Z6", factor: 1.0700},
+            {zona: "Z7", factor: 0.9700},
         ]
     }
 })();

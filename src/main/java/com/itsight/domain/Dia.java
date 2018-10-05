@@ -57,7 +57,10 @@ public class Dia {
     private int minutos;
 
     @Column
-    private int distancia;
+    private double distancia;
+
+    @Column
+    private double calorias;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

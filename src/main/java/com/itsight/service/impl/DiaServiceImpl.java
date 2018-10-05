@@ -195,9 +195,9 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarDistanciaElementoByListaIndexAndId(int distancia, int elementoIndice, int id, int distanciaTotal) {
+    public void actualizarDistanciaElementoByListaIndexAndId(double distancia, int elementoIndice, int id, double distanciaTotal, double calorias) {
         String texto = "{"+elementoIndice+",\"distancia\""+"}";
-        repository.updateDistanciasDia(id, String.valueOf(distancia), texto, distanciaTotal);
+        repository.updateDistanciasDia(id, String.valueOf(distancia), texto, distanciaTotal, calorias);
     }
 
     @Override

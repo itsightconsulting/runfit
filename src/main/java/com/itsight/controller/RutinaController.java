@@ -345,11 +345,12 @@ public class RutinaController {
     @PutMapping(value = "/elemento/distancia/modificar")
     public @ResponseBody String modificarDistancialemento(
             @RequestBody Elemento elemento, HttpSession session){
-        int distanciaDia = elemento.getDistanciaDia();
+        double distanciaDia = elemento.getDistanciaDia();
         elemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarDistanciaElementoByListaIndexAndId(elemento.getDistancia(), elemento.getElementoIndice(), diaId, distanciaDia);
+        //Y calorias
+        diaService.actualizarDistanciaElementoByListaIndexAndId(elemento.getDistancia(), elemento.getElementoIndice(), diaId, distanciaDia, elemento.getCalorias());
         return ResponseCode.ACTUALIZACION.get();
     }
 
@@ -515,6 +516,13 @@ public class RutinaController {
             }
             //Agregando la lista de dias a la semana
             semana1.setLstDia(dias);
+            String[] objsTemp = {"Carrera","Ejercicios","Técnica","Carrera","Ejercicios","Técnica","Descanso"};
+            String objs = "";
+            for(int i=0; i<semana1.getLstDia().size();i++){
+                objs+=objsTemp[i] +",";
+            }
+            objs = objs.substring(0, objs.length() - 1);
+            semana1.setObjetivos(objs);
         }
         //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
         objR.setLstSemana(semanas);

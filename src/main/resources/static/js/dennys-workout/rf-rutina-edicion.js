@@ -1377,7 +1377,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-sub-elemento')) {
         const valor = input.value.trim();
-        if (valor.length > 2) {
+        if (valor.length >= 2) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
             const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1390,6 +1390,7 @@ function principalesEventosFocusOutSemanario(e) {
             instanciarSubElementoTooltip(nSubEle);
             instanciarSubElementoPopover(nSubEle);
             agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
+            DiaOpc.actualizarKilometraje(valor, ixs, (posElemento = i));
             input.value = '';
         } else {
             if (valor.length == 0) {
@@ -1400,7 +1401,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-sub-ele-esp-pos')) {
         const valor = input.value.trim();
-        if (valor.length > 2) {
+        if (valor.length >= 2) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
@@ -1416,6 +1417,7 @@ function principalesEventosFocusOutSemanario(e) {
             instanciarSubElementoTooltip(subEle);
             instanciarSubElementoPopover(subEle);
             actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
+            DiaOpc.actualizarKilometraje(valor, ixs, i);
             initTempSubEleRef.remove();
         }
     }
@@ -1517,16 +1519,7 @@ function principalesEventosFocusOutSemanario(e) {
             divNota.remove();
         }
     }
-    else if(clases.contains('agregar-kms')){
-        let kms = Number(e.target.textContent);
-        if($kmsActualizar != kms){
-            if(!kms.isNaN && kms>=0){
-                kms = Math.floor(kms);
-                const ixs = RutinaIx.getIxsForElemento(input);
-                ElementoOpc.actualizarDistanciaElemento(ixs, kms);
-            }
-        }
-    }
+    else if(clases.contains('agregar-kms')){}
     else if(clases.contains('agregar-tiempo')){
         //$tiempoActualizar: Sirve para comparar el valor inicial del elemento con el valor que retorna cuando se activa este evento(focusout) con el fin de evitar actualizaciones innecesarias
         const tiempo = Number(e.target.value.trim());
@@ -2147,12 +2140,13 @@ function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) 
     })
 }
 
-function actualizarDistanciaElementoBD(numSem, diaIndex, elementoIndice, totalKms) {
+function actualizarDistanciaElementoBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
     params.distanciaDia = totalKms;
+    params.calorias = calorias;
     $.ajax({
         type: "PUT",
         contentType: "application/json",

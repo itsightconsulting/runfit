@@ -21,7 +21,7 @@ public class Elemento implements Serializable {
     private String mediaAudio;
     private String mediaVideo;
     private int minutos;
-    private int distancia;
+    private double distancia;
     private Set<Estilo> estilos;
     private List<SubElemento> subElementos;
     private int tipo;
@@ -40,7 +40,9 @@ public class Elemento implements Serializable {
     @JsonInclude(Include.NON_DEFAULT)
     private int minutosDia;
     @JsonInclude(Include.NON_DEFAULT)
-    private int distanciaDia;
+    private double distanciaDia;
+    @JsonInclude(Include.NON_DEFAULT)
+    private double calorias;
 
     public Elemento(){}
 

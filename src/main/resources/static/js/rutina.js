@@ -230,6 +230,7 @@ class Dia{
             this.diaLiteral = this.literal + " " + this.dia;
             this.minutos = obj.minutos==undefined?0:obj.minutos;
             this.distancia = obj.distancia==undefined?0:obj.distancia;
+            this.calorias = obj.calorias==undefined?0:obj.calorias;
         }else{
             this.fecha = fechaDia;
             this.dia = fechaDia.getDate();
@@ -588,6 +589,9 @@ RutinaSet = (function(){
         },
         setDiaTiempoTotal:  (numSem, diaIndex, minutos)=>{
             $rutina.semanas[numSem].dias[diaIndex].minutos = minutos;
+        },
+        setDiaCalorias: (numSem, diaIndex, calorias)=>{
+            $rutina.semanas[numSem].dias[diaIndex].calorias = calorias;
         },
         setElementos: (numSem, diaIndex, elementos)=>{
             $rutina.semanas[numSem].dias[diaIndex].elementos = elementos;
@@ -1133,6 +1137,39 @@ DiaOpc = (function(){
                 dia.querySelector(`.distancia-total`).textContent = "0.00";
             }
         },
+        actualizarKilometraje: (e, ixs, posEle)=>{
+            const zonaCardiaca = e.toUpperCase();
+            const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
+            if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
+                if (zonaCardiaca == "Z1" || zonaCardiaca == "Z2" || zonaCardiaca == "Z3" || zonaCardiaca == "Z4" || zonaCardiaca == "Z5" || zonaCardiaca == "Z6" || zonaCardiaca == "Z7") {
+                    const zonaNum = Number(zonaCardiaca.substr(1)) - 1;
+                    const indicadores = $rutina.semanas[ixs.numSem].metricas[zonaNum].indicadores;
+                    let kilometraje = 0;
+                    if(zonaNum == 0){
+                        kilometraje = roundNumber((tiempoAsignado*60) / indicadores.max.toSeconds(), 1);
+                    }else if(zonaNum == 6){
+                        kilometraje = roundNumber((tiempoAsignado*60) / indicadores.min.toSeconds(), 1);
+                    }else {
+                        kilometraje = roundNumber((tiempoAsignado * 60) / ((indicadores.min.toSeconds() + indicadores.max.toSeconds()) / 2), 1);
+                    }
+                    const calorias = DiaOpc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
+                    ElementoOpc.actualizarDistanciaElemento(elemento, kilometraje, calorias, posEle, ixs);
+                }
+            }
+
+
+        },
+        obtenerGastoCalorico: (nivelZIndex, tiempoMinutos)=>{
+            const semActualIx = Number($('#SemanaActual').text())-1;
+            let factorTiempo;
+            if(nivelZIndex == 0){
+                factorTiempo = $rutina.semanas[semActualIx].metricas[nivelZIndex].indicadores.max.toSeconds();
+            }else
+                factorTiempo = $rutina.semanas[semActualIx].metricas[nivelZIndex].indicadores.min.toSeconds();
+            let factorCalorico = BaseCalculo.factoresCaloricos[nivelZIndex].factor;
+            return roundNumber((roundNumber((tiempoMinutos / ((factorTiempo*factorCalorico)/60)),2)*75),1);
+        },
         copiarMiniPlantillaDia: (e)=>{
             const diaPos = e.getAttribute('data-pos');
             $diaPlantilla = $diaPlantillas[diaPos];
@@ -1297,15 +1334,14 @@ ElementoOpc = (function(){
             input.textContent = elemento.getAttribute('data-kms')!=undefined?elemento.getAttribute('data-kms').trim():'';
             $kmsActualizar = input.textContent.trim();
         },
-        actualizarDistanciaElemento: (ixs, kms)=>{
-            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
-            tempElemento.setAttribute('data-kms', kms);
-            while((tempElemento = tempElemento.previousElementSibling) != null) i++;
-            RutinaSet.setElementoDistancia(ixs.numSem, ixs.diaIndex, (posEle = i), kms);
+        actualizarDistanciaElemento: (elemento, kms, calorias, posEle, ixs)=>{
+            elemento.setAttribute('data-kms', kms);
             const totalKms = DiaFunc.obtenerTotalKmsDia(ixs.diaIndex);
-            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.distancia-total`).textContent = parseNumberToDecimal(totalKms, 2);
+            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.distancia-total`).textContent = parseFloat(roundNumber(totalKms, 2)).toFixed(2);
+            RutinaSet.setElementoDistancia(ixs.numSem, ixs.diaIndex, posEle, kms);
             RutinaSet.setDiaDistanciaTotal(ixs.numSem, ixs.diaIndex, totalKms);
-            actualizarDistanciaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), totalKms);
+            RutinaSet.setDiaCalorias(ixs.numSem, ixs.diaIndex, calorias);
+            actualizarDistanciaElementoBD(ixs.numSem, ixs.diaIndex, posEle, totalKms, calorias);//Incluye gasto calorico
         },
         actualizarTiempoElemento: (ixs, minutos)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
@@ -2141,7 +2177,7 @@ RutinaPS = (function () {
                     <i rel='tooltip' data-original-title='Eliminar video' data-trigger='hover' class='fa fa-video-camera txt-color-red padding-5 trash-video' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Insertar encima del elemento' data-trigger='hover' class='fa fa-arrow-up txt-color-black padding-5 insertar-encima' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Reemplazar elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-index='${eleIndex}'></i>
-                    <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}' contenteditable='true'>KM</span>
+                    <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}'>KM</span>
                     <i rel='tooltip' data-original-title='Eliminar elemento' data-trigger='hover' class='fa fa-trash-o txt-color-redLight padding-5 trash-elemento' data-dia-index='${diaIndex}' data-index='${eleIndex}'></i>
                 </div>
             `;
@@ -2155,7 +2191,7 @@ RutinaPS = (function () {
                     <i rel='tooltip' data-original-title='Insertar encima del elemento' data-trigger='hover' class='fa fa-arrow-up txt-color-black padding-5 insertar-encima' data-index='${eleIndex}' data-dia-index='${diaIndex}'></i>
                     <i rel='tooltip' data-original-title='Reemplazar elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-index='${eleIndex}'></i>
                     <i rel='tooltip' data-original-title='Agregar varios' data-trigger='hover' class='fa fa-angle-double-down padding-5 varios-media' data-dia-index='${diaIndex}' data-index='${eleIndex}'></i>
-                    <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}' contenteditable='true'>KM</span>
+                    <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}'>KM</span>
                     <i rel='tooltip' data-original-title='Eliminar elemento' data-placement='top' data-dia-index='${diaIndex}' data-index='${eleIndex}' class='fa fa-trash padding-5 txt-color-redLight trash-elemento'></i>
                 </div>
             `;
