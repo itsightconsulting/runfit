@@ -230,6 +230,29 @@ Calc = (function(){
             return ritmosCompetencia.map((v,i)=>{
                 return roundNumber(1000/((ritmosCompetencia[i].preciso/60)*ritmosCadencia[i].preciso),2);
             })
+        },
+        getRitmosAerobicos: ()=>{
+            const MZC = RitmosSZC.getMetricasZonasCardiacas();
+            const Z3 = MZC[2].indicadores;//Se utiliza la zona de intensidad Z3 siempre
+            const ZELength = Z3.length - 1;
+            const FZ3Max = Z3[0].max;//Primer Z3 Max
+            const FZ3Min = Z3[0].min;//Primer Z3 Max
+            const LZ3Max = Z3[ZELength].max;
+            const LZ3Min = Z3[ZELength].min;
+            //Se evalua extremos
+            const ZEMaxFinal1 = FZ3Max.toSeconds() > LZ3Max.toSeconds() ? FZ3Max : LZ3Max;
+            const ZEMinFinal1 = FZ3Min.toSeconds() > LZ3Min.toSeconds() ? FZ3Min : LZ3Min;
+
+            const ZEMaxFinal2 = FZ3Max.toSeconds() < LZ3Max.toSeconds() ? FZ3Max : LZ3Max;
+            const ZEMinFinal2 = FZ3Min.toSeconds() < LZ3Min.toSeconds() ? FZ3Min : LZ3Min;
+
+            const ritmoAerobicoActual = ((ZEMaxFinal1.toSeconds() + ZEMinFinal1.toSeconds())/2);
+            const ritmoAerobicoPreComp = ((ZEMaxFinal2.toSeconds() + ZEMinFinal2.toSeconds()) / 2);
+
+            $('#RitmoAerobicoActual').val(String(ritmoAerobicoActual).toHHMMSSM());//Siempre va ser Z3 == index 2
+            $('#RitmoAerobicoPreComp').val(String(ritmoAerobicoPreComp).toHHMMSSM());//Siempre va ser Z3 == index 2
+
+            return {actual: ritmoAerobicoActual, preCompetitivo: ritmoAerobicoPreComp};
         }
     }
 })();

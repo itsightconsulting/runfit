@@ -52,6 +52,7 @@ FichaGet = (function(){
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;
             basico.fechaFin = document.querySelector('#MacroFechaFin').value;
+            $kilometrajeBase.length == 0 ? obtenerKilometrajeBaseBD(basico.distancia, basico.nivelAtleta) : "";//En caso no tengamos el kilometrajeMaestro, lo consultamos
             return basico;
         },
     }
@@ -124,42 +125,19 @@ FichaDOMQueries = (function(){
 MacroCiclo = (function(){
     return {
         comprobar: ()=>{
-            //Actualizando calculos bases en caso se hayan modificado algunos otros parametros
-            Calc.setRestantes();
-            const metricasZc = RitmosSZC.getMetricasZonasCardiacas();
-            const Z3 = metricasZc[2].indicadores;
-            const ZELength = Z3.length - 1;
-            const Z3Max = Z3[0].max.toSeconds() > Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
-            const Z3Min = Z3[0].min.toSeconds() > Z3[ZELength].min.toSeconds() ? Z3[0].min : Z3[ZELength].min;
-            const ritmoAerobicoActual = ((Z3Max.toSeconds() + Z3Min.toSeconds())/2);
-            $('#RitmoAerobicoActual').val(String(ritmoAerobicoActual).toHHMMSSM());//Siempre va ser Z3 == index 2
-            const Z33Max = Z3[0].max.toSeconds() < Z3[ZELength].max.toSeconds() ? Z3[0].max : Z3[ZELength].max;
-            const Z33Min = Z3[0].min.toSeconds() < Z3[ZELength].min.toSeconds() ? Z3[0].min : Z3[ZELength].min;
-            const ritmoAerobicoPreComp = ((Z33Max.toSeconds() + Z33Min.toSeconds()) / 2);
-            $('#RitmoAerobicoPreComp').val(String(ritmoAerobicoPreComp).toHHMMSSM());//Siempre va ser Z3 == index 2
-
-            let validado = false;
-            if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
-                validado = true;
-            const mainContainer = document.querySelector('#PorcentajesKilometraje');
-            if(mainContainer.children.length == 1) {
-                mainContainer.children[0].remove();
-            }
-
-            const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
-            const totSemPerio = Number(document.querySelector('#TotalPeriodizacion2').value.trim());
-            if(validado && FichaGet.obtenerNivelAtleta() != undefined && totSem == totSemPerio) {
+            const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
+            if(MacroCiclo.validacion(contenedorMK)) {
+                //Actualizando calculos bases en caso se hayan modificado algunos otros parametros
+                Calc.setRestantes();
+                const ritmosAerobicos = Calc.getRitmosAerobicos();
                 const base = FichaGet.obtenerBase();
-                if($kilometrajeBase.length == 0){
-                    obtenerKilometrajeBaseBD(base.distancia, base.nivelAtleta);
-                }
                 instanciarPorcentajesKilometraje(base.distancia).then(porcentajes=>{
                     //Filtrando porcentajes
                     const porcentajesTrainer = [{},{},{}];
                     for(let i=0; i<porcentajesTrainer.length;i++){
                         porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[base.periodizacion[i]-4];//1+ por que el index comienza en 0
                     }
-                    mainContainer.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo(base, porcentajesTrainer)));
+                    contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo(base, porcentajesTrainer)));
                     //ModificandoBase en caso semana inicial y final no esten completas
                     $semCalculoMacro = CalcProyecciones.informacionSemanas();
                     if($semCalculoMacro.diasPrimeraSemana < 7) {
@@ -191,7 +169,7 @@ MacroCiclo = (function(){
                         v.value = RCPs[i].last.substring(3);
                     });
 
-                    const ritmosEntreAero = Calc.getRitmosEntrenamientoAerobico(ritmoAerobicoActual, ritmoAerobicoPreComp, base);
+                    const ritmosEntreAero = Calc.getRitmosEntrenamientoAerobico(ritmosAerobicos.actual, ritmosAerobicos.preCompetitivo, base);
                     let acc = 0;
                     document.querySelectorAll('#EstadisticasAdicionales .raps').forEach((v,i)=>{
                         v.value = ritmosEntreAero[(acc+base.periodizacion[i])-1].factor.substring(3);
@@ -231,7 +209,7 @@ MacroCiclo = (function(){
             });
             base.porcentajesKms = [];
 
-            const kiloTotal = document.querySelector('#KilometrajeTotal')
+            const kiloTotal = document.querySelector('#KilometrajeTotal');
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
             kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
             document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
@@ -256,7 +234,6 @@ MacroCiclo = (function(){
                         </div>`
             }).join('');
             html+=`</section>`
-            console.log(html);
             return html;
         },
         instanciarKilometrajeBase: (e)=>{
@@ -267,7 +244,7 @@ MacroCiclo = (function(){
             if( rdbVal == 10 || rdbVal == 21 || rdbVal == 42)
                 document.querySelector('#DistanciaCompetencia').value = rdbVal;
         },
-        generarRutinaCompleta: (e)=>{
+        generarRutinaCompleta: (e)=>{//Temp
             if($('#KilometrajePromedioSemanal').val() != ""){
                 const $chelmoMacro = [];
                 //Semanas
@@ -330,6 +307,23 @@ MacroCiclo = (function(){
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
         },
+        validacion: (contenedorMK)=>{//contenedor de metricas de kilometraje
+            let validado = false;
+            if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
+                validado = true;
+
+            if(contenedorMK.children.length == 1) {
+                contenedorMK.children[0].remove();
+            }
+
+            const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
+            const totSemPerio = Number(document.querySelector('#TotalPeriodizacion2').value.trim());
+            if(validado && FichaGet.obtenerNivelAtleta() != undefined && totSem == totSemPerio) {
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 })();
 

@@ -2426,8 +2426,7 @@ function principalesAlCambiarTab(e){
         document.querySelector('#OpsAdic').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($kilometrajeBase.length == 0){
-                const base = FichaGet.obtenerBase();
-                obtenerKilometrajeBaseBD(base.distancia, base.nivelAtleta);
+                FichaGet.obtenerBase();
             }
         }
     }
