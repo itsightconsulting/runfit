@@ -160,6 +160,23 @@ RitmosSZC = (function(){
         },
     }
 })();
+//RITMOS PARA SESIONES DE VELOCIDAD Y DE COMPETENCIA
+RitmosSVYC = (function(){
+    return {
+        getMetricasVelocidades: (medidaComp)=>{
+            const factorDesentrenamientoControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
+            //const disCompetencia = Number(document.querySelector('#DistanciaCompetencia').value);
+            const diasCompetencia = medidaComp;
+            //const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return disCompetencia == v.dist})[0].medida;
+            const medidaDisCompetencia = medidaComp;
+            const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
+            const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
+            const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
+            const factorDisCompetencia = BaseCalculo.factorVelocidadByKms.filter(v=>{return diasCompetencia == v.dist})[0].factor;
+            return String(factorDesentrenamientoControl * Math.pow((medidaDisCompetencia/medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia * medidaDisCompetencia).toHHMMSSM()
+        }
+    }
+})();
 
 Calc = (function(){
     return {
