@@ -38,6 +38,5 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }

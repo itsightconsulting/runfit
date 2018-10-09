@@ -726,6 +726,26 @@ async function instanciarPorcentajesKilometraje(distancia){
     })
 }
 
+function actualizarPorcentajesKilometrajeBD(porcentajes){
+    console.log(porcentajes);
+    $.ajax({
+        type: 'PUT',
+        contentType: "application/json",
+        url: _ctx + 'calculo/porcentajes-kilo/actualizar',
+        dataType: "json",
+        data: JSON.stringify(porcentajes),
+        success: function (data) {
+            if(notificacionesRutinaSegunResponseCode(data) != undefined){
+
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
 function obtenerKilometrajeBaseBD(distancia, nivel){
     const o  = {};
     o.distancia = distancia;
@@ -1637,6 +1657,11 @@ function principalesEventosTabRutina(e){
         const metricas = $rutina.semanas[semIndex].metricas;
         Indicadores.abrirIndicador1(metricas);
     }
+    else if(clases.contains('abrir-indicador-2')){
+        const semIndex = Number(document.querySelector('#SemanaActual').textContent)-1;
+        const metricas = $rutina.semanas[semIndex].metricasVelocidad;
+        Indicadores.abrirIndicador2(metricas);
+    }
 }
 
 function principalesEventosTabGrupoVideos(e){
@@ -1734,12 +1759,13 @@ function principalesEventosTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
 
-    if(clases.contains('refrescar-grafico')) {
+    if(clases.contains('refrescar-grafico')){
         e.preventDefault();
         e.stopPropagation();
         const base = FichaGet.obtenerBase();
         MCGrafico.temporada(MCGraficoData.paraTemporada(base));
         MacroCiclo.instanciarInformacionTemporada(base);
+        actualizarPorcentajesKilometrajeBD(MacroCicloGet.obtenerPorcentajesParaActualizacion(base));
     }
 }
 function principalesEventosFocusOutTabFichaTecnica(e){

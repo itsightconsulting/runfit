@@ -295,11 +295,15 @@ MacroCiclo = (function(){
                     return {numSem: i+1, kms: Number(v.textContent), color: c}
                 });
                 const mZC = RitmosSZC.getMetricasZonasCardiacas();
+                const mVC = RitmosSVYC. getMetricasVelocidades();
                 r.semanas.forEach((v,fix)=>{
                     v.kilometrajeTotal = objs[fix].kms;
                     //Modificando indicadores de pulso y de tiempos
                     r.semanas[fix].metricas = JSON.stringify(mZC.map(v=>{
                         return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
+                    }));
+                    r.semanas[fix].metricasVelocidad = JSON.stringify(mVC.map(v=>{
+                        return {parcial: v.indicadores[fix].p};
                     }));
                 })
                 guardarRutina(r, (btn = e.target));
@@ -424,6 +428,18 @@ MacroCicloSeccion = (function(){
             }
             prefix+=`</div>`,porcents+=`</div>`, html+=`</div>`, kms+=`</div>`;
             return prefix+html+porcents+kms;
+        }
+    }
+})();
+
+MacroCicloGet = (function(){
+    return {
+        obtenerPorcentajesParaActualizacion: (base)=>{
+            const distancia = Number(document.querySelector('#DistanciaRutina .chkDistancia:checked').value);
+            const porcentajes = Array.from(document.querySelectorAll('.perc')).map(v=>{return Number(v.textContent.slice(0, -1))})
+            return base.periodizacion.map((v, i)=>{
+                return {indice: v-4, distancia: distancia, etapa:  i+1, porcentajes: porcentajes.splice(0, v).join()}
+            })
         }
     }
 })();

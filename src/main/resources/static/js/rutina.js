@@ -140,6 +140,7 @@ class Rutina {
         instanciarPopovers();
         instanciarTooltips();
         Indicadores.instanciarIndicadores1();
+        Indicadores.instanciarIndicadores2();
     }
 
     agregarNuevaSemana() {
@@ -190,6 +191,7 @@ class Semana{
             this.flagFull = obj.flagFull;
             this.dias = this.instanciarDias(obj.lstDia);
             this.metricas = obj.metricas != undefined ? obj.metricas != "" ? JSON.parse(obj.metricas) : "" : "";
+            this.metricasVelocidad = obj.metricasVelocidad != undefined ? obj.metricasVelocidad != "" ? JSON.parse(obj.metricasVelocidad) : "" : "";
             this.kilometrajeTotal = obj.kilometrajeActual;
         }else{
             this.fechaInicio = fechaInicio;
@@ -2258,7 +2260,7 @@ Indicadores = (function(){
             const bOpacidad = 1/iteraciones;
             for(let i=0; i<iteraciones;i++){
                 raw += `<div class="col-md-12 col-sm-12 col-xs-12 padding-o-bottom-5 text-align-center">
-                            <div class="col-md-3 col-sm-3 col-xs-3 padding-0">
+                            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 rf-n">
                                 <a href="javascript:void(0);">${metricas[i].nombre}</a>
                             </div>
                             <div class="col-md-2 col-sm-2 col-xs-2 padding-0">
@@ -2270,6 +2272,32 @@ Indicadores = (function(){
                                     :`<b> ${metricas[i].min} - ${metricas[i].max}</b>`
                                 }
                             </div>                            
+                        </div>`
+            }
+            return raw;
+        },
+        instanciarIndicadores2: ()=>{
+            const raw = `<a href="javascript:void(0);"><i id="IconIndicador2" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-bar-chart-o fa-2x txt-color-orange abrir-indicador-2"></i></a>`;
+            document.querySelector('#Indicadores2').innerHTML = raw;
+        },
+        abrirIndicador2: (metricas)=>{
+            const iconIndi2 = document.querySelector('#IconIndicador2');
+            const raw = `
+                <div class="container-fluid padding-0 its-indicador-1">
+                    ${Indicadores.indicador2Body(metricas)}
+                </div>
+            `
+            iconIndi2.setAttribute('data-content', raw);
+            $('#IconIndicador2').popover('show');
+        },
+        indicador2Body: (metricas)=>{
+            let raw = "";
+            for(let i=0; i<metricas.length;i++){
+                raw += `<div class="col-md-3 col-sm-3 col-xs-3 padding-7">
+                            <div class="row padding-5 text-align-center">
+                                <span class="txt-color-blue"><b>${BaseCalculo.ofMetricasBase[i].n}</b></span>
+                                ${metricas[i].parcial}
+                            </div>
                         </div>`
             }
             return raw;

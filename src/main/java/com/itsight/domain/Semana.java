@@ -87,6 +87,10 @@ public class Semana {
     @Column
     private String metricas;
 
+    @Lob
+    @Column
+    private String metricasVelocidad;
+
     public Semana(){}
 
 

@@ -21,6 +21,7 @@ public class SemanaPlantillaDto {
     private int totalSemanas;
     private double kilometrajeTotal;
     private String metricas;
+    private String metricasVelocidad;
 
     private List<DiaPlantillaDto> dias;
 

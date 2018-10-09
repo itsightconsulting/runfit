@@ -24,7 +24,7 @@ BaseCalculo = (function(){
             {dist: 10, factor: 1.06},
             {dist: 4, factor: 1.06},
             {dist: 2, factor: 1.06},
-            {dist: 1, factor: 1.07},
+            {dist: 1, factor: 1.065},
             {dist: 0.8, factor: 1.07},
             {dist: 0.4, factor: 1.08},
             {dist: 0.2, factor: 1.1},
@@ -64,6 +64,16 @@ BaseCalculo = (function(){
             {zona: "Z5", factor: 1.0035},
             {zona: "Z6", factor: 1.0700},
             {zona: "Z7", factor: 0.9700},
+        ],
+        ofMetricasBase: [
+            {n: "0.2 KM", factor: .2},
+            {n: "0.4 KM", factor: .4},
+            {n: "0.8 KM", factor: .8},
+            {n: "1 KM", factor: 1},
+            {n: "10 KM", factor: 10},
+            {n: "15 KM", factor: 15},
+            {n: "21 KM", factor: 21},
+            {n: "42 KM", factor: 42}
         ]
     }
 })();
@@ -163,17 +173,40 @@ RitmosSZC = (function(){
 //RITMOS PARA SESIONES DE VELOCIDAD Y DE COMPETENCIA
 RitmosSVYC = (function(){
     return {
-        getMetricasVelocidades: (medidaComp)=>{
+        getMetricasVelocidades: ()=>{// PARCIALES PARA SESIONES DE VELOCIDAD Y RITMOS DE COMPETENCIA(REF: MACRO -> C39)
+            const base = FichaGet.obtenerBase();
             const factorDesentrenamientoControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
-            //const disCompetencia = Number(document.querySelector('#DistanciaCompetencia').value);
-            const diasCompetencia = medidaComp;
-            //const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return disCompetencia == v.dist})[0].medida;
-            const medidaDisCompetencia = medidaComp;
             const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
             const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
             const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
-            const factorDisCompetencia = BaseCalculo.factorVelocidadByKms.filter(v=>{return diasCompetencia == v.dist})[0].factor;
-            return String(factorDesentrenamientoControl * Math.pow((medidaDisCompetencia/medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia * medidaDisCompetencia).toHHMMSSM()
+            const tiempoCompetencia = document.querySelector('#TiempoCompetencia').value.toSeconds();
+
+            const metricasBase = BaseCalculo.ofMetricasBase;
+            const factorDistanciaCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return Number(document.querySelector('#DistanciaCompetencia').value) == v.dist})[0].medida;
+            const matriz = [];
+
+
+            let ix1 = 0;
+            metricasBase.forEach((v, fix)=>{
+                const factorBase = v.factor;
+                const medDisBase = BaseCalculo.oficialesMedidasKms.filter(v=>{return factorBase == v.dist})[0].dist;
+                const factorDistanciaRelativo = BaseCalculo.factorVelocidadByKms.filter(v=>{return medDisBase == v.dist})[0].factor;
+                matriz.push({nombre: v.n, indicadores: []});
+                base.periodizacion.forEach((p, six)=>{
+                    for(let i=0; i<p; i++){
+                        if(ix1==0){
+                            const parcial = (factorDesentrenamientoControl * Math.pow((factorBase/medidaDisControl) * (factorRitmoCompetencia), factorDistanciaRelativo) / factorBase * (Number(v.factor) > 0.4 ? 1 : factorBase));
+                            matriz[fix].indicadores.push({p: String(parcial).toHHMMSSM(),preciso: parcial})
+                        }else{
+                            const parcial = matriz[fix].indicadores[ix1-1].preciso - (Number(v.factor) > 0.8 ? 1 : medDisBase) * base.distribucionPorcentaje[six] / base.periodizacion[six] * (factorDesentrenamientoControl * Math.pow((medDisBase/medidaDisControl) * (factorRitmoCompetencia), factorDistanciaRelativo) / medDisBase - tiempoCompetencia * (Math.pow(medDisBase / factorDistanciaCompetencia, factorDistanciaRelativo)) / medDisBase);
+                            matriz[fix].indicadores.push({p: String(parcial).toHHMMSSM(),preciso: parcial})
+                        }
+                        ix1++;
+                    }
+                })
+                ix1=0;
+            })
+            return matriz;
         }
     }
 })();

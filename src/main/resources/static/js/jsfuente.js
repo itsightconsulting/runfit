@@ -449,6 +449,7 @@ function notificacionesRutinaSegunResponseCode(resCode){
     switch (code){
         case -1:
         case -2:
+            return "success";
             break;
         case -3:
             $.smallBox({content: "Eliminación satisfactoria"});
