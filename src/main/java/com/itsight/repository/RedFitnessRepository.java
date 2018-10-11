@@ -25,7 +25,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     void actualizarNotaAIntegrante(int id, String nota);
 
     @Modifying
-    @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaFinalPlanificacion = ?3, R.contadorRutinas = ?4 WHERE R.id = ?1")
+    @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaFinalPlanificacion = ?3, R.contadorRutinas = R.contadorRutinas + ?4 WHERE R.id = ?1")
     void updatePlanStatusAndUltimoDiaPlanificacion(int id, int planStatus, Date diaFinalPlanificacion, int contadorRutinas);
 
     @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1")
@@ -40,4 +40,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
 
     @EntityGraph(value = "redFitness.integrante")
     RedFitness findByTrainerCodigoTrainer(String codTrainer);
+
+    @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1 AND R.integrante.id = ?2")
+    String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
 }

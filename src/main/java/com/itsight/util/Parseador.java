@@ -2,6 +2,7 @@ package com.itsight.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hashids.Hashids;
 
 import java.math.BigDecimal;
 import java.text.Normalizer;
@@ -81,5 +82,14 @@ public class Parseador {
 	    	}
 	    }
 	    return b;
+	}
+
+	public static int getDecodeHash32Id(String schema,  String hash){
+		Hashids rfIdHash = new Hashids(schema, 32);
+		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash)[0]));
+	}
+	public static int getDecodeHash16Id(String schema,  String hash){
+		Hashids rfIdHash = new Hashids(schema, 16);
+		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash)[0]));
 	}
 }

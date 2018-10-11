@@ -75,8 +75,6 @@ function init(){
         $rutina.init(semana);
 
         validators();
-        instanciarMiniPlantillas();
-        instanciarGrupoVideos();
         instanciarDatosFitnessCliente();
 
         tabRutina.addEventListener('click', principalesEventosTabRutina);
@@ -635,7 +633,7 @@ function instanciarDatosFitnessCliente(){
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + 'gestion/usuario-fitness/obtener/secundario',
+        url: _ctx + 'gestion/usuario-fitness/obtener/secundario/'+ getParamFromURL('rn'),
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
@@ -2436,11 +2434,17 @@ function principalesAlCambiarTab(e){
     if(e.target.classList.contains('main-tab')){
         document.querySelector('#OpsAdic').classList.remove('hidden');
     }
-    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos'){
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
         e.preventDefault();
         document.querySelector('#OpsAdic').classList.add('hidden');
         $videosElegidos = [];
-        Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e=>e.classList.remove('txt-color-greenIn'));
+        Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
+        if (document.querySelector('#ArbolGrupoVideo').children.length == 0)
+            instanciarGrupoVideos();
+    }
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
+        if(document.querySelector('#ArbolRutinario').children.length == 0)
+            instanciarMiniPlantillas();
     }
     else if(e.target.tagName === "A"){
         document.querySelector('#OpsAdic').classList.add('hidden');

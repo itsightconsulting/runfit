@@ -5,6 +5,7 @@ import com.itsight.domain.Plan;
 import com.itsight.domain.UsuarioFitness;
 import com.itsight.domain.dto.UsuarioFitnessDto;
 import com.itsight.service.*;
+import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,11 +56,11 @@ public class UsuarioFitnessController {
     }
 
     //Edicion de rutinas
-    @GetMapping(value = "/obtener/secundario")
+    @GetMapping(value = "/obtener/secundario/{runnerId}")
     public @ResponseBody
-    UsuarioFitness obtenerPorUsuarioId(HttpSession session) {
-        int usuarioId = (int) session.getAttribute("edicionUsuarioId");
-        return usuarioFitnessService.findByUsuarioId(usuarioId);
+    UsuarioFitness obtenerPorUsuarioId(@PathVariable(name = "runnerId") String runnerId, HttpSession session) {
+        int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+        return usuarioFitnessService.findByUsuarioId(runneId);
     }
 
     @PostMapping(value = "/agregar")

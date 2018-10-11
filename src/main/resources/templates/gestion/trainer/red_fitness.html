@@ -182,6 +182,7 @@
 <script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/programa-entrenamiento.js}+'?'+${version}"></script>
+<script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     let $table = $('#tblRegistros');
@@ -334,55 +335,17 @@
         return opciones;
     }
 
-    function crearNuevaRutina(id, integranteId, index, contadorRutinas){
-        let hoy = new Date();
-        let mes = Number(hoy.getMonth()+1)<10?"0"+Number(hoy.getMonth()+1):Number(hoy.getMonth()+1);
-        let dia = hoy.getDate()<10?"0"+hoy.getDate():hoy.getDate();
-        let fechaString = hoy.getFullYear() + '-' + mes + '-' + dia;
+    function crearNuevaRutina(id, integranteId){
+        id = getHash32Id('rf-rutina', id);
+        integranteId = getHash16Id('rf-rutina', integranteId);
         $.SmartMessageBox({
             title: "<i class='fa fa-bullhorn'></i> Workout Notification",
             content: "" +
-                "<br/><h6>Debe seleccionar un día de inicio del plan de entrenamiento:</h6><br/>" +
-                "<div class='row txt-color-blueDark prompt-init'><div class='smart-form'><fieldset><section class='col col-3'></section><section class='col col-6'><div class='col col-2'></div><div class='col col-8 text-align-center'><label class='label'><b>Fecha Inicial:</b></label><label class='input'><i style='color: #67d1ff !important;' class=\"icon-append fa fa-calendar\" for='PromptFecha'></i><input id='PromptFecha' class='prompt-fecha' type='date' name='Demo' min=\""+fechaString+"\" value=\"\"></label></div></section><section class='col col-3'></section></fieldset></div></div>",
-            buttons: '[Generar]'
+                "<br/><h6>Confirmar:</h6>",
+            buttons: '[NO][SI]'
         }, function (ButtonPressed) {
-            if (ButtonPressed === "Generar") {
-                document.querySelector('.MessageBoxButtonSection button').setAttribute('disabled','disabled');
-                const prompt = document.querySelectorAll('.prompt-init')[document.querySelectorAll('.prompt-init').length-1];
-                let fechaInit = prompt.querySelectorAll('.prompt-fecha')[prompt.querySelectorAll('.prompt-fecha').length-1].value;
-                let parseFechaInit = parseFromStringToDate(fechaInit);
-                let rutina = new ProgramaEntrenamiento(parseFechaInit, 1);
-                rutina.init(1);
-                let now = getOnlyDate();
-                rutina.clienteId = integranteId;
-                rutina.redFitnessId = id;
-                rutina.contadorRutinas = 1+contadorRutinas;
-                if(parseFechaInit>=now && parseFechaInit.getFullYear()< now.getFullYear()+2){
-                    $.smallBox({color: "info", content: "<i class='fa fa-spinner fa-spin fa-2x fa-fw'></i> <i>Cargando... Por favor espere...<i>", timeout: 10000});
-                    $.ajax({
-                        type: "POST",
-                        contentType: 'application/json',
-                        url: _ctx + "gestion/trainer/red/pre-asignar-rutina",
-                        dataType: "json",
-                        data: JSON.stringify(rutina),
-                        success: function (data) {
-                            res = getResponseCodeWithId(data);
-                            if(res.code == "-1"){
-                                document.querySelectorAll('#divSmallBoxes')[0].innerHTML = '';
-                                $.smallBox({color: "rgb(131, 186, 40)", content: "<i>La nueva rutina ha sido creada <br/> y esta lista para ser modificada...<br/>En breve será redireccionado a la rutina...</i>"});
-                                setTimeout(()=>{
-                                    window.location.href = _ctx+'gestion/rutina/trainer/red/ver/ultima-rutina/'+res.id+'/'+integranteId;//res.id para el caso = redFitnessId;
-                                }, 2500);
-                            }
-                        },
-                        error: function (xhr) {
-                            exception(xhr);
-                        },
-                        complete: function () {}
-                    })
-                }else{
-                    $.smallBox({color: "alert", content: "<i>Ha seleccionado una fecha inválida... <br/> La fecha debe ser mayor igual al día de hoy <br/> y como máximo 1 año y medio posterior a la fecha actual</i>", timeout: "10000"});
-                }
+            if (ButtonPressed === "SI") {
+               window.location.href = _ctx+'rutina/pre?key='+id + '&rn='+integranteId;//res.id para el caso = redFitnessId;
             }
         });
 
@@ -391,7 +354,7 @@
     }
 
     function verUltimoPrograma(redFitnessId, integranteId){
-       window.location.href = _ctx+'gestion/rutina/trainer/red/ver/ultima-rutina/'+redFitnessId+ '/' + integranteId;
+       window.location.href = _ctx+'rutina/edicion?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', integranteId);
     }
 
     function estadoPlan(value, row){

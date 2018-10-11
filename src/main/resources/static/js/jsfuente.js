@@ -486,3 +486,15 @@ function calcularEdadByFechaNacimiento(fechaNac){
     }
     return edad;
 }
+
+function getHash32Id(schema, id){
+    return new Hashids(schema, 32).encode(id)
+}
+
+function getHash16Id(schema, id){
+    return new Hashids(schema, 16).encode(id)
+}
+
+function getParamFromURL(param){
+    return new URLSearchParams(window.location.search).get(param);
+}

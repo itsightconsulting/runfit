@@ -9,6 +9,8 @@ import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,31 +106,6 @@ public class RutinaController {
         int trainerId = Integer.parseInt(session.getAttribute("id").toString());
         //PT: Por trainer
         return rutinaService.listarPorFiltroPT(trainerId);
-    }
-
-    @GetMapping(value = "/trainer/red/ver/ultima-rutina/{redFitnessId}/{clienteId}")
-    public ModelAndView verUltimaRutinaDeCliente(Model model, @PathVariable String redFitnessId, @PathVariable String clienteId, HttpSession session) {
-
-        String codTrainer = session.getAttribute("codTrainer").toString();
-        String qCodTrainer = redFitnessService.findCodTrainerById(Integer.parseInt(redFitnessId));
-        if(codTrainer.equals(qCodTrainer)){
-            //Se obtiene la última rutina del cliente
-            Rutina rutina = rutinaService.findLastByRedFitnessId(Integer.parseInt(redFitnessId));
-            if(rutina.getId() != 0){
-                //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
-                session.setAttribute("edicionRutinaId", rutina.getId());
-                session.setAttribute("edicionUsuarioId", Integer.parseInt(clienteId));
-                session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
-                session.setAttribute("semanaIds", rutina.getSemanaIds());
-                model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());
-                model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
-                model.addAttribute("lstCategoriaPlantRutina", categoriaService.findByFlagActivo(true));
-                return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
-            }
-            return new ModelAndView(ViewConstant.ERROR404);
-        }else{
-            return new ModelAndView(ViewConstant.ERROR403);
-        }
     }
 
     @GetMapping(value = "/primera-semana/edicion")
@@ -479,61 +456,64 @@ public class RutinaController {
     }
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")
-    @PostMapping(value = "/generar/rutina/macro/demo")
+    @PostMapping(value = "/nueva")
     public @ResponseBody
-    String nuevo(@RequestBody RutinaDto rutinaDto, HttpSession session) {
-        //int clienteId = Integer.parseInt(session.getAttribute("clienteId").toString());
+    String nuevo(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestBody RutinaDto rutinaDto, HttpSession session) {
+        int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
+        int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         String codTrainer = session.getAttribute("codTrainer").toString();
-        RedFitness rfs = redFitnessService.findByTrainerCodigoTrainer(codTrainer);
-
-        int userId = Integer.parseInt(session.getAttribute("id").toString());
-        Rutina objR = new Rutina();
-        //Pasando del Dto al objeto
-        RutinaControl rc = new RutinaControl();
-        BeanUtils.copyProperties(rutinaDto.getControl(), rc);
-        BeanUtils.copyProperties(rutinaDto, objR);
-        objR.setUsuario(rfs.getIntegrante().getId());
-        objR.setRedFitness(rfs.getId());
-        objR.setControl(rc);
-        //Instanciando lista de semanas
-        List<Semana> semanas = new ArrayList<>();
-        for (SemanaPlantillaDto semana: rutinaDto.getSemanas()) {
-            Semana semana1 = new Semana();
-            BeanUtils.copyProperties(semana, semana1);
-            semanas.add(semana1);
-            //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
-            //se referencie en el registro de la semana
-            semana1.setRutina(objR);
-            //Insertando dias de la semana a su respectiva lista de dias
-            List<Dia> dias = new ArrayList<>();
-            for(DiaPlantillaDto dia: semana.getDias()){
-                Dia objDia = new Dia();
-                BeanUtils.copyProperties(dia, objDia);
-                dias.add(objDia);
-                //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
-                //se referencie en el registro del día
-                objDia.setSemana(semana1);
+        String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+        if(codTrainer.equals(qCodTrainer)){
+            Rutina objR = new Rutina();
+            //Pasando del Dto al objeto
+            RutinaControl rc = new RutinaControl();
+            BeanUtils.copyProperties(rutinaDto.getControl(), rc);
+            BeanUtils.copyProperties(rutinaDto, objR);
+            objR.setUsuario(runneId);
+            objR.setRedFitness(redFitId);
+            objR.setControl(rc);
+            //Instanciando lista de semanas
+            List<Semana> semanas = new ArrayList<>();
+            for (SemanaPlantillaDto semana: rutinaDto.getSemanas()) {
+                Semana semana1 = new Semana();
+                BeanUtils.copyProperties(semana, semana1);
+                semanas.add(semana1);
+                //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
+                //se referencie en el registro de la semana
+                semana1.setRutina(objR);
+                //Insertando dias de la semana a su respectiva lista de dias
+                List<Dia> dias = new ArrayList<>();
+                for(DiaPlantillaDto dia: semana.getDias()){
+                    Dia objDia = new Dia();
+                    BeanUtils.copyProperties(dia, objDia);
+                    dias.add(objDia);
+                    //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
+                    //se referencie en el registro del día
+                    objDia.setSemana(semana1);
+                }
+                //Agregando la lista de dias a la semana
+                semana1.setLstDia(dias);
+                String[] objsTemp = {"Carrera","Ejercicios","Técnica","Carrera","Ejercicios","Técnica","Descanso"};
+                String objs = "";
+                for(int i=0; i<semana1.getLstDia().size();i++){
+                    objs+=objsTemp[i] +",";
+                }
+                objs = objs.substring(0, objs.length() - 1);
+                semana1.setObjetivos(objs);
             }
-            //Agregando la lista de dias a la semana
-            semana1.setLstDia(dias);
-            String[] objsTemp = {"Carrera","Ejercicios","Técnica","Carrera","Ejercicios","Técnica","Descanso"};
-            String objs = "";
-            for(int i=0; i<semana1.getLstDia().size();i++){
-                objs+=objsTemp[i] +",";
+            //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
+            objR.setLstSemana(semanas);
+            objR.setFlagActivo(false);
+            objR.setTipoRutina(Enums.TipoRutina.RUNNING.get());
+            rutinaService.save(objR);
+            int[] qSemanaIds = new int[objR.getLstSemana().size()];
+            for(int i=0; i<qSemanaIds.length;i++){
+                qSemanaIds[i] = objR.getLstSemana().get(i).getId();
             }
-            objs = objs.substring(0, objs.length() - 1);
-            semana1.setObjetivos(objs);
+            rutinaService.updateSemanaIds(objR.getId(), qSemanaIds);
+            redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutinaDto.getFechaFin(), 1);
+            return ResponseCode.REGISTRO.get();
         }
-        //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
-        objR.setLstSemana(semanas);
-        objR.setFlagActivo(true);
-        rutinaService.save(objR);
-        int[] qSemanaIds = new int[objR.getLstSemana().size()];
-        for(int i=0; i<qSemanaIds.length;i++){
-            qSemanaIds[i] = objR.getLstSemana().get(i).getId();
-        }
-        rutinaService.updateSemanaIds(objR.getId(), qSemanaIds);
-        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(rfs.getId(), 2, rutinaDto.getFechaFin(), 2);
-        return ResponseCode.REGISTRO.get();
+        return ResponseCode.EX_GENERIC.get();
     }
 }

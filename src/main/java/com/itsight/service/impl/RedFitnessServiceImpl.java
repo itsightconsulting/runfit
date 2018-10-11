@@ -137,4 +137,9 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     public RedFitness findByTrainerCodigoTrainer(String codTrainer) {
         return repository.findByTrainerCodigoTrainer(codTrainer);
     }
+
+    @Override
+    public String findCodTrainerByIdAndRunnerId(int redFitId, int runneId) {
+        return repository.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+    }
 }

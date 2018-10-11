@@ -21,4 +21,6 @@ public interface RedFitnessService extends BaseService<RedFitness> {
     void actualizarUltimaFechaPlanificacionById(int id, Date ultimaFecha);
 
     RedFitness findByTrainerCodigoTrainer(String codTrainer);
+
+    String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
 }

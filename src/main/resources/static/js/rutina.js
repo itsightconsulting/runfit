@@ -2291,14 +2291,20 @@ Indicadores = (function(){
             $('#IconIndicador2').popover('show');
         },
         indicador2Body: (metricas)=>{
-            let raw = "";
+            let raw = '<div class="col-md-12 col-sm-12 col-xs-12">';
             for(let i=0; i<metricas.length;i++){
+
                 raw += `<div class="col-md-3 col-sm-3 col-xs-3 padding-7">
                             <div class="row padding-5 text-align-center">
                                 <span class="txt-color-blue"><b>${BaseCalculo.ofMetricasBase[i].n}</b></span>
                                 ${metricas[i].parcial}
                             </div>
                         </div>`
+                        if((i+1)%4 == 0 && (i+1) == metricas.length){
+                            raw+='</div>';
+                        }else if((i+1)%4 == 0){
+                            raw+='</div><div class="col-md-12 col-sm-12 col-xs-12">';
+                        }
             }
             return raw;
         }
