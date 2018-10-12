@@ -37,8 +37,12 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void updateTiemposDia(@Param("id") int id, @Param("valor") String valor, @Param(value = "texto") String texto,@Param(value = "minutos") int totalMinutos);
 
     @Modifying
-    @Query(value = "UPDATE dia SET calorias = calorias + :calorias, distancia = :distancia, elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:valor as jsonb), false) WHERE dia_id = :id", nativeQuery = true)
-    void updateDistanciasDia(@Param("id") int id, @Param("valor") String valor, @Param(value = "texto") String texto,@Param(value = "distancia") double totalDistancia, @Param(value = "calorias") double calorias);
+    @Query(value = "UPDATE dia SET calorias = calorias + :calorias, distancia = :totalDistancia, elementos = jsonb_set(jsonb_set(elementos, CAST(:txtNombre as text[]), to_jsonb(CAST(:nombre as text)), false), CAST(:txtDistancia as text[]), CAST(:distancia as jsonb), false) WHERE dia_id = :id", nativeQuery = true)
+    void updateDiaAndElemento(@Param("id") int id, @Param(value = "calorias") double calorias, @Param(value = "totalDistancia") double totalDistancia, @Param(value = "txtNombre") String txtNombre, @Param("nombre") String nombre, @Param(value = "txtDistancia") String txtDistancia, @Param("distancia") String distancia);
+
+    @Modifying
+    @Query(value = "UPDATE dia SET calorias = calorias + :calorias, distancia = :totalDistancia, minutos = :totalMinutos, elementos = jsonb_set(jsonb_set(jsonb_set(elementos, CAST(:txtNombre as text[]), to_jsonb(CAST(:nombre as text)), false), CAST(:txtDistancia as text[]), CAST(:distancia as jsonb), false), CAST(:txtMinutos as text[]), CAST(:minutos as jsonb), false) WHERE dia_id = :id", nativeQuery = true)
+    void updateDiaAndElemento2(@Param("id") int id, @Param(value = "calorias") double calorias, @Param(value = "totalDistancia") double totalDistancia, @Param(value = "totalMinutos") double totalMinutos, @Param(value = "txtNombre") String txtNombre, @Param("nombre") String nombre, @Param(value = "txtDistancia") String txtDistancia, @Param("distancia") String distancia, @Param(value = "txtMinutos") String txtMinutos, @Param("minutos") String minutos);
 
     //COALESCE retorna el primer valor not null(en caso no haya ninguna lista se guarde una lista vacia)
     @Modifying
@@ -62,12 +66,12 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void saveElementos(@Param("id") int id, @Param("listaIx") int listaIx, @Param("texto") String texto, @Param("elementos") String elementos);
 
     @Modifying
-    @Query("UPDATE Dia D SET D.distancia = 0, D.minutos = 0, D.flagDescanso = ?2, D.elementos = null WHERE D.id = ?1 ")
+    @Query("UPDATE Dia D SET D.calorias = 0, D.distancia = 0, D.minutos = 0, D.flagDescanso = ?2, D.elementos = null WHERE D.id = ?1 ")
     void updateFlagDescanso(int id, boolean flagDescanso);
 
     @Modifying
     @Query(value = "UPDATE dia SET distancia = distancia - ?4, minutos = minutos - ?3, elementos = (SELECT elementos-?2 FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
-    void deleteElementoById(int id, int listaIndice, int minutos, int distancia);
+    void deleteElementoById(int id, int listaIndice, int minutos, double distancia);
 
     @Modifying
     @Query(value = "UPDATE dia SET elementos = (SELECT elementos #- CAST(?2 as text[]) FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)

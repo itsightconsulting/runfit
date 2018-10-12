@@ -1683,7 +1683,7 @@ function actualizarListaNombreBD(numSem, diaIndex, listaIndex) {
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina-plantilla/lista/modificar",
+        url: _ctx + "gestion/rutina-plantilla/lista/actualizar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -1720,7 +1720,7 @@ function actualizarElementoNombreBD(nuevoNombre, numSem, diaIndex, listaIndex, e
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        url: _ctx + "gestion/rutina-plantilla/elemento/modificar",
+        url: _ctx + "gestion/rutina-plantilla/elemento/actualizar",
         dataType: "json",
         data: params,
         success: function (data) {

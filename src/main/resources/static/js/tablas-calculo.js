@@ -66,9 +66,9 @@ BaseCalculo = (function(){
             {zona: "Z7", factor: 0.9700},
         ],
         ofMetricasBase: [
-            {n: "0.2 KM", factor: .2},
-            {n: "0.4 KM", factor: .4},
-            {n: "0.8 KM", factor: .8},
+            {n: "200 m", factor: .2},
+            {n: "400 m", factor: .4},
+            {n: "800 m", factor: .8},
             {n: "1 KM", factor: 1},
             {n: "10 KM", factor: 10},
             {n: "15 KM", factor: 15},

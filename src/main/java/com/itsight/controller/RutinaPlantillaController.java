@@ -203,8 +203,8 @@ public class RutinaPlantillaController {
         return ResponseCode.REGISTRO.get();
     }
 
-    @PutMapping(value = "/lista/modificar")
-    public @ResponseBody String modificarListaPlantilla(
+    @PutMapping(value = "/lista/actualizar")
+    public @ResponseBody String actualizarListaPlantilla(
                 @RequestBody ListaPlantilla lista, HttpSession session){
         int semanaId = ((Integer[]) session.getAttribute("rpSemanaIds"))[lista.getNumeroSemana()];
         int diaPlantillaId = diaPlantillaService.encontrarIdPorSemanaId(semanaId).get(lista.getDiaIndice());
@@ -212,8 +212,8 @@ public class RutinaPlantillaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/modificar")
-    public @ResponseBody String modificarElementoPlantilla(
+    @PutMapping(value = "/elemento/actualizar")
+    public @ResponseBody String actualizarElementoPlantilla(
                 @RequestParam String nombre,
                 @RequestParam String numeroSemana,
                 @RequestParam String diaIndice,

@@ -43,6 +43,7 @@ public class RutinaHshController {
 
     @GetMapping(value = "/edicion")
     public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) {
+
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         String codTrainer = session.getAttribute("codTrainer").toString();

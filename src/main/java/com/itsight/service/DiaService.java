@@ -25,7 +25,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int id, int listaIndice, int elementoIndice, String nombre);
 
-    void eliminarElementoById(int id, int listaIndice, int minutos, int distancia);
+    void eliminarElementoById(int id, int listaIndice, int minutos, double distancia);
 
     void eliminarSubElementoById(int id, int eleIndice, int subEleIndice);
 
@@ -41,7 +41,9 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarTiempoElementoByListaIndexAndId(int tiempo, int elementoIndice, int id, int minutosTotales);
 
-    void actualizarDiaAndElementoById(double distancia, int elementoIndice, int id, double distanciaTotal, double calorias);
+    void actualizarDiaAndElementoById(int id, double calorias, double distanciaTotal, String nombre, double distancia, int elementoIndice);
+
+    void actualizarDiaAndElemento2ById(int id, double calorias, double distanciaTotal, int minutosTotal, String nombre, double distancia, int minutos, int elementoIndice);
 
     void actualizarNotaElementoByListaIndexAndId(String nota, int elementoIndice, int id);
 

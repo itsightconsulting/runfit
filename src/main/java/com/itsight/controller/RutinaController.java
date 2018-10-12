@@ -3,7 +3,10 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.*;
+import com.itsight.domain.Dia;
+import com.itsight.domain.Rutina;
+import com.itsight.domain.RutinaPlantilla;
+import com.itsight.domain.Semana;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.RutinaControl;
@@ -23,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -192,8 +194,8 @@ public class RutinaController {
         return ResponseCode.REGISTRO.get();
     }
 
-    /*@PutMapping(value = "/elemento/modificar")
-    public @ResponseBody String modificarElemento(
+    /*@PutMapping(value = "/elemento/actualizar")
+    public @ResponseBody String actualizarElemento(
             @RequestParam String nombre,
             @RequestParam String numeroSemana,
             @RequestParam String diaIndice,
@@ -258,7 +260,7 @@ public class RutinaController {
             @RequestParam String diaIndice,
             @RequestParam String elementoIndice,
             @RequestParam int minutos,
-            @RequestParam int distancia, HttpSession session){
+            @RequestParam double distancia, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
         diaService.eliminarElementoById(diaId, Integer.parseInt(elementoIndice), minutos, distancia);
@@ -278,16 +280,16 @@ public class RutinaController {
         return ResponseCode.ELIMINACION.get();
     }
 
-    @PutMapping(value = "/elemento/modificar")
-    public @ResponseBody String modificarElementoDia(@RequestBody Elemento elemento, HttpSession session){
+    @PutMapping(value = "/elemento/actualizar")
+    public @ResponseBody String actualizarElementoDia(@RequestBody Elemento elemento, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
         diaService.actualizarNombreElementoByListaIndexAndId(elemento.getNombre(), elemento.getElementoIndice(), diaId);
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/estilos/modificar")
-    public @ResponseBody String modificarEstilosElementoDia(
+    @PutMapping(value = "/elemento/estilos/actualizar")
+    public @ResponseBody String actualizarEstilosElementoDia(
             @RequestBody Elemento elemento, HttpSession session) throws JsonProcessingException {
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
@@ -295,8 +297,8 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/modificar/2")
-    public @ResponseBody String modificarElementoNomAndTipoDia(
+    @PutMapping(value = "/elemento/actualizar/2")
+    public @ResponseBody String actualizarElementoNomAndTipoDia(
             @RequestBody ElementoDto elemento, HttpSession session) throws JsonProcessingException {
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
@@ -308,8 +310,8 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/tiempo/modificar")
-    public @ResponseBody String modificarTiempoElemento(
+    @PutMapping(value = "/elemento/tiempo/actualizar")
+    public @ResponseBody String actualizarTiempoElemento(
             @RequestBody Elemento elemento, HttpSession session){
         int minutosDia = elemento.getMinutosDia();
         elemento.setMinutosDia(0);//Para no ser tomado en cuenta en la serializacion
@@ -319,19 +321,30 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/dia/modificar")
-    public @ResponseBody String modificarDia(
+    @PutMapping(value = "/dia/actualizar")
+    public @ResponseBody String actualizarDia(
             @RequestBody Elemento elemento, HttpSession session){
         double distanciaDia = elemento.getDistanciaDia();
         elemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarDiaAndElementoById(elemento.getDistancia(), elemento.getElementoIndice(), diaId, distanciaDia, elemento.getCalorias());
+        diaService.actualizarDiaAndElementoById(diaId, elemento.getCalorias(), distanciaDia, elemento.getNombre(), elemento.getDistancia(), elemento.getElementoIndice());
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/nota/modificar")
-    public @ResponseBody String modificarNotaElemento(
+    @PutMapping(value = "/dia/actualizar2")
+    public @ResponseBody String actualizarDiaPlusTiempo(
+            @RequestBody Elemento elemento, HttpSession session){
+        double distanciaDia = elemento.getDistanciaDia();
+        elemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
+        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
+        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
+        diaService.actualizarDiaAndElemento2ById(diaId, elemento.getCalorias(), distanciaDia, elemento.getMinutosDia(), elemento.getNombre(), elemento.getDistancia(), elemento.getMinutos(), elemento.getElementoIndice());
+        return ResponseCode.ACTUALIZACION.get();
+    }
+
+    @PutMapping(value = "/elemento/nota/actualizar")
+    public @ResponseBody String actualizarNotaElemento(
             @RequestBody Elemento elemento, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
@@ -339,8 +352,8 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/media/modificar")
-    public @ResponseBody String modificarMediaElemento(
+    @PutMapping(value = "/elemento/media/actualizar")
+    public @ResponseBody String actualizarMediaElemento(
             @ModelAttribute ElementoMediaDto elemento, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
@@ -384,8 +397,8 @@ public class RutinaController {
         return ResponseCode.REGISTRO.get();
     }
 
-    @PutMapping(value = "/sub-elemento/modificar")
-    public @ResponseBody String modificarSubElementoNombre(
+    @PutMapping(value = "/sub-elemento/actualizar")
+    public @ResponseBody String actualizarSubElementoNombre(
             @RequestParam String nombre,
             @RequestParam String numeroSemana,
             @RequestParam String diaIndice,
@@ -397,8 +410,8 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/sub-elemento/nota/modificar")
-    public @ResponseBody String modificarSubElementoNota(
+    @PutMapping(value = "/sub-elemento/nota/actualizar")
+    public @ResponseBody String actualizarSubElementoNota(
             @RequestParam String nota,
             @RequestParam String numeroSemana,
             @RequestParam String diaIndice,
@@ -410,8 +423,8 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/sub-elemento/media/modificar")
-    public @ResponseBody String modificarSubElementoMedia(@RequestBody SubElementoMediaDto subElemento, HttpSession session){
+    @PutMapping(value = "/sub-elemento/media/actualizar")
+    public @ResponseBody String actualizarSubElementoMedia(@RequestBody SubElementoMediaDto subElemento, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[subElemento.getNumeroSemana()];
         int id = diaService.encontrarIdPorSemanaId(semanaId).get(subElemento.getDiaIndice());
         diaService.actualizarMediaSubElemento2(subElemento, id);

@@ -369,14 +369,18 @@ function instanciarElementosDiaPopover(elementos){
 }
 
 function generandoNuevaMiniPlantilla(subCatId){
-    let especificacion = document.querySelector(`#ArbolRutinario a[data-especificacion-id="${subCatId}"]`).parentElement;
-    let cantHijos = especificacion.children.length;//Como el icon plus representa un hijo ya no le aumentamos +1
-    var a = document.createElement('a');
-    a.href = 'javascript:void(0)';
-    a.innerHTML = `<span onclick="obtenerMiniPlantilla(${subCatId}, ${--cantHijos});" class="badge bg-color-greenLight font-md mini">${++cantHijos}</span>`;
-    especificacion.append(a);
-    setTimeout(()=>{especificacion.children[cantHijos].children[0].classList.remove('bg-color-greenLight');
-        especificacion.children[cantHijos].children[0].classList.add('bg-color-darken');} ,4000);
+    if(document.querySelector('#ArbolRutinario').children.length > 0) {
+        let especificacion = document.querySelector(`#ArbolRutinario a[data-especificacion-id="${subCatId}"]`).parentElement;
+        let cantHijos = especificacion.children.length;//Como el icon plus representa un hijo ya no le aumentamos +1
+        let a = document.createElement('a');
+        a.href = 'javascript:void(0)';
+        a.innerHTML = `<span onclick="obtenerMiniPlantilla(${subCatId}, ${--cantHijos});" class="badge bg-color-greenLight font-md mini">${++cantHijos}</span>`;
+        especificacion.append(a);
+        setTimeout(() => {
+            especificacion.children[cantHijos].children[0].classList.remove('bg-color-greenLight');
+            especificacion.children[cantHijos].children[0].classList.add('bg-color-darken');
+        }, 4000);
+    }
 }
 
 function guardarMiniPlantilla(e){
@@ -1070,7 +1074,7 @@ function principalesEventosClickRutina(e) {
         e.preventDefault();
         e.stopPropagation();
         e.target.select();
-        $tiempoActualizar = e.target.value.trim();
+        $tiempoActualizar = Number(e.target.value.trim());
         $gIndex = e.target.getAttribute('data-index');
     }
     else if(clases.contains('pre-guardar-dia')) {
@@ -1396,7 +1400,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-sub-elemento')) {
         const valor = input.value.trim();
-        if (valor.length >= 2) {
+        if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
             const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1420,7 +1424,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-sub-ele-esp-pos')) {
         const valor = input.value.trim();
-        if (valor.length >= 2) {
+        if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
@@ -1452,11 +1456,12 @@ function principalesEventosFocusOutSemanario(e) {
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
                 RutinaSet.setElementoNombre(ixs.numSem, ixs.diaIndex, (posEle = i), valor);
                 //Indices con respecto a la posicion en la que se encuentran con respecto a su contenedor padre y sus hermanos
-                actualizarElementoNombreBD(ixs.numSem, ixs.diaIndex, (eleIndex = i));
+                DiaOpc.validPreActualizarFromNomEle(valor, ixs, (posElemento = i));
             }
         }else{
             console.log("No es necesario actualizar");
         }
+        $nombreActualizar = valor;
 
     }
     else if(clases.contains('rf-sub-elemento-nombre')){
@@ -1549,6 +1554,7 @@ function principalesEventosFocusOutSemanario(e) {
         }else{
             console.log("No es necesario actualizar");
         }
+        $tiempoActualizar = tiempo;
     }
 }
 
@@ -1863,7 +1869,7 @@ function actualizarElementoStrategyBD2(numSem, diaIndex, eleIndex, tipoElemento)
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/elemento/modificar/2",
+        url: _ctx + "gestion/rutina/elemento/actualizar/2",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -2130,7 +2136,7 @@ function actualizarElementoNombreBD(numSem, diaIndex, eleIndex) {
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/elemento/modificar",
+        url: _ctx + "gestion/rutina/elemento/actualizar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -2152,7 +2158,7 @@ function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) 
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/elemento/tiempo/modificar",
+        url: _ctx + "gestion/rutina/elemento/tiempo/actualizar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -2175,7 +2181,31 @@ function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/dia/modificar",
+        url: _ctx + "gestion/rutina/dia/actualizar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, totalMinutos) {
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.distanciaDia = totalKms;
+    params.calorias = calorias;
+    params.minutosDia = totalMinutos;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/actualizar2",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -2196,7 +2226,7 @@ function actualizarNotaElementoBD(numSem, diaIndex, elementoIndice) {
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/elemento/nota/modificar",
+        url: _ctx + "gestion/rutina/elemento/nota/actualizar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -2224,7 +2254,7 @@ function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
     $.ajax({
         type: "PUT",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + "gestion/rutina/elemento/media/modificar",
+        url: _ctx + "gestion/rutina/elemento/media/actualizar",
         dataType: "json",
         data: params,
         success: function (data) {
@@ -2254,7 +2284,7 @@ function actualizarMediaElementoBD2(numSem, diaIndex, elementoIndice, tipoMedia,
     $.ajax({
         type: "PUT",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + "gestion/rutina/elemento/media/modificar",
+        url: _ctx + "gestion/rutina/elemento/media/actualizar",
         dataType: "json",
         data: params,
         success: function (data) {
@@ -2277,7 +2307,7 @@ function actualizarMediaSubElementoBD(numSem, diaIndex, elementoIndice, subEleIn
     $.ajax({
         type: "PUT",
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-        url: _ctx + "gestion/rutina/sub-elemento/media/modificar",
+        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
         dataType: "json",
         data: params,
         success: function (data) {
@@ -2303,7 +2333,7 @@ function actualizarMediaSubElementoBD2(numSem, diaIndex, elementoIndice, subEleI
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/sub-elemento/media/modificar",
+        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
@@ -2326,7 +2356,7 @@ function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElement
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        url: _ctx + "gestion/rutina/sub-elemento/modificar",
+        url: _ctx + "gestion/rutina/sub-elemento/actualizar",
         dataType: "json",
         data: params,
         success: function (data) {
@@ -2349,7 +2379,7 @@ function actualizarSubElementoNotaBD(nota, numSem, diaIndex, posElemento, postSu
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        url: _ctx + "gestion/rutina/sub-elemento/nota/modificar",
+        url: _ctx + "gestion/rutina/sub-elemento/nota/actualizar",
         dataType: "json",
         data: params,
         success: function (data) {
@@ -2394,7 +2424,7 @@ function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/elemento/estilos/modificar",
+        url: _ctx + "gestion/rutina/elemento/estilos/actualizar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {
