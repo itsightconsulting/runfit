@@ -41,7 +41,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarTiempoElementoByListaIndexAndId(int tiempo, int elementoIndice, int id, int minutosTotales);
 
-    void actualizarDistanciaElementoByListaIndexAndId(double distancia, int elementoIndice, int id, double distanciaTotal, double calorias);
+    void actualizarDiaAndElementoById(double distancia, int elementoIndice, int id, double distanciaTotal, double calorias);
 
     void actualizarNotaElementoByListaIndexAndId(String nota, int elementoIndice, int id);
 

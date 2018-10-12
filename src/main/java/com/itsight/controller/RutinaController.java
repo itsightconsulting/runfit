@@ -319,15 +319,14 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-    @PutMapping(value = "/elemento/distancia/modificar")
-    public @ResponseBody String modificarDistancialemento(
+    @PutMapping(value = "/dia/modificar")
+    public @ResponseBody String modificarDia(
             @RequestBody Elemento elemento, HttpSession session){
         double distanciaDia = elemento.getDistanciaDia();
         elemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        //Y calorias
-        diaService.actualizarDistanciaElementoByListaIndexAndId(elemento.getDistancia(), elemento.getElementoIndice(), diaId, distanciaDia, elemento.getCalorias());
+        diaService.actualizarDiaAndElementoById(elemento.getDistancia(), elemento.getElementoIndice(), diaId, distanciaDia, elemento.getCalorias());
         return ResponseCode.ACTUALIZACION.get();
     }
 

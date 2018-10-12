@@ -1325,7 +1325,8 @@ function principalesEventosFocusOutSemanario(e) {
         e.preventDefault();
         const valor = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
-        if (valor.length > 2 && listaNoRepetida(ixs.diaIndex, valor)) {
+        const diaIndex = input.getAttribute('data-dia-index');
+        if (valor.length > 1 && listaNoRepetida(ixs.diaIndex, valor)) {
             const nuevoIx = RutinaSeccion.newElementoSimple(ixs.diaIndex, ElementoTP.SIMPLE, valor);
             ixs.eleIndex = nuevoIx;
             $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento({nombre: valor}));
@@ -1337,10 +1338,10 @@ function principalesEventosFocusOutSemanario(e) {
         } else {
             if (e.target.value.length == 0) {
             } else {
-                if (e.target.value.length > 2) {
+                if (e.target.value.length > 1) {
                     $(`#msg-val-${diaIndex}`).text('No puede crear una lista con un nombre repetido');
                 } else {
-                    $(`#msg-val-${diaIndex}`).text('Se requiere mínimo 3 letras');
+                    $(`#msg-val-${diaIndex}`).text('Se requiere mínimo 2 letras');
                 }
                 setTimeout(() => $(`#msg-val-${diaIndex}`).text(''), 3500);
             }
@@ -1351,8 +1352,8 @@ function principalesEventosFocusOutSemanario(e) {
         e.preventDefault();
         const valor = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
-        const diaIndex = e.target.getAttribute('data-dia-index');
-        if (valor.length > 2 && listaNoRepetida(ixs.diaIndex, valor)) {
+        const diaIndex = input.getAttribute('data-dia-index');
+        if (valor.length > 1 && listaNoRepetida(ixs.diaIndex, valor)) {
             const nuevoIx = RutinaSeccion.newElementoLista(ixs.diaIndex, ElementoTP.COMPUESTO, valor);
             ixs.eleIndex = nuevoIx;
             $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento({nombre: valor}));
@@ -1364,10 +1365,10 @@ function principalesEventosFocusOutSemanario(e) {
         } else {
             if (valor.length == 0) {
             } else {
-                if (valor.length > 2) {
+                if (valor.length > 1) {
                     $(`#msg-val-${diaIndex}`).text('No puede crear una lista con un nombre repetido');
                 } else {
-                    $(`#msg-val-${diaIndex}`).text('Se requiere mínimo 3 letras');
+                    $(`#msg-val-${diaIndex}`).text('Se requiere mínimo 2 letras');
                 }
                 setTimeout(() => $(`#msg-val-${diaIndex}`).text(''), 3500);
             }
@@ -1376,7 +1377,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         const valor = input.value.trim();
-        if(valor.length > 2){
+        if(valor.length > 1){
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
             let tipo = input.getAttribute('data-ele-tipo');
@@ -1408,7 +1409,7 @@ function principalesEventosFocusOutSemanario(e) {
             instanciarSubElementoTooltip(nSubEle);
             instanciarSubElementoPopover(nSubEle);
             agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
-            DiaOpc.actualizarKilometraje(valor, ixs, (posElemento = i));
+            DiaOpc.validPreActualizar(valor, ixs, (posElemento = i));
             input.value = '';
         } else {
             if (valor.length == 0) {
@@ -1435,7 +1436,7 @@ function principalesEventosFocusOutSemanario(e) {
             instanciarSubElementoTooltip(subEle);
             instanciarSubElementoPopover(subEle);
             actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
-            DiaOpc.actualizarKilometraje(valor, ixs, i);
+            DiaOpc.validPreActualizar(valor, ixs, i);
             initTempSubEleRef.remove();
         }
     }
@@ -2164,7 +2165,7 @@ function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) 
     })
 }
 
-function actualizarDistanciaElementoBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
+function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
@@ -2174,7 +2175,7 @@ function actualizarDistanciaElementoBD(numSem, diaIndex, elementoIndice, totalKm
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: _ctx + "gestion/rutina/elemento/distancia/modificar",
+        url: _ctx + "gestion/rutina/dia/modificar",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {

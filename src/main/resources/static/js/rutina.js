@@ -1059,11 +1059,11 @@ DiaOpc = (function(){
                                                     <div class="smart-form">
                                                         <div class="form-group">
                                                                 <label class="input col-md-6 col-sm-12 col-xs-12">
-                                                                    <input class="in-ele-dia-1 in-init-ele" type="text" maxlength="121" placeholder="Elemento simple" data-dia-index="${diaIndex}">
+                                                                    <input class="in-ele-dia-1 in-init-ele" type="text" maxlength="121" placeholder="" data-dia-index="${diaIndex}">
                                                                     </label>
                                                                 
                                                                 <label class="input col-md-6 col-sm-12 col-xs-12">
-                                                                    <input class="in-ele-dia-2 in-init-ele" type="text" maxlength="121" placeholder="Elemento lista" data-dia-index="${diaIndex}">
+                                                                    <input class="in-ele-dia-2 in-init-ele" type="text" maxlength="121" placeholder="" data-dia-index="${diaIndex}">
                                                                     </label>
                                                                 <em class="txt-color-redLight" id="msg-val-${diaIndex}"></em>
                                                         </div>
@@ -1139,7 +1139,7 @@ DiaOpc = (function(){
                 dia.querySelector(`.distancia-total`).textContent = "0.00";
             }
         },
-        actualizarKilometraje: (e, ixs, posEle)=>{
+        validPreActualizar: (e, ixs, posEle)=>{
             const zonaCardiaca = e.toUpperCase();
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
@@ -1156,11 +1156,18 @@ DiaOpc = (function(){
                         kilometraje = roundNumber((tiempoAsignado * 60) / ((indicadores.min.toSeconds() + indicadores.max.toSeconds()) / 2), 1);
                     }
                     const calorias = DiaOpc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
-                    ElementoOpc.actualizarDistanciaElemento(elemento, kilometraje, calorias, posEle, ixs);
+                    DiaOpc.actualizar(elemento, kilometraje, calorias, posEle, ixs);
                 }
             }
-
-
+        },
+        actualizar: (elemento, kms, calorias, posEle, ixs)=>{
+            elemento.setAttribute('data-kms', kms);
+            const totalKms = DiaFunc.obtenerTotalKmsDia(ixs.diaIndex);
+            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.distancia-total`).textContent = parseFloat(roundNumber(totalKms, 2)).toFixed(2);
+            RutinaSet.setElementoDistancia(ixs.numSem, ixs.diaIndex, posEle, kms);
+            RutinaSet.setDiaDistanciaTotal(ixs.numSem, ixs.diaIndex, totalKms);
+            RutinaSet.setDiaCalorias(ixs.numSem, ixs.diaIndex, calorias);
+            actualizarDiaBD(ixs.numSem, ixs.diaIndex, posEle, totalKms, calorias);//Incluye gasto calorico
         },
         obtenerGastoCalorico: (nivelZIndex, tiempoMinutos)=>{
             const semActualIx = Number($('#SemanaActual').text())-1;
@@ -1335,15 +1342,6 @@ ElementoOpc = (function(){
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             input.textContent = elemento.getAttribute('data-kms')!=undefined?elemento.getAttribute('data-kms').trim():'';
             $kmsActualizar = input.textContent.trim();
-        },
-        actualizarDistanciaElemento: (elemento, kms, calorias, posEle, ixs)=>{
-            elemento.setAttribute('data-kms', kms);
-            const totalKms = DiaFunc.obtenerTotalKmsDia(ixs.diaIndex);
-            RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.distancia-total`).textContent = parseFloat(roundNumber(totalKms, 2)).toFixed(2);
-            RutinaSet.setElementoDistancia(ixs.numSem, ixs.diaIndex, posEle, kms);
-            RutinaSet.setDiaDistanciaTotal(ixs.numSem, ixs.diaIndex, totalKms);
-            RutinaSet.setDiaCalorias(ixs.numSem, ixs.diaIndex, calorias);
-            actualizarDistanciaElementoBD(ixs.numSem, ixs.diaIndex, posEle, totalKms, calorias);//Incluye gasto calorico
         },
         actualizarTiempoElemento: (ixs, minutos)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
@@ -2147,10 +2145,10 @@ RutinaDiaHTML = (function(){
                                 <div class="smart-form">
                                     <div class="form-group">
                                             <label class="input col-md-6 col-sm-12 col-xs-12">
-                                                <input class="in-ele-dia-1 in-init-ele" type="text" maxlength="121" placeholder="Elemento simple" data-dia-index="${diaIndex}">
+                                                <input class="in-ele-dia-1 in-init-ele" type="text" maxlength="121" placeholder="" data-dia-index="${diaIndex}">
                                                 </label>
                                             <label class="input col-md-6 col-sm-12 col-xs-12">
-                                                <input class="in-ele-dia-2 in-init-ele" type="text" maxlength="121" placeholder="Elemento lista" data-dia-index="${diaIndex}">
+                                                <input class="in-ele-dia-2 in-init-ele" type="text" maxlength="121" placeholder="" data-dia-index="${diaIndex}">
                                                 </label>
                                             <em class="txt-color-redLight" id="msg-val-${diaIndex}"></em>
                                     </div>
