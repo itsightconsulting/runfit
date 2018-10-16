@@ -1405,15 +1405,9 @@ function principalesEventosFocusOutSemanario(e) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let initEle = tempElemento;
-            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
-            const nSubEle = initEle.querySelector(`li[data-index="${nuevoIx}"]`);
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-            $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[i].subElementos.push(new SubElemento({nombre: valor}));
-            initEle.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
-            instanciarSubElementoTooltip(nSubEle);
-            instanciarSubElementoPopover(nSubEle);
-            DiaOpc.validPreActualizarFromNomSubEle(valor, ixs, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
+            DiaOpc.validPreActualizarFromNomSubEle(initEle, valor, ixs, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
             input.value = '';
         } else {
             if (valor.length == 0) {

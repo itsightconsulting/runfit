@@ -1173,28 +1173,21 @@ DiaOpc = (function(){
             const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
             if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
                 if (RutinaValidator.esZ(nombreOZonaCardiaca)) {
-                    if(RutinaValidator.hayZFromEle(elemento)){
+                    if(elemento.getAttribute('data-type') == "2" && RutinaValidator.hayZFromEle(elemento)){
                         document.execCommand('undo', false, null);
                         $.smallBox({color: "alert", content: "<i>Este elemento ya tiene especificada una carrera...</i>"});
                     } else {
                         const zonaNum = Number(nombreOZonaCardiaca.substr(1)) - 1;
-                        const indicadores = $rutina.semanas[ixs.numSem].metricas[zonaNum].indicadores;
-                        let kilometraje = 0;
-                        if (zonaNum == 0) {
-                            kilometraje = roundNumber((tiempoAsignado * 60) / indicadores.max.toSeconds(), 1);
-                        } else if (zonaNum == 6) {
-                            kilometraje = roundNumber((tiempoAsignado * 60) / indicadores.min.toSeconds(), 1);
-                        } else {
-                            kilometraje = roundNumber((tiempoAsignado * 60) / ((indicadores.min.toSeconds() + indicadores.max.toSeconds()) / 2), 1);
-                        }
-                        let caloriasNuevas = DiaOpc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
+                        let kilometraje = DiaFunc.obtenerKilometraje(ixs.numSem, zonaNum, tiempoAsignado);
+                        let caloriasNuevas = DiaFunc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
+
                         const nomEleAnterior = $nombreActualizar.toUpperCase();
                         if (RutinaValidator.esZ(nomEleAnterior)) {
                             if (nombreOZonaCardiaca === $nombreActualizar) {
                                 caloriasNuevas = 0;//Como son iguales para no añadir calorias de forma incorrecta se envia como 0
                             } else {
                                 const zonaNumAnterior = Number(nomEleAnterior.substr(1)) - 1
-                                caloriasNuevas = caloriasNuevas - DiaOpc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado) //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
+                                caloriasNuevas = caloriasNuevas - DiaFunc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado) //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
                             }
                         }
                         DiaOpc.actualizar(elemento, nombreOZonaCardiaca, kilometraje, caloriasNuevas, posEle, ixs, 1);
@@ -1203,7 +1196,7 @@ DiaOpc = (function(){
                     const nomEleAnterior = $nombreActualizar.toUpperCase();
                     if (RutinaValidator.esZ(nomEleAnterior)) {
                         const zonaNumAnterior = Number(nomEleAnterior.substr(1)) - 1;
-                        const caloriasNuevas = -DiaOpc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado); //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
+                        const caloriasNuevas = -DiaFunc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado); //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
                         DiaOpc.actualizar(elemento, e, 0, caloriasNuevas, posEle, ixs, 1);
                     } else
                         actualizarElementoNombreBD(ixs.numSem, ixs.diaIndex, posEle);
@@ -1212,49 +1205,59 @@ DiaOpc = (function(){
                 actualizarElementoNombreBD(ixs.numSem, ixs.diaIndex, posEle);
             }
         },
-        validPreActualizarFromNomSubEle: (e, ixs, posEle, posSE)=>{
+        validPreActualizarFromNomSubEle: (elemento, valor, ixs, posEle, posSE)=>{
 
-            const nombreOZonaCardiaca = e.toUpperCase();
-            const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            const nombreOZonaCardiaca = valor.toUpperCase();
             const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
             if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
                 if (RutinaValidator.esZ(nombreOZonaCardiaca)) {
                     if(RutinaValidator.hayZFromSubEle(elemento)){
-                        alert(1);
+                        $.smallBox({color: "alert", content: "<i>Este elemento ya tiene especificada una carrera...</i>"});
                     }else {
+                        const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+                        const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
+                        $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor}));
+                        elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+                        instanciarSubElementoTooltip(nSubEle);
+                        instanciarSubElementoPopover(nSubEle);
+
                         const zonaNum = Number(nombreOZonaCardiaca.substr(1)) - 1;
-                        const indicadores = $rutina.semanas[ixs.numSem].metricas[zonaNum].indicadores;
-                        let kilometraje = 0;
-                        if(zonaNum == 0){
-                            kilometraje = roundNumber((tiempoAsignado*60) / indicadores.max.toSeconds(), 1);
-                        }else if(zonaNum == 6){
-                            kilometraje = roundNumber((tiempoAsignado*60) / indicadores.min.toSeconds(), 1);
-                        }else {
-                            kilometraje = roundNumber((tiempoAsignado*60) / ((indicadores.min.toSeconds() + indicadores.max.toSeconds()) / 2), 1);
-                        }
-                        let caloriasNuevas = DiaOpc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
+                        let caloriasNuevas = DiaFunc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
+                        let kilometraje = DiaFunc.obtenerKilometraje(ixs.numSem, zonaNum, tiempoAsignado);
+
                         const nomEleAnterior = $nombreActualizar.toUpperCase();
                         if (RutinaValidator.esZ(nomEleAnterior)) {
                             if(nombreOZonaCardiaca === $nombreActualizar){
                                 caloriasNuevas = 0;//Como son iguales para no añadir calorias de forma incorrecta se envia como 0
                             }else{
                                 const zonaNumAnterior = Number(nomEleAnterior.substr(1)) - 1
-                                caloriasNuevas = caloriasNuevas - DiaOpc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado) //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
+                                caloriasNuevas = caloriasNuevas - DiaFunc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado) //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
                             }
                         }
                         DiaOpc.actualizarFromSE(elemento, nombreOZonaCardiaca, kilometraje, caloriasNuevas, posEle, posSE, ixs);
                     }
                 }else {
+                    const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+                    const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
+                    $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor}));
+                    elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+                    instanciarSubElementoTooltip(nSubEle);
+                    instanciarSubElementoPopover(nSubEle);
                     const nomEleAnterior = $nombreActualizar.toUpperCase();
                     if (RutinaValidator.esZ(nomEleAnterior)) {
                         const zonaNumAnterior = Number(nomEleAnterior.substr(1)) - 1;
-                        const caloriasNuevas = -DiaOpc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado); //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
+                        const caloriasNuevas = -DiaFunc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado); //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
                         DiaOpc.actualizarFromSE(elemento, e, 0, caloriasNuevas, posEle, posSE, ixs);
                     } else
                         agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
                 }
-                //agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
             }else{
+                const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+                const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
+                $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor}));
+                elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+                instanciarSubElementoTooltip(nSubEle);
+                instanciarSubElementoPopover(nSubEle);
                 agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
             }
         },
@@ -1275,16 +1278,6 @@ DiaOpc = (function(){
             RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.distancia-total`).textContent = parseFloat(roundNumber(totalKms, 2)).toFixed(2);
             RutinaSet.setDiaAndSubEle(ixs.numSem, ixs.diaIndex, posEle, posSE, nombre, kms, totalKms, calorias)
             actualizarDiaBD3(ixs.numSem, ixs.diaIndex, posEle, posSE, totalKms, calorias);//Incluye gasto calorico
-        },
-        obtenerGastoCalorico: (nivelZIndex, tiempoMinutos)=>{
-            const semActualIx = Number($('#SemanaActual').text())-1;
-            let factorTiempo;
-            if(nivelZIndex == 0){
-                factorTiempo = $rutina.semanas[semActualIx].metricas[nivelZIndex].indicadores.max.toSeconds();
-            }else
-                factorTiempo = $rutina.semanas[semActualIx].metricas[nivelZIndex].indicadores.min.toSeconds();
-            let factorCalorico = BaseCalculo.factoresCaloricos[nivelZIndex].factor;
-            return roundNumber((roundNumber((tiempoMinutos / ((factorTiempo*factorCalorico)/60)),2)*75),1);
         },
         copiarMiniPlantillaDia: (e)=>{
             const diaPos = e.getAttribute('data-pos');
@@ -1413,7 +1406,7 @@ ElementoOpc = (function(){
             //3. Eliminando de la BD
             let calorias = 0;
             if(RutinaValidator.esZ($nombreActualizar.toUpperCase())){
-                calorias = DiaOpc.obtenerGastoCalorico(Number($nombreActualizar.substr(1)) - 1, minutos);
+                calorias = DiaFunc.obtenerGastoCalorico(Number($nombreActualizar.substr(1)) - 1, minutos);
             }
             RutinaSet.subtractDiaCalorias(numSem, diaIndex, calorias);
             removerElementoBD(numSem, diaIndex, (eleIndex = i), minutos, distancia, calorias);
@@ -1475,22 +1468,14 @@ ElementoOpc = (function(){
                 let anteriorMinutos = $tiempoActualizar;
                 let caloriasNuevas = 0;
                 const zonaNum = Number(nombreEle.substr(1)) - 1;
-                const indicadores = $rutina.semanas[ixs.numSem].metricas[zonaNum].indicadores;
-                let kilometraje = 0;
-                if(zonaNum == 0){
-                    kilometraje = roundNumber((minutos*60) / indicadores.max.toSeconds(), 1);
-                }else if(zonaNum == 6){
-                    kilometraje = roundNumber((minutos*60) / indicadores.min.toSeconds(), 1);
-                }else {
-                    kilometraje = roundNumber((minutos*60) / ((indicadores.min.toSeconds() + indicadores.max.toSeconds()) / 2), 1);
-                }
+                let kilometraje = DiaFunc.obtenerKilometraje(ixs.numSem, zonaNum, minutos);
 
                 if(minutos>0 && anteriorMinutos == 0){
-                    caloriasNuevas = DiaOpc.obtenerGastoCalorico(zonaNum, minutos);
+                    caloriasNuevas = DiaFunc.obtenerGastoCalorico(zonaNum, minutos);
                 }else if(minutos == 0 && anteriorMinutos > 0){
-                    caloriasNuevas = -DiaOpc.obtenerGastoCalorico(zonaNum, anteriorMinutos) //En este caso colocamos el número negativo ya que se esta cambiando el tiempo a 0min
+                    caloriasNuevas = -DiaFunc.obtenerGastoCalorico(zonaNum, anteriorMinutos) //En este caso colocamos el número negativo ya que se esta cambiando el tiempo a 0min
                 }else{
-                    caloriasNuevas = DiaOpc.obtenerGastoCalorico(zonaNum, minutos) - DiaOpc.obtenerGastoCalorico(zonaNum, anteriorMinutos);
+                    caloriasNuevas = DiaFunc.obtenerGastoCalorico(zonaNum, minutos) - DiaFunc.obtenerGastoCalorico(zonaNum, anteriorMinutos);
                 }
                 DiaOpc.actualizar(initTempElemento, nombreEle, kilometraje, caloriasNuevas, i, ixs, 2, totalMin);//Plus
             }else{
@@ -1826,6 +1811,28 @@ DiaFunc = (function(){
         // of the last month, so you have to add 1 to the month number so it returns the correct amount of days
         obtenerDiasByMes: (y, m)=>{
             return new Date(y, m+1, 0).getDate();
+        },
+        obtenerGastoCalorico: (nivelZIndex, tiempoMinutos)=>{
+            const semActualIx = Number($('#SemanaActual').text())-1;
+            let factorTiempo;
+            if(nivelZIndex == 0){
+                factorTiempo = $rutina.semanas[semActualIx].metricas[nivelZIndex].indicadores.max.toSeconds();
+            }else
+                factorTiempo = $rutina.semanas[semActualIx].metricas[nivelZIndex].indicadores.min.toSeconds();
+            let factorCalorico = BaseCalculo.factoresCaloricos[nivelZIndex].factor;
+            return roundNumber((roundNumber((tiempoMinutos / ((factorTiempo*factorCalorico)/60)),2)*75),1);
+        },
+        obtenerKilometraje: (numSem, zonaNum, tiempoAsignado)=>{
+            const indicadores = $rutina.semanas[numSem].metricas[zonaNum].indicadores;
+            let kilometraje = 0;
+            if(zonaNum == 0){
+                kilometraje = roundNumber((tiempoAsignado*60) / indicadores.max.toSeconds(), 1);
+            }else if(zonaNum == 6){
+                kilometraje = roundNumber((tiempoAsignado*60) / indicadores.min.toSeconds(), 1);
+            }else {
+                kilometraje = roundNumber((tiempoAsignado*60) / ((indicadores.min.toSeconds() + indicadores.max.toSeconds()) / 2), 1);
+            }
+            return kilometraje;
         }
     }
 })();
@@ -1869,7 +1876,7 @@ RutinaSeccion = (function (){
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             let subEleHTML = `
-                    <div class="panel panel-default rf-dia-elemento" data-index="${ix}">
+                    <div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${tipo}">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}">
