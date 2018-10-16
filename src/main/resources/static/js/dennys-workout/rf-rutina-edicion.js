@@ -84,6 +84,7 @@ function init(){
         tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
+        $semanario.addEventListener('focusin', principalEventoFocusIn);
         rutinarioCe.addEventListener('click', genericoRutinarioCe);
         cboSubCategoriaId.addEventListener('change', cargarListaSubCategoriaEjercicio);
         cboSubCategoriaIdSec.addEventListener('change', cargarListaSubCategoriaEjercicio);
@@ -1402,9 +1403,9 @@ function principalesEventosFocusOutSemanario(e) {
         const valor = input.value.trim();
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
-            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let initEle = tempElemento;
+            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
             const nSubEle = initEle.querySelector(`li[data-index="${nuevoIx}"]`);
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
@@ -1412,13 +1413,12 @@ function principalesEventosFocusOutSemanario(e) {
             initEle.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
             instanciarSubElementoTooltip(nSubEle);
             instanciarSubElementoPopover(nSubEle);
-            agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
-            DiaOpc.validPreActualizar(valor, ixs, (posElemento = i));
+            DiaOpc.validPreActualizarFromNomSubEle(valor, ixs, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
             input.value = '';
         } else {
             if (valor.length == 0) {
             } else {
-                $.smallBox({color: "alert", content: "Debe ingresar más de 2 caracteres..."})
+                $.smallBox({color: "alert", content: "Debe ingresar más de 1 caracter..."})
             }
         }
     }
@@ -1440,7 +1440,7 @@ function principalesEventosFocusOutSemanario(e) {
             instanciarSubElementoTooltip(subEle);
             instanciarSubElementoPopover(subEle);
             actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
-            DiaOpc.validPreActualizar(valor, ixs, i);
+            //DiaOpc.validPreActualizarFromNomSubEle(valor, ixs, i);
             initTempSubEleRef.remove();
         }
     }
@@ -1558,6 +1558,11 @@ function principalesEventosFocusOutSemanario(e) {
     }
 }
 
+
+function principalEventoFocusIn(e){
+    $nombreActualizar = e.target.textContent;
+}
+
 function principalesEventosTabRutina(e){
     const input = e.target;
     const clases = input.classList;
@@ -1654,7 +1659,11 @@ function principalesEventosTabRutina(e){
         RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
     }
     else if(clases.contains('fechas-calendar')){
-        avanzarRetrocederSemana($refIxsSemCalendar[input.getAttribute('data-index')], 2);
+        const semActual = Number(document.querySelector('#SemanaActual').textContent)-1;
+        if(semActual != $refIxsSemCalendar[input.getAttribute('data-index')])
+            avanzarRetrocederSemana($refIxsSemCalendar[input.getAttribute('data-index')], 2);
+        else
+            $.smallBox({color: "grey", content: "<i>El día que acaba de seleccionar pertenece a la semana<br/> que ya esta visualizando...</i>"});
         $('#CalendarioRf').popover('show');
     }
     else if(clases.contains('abrir-indicador-1')){
@@ -1991,13 +2000,14 @@ function agregarSubElementoEnBlancoBD(numSem, diaIndex, tipoSubEle, eleIndex, po
     })
 }
 
-function removerElementoBD(numSem, diaIndex, elementoIndex, minutos, distancia){
+function removerElementoBD(numSem, diaIndex, elementoIndex, minutos, distancia, calorias){
     let params = {}
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndex;
     params.minutos = minutos;
     params.distancia = distancia;
+    params.calorias = calorias;
 
     $.ajax({
         type: "PUT",
@@ -2195,6 +2205,7 @@ function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
 }
 
 function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, totalMinutos) {
+
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
@@ -2206,6 +2217,31 @@ function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, 
         type: "PUT",
         contentType: "application/json",
         url: _ctx + "gestion/rutina/dia/actualizar2",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
+function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, totalKms, calorias) {
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.distanciaDia = totalKms;
+    params.calorias = calorias;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/actualizar3",
         dataType: "json",
         data: JSON.stringify(params),
         success: function (data) {

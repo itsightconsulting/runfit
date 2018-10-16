@@ -70,8 +70,8 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void updateFlagDescanso(int id, boolean flagDescanso);
 
     @Modifying
-    @Query(value = "UPDATE dia SET distancia = distancia - ?4, minutos = minutos - ?3, elementos = (SELECT elementos-?2 FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
-    void deleteElementoById(int id, int listaIndice, int minutos, double distancia);
+    @Query(value = "UPDATE dia SET calorias =  calorias - ?5,distancia = distancia - ?4, minutos = minutos - ?3, elementos = (SELECT elementos-?2 FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
+    void deleteElementoById(int id, int listaIndice, int minutos, double distancia, double calorias);
 
     @Modifying
     @Query(value = "UPDATE dia SET elementos = (SELECT elementos #- CAST(?2 as text[]) FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
@@ -106,4 +106,9 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     @Modifying
     @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), COALESCE(elementos #> CAST(:texto as text[]), '[]') || CAST(:subEles as jsonb), true) WHERE dia_id = :id", nativeQuery = true)
     void updateSubElementos(@Param("id") int id, @Param("texto") String texto, @Param("subEles") String subEles);
+
+    @Modifying
+
+    @Query(value = "UPDATE dia SET calorias = calorias + :calorias, distancia = :totalDistancia, elementos = jsonb_set(jsonb_set(elementos, CAST(:txtDistancia as text[]), CAST(:distancia as jsonb), false), CAST(:txtNewSubEle as text[]), CAST(:subEle as jsonb), true) WHERE dia_id = :id", nativeQuery = true)
+    void updateDiaAndSubEleEle(@Param("id") int id, @Param("calorias") double calorias, @Param("totalDistancia") double totalDistancia, @Param("txtDistancia") String txtDistancia, @Param("distancia") String distancia, @Param("txtNewSubEle") String txtNewSubEle, @Param("subEle") String subEle);
 }

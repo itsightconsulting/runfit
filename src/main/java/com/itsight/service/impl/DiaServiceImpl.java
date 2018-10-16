@@ -149,8 +149,8 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void eliminarElementoById(int id, int listaIndice, int minutos, double distancia) {
-        repository.deleteElementoById(id, listaIndice, minutos, distancia);
+    public void eliminarElementoById(int id, int listaIndice, int minutos, double distancia, double calorias) {
+        repository.deleteElementoById(id, listaIndice, minutos, distancia, calorias);
     }
 
     @Override
@@ -207,6 +207,13 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         String txtDistancia = "{"+elementoIndice+",\"distancia\""+"}";
         String txtMinutos = "{"+elementoIndice+",\"minutos\""+"}";
         repository.updateDiaAndElemento2(id, calorias, distanciaTotal, minutosTotal, txtNombre, nombre , txtDistancia, String.valueOf(distancia), txtMinutos, String.valueOf(minutos));
+    }
+
+    @Override
+    public void actualizarDiaAndSubElementoById(int id, double calorias, double distanciaDia, double distanciaEle, int elementoIndice, int subElementoIndice, String subEle) {
+        String txtDistancia = "{"+elementoIndice+",\"distancia\""+"}";
+        String txtNewSubEle = "{"+elementoIndice+",\"subElementos\""+","+subElementoIndice+"}";
+        repository.updateDiaAndSubEleEle(id, calorias, distanciaDia, txtDistancia, String.valueOf(distanciaEle), txtNewSubEle, subEle);
     }
 
     @Override

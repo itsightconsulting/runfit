@@ -260,10 +260,11 @@ public class RutinaController {
             @RequestParam String diaIndice,
             @RequestParam String elementoIndice,
             @RequestParam int minutos,
-            @RequestParam double distancia, HttpSession session){
+            @RequestParam double distancia,
+            @RequestParam double calorias, HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.eliminarElementoById(diaId, Integer.parseInt(elementoIndice), minutos, distancia);
+        diaService.eliminarElementoById(diaId, Integer.parseInt(elementoIndice), minutos, distancia, calorias);
         return ResponseCode.ELIMINACION.get();
     }
 
@@ -340,6 +341,17 @@ public class RutinaController {
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
         diaService.actualizarDiaAndElemento2ById(diaId, elemento.getCalorias(), distanciaDia, elemento.getMinutosDia(), elemento.getNombre(), elemento.getDistancia(), elemento.getMinutos(), elemento.getElementoIndice());
+        return ResponseCode.ACTUALIZACION.get();
+    }
+
+    @PutMapping(value = "/dia/actualizar3")
+    public @ResponseBody String actualizarDiaFromSubEle(
+            @RequestBody SubElemento subElemento, HttpSession session) throws JsonProcessingException{
+        double distanciaDia = subElemento.getDistanciaDia();
+        subElemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
+        int semanaId = ((int[]) session.getAttribute("semanaIds"))[subElemento.getNumeroSemana()];
+        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(subElemento.getDiaIndice());
+        diaService.actualizarDiaAndSubElementoById(diaId, subElemento.getCalorias(), distanciaDia, subElemento.getDistancia(),  subElemento.getElementoIndice(), subElemento.getSubElementoIndice(), new ObjectMapper().writeValueAsString(new SubElemento(subElemento.getNombre(), subElemento.getMediaAudio(),subElemento.getMediaVideo(), subElemento.getTipo())));
         return ResponseCode.ACTUALIZACION.get();
     }
 
