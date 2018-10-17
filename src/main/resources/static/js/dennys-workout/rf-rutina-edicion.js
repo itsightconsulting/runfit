@@ -17,6 +17,8 @@ let $tiempoActualizar = '';
 let $kmsActualizar = '';
 let $gIndex = '';
 let $tipoMedia = '';
+let $eleElegidos = [];
+let $subEleElegidos = [];
 let $eleFromMiniElegidos = [];
 let $eleListas = [];
 let $eleListasElegidos = [];
@@ -114,12 +116,15 @@ function init(){
 
 function avanzarRetrocederSemana(numSem, action){
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
-        $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
-        //Importante mantener el orden para el correcto funcionamiento
-        $rutina = new Rutina(semana.rutina);
-        $rutina.initEspecifico(semana, numSem);
+        if(semana != undefined) {
+            $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
+            //Importante mantener el orden para el correcto funcionamiento
+            $rutina = new Rutina(semana.rutina);
+            $rutina.initEspecifico(semana, numSem);
+            instanciarTooltips();
+        }
     })
-    instanciarTooltips();
+
 }
 
 async function obtenerSemanaInicialRutina(){
@@ -160,23 +165,25 @@ async function obtenerEspecificaSemana(semanaIndex, action){
             type: 'GET',
             url: _ctx + 'gestion/rutina/semana/obtener/'+semanaIndex,
             dataType: "json",
-            success: function (data, textStatus) {
-                console.log(data);
-                if (textStatus == "success") {
-                    if (data == "-9") {
-                        $.smallBox({
-                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                            timeout: 4500,
-                            color: "alert",
-                        });
+            success: function (data) {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                } else {
+                    if(data.fechaInicio == undefined) {
+                        $.smallBox({content: "<i> Usted se encuentra ya en la última semana de la rutina...</i>", timeout: 4500, color: "alert"});
+                        resolve(undefined);
                     } else {
                         //Semana
-                        if(action == 1)//Avanzar
-                            $semActual.textContent = Number($semActual.textContent.trim()) +1;
-                        else if(action == 2)//Semana elegida desde el calendario
-                            $semActual.textContent = Number(semanaIndex) +1;
+                        if (action == 1)//Avanzar
+                            $semActual.textContent = Number($semActual.textContent.trim()) + 1;
+                        else if (action == 2)//Semana elegida desde el calendario
+                            $semActual.textContent = Number(semanaIndex) + 1;
                         else
-                            $semActual.textContent = Number($semActual.textContent.trim()) -1;
+                            $semActual.textContent = Number($semActual.textContent.trim()) - 1;
                         $semanaInicial = data;
                         resolve(data);
                     }
@@ -561,7 +568,7 @@ function cargarReferenciasMiniPlantilla(e){
                     if(data != "0"){
                         let raw = '<div class="text-align-center">';
                         for(let i=0;i<data;i++){
-                            raw+=`<a href="javascript:void(0);"><span onclick="obtenerMiniPlantilla(${params.espSubCatId}, ${i});" class="badge bg-color-darken font-md mini">${i+1}</span></a>`;
+                            raw+=`<a href="javascript:void(0);"><span onclick="obtenerMiniPlantilla(${params.espSubCatId}, ${i}, ${data});" class="badge bg-color-darken font-md mini">${i+1}</span></a>`;
                         }
                         raw+= '</div>';
                         const sameLevel = e.target.parentElement;
@@ -917,7 +924,7 @@ function generandoEspecificacionesPorNiveles(generalEspSubCat){
     return htmlRaw;
 }
 
-function obtenerMiniPlantilla(subCatId, index){
+function obtenerMiniPlantilla(subCatId, index, sizeFromMainTab){
     //Sirve cuando se busca desde shortcut rutinario
     $('#modalPickRutina').modal('hide');
 
@@ -925,11 +932,17 @@ function obtenerMiniPlantilla(subCatId, index){
     let params = {};
     params.subCatId = subCatId;
     params.index = index;
-    let numAdicionales = 1;++numAdicionales;//Le sumamos uno para obviar el icono fa fa plus que se encuentra como un hijo más
-    if(document.querySelector(`#ArbolRutinario a[data-especificacion-id="${subCatId}"]`).parentElement.children[Number(index)+numAdicionales] != undefined){
-        params.subCatId+="|1";
+    if(sizeFromMainTab == undefined) {
+        let numAdicionales = 1;
+        ++numAdicionales;//Le sumamos uno para obviar el icono fa fa plus que se encuentra como un hijo más
+        if (document.querySelector(`#ArbolRutinario a[data-especificacion-id="${subCatId}"]`).parentElement.children[Number(index) + numAdicionales] != undefined)
+            params.subCatId += "|1";
+        else params.subCatId += "|0";
+
     }else{
-        params.subCatId+="|0";
+        if(sizeFromMainTab-1 == index)
+            params.subCatId += "|0";
+        else params.subCatId += "|1";
     }
     const contenidoMini = document.querySelector('#ContenidoMini');
     contenidoMini.innerHTML = spinnerHTMLRawCsMessage('Cargando...');
@@ -985,6 +998,14 @@ function copiarMiniPlantilla(){
 function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
     let input = e.target;
+    if(e.ctrlKey){
+        if(clases.contains('rf-dia-elemento-nombre')){
+            DiaOpc.seleccionarElementos(input);
+        }else if(clases.contains('rf-sub-elemento-nombre')){
+            DiaOpc.seleccionarSubElementos(input);
+        }
+    }
+
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
             input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
@@ -1279,6 +1300,7 @@ function principalesEventosClickRutina(e) {
     else if(clases.contains('pegar-mini-listas')) {
         const diaIndex = input.getAttribute('data-index');
         DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
+        DiaOpc.pegarElementosSeleccionados(diaIndex);
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
@@ -1317,7 +1339,12 @@ function principalesEventosClickRutina(e) {
 
         if($videosElegidos != undefined && typeof $videosElegidos == 'object' && $videosElegidos.length >0){
             const ixs = RutinaIx.getIxsForElemento(input);
-            RutinaElementoHTML.adjuntarSubElementos(ixs);
+            RutinaElementoHTML.adjuntarSubElementos(ixs, 1);
+        }
+
+        if($subEleElegidos != undefined && typeof $subEleElegidos == 'object' && $subEleElegidos.length >0){
+            const ixs = RutinaIx.getIxsForElemento(input);
+            RutinaElementoHTML.adjuntarSubElementos(ixs, 2);
         }
     }
 }
@@ -1466,6 +1493,7 @@ function principalesEventosFocusOutSemanario(e) {
                 SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
             }else {
                 let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+                let initEle = tempElemento;
                 let i = 0, k = 0;
                 //
                 while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
@@ -1473,7 +1501,7 @@ function principalesEventosFocusOutSemanario(e) {
 
                 while ((tempSubElemento = tempSubElemento.previousElementSibling) != null) k++;
                 RutinaSet.setSubElementoNombre(ixs.numSem, ixs.diaIndex, i, k, valor);
-                actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
+                DiaOpc.validPreActualizarFromNomSubEle2(initEle, valor, ixs, i, k);//Siempre va ser el primero por eso se deja la posicion como 0
             }
         }
     }
@@ -1763,6 +1791,7 @@ function principalesEventosTabGrupoAudios(e){
         $audiosElegidos.push([ix, media, nombreMedia]);
     }
 }
+
 function principalesEventosTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
@@ -2064,6 +2093,7 @@ function actualizarDiaCompletoBD(numSem, diaIndex){
 function actualizarDiaParcialBD(numSem, diaIndex, cantUltimos){
     let refDia = RutinaGet.dia(numSem, diaIndex);
     let params = {};
+    params.calorias = refDia.calorias;
     params.minutos = refDia.minutos;
     params.distancia = refDia.distancia;
     params.numeroSemana = numSem;

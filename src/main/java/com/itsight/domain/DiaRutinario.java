@@ -36,6 +36,9 @@ public class DiaRutinario implements Serializable {
     @Column
     private double distancia;
 
+    @Column
+    private double calorias;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private List<Elemento> elementos;

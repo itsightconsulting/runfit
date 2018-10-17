@@ -57,7 +57,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarMediaElemento(ElementoMediaDto elemento, int id);
 
-    void actualizarDiaFromPlantilla(int id,int distanciaTot, int minutosTot, String elementos);
+    void actualizarDiaFromPlantilla(int id, double calorias, double distanciaTot, int minutosTot, String elementos);
 
     void actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nota);
 
@@ -71,7 +71,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarSubElementos(int id, int elementoIndice, String subEles);
 
-    void actualizarDiaRaizDesdePlantilla(int id, int distancia, int minutos, String writeValueAsString);
+    void actualizarDiaRaizDesdePlantilla(int id, double calorias,double distancia, int minutos, String writeValueAsString);
 
     void actualizarElementosEstilosFull(String estilos, int elementoIndice, int id);
 

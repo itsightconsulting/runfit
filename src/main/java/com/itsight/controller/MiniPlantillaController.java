@@ -94,6 +94,7 @@ public class MiniPlantillaController {
         diaRutinario.setElementos(qDia.getElementos());
         diaRutinario.setMinutos(qDia.getMinutos());
         diaRutinario.setDistancia(qDia.getDistancia());
+        diaRutinario.setCalorias(qDia.getCalorias());
 
         MiniPlantilla miniPlantilla = miniPlantillaService.findByUsuarioIdAndEspecificacionSubCategoriaId(Integer.parseInt(session.getAttribute("id").toString()), Integer.parseInt(especificacionSubCategoriaId));
         List<DiaRutinarioPk> diaRutinarioPks;

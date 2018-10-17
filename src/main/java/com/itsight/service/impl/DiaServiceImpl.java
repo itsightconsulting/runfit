@@ -272,8 +272,8 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarDiaFromPlantilla(int id, int distanciaTot, int minutosTot, String elementos) {
-        repository.updateDiaFromTemplate(id, distanciaTot, minutosTot, elementos);
+    public void actualizarDiaFromPlantilla(int id, double calorias, double distanciaTot, int minutosTot, String elementos) {
+        repository.updateDiaFromTemplate(id, calorias, distanciaTot, minutosTot, elementos);
     }
 
     @Override
@@ -349,8 +349,8 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarDiaRaizDesdePlantilla(int id, int distancia, int minutos, String elementos) {
-        repository.updateDiaRootFromTemplate(id, distancia, minutos, elementos);
+    public void actualizarDiaRaizDesdePlantilla(int id, double calorias, double distancia, int minutos, String elementos) {
+        repository.updateDiaRootFromTemplate(id, calorias, distancia, minutos, elementos);
     }
 
     @Override

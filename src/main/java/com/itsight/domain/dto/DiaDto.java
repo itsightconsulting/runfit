@@ -23,7 +23,9 @@ public class DiaDto implements Serializable {
 
     private int minutos;
 
-    private int distancia;
+    private double distancia;
+
+    private double calorias;
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int numeroSemana;

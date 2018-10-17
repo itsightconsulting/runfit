@@ -50,12 +50,12 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void saveElemento(@Param("id") int id, @Param("lista") String lista);
 
     @Modifying
-    @Query(value = "UPDATE dia SET distancia = :distancia, minutos = :minutos, elementos = COALESCE(elementos, '[]') || CAST(:elementos as jsonb) WHERE dia_id = :id", nativeQuery = true)
-    void updateDiaFromTemplate(@Param("id") int id, @Param("distancia") int distancia, @Param("minutos") int minutos,@Param("elementos") String elementos);
+    @Query(value = "UPDATE dia SET calorias = :calorias, distancia = :distancia, minutos = :minutos, elementos = COALESCE(elementos, '[]') || CAST(:elementos as jsonb) WHERE dia_id = :id", nativeQuery = true)
+    void updateDiaFromTemplate(@Param("id") int id, @Param("calorias") double calorias, @Param("distancia") double distancia, @Param("minutos") int minutos,@Param("elementos") String elementos);
 
     @Modifying
-    @Query(value = "UPDATE dia SET distancia = :distancia, minutos = :minutos, elementos = CAST(:elementos as jsonb) WHERE dia_id = :id", nativeQuery = true)
-    void updateDiaRootFromTemplate(@Param("id") int id, @Param("distancia") int distancia, @Param("minutos") int minutos,@Param("elementos") String elementos);
+    @Query(value = "UPDATE dia SET calorias = :calorias, distancia = :distancia, minutos = :minutos, elementos = CAST(:elementos as jsonb) WHERE dia_id = :id", nativeQuery = true)
+    void updateDiaRootFromTemplate(@Param("id") int id, @Param("calorias") double calorias, @Param("distancia") double distancia, @Param("minutos") int minutos,@Param("elementos") String elementos);
 
     @Modifying
     @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:elemento as jsonb), true) WHERE dia__id = :id", nativeQuery = true)

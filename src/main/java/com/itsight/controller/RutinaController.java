@@ -125,8 +125,12 @@ public class RutinaController {
     public @ResponseBody Semana obtenerEspecificaSemana(@PathVariable String semanaIndice, HttpSession session) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
-            int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(semanaIndice)];
-            return semanaService.findOneWithDaysById(semanaId);
+            int[] sIds = (int[]) session.getAttribute("semanaIds");
+            int sIx = Integer.parseInt(semanaIndice);
+            if(sIx <sIds.length)
+                return semanaService.findOneWithDaysById(sIds[sIx]);
+            else
+                return new Semana();
         }else{//En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
             // desde un simple peticion get y no desde su vista de red fitness
             return new Semana();
@@ -463,7 +467,7 @@ public class RutinaController {
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(diaDto.getDiaIndice());
         diaDto.setNumeroSemana(0);
         diaDto.setDiaIndice(0);
-        diaService.actualizarDiaFromPlantilla(diaId, diaDto.getDistancia(), diaDto.getMinutos(), new ObjectMapper().writeValueAsString(diaDto.getElementos()));
+        diaService.actualizarDiaFromPlantilla(diaId, diaDto.getCalorias(), diaDto.getDistancia(), diaDto.getMinutos(), new ObjectMapper().writeValueAsString(diaDto.getElementos()));
         return ResponseCode.REGISTRO.get();
     }
 
@@ -475,7 +479,7 @@ public class RutinaController {
         diaDto.setNumeroSemana(0);
         diaDto.setDiaIndice(0);
         //Actualiza de raiz, los elementos. No tomando en consideracion los anteriores(si es que existian)
-        diaService.actualizarDiaRaizDesdePlantilla(diaId, diaDto.getDistancia(), diaDto.getMinutos(), new ObjectMapper().writeValueAsString(diaDto.getElementos()));
+        diaService.actualizarDiaRaizDesdePlantilla(diaId, diaDto.getCalorias(), diaDto.getDistancia(), diaDto.getMinutos(), new ObjectMapper().writeValueAsString(diaDto.getElementos()));
         return ResponseCode.REGISTRO.get();
     }
 
