@@ -76,4 +76,6 @@ public interface DiaService extends BaseService<Dia> {
     void actualizarElementosEstilosFull(String estilos, int elementoIndice, int id);
 
     void actualizarDiaAndSubElementoById(int id, double calorias, double distanciaDia, double distanciaEle, int elementoIndice, int subElementoIndice, String subEle);
+
+    void actualizarSemanaCompletaDesdeOtra(int semIdDesde, int semIdPara);
 }

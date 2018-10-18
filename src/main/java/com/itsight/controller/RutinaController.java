@@ -544,4 +544,12 @@ public class RutinaController {
         }
         return ResponseCode.EX_GENERIC.get();
     }
+
+    @PutMapping(value = "/semana-completa/actualizar/{semIxDesde}/{semIxPara}")
+    public @ResponseBody String actualizarSemanaCompletaDesdeOtra(@PathVariable int semIxDesde, @PathVariable int semIxPara, HttpSession session){
+        semIxDesde = ((int[]) session.getAttribute("semanaIds"))[semIxDesde];
+        semIxPara = ((int[]) session.getAttribute("semanaIds"))[semIxPara];
+        diaService.actualizarSemanaCompletaDesdeOtra(semIxDesde, semIxPara);
+        return ResponseCode.ACTUALIZACION.get();
+    }
 }

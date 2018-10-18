@@ -87,7 +87,7 @@ class Rutina {
             const val = v.elementos.length>0?undefined:'showInputsInit';//La validacion requiere un null;
             const flagDescanso = v.flagDescanso;
             rawDias +=
-                `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia" data-index="${i}" data-fecha="${v.fechaCorta()}" >            
+                `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia" data-index="${i}" data-fecha="${v.fechaCorta()}">            
 									<div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0" tabindex='${i}'>
 										<header role="heading" class="heading-dia">
 								            <span class="widget-icon"> <a href="#" rel="tooltip" data-placement="right" data-original-title="Copiar día"><i class="fa fa-calendar-o txt-color-blue copiar-dia" data-index="${i}"></i></a></span>
@@ -139,6 +139,7 @@ class Rutina {
         RutinaOpc.iniciarSemanas(this.totalSemanas);
         instanciarPopovers();
         instanciarTooltips();
+        RutinaOpc.instanciarCopiarSemanaCompleta();
         Indicadores.instanciarIndicadores1();
         Indicadores.instanciarIndicadores2();
     }
@@ -589,6 +590,35 @@ RutinaOpc = (function(){
                 e.setAttribute('aria-expanded', "false");
             });
         },
+        abrirCopiadorSemana: (input)=>{
+            input.setAttribute('data-content', RutinaOpc.bodyCopiarSemana($rutina.totalSemanas));
+            $(input).popover('show');
+        },
+        instanciarCopiarSemanaCompleta: ()=>{
+            const cs = document.querySelector('#myTabRutina #CopySemana');
+            cs.innerHTML = `<div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-copyright fa-2x txt-color-redLight copiar-full-semana" id="CopiarSemana" rel="popover" data-placement="bottom" data-content="" data-html="true"></i></a></div>`;
+        },
+        bodyCopiarSemana: (totalSemanas)=>{
+            const semActual = Number($semActual.textContent) -1;
+            let ops = "";
+            for(let i=0; i<totalSemanas;i++){
+                if(i != semActual)
+                    ops+= `<option value="${i}">Semana ${i+1}</option>`
+            }
+            return `<form style='min-width:170px'>
+                        <div style='text-align: center;'>
+                            <select style='width: 95%;padding: 5px;margin: 5px;'>${ops}</select>
+                        </div>
+                        <div class='form-actions'>
+                        <div class='row'>
+                            <div class='col-md-12'>
+                                <button class='btn btn-primary btn-sm' type='button' onclick="javascript:copiarSemanaBD(this)">
+                                    Confirmar <i class='fa fa-fw fa-check'></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>`;
+        }
     }
 })();
 
@@ -664,9 +694,10 @@ RutinaSet = (function(){
             const dia = $rutina.semanas[numSem].dias[posDia];
             dia.distancia = distanciaTotal;
             dia.calorias += calorias;
-            const subEle = dia.elementos[posEle].subElementos[posSE];
+            const ele = dia.elementos[posEle];
+            ele.distancia =  distancia;
+            const subEle = ele.subElementos[posSE];
             subEle.nombre = nombre;
-            subEle.distancia =  distancia;
         },
         subtractDiaCalorias: (numSem, diaIndex, calorias)=>{
             $rutina.semanas[numSem].dias[diaIndex].calorias -= calorias;
@@ -1226,9 +1257,9 @@ DiaOpc = (function(){
                     if(RutinaValidator.hayZFromSubEle(elemento)){
                         $.smallBox({color: "alert", content: "<i>Este elemento ya tiene especificada una carrera...</i>"});
                     }else {
-                        const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+                        const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
                         const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
-                        $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor}));
+                        $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                         elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
                         instanciarSubElementoTooltip(nSubEle);
                         instanciarSubElementoPopover(nSubEle);
@@ -1240,9 +1271,9 @@ DiaOpc = (function(){
                         DiaOpc.actualizarFromSE(elemento, nombreOZonaCardiaca, kilometraje, caloriasNuevas, posEle, posSE, ixs);
                     }
                 }else {
-                    const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+                    const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
                     const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
-                    $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor}));
+                    $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                     elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
                     instanciarSubElementoTooltip(nSubEle);
                     instanciarSubElementoPopover(nSubEle);
@@ -1255,9 +1286,9 @@ DiaOpc = (function(){
                         agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, posSE);
                 }
             }else{
-                const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, valor);
+                const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
                 const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
-                $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor}));
+                $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                 elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
                 instanciarSubElementoTooltip(nSubEle);
                 instanciarSubElementoPopover(nSubEle);
@@ -1452,7 +1483,11 @@ DiaOpc = (function(){
             if(clases.contains('rf-semanario-sels')){
                 $subEleElegidos = $subEleElegidos.filter(e=> {return !(e[0]==diaIndex && e[2]==subEleIndex)});
             }else{
-                $subEleElegidos.push([diaIndex, eleIndex, subEleIndex]);
+                const ops = e.previousElementSibling;
+                const mV = ops.querySelector('.reprod-video') != undefined ? ops.querySelector('.reprod-video').dataset.media : null;
+                const mA = ops.querySelector('.reprod-audio') != undefined ? ops.querySelector('.reprod-audio').dataset.media : null;
+                const t = e.parentElement.parentElement.dataset.type;
+                $subEleElegidos.push([diaIndex, eleIndex, subEleIndex, e.textContent.trim(), e.dataset.content, mV, mA, t]);
                 $subEleElegidos = $subEleElegidos.sort();
             }
             e.classList.toggle('rf-semanario-sels');
@@ -1979,7 +2014,7 @@ DiaFunc = (function(){
                 }else if(v.tipo == ElementoTP.COMPUESTO && v.minutos > 0) {
                     if(v.distancia>0)
                         if(RutinaValidator.esZ(v.nombre))
-                            calorias += DiaFunc.obtenerGastoCalorico(Number(v.subElementos[0].nombre.substr(1)) - 1, v.minutos);
+                            calorias += DiaFunc.obtenerGastoCalorico(Number(v.nombre.substr(1)) - 1, v.minutos);
                         else{
                             calorias += DiaFunc.obtenerGastoCalorico(Number(v.subElementos.filter(w=>{return RutinaValidator.esZ(w.nombre)})[0].nombre.substr(1)) - 1, v.minutos);
                         }
@@ -2250,28 +2285,37 @@ RutinaElementoHTML = (function(){
             instanciarElementosDiaPopover(listaDiv);
         },
         adjuntarSubElementos: (ixs, via)=>{
+            const newSubEleS = [];
+            let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            const divSubEle = elemento.querySelector('.detalle-lista');
+            divSubEle.children.length == 0 ? elemento.querySelector('.in-init-sub-ele').classList.toggle('hidden') : '';
+            let i = 0;
+            while ((elemento = elemento.previousElementSibling) != undefined) ++i;
             if(via == 1) {
-
-                let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
-                const divSubEle = elemento.querySelector('.detalle-lista');
                 const lenNuevos = $videosElegidos.length;
-                divSubEle.children.length == 0 ? elemento.querySelector('.in-init-sub-ele').classList.toggle('hidden') : '';
-                let i = 0;
-                while ((elemento = elemento.previousElementSibling) != undefined) ++i;
-                const newSubEleS = [];
                 $videosElegidos.forEach(e => {
-                    const objSubELe = {nombre: e[1], mediaVideo: e[2], tipo: TipoElemento.TEXTO};
+                    const objSubELe = {nombre: e[1], mediaVideo: e[2], tipo: TipoElemento.VIDEO};
                     newSubEleS.push(objSubELe);
                     divSubEle.appendChild(htmlStringToElement(RutinaElementoHTML.subElementoMedia(objSubELe, ixs.diaIndex, ixs.eleIndex)));
                 });
                 RutinaSet.concatSubElementos(ixs.numSem, ixs.diaIndex, (eleIndex = i), newSubEleS);
                 actualizarElementoParcialBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), lenNuevos);
                 $videosElegidos = [];
-                instanciarSubElementosTooltip(divSubEle);
-                instanciarSubElementosPopover(divSubEle);
             }else{
-                alert(1);
+                const lenNuevos = $subEleElegidos.length;
+                $subEleElegidos.forEach(e => {
+                    const objSubELe = {nombre: e[3], nota: e[4], mediaVideo: e[5], mediaAudio: e[6], tipo: e[7]};
+                    newSubEleS.push(objSubELe);
+                    divSubEle.appendChild(htmlStringToElement(RutinaElementoHTML.subElementoPaste(objSubELe, ixs.diaIndex, ixs.eleIndex)));
+                });
+                RutinaSet.concatSubElementos(ixs.numSem, ixs.diaIndex, (eleIndex = i), newSubEleS);
+                actualizarElementoParcialBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), lenNuevos);
+                document.querySelectorAll('#RutinaSemana .rf-sub-elemento-nombre').forEach(v=>{v.classList.remove('rf-semanario-sels');});
+                $subEleElegidos = [];
             }
+
+            instanciarSubElementosTooltip(divSubEle);
+            instanciarSubElementosPopover(divSubEle);
         },
         elementoSimple:(ele, posDia, posEle)=>{
             const ess = RutinaEditor.obtenerEstilos(ele.estilos);
@@ -2420,7 +2464,7 @@ RutinaElementoHTML = (function(){
             subElementos.forEach(sEle=>{
                 let ix = ++indexGlobal;
                 subElementosHTML += `
-                    <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="1">
+                    <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
                        <div class="col-md-12">
                            <span class="pull-left">
                                 ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
@@ -2436,10 +2480,26 @@ RutinaElementoHTML = (function(){
             });
             return subElementosHTML;
         },
+        subElementoPaste: (sEle, diaIndex, eleIndex)=>{
+            let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
+            let ix = ++indexGlobal;
+                    return `<li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
+                               <div class="col-md-12">
+                                   <span class="pull-left">
+                                        ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
+                                        ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
+                                        <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                                        <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
+                                   </span>
+                                   <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
+                                   ${RutinaElementoHTML.iconoNota(sEle.nota)}
+                               </div>																			
+                            </li>`;
+        },
         subElementoMedia: (sEle, diaIndex, eleIndex)=>{
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-            return `<li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="1">
+            return `<li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
                        <div class="col-md-12">
                            <span class="pull-left">
                                 ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}

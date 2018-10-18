@@ -736,8 +736,29 @@ async function instanciarPorcentajesKilometraje(distancia){
     })
 }
 
+function copiarSemanaBD(e){
+    const sA = Number($semActual.textContent) - 1;
+    const sP = Number(e.parentElement.parentElement.parentElement.parentElement.children[0].children[0].value);
+    e.setAttribute('disabled', 'disabled');
+    $.ajax({
+        type: 'PUT',
+        contentType: "application/json",
+        url: _ctx + 'gestion/rutina/semana-completa/actualizar/'+sA+'/'+sP,
+        dataType: "json",
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+            if(data == "-2") $.smallBox({content: "<i>La semana ha sido copiada correctamente</i>"});
+            setTimeout(()=>{e.removeAttribute('disabled', 'disabled')}, 1000)
+        },
+        error: function (xhr) {
+            setTimeout(()=>{e.removeAttribute('disabled', 'disabled')}, 1000)
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
 function actualizarPorcentajesKilometrajeBD(porcentajes){
-    console.log(porcentajes);
     $.ajax({
         type: 'PUT',
         contentType: "application/json",
@@ -1025,10 +1046,10 @@ function principalesEventosClickRutina(e) {
             clases.toggle('hidden');
             const obj = {};
             obj.nombre = $mediaNombre;
-            $tipoMedia == TipoElemento.AUDIO?obj.mediaAudio = $mediaAudio:obj.mediaVideo = $mediaVideo;
-            obj.tipo = 3;
+            $tipoMedia == TipoElemento.AUDIO?obj.mediaAudio = $mediaAudio : obj.mediaVideo = $mediaVideo;
+            obj.tipo = $tipoMedia;
             let ixs = RutinaIx.getIxsForSubElemento(input);
-            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoSubElemento.TEXTO, obj.nombre);
+            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, $tipoMedia, obj.nombre);
             ixs.subEleIndex = nuevoIx;
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let nSubEle = tempElemento.querySelector(`li[data-index="${nuevoIx}"]`);
@@ -1327,7 +1348,7 @@ function principalesEventosClickRutina(e) {
             let i = 0, k=0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
             while((tempSubEle = tempSubEle.previousElementSibling))k++;
-            const nuevoIx = RutinaSeccion.newSubElementoPosEspecifica(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor, 'afterend', initTempSubEleRef);
+            const nuevoIx = RutinaSeccion.newSubElementoPosEspecifica(ixs.diaIndex, ixs.eleIndex, validUUID($mediaAudio) ? TipoElemento.AUDIO : TipoElemento.VIDEO, valor, 'afterend', initTempSubEleRef);
             ixs.subEleIndex = nuevoIx;
             SubEleOpc.agregarMediaSubElemento(ixs, RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.rf-sub-elemento-nombre'), i, k);
             initTempSubEleRef.remove();
@@ -1588,7 +1609,12 @@ function principalEventoFocusIn(e){
 function principalesEventosTabRutina(e){
     const input = e.target;
     const clases = input.classList;
-    if(clases.contains('numero-semana')){
+
+    if(clases.contains('copiar-full-semana')) {
+        e.preventDefault();
+        RutinaOpc.abrirCopiadorSemana(input);
+    }
+    else if(clases.contains('numero-semana')){
         e.preventDefault();
         const index = e.target.getAttribute('data-index');
         avanzarRetrocederSemana(Number(index));
@@ -1954,7 +1980,7 @@ function actualizarSubElementoStrategyBD(numSem, diaIndex, eleIndex, subEleIndex
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;
     params.subElementoIndice = subEleIndex;
-    params.tipo = 3;
+    params.tipo = tipoMedia;
     params.tipoMedia = tipoMedia;
 
     $.ajax({
@@ -2476,7 +2502,6 @@ function modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso){
 function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     let ele = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
     let params = {};
-    console.log(ele.estilos);
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;
@@ -2529,6 +2554,7 @@ function principalesAlCambiarTab(e){
         e.preventDefault();
         document.querySelector('#OpsAdic').classList.add('hidden');
         $videosElegidos = [];
+        $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
         if (document.querySelector('#ArbolGrupoVideo').children.length == 0)
             instanciarGrupoVideos();

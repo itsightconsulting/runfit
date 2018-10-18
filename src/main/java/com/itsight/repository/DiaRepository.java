@@ -108,7 +108,10 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void updateSubElementos(@Param("id") int id, @Param("texto") String texto, @Param("subEles") String subEles);
 
     @Modifying
-
     @Query(value = "UPDATE dia SET calorias = calorias + :calorias, distancia = :totalDistancia, elementos = jsonb_set(jsonb_set(elementos, CAST(:txtDistancia as text[]), CAST(:distancia as jsonb), false), CAST(:txtNewSubEle as text[]), CAST(:subEle as jsonb), true) WHERE dia_id = :id", nativeQuery = true)
     void updateDiaAndSubEleEle(@Param("id") int id, @Param("calorias") double calorias, @Param("totalDistancia") double totalDistancia, @Param("txtDistancia") String txtDistancia, @Param("distancia") String distancia, @Param("txtNewSubEle") String txtNewSubEle, @Param("subEle") String subEle);
+
+    @Modifying
+    @Query(value = "WITH SA AS(select calorias, distancia, elementos, literal, flag_descanso, minutos FROM dia WHERE semana_id = ?1) UPDATE dia SET calorias = sa.calorias,distancia = sa.distancia,elementos = sa.elementos,flag_descanso = sa.flag_descanso,minutos = sa.minutos FROM SA WHERE dia.semana_id= ?2 AND SA.literal=dia.literal", nativeQuery = true)
+    void updateSemanaFromAnother(int semIdDesde, int semIdPara);
 }

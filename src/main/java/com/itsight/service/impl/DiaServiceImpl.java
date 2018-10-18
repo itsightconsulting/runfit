@@ -338,8 +338,8 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
 
         String textoNombre = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\"nombre\"}";
         String textoMedia = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\""+entryTipo+"\"}";
-
-        repository.updateEspecificasColumnasJsonBGenericoByQueriesTextAndId2(id, textoNombre, subEle.getNombre(), textoMedia, entryMedia);
+        String textoTipo = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\"tipo\"}";
+        repository.updateEspecificasColumnasJsonBGenericoByQueriesTextAndId(id, textoNombre, subEle.getNombre(), textoMedia, entryMedia, textoTipo, String.valueOf(subEle.getTipo()));
     }
 
     @Override
@@ -357,5 +357,10 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     public void actualizarElementosEstilosFull(String estilos, int elementoIndice, int id) {
         String texto = "{"+elementoIndice+",\"estilos\""+"}";
         repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndIdInt(id, estilos, texto);
+    }
+
+    @Override
+    public void actualizarSemanaCompletaDesdeOtra(int semIdDesde, int semIdPara) {
+        repository.updateSemanaFromAnother(semIdDesde, semIdPara);
     }
 }

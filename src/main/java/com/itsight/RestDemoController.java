@@ -1,24 +1,12 @@
 package com.itsight;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.itsight.domain.*;
-import com.itsight.repository.AudioRepository;
-import com.itsight.repository.UsuarioRepository;
-import com.itsight.repository.specifications.UsuarioSpecificationBuilder;
-import com.itsight.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/rest")
 public class RestDemoController {
-
+/*
     @Autowired
     private ProductoPresentacionService proPresentacionService;
 
@@ -41,16 +29,10 @@ public class RestDemoController {
     private UsuarioFitnessService usuarioFitnessService;
 
     @Autowired
-    private RutinaService rutinaService;
-
-    @Autowired
-    private SemanaService semanaService;
-
-    @Autowired
     private DiaService diaService;
 
     @Autowired
-    private RedFitnessService redFitnessService;
+    private SemanaService semanaService;
 
     @Autowired
     private PorcentajesKilometrajeService porcentajesKilometrajeService;
@@ -81,8 +63,8 @@ public class RestDemoController {
     @GetMapping("/padre-hijo")
     public List<TipoAudio> getTA() throws JsonProcessingException {
         //return audioRepository.findAll();
-       /* UsuarioSpecification spec =
-                new UsuarioSpecification(new SearchCriteria("nombres", ":", "Peter"));*/
+       *//* UsuarioSpecification spec =
+                new UsuarioSpecification(new SearchCriteria("nombres", ":", "Peter"));*//*
 
         UsuarioSpecificationBuilder builder = new UsuarioSpecificationBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\"([^\"]+)\")");
@@ -117,15 +99,6 @@ public class RestDemoController {
         return tipoAudioService.findAllWithChildrens();
     }
 
-    @GetMapping("/rutina/{id}")
-    public Rutina obtenerRutinaConSoloUnaSemana(@PathVariable int id){
-        Rutina r = rutinaService.findOne(id);
-        r.setFechaFin(new Date());
-        r.setTotalSemanas(200);
-        rutinaService.update(r);
-        return rutinaService.findOne(id);
-    }
-
     @GetMapping("/semana/{id}")
     public Semana obtenerSemanaRutina(){
         return semanaService.findOneWithDaysById(1);
@@ -149,6 +122,5 @@ public class RestDemoController {
     @GetMapping(value = "/porcentajes/kilometro")
     public @ResponseBody List<PorcentajesKilometraje> obtenerPorceKiloByTrainerId(HttpSession session) {
         return porcentajesKilometrajeService.findAllByUsuarioId((int) session.getAttribute("id"));
-    }
-
+    }*/
 }
