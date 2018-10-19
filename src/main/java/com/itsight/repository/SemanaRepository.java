@@ -17,4 +17,9 @@ public interface SemanaRepository extends JpaRepository<Semana, Integer> {
 
     @Query("SELECT DISTINCT S FROM Semana S LEFT JOIN FETCH S.lstDia D LEFT JOIN FETCH S.rutina R WHERE S.id=?1")
     Semana findOneWithDays(int id);
+
+    @Query("SELECT DISTINCT S FROM Semana S LEFT JOIN FETCH S.lstDia D WHERE S.rutina.id=?1")
+    List<Semana> findByRutinaIdOrderByIdDesc(int idrutina);
+
+
 }

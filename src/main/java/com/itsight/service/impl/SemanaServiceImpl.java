@@ -104,4 +104,9 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     public Semana findOneWithDaysById(int id) {
         return repository.findOneWithDays(id);
     }
+
+    @Override
+    public List<Semana> findByRutinaIdOrderByIdDesc(int idrutina) {
+        return repository.findByRutinaIdOrderByIdDesc(idrutina);
+    }
 }

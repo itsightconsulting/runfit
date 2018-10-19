@@ -33,4 +33,11 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
     @Query("SELECT R.redFitness.id FROM Rutina R WHERE R.id = ?1")
     int findRedFitnessIdById(int rutinaId);
+
+
+    @EntityGraph(value = "rutina")
+    @Query("SELECT R FROM Rutina R LEFT JOIN FETCH R.lstSemana D where R.usuario.id =?1")
+    List<Rutina> findByUsuarioId(int id);
+
+
 }

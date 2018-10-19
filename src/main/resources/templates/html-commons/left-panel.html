@@ -135,7 +135,7 @@
                                         class="menu-item-parent"> Planes</span></a>
                             </li>
                             <li>
-                                <a th:href="@{/portal/usuario}" title="Facturación Mensual"><i class="fa fa-area-chart txt-color-blueLight"></i><span
+                                <a th:href="@{/portal/facturacion}" title="Facturación Mensual"><i class="fa fa-area-chart txt-color-blueLight"></i><span
                                         class="menu-item-parent"> Facturación Mensual</span></a>
                             </li>
 
@@ -168,6 +168,15 @@
                     </li>
                     <li>
                         <a th:href="@{/gestion/usuario/micuenta}" title="Mi Cuenta"><i class="fa fa-user"></i><span class="menu-item-parent"> Mi Cuenta</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class="top-menu-invisible">
+                <a href="#" title="GestionCliente"><i class="fa fa-lg fa-fw fa-user txt-color-redLight"></i> <span
+                        class="menu-item-parent">Clientes</span></a>
+                <ul>
+                    <li>
+                        <a th:href="@{/cliente/}" title="Principal"><i class="fa fa-lg fa-fw fa-odnoklassniki"></i><span class="menu-item-parent"> Principal</span></a>
                     </li>
                 </ul>
             </li>

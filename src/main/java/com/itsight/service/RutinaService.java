@@ -18,4 +18,9 @@ public interface RutinaService extends BaseService<Rutina> {
     void updateTotalSemanas(int id, int totalSemanas);
 
     int obtenerRedFitnessIdById(int rutinaId);
+
+    List<Rutina> getAllRutinasByUser(int id);
+
+
 }
+

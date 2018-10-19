@@ -25,11 +25,11 @@
             border-radius: 3%;
         }
 
-        .padding-top-8{
+        .padding-top-8 {
             padding-top: 8px;
         }
 
-        #ArbolRutinario .text-warning{
+        #ArbolRutinario .text-warning {
             color: #ecdf3b !important;
         }
 
@@ -64,11 +64,11 @@
             padding: 0px;
         }
 
-        #scrollRutina{
+        #scrollRutina {
             padding: 10px 0px;
         }
 
-        #myTabRutina{
+        #myTabRutina {
             padding: 10px 0px;
         }
 
@@ -94,7 +94,8 @@
             font-size: 12px;
         }
 
-        .dd-list {}
+        .dd-list {
+        }
 
         .dd-item {
             line-height: 12px;
@@ -106,66 +107,66 @@
             color: #333 !important;
         }
 
-        .linea{
+        .linea {
             border-bottom: dashed 1px #d6e5ec;
         }
 
-        .rut-ce-separador{
-             border: 3px solid #baf3c6;
-             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        .rut-ce-separador {
+            border: 3px solid #baf3c6;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        .popover-title{
+        .popover-title {
             background: #2C3742 !important;
         }
 
-        .numero-semana:hover{
+        .numero-semana:hover {
             background: skyblue !important;
             font-weight: bold;
         }
 
-        .mini{
+        .mini {
             padding: 0px 5px;
             margin: 0px 3px;
         }
 
-        .mini:hover{
+        .mini:hover {
             background: #89AD45 !important;
         }
 
-        .elegido{
-            background-color:#46b9ca !important;
+        .elegido {
+            background-color: #46b9ca !important;
         }
 
-        .lvl-1{
+        .lvl-1 {
             color: #d4ecd4;
         }
 
-        .lvl-2{
+        .lvl-2 {
             color: #8ee68e;
         }
 
-        .lvl-3{
+        .lvl-3 {
             color: #60e660;
         }
 
-        .rf-dia{
-            padding:0px !important;
+        .rf-dia {
+            padding: 0px !important;
         }
 
-        .rf-dia-off{
-            padding:0px !important;
+        .rf-dia-off {
+            padding: 0px !important;
         }
 
-        .padding-0{
-            padding:0px !important;
+        .padding-0 {
+            padding: 0px !important;
         }
 
-        .panel-body{
-            padding:3px !important;
+        .panel-body {
+            padding: 3px !important;
         }
 
-        .txt-color-greenIn{
+        .txt-color-greenIn {
             color: #34ad34 !important;
         }
 
@@ -253,15 +254,28 @@
                                             <span class="label label-primary" id="MesAnio"></span>
                                         </div>
                                         <div class="widget-toolbar">
-                                            <span class="label label-success retroceder-semana" rel="tooltip" data-placement="top" data-original-title="Retroceder una semana"><i class="fa fa-chevron-left retroceder-semana"></i></span>
-                                            <span class="label label-success adelantar-semana" rel="tooltip" data-placement="top" data-original-title="Adelantar una semana"><i class="fa fa-chevron-right adelantar-semana"></i></span>
+                                            <span class="label label-success retroceder-semana" rel="tooltip"
+                                                  data-placement="top" data-original-title="Retroceder una semana"><i
+                                                    class="fa fa-chevron-left retroceder-semana"></i></span>
+                                            <span class="label label-success adelantar-semana" rel="tooltip"
+                                                  data-placement="top" data-original-title="Adelantar una semana"><i
+                                                    class="fa fa-chevron-right adelantar-semana"></i></span>
                                         </div>
                                         <div class="widget-toolbar">
-                                            <a href="#" class="label label-warning" id="Semanas" data-html="true" data-original-title="" data-content="Demo" data-placement="bottom" rel="popover"><span class="label label-warning">Semana <span id="SemanaActual">1</span></span></a>
+                                            <a href="#" class="label label-warning" id="Semanas" data-html="true"
+                                               data-original-title="" data-content="Demo" data-placement="bottom"
+                                               rel="popover"><span class="label label-warning">Semana <span
+                                                    id="SemanaActual">1</span></span></a>
                                         </div>
                                         <div class="widget-toolbar">
-                                            <span class="label label-primary" onclick="moverAInicio();" rel="tooltip" data-placement="top" data-original-title="Mover hasta el primer día de este semana"><i class="fa fa-mail-reply"></i></span>
-                                            <span class="label label-primary" onclick="moverAFinal();" rel="tooltip" data-placement="top" data-original-title="Mover hasta el último dia de este semana"><i class="fa fa-mail-forward"></i></span>
+                                            <span class="label label-primary" onclick="moverAInicio();" rel="tooltip"
+                                                  data-placement="top"
+                                                  data-original-title="Mover hasta el primer día de este semana"><i
+                                                    class="fa fa-mail-reply"></i></span>
+                                            <span class="label label-primary" onclick="moverAFinal();" rel="tooltip"
+                                                  data-placement="top"
+                                                  data-original-title="Mover hasta el último dia de este semana"><i
+                                                    class="fa fa-mail-forward"></i></span>
                                         </div>
                                     </header>
                                     <div class="row" hidden="hidden">
@@ -470,10 +484,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="padding-bottom-10 col col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                                                    <img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}" style="max-width: 100%" height="100px" />
+                                                    <img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}"
+                                                         style="max-width: 100%" height="100px"/>
                                                     <h6 class="font-lg" th:text="${c.nombre}"></h6>
-                                                    <ul style="padding-left:20px" th:each="sb : ${c.lstSubCategoriaEjercicio}">
-                                                        <li class="font-md"><a class="sub-categoria" href="javascript:void();" th:attr="data-id=${sb.id}" th:text="${sb.nombre}"></a></li>
+                                                    <ul style="padding-left:20px"
+                                                        th:each="sb : ${c.lstSubCategoriaEjercicio}">
+                                                        <li class="font-md"><a class="sub-categoria"
+                                                                               href="javascript:void();"
+                                                                               th:attr="data-id=${sb.id}"
+                                                                               th:text="${sb.nombre}"></a></li>
                                                     </ul>
                                                 </div>
                                             </th:block>
@@ -486,7 +505,9 @@
                                         <!-- CONTENIDO DEL ARBOL -->
                                     </section>
                                 </fieldset>
-                                <a onclick="topFunction()" rel="tooltip" id="myBtn" data-placement="top" data-original-title="Subir" class="txt-color-blueLight"><i class="fa swing animated fa-arrow-up fa-2x"></i></a>
+                                <a onclick="topFunction()" rel="tooltip" id="myBtn" data-placement="top"
+                                   data-original-title="Subir" class="txt-color-blueLight"><i
+                                        class="fa swing animated fa-arrow-up fa-2x"></i></a>
                             </div>
                             <div class="tab-pane fade in" id="tabGrupoAudios">
                                 <fieldset>
@@ -500,8 +521,16 @@
                                                 <div class="padding-bottom-10 col col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                                     <!--<img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}" style="max-width: 100%" height="100px" />-->
                                                     <h6 class="font-lg" th:text="${ta.nombre}"></h6>
-                                                    <ul style="padding-left:20px;list-style-type: none;" th:each="a : ${ta.lstAudio}">
-                                                        <li class="font-md"><a class="elegir-audio" href="javascript:void(0);" th:inline="text"><i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-music fa-fw" th:attr="data-media=${a.rutaWeb}"></i>[[${a.nombre}]]</a></li>
+                                                    <ul style="padding-left:20px;list-style-type: none;"
+                                                        th:each="a : ${ta.lstAudio}">
+                                                        <li class="font-md"><a class="elegir-audio"
+                                                                               href="javascript:void(0);"
+                                                                               th:inline="text"><i
+                                                                data-placement="bottom" rel="tooltip"
+                                                                data-original-title="Reproducir"
+                                                                class="reprod-audio fa fa-music fa-fw"
+                                                                th:attr="data-media=${a.rutaWeb}"></i>[[${a.nombre}]]</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </th:block>
@@ -514,10 +543,13 @@
                                         <!-- CONTENIDO DEL ARBOL -->
                                     </section>
                                 </fieldset>
-                                <a onclick="topFunction()" rel="tooltip" id="myBtn" data-placement="top" data-original-title="Subir" class="txt-color-blueLight"><i class="fa swing animated fa-arrow-up fa-2x"></i></a>
+                                <a onclick="topFunction()" rel="tooltip" id="myBtn" data-placement="top"
+                                   data-original-title="Subir" class="txt-color-blueLight"><i
+                                        class="fa swing animated fa-arrow-up fa-2x"></i></a>
                             </div>
                             <footer>
-                                <a href="#" id="btnGuardar" class="hidden pull-right btn btn-primary margin-right-13 margin-bottom-10">Guardar</a>
+                                <a href="#" id="btnGuardar"
+                                   class="hidden pull-right btn btn-primary margin-right-13 margin-bottom-10">Guardar</a>
                             </footer>
                         </div>
                     </div>
@@ -673,15 +705,18 @@
     <div class="modal-dialog modal-sm">
         <div class="">
             <form class="smart-form" id="frm_cambios">
-                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Guardar Mini Plantilla</h6>
+                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Guardar Mini
+                    Plantilla</h6>
                 <fieldset>
                     <section class="">
                         <label class="label">Sub Categoría:</label>
                         <label class="input">
                             <select style="width:100%" class="select2 form-control" id="SubCategoriaId">
-                                <option value="" disabled="disabled" selected="selected"> -- Seleccione -- </option>
+                                <option value="" disabled="disabled" selected="selected"> -- Seleccione --</option>
                                 <optgroup th:each="c: ${lstCategoriaEjercicio}" th:label="${c.nombre}">
-                                    <option th:each="sb : ${c.lstSubCategoriaEjercicio}" th:value="${sb.id}" th:text="${sb.nombre}">Alaska</option>
+                                    <option th:each="sb : ${c.lstSubCategoriaEjercicio}" th:value="${sb.id}"
+                                            th:text="${sb.nombre}">Alaska
+                                    </option>
                                 </optgroup>
                             </select>
                         </label>
@@ -689,7 +724,7 @@
                     <section class="">
                         <label class="label">Especificación Sub Categoría:</label>
                         <select style="width:100%" class="form-control" id="EspecificacionSubCategoriaId">
-                            <option value="" disabled="disabled" selected="selected"> -- Seleccione -- </option>
+                            <option value="" disabled="disabled" selected="selected"> -- Seleccione --</option>
                         </select>
                     </section>
                     <section id="spRaw">
@@ -717,7 +752,8 @@
                     </section>
                 </fieldset>
                 <footer>
-                    <a id="btnCopiarMini" href="javascript:void(0);" class="btn btn-primary"><i class="fa fa-paste fa-fw"></i>Copiar</a>
+                    <a id="btnCopiarMini" href="javascript:void(0);" class="btn btn-primary"><i
+                            class="fa fa-paste fa-fw"></i>Copiar</a>
                 </footer>
             </form>
         </div>
@@ -730,7 +766,8 @@
     <div class="modal-dialog modal-sm">
         <div class="">
             <form class="smart-form">
-                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Guardar Mini Plantilla</h6>
+                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Guardar Mini
+                    Plantilla</h6>
                 <fieldset>
                     <section class="">
                         <label class="label">Sub Categoría:</label>
@@ -752,12 +789,15 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <button type="button" class="close" data-dismiss="modal" title="Close"><span
+                        class="glyphicon glyphicon-remove"></span></button>
                 <h4 class="modal-title text-align-center"><strong>Nueva Mini Plantilla</strong></h4>
             </div>
             <div class="modal-body">
                 <div class="smart-form">
-                        <label class="input"><i class="icon-append fa fa-asterisk"></i><input id="NombreListaMini" type="text" placeholder="Ingrese nombre de lista"/></label>
+                    <label class="input"><i class="icon-append fa fa-asterisk"></i><input id="NombreListaMini"
+                                                                                          type="text"
+                                                                                          placeholder="Ingrese nombre de lista"/></label>
                 </div>
                 <div id="MiniPlantilla" class="form-group">
                     <!-- CONTENIDO DE LA MINI PLANTILLA -->
@@ -765,7 +805,8 @@
                 <div id="spRaw3" class="form-group">
                 </div>
                 <div>
-                    <a id="btnMiniPlantilla" type="submit" class="click btn btn-primary" style="width: 100%; !important">Guardar</a>
+                    <a id="btnMiniPlantilla" type="submit" class="click btn btn-primary"
+                       style="width: 100%; !important">Guardar</a>
                 </div>
             </div>
         </div>
@@ -825,7 +866,7 @@ you can add as many as you like
 <script th:src="@{/js/dennys-workout/rf-rutinario.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-        pageSetUp();
+    pageSetUp();
     /*]]>*/
 </script>
 
