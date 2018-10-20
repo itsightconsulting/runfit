@@ -31,6 +31,12 @@ function principalesEventosCalendario(e) {
             qFecha = getFechaFinSemanaEspecifica(semIxRef);
         }
         abrirCalendario(getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
+    } else if(clases.contains('fechas-calendar')){
+        const mes = input.getAttribute('data-mes');
+        const day = input.getAttribute('data-dia');
+        if(mes != null && day != null) {
+            getDayOfWeek(day, (parseInt(mes)-1));
+        }
     }
 }
 
@@ -38,6 +44,8 @@ function _init() {
     var aniomesActual = getFechaInicioSemanaEdicion();
     semanasIxs = getCalendarioSemanaIxs(aniomesActual.anio,aniomesActual.mes);
     abrirCalendario(semanasIxs,false,aniomesActual.mes);
+    var diasemanaactual = new Date().getUTCDate();
+    mostrarSemana(semanaEncontrada,0,diasemanaactual)
 }
 
 function getFechaInicioSemanaEdicion(){
@@ -127,7 +135,7 @@ function abrirCalendario(semanasIxs,edicion,mes) {
         if(semanasIxs[0] == 0){
             for(let x=0; x < v; x++){
                 if(d>= min && d<=max) {
-                    calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar text-align-center" data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                    calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar text-align-center" data-mes data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                 }else{
                     calendarBody+=`<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini txt-color-grayDark text-align-center">${d++}</div>`;
                 }
@@ -138,7 +146,7 @@ function abrirCalendario(semanasIxs,edicion,mes) {
         }else if(semanasIxs[semanasIxs.length-1] == $rutina.totalSemanas-1) {
             for(let x=0; x < v; x++) {
                 if (d <= max) {
-                    calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-align-center" data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                    calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-align-center" data-mes data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                 } else {
                     calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark text-align-center" data-index="${i}">${d++}</div>`;
                 }
@@ -147,7 +155,7 @@ function abrirCalendario(semanasIxs,edicion,mes) {
         //Los meses intermedios o full
         else{
             for (let x = 0; x < v; x++) {
-                calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-align-center" data-dia="${d}" data-index="${i}">
+                calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-align-center" data-mes data-dia="${d}" data-index="${i}">
                                             ${d++}
                                             <i class="fa fa-circle event-calendar"></i>
                                          </div>`;
@@ -197,13 +205,17 @@ function abrirCalendario(semanasIxs,edicion,mes) {
         }, 100);
     }
 
-    pintarDiaHoyCalendar(anioFechaReferencial, mesFechaReferencial, max);
+    //setTimeout(() => {
+    //    pintarDiaHoyCalendar(anioFechaReferencial, mesFechaReferencial, max);
+    //}, 2150);
 }
 
 function reconstruirCalendario(dias, anio, mesInt, mesString){
     const mesFechaInicio = $rutina.fechaInicio.getMonth(), anioFi = $rutina.fechaInicio.getFullYear();
     const mesFechaFin = $rutina.fechaFin.getMonth(), anioFf = $rutina.fechaFin.getFullYear();
     let classFini = "", classFfin = "";
+
+    dias = dias.replaceAll('data-mes', 'data-mes="'+(mesInt+1)+'"');
 
     //Para la ocultación de las opciones de adelanto y atras en 1 mes del calendario
     if(mesInt == mesFechaInicio && mesInt == mesFechaFin && anio == anioFi && anio == anioFf ){
@@ -332,11 +344,22 @@ function getFechaFinSemanaEspecifica(semIx) {
     const objSem = $rutina.semanas[semIx].fechaInicio;
     return {fechaInicio: objSem, anio: objSem.getFullYear(), mes: objSem.getMonth()}
 }
+
 function pintarDiaHoyCalendar (anio, mes, max){
     const hoy = new Date();
     if(hoy.getMonth() == mes && hoy.getFullYear() == anio && hoy.getDate()<=max){
         setTimeout(() => {
-            $('div[data-dia ="'+hoy.getDate()+'"]').addClass('its-calendar-hoy');
-        }, 110);
+            //$('div[data-dia ="'+hoy.getDate()+'"]').addClass('its-calendar-hoy');
+            document.querySelector('#CalendarioRf').nextElementSibling.querySelector(`.its-calendar div[data-dia="${hoy.getDate()}"]`).classList.add('its-calendar-hoy');
+        }, 100);
     }
 }
+
+
+
+
+
+
+
+
+

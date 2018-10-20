@@ -345,6 +345,7 @@
 
         .padding-0{
             padding:0px !important;
+            border-radius: 0 0 22px 22px !important;
         }
 
         .header-visor-dia{
@@ -611,7 +612,7 @@
             border-left : 0px;
         }
     </style>
-<style>
+    <style>
     .span-dia{
         margin-top: 8px !important;
         position: absolute;
@@ -626,22 +627,28 @@
 
     .label-dia{
         font-size: 60px !important;
+        line-height: 1;
     }
 
     .section-dia{
         text-align: center;
-        width: 10%;
+        width: 9%;
+        margin: 0.5%;
     }
 
     .section-dia-gray{
         text-align: center;
-        width: 10%;
+        width: 9%;
+        margin: 0.5%;
         color: grey;
     }
 
     .section-dia-back{
         background-color: #99FFCC;
-        border-radius: 10px;
+        border-radius: 22px;
+        -webkit-box-shadow: 12px 4px 5px -9px  rgba(0,0,0,0.75);
+        -moz-box-shadow: 12px 4px 5px -9px  rgba(0,0,0,0.75);
+        box-shadow: 12px 4px 5px -9px  rgba(0,0,0,0.75);
     }
     .mano-a{
         cursor: pointer !important;
@@ -665,7 +672,7 @@
         width: 25%;
         position: absolute;
         text-align: center;
-        top: 18%;
+        top: 3%;
         left: 73%;
     }
 
@@ -677,9 +684,17 @@
         cursor: pointer;
     }
 
-    .widget-toolbar{
+    .widget-toolbar-2{
         float: left;
         padding: 0 28px;
+        display: inline-block;
+        width: auto;
+        height: 32px;
+        line-height: 32px;
+        position: relative;
+        cursor: pointer;
+        text-align: center;
+        font-size: 16px;
     }
 
     .borderless-boton{
@@ -690,7 +705,18 @@
         border: 1px solid grey;
         border-radius: 3px;
     }
+    .a-sinclick{
+        color: grey;
+        cursor: pointer;
+    }
+    .heading-dia{
+        border-radius: 22px 22px 0 0;
+    }
+    .label-success{
+        margin-left: 10px;
+    }
 </style>
+
 </head>
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">
 
@@ -710,17 +736,22 @@
         <fieldset>
             <div class="space-right td-table">
                 <div class="row">
-                    <div class="widget-toolbar borderless">
+                    <div class="widget-toolbar-2 borderless">
                         <span class="label label-primary bg-green-rf" id="MesAnio"></span>
                     </div>
-                    <div id="myTabRutina" class="widget-toolbar borderless borderless-boton">
-                        <span class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana" aria-describedby="tooltip618524"><i class="fa fa-chevron-left retroceder-semana"></i></span>
-                        <span class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana"><i class="fa fa-chevron-right adelantar-semana"></i></span>
-                        <span class="label label-success adelantar-semana bg-black-rf" rel="tooltip" data-placement="bottom" >Hoy</span>
+                    <div id="myTabRutina" class="widget-toolbar-2 borderless borderless-boton">
+                        <span class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana" aria-describedby="tooltip618524">
+                            <a href="javascript:IrSemanaAnterior();"><i class="fa fa-chevron-left retroceder-semana"></i></a>
+                        </span>
+                        <span class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana">
+                            <a href="javascript:IrSemanaSiguiente();"><i class="fa fa-chevron-right adelantar-semana"></i></a>
+                        </span>
+                        <span class="label label-success hoy-semana bg-black-rf" rel="tooltip" data-placement="bottom" >
+                            <a style="color: #fff;" href="javascript:IrSemanaDiaHoy();">Hoy</a></span>
                         <a style="font-size: 20px;margin-left: 30px;" href="javascript:void(0);"><i id="CalendarioRf" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-calendar abrir-calendario" data-original-title="" title=""></i></a>
 
                     </div>
-                    <div class="widget-toolbar borderless">
+                    <div class="widget-toolbar-2 borderless">
                         <span class="label label-primary bg-black-rf" >Semana <span id="SemanaActual"></span></span>
                     </div>
                 </div>
@@ -761,13 +792,14 @@
                     </tr>
                 </table>
             </div>
-            <div>
+            <div style="margin: 4%;">
                 <div class="row padding-0" id="scrollRutina">
                     <div class="of_carousel" id="RutinaSemana">
                         <!-- D I A S  D E  S E M A N A -->
                     </div>
                 </div>
             </div>
+
         </fieldset>
     </div>
     <!-- END MAIN CONTENT -->
@@ -786,6 +818,7 @@
 <!--<script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>-->
 <script th:src="@{/js/cliente-principal.js}+'?'+${version}"></script>
 <script th:src="@{/js/calendarioRutina.js}+'?'+${version}"></script>
+<script th:src="@{/js/diaSemanaRutina.js}+'?'+${version}"></script>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -794,6 +827,7 @@
     var color_array = ['#7CA69E', '#F2594A', '#F28C4B', '#7E6F6A', '#36AFB2', '#9c6db2', '#d24a67', '#89a958', '#00739a', '#BDBDBD'];
 
 
+    $('[data-toggle="popover"]').popover();
 
 </script>
 </body>
