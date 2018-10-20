@@ -91,6 +91,9 @@ public class Rutina extends AuditingEntity {
     private RutinaControl control;
 
 
+    @Transient
+    private List<Semana> listaSemanas;
+
     public Rutina(){}
 
     public Rutina(int id){

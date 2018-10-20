@@ -141,4 +141,11 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     public int obtenerRedFitnessIdById(int rutinaId) {
         return repository.findRedFitnessIdById(rutinaId);
     }
+
+    @Override
+    public List<Rutina> getAllRutinasByUser(int id) {
+        return repository.findByUsuarioIdOrderByIdDesc(id);
+    }
+
+
 }

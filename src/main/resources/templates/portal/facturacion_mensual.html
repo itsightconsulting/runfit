@@ -95,89 +95,68 @@
 <!-- IMPORTS JAVASCRIPT -->
 <script th:replace="html-commons/js :: fg-js"/>
 <script>
-    var chart = AmCharts.makeChart("chartdiv", {
-        "type": "pie",
-        "startDuration": 0,
-        "theme": "light",
-        "addClassNames": true,
-        "legend":{
-            "position":"right",
-            "marginRight":100,
-            "autoMargins":false
-        },
-        "innerRadius": "30%",
-        "defs": {
-            "filter": [{
-                "id": "shadow",
-                "width": "200%",
-                "height": "200%",
-                "feOffset": {
-                    "result": "offOut",
-                    "in": "SourceAlpha",
-                    "dx": 0,
-                    "dy": 0
-                },
-                "feGaussianBlur": {
-                    "result": "blurOut",
-                    "in": "offOut",
-                    "stdDeviation": 5
-                },
-                "feBlend": {
-                    "in": "SourceGraphic",
-                    "in2": "blurOut",
-                    "mode": "normal"
-                }
-            }]
-        },
-        "dataProvider": [{
-            "country": "Lithuania",
-            "litres": 501.9
-        }, {
-            "country": "Czech Republic",
-            "litres": 301.9
-        }, {
-            "country": "Ireland",
-            "litres": 201.1
-        }, {
-            "country": "Germany",
-            "litres": 165.8
-        }, {
-            "country": "Australia",
-            "litres": 139.9
-        }, {
-            "country": "Austria",
-            "litres": 128.3
-        }, {
-            "country": "UK",
-            "litres": 99
-        }, {
-            "country": "Belgium",
-            "litres": 60
-        }, {
-            "country": "The Netherlands",
-            "litres": 50
-        }],
-        "valueField": "litres",
-        "titleField": "country",
-        "export": {
-            "enabled": true
-        }
-    });
+    var chart = AmCharts.makeChart("chartdiv",
+        {
+            "type": "serial",
+            "theme": "light",
+            "dataProvider": [{
+                "name": "John",
+                "points": 35654,
+                "color": "#7F8DA9",
+                "bullet": "https://www.amcharts.com/lib/images/faces/A04.png"
+            }, {
+                "name": "Damon",
+                "points": 65456,
+                "color": "#FEC514",
+                "bullet": "https://www.amcharts.com/lib/images/faces/C02.png"
+            }, {
+                "name": "Patrick",
+                "points": 45724,
+                "color": "#DB4C3C",
+                "bullet": "https://www.amcharts.com/lib/images/faces/D02.png"
+            }, {
+                "name": "Mark",
+                "points": 13654,
+                "color": "#DAF0FD",
+                    "bullet": "https://www.amcharts.com/lib/images/faces/E01.png"
+            }],
+            "valueAxes": [{
+                "maximum": 80000,
+                "minimum": 0,
+                "axisAlpha": 0,
+                "dashLength": 4,
+                "position": "left"
+            }],
+            "startDuration": 1,
+            "graphs": [{
+                "balloonText": "<span>[[category]]: <b>[[value]]</b></span>",
+                "bulletOffset": 10,
+                "bulletSize": 52,
+                "colorField": "color",
+                "cornerRadiusTop": 8,
+                "customBulletField": "bullet",
+                "fillAlphas": 0.8,
+                "lineAlpha": 0,
+                "type": "column",
+                "valueField": "points"
+            }],
+            "marginTop": 0,
+            "marginRight": 0,
+            "marginLeft": 0,
+            "marginBottom": 0,
+            "autoMargins": false,
+            "categoryField": "name",
+            "categoryAxis": {
+                "axisAlpha": 0,
+                "gridAlpha": 0,
+                "inside": true,
+                "tickLength": 0
+            },
+            "export": {
+                "enabled": true
+            }
+        });
 
-    chart.addListener("init", handleInit);
-
-    chart.addListener("rollOverSlice", function(e) {
-        handleRollOver(e);
-    });
-
-    function handleInit(){
-        chart.legend.addListener("rollOverItem", handleRollOver);
-    }
-
-    function handleRollOver(e){
-        var wedge = e.dataItem.wedge.node;
-        wedge.parentNode.appendChild(wedge);
-    }
 
 </script>
 </body>
