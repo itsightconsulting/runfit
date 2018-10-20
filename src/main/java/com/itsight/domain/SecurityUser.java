@@ -2,6 +2,7 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -15,7 +16,17 @@ import java.util.Set;
 public class SecurityUser{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "sec_user_seq")
+    @GenericGenerator(
+            name = "sec_user_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "prefer_sequence_per_entity", value = "true"),
+                    @org.hibernate.annotations.Parameter(name = "sec_user_seq", value = "sec_user_seq"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Column(name = "SecurityUserId")
     private int id;
     @Column(name = "Username", unique = true, updatable = false)
@@ -30,7 +41,7 @@ public class SecurityUser{
     private Set<SecurityRole> roles;
 
     @JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private Usuario usuario;
 
     public SecurityUser() {

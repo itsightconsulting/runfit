@@ -558,6 +558,7 @@
                     $("#NumeroDocumento").val(data.numeroDocumento);
                     $("#TelefonoFijo").val(data.telefonoFijo);
                     $("#Nombres").val(data.nombres);
+                    console.log(data.roles);
                     data.roles.forEach(v=>{
                         Array.from($('.checkbox input[type="checkbox"]'))[v.id-1].click();//se le resta menos uno para igualarlo ya que el array comienza desde 0
                     })

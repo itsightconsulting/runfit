@@ -6,6 +6,7 @@ import com.itsight.service.*;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,8 @@ public class RutinaHshController {
         this.categoriaService = categoriaService;
     }
 
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
     @GetMapping(value = "/edicion")
     public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) {
 

@@ -19,6 +19,7 @@ import com.itsight.service.UsuarioService;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,9 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     private EmailService emailService;
 
     private PorcentajesKilometrajeService porcentajesKilometrajeService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Value("${domain.name}")
     private String domainName;
@@ -210,7 +214,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
             }
             //Adding to User
             secUser.setRoles(listSr);
-            secUser.addUsuario(usuario);
+            //secUser.addUsuario(usuario);
             //Validamos si presenta un rol de entrenador
             int flagTrainer = usuario.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
             //Generando codigo de entrenador en caso tenga el rol de entrenador
@@ -218,14 +222,15 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
                 usuario.setCodigoTrainer(secUser.getUsername());
             }
             //Guardando usuario de autenticacion
-            securityUserRepository.save(secUser);
+            usuario.setSecurityUser(secUser);
+            usuarioService.save(usuario);
+            //securityUserRepository.save(secUser);
             //Generando las mini_plantillas al entrenador en caso lo sea
             if(flagTrainer == 1){
                 cargarRutinarioCe(usuario.getId());
                 //Generando los porcentajes kilometricos para macro-ciclo
                 agregandoPorcentajesK(usuario);
             }
-
 
             //Enviando correo al nuevo usuario
             StringBuilder sb = MailContents.contenidoNuevoUsuario(usuario.getUsername(), originalPassword, usuario.getTipoUsuario().getId(), domainName);

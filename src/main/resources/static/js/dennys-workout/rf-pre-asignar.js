@@ -50,6 +50,11 @@ function init(){
     fInitMacro.addEventListener('change', FichaSet.setTotalSemanas);
     fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
     setFechaActual(document.querySelectorAll('input[type="date"]'));
+    setTimeout(() => {
+        $('#MacroFechaInicio').val('2018-10-19');
+        $('#MacroFechaFin').val('2019-11-10');
+    }, 100);
+
 }
 
 function instanciarTooltips(){
@@ -113,7 +118,6 @@ async function instanciarPorcentajesKilometraje(distancia){
 }
 
 function actualizarPorcentajesKilometrajeBD(porcentajes){
-    console.log(porcentajes);
     $.ajax({
         type: 'PUT',
         contentType: "application/json",
@@ -165,6 +169,7 @@ function principalesEventosTabFichaTecnica(e){
         MCGrafico.temporada(MCGraficoData.paraTemporada(base));
         MacroCiclo.instanciarInformacionTemporada(base);
         actualizarPorcentajesKilometrajeBD(MacroCicloGet.obtenerPorcentajesParaActualizacion(base));
+    }else if(clases.contains('regular-datos-grafico')){
     }
 }
 function principalesEventosFocusOutTabFichaTecnica(e){

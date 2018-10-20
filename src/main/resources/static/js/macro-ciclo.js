@@ -109,7 +109,8 @@ FichaSet = (function(){
             const fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
             const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
-            document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+            //document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+            document.querySelector('#MacroTotalSemanas').textContent = "56";
         },
     }
 })();
@@ -196,6 +197,9 @@ MacroCiclo = (function(){
                     //Graficos - Información relacionada
                     MacroCiclo.instanciarInformacionTemporada(base);
                     MCGrafico.temporada(MCGraficoData.paraTemporada(base));
+
+                    document.querySelector('#btnGenerarRutina').classList.remove('disabled');
+                    document.querySelector('#btnGenerarRutina').setAttribute('title','Generar rutina')
                 })
             }else{
                 $.smallBox({color: "alert", content: "Validación fallida"});
@@ -414,6 +418,22 @@ MacroCicloSeccion = (function(){
     return {
         bodyPorcentajesKilo: (arrCant, pTrainer, ix, kmsBase)=>{
             const colorClass = ["slider-warning", "slider-danger", "slider-success"];
+            let all = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`;
+            for(let i=0; i<arrCant[ix];i++){
+                all += `<div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">`
+                const fixVal = 100 - pTrainer.porcentajes[i];
+                const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
+                    all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
+                    all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span></div>`;
+                    all +=`<div><label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`;
+                    all +=`<div><label class="padding-5 kms" data-index="${windx}">${((kmsBase*pTrainer.porcentajes[i])/100).toFixed(1)}</label></div>`;
+                all+= "</div>";
+            }
+            all+=`</div>`;
+            return all;
+
+
+            /*const colorClass = ["slider-warning", "slider-danger", "slider-success"];
             let prefix = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`
             let html = `<div class="col <col>-xs-12 col-sm-12 col-md-12 col-lg-12">`;
             let porcents = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`
@@ -423,11 +443,11 @@ MacroCicloSeccion = (function(){
                 const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
                 prefix+= `<label class="padding-10">${windx<10 ? '0'+windx : windx}</label>`;
                 html+= `<span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span>`;
-                porcents+=`<label class="padding-5 perc" data-index="${windx}">${pTrainer.porcentajes[i]}%</label>`;
+                porcents+=`<label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label>`;
                 kms+=`<label class="padding-5 kms" data-index="${windx}">${((kmsBase*pTrainer.porcentajes[i])/100).toFixed(1)}</label>`;
             }
             prefix+=`</div>`,porcents+=`</div>`, html+=`</div>`, kms+=`</div>`;
-            return prefix+html+porcents+kms;
+            return prefix+html+porcents+kms;*/
         }
     }
 })();

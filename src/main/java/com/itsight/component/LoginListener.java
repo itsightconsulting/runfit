@@ -35,6 +35,7 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                 session.setAttribute("codTrainer", codTrainer);
             }
             usuarioService.actualizarFechaUltimoAcceso(new Date(), userName);
+
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -656,17 +656,23 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             usuario.setNumeroDocumento("44444444");
             usuario.setUsername("info@runfit.pe");
             List<com.itsight.domain.jsonb.Rol> lstR = new ArrayList<>();
+            com.itsight.domain.jsonb.Rol rr = new com.itsight.domain.jsonb.Rol();
+            rr.setNombre("ROLE_ADMIN");
+            rr.setId(1);
             com.itsight.domain.jsonb.Rol r = new com.itsight.domain.jsonb.Rol();
             r.setNombre("ROLE_TRAINER");
             r.setId(2);
             lstR.add(r);
+            lstR.add(rr);
             usuario.setRoles(lstR);
             usuario.setTipoDocumento(1);
             usuario.setTipoUsuario(2);
             usuario.setFlagActivo(true);
             usuario.setCodigoTrainer("info@runfit.pe");
-            secUserTrainer.addUsuario(usuario);
-            userRepository.save(secUserTrainer);
+            usuario.setSecurityUser(secUserTrainer);
+            //secUserTrainer.addUsuario(usuario);
+            usuarioService.save(usuario);
+            //userRepository.save(secUserTrainer);
             usuarioService.cargarRutinarioCe(secUserTrainer.getId());
 
 
@@ -698,15 +704,17 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
             com.itsight.domain.jsonb.Rol rolCliJson = new com.itsight.domain.jsonb.Rol();
             rolCliJson.setNombre("ROLE_RUNNER");
-            rolCliJson.setId(2);
+            rolCliJson.setId(3);
             lstRolCli.add(rolCliJson);
             usuario1.setRoles(lstRolCli);
             usuario1.setTipoDocumento(1);
             usuario1.setFechaNacimiento(Parseador.fromStringToDate("1987-01-01"));
             usuario1.setTipoUsuario(3);
             usuario1.setFlagActivo(true);
-            secUserCliente.addUsuario(usuario1);
-            userRepository.save(secUserCliente);
+            //secUserCliente.addUsuario(usuario1);
+            usuario1.setSecurityUser(secUserCliente);
+            usuarioService.save(usuario1);
+            //userRepository.save(secUserCliente);
             //Guardando al cliente en la red del entrenador creado anteriormente
             redFitnessService.save( new RedFitness(usuario.getUsername(), usuario1.getId()));
 

@@ -142,6 +142,7 @@ class Rutina {
         RutinaOpc.instanciarCopiarSemanaCompleta();
         Indicadores.instanciarIndicadores1();
         Indicadores.instanciarIndicadores2();
+        Indicadores.instanciarKilometrajes();
     }
 
     agregarNuevaSemana() {
@@ -192,7 +193,7 @@ class Semana{
             this.dias = this.instanciarDias(obj.lstDia);
             this.metricas = obj.metricas != undefined ? obj.metricas != "" ? JSON.parse(obj.metricas) : "" : "";
             this.metricasVelocidad = obj.metricasVelocidad != undefined ? obj.metricasVelocidad != "" ? JSON.parse(obj.metricasVelocidad) : "" : "";
-            this.kilometrajeTotal = obj.kilometrajeActual;
+            this.kilometrajeTotal = obj.kilometrajeTotal;
         }else{
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
@@ -593,10 +594,11 @@ RutinaOpc = (function(){
         abrirCopiadorSemana: (input)=>{
             input.setAttribute('data-content', RutinaOpc.bodyCopiarSemana($rutina.totalSemanas));
             $(input).popover('show');
+            $('#btnConSemanaCopy').tooltip();
         },
         instanciarCopiarSemanaCompleta: ()=>{
             const cs = document.querySelector('#myTabRutina #CopySemana');
-            cs.innerHTML = `<div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-copyright fa-2x txt-color-redLight copiar-full-semana" id="CopiarSemana" rel="popover" data-placement="bottom" data-content="" data-html="true"></i></a></div>`;
+            cs.innerHTML = `<div class="col-md-12 col-xs-2"><a href="javascript:void(0);" rel="tooltip" data-original-title="Copiar semana completa" data-placement="bottom"><i class="fa fa-copyright fa-2x txt-color-redLight copiar-full-semana" id="CopiarSemana" rel="popover" data-placement="right" data-content="" data-html="true"></i></a></div>`;
         },
         bodyCopiarSemana: (totalSemanas)=>{
             const semActual = Number($semActual.textContent) -1;
@@ -605,17 +607,12 @@ RutinaOpc = (function(){
                 if(i != semActual)
                     ops+= `<option value="${i}">Semana ${i+1}</option>`
             }
-            return `<form style='min-width:170px'>
-                        <div style='text-align: center;'>
-                            <select style='width: 95%;padding: 5px;margin: 5px;'>${ops}</select>
-                        </div>
-                        <div class='form-actions'>
-                        <div class='row'>
-                            <div class='col-md-12'>
-                                <button class='btn btn-primary btn-sm' type='button' onclick="javascript:copiarSemanaBD(this)">
-                                    Confirmar <i class='fa fa-fw fa-check'></i>
-                                </button>
-                            </div>
+            return `<form style='min-width:170px' class=''>
+                        <div class='input-group input-group-sm'>
+                            <select class='form-control'>${ops}</select>
+                            <div class="input-group-btn">
+                                <button id="btnConSemanaCopy" class="btn btn-default" type="button" rel="tooltip" data-original-title="Proceder a copiar" data-placement="bottom" onclick="javascript:copiarSemanaBD(this)"><strong><i class="fa fa-clipboard text-warning"></i></strong></button>
+							</div>
                         </div>
                     </form>`;
         }
@@ -759,6 +756,24 @@ RutinaGet = (function(){
             //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
             semanas[totalSemanas-1].fechaFin = fFin;
             return semanas;
+        },
+        getKilometrajes: ()=>{
+            const k = {};
+            let kcalTotal = 0, kmPlanificado = 0;
+            const sIx = Number($semActual.textContent)-1;
+            $rutina.semanas[sIx].dias.forEach(v=>{
+                kcalTotal+=v.calorias;
+            });
+
+            $rutina.semanas[sIx].dias.forEach(v=>{
+                kmPlanificado+=v.distancia;
+            });
+
+            k.kcal = parseNumberToDecimal(kcalTotal, 2);
+            k.kmMacro = $rutina.semanas[sIx].kilometrajeTotal;
+            k.kmPlanificado = parseNumberToDecimal(kmPlanificado, 2);
+
+            return k;
         }
     }
 })();
@@ -1258,7 +1273,7 @@ DiaOpc = (function(){
                         $.smallBox({color: "alert", content: "<i>Este elemento ya tiene especificada una carrera...</i>"});
                     }else {
                         const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
-                        const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
+                        const nSubEle = elemento.querySelector(`div[data-index="${nuevoIx}"]`);
                         $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                         elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
                         instanciarSubElementoTooltip(nSubEle);
@@ -1272,7 +1287,7 @@ DiaOpc = (function(){
                     }
                 }else {
                     const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
-                    const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
+                    const nSubEle = elemento.querySelector(`div[data-index="${nuevoIx}"]`);
                     $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                     elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
                     instanciarSubElementoTooltip(nSubEle);
@@ -1287,7 +1302,7 @@ DiaOpc = (function(){
                 }
             }else{
                 const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
-                const nSubEle = elemento.querySelector(`li[data-index="${nuevoIx}"]`);
+                const nSubEle = elemento.querySelector(`div[data-index="${nuevoIx}"]`);
                 $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                 elemento.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
                 instanciarSubElementoTooltip(nSubEle);
@@ -1749,41 +1764,53 @@ ElementoOpc = (function(){
             input.classList.toggle('fa-video-camera');
             input.classList.toggle('fa-close');
             input.classList.toggle('txt-color-redLight');
-            const mainContainerSub = input.parentElement.parentElement.parentElement;
-            const tipoContent = mainContainerSub.parentElement.parentElement.parentElement.getAttribute('data-type');
-            if(tipoContent == undefined){
-                //SUB ELEMENTOS
-                if(mainContainerSub.children.length == 2){
-                    $("#VideoReproduccion").parent().get(0).pause();
-                    $(mainContainerSub.children[1].children[0]).slideUp('slow', ()=> {
-                        mainContainerSub.children[1].remove();
-                    });
-                }else {
-                    if(mainContainerSub.nodeName == "A"){
 
-                    }else
-                        mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+            let mainContainer = input.parentElement.parentElement;
+            if(mainContainer.tagName === "DIV"){
+                //SUB ELEMENTOS
+                if(mainContainer.children[2] != undefined){
+                    if(mainContainer.children[3] != undefined) {
+                        if(mainContainer.children[3].tagName === "DIV") {
+                            $("#VideoReproduccion").parent().get(0).pause();
+                            $(mainContainer.children[3]).slideUp('slow', ()=> {
+                                mainContainer.children[3].remove();
+                            });
+                        }else {}
+                    }else{
+                        if(mainContainer.children[2].tagName === "DIV"){
+                            $("#VideoReproduccion").parent().get(0).pause();
+                            $(mainContainer.children[2]).slideUp('slow', ()=> {
+                                mainContainer.children[2].remove();
+                            });
+                        }else{
+                            mainContainer.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+                        }
+                    }
+                }else {
+                    mainContainer.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
                 }
             }else{
                 //ELEMENTOS
+                const mainContainerEle = mainContainer.parentElement;
+                const tipoContent = mainContainerEle.parentElement.parentElement.parentElement.getAttribute('data-type');
                 if(tipoContent == 1){//Simple
-                    if(mainContainerSub.nodeName == "A"){
-                        if(mainContainerSub.children.length == 3){
-                            $(mainContainerSub.children[2].children[0]).slideUp('slow', ()=> {
-                                mainContainerSub.children[2].remove();
+                    if(mainContainerEle.nodeName == "A"){
+                        if(mainContainerEle.children.length == 3){
+                            $(mainContainerEle.children[2].children[0]).slideUp('slow', ()=> {
+                                mainContainerEle.children[2].remove();
                             });
                         }else{
-                            mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+                            mainContainerEle.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
                         }
                     }
                 }else{//Compuesto(Lista)
-                    if(mainContainerSub.nodeName == "A"){
-                        if(mainContainerSub.children.length == 4){
-                            $(mainContainerSub.children[3].children[0]).slideUp('slow', ()=> {
-                                mainContainerSub.children[3].remove();
+                    if(mainContainerEle.nodeName == "A"){
+                        if(mainContainerEle.children.length == 4){
+                            $(mainContainerEle.children[3].children[0]).slideUp('slow', ()=> {
+                                mainContainerEle.children[3].remove();
                             });
                         }else{
-                            mainContainerSub.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+                            mainContainerEle.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
                         }
                     }
                 }
@@ -2170,15 +2197,13 @@ RutinaSeccion = (function (){
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             let subEleHTML = `
-                    <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${tipo}">
-                       <div class="col-md-12">
-                           <span class="pull-left">
-                               <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                               <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i>
-                           </span>
-                           <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
-                       </div>																			
-                    </li>
+                    <div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${tipo}">
+                        <span class="pull-left">
+                            <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                            <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i>
+                        </span>
+                        <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
+                    </div>
                     `;
             document.querySelector(`#RutinaSemana .rf-dia[data-index="${diaIndex}"] #collapse${eleIndex} .dd-list`).appendChild(htmlStringToElement(subEleHTML));
             return ix;
@@ -2187,14 +2212,12 @@ RutinaSeccion = (function (){
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             let subEleHTML = `
-                    <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${tipo}">
-                       <div class="col-md-12">
-                           <span class="pull-left">
-                                <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                                <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i>
-                           </span>
-                            <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
-                       </div>																			
+                    <li class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${tipo}">
+                        <span class="pull-left">
+                             <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                             <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i>
+                        </span>
+                        <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                     </li>
                     `;
             subEleRef.insertAdjacentHTML(strategy, subEleHTML);
@@ -2379,16 +2402,14 @@ RutinaElementoHTML = (function(){
             subElementos.forEach((sEle, pos)=>{
                 let ix = ++indexGlobal;
                 subElementosHTML += `
-                    <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="1">
-                       <div class="col-md-12 padding-hz-t-13">
-                           <span class="pull-left">
-                                ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                                ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
-                           </span>
-                           <span class="rf-sub-elemento-nombre padding-10" data-dia-index="" data-ele-index="" data-index="${ix}" data-dia-pos="${posDia}" data-ele-pos="${posEle}" data-pos="${pos}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
-                           ${RutinaElementoHTML.iconoNota(sEle.nota)}
-                       </div>																			
-                    </li>
+                    <div class="col-md-12 rf-sub-elemento padding-hz-t-13" data-index="${ix}" data-type="1">
+                        <span class="pull-left">
+                             ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
+                             ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
+                        </span>
+                        <span class="rf-sub-elemento-nombre" data-dia-index="" data-ele-index="" data-index="${ix}" data-dia-pos="${posDia}" data-ele-pos="${posEle}" data-pos="${pos}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
+                        ${RutinaElementoHTML.iconoNota(sEle.nota)}
+                    </div>
                     `;
             });
             return subElementosHTML;
@@ -2464,18 +2485,16 @@ RutinaElementoHTML = (function(){
             subElementos.forEach(sEle=>{
                 let ix = ++indexGlobal;
                 subElementosHTML += `
-                    <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
-                       <div class="col-md-12">
-                           <span class="pull-left">
-                                ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                                ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
-                                <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                                <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
-                           </span>
-                           <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
-                           ${RutinaElementoHTML.iconoNota(sEle.nota)}
-                       </div>																			
-                    </li>
+                    <div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
+                        <span class="pull-left">
+                             ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
+                             ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
+                             <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                             <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
+                        </span>
+                        <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
+                        ${RutinaElementoHTML.iconoNota(sEle.nota)}
+                    </div>
                     `;
             });
             return subElementosHTML;
@@ -2483,32 +2502,28 @@ RutinaElementoHTML = (function(){
         subElementoPaste: (sEle, diaIndex, eleIndex)=>{
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-                    return `<li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
-                               <div class="col-md-12">
-                                   <span class="pull-left">
-                                        ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                                        ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
-                                        <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                                        <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
-                                   </span>
-                                   <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
-                                   ${RutinaElementoHTML.iconoNota(sEle.nota)}
-                               </div>																			
-                            </li>`;
+                    return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
+                                <span class="pull-left">
+                                     ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
+                                     ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
+                                     <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                                     <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
+                                </span>
+                                <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
+                                ${RutinaElementoHTML.iconoNota(sEle.nota)}
+                            </div>`;
         },
         subElementoMedia: (sEle, diaIndex, eleIndex)=>{
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-            return `<li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
-                       <div class="col-md-12">
-                           <span class="pull-left">
-                                ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                                <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                                <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
-                           </span>
-                           <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${sEle.nombre}</span>
-                       </div>																			
-                    </li>
+            return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
+                        <span class="pull-left">
+                             ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
+                             <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                             <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
+                        </span>
+                        <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${sEle.nombre}</span>
+                    </div>
                     `;
         },
     }
@@ -2657,6 +2672,20 @@ Indicadores = (function(){
         instanciarIndicadores2: ()=>{
             const raw = `<a href="javascript:void(0);"><i id="IconIndicador2" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-bar-chart-o fa-2x txt-color-orange abrir-indicador-2"></i></a>`;
             document.querySelector('#Indicadores2').innerHTML = raw;
+        },
+        instanciarKilometrajes: ()=>{
+            const k = RutinaGet.getKilometrajes();
+            const raw = `<hr class="margin-0" style="margin: 0px -10px !important"/>
+                        <div>
+                            <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.C.</h6></div>
+                            <div class="txt-color-blueLight text-align-center"><span><b>${k.kcal} kcal</b></span></div>
+                            <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.M.</h6></div>
+                            <div class="txt-color-blueLight text-align-center"><span><b>${k.kmMacro} K.M.</b></span></div>
+                            <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.P.</h6></div>
+                            <div class="txt-color-blueLight text-align-center"><span><b>${k.kmPlanificado} K.M.</b></span></div>
+                        </div>
+                        <hr class="margin-0" style="margin: 0px -10px !important"/>`;
+            document.querySelector('#Kilometrajes').innerHTML = raw;
         },
         abrirIndicador2: (metricas)=>{
             const iconIndi2 = document.querySelector('#IconIndicador2');

@@ -143,7 +143,6 @@ async function obtenerSemanaInicialRutina(){
                         });
                     } else {
                         //Semana
-                        $semanaInicial = data;
                         resolve(data);
                     }
                 }
@@ -184,7 +183,6 @@ async function obtenerEspecificaSemana(semanaIndex, action){
                             $semActual.textContent = Number(semanaIndex) + 1;
                         else
                             $semActual.textContent = Number($semActual.textContent.trim()) - 1;
-                        $semanaInicial = data;
                         resolve(data);
                     }
                 }
@@ -738,7 +736,7 @@ async function instanciarPorcentajesKilometraje(distancia){
 
 function copiarSemanaBD(e){
     const sA = Number($semActual.textContent) - 1;
-    const sP = Number(e.parentElement.parentElement.parentElement.parentElement.children[0].children[0].value);
+    const sP = Number(e.parentElement.parentElement.children[0].value);
     e.setAttribute('disabled', 'disabled');
     $.ajax({
         type: 'PUT',
@@ -1052,7 +1050,7 @@ function principalesEventosClickRutina(e) {
             const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, $tipoMedia, obj.nombre);
             ixs.subEleIndex = nuevoIx;
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            let nSubEle = tempElemento.querySelector(`li[data-index="${nuevoIx}"]`);
+            let nSubEle = tempElemento.querySelector(`div[data-index="${nuevoIx}"]`);
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
@@ -1226,7 +1224,7 @@ function principalesEventosClickRutina(e) {
     else if(clases.contains('agregar-nota-sbe')) {
         const ixs = RutinaIx.getIxsForSubElemento(input);
         let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
-        if(subEle.children.length != 2) {
+        if(subEle.children.length != 1) {
             let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
             let notaInput = document.createElement('div');
             notaInput.className = 'panel-heading';
@@ -1565,7 +1563,7 @@ function principalesEventosFocusOutSemanario(e) {
         if(anteriorNota.trim() != nota){
 
             if(tempSubEle.querySelector('i.check-nota')==undefined){
-                tempSubEle.querySelector('.col-md-12').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT()));
+                tempSubEle.appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT()));
             }else{
                 if(nota.length == 0){
                     tempSubEle.querySelector('i.check-nota').remove();

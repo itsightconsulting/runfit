@@ -13,8 +13,8 @@
     <!-- END CSS FILES -->
     <style type="text/css">
 
-        li.dd-item{
-            margin-bottom: 12px !important;
+        .modulo-detalle >.nestable .rf-sub-elemento{
+            margin-bottom: 6px !important;
         }
         .v-center{
             padding-top: 23% !important;
@@ -279,11 +279,11 @@
             font-size: 12px;
         }
 
-        .dd-list {}
-
-        .dd-item {
-            line-height: 12px;
+        .pading-hz-6{
+            padding: 0px 6px !important;
         }
+
+        .dd-list {}
 
         .md-add {
             background: #f0fff0 !important;
@@ -298,6 +298,11 @@
         .rut-ce-separador{
             border: 3px solid #baf3c6;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .ops-laterales{
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border: 0.5px solid #baf3c6;
         }
 
         .popover-title{
@@ -499,7 +504,7 @@
         }
 
         .heading-dia, #header-rutina{
-            background: #83AF9B !important;
+            background: #4A4E3B !important;
         }
 
         .img-cat-rutina:hover{
@@ -663,7 +668,7 @@
                             <div class="widget-toolbar borderless">
                                 <span class="label label-primary bg-green-rf" id="MesAnio"></span>
                             </div>
-                            <div class="widget-toolbar borderless"><div class="container-fluid note-btn-group btn-group note-font text-align-center padding-0" id="MiniEditor">
+                            <div class="widget-toolbar borderless" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"><div class="container-fluid note-btn-group btn-group note-font text-align-center padding-0" id="MiniEditor">
                                 <button type="button" data-index="1" class="note-btn btn btn-default btn-sm note-btn-bold btn-bold" title="" data-original-title="Bold (CTRL+B)" style="margin-top: 0px;"><i class="note-icon-bold btn-bold" data-index="1"></i></button>
                                 <button type="button" data-index="2" class="note-btn btn btn-default btn-sm note-btn-italic btn-italic" title="" data-original-title="Italic (CTRL+I)"><i class="note-icon-italic btn-italic" data-index="2"></i></button>
                                 <button type="button" data-index="3" class="note-btn btn btn-default btn-sm note-btn-underline btn-underline" title="" data-original-title="Underline (CTRL+U)"><i class="note-icon-underline btn-underline" data-index="3"></i></button>
@@ -740,38 +745,41 @@
                             <div class="tab-pane fade in active" id="tabRutina">
                                 <div class="col-md-12 padding-0">
                                     <div class="col-md-1" id="OpsLaterales">
-                                        <div class="container-fluid text-align-center">
-                                            <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="CopySemana"></div>
-                                        </div>
-                                        <div class="container-fluid padding-o-bottom-10 text-align-center">
-                                            <div>
-                                                <span class="label label-primary bg-green-rf" onclick="moverAInicio();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el primer día de este semana"><i class="fa fa-mail-reply"></i></span>
-                                                <span class="label label-primary bg-green-rf" onclick="moverAFinal();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el último dia de este semana"><i class="fa fa-mail-forward"></i></span>
+                                        <div class="ops-laterales">
+                                            <div class="container-fluid text-align-center padding-top-8">
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="CopySemana"></div>
                                             </div>
-                                        </div>
-                                        <div class="container-fluid padding-o-bottom-10 text-align-center">
-                                            <div>
-                                                <span class="label label-primary bg-green-rf" onclick="RutinaOpc.comprimirAll();" rel="tooltip" data-placement="bottom" data-original-title="Comprimir elementos lista"><i class="fa fa-angle-up"></i></span>
-                                                <span class="label label-primary bg-green-rf" onclick="RutinaOpc.colapsarAll();" rel="tooltip" data-placement="bottom" data-original-title="Colapsar elementos lista"><i class="fa fa-angle-down"></i></span>
+                                            <div class="container-fluid padding-o-bottom-10 text-align-center">
+                                                <div>
+                                                    <span class="label label-primary bg-green-rf" onclick="moverAInicio();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el primer día de este semana"><i class="fa fa-mail-reply"></i></span>
+                                                    <span class="label label-primary bg-green-rf" onclick="moverAFinal();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el último dia de este semana"><i class="fa fa-mail-forward"></i></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="container-fluid padding-o-bottom-10 text-align-center">
-                                            <div class="">
-                                                <a href="javascript:void(0);" class="label label-warning bg-black-rf" id="Semanas"><span class="label label-warning font-sm bg-black-rf">Semana <span id="SemanaActual">1</span></span></a>
+                                            <div class="container-fluid padding-o-bottom-10 text-align-center">
+                                                <div>
+                                                    <span class="label label-primary bg-green-rf" onclick="RutinaOpc.comprimirAll();" rel="tooltip" data-placement="bottom" data-original-title="Comprimir elementos lista"><i class="fa fa-angle-up"></i></span>
+                                                    <span class="label label-primary bg-green-rf" onclick="RutinaOpc.colapsarAll();" rel="tooltip" data-placement="bottom" data-original-title="Colapsar elementos lista"><i class="fa fa-angle-down"></i></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="container-fluid padding-o-bottom-10 text-align-center">
-                                            <div class="">
-                                                <span class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana"><i class="fa fa-chevron-left retroceder-semana"></i></span>
-                                                <span class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana"><i class="fa fa-chevron-right adelantar-semana"></i></span>
+                                            <div class="container-fluid padding-o-bottom-10 text-align-center">
+                                                <div class="">
+                                                    <a href="javascript:void(0);" class="label label-warning bg-black-rf" id="Semanas"><span class="label label-warning font-sm bg-black-rf">Semana <span id="SemanaActual">1</span></span></a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="container-fluid text-align-center rut-ce-separador padding-10">
-                                            <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="SemanasLineal"></div>
-                                            <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Indicadores1"></div>
-                                            <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Indicadores2"></div>
-                                            <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-pinterest fa-2x txt-color-redLight"></i></a></div>
-                                            <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-comment-o fa-2x txt-color-green"></i></a></div>
+                                            <div class="container-fluid padding-o-bottom-10 text-align-center">
+                                                <div class="">
+                                                    <span class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana"><i class="fa fa-chevron-left retroceder-semana"></i></span>
+                                                    <span class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana"><i class="fa fa-chevron-right adelantar-semana"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="container-fluid text-align-center padding-10">
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="SemanasLineal"></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Indicadores1"></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Indicadores2"></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Kilometrajes"></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-pinterest fa-2x txt-color-redLight"></i></a></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-comment-o fa-2x txt-color-green"></i></a></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-11 padding-0">
@@ -1040,13 +1048,12 @@
                                             </section>
                                             <section class="col col-2">
                                                 <section class="container-fluid v-center">
-                                                    <h1 class="text-align-center"><b>Semanas</b></h1>
+                                                    <h1 class="text-align-center"><b>Semanas </b><a href="javascript:void(0);" class="btn btn-circle txt-color-grayDark btn-default padding-5" id="btnVerDetalleSemanas" ><i class="fa fa-info"></i></a></h1>
                                                     <h1 class="text-align-center"><span id="MacroTotalSemanas">0</span></h1>
                                                 </section>
                                                 <section class="container-fluid text-align-center">
-                                                    <a href="javascript:void(0);" class="btn btn-success padding-5" id="btnVerDetalleSemanas">Información detallada</a>
-                                                    <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5" id="btnComprobar">Comprobar</a>
-                                                    <a href="javascript:void(0);" class="btn btn-primary margin-top-5 padding-5" id="btnGenerarRutina">Confirmar rutina</a>
+                                                    <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5" id="btnComprobar"><i class="fa fa-check fa-fw fa-15x"></i>Calcular</a>
+                                                    <a href="javascript:void(0);" class="btn btn-primary margin-top-5 padding-5 disabled" id="btnGenerarRutina" title="Primero comprobar"><i class="fa fa-save fa-fw fa-15x"></i></a>
                                                 </section>
                                             </section>
                                         </div>
