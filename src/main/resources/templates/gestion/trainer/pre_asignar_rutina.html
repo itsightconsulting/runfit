@@ -12,6 +12,15 @@
 
     <!-- END CSS FILES -->
     <style type="text/css">
+
+        .txt-color-rfb {
+            color: #4A4E3B !important;
+        }
+
+        .txt-color-rfg {
+            color: #73F194 !important;
+        }
+
         .v-center{
             padding-top: 23% !important;
         }
@@ -494,18 +503,6 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        .rf-n{
-            font-weight: bold !important;
-        }
-
-        .rf-k{
-            font-style: italic !important;
-        }
-
-        .rf-s{
-            text-decoration: underline !important;
-        }
-
         button.note-color-fuente, button.note-bg-color {
             padding: 6px;
         }
@@ -513,52 +510,6 @@
         .padding-left-20{
             padding-left: 20px !important;
         }
-
-        .rf-ct-white{color:white}
-        .rf-ct-black{color:black}
-        .rf-ct-gray{color:gray}
-        .rf-ct-navyblue{color:#003366}
-        .rf-ct-skyblue{color:skyblue}
-        .rf-ct-orange{color:yellow}
-        .rf-ct-yellow{color:green}
-        .rf-ct-green{color:pink}
-        .rf-ct-m-pink{color:#F67280}
-        .rf-ct-m-blue{color:#355C7D}
-        .rf-ct-m-gray{color:#474747}
-        .rf-ct-m-navyblue{color:#2A363B}
-        .rf-ct-m-skyblue{color:#A8E6CE}
-        .rf-ct-m-orange{color:#FC913A}
-        .rf-ct-m-yellow{color:#F9D423}
-        .rf-ct-m-green{color:#99B898}
-
-        .rf-bg-white{background-color:white}
-        .rf-bg-black{background-color:black}
-        .rf-bg-gray{background-color:gray}
-        .rf-bg-navyblue{background-color:#000080}
-        .rf-bg-skyblue{background-color:skyblue}
-        .rf-bg-orange{background-color:yellow}
-        .rf-bg-yellow{background-color:green}
-        .rf-bg-green{background-color:pink}
-        .rf-bg-m-pink{background-color:#F67280}
-        .rf-bg-m-blue{background-color:#355C7D}
-        .rf-bg-m-gray{background-color:#474747}
-        .rf-bg-m-navyblue{background-color:#2A363B}
-        .rf-bg-m-skyblue{background-color:#A8E6CE}
-        .rf-bg-m-orange{background-color:#FC913A}
-        .rf-bg-m-yellow{background-color:#F9D423}
-        .rf-bg-m-green{background-color:#99B898}
-
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-8{font-size: 8px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-9{font-size: 9px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-10{font-size: 10px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-11{font-size: 11px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-12{font-size: 12px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-13{font-size: 13px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-14{font-size: 14px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-15{font-size: 15px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-16{font-size: 16px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-17{font-size: 17px !important;}
-        #RutinaSemana .rf-dia .rf-listas .rf-fs-18{font-size: 18px !important;}
 
         .rf-align-l{text-align:left}
         .rf-align-c{text-align:center}
@@ -611,6 +562,14 @@
 
         .padding-right-22{
             padding-right: 22px !important;
+        }
+
+        .bg-color-rfb{
+            background: #4A4E3B !important;
+        }
+
+        .bg-color-rfg{
+            background: #73F194 !important;
         }
 
     </style>
@@ -667,7 +626,7 @@
                             <div class="tab-pane fade in active" id="tabFichaTecnica">
                                 <form class="smart-form">
                                     <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">1. Datos Generales</h6>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Datos Generales</h5>
                                         <div class="row">
                                             <section class="col col-4">
                                                 <label class="label">Nombres:</label>
@@ -700,7 +659,7 @@
                                                 </label>
                                             </section>
                                         </div>
-                                        <div class="row">
+                                        <div class="row padding-o-bottom-10" style="border-bottom: 1px solid rgba(0,0,0,.1)">
                                             <section class="col col-2 text-align-center">
                                                 <div class="container-fluid v-center">
                                                     <div class="col-md-6">
@@ -794,21 +753,54 @@
                                             </section>
                                         </div>
                                         <!-- GRAFICO TEMPORADA-->
-                                        <div class="row hidden padding-o-bottom-10" id="InicialMacro">
+                                        <div class="row hidden padding-o-top-10" id="InicialMacro">
+                                            <div class="container-fluid padding-o-bottom-10" id="DistribucionDetallado">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center" id="KilometrajeTotal">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje total</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. General)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Específica)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Competitiva)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Tránsito)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">2</h1>
+                                                        <span class="text-align-center txt-color-rfb">2 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
+                                                        <h5 class="text-align-center txt-color-rfb"><b>Distribución</b></h5>
+                                                        <canvas id="MiniGraficoDistribucion"></canvas>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                             <div class="container-fluid">
-                                                <section class="">
+                                                <section class="margin-0">
                                                     <div class="panel-group smart-accordion-default ">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseXWY" class="" aria-expanded="true">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseXWY" class="bg-color-rfb" aria-expanded="true">
                                                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
                                                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                                                         <span class="rf-dia-elemento-nombre padding-10">
                                                                             <i class="fa fa-lg fa-bar-chart-o pull-left text-primary padding-top-5"></i>
                                                                             <i class="fa fa-lg fa-fw fa-refresh pull-right text-primary padding-top-5 refrescar-grafico" rel="tooltip" data-placement="bottom" data-original-title="Actualizar gráfico"></i>
-                                                                            <i class="fa fa-lg fa-fw fa-balance-scale pull-right text-danger padding-top-5 regular-datos-grafico" rel="tooltip" data-placement="bottom" data-original-title="Regular kilometraje"></i>
-                                                                            Distribución de volumen de kilómetros por semana
+                                                                            <span class="txt-color-white">Distribución de volumen de kilómetros por semana</span>
                                                                         </span>
                                                                     </a>
                                                                 </h4>
@@ -816,14 +808,8 @@
                                                             <div id="collapseXWY" class="panel-collapse collapse in" aria-expanded="true">
                                                                 <div class="panel-body" style="padding: 3px 0px !important">
                                                                     <div class="container-fluid">
-                                                                        <div class="col-md-4">
-                                                                            <h6 class="text-align-center padding-bottom-10">Preparación general</h6>
-                                                                            <h6 class="text-align-center padding-bottom-10">Preparación específica</h6>
-                                                                            <h6 class="text-align-center padding-bottom-10">Preparación precompetitiva</h6>
-
-                                                                        </div>
-                                                                        <div class="col-md-8" id="GraficoTemporada">
-
+                                                                        <div class="col-md-12">
+                                                                            <canvas id="GraficoTemporada" height="350"></canvas>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -832,62 +818,35 @@
                                                     </div>
                                                 </section>
                                             </div>
-                                            <div class="container-fluid" id="DistribucionDetallado">
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center" id="KilometrajeTotal">
-                                                        <h5 class="text-align-center txt-color-orange">Kilometraje total</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
-                                                        <h5 class="text-align-center">Kilometraje(P. General)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
-                                                        <h5 class="text-align-center">Kilometraje(P. Específica)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
-                                                        <h5 class="text-align-center">Kilometraje(P. Competitiva)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
-                                                        <h5 class="text-align-center">Kilometraje(P. Tránsito)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">2</h1>
-                                                        <span class="text-align-center">2 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
-                                                        <h5 class="text-align-center txt-color-blueLight"><b>Distribución</b></h5>
-                                                        <div id="MiniGraficoDistribucion"></div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                         </div>
-                                        <!--id="PorcentajesKilometraje"-->
                                         <!-- END GRAFICO TEMPORADA-->
-                                        <div class="row padding-o-bottom-10">
+                                        <div class="row padding-o-bottom-10 hidden" id="ContainerVarVolumen">
                                             <div class="container-fluid">
                                                 <section class="">
-                                                    <div class="panel-group smart-accordion-default ">
+                                                    <div class="panel-group smart-accordion-default">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseReguladores" class="" aria-expanded="true">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseReguladores" class="collapsed bg-color-rfb" aria-expanded="false">
                                                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
                                                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                                                         <span class="padding-10">
                                                                             <i class="fa fa-lg fa-cogs pull-left text-warning padding-top-5"></i>
-                                                                            <span class="txt-color-grayDark">Regulador de porcentajes e intensidad</span>
+                                                                            <i class="fa fa-lg fa-fw fa-15x pull-right txt-color-blueLight volver-kms-distribucion hidden padding-right-22 padding-top-5" rel="tooltip" data-placement="bottom" data-original-title="Regular los volumenes de distancia" style="font-size: 1.5em !important;">K.M.</i>
+                                                                            <i class="fa fa-lg fa-fw fa-percent pull-right txt-color-blueLight padding-top-5 regular-intensidad" rel="tooltip" data-placement="bottom" data-original-title="Regular la intensidad"></i>
+                                                                            <span class="txt-color-white">Regulador de porcentajes e intensidad</span>
                                                                         </span>
                                                                     </a>
                                                                 </h4>
                                                             </div>
-                                                            <div id="collapseReguladores" class="panel-collapse collapse in" aria-expanded="true">
-                                                                <div class="panel-body" id="PorcentajesKilometraje" style="padding: 3px 0px !important"></div>
+                                                            <div id="collapseReguladores" class="panel-collapse collapse" aria-expanded="false">
+                                                                <div class="panel-body" style="padding: 3px 0px !important"></div>
+                                                                <div class="container-fluid" id="PorcentajesKilometraje">
+
+                                                                </div>
+                                                                <div class="container-fluid hidden" id="PorcentajesIntensidad">
+
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1221,7 +1180,7 @@
                                         </div>
                                     </fieldset>
                                     <fieldset id="Proyecciones">
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">2. Mejoras proyectadas</h6>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Mejoras proyectadas</h5>
                                         <div class="row padding-top-10" style="border-bottom: 1px solid grey; !important">
                                             <section class="col col-1"></section>
                                             <section class="col col-5" style="border-right: 1px solid grey; !important">
@@ -1446,7 +1405,7 @@
                                         </div>
                                     </fieldset>
                                     <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">3. Competiciones a participar</h6>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Competiciones a participar</h5>
                                         <div class="row padding-top-10">
                                             <div class="col col-md-12">
                                                 <table id="TablaCompetencias" class="table table-bordered table-responsive-md table-striped text-center">
@@ -1527,6 +1486,7 @@ you can add as many as you like
 <script th:src="@{/js/macro-ciclo.js}+'?'+${version}"></script>
 <script th:src="@{/js/tablas-calculo.js}+'?'+${version}"></script>
 <script th:src="@{/js/dennys-workout/rf-pre-asignar.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     pageSetUp();

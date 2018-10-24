@@ -1,8 +1,10 @@
+let $porcentajesIntensidad = [];
+
 Ficha = (function(){
     return {
         instanciar: (ficha)=>{
             const comps = ficha.competencias;
-            $fechasCompetencia = comps.map(v=>{return {prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}});
+            $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
             $('#Nombres').val(ficha.usuario.nombres);
             $('#ApellidoPaterno').val(ficha.usuario.apellidoPaterno);
             $('#FechaNacimiento').val(ficha.usuario.fechaNacimiento);
@@ -109,8 +111,8 @@ FichaSet = (function(){
             const fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
             const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
-            //document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
-            document.querySelector('#MacroTotalSemanas').textContent = "56";
+            document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+            //document.querySelector('#MacroTotalSemanas').textContent = "56";
         },
     }
 })();
@@ -125,9 +127,11 @@ FichaDOMQueries = (function(){
 
 MacroCiclo = (function(){
     return {
-        comprobar: ()=>{
+        comprobar: (e)=>{
+            blockButton(e.target);
             const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
-            if(MacroCiclo.validacion(contenedorMK)) {
+            const contenedorMK2 = document.querySelector('#PorcentajesIntensidad');//metricas de kilometraje
+            if(MacroCiclo.validacion(contenedorMK, contenedorMK2)) {
                 //Actualizando calculos bases en caso se hayan modificado algunos otros parametros
                 Calc.setRestantes();
                 const ritmosAerobicos = Calc.getRitmosAerobicos();
@@ -139,6 +143,7 @@ MacroCiclo = (function(){
                         porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[base.periodizacion[i]-4];//1+ por que el index comienza en 0
                     }
                     contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo(base, porcentajesTrainer)));
+                    contenedorMK2.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesIntensidad(base, porcentajesTrainer)));
                     //ModificandoBase en caso semana inicial y final no esten completas
                     $semCalculoMacro = CalcProyecciones.informacionSemanas();
                     if($semCalculoMacro.diasPrimeraSemana < 7) {
@@ -197,9 +202,9 @@ MacroCiclo = (function(){
                     //Graficos - Información relacionada
                     MacroCiclo.instanciarInformacionTemporada(base);
                     MCGrafico.temporada(MCGraficoData.paraTemporada(base));
-
                     document.querySelector('#btnGenerarRutina').classList.remove('disabled');
-                    document.querySelector('#btnGenerarRutina').setAttribute('title','Generar rutina')
+                    document.querySelector('#btnGenerarRutina').setAttribute('title','Generar rutina');
+                    unlockButton(e.target);
                 })
             }else{
                 $.smallBox({color: "alert", content: "Validación fallida"});
@@ -224,19 +229,32 @@ MacroCiclo = (function(){
             });
             document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
             document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
-            MCGrafico.miniPorcentual(base.porcentajesKms);
+            MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
         },
         mostrarPorcentajesKilo: (base, pTrainer)=>{
             const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva"];
-            const colorClass = ["bg-color-teal", "bg-color-redLight", "bg-color-greenLight"];
+            //const colorClass = ["bg-color-teal", "bg-color-redLight", "bg-color-greenLight"];
             let html = `<section class="">`;
             html += base.periodizacion.map((v,i,k)=>{
                 const kmsRef = $kilometrajeBase[i].kilometraje;
                 return `<div class="col col-4 padding-0 text-align-center">
-                            <h6 class="${colorClass[i]} txt-color-white font-md margin-bottom-10 padding-10 text-align-center">${nombresEtapa[i]}</h6>
+                            <h6 class="bg-color-white txt-color-gray font-md margin-bottom-10 padding-10 text-align-center">${nombresEtapa[i]}</h6>
                             ${MacroCicloSeccion.bodyPorcentajesKilo(k, pTrainer[i], i, kmsRef)}
                         </div>`
             }).join('');
+            html+=`</section>`
+            return html;
+        },
+        mostrarPorcentajesIntensidad: (base, pTrainer)=>{
+            const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva"];
+            let html = `<section class="">`;
+            html += base.periodizacion.map((v,i,k)=>{
+                return `<div class="col col-4 padding-0 text-align-center">
+                            <h6 class="bg-color-white txt-color-gray font-md margin-bottom-10 padding-10 text-align-center">${nombresEtapa[i]}</h6>
+                            ${MacroCicloSeccion.bodyPorcentajesIntensidad(k, pTrainer[i], i)}
+                        </div>`
+            }).join('');
+            $porcentajesIntensidad.length==0? MacroCicloGet.obtenerPorcentajesIntens(base.periodizacion) : "";
             html+=`</section>`
             return html;
         },
@@ -311,17 +329,21 @@ MacroCiclo = (function(){
                     }));
                 })
                 guardarRutina(r, (btn = e.target));
-            }else{
+            } else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
         },
-        validacion: (contenedorMK)=>{//contenedor de metricas de kilometraje
+        validacion: (contenedorMK, contenedorMK2)=>{//contenedor de metricas de kilometraje
             let validado = false;
             if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
                 validado = true;
 
             if(contenedorMK.children.length == 1) {
                 contenedorMK.children[0].remove();
+            }
+
+            if(contenedorMK2.children.length == 1) {
+                contenedorMK2.children[0].remove();
             }
 
             const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
@@ -340,77 +362,245 @@ MCGraficoData = (function(){
         paraTemporada: (objBase)=>{
             const dis1 = objBase.periodizacion[0];
             const dis2 = dis1 + objBase.periodizacion[1];
+            //Dis kilometraje
             const data = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
-                const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
+                const c = i < dis1 ? "rgba(131, 197, 255, 0.2)" : i < dis2 ? "rgba(232, 107, 10, 0.2)" : "rgba(164, 247, 144, 0.2)";
                 return {numSem: i+1, kms: Number(v.textContent), color: c};
             });
+
+            //Intensidad
+            document.querySelectorAll('#PorcentajesIntensidad label.perc-ints').forEach((v,i)=>{
+                data[i].perc = v.textContent.slice(0,-1);
+            })
 
             //Reconstruyendo Semanas
             RutinaGet.getRegeneracionSemanas(moment(objBase.fechaInicio).format('DD/MM/YYYY'), moment(objBase.fechaFin).format('DD/MM/YYYY'), objBase.numSem).forEach((v,i)=>{
                 $fechasCompetencia.forEach(w=>{
                     if(v.fechaInicio<=w.fecha && v.fechaFin>=w.fecha)
                         data[i].bullet = w.prioridad == 1 ? `${_ctx}img/gold-medal.png` : `${_ctx}img/silver-medal.png`;
+
                 })
             })
             return data;
         },
+        paraMini: (porcentajes)=>{
+            const lenP = porcentajes.length;
+            const data = [{title: "General", value: porcentajes[0], color: "#e6f3ff"}, {title: "Específica", value: porcentajes[1], color: "#fae1ce"}, {title: "Precompetitiva", value: porcentajes[2], color: "#edfde9"}];
+            const dF = new Array(lenP);
+            for(let i=0; i<Object.keys(data).length;i++){
+                dF[i] = [];
+                data.forEach((v,ii)=>{
+                    if(ii<lenP)
+                        dF[i].push(v[Object.keys(v)[i]]);
+                });
+            }
+            return dF;
+        }
     }
 })();
 MCGrafico = (function(){
     return {
-        temporada: (kms)=>{
-            AmCharts.makeChart( "GraficoTemporada", {
-                "type": "serial",
-                "theme": "light",
-                "dataProvider": kms,
-                "valueAxes": [ {
-                    "gridColor": "#FFFFFF",
-                    "minimum": 0,
-                    "gridAlpha": 0.2,
-                    "dashLength": 0,
-                } ],
-                "gridAboveGraphs": true,
-                "startDuration": 1,
-                "graphs": [ {
-                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                    "fillColorsField": "color",
-                    "fillAlphas": 0.8,
-                    "lineAlpha": 0.2,
-                    "type": "column",
-                    "valueField": "kms",
-                    "bulletSize": 52,
-                    "customBulletField": "bullet",
-                } ],
-                "chartCursor": {
-                    "categoryBalloonEnabled": false,
-                    "cursorAlpha": 0,
-                    "zoomable": false
-                },
-                "categoryField": "numSem",
-                "categoryAxis": {
-                    "gridPosition": "start",
-                    "gridAlpha": 0,
-                    "tickPosition": "start",
-                    "tickLength": 20,
-                },
-            })
+        temporada: (data)=>{
             document.querySelector('#InicialMacro').classList.remove('hidden');
-        },
-        miniPorcentual: (porcentajes)=>{
-            const data = [{title: "General", value: porcentajes[0], color: "#83c5ff"}, {title: "Específica", value: porcentajes[1], color: "#e86b6b"}, {title: "Precompetitiva", value: porcentajes[2], color: "#a4f790"}];
-            AmCharts.makeChart( "MiniGraficoDistribucion", {
-                "type": "pie",
-                "theme": "light",
-                "dataProvider": data,
-                "titleField": "title",
-                "valueField": "value",
-                "labelRadius": -10,
-                "radius": "42%",
-                "innerRadius": "60%",
-                "labelText": "[[percents]]%",
-                "colorField": "color",
+            document.querySelector('#ContainerVarVolumen').classList.remove('hidden');
+
+            if($chartTemporada.ctx != undefined){
+                $chartTemporada.destroy();
+            }else{
+                Chart.pluginService.register({
+                    afterUpdate: function(chart) {
+                        $idsComp = [];
+                        if(chart.canvas.id === "GraficoTemporada")
+                            data.forEach((v,i)=>{
+                                if(v.bullet != undefined){
+                                    let img = new Image();
+                                    img.src = v.bullet;
+                                    Object.values(chart.config.data.datasets[1]._meta)[0].data[i]._model.pointStyle = img;
+                                    $idsComp.push(i);
+                                }
+                            })
+                    },
+                    afterDatasetsDraw: function(chart) {
+                        if(chart.canvas.id === "GraficoTemporada"){
+                            let ctx = chart.ctx;
+                            chart.data.datasets.forEach(function (dataset, i) {
+                                if (i == 1) {
+                                    let meta = chart.getDatasetMeta(i);
+                                    if (!meta.hidden) {
+                                        meta.data.forEach(function (element, index) {
+                                            // Draw the text in black, with the specified font
+                                            ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                                            let fontSize = 11;
+                                            let fontStyle = 'normal';
+                                            ctx.font = Chart.helpers.fontString(fontSize, fontStyle);
+                                            let dataString = "";
+                                            // Just naively convert to string for now
+                                            $idsComp.filter(v => {
+                                                return v == index
+                                            }).length == 0 ? dataString = dataset.data[index].toString() + "%" : "";
+                                            // Make sure alignment settings are correct
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'middle';
+                                            ctx.fillStyle = '#57889c';
+
+                                            let padding = 5;
+                                            let position = element.tooltipPosition();
+                                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+
+                                        });
+                                    }
+                                }
+                            });
+                        }else{
+                            let ctx = chart.ctx;
+                            chart.data.datasets.forEach(function (dataset, i) {
+                                if (i == 0) {
+                                    let meta = chart.getDatasetMeta(i);
+                                    if (!meta.hidden) {
+                                        meta.data.forEach(function (element, index) {
+                                            // Draw the text in black, with the specified font
+                                            ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                                            let fontSize = 20;
+                                            let fontStyle = 'normal';
+                                            ctx.font = Chart.helpers.fontString(fontSize, fontStyle);
+                                            let dataString = "";
+                                            // Just naively convert to string for now
+                                            dataString = dataset.data[index].toString() + "%";
+                                            // Make sure alignment settings are correct
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'middle';
+                                            ctx.fillStyle = '#4A4E3B ';
+
+                                            let padding = 0;
+                                            let position = element.tooltipPosition();
+                                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            let ctx = document.getElementById('GraficoTemporada').getContext('2d');
+
+            $chartTemporada = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(({numSem})=>numSem),
+                    datasets: [{
+                        label: 'Kilometraje',
+                        data: data.map(({kms})=>kms),
+                        borderColor: "grey",
+                        yAxisID: 'y-axis-1',
+                        backgroundColor: data.map(({color})=>color)
+                        ,
+                    }, {
+                        label: 'Intensidad',
+                        data: data.map(({perc})=>perc),
+                        yAxisID: 'y-axis-2',
+                        // Changes this dataset to become a line
+                        type: 'line',
+                        borderColor: '#73F194',
+                        backgroundColor: '#73F194',
+                        pointBorderColor: '#73F194',
+                        pointBackgroundColor: '#73F194',
+                        pointHoverBackgroundColor: '#73F194',
+                        pointHoverBorderColor: '#73F194',
+                    }]
+                },
+                borderWidth: 1,
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        yAlign: 'bottom',
+                        xAlign: 'center',
+                        callbacks: {
+                            title: function(tooltipItem) {
+                                let mIx;
+                                return $idsComp.filter((v,i) => {
+                                    if(v == tooltipItem[0].index)
+                                        return String(mIx = i);//Se convierte en String para evitar problemas cuando el indice sea 0, ya que js considera en el caso de filter el 0 como undef/null
+                                }).length == 0 ? this._data.labels[tooltipItem[0].index] : $fechasCompetencia[mIx].nombre;
+                            },
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            id: 'y-axis-1',
+                            type: 'linear',
+                            position: 'left',
+                            gridLines: {
+                                display:false
+                            },
+                            ticks: {
+                                suggestedMin: 0,
+                                beginAtZero: true
+                            }
+                        }, {
+                            id: 'y-axis-2',
+                            type: 'linear',
+                            position: 'right',
+                            gridLines: {
+                                color: "#F1F9FD"
+                            },
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: 100,   // minimum will be 0, unless there is a lower value.
+                                // OR //
+                                beginAtZero: true,   // minimum value will be 0.
+                                callback: function(label) {
+                                    return label + "%";
+                                }
+                            },
+                        }]
+                    },
+                    elements:{
+                        line: {
+                            fill: false
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            filter: function(legendItem) {
+                                if (legendItem.datasetIndex === 0) {
+                                    return false;
+                                }
+                                return true;
+                            }
+                        }
+                    },
+                }
             });
         },
+        miniPorcentual: (dF)=>{
+            let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
+
+            if($chartMiniPorc.ctx != undefined){
+                $chartMiniPorc.destroy();
+            }
+            $chartMiniPorc = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: dF[0],
+                    datasets: [{
+                        data: dF[1],
+                        backgroundColor: dF[2],
+                        hoverBackgroundColor: dF[2]
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        }
     }
 })();
 
@@ -423,31 +613,30 @@ MacroCicloSeccion = (function(){
                 all += `<div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">`
                 const fixVal = 100 - pTrainer.porcentajes[i];
                 const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
-                    all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
-                    all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span></div>`;
-                    all +=`<div><label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`;
-                    all +=`<div><label class="padding-5 kms" data-index="${windx}">${((kmsBase*pTrainer.porcentajes[i])/100).toFixed(1)}</label></div>`;
+                all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
+                all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span></div>`;
+                all +=`<div><label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`;
+                all +=`<div><label class="padding-5 kms" data-index="${windx}">${((kmsBase*pTrainer.porcentajes[i])/100).toFixed(1)}</label></div>`;
                 all+= "</div>";
             }
             all+=`</div>`;
             return all;
+        },
 
-
-            /*const colorClass = ["slider-warning", "slider-danger", "slider-success"];
-            let prefix = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`
-            let html = `<div class="col <col>-xs-12 col-sm-12 col-md-12 col-lg-12">`;
-            let porcents = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`
-            let kms = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`
+        bodyPorcentajesIntensidad: (arrCant, pTrainer, ix)=>{
+            const colorClass = ["slider-warning", "slider-danger", "slider-success"];
+            let all = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`;
             for(let i=0; i<arrCant[ix];i++){
+                all += `<div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">`
                 const fixVal = 100 - pTrainer.porcentajes[i];
                 const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
-                prefix+= `<label class="padding-10">${windx<10 ? '0'+windx : windx}</label>`;
-                html+= `<span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span>`;
-                porcents+=`<label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label>`;
-                kms+=`<label class="padding-5 kms" data-index="${windx}">${((kmsBase*pTrainer.porcentajes[i])/100).toFixed(1)}</label>`;
+                all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
+                all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="50"></span></div>`;
+                all +=`<div><label class="padding-5 perc-ints" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`;
+                all+= "</div>";
             }
-            prefix+=`</div>`,porcents+=`</div>`, html+=`</div>`, kms+=`</div>`;
-            return prefix+html+porcents+kms;*/
+            all+=`</div>`;
+            return all;
         }
     }
 })();
@@ -460,6 +649,12 @@ MacroCicloGet = (function(){
             return base.periodizacion.map((v, i)=>{
                 return {indice: v-4, distancia: distancia, etapa:  i+1, porcentajes: porcentajes.splice(0, v).join()}
             })
+        },
+        obtenerPorcentajesIntens: (periodizacion)=>{
+            const totSems = periodizacion.reduce((a, b) => {return a + b;})
+            for(let i=0; i<totSems; i++){
+                $porcentajesIntensidad.push(50);
+            }
         }
     }
 })();

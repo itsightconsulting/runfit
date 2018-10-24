@@ -19,6 +19,11 @@ let $estilosCopiados = [];
 let $statusCopy = false;
 let $kilometrajeBase = [];
 let $semCalculoMacro = {};
+let $edcPorcIntensidad = false;
+let $chartTemporada = {};
+let $chartMiniPorc = {};
+let $preHtmlButton;
+let $idsComp = [];
 
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
@@ -53,7 +58,11 @@ function init(){
     setTimeout(() => {
         $('#MacroFechaInicio').val('2018-10-19');
         $('#MacroFechaFin').val('2019-11-10');
+        FichaSet.setTotalSemanas();
+        obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
     }, 100);
+
+
 
 }
 
@@ -166,10 +175,31 @@ function principalesEventosTabFichaTecnica(e){
         e.preventDefault();
         e.stopPropagation();
         const base = FichaGet.obtenerBase();
-        MCGrafico.temporada(MCGraficoData.paraTemporada(base));
         MacroCiclo.instanciarInformacionTemporada(base);
-        actualizarPorcentajesKilometrajeBD(MacroCicloGet.obtenerPorcentajesParaActualizacion(base));
-    }else if(clases.contains('regular-datos-grafico')){
+        MCGrafico.temporada(MCGraficoData.paraTemporada(base));
+        if(!$edcPorcIntensidad){//En construccion
+            actualizarPorcentajesKilometrajeBD(MacroCicloGet.obtenerPorcentajesParaActualizacion(base));
+        }else{
+        }
+
+    }else if(clases.contains('regular-intensidad')){
+        e.preventDefault();
+        e.stopPropagation();
+        $edcPorcIntensidad = true;
+        $slideType = 2;
+        document.querySelector('#ContainerVarVolumen .volver-kms-distribucion').classList.toggle('hidden');
+        clases.toggle('hidden');
+        document.querySelector('#PorcentajesKilometraje').classList.toggle('hidden');
+        document.querySelector('#PorcentajesIntensidad').classList.toggle('hidden');
+    }else if(clases.contains('volver-kms-distribucion')){
+        e.preventDefault();
+        e.stopPropagation();
+        $edcPorcIntensidad = false;
+        $slideType = 1;
+        document.querySelector('#ContainerVarVolumen .regular-intensidad').classList.toggle('hidden');
+        document.querySelector('#PorcentajesKilometraje').classList.toggle('hidden');
+        document.querySelector('#PorcentajesIntensidad').classList.toggle('hidden');
+        clases.toggle('hidden');
     }
 }
 function principalesEventosFocusOutTabFichaTecnica(e){

@@ -494,3 +494,15 @@ function getHash16Id(schema, id){
 function getParamFromURL(param){
     return new URLSearchParams(window.location.search).get(param);
 }
+
+function blockButton(e){
+    $preHtmlButton = e.innerHTML;
+    e.classList.add('disabled');
+    e.innerHTML = '<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando...</i>';
+}
+
+function unlockButton(e){
+    e.classList.remove('disabled');
+    e.innerHTML = $preHtmlButton;
+    $preHtmlButton = "";
+}
