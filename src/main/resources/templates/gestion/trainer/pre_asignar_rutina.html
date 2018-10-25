@@ -778,8 +778,8 @@
                                                     </div>
                                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
                                                         <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Tránsito)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">2</h1>
-                                                        <span class="text-align-center txt-color-rfb">2 semanas</span>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
                                                     </div>
                                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
                                                         <h5 class="text-align-center txt-color-rfb"><b>Distribución</b></h5>
@@ -886,7 +886,7 @@
                                                         </div>
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
                                                             <label class="input">
-                                                                <input value="00:00:00" type="time" id="TiempoControl" step="1"/>
+                                                                <input value="00:00:00" type="time" id="TiempoControl" class="tiempo-control" step="1"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -913,9 +913,10 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">T.C.S.</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
                                                             <label class="input">
-                                                                <input type="text"/>
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>TCS</h6></i>
+                                                                <input type="number" id="TcsControl"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -931,7 +932,7 @@
                                                         <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                             <label class="input">
                                                                 <i class="icon-append txt-color-blue" style="font-style: normal"><h6>%</h6></i>
-                                                                <input type="number" id="FactorDesentrenamientoControl"/>
+                                                                <input type="number" id="FactorDesentrenamientoControl" class="factor-desentrenamiento"/>
                                                             </label>
                                                         </div>
                                                         <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
@@ -947,7 +948,7 @@
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
                                                         <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                             <label class="input padding-top-5">
-                                                                <input value="00:00:00" type="time" id="TiempoDesentrControl" step="1"/>
+                                                                <input value="00:00:00" type="time" id="TiempoDesentrControl" step="1" readonly="readonly"/>
                                                             </label>
                                                         </div>
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
@@ -1013,9 +1014,10 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">T.C.S.</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
                                                             <label class="input">
-                                                                <input type="text"/>
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>TCS</h6></i>
+                                                                <input type="number" id="TcsCompetencia"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1031,7 +1033,7 @@
                                                         <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                             <label class="input">
                                                                 <i class="icon-append txt-color-blue" style="font-style: normal"><h6>%</h6></i>
-                                                                <input type="number"/>
+                                                                <input type="number" id="FactorMejoria" readonly="readonly"/>
                                                             </label>
                                                         </div>
                                                         <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
@@ -1048,7 +1050,7 @@
                                                         <label class="label padding-top-5">Ritmo por kilómetro proyectado para la competencia:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoXKilometro" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoXKilometro" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1056,7 +1058,7 @@
                                                         <label class="label padding-top-5">Ritmo de competencia actual:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoCompetenciaActual" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoCompetenciaActual" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1064,7 +1066,7 @@
                                                         <label class="label padding-top-5">Ritmo de entrenamiento aeróbico actual:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoActual" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoActual" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1072,7 +1074,7 @@
                                                         <label class="label padding-top-5">Ritmo de entrenamiento aeróbico precompetitivo:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoPreComp" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoPreComp" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1082,7 +1084,7 @@
                                                     <div class="col col-md-4 padding-top-5">
                                                         <label class="input">
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>m</h6></i>
-                                                            <input type="number" id="LongitudPasoCA"/></label>
+                                                            <input type="number" id="LongitudPasoCA" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1092,7 +1094,7 @@
                                                     <div class="col col-md-4 padding-top-5">
                                                         <label class="input">
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
-                                                            <input type="number" id="KilometrajeTotalTemporada"/>
+                                                            <input type="number" id="KilometrajeTotalTemporada" readonly="readonly"/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1103,7 +1105,7 @@
                                                     <div class="col col-md-4 padding-top-5">
                                                         <label class="input">
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
-                                                            <input type="number" id="KilometrajePromedioSemanal"/>
+                                                            <input type="number" id="KilometrajePromedioSemanal" readonly="readonly"/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1113,22 +1115,22 @@
                                                     <label class="label text-align-center">Preparación General</label>
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
-                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                        <input type="time" class="text-align-right rcps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
-                                                        <input type="time" class="text-align-right raps"/></label>
+                                                        <input type="time" class="text-align-right raps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>C.D.C.</h6></i>
-                                                        <input type="number" class="text-align-center cdcs"/></label>
+                                                        <input type="number" class="text-align-center cdcs" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>L.P.C.</h6></i>
-                                                        <input type="number" class="text-align-center lpcs" step="0.1"/></label>
+                                                        <input type="number" class="text-align-center lpcs" step="0.1" readonly="readonly"/></label>
                                                 </div>
                                             </section>
                                             <section class="col col-2">
@@ -1136,22 +1138,22 @@
                                                     <label class="label text-align-center">Preparación Específica</label>
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
-                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                        <input type="time" class="text-align-right rcps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
-                                                        <input type="time" class="text-align-right raps"/></label>
+                                                        <input type="time" class="text-align-right raps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>C.D.C.</h6></i>
-                                                        <input type="number" class="text-align-center cdcs"/></label>
+                                                        <input type="number" class="text-align-center cdcs" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>L.P.C.</h6></i>
-                                                        <input type="number" class="text-align-center lpcs" step="0.1"/></label>
+                                                        <input type="number" class="text-align-center lpcs" step="0.1" readonly="readonly"/></label>
                                                 </div>
                                             </section>
                                             <section class="col col-2">
@@ -1159,22 +1161,22 @@
                                                     <label class="label text-align-center">Preparación Competitiva</label>
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
-                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                        <input type="time" class="text-align-right rcps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
-                                                        <input type="time" class="text-align-right raps"/></label>
+                                                        <input type="time" class="text-align-right raps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>C.D.C.</h6></i>
-                                                        <input type="number" class="text-align-center cdcs"/></label>
+                                                        <input type="number" class="text-align-center cdcs" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>L.P.C.</h6></i>
-                                                        <input type="number" class="text-align-center lpcs" step="0.1"/></label>
+                                                        <input type="number" class="text-align-center lpcs" step="0.1" readonly="readonly"/></label>
                                                 </div>
                                             </section>
                                         </div>

@@ -74,6 +74,12 @@ BaseCalculo = (function(){
             {n: "15 KM", factor: 15},
             {n: "21 KM", factor: 21},
             {n: "42 KM", factor: 42}
+        ],
+        porcentajesPeriodoTransito: [
+            {n: "10 KM", porc: [100]},
+            {n: "15 KM", porc: []},
+            {n: "21 KM", porc: [60, 100]},
+            {n: "42 KM", porc: [50, 75, 100]}
         ]
     }
 })();
@@ -290,6 +296,25 @@ Calc = (function(){
                 return roundNumber(1000/((ritmosCompetencia[i].preciso/60)*ritmosCadencia[i].preciso),2);
             })
         },
+        getTCSs: (tcsActual, tcsCompetencia, base)=>{
+            let tcsBase = tcsCompetencia - tcsActual ;
+            const tcss = [];
+            let it = 0;
+            base.periodizacion.forEach((v,i)=>{
+                for(let k=0; k<v; k++){
+                    if(it == 0){
+                        tcss.push({factor: Math.round(tcsActual), preciso: Math.round(tcsActual)})
+                    } else {
+                        const anterior = tcss[it-1].preciso;
+                        const x1 = base.distribucionPorcentaje[i]/v;
+                        const final = anterior + tcsBase * x1;
+                        tcss.push({factor: Math.round(final), preciso: final})
+                    }
+                    it++;
+                }
+            });
+            return tcss;
+        },
         getRitmosAerobicos: ()=>{
             const MZC = RitmosSZC.getMetricasZonasCardiacas();
             const Z3 = MZC[2].indicadores;//Se utiliza la zona de intensidad Z3 siempre
@@ -312,6 +337,10 @@ Calc = (function(){
             $('#RitmoAerobicoPreComp').val(String(ritmoAerobicoPreComp).toHHMMSSM());//Siempre va ser Z3 == index 2
 
             return {actual: ritmoAerobicoActual, preCompetitivo: ritmoAerobicoPreComp};
+        },
+        getFactorMejoria: (metricasVelocidades, base)=>{
+            const ixMV = base.distancia == 10 ? 4 : base.distancia == 15 ? 5 : base.distancia == 21 ? 6 : 7;
+            return ((1 - (metricasVelocidades[ixMV].indicadores[base.numSem - 1].p.toSeconds() / metricasVelocidades[ixMV].indicadores[0].p.toSeconds())) * 100).toFixed(1);
         }
     }
 })();

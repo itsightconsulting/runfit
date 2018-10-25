@@ -128,22 +128,23 @@ FichaDOMQueries = (function(){
 MacroCiclo = (function(){
     return {
         comprobar: (e)=>{
-            blockButton(e.target);
             const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
             const contenedorMK2 = document.querySelector('#PorcentajesIntensidad');//metricas de kilometraje
             if(MacroCiclo.validacion(contenedorMK, contenedorMK2)) {
+                blockButton(e.target);
+                document.querySelector('#TiempoDesentrControl').value =  String(document.getElementById('TiempoControl').value.toSeconds() + (Number(document.getElementById('TiempoControl').value.toSeconds()) * Number(document.getElementById('FactorDesentrenamientoControl').value).toPercentage())).toHHMMSSM();
                 //Actualizando calculos bases en caso se hayan modificado algunos otros parametros
                 Calc.setRestantes();
                 const ritmosAerobicos = Calc.getRitmosAerobicos();
-                const base = FichaGet.obtenerBase();
-                instanciarPorcentajesKilometraje(base.distancia).then(porcentajes=>{
+                $baseAfterComprobacion = FichaGet.obtenerBase();
+                instanciarPorcentajesKilometraje($baseAfterComprobacion.distancia).then(porcentajes=>{
                     //Filtrando porcentajes
                     const porcentajesTrainer = [{},{},{}];
                     for(let i=0; i<porcentajesTrainer.length;i++){
-                        porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[base.periodizacion[i]-4];//1+ por que el index comienza en 0
+                        porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[$baseAfterComprobacion.periodizacion[i]-4];//1+ por que el index comienza en 0
                     }
-                    contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo(base, porcentajesTrainer)));
-                    contenedorMK2.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesIntensidad(base, porcentajesTrainer)));
+                    contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo($baseAfterComprobacion, porcentajesTrainer)));
+                    contenedorMK2.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesIntensidad($baseAfterComprobacion, porcentajesTrainer)));
                     //ModificandoBase en caso semana inicial y final no esten completas
                     $semCalculoMacro = CalcProyecciones.informacionSemanas();
                     if($semCalculoMacro.diasPrimeraSemana < 7) {
@@ -162,11 +163,11 @@ MacroCiclo = (function(){
                     }
                     $('.slider').slider();
                     //Calculando las mejoras de velocidades segun semana
-                    const arrTiempos = Calc.getDistribucionTiempoPlanificado(base);
+                    const arrTiempos = Calc.getDistribucionTiempoPlanificado($baseAfterComprobacion);
                     const copyArrTiempos = JSON.parse(JSON.stringify(arrTiempos));
                     const RCPs = [];
                     //Separando máximo y mínimos por etapa de preparación
-                    base.periodizacion.forEach(v=>{
+                    $baseAfterComprobacion.periodizacion.forEach(v=>{
                         RCPs.push({first: copyArrTiempos[0].factor, last: copyArrTiempos[v-1].factor});
                         copyArrTiempos.splice(0, v);
                     });
@@ -175,33 +176,47 @@ MacroCiclo = (function(){
                         v.value = RCPs[i].last.substring(3);
                     });
 
-                    const ritmosEntreAero = Calc.getRitmosEntrenamientoAerobico(ritmosAerobicos.actual, ritmosAerobicos.preCompetitivo, base);
+                    const ritmosEntreAero = Calc.getRitmosEntrenamientoAerobico(ritmosAerobicos.actual, ritmosAerobicos.preCompetitivo, $baseAfterComprobacion);
                     let acc = 0;
                     document.querySelectorAll('#EstadisticasAdicionales .raps').forEach((v,i)=>{
-                        v.value = ritmosEntreAero[(acc+base.periodizacion[i])-1].factor.substring(3);
-                        acc+=base.periodizacion[i];
+                        v.value = ritmosEntreAero[(acc+$baseAfterComprobacion.periodizacion[i])-1].factor.substring(3);
+                        acc+=$baseAfterComprobacion.periodizacion[i];
                     });
 
                     const cadenciaActual = document.querySelector('#CadenciaControl').value;
                     const cadenciaCompetencia = document.querySelector('#CadenciaCompetencia').value;
-                    const ritmosCadencia = Calc.getRitmosCadenciaCompetencia(cadenciaActual, cadenciaCompetencia, base);
+                    const ritmosCadencia = Calc.getRitmosCadenciaCompetencia(cadenciaActual, cadenciaCompetencia, $baseAfterComprobacion);
 
                     acc = 0;
                     document.querySelectorAll('#EstadisticasAdicionales .cdcs').forEach((v,i)=>{
-                        v.value = ritmosCadencia[(acc+base.periodizacion[i])-1].factor;
-                        acc+=base.periodizacion[i];
+                        v.value = ritmosCadencia[(acc+$baseAfterComprobacion.periodizacion[i])-1].factor;
+                        acc+=$baseAfterComprobacion.periodizacion[i];
                     });
 
                     acc = 0;
                     const longitudesPaso = Calc.getLongitudesDePaso(arrTiempos, ritmosCadencia);
                     document.querySelectorAll('#EstadisticasAdicionales .lpcs').forEach((v,i)=>{
-                        v.value = longitudesPaso[(acc+base.periodizacion[i])-1];
-                        acc+=base.periodizacion[i];
+                        v.value = longitudesPaso[(acc+$baseAfterComprobacion.periodizacion[i])-1];
+                        acc+=$baseAfterComprobacion.periodizacion[i];
                     });
 
+
+                    const tcsActual = document.querySelector('#TcsControl').value;
+                    const tcsCompetencia = document.querySelector('#TcsCompetencia').value;
+                    const valoresTCSs = Calc.getTCSs(tcsActual, tcsCompetencia, $baseAfterComprobacion);
+                    acc = 0;
+                    document.querySelectorAll('#EstadisticasAdicionales .cdcs').forEach((v,i)=>{
+                        v.value = valoresTCSs[(acc+$baseAfterComprobacion.periodizacion[i])-1].factor;
+                        acc+=$baseAfterComprobacion.periodizacion[i];
+                    });
+
+                    //Metricas velocidades y factor de mejora
+                    const mVC = RitmosSVYC. getMetricasVelocidades();
+                    document.querySelector('#FactorMejoria').value = Calc.getFactorMejoria(mVC, $baseAfterComprobacion);
+
                     //Graficos - Información relacionada
-                    MacroCiclo.instanciarInformacionTemporada(base);
-                    MCGrafico.temporada(MCGraficoData.paraTemporada(base));
+                    MacroCiclo.instanciarInformacionTemporada($baseAfterComprobacion);
+                    MCGrafico.temporada(MCGraficoData.paraTemporada($baseAfterComprobacion));
                     document.querySelector('#btnGenerarRutina').classList.remove('disabled');
                     document.querySelector('#btnGenerarRutina').setAttribute('title','Generar rutina');
                     unlockButton(e.target);
@@ -227,8 +242,35 @@ MacroCiclo = (function(){
                 v.querySelector('span').textContent = base.periodizacion[i] +" semanas";
                 base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
             });
+            console.log(base.porcentajesKms);
             document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
             document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
+            MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
+        },
+        actualizarInformacionKilometrajeTemporada: ()=>{
+            const base = $baseAfterComprobacion;
+            const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
+            const sumKms = allKms.reduce((a,b)=>{return a+b});
+            const kmsParts = base.periodizacion.map((v)=>{
+                return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
+            });
+            base.porcentajesKms = [];
+
+            const kiloTotal = document.querySelector('#KilometrajeTotal');
+            kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
+            document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
+                const kmsEsp = parseFloat(kmsParts[i].reduce((a,b)=>{return a+b}))
+                v.querySelector('h1').textContent = kmsEsp.toFixed(1);
+                v.querySelector('span').textContent = base.periodizacion[i] +" semanas";
+                base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
+            });
+            document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
+            document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
+
+            $chartMiniPorc.data.datasets[0].data[0] = base.porcentajesKms[0];
+            $chartMiniPorc.data.datasets[0].data[1] = base.porcentajesKms[1];
+            $chartMiniPorc.data.datasets[0].data[2] = base.porcentajesKms[2];
+            $chartMiniPorc.update();
             MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
         },
         mostrarPorcentajesKilo: (base, pTrainer)=>{
@@ -374,12 +416,17 @@ MCGraficoData = (function(){
             })
 
             //Reconstruyendo Semanas
-            RutinaGet.getRegeneracionSemanas(moment(objBase.fechaInicio).format('DD/MM/YYYY'), moment(objBase.fechaFin).format('DD/MM/YYYY'), objBase.numSem).forEach((v,i)=>{
+            const t = getOnlyDate();//Pendiente
+            RutinaGet.getRegeneracionSemanas(moment(objBase.fechaInicio).format('DD/MM/YYYY'), moment(objBase.fechaFin).format('DD/MM/YYYY'), objBase.numSem).forEach((v, i, k)=>{
                 $fechasCompetencia.forEach(w=>{
                     if(v.fechaInicio<=w.fecha && v.fechaFin>=w.fecha)
                         data[i].bullet = w.prioridad == 1 ? `${_ctx}img/gold-medal.png` : `${_ctx}img/silver-medal.png`;
-
                 })
+
+                if(t>=v.fechaFin)
+                    data[i].avance=0;
+                else if(t>=v.fechaInicio)
+                    data[i].avance=0;
             })
             return data;
         },
@@ -401,8 +448,22 @@ MCGraficoData = (function(){
 MCGrafico = (function(){
     return {
         temporada: (data)=>{
+
+            const avances =  data.filter(v=>{//Provisional
+                return (v.avance != undefined)
+            }).map(({avance})=>avance);
+            avances.push(0);
+
             document.querySelector('#InicialMacro').classList.remove('hidden');
             document.querySelector('#ContainerVarVolumen').classList.remove('hidden');
+            Chart.controllers.LineNoOffset = Chart.controllers.line.extend({
+                updateElement: function(point, index, reset) {
+                    Chart.controllers.line.prototype.updateElement.call(this, point, index, reset);
+                    const meta = this.getMeta();
+                    const xScale = this.getScaleForId(meta.xAxisID);
+                    point._model.x = xScale.getPixelForValue(undefined, index-0.5);
+                },
+            });
 
             if($chartTemporada.ctx != undefined){
                 $chartTemporada.destroy();
@@ -482,6 +543,26 @@ MCGrafico = (function(){
                                 }
                             });
                         }
+                    },
+                    beforeDraw: function(chartInstance) {
+                        // check and see if the plugin is active (its active if the option exists)
+                        if (chartInstance.config.options.tooltips.onlyShowForDatasetIndex) {
+                            // get the plugin configuration
+                            var tooltipsToDisplay = chartInstance.config.options.tooltips.onlyShowForDatasetIndex;
+
+                            // get the active tooltip (if there is one)
+                            var active = chartInstance.tooltip._active || [];
+
+                            // only manipulate the tooltip if its just about to be drawn
+                            if (active.length > 0) {
+                                // first check if the tooltip relates to a dataset index we don't want to show
+                                if (tooltipsToDisplay.indexOf(active[0]._datasetIndex) === -1) {
+                                    // we don't want to show this tooltip so set it's opacity back to 0
+                                    // which causes the tooltip draw method to do nothing
+                                    chartInstance.tooltip._model.opacity = 0;
+                                }
+                            }
+                        }
                     }
                 });
             }
@@ -511,6 +592,20 @@ MCGrafico = (function(){
                         pointBackgroundColor: '#73F194',
                         pointHoverBackgroundColor: '#73F194',
                         pointHoverBorderColor: '#73F194',
+                    }, {
+                        label: 'Progreso',
+                        data: avances,
+                        yAxisID: 'y-axis-3',
+                        // Changes this dataset to become a line
+                        type: 'LineNoOffset',
+                        borderWidth: 3,
+                        borderColor: '#f0da1c',
+                        backgroundColor: '#f0da1c',
+                        pointBorderColor: '#f0da1c',
+                        pointBackgroundColor: '#f0da1c',
+                        pointHoverBackgroundColor: 'transparent',
+                        pointHoverBorderColor: 'transparent',
+                        pointRadius: 0,
                     }]
                 },
                 borderWidth: 1,
@@ -519,6 +614,7 @@ MCGrafico = (function(){
                     tooltips: {
                         yAlign: 'bottom',
                         xAlign: 'center',
+                        onlyShowForDatasetIndex: [0, 1],
                         callbacks: {
                             title: function(tooltipItem) {
                                 let mIx;
@@ -539,25 +635,50 @@ MCGrafico = (function(){
                             },
                             ticks: {
                                 suggestedMin: 0,
-                                beginAtZero: true
+                                beginAtZero: true,
                             }
                         }, {
                             id: 'y-axis-2',
                             type: 'linear',
                             position: 'right',
                             gridLines: {
-                                color: "#F1F9FD"
+                                color: "#F1F9FD",
+                                /*display: false,*/
+
                             },
                             ticks: {
+                                display: false,
                                 suggestedMin: 0,
                                 suggestedMax: 100,   // minimum will be 0, unless there is a lower value.
                                 // OR //
                                 beginAtZero: true,   // minimum value will be 0.
+                                fontColor: "rgba(74, 78, 59, 1)",
                                 callback: function(label) {
                                     return label + "%";
                                 }
                             },
-                        }]
+                        }, {
+                            id: 'y-axis-3',
+                            type: 'linear',
+                            position: 'right',
+                            gridLines: {
+                                display: false,
+                            },
+                            ticks: {
+                                display: false,
+                                suggestedMin: 0,
+                                beginAtZero: true,   // minimum value will be 0.
+                            },
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                userCallback: function(item, index) {
+                                    if (!(index % 4)) return item;
+                                },
+                                autoSkip: false,
+                                fontColor: "rgba(74, 78, 59, 1)"
+                            },
+                        }],
                     },
                     elements:{
                         line: {
@@ -613,16 +734,15 @@ MacroCicloSeccion = (function(){
                 all += `<div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">`
                 const fixVal = 100 - pTrainer.porcentajes[i];
                 const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
-                all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
-                all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span></div>`;
-                all +=`<div><label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`;
                 all +=`<div><label class="padding-5 kms" data-index="${windx}">${((kmsBase*pTrainer.porcentajes[i])/100).toFixed(1)}</label></div>`;
+                all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="${kmsBase}"></span></div>`;
+                all +=`<div><label class="padding-5 perc hidden" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`
+                all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
                 all+= "</div>";
             }
             all+=`</div>`;
             return all;
         },
-
         bodyPorcentajesIntensidad: (arrCant, pTrainer, ix)=>{
             const colorClass = ["slider-warning", "slider-danger", "slider-success"];
             let all = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`;
@@ -630,9 +750,9 @@ MacroCicloSeccion = (function(){
                 all += `<div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">`
                 const fixVal = 100 - pTrainer.porcentajes[i];
                 const windx = ix==0?i+1:ix==1?(i+1)+arrCant[ix-1]:(arrCant.reduce((a, b)=>{return a+b}))-arrCant[ix]+i+1;
-                all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
-                all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="50"></span></div>`;
                 all +=`<div><label class="padding-5 perc-ints" data-index="${windx}">${pTrainer.porcentajes[i]}%</label></div>`;
+                all +=`<div><span class="padding-5 text-align-left"><input type="text" class="slider ${colorClass[ix]}" value="" data-slider-min="0" data-slider-max="100" data-slider-step="2" data-slider-value="${fixVal}" data-slider-orientation="vertical" data-slider-selection="after" data-slider-handle="round" data-slider-tooltip="hide" data-index="${windx}" data-kms="50"></span></div>`;
+                all +=`<div><label class="padding-10">${windx<10 ? '0'+windx : windx}</label></div>`;
                 all+= "</div>";
             }
             all+=`</div>`;
@@ -668,10 +788,13 @@ FichaSeeder = (function(){
             tiempoControl.value = "00:21:00";
             document.querySelector('#CadenciaControl').value = 174;
             factorDesentrenamientoControl.value = 3;
+            document.querySelector('#TcsControl').value = 182;
+
 
             document.querySelector('#TiempoCompetencia').value = "04:10:00";
             document.querySelector('#CadenciaCompetencia').value = 185;
             document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
+            document.querySelector('#TcsCompetencia').value = 191;
         }
     }
 })();

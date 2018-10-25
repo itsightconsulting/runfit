@@ -24,6 +24,8 @@ let $chartTemporada = {};
 let $chartMiniPorc = {};
 let $preHtmlButton;
 let $idsComp = [];
+let $antPorcKilo = "";
+let $baseAfterComprobacion;
 
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
@@ -59,7 +61,9 @@ function init(){
         $('#MacroFechaInicio').val('2018-10-19');
         $('#MacroFechaFin').val('2019-11-10');
         FichaSet.setTotalSemanas();
-        obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
+        setTimeout(() => {
+            obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
+        }, 500);
     }, 100);
 
 
@@ -106,23 +110,27 @@ function instanciarDatosFitnessCliente(){
 
 async function instanciarPorcentajesKilometraje(distancia){
     return new Promise((res, rej)=>{
-        $.ajax({
-            type: 'GET',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'calculo/porcentajes-kilo/obtener/'+distancia,
-            dataType: "json",
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    notificacionesRutinaSegunResponseCode(data);
-                    res(data);
-                }
-            },
-            error: function (xhr) {
-                rej("fail");
-                exception(xhr);
-            },
-            complete: function () {}
-        });
+        if($antPorcKilo.length == 2 && $antPorcKilo[0] == distancia)
+            res($antPorcKilo[1]);
+        else
+            $.ajax({
+                type: 'GET',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'calculo/porcentajes-kilo/obtener/'+distancia,
+                dataType: "json",
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        notificacionesRutinaSegunResponseCode(data);
+                        res(data);
+                        $antPorcKilo = [distancia, data];
+                    }
+                },
+                error: function (xhr) {
+                    rej("fail");
+                    exception(xhr);
+                },
+                complete: function () {}
+            });
     })
 }
 
@@ -217,6 +225,12 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     }
     else if(clases.contains('tcs-calc')){
         CalcProyecciones.calcular(input, 4);
+    }
+    else if(clases.contains('tiempo-control')){
+
+    }
+    else if(clases.contains('factor-desentrenamiento')){
+
     }
 }
 

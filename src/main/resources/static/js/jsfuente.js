@@ -425,8 +425,8 @@ function parseNumberToHours(minutos){
     let m = minutos%60;
     return h+ "' "+ (m%60<10?"0"+String(m%60):m%60) + "\"";
 }
-function parseNumberToDecimal(kms, decimals){
-    return parseFloat(Number(kms)).toFixed(decimals);
+function parseNumberToDecimal(num, decimals){
+    return parseFloat(Number(num)).toFixed(decimals);
 }
 
 function validUUID(urlUuid){
