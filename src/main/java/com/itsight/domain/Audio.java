@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -77,7 +78,23 @@ public class Audio extends AuditingEntity {
     @ManyToMany(mappedBy = "lstAudio")
     private Set<Producto> lstProducto;*/
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "audio")
+    private List<VideoAudioFavorito> lstFavoritos;
+
+    @Transient
+    private int seleccionado;
+
+    public void setSeleccionado(int seleccionado) {
+        this.seleccionado = seleccionado;
+    }
+
+
     public Audio() {
+    }
+
+    public Audio(int id) {
+        this.id = id;
     }
 
     public Audio(String nombre, String descripcion, String peso, String duracion, boolean flagActivo,UUID uuid, String rutaWeb, String rutaReal,int tpAudioId) {

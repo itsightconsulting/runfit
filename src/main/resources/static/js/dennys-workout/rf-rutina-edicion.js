@@ -1774,6 +1774,25 @@ function principalesEventosTabGrupoVideos(e){
         $tipoMedia = TipoElemento.VIDEO;
         cambiarATabRutina();
     }
+    else if(clases.contains('ck-favorito-video')){
+        e.preventDefault();
+        e.stopPropagation();
+        parent = input.parentElement;
+        var idvideo = parent.querySelector('.ck-favorito-video').getAttribute('data-id');
+        //console.log(id);
+        var selected = $(parent.querySelector('.ck-favorito-video')).attr("data-selected");
+        var editaragregar = 0;
+        if(selected == "1"){
+            $(parent.querySelector('.ck-favorito-video')).css("color","#3276b1");
+            $(parent.querySelector('.ck-favorito-video')).attr("data-selected", "0");
+            editaragregar = 0;
+        }else {
+            $(parent.querySelector('.ck-favorito-video')).attr("data-selected", "1");
+            $(parent.querySelector('.ck-favorito-video')).css("color","#d8d807");
+            editaragregar = 1;
+        }
+        agregarEliminarFavorito(idvideo,0,editaragregar);
+    }
 }
 
 function principalesEventosTabGrupoAudios(e){
@@ -1814,6 +1833,47 @@ function principalesEventosTabGrupoAudios(e){
         const nombreMedia = li.textContent.trim();
         $audiosElegidos.push([ix, media, nombreMedia]);
     }
+    else if(clases.contains('ck-favorito-audio')){
+        e.preventDefault();
+        e.stopPropagation();
+        parent = input.parentElement;
+        var idaudio = parent.querySelector('.ck-favorito-audio').getAttribute('data-id');
+        //console.log(id);
+        var selected = $(parent.querySelector('.ck-favorito-audio')).attr("data-selected");
+        var editaragregar = 0;
+        if(selected == "1"){
+            $(parent.querySelector('.ck-favorito-audio')).css("color","#3276b1");
+            $(parent.querySelector('.ck-favorito-audio')).attr("data-selected", "0");
+            editaragregar = 0;
+        }else {
+            $(parent.querySelector('.ck-favorito-audio')).attr("data-selected", "1");
+            $(parent.querySelector('.ck-favorito-audio')).css("color","#d8d807");
+            editaragregar = 1;
+        }
+        agregarEliminarFavorito(0,idaudio,editaragregar);
+    }
+
+}
+
+function agregarEliminarFavorito(idvideo,idaudio,selected) {
+    let params ={};
+    params.videoid = parseInt(idvideo);
+    params.audioid = parseInt(idaudio);
+    params.addedit = selected;
+
+        $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/adddeletefavorito",
+        dataType: "json",
+        data: params,
+        success: function (data, textStatus) {
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
 }
 
 function principalesEventosTabFichaTecnica(e){
@@ -2627,4 +2687,43 @@ function principalesMiniEditor(e){
         e.stopPropagation();
         RutinaEditor.agregarOeliminarEstiloToElemento(ix, 4);
     }
+}
+
+function updateAudioFavoritos() {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/obtenermisfavoritos",
+        dataType: "json",
+        success: function (data) {
+            if(data != null){
+                console.log(data);
+                let listaAudios = [];
+                let listaVideos = [];
+                $.each(data,function (i,item) {
+                    if(item.audio != null){
+                        listaAudios.push(item.audio);
+                    }else{
+                        listaVideos.push(item.video);
+                    }
+                });
+
+                $.each(listaAudios,function (i,item) {
+                    $("#liaudio"+item.id).attr("data-selected", "1");
+                    $("#liaudio"+item.id).css("color","#d8d807");
+                });
+
+                $.each(listaVideos,function (i,item) {
+                    $("#livideo"+item.id).attr("data-selected", "1");
+                    $("#livideo"+item.id).css("color","#d8d807");
+                });
+
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+        }
+    })
 }

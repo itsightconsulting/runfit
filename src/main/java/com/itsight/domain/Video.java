@@ -88,7 +88,18 @@ public class Video extends AuditingEntity implements Identifiable {
     @JsonInclude(Include.NON_DEFAULT)
     private String nombreSubCat;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
+    private List<VideoAudioFavorito> lstFavoritos;
+
+
+
+
     public Video(){ }
+
+    public Video(int id) {
+        this.id = id;
+    }
 
     public Video(String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, int subCatVideoId, boolean flagActivo) {
         this.nombre = nombre;

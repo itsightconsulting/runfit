@@ -523,9 +523,19 @@
                                                     <h6 class="font-lg" th:text="${ta.nombre}"></h6>
                                                     <ul style="padding-left:20px;list-style-type: none;"
                                                         th:each="a : ${ta.lstAudio}">
-                                                        <li class="font-md"><a class="elegir-audio"
+                                                        <li class="font-md">
+                                                            <a class=""
+                                                               href="javascript:void(0);"
+                                                               th:inline="text">
+                                                            <i data-placement="bottom" rel="tooltip"
+                                                               data-original-title="Favorito"
+                                                               class="ck-favorito-audio fa fa-star fa-fw"
+                                                               th:attr="data-id=${a.id}"></i></a>
+
+                                                            <a class="elegir-audio"
                                                                                href="javascript:void(0);"
-                                                                               th:inline="text"><i
+                                                                               th:inline="text">
+                                                            <i
                                                                 data-placement="bottom" rel="tooltip"
                                                                 data-original-title="Reproducir"
                                                                 class="reprod-audio fa fa-music fa-fw"

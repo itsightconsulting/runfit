@@ -633,6 +633,7 @@
     .section-dia{
         text-align: center;
         width: 9%;
+        font-size: 14px;
         margin: 0.5%;
     }
 
@@ -641,6 +642,7 @@
         width: 9%;
         margin: 0.5%;
         color: grey;
+        font-size: 14px;
     }
 
     .section-dia-back{
@@ -712,9 +714,45 @@
     .heading-dia{
         border-radius: 22px 22px 0 0;
     }
-    .label-success{
+    .label-success {
         margin-left: 10px;
     }
+
+        .divVideo{
+            width: 65%;
+            padding-right: 30%;
+            float: right;
+        }
+    .close{
+        color: #f2594a !important;
+        opacity:2 !important;
+    }
+
+    .divAudio{
+        width: 65%;
+        padding-right: 30%;
+        float: right;
+    }
+        .spantime{
+            font-size: 21px;
+        }
+
+
+
+    .spantime-height{
+        line-height:1;
+    }
+        .span-time{
+            color: #5de6a2;
+        }
+
+    .span-time-header{
+        color: #b1382c;
+    }
+
+.td-abajo{
+    padding-bottom: 6px !important;
+}
 </style>
 
 </head>
@@ -765,31 +803,32 @@
                 </div>
             </div>
             <div class="div-table">
-                <table>
+                <table id="tbMetricas">
                     <tr>
-                        <td class="td-table"><span class="">Kilometraje Semanal</span></td>
-                        <td class="td-table"><span class="">Horas Semanales</span></td>
+                        <td class="td-table" colspan="2"><span class="">Kilometraje Semanal</span></td>
+                        <td class="td-table" colspan="2"><span class="">Horas Semanales</span></td>
                     </tr>
                     <tr>
-                        <td class="td-table"><span class="span-table" id="spanKilometrajeSemanal"></span></td>
-                        <td class="td-table"><span class="span-table" id="spanHorasSemanales"></span></td>
+                        <td class="td-table" colspan="2"><span class="span-table" id="spanKilometrajeSemanal"></span></td>
+                        <td class="td-table" colspan="2"><span class="span-table" id="spanHorasSemanales"></span></td>
                     </tr>
                     <tr>
-                        <td class="td-table"><span class="">Kilometraje calórico</span></td>
-                        <td class="td-table"><span class="">Calorías semanales</span></td>
+                        <td class="td-table" colspan="2"><span class="">Kilometraje calórico</span></td>
+                        <td class="td-table" colspan="2"><span class="">Calorías semanales</span></td>
                     </tr>
                     <tr>
-                        <td class="td-table"><span class="span-table" id="spanKilometrajeCalorico"></span></td>
-                        <td class="td-table"><span class="span-table" id="spanCaloriasSemanales"></span></td>
+                        <td class="td-table" colspan="2"><span class="span-table" id="spanKilometrajeCalorico"></span></td>
+                        <td class="td-table" colspan="2"><span class="span-table" id="spanCaloriasSemanales"></span></td>
                     </tr>
                     <tr>
-                        <td class="td-table"><span class="">Cumplimiento</span></td>
-                        <td class="td-table"><span class="">Kilometraje restar</span></td>
+                        <td class="td-table" colspan="2"><span class="">Cumplimiento</span></td>
+                        <td class="td-table" colspan="2"><span class="">Kilometraje restar</span></td>
                     </tr>
                     <tr>
-                        <td class="td-table"><div id="graphCumplimiento"></div></td>
-                        <td class="td-table"><div id="graphKilometraje"></div></td>
+                        <td class="td-table" colspan="2"><div id="graphCumplimiento"></div></td>
+                        <td class="td-table" colspan="2"><div id="graphKilometraje"></div></td>
                     </tr>
+
                 </table>
             </div>
             <div style="margin: 4%;">
@@ -797,12 +836,19 @@
                     <div class="of_carousel" id="RutinaSemana">
                         <!-- D I A S  D E  S E M A N A -->
                     </div>
-                </div>
-            </div>
+                    <div class="" id="Metricas">
+                        <!-- D I A S  D E  S E M A N A -->
+                    </div>
+                    <div class="divVideo">
+                     </div>
+                     <div class="divAudio">
+                     </div>
+                 </div>
+             </div>
 
-        </fieldset>
-    </div>
-    <!-- END MAIN CONTENT -->
+         </fieldset>
+     </div>
+     <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
 <!-- PAGE FOOTER -->
@@ -827,7 +873,11 @@
     var color_array = ['#7CA69E', '#F2594A', '#F28C4B', '#7E6F6A', '#36AFB2', '#9c6db2', '#d24a67', '#89a958', '#00739a', '#BDBDBD'];
 
 
-    $('[data-toggle="popover"]').popover();
+    $('.divVideo').hide();
+    $('.divAudio').hide();
+
+    setTimeout(() => $('[data-toggle="popover"]').popover()  , 3000);
+    setTimeout(() => $('[rel="tooltip"]').tooltip()  , 3000);
 
 </script>
 </body>

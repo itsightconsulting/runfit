@@ -1,6 +1,8 @@
 package com.itsight.service;
 
+import com.itsight.domain.PorcentajesKilometraje;
 import com.itsight.domain.Usuario;
+import com.itsight.domain.VideoAudioFavorito;
 import com.itsight.generic.BaseService;
 
 import java.util.Date;
@@ -25,4 +27,6 @@ public interface UsuarioService extends BaseService<Usuario> {
     String validarUsername(String username);
 
     Usuario findByUsername(String username);
+
+
 }

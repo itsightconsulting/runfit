@@ -137,5 +137,9 @@ public class UsuarioController {
         return usuarioService.validarUsername(username);
     }
 
+    @GetMapping(value = "/mimediafavorito")
+    public ModelAndView miMediaFavorito(Model model) {
+        return new ModelAndView(ViewConstant.MI_MEDIA_FAVORITO);
+    }
 
 }

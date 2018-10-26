@@ -101,6 +101,10 @@ public class Usuario extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<PorcentajesKilometraje> lstPorcentajesKilo;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    private List<VideoAudioFavorito> lstMiFavorito;
+
     @Transient
     @JsonSerialize
     private String nombreCompleto;

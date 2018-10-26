@@ -285,6 +285,10 @@
 
         .dd-list {}
 
+        .dd-item {
+            line-height: 12px;
+        }
+
         .md-add {
             background: #f0fff0 !important;
             border: 1px solid #7DC27D !important;
@@ -877,7 +881,7 @@
                                                     <img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}" style="max-width: 100%" height="100px" />
                                                     <h6 class="font-lg" th:text="${c.nombre}"></h6>
                                                     <ul style="padding-left:20px" th:each="sb : ${c.lstSubCategoriaEjercicio}">
-                                                        <li class="font-md"><a class="sub-categoria" href="javascript:void();" th:attr="data-id=${sb.id}" th:text="${sb.nombre}"></a></li>
+                                                        <li class="font-md"><a class="sub-categoria" href="javascript:void(0);" th:attr="data-id=${sb.id}" th:text="${sb.nombre}"></a></li>
                                                     </ul>
                                                 </div>
                                             </th:block>
@@ -905,7 +909,16 @@
                                                     <!--<img th:src="@{/workout/media/image/categoria-ejercicio/gt/1} + ${c.rutaWeb}" style="max-width: 100%" height="100px" />-->
                                                     <h6 class="font-lg" th:text="${ta.nombre}"></h6>
                                                     <ul class="ul-audio" th:each="a: ${ta.lstAudio}">
-                                                        <li class="font-md"><a class="elegir-audio" href="javascript:void(0);" th:inline="text"><i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-music fa-fw" th:attr="data-media=${a.rutaWeb}, data-index=${a.id}"></i>[[${a.nombre}]]</a></li>
+                                                        <li class="font-md">
+                                                            <a class="" href="javascript:void(0);" th:inline="text">
+                                                                <i data-placement="bottom" rel="tooltip" data-original-title="Favorito" class="ck-favorito-audio fa fa-star fa-fw"
+                                                                   th:attr="data-id=${a.id},id='liaudio'+${a.id}" data-selected="0"></i>
+                                                            </a>
+                                                            <a class="elegir-audio" href="javascript:void(0);" th:inline="text">
+                                                                <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-music fa-fw" th:attr="data-media=${a.rutaWeb}, data-index=${a.id}"></i>
+                                                                [[${a.nombre}]]
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </th:block>

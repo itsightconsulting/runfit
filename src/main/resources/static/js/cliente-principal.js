@@ -26,6 +26,21 @@ $(function () {
 
         return str.replace(new RegExp(searchStr, 'gi'), replaceStr);
     }
+
+    if (!String.Format) {
+        Semana  = function(format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return format.replace(/{(\d+)}/g, function(match, number) {
+                return typeof args[number] != 'undefined'
+                    ? args[number]
+                    : match
+                    ;
+            });
+        };
+    }
+
+
+
 });
 
 function getRutinas(){
@@ -44,20 +59,11 @@ function getRutinas(){
                     });
                 } else {
                     //Semana
-                    console.log(data);
-                    //if(data.length >0){
-                    //    $rutina = data[1];
-                    //    $.each(data,function (i,item) {
-                    //        item.fechaInicio = parseFromStringToDate2(item.fechaInicio);
-                    //        item.fechaFin = parseFromStringToDate2(item.fechaFin);
-                    //        var listmp = getSemanas(item.id);
-                    //        item.ListaSemanas = listmp;
-                    //    });
-                    //    getSemanas(datos.id);
-                    //}
-                    getSemanas(data[0].id);
-                    $rutina.fechaInicio = parseFromStringToDate2(data[0].fechaInicio);
-                    $rutina.fechaFin  = parseFromStringToDate2(data[0].fechaFin);
+                    if(data.length>0) {
+                        getSemanas(data[0].id);
+                        $rutina.fechaInicio = parseFromStringToDate2(data[0].fechaInicio);
+                        $rutina.fechaFin = parseFromStringToDate2(data[0].fechaFin);
+                    }
                 }
             }
         },
@@ -71,7 +77,6 @@ function getRutinas(){
 }
 
 function getSemanas(id) {
-
     const params = {};
     params.idrutina = id;
 
@@ -96,7 +101,6 @@ function getSemanas(id) {
                         semanas.push(item);
                     });
                     $rutina.semanas = semanas;
-
                 }
             }
         },
@@ -105,9 +109,6 @@ function getSemanas(id) {
         },
         complete: function (data) {
             generarDias();
-
-
-
         }
     });
 }
@@ -116,8 +117,8 @@ function generarDias() {
     var FechaActual = new Date();
     var flagEncontrado = false;
     var semanaEncontradaSiguiente = {};
-    $("#SemanaActual").text("Semana {0}");
-    var auxsemana = 1;
+    $("#SemanaActual").text("{0}");
+    var auxsemana = 0;
     $.each(semanas, function (i, item) {
         if (flagEncontrado == false && item.fechaInicio <= FechaActual && FechaActual <= item.fechaFin) {
             semanaEncontrada = item;
@@ -127,7 +128,7 @@ function generarDias() {
         }
     });
 
-    if (semanaEncontrada != null) {
+    if (semanaEncontrada != null && semanaEncontrada.fechaInicio != null && semanaEncontrada.fechaFin != null) {
         generarSemana(semanaEncontradaSiguiente,auxsemana);
     } else {
         generarGraficoEmpty();
@@ -141,13 +142,28 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
     $("#graphCumplimiento").html("");
     $("#graphKilometraje").html("");
 
-    var dateTmpdet = semanaEncontrada.objetivos.split(",");
+    var dateTmpdet = semanaEncontrada.objetivos != "" && semanaEncontrada.objetivos != null ? semanaEncontrada.objetivos.split(",") : [];
     var auxdet = 0
     $("#SemanaActual").text(auxsemana);
     var dateArraySemana = getDates(semanaEncontrada.fechaInicio, semanaEncontrada.fechaFin);
-
-
     var fechaActual = new Date();
+
+    var arrayDias = [1,2,3,4,5,6,0];
+    var arrayDiasFaltan = [];
+    var flagDiasAgregados = false;
+    if(dateArraySemana.length != 7) {
+        $.each(dateArraySemana, function (i, item) {
+            arrayDiasFaltan.push(item.getDay());
+        });
+        var arrayEncontrados = compare(arrayDias,arrayDiasFaltan);
+        $.each(arrayEncontrados, function (i, item) {
+            var day = semanaEncontrada.fechaInicio.addDays(- parseInt(item));
+            dateArraySemana.push(day);
+            flagDiasAgregados = true;
+        });
+        dateArraySemana.sort((a,b)=> a-b);
+    }
+
     $.each(dateArraySemana, function (i, item) {
         var daystr = item.getDay();
         var day = item.getUTCDate();
@@ -156,13 +172,19 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
         var cssSection = fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
         var dayPast = fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? "section-dia-gray" : "section-dia";
         var dayhtml = fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>' : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>';
-        var section = GenerarSection(dias[daystr],dayhtml,dateTmpdet[auxdet],dayPast,cssSection);
+
+        var section = "";
+        if(flagDiasAgregados && semanaEncontrada.fechaInicio.getUTCDate() > day) {
+            section = GenerarSection(dias[daystr], day, "", "section-dia-gray", "");
+        }else{
+            section = GenerarSection(dias[daystr], dayhtml, (dateTmpdet.length > 1 ? dateTmpdet[auxdet] : ""), dayPast, cssSection);
+            auxdet += 1;
+        }
         $("#semanaRutina").append(section);
-        auxdet += 1;
     });
 
     if (dateArraySemana.length < 7) {
-        const dayfirst = dateArraySemana[dateArraySemana.length-1];
+        const dayfirst = dateArraySemana.length == 0 ?  new Date() : dateArraySemana[dateArraySemana.length-1];
         var dateTmp = [];
         for (var i = 0; i < 7 - dateArraySemana.length; i++) {
             let result = new Date();
@@ -184,9 +206,9 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
         dateArraySemana.sort((a,b)=> a-b);
     }
 
-    if (semanaEncontradaSiguiente != null) {
+    if (semanaEncontradaSiguiente != null && semanaEncontradaSiguiente.fechaInicio != null && semanaEncontradaSiguiente.fechaFin != null) {
         var auxdetsig = 0;
-        var dateTmpdetSiguiente = semanaEncontradaSiguiente.objetivos.split(",");
+        var dateTmpdetSiguiente = semanaEncontradaSiguiente.objetivos != "" && semanaEncontradaSiguiente.objetivos != null ? semanaEncontradaSiguiente.objetivos.split(",") : [];
         var dateArraySemanaSiguiente = getDates(semanaEncontradaSiguiente.fechaInicio, semanaEncontradaSiguiente.fechaFin);
         $.each(dateArraySemanaSiguiente, function (i, item) {
             var daystr = item.getDay();
@@ -197,7 +219,7 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
             var cssSection = fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
             var dayPast = fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? "section-dia-gray" : "section-dia";
             var dayhtml = fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>' : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>';
-            var section = GenerarSection(dias[daystr],dayhtml,dateTmpdetSiguiente[auxdetsig],dayPast,cssSection);
+            var section = GenerarSection(dias[daystr],dayhtml,(dateTmpdetSiguiente.length>0 ? dateTmpdetSiguiente[auxdetsig] : ""),dayPast,cssSection);
             $("#semanaRutinaSiguiente").append(section);
             auxdetsig+=1;
         });
@@ -232,7 +254,6 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
             result.setDate(daylast.getDate() + (i + 1));
             dateTmpS.push(result);
         }
-
         dateTmpS.sort((a, b) => a - b);
         $.each(dateTmpS, function (i, item) {
             var daystr = item.getDay();
@@ -252,7 +273,9 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
     $("#spanKilometrajeCalorico").text("0Km");
     $("#spanCaloriasSemanales").text("0");
     generarGrafico(semanaEncontrada);
-
+    //setTimeout(() => {
+    generarMetricas(semanaEncontrada);
+    //}, 2000);
 }
 
 function getDates(startDate, stopDate) {
@@ -437,3 +460,82 @@ function getDayOfWeek(day, month){
     }
 
 }
+
+function compare(a1, a2) {
+    var a = [], diff = [];
+    for (var i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+    for (var i = 0; i < a2.length; i++) {
+        if (a[a2[i]]) {
+            delete a[a2[i]];
+        } else {
+            a[a2[i]] = true;
+        }
+    }
+    for (var k in a) {
+        diff.push(k);
+    }
+    return diff;
+}
+
+function generarMetricas(semana) {
+    $('.trdelete').remove();
+    if (semana.metricasVelocidad != null && semana.metricasVelocidad != "") {
+        var metricas = JSON.parse(semana.metricasVelocidad);
+        var TR ='<tr class="trdelete"><td class="td-table" colspan="4"><span>Ritmos y tiempos proyectados</span></td></tr>';
+        TR += '<tr class="trdelete">' +
+            '<td class="td-table" style="padding: 5px;"><span class=""> </span></td>' +
+            '<td class="td-table" style="padding: 5px;"><span class=""> </span></td>' +
+            '<td class="td-table" style="padding: 5px;"><span class=""> </span></td>' +
+            '<td class="td-table" style="padding: 5px;"><span class=""> </span></td></tr>';
+
+        var METROS = ["200mt","400mt","800mt","1km"];
+        var KILOMETROS = ["10km","15km","21km","42km"];
+
+        const wex = ["200m", "400m", "800m", "1KM","10KM","15KM","21KM","42KM"];
+        metricas = metricas.map((v,i)=>{return {p: v.parcial, s: v.parcial.toSeconds(), m: wex[i]}});
+        metricas.forEach((v,i)=>{
+            if(i>3)
+                v.tt = String(v.s*Number(v.m.slice(0, -2))).toHHMMSSM()
+            else
+                v.tt = v.p
+        });
+
+        for(let i=0; i<4 ;i++){
+            var tds = '<tr class="trdelete">' +
+                '<td class="td-table"><span class="span-time-header">'+( METROS[i] )+'</span></td>' +
+                '<td class="td-table"><span class="spantime spantime-height"> '+ (i == 0 ? '<i class="fa fa-clock-o"></i>' :'' )+ '</span></td>' +
+                '<td class="td-table"><span class="span-time-header">'+( KILOMETROS[i] )+'</span></td>' +
+                '<td class="td-table"><span class="spantime spantime-height"> '+ (i == 0 ? '<i class="fa fa-clock-o"></i>' :'' )+ '</span></td>' +
+                '<tr class="trdelete"><td class="td-table td-abajo"><span class="">'+(metricas[i].p)+'</span></td>' +
+                '<td class="td-table td-abajo"><span class="span-time">'+(metricas[i].tt)+'</span></td>' +
+                '<td class="td-table td-abajo"><span class="">'+(metricas[i+4].p)+'</span></td>' +
+                '<td class="td-table td-abajo"><span class="span-time">'+(metricas[i+4].tt)+'</span></td></tr>';
+            TR += tds;
+        }
+
+        $("#tbMetricas").append(TR);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

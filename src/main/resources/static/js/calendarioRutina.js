@@ -5,9 +5,14 @@ let semanasIxs = [];
 let $refIxsSemCalendar = [];
 let $fechasCompetencia = [];
 const tabRutina = document.querySelector('#myTabRutina');
+const divContent = document.querySelector('#content');
+
 
 $(function () {
     tabRutina.addEventListener('click', principalesEventosCalendario);
+    divContent.addEventListener('click', principalesEventos);
+
+
 });
 
 function principalesEventosCalendario(e) {
@@ -37,6 +42,21 @@ function principalesEventosCalendario(e) {
         if(mes != null && day != null) {
             getDayOfWeek(day, (parseInt(mes)-1));
         }
+    }
+}
+
+function principalesEventos(e) {
+    const input = e.target;
+    const clases = input.classList;
+
+    if(clases.contains('reprod-video')){
+        e.stopPropagation();
+        e.preventDefault();
+        VerVideo($(input).attr("data-media"));
+    } else if(clases.contains('reprod-audio')){
+        e.stopPropagation();
+        e.preventDefault();
+        VerAudio($(input).attr("data-media"));
     }
 }
 
@@ -355,6 +375,41 @@ function pintarDiaHoyCalendar (anio, mes, max){
     }
 }
 
+function VerVideo(video){
+    $('.divVideo').html("");
+
+    var src = `${_ctx}`+`workout/media/file/video/gt/1`+ video;
+    var divvideo =  '<button id="btnCerrarVideo" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+    '<video id="somevid" controls="controls" autoplay="autoplay" controlsList="nodownload" width="100%" height="100%">' +
+    '<source id="VideoReproduccion" src="'+src+'" type="video/mp4"/></video>';
+
+    $('.divVideo').append(divvideo);
+
+    $("#btnCerrarVideo").click(function (){
+        $('.divVideo').html("");
+        $('.divVideo').hide();
+    });
+
+    $('.divVideo').show();
+}
+function VerAudio(audio){
+    $('.divAudio').html("");
+
+    var src = `${_ctx}`+`workout/media/audio`+ audio;
+    var divAudio =  '<button id="btnCerrarAudio" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '<audio id="someaud" preload="none" controls="" controlsList="nodownload" autoplay="" width="100%" height="100%">' +
+                    '<source id="AudioReproduccion" src="'+src+'" type="audio/mpeg"/></audio>';
+
+    $('.divAudio').append(divAudio);
+
+    $("#btnCerrarAudio").click(function (){
+        $('.divAudio').html("");
+        $('.divAudio').hide();
+    });
+
+    $('.divAudio').show();
+
+}
 
 
 

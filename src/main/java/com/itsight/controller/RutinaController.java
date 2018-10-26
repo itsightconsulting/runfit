@@ -3,10 +3,7 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.Dia;
-import com.itsight.domain.Rutina;
-import com.itsight.domain.RutinaPlantilla;
-import com.itsight.domain.Semana;
+import com.itsight.domain.*;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.RutinaControl;
@@ -19,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +33,7 @@ import static com.itsight.util.Enums.ResponseCode;
 @RequestMapping("/gestion/rutina")
 public class RutinaController {
 
+    private UsuarioService usuarioService;
     private RutinaService rutinaService;
 
     private DiaService diaService;
@@ -55,11 +54,13 @@ public class RutinaController {
 
     private CategoriaService categoriaService;
 
+    private VideoAudioFavoritoService videoAudioFavoritoService;
+
     @Value("${domain.name}")
     private String domainName;
 
     @Autowired
-    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService) {
+    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.rutinaService = rutinaService;
         this.diaService = diaService;
@@ -70,6 +71,8 @@ public class RutinaController {
         this.semanaService = semanaService;
         this.videoService = videoService;
         this.categoriaService = categoriaService;
+        this.usuarioService = usuarioService;
+        this.videoAudioFavoritoService = videoAudioFavoritoService;
     }
 
     @GetMapping(value = "")
@@ -552,4 +555,48 @@ public class RutinaController {
         diaService.actualizarSemanaCompletaDesdeOtra(semIxDesde, semIxPara);
         return ResponseCode.ACTUALIZACION.get();
     }
+
+    @PostMapping(value = "/elemento/adddeletefavorito")
+    public @ResponseBody String agregarEliminarFavorito(@RequestParam int videoid,@RequestParam int audioid,@RequestParam int addedit) {
+
+        String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario objuse = usuarioService.findByUsername(nameuser);
+        VideoAudioFavorito videoaudio = new VideoAudioFavorito();
+        VideoAudioFavorito videoaudioexiste = null;
+        if (videoid != 0) {
+            videoaudioexiste = videoAudioFavoritoService.getVideoAudioFavoritoVideo(objuse.getId(), videoid);
+        }
+        if (audioid != 0) {
+            videoaudioexiste = videoAudioFavoritoService.getVideoAudioFavoritoAudio(objuse.getId(), audioid);
+        }
+
+        if (addedit == 1 && videoaudioexiste == null) {
+            if (videoid != 0) {
+                videoaudio.setTipo(Enums.TipoMedia.VIDEO.get());
+                videoaudio.setVideo(videoid);
+            }
+            if (audioid != 0) {
+                videoaudio.setTipo(Enums.TipoMedia.AUDIO.get());
+                videoaudio.setAudio(audioid);
+
+            }
+            videoaudio.setFlagActivo(true);
+            videoaudio.setUsuario(objuse.getId());
+            videoAudioFavoritoService.save(videoaudio);
+        }
+
+        if (addedit == 0 && videoaudioexiste != null) {
+            videoAudioFavoritoService.delete(videoaudioexiste.getId());
+        }
+        return "Ok";
+    }
+
+
+    @GetMapping(value = "/elemento/obtenermisfavoritos")
+    public @ResponseBody List<VideoAudioFavorito> obtenerMisFavoritos(){
+        String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario objuse = usuarioService.findByUsername(nameuser);
+        return videoAudioFavoritoService.findByUsuarioId(objuse.getId());
+    }
+
 }

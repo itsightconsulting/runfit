@@ -113,6 +113,7 @@ public class ViewConstant {
 
     public static final String MI_USUARIO = "usuario/micuenta";
     public static final String FACTURACION_MENSUAL = "portal/facturacion_mensual";
+    public static final String MI_MEDIA_FAVORITO = "usuario/mimediafavorito";
 
     public static final int ACTIVO = 1;
     public static final int INACTIVO = 0;

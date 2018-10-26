@@ -1,8 +1,6 @@
 
 const $semanario = document.querySelector('#RutinaSemana');
 
-
-
 function mostrarSemana(sem, sIndex, diasemanaactual){
     //Inicialmente generamos solo la primera semana de todo el plan de entrenamiento
     let semana = sem;
@@ -57,6 +55,7 @@ function mostrarSemana(sem, sIndex, diasemanaactual){
 								</article>`;
         });
     }
+    rawDiasRestantes = '';
 
     var dayEncontrado = [];
     $.each(semana.lstDia ,function (i,item) {
@@ -74,7 +73,7 @@ function mostrarSemana(sem, sIndex, diasemanaactual){
             `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia" data-index="${i}" data-fecha="${v.fecha}">            
 									<div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0" tabindex='${i}'>
 										<header role="heading" class="heading-dia">
-								            <span class="widget-icon"> <a href="#" rel="tooltip" data-placement="right" data-original-title="Copiar día"><i class="fa fa-calendar-o txt-color-blue copiar-dia" data-index="${i}"></i></a></span>
+								            <span class="widget-icon"><i class="fa fa-calendar-o txt-color-blue copiar-dia" data-index="${i}"></i></span>
 								            <h2 class="titulo-dia">${v.literal} ${v.dia}</h2>								             
 								        </header>
 								        <div role="heading">
@@ -106,12 +105,19 @@ function mostrarSemana(sem, sIndex, diasemanaactual){
 
     $semanario.innerHTML = '';
     $semanario.append(RutinaSemanaDiv);
+
+    if(semana.metricas != null && semana.metricas != "") {
+        $("#Metricas").html("");
+        let strMetricas = Metricas(JSON.parse(semana.metricas));
+        $("#stMetricas").append(strMetricas);
+    }
+
+
     //Seteamos un ancho especifico de acuerdo a los 7 días de la semana para poder hacer un scrolling en X
     //$(".of_carousel").width($(".of_carousel article").length * $(".of_carousel article")[0].clientWidth) + $(".of_carousel article").length * $(".of_carousel article")[0].clientWidth * 2;
     //$('#RutinaSemana').attr('data-index', sIndex);
     $('[data-toggle="popover"]').popover();
 }
-
 RutinaDiaHTML = (function(){
     return {
         full: (elementos, diaIndex, init, flagDescanso)=>{//init se usa para cuando se recrea la semana desde la instancia del objeto Rutina
@@ -137,27 +143,32 @@ RutinaDiaHTML = (function(){
                                 <!-- LISTAS DEL DIA DE SEMANA -->
                                     ${newElementosFromMiniPlantilla(elementos, diaIndex)}
                                 <!-- END LISTAS DEL DIA DE SEMANA -->
-                            </div>
+                            </div> 
+                            <div class="panel-group smart-accordion-default rf-listas padding-5" id="stMetricas">
+                                <!-- LISTAS DEL DIA DE SEMANA -->
+                                    
+                                <!-- END LISTAS DEL DIA DE SEMANA -->
+                            </div> 
                         </div>`
             }
         },
     }
 })();
-
 function newElementosFromMiniPlantilla(elementos, diaIndex){
     let elementosHTML = '';
     if(elementos != null) {
         elementos.forEach(ele => {
             elementosHTML += ele.tipo == 1 ? elementoSimplePaste(ele, diaIndex) : elementoCompuestoPaste(ele, diaIndex);
         });
+
     }
     return elementosHTML;
 }
-
 function elementoSimplePaste(ele, diaIndex){
     const ess = obtenerEstilos(ele.estilos);
     let posPopover = positionPopoverByDiaIndex(diaIndex);
     let ix = ++indexGlobal;
+
     return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
@@ -167,20 +178,25 @@ function elementoSimplePaste(ele, diaIndex){
                                         <span class="pull-left">
                                             ${ele.mediaVideo != undefined?iconoVideo(ele.mediaVideo):''}
                                             ${ele.mediaAudio != undefined?iconoAudio(ele.mediaAudio):''}
+                                            
+                                            
                                         </span>
-                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
-                                        <input value="${ele.minutos}" disabled="disabled" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>  
+                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
+                                        <input disabled="disabled" value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>  
                                     </span>
-                                </a> 
+                                </a>
+                                ${iconoNota(ele.nota)}
                             </h4>
                         </div>
                     </div>`;
+
 }
 function elementoCompuestoPaste(ele, diaIndex){
     const ess = obtenerEstilos(ele.estilos);
     let classInputsInitSubEle = ele.subElementos.length == 0?'':'hidden';
-    let posPopover = positionPopoverByDiaIndex(diaIndex);
     let ix = ++indexGlobal;
+
+    let posPopover = positionPopoverByDiaIndex(diaIndex);
     return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -189,11 +205,11 @@ function elementoCompuestoPaste(ele, diaIndex){
                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                         <span class="txt-color-blue lista-title">
                                             <span class="pull-left">                                         
-                                                ${ele.mediaVideo != undefined?iconoVideo(ele.mediaVideo):''}
-                                                ${ele.mediaAudio != undefined?iconoAudio(ele.mediaAudio):''}
+                                                ${ele.mediaVideo != undefined? iconoVideo(ele.mediaVideo):''}
+                                                ${ele.mediaAudio != undefined? iconoAudio(ele.mediaAudio):''}                                                
                                             </span>
-                                            <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover">${ele.nombre}</span>
-                                            <input value="${ele.minutos}" disabled="disabled" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                                            <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover">${ele.nombre}</span>
+                                            <input disabled="disabled" value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                         </span>
                                     </a>
                                     ${iconoNota(ele.nota)}
@@ -201,11 +217,11 @@ function elementoCompuestoPaste(ele, diaIndex){
                         </div>
                         <div id="collapse${ix}" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                <div class="smart-form"><label class="input padding-5"><input data-ele-index="${ix}" data-dia-index="${diaIndex}" class="in-sub-elemento in-init-sub-ele ${classInputsInitSubEle}" type="text" maxlength="44" placeholder=""></label></div>
+                                <div class="smart-form"><label class="input padding-5"><input disabled="disabled" data-ele-index="${ix}" data-dia-index="${diaIndex}" class="in-sub-elemento in-init-sub-ele ${classInputsInitSubEle}" type="text" maxlength="44" placeholder=""></label></div>
                                 <div class="modulo-detalle">
                                     <div class="dd nestable">
                                         <ol class="dd-list detalle-lista">
-                                            ${subElementosPaste(ele.subElementos, diaIndex, ix)}
+                                            ${ subElementosPaste(ele.subElementos, diaIndex, ix)}
                                         </ol>
                                     </div>
                                 </div>
@@ -213,7 +229,6 @@ function elementoCompuestoPaste(ele, diaIndex){
                         </div>
                      </div>`;
 }
-
 function obtenerEstilos(ess){
     let  estHeader = "", estElem = "", margen = "";
     for(let i=0; i<ess.length;i++){
@@ -234,10 +249,12 @@ function positionPopoverByDiaIndex(dIx){
     return dIx == "0" ? "right" : "bottom";
 }
 function iconoVideo (mediaVideo){
-    return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw padding-top-3 rf-media" data-media="${mediaVideo}"></i>`
+    //return `<a style="padding: 0px !important;" href="javascript:VerVideo('${mediaVideo}')" data-video="${mediaVideo}"><i  data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw padding-top-3 rf-media" data-media="${mediaVideo}"></i></a>`
+    return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw padding-top-3 rf-media" data-media="${mediaVideo}"></i>`;
 }
 function iconoAudio(mediaAudio){
-    return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-play fa-fw padding-top-3 rf-media" data-media="${mediaAudio}"></i>`
+    //return `<a style="padding: 0px !important;" href="javascript:VerAudio('${mediaAudio}')" data-audio="${mediaAudio}"><i  data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-play fa-fw padding-top-3 rf-media" data-media="${mediaAudio}"></i></a>`
+    return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-play fa-fw padding-top-3 rf-media" data-media="${mediaAudio}"></i>`;
 }
 function iconoNota(nota){
     return `${nota != '' && nota != undefined?'<i class="fa fa-minus check-nota agregar-nota" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}"></i>':''}`;
@@ -272,16 +289,18 @@ function opsPopoverElemento2(diaIndex, eleIndex){
 function subElementosPaste(subElementos, diaIndex, eleIndex){
     let posPopover = positionPopoverByDiaIndex(diaIndex);
     let subElementosHTML = '';
+
     subElementos.forEach(sEle=>{
         let ix = ++indexGlobal;
         subElementosHTML += `
                     <li class="dd-item rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
                        <div class="col-md-12">
                            <span class="pull-left">
-                                ${sEle.mediaVideo != undefined?iconoVideo(sEle.mediaVideo):''}
-                                ${sEle.mediaAudio != undefined?iconoAudio(sEle.mediaAudio):''}
+                                ${sEle.mediaVideo != undefined && sEle.mediaVideo != null && sEle.mediaVideo != "" ?iconoVideo(sEle.mediaVideo):''}
+                                ${sEle.mediaAudio != undefined && sEle.mediaAudio != null && sEle.mediaAudio != "" ?iconoAudio(sEle.mediaAudio):''}
                            </span>
-                           <span class="rf-sub-elemento-nombre padding-10" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
+                           <span class="rf-sub-elemento-nombre padding-10" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
+                           
                            ${iconoNota(sEle.nota)}
                        </div>																			
                     </li>
@@ -304,11 +323,49 @@ function opsPopoverSubElemento(diaIndex, eleIndex, subEleIndex){
                 </div>
             `
 }
+function Metricas(metricas){
+    const raw = `
+                <div class="container-fluid padding-0 its-indicador-1">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="row padding-5 text-align-center">
+                            <span class="txt-color-blue"><b>Paso</b></span>
+                        </div>
+                        ${indicador1Body(metricas, 1)}
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="row padding-5 text-align-center">
+                            <span class="txt-color-red"><b>Pulso</b></span>
+                        </div>
+                        ${indicador1Body(metricas, 2)}
+                    </div>
+                </div>
+            `
 
-
-
-
-
+    return raw;
+}
+function indicador1Body(metricas, t) {
+    const iteraciones = metricas.length;
+    let raw = '';
+    const claseTipo = t == 2 ? 'txt-color-red':'';
+    const bOpacidad = 1/iteraciones;
+    for(let i=0; i<iteraciones;i++){
+        raw += `<div class="col-md-11 col-sm-11 col-xs-11 padding-o-bottom-5 text-align-center">
+                            <div class="col-md-1 col-sm-1 col-xs-1 padding-0 rf-n">
+                                <a href="javascript:void(0);">${metricas[i].nombre}</a>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 padding-0">
+                                <a href="javascript:void(0);"><i class="fa fa-long-arrow-up ${claseTipo}" style="opacity: ${bOpacidad*(i+1)}"></i></a>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-9 padding-0">
+                                ${t == 1 ?
+            `<b> ${i == 0 ? metricas[i].indicadores.max.substr(3) : i == 6 ? metricas[i].indicadores.min.substr(3): metricas[i].indicadores.max.substr(3) +' - '+ metricas[i].indicadores.min.substr(3)}</b>`
+            :`<b> ${metricas[i].min} - ${metricas[i].max}</b>`
+            }
+                            </div>                            
+                        </div>`
+    }
+    return raw;
+}
 
 
 

@@ -30,16 +30,22 @@ public class RutinaHshController {
 
     private CategoriaService categoriaService;
 
+    private VideoAudioFavoritoService videoAudioFavoritoService;
+
+    private UsuarioService usuarioService;
+
     @Value("${domain.name}")
     private String domainName;
 
     @Autowired
-    public RutinaHshController(RutinaService rutinaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, CategoriaService categoriaService) {
+    public RutinaHshController(RutinaService rutinaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, CategoriaService categoriaService,VideoAudioFavoritoService videoAudioFavoritoService, UsuarioService usuarioService) {
         this.rutinaService = rutinaService;
         this.tipoAudioService = tipoAudioService;
         this.categoriaEjercicioService = categoriaEjercicioService;
         this.redFitnessService = redFitnessService;
         this.categoriaService = categoriaService;
+        this.videoAudioFavoritoService = videoAudioFavoritoService;
+        this.usuarioService = usuarioService;
     }
 
 
