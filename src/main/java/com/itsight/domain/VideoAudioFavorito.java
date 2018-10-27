@@ -63,6 +63,11 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
     @Column
     private int Tipo;
 
+    @Column
+    private String Titulo;
+    @Column
+    private String Descripcion;
+
     public VideoAudioFavorito(){
 
     }

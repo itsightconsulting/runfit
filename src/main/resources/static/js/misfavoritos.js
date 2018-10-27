@@ -1,15 +1,24 @@
 const $tabla = $("#tbVideoAudio");
 var LISTA_FAVORITOS_VIDEO = [];
 var LISTA_FAVORITOS_AUDIO = [];
+var LISTA_FAVORITOS_TEXTO = [];
 
 $(function () {
-    updateAudioFavoritos();
+    ObtenerData(0);
+    $("#btnAdd").hide();
     $("#btnVideos").click(GenerarListaVideos);
     $("#btnAudios").click(GenerarListaAudios);
     $("#btnTextos").click(GenerarListaTextos);
+    $("#btnAdd").click(MostrarListaTextos);
+    $("#btnAgregar").click(RegistrarTextos);
+    $("#btnCancelar").click(OcultarTextos);
+
 });
 
-function updateAudioFavoritos() {
+function ObtenerData(flag) {
+    LISTA_FAVORITOS_VIDEO = [];
+    LISTA_FAVORITOS_AUDIO = [];
+    LISTA_FAVORITOS_TEXTO = [];
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -17,29 +26,14 @@ function updateAudioFavoritos() {
         dataType: "json",
         success: function (data) {
             if(data != null){
-                console.log(data);
-                let listaAudios = [];
-                let listaVideos = [];
                 $.each(data,function (i,item) {
                     if(item.audio != null){
-                        listaAudios.push(item.audio);
                         LISTA_FAVORITOS_AUDIO.push(item.audio);
-                    }else{
-                        listaVideos.push(item.video);
+                    }else if(item.video != null){
                         LISTA_FAVORITOS_VIDEO.push(item.video);
+                    } else {
+                        LISTA_FAVORITOS_TEXTO.push(item);
                     }
-                });
-
-                $("#thTitulo").text("Vídeo");
-                $.each(listaVideos,function (i,item) {
-                   let TR = `<tr id="trvideo${item.id}">
-                                <td></td>
-                                <td>`+(i+1)+`</td>
-                                <td style="font-size: 20px; text-align: center;">`+generarVideo(item,i)+`</td>
-                                <td>`+item.nombre+`</td>
-                                <td>`+eliminarVideoAudio(item.id,0)+`</td>
-                            </tr>`;
-                    $tabla.append(TR);
                 });
             }
         },
@@ -47,6 +41,13 @@ function updateAudioFavoritos() {
             exception(xhr);
         },
         complete: function () {
+            if(flag == 0){
+                GenerarListaVideos();
+            } else if(flag == 1){
+                GenerarListaAudios();
+            } else if(flag == 2){
+                GenerarListaTextos();
+            }
         }
     })
 }
@@ -89,6 +90,7 @@ function GenerarListaVideos() {
     $("#registroTexto").hide();
     $("#btnVideos").removeClass("btn-light");
     $("#btnVideos").addClass("btn-info");
+    $("#btnAdd").hide();
     $tabla.html("");
     $("#thTitulo").text("Vídeo");
     $("#thTitulo2").text("Nombre");
@@ -109,6 +111,7 @@ function GenerarListaAudios() {
     $("#registroTexto").hide();
     $("#btnAudios").removeClass("btn-light");
     $("#btnAudios").addClass("btn-info");
+    $("#btnAdd").hide();
     $tabla.html("");
     $("#thTitulo").text("Audio");
     $("#thTitulo2").text("Nombre");
@@ -119,6 +122,27 @@ function GenerarListaAudios() {
                                 <td style="font-size: 20px; text-align: center;">`+generarAudio(item,i)+`</td>
                                 <td>`+item.nombre+`</td>
                                 <td>`+eliminarVideoAudio(0,item.id)+`</td>
+                            </tr>`;
+        $tabla.append(TR);
+    });
+}
+
+function GenerarListaTextos() {
+    $(".btn").removeClass("btn-info");
+    $("#btnTextos").removeClass("btn-light");
+    $("#btnTextos").addClass("btn-info");
+    $tabla.html("");
+    $("#btnAdd").show();
+    $("#thTitulo").text("Título");
+    $("#thTitulo2").text("Descripción");
+
+    $.each(LISTA_FAVORITOS_TEXTO,function (i,item) {
+        let TR = `<tr id="trtexto${item.id}">
+                                <td></td>
+                                <td>`+(i+1)+`</td>
+                                <td>`+item.titulo+`</td>
+                                <td>`+item.descripcion+`</td>
+                                <td>`+formatterTexto(item.id)+`</td>
                             </tr>`;
         $tabla.append(TR);
     });
@@ -156,19 +180,6 @@ function verAudio(id) {
     });
 }
 
-function GenerarListaTextos() {
-    $(".btn").removeClass("btn-info");
-    $("#btnTextos").removeClass("btn-light");
-    $("#btnTextos").addClass("btn-info");
-    $tabla.html("");
-    $("#thTitulo").text("Título");
-    $("#thTitulo2").text("Descripción");
-    $("#registroTexto").show();
-
-}
-
-
-
 function eliminarVideoAudio(item,item2) {
     return '<a style="font-size: 20px" href="javascript:eliminarAudioVideoFavorito('+ item +','+ item2 +')"><i class="fa fa-trash"></i></a>';
 }
@@ -204,9 +215,9 @@ function eliminarAudioVideoFavorito(idvideo,idaudio) {
                     data: params,
                     success: function (data, textStatus) {
                         if(idvideo != 0) {
-                            $("#trvideo"+idvideo).remove();
+                            ObtenerData(0);
                         }else{
-                            $("#trvideo"+idaudio).remove()
+                            ObtenerData(1);
                         }
                     },
                     error: function (xhr) {
@@ -219,6 +230,106 @@ function eliminarAudioVideoFavorito(idvideo,idaudio) {
     });
 }
 
+function MostrarListaTextos() {
+    $("#registroTexto").show();
+}
+
+function RegistrarTextos() {
+    if($("#tTitulo").val() == ""){
+        bootbox.alert("Debe ingresar un título");
+        return;
+    } else if($("#tDescripion").val() == "") {
+        bootbox.alert("Debe ingresar una descripción");
+        return;
+    } else {
+        $("#btnAgregar").button('loading');
+        let params ={};
+        params.titulo = $("#tTitulo").val();
+        params.descripcion = $("#tDescripcion").val();
+        params.addedit = 0;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + "gestion/rutina/elemento/adddeletetexto",
+            dataType: "json",
+            data: params,
+            success: function (data, textStatus) {
+                bootbox.alert("Se registró satisfactoriamente.", function () {
+                    $("#tTitulo").val("");
+                    $("#tDescripcion").val("");
+                    $("#registroTexto").hide();
+                    $("#btnAdd").hide();
+                    ObtenerData(2);
+                });
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                $("#btnAgregar").button('reset');
+            }
+        });
+    }
+}
+
+function formatterTexto(id) {
+    return '<a style="font-size: 20px" href="javascript:eliminarTexto('+ id +')"><i class="fa fa-trash"></i></a>';
+}
+
+function eliminarTexto(id) {
+    bootbox.confirm({
+        message: "¿Está seguro de eliminar el texto",
+        buttons: {
+            confirm: {
+                label: 'Si',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if(result){
+                $("#btnAgregar").button('loading');
+                let params ={};
+                params.titulo = $("#tTitulo").val();
+                params.descripcion = $("#tDescripcion").val();
+                params.addedit = id;
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    url: _ctx + "gestion/rutina/elemento/adddeletetexto",
+                    dataType: "json",
+                    data: params,
+                    success: function (data, textStatus) {
+                        bootbox.alert("Se " + (id == 0 ? "registró" : "eliminó") + " satisfactoriamente.", function () {
+                            $("#tTitulo").val("");
+                            $("#tDescripcion").val("");
+                            $("#registroTexto").hide();
+                            $("#btnAdd").hide();
+                            ObtenerData(2);
+                        });
+                    },
+                    error: function (xhr) {
+                        exception(xhr);
+                    },
+                    complete: function () {
+                        $("#btnAgregar").button('reset');
+                    }
+                });
+            }
+        }
+    });
+}
+
+function OcultarTextos() {
+    $("#tTitulo").val("");
+    $("#tDescripcion").val("");
+    $("#registroTexto").hide();
+}
 
 
 

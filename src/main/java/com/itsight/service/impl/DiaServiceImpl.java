@@ -145,6 +145,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     @Override
     public void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int diaId, int listaIndice, int elementoIndice, String nombre) {
         String texto = "{"+listaIndice+",\"subelementos\""+","+elementoIndice+",\"nombre\"}";
+        //{"avanceSemanas", 20}
         repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(diaId, nombre, texto);
     }
 

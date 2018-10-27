@@ -558,7 +558,6 @@ public class RutinaController {
 
     @PostMapping(value = "/elemento/adddeletefavorito")
     public @ResponseBody String agregarEliminarFavorito(@RequestParam int videoid,@RequestParam int audioid,@RequestParam int addedit) {
-
         String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario objuse = usuarioService.findByUsername(nameuser);
         VideoAudioFavorito videoaudio = new VideoAudioFavorito();
@@ -591,12 +590,30 @@ public class RutinaController {
         return "Ok";
     }
 
-
     @GetMapping(value = "/elemento/obtenermisfavoritos")
     public @ResponseBody List<VideoAudioFavorito> obtenerMisFavoritos(){
         String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario objuse = usuarioService.findByUsername(nameuser);
         return videoAudioFavoritoService.findByUsuarioId(objuse.getId());
     }
+
+    @PostMapping(value = "/elemento/adddeletetexto")
+    public @ResponseBody String adddeletetexto(@RequestParam String titulo,@RequestParam String descripcion,@RequestParam int addedit) {
+        String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario objuse = usuarioService.findByUsername(nameuser);
+        VideoAudioFavorito videoaudiotexto = new VideoAudioFavorito();
+        if (addedit == 0) {
+            videoaudiotexto.setUsuario(objuse.getId());
+            videoaudiotexto.setTitulo(titulo);
+            videoaudiotexto.setDescripcion(descripcion);
+            videoaudiotexto.setTipo(Enums.TipoMedia.TEXTO.get());
+            videoaudiotexto.setFlagActivo(true);
+            videoAudioFavoritoService.save(videoaudiotexto);
+        } else {
+            videoAudioFavoritoService.delete(addedit);
+        }
+        return "Ok";
+    }
+
 
 }

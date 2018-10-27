@@ -45,7 +45,8 @@ public class Enums {
 
     public enum TipoMedia{
         AUDIO(1),
-        VIDEO(2);
+        VIDEO(2),
+        TEXTO(3);
 
         final int id;
 

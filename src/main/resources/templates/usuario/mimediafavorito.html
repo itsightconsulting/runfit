@@ -52,6 +52,7 @@
                         <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnVideos" type="button" class="btn btn-info">Vídeos</button> </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnAudios" type="button" class="btn btn-light">Audios</button></div>
                         <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnTextos" type="button" class="btn btn-light">Textos</button></div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnAdd" type="button" class="btn btn-success">Agregar Texto</button></div>
                     </div>
                 </div>
                 <div class="space-right">
@@ -61,18 +62,21 @@
                                 <label>Titulo</label>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <input type="text" class="form-control"></input>
+                                <input id="tTitulo" type="text" class="form-control"></input>
                             </div>
 
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                                <button id="btnAgregar" type="button" class="btn btn-info">Agregar</button>
+                                <button id="btnAgregar" type="button"  data-loading-text="Procesando..." class="btn btn-info">Agregar</button>
                             </div>
                             <br/><br/>
                             <div class="col-lg-2 col-md-2 col-sm-2">
                                 <label>Descripción</label>
                             </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                 <textarea class="form-control"></textarea>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <textarea id="tDescripcion" class="form-control"></textarea>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <button id="btnCancelar" type="button"  data-loading-text="Procesando..." class="btn btn-info">Cancelar</button>
                             </div>
                     </div>
                     <div class="row">
