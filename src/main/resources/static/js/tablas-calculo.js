@@ -76,10 +76,10 @@ BaseCalculo = (function(){
             {n: "42 KM", factor: 42}
         ],
         porcentajesPeriodoTransito: [
-            {n: "10 KM", porc: [100]},
-            {n: "15 KM", porc: []},
-            {n: "21 KM", porc: [60, 100]},
-            {n: "42 KM", porc: [50, 75, 100]}
+            {n: "10 KM", porcentajes: [100]},
+            {n: "15 KM", porcentajes: []},
+            {n: "21 KM", porcentajes: [60, 100]},
+            {n: "42 KM", porcentajes: [50, 75, 100]}
         ]
     }
 })();

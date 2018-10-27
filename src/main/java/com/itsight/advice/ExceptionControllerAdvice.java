@@ -1,14 +1,17 @@
 package com.itsight.advice;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.itsight.constants.ViewConstant;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.servlet.ModelAndView;
 
 import static com.itsight.util.Enums.ResponseCode.*;
 
@@ -50,11 +53,10 @@ public class ExceptionControllerAdvice {
         return EX_JACKSON_INVALID_FORMAT.get();
     }
 
-    /*@ExceptionHandler(Exception.class)
-    public @ResponseBody
-    String handleErrorByGenericException(Exception ex) {
-        ex.printStackTrace();
-        return EX_GENERIC.get();
-    }*/
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ModelAndView handleErrorByGenericException(Exception ex) {
+        System.out.println(ex.getMessage());
+        return new ModelAndView(ViewConstant.ERROR404PARAMEXCEP);
+    }
 }
 

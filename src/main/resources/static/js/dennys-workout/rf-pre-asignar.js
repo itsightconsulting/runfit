@@ -47,6 +47,7 @@ $(function () {
 
 
 function init(){
+    MacroValidacion.formulario();
     instanciarDatosFitnessCliente();
     tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
     tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
@@ -63,11 +64,8 @@ function init(){
         FichaSet.setTotalSemanas();
         setTimeout(() => {
             obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
-        }, 500);
+        }, 1000);
     }, 100);
-
-
-
 }
 
 function instanciarTooltips(){

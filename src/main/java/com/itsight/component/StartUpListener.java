@@ -135,7 +135,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingMusculoToTable();
             addingCondicionMejoraToTable();
             addingTipoDocumentoToTable();
-            addingKilometrajBase();
+            addingKilometrajeBase();
             addingAudiosDemo();
 
             if(bagForestRepository.findOne(1) == null) {
@@ -536,7 +536,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(tipoDocumentoService.findOne(2) == null) tipoDocumentoService.save(new TipoDocumento("CE"));
     }
 
-    public void addingKilometrajBase(){
+    public void addingKilometrajeBase(){
         if(kilometrajeBaseService.findOne(1) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,1,30.67));
         if(kilometrajeBaseService.findOne(2) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,2,41.14));
         if(kilometrajeBaseService.findOne(3) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,3,34.41));
@@ -732,9 +732,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                         PorcKiloTipo porcKiloTipo = new PorcKiloTipo();
                         porcKiloTipo.setTipo(k);
                         List<PorcKiloTipoSema> lstPorcKiloTipoSema = new ArrayList<>();
-                        for(int y=4; y<21; y++) {
+                        for(int y=2; y<29; y++) {
                             PorcKiloTipoSema porcKiloTipoSema = new PorcKiloTipoSema();
-                            porcKiloTipoSema.setTotalSemanas(y);
+                            porcKiloTipoSema.setTs(y);
                             List<Integer> porcents = new ArrayList<>(y);
                             for(int s=0; s<y;s++){
                                 porcents.add(70-s);

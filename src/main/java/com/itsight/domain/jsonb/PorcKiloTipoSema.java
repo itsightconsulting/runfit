@@ -10,7 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PorcKiloTipoSema implements Serializable {
 
-    private int totalSemanas;
+    private int ts;
     private List<Integer> porcentajes;
 
 }

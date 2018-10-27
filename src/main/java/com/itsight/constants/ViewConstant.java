@@ -66,6 +66,7 @@ public class ViewConstant {
     public static final String INTRANET = "login-colaborador";
     public static final String ERROR403 = "error/403";
     public static final String ERROR404 = "error/404";
+    public static final String ERROR404PARAMEXCEP = "error/404RE";
     public static final String ERROR500 = "error/500";
     public static final String FORM_BANDEJA_USUARIO = "administracion/bdj-usuario";
     public static final String FORM_BANDEJA_COMPARTIDA = "administracion/bdj-compartida";

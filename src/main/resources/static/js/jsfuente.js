@@ -83,6 +83,11 @@ const EstadoPlan = Object.freeze({
     COLMINADO: 5,
 });
 
+const TipoDato = Object.freeze({
+    PORCENTUAL: 1,
+    NUMERICO: 2,
+})
+
 const TipoRutina = Object.freeze({
     ESPECIFICA:   1,
     GENERAL:   2,

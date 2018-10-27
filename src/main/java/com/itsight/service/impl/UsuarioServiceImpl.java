@@ -394,9 +394,9 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
                 PorcKiloTipo porcKiloTipo = new PorcKiloTipo();
                 porcKiloTipo.setTipo(k);
                 List<PorcKiloTipoSema> lstPorcKiloTipoSema = new ArrayList<>();
-                for(int y=4; y<21; y++) {
+                for(int y=2; y<29; y++) {
                     PorcKiloTipoSema porcKiloTipoSema = new PorcKiloTipoSema();
-                    porcKiloTipoSema.setTotalSemanas(y);
+                    porcKiloTipoSema.setTs(y);
                     List<Integer> porcents = new ArrayList<>(y);
                     for(int s=0; s<y;s++){
                         porcents.add(70-s);

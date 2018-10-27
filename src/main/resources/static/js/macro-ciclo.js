@@ -127,11 +127,21 @@ FichaDOMQueries = (function(){
 
 MacroCiclo = (function(){
     return {
+    
         comprobar: (e)=>{
-            const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
-            const contenedorMK2 = document.querySelector('#PorcentajesIntensidad');//metricas de kilometraje
-            if(MacroCiclo.validacion(contenedorMK, contenedorMK2)) {
+            if(MacroValidacion.principal() && MacroValidacion.basicos()) {
                 blockButton(e.target);
+
+                const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
+                const contenedorMK2 = document.querySelector('#PorcentajesIntensidad');//metricas de kilometraje
+
+                if(contenedorMK.children.length == 1) {
+                    contenedorMK.children[0].remove();
+                }
+
+                if(contenedorMK2.children.length == 1) {
+                    contenedorMK2.children[0].remove();
+                }
                 document.querySelector('#TiempoDesentrControl').value =  String(document.getElementById('TiempoControl').value.toSeconds() + (Number(document.getElementById('TiempoControl').value.toSeconds()) * Number(document.getElementById('FactorDesentrenamientoControl').value).toPercentage())).toHHMMSSM();
                 //Actualizando calculos bases en caso se hayan modificado algunos otros parametros
                 Calc.setRestantes();
@@ -139,9 +149,16 @@ MacroCiclo = (function(){
                 $baseAfterComprobacion = FichaGet.obtenerBase();
                 instanciarPorcentajesKilometraje($baseAfterComprobacion.distancia).then(porcentajes=>{
                     //Filtrando porcentajes
-                    const porcentajesTrainer = [{},{},{}];
+                    const porcentajesTrainer = [{},{},{},{}];
                     for(let i=0; i<porcentajesTrainer.length;i++){
-                        porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[$baseAfterComprobacion.periodizacion[i]-4];//1+ por que el index comienza en 0
+                        if(i != 3)
+                            porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[$baseAfterComprobacion.periodizacion[i]-2];
+                            //Explicacion(-2)
+                            // - Uno es por que el indice de todo array comienza en 0
+                            // - El último -uno es porque por regla de negocio cada periodo debe tener como mínimo 2 semanas entonces en base de datos se ha guardado como indice 0 la semana 2, indice 1 la semana 3 y así... por ello para evitar un arrayindexoutofboundsexception se resta - 2
+                        else
+                            porcentajesTrainer[i] = MacroCicloGet.obtenerPorcentajePT($baseAfterComprobacion.distancia);
+
                     }
                     contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo($baseAfterComprobacion, porcentajesTrainer)));
                     contenedorMK2.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesIntensidad($baseAfterComprobacion, porcentajesTrainer)));
@@ -221,18 +238,17 @@ MacroCiclo = (function(){
                     document.querySelector('#btnGenerarRutina').setAttribute('title','Generar rutina');
                     unlockButton(e.target);
                 })
-            }else{
-                $.smallBox({color: "alert", content: "Validación fallida"});
             }
         },
         instanciarInformacionTemporada: (base)=>{
+            base.periodizacion.push(base.distancia == 10 ? 1 : base.distancia == 21 ? 2 : 3);//42: 3 semanas;
+
             const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
             const sumKms = allKms.reduce((a,b)=>{return a+b});
             const kmsParts = base.periodizacion.map((v)=>{
                 return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
             });
             base.porcentajesKms = [];
-
             const kiloTotal = document.querySelector('#KilometrajeTotal');
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
             kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
@@ -242,7 +258,6 @@ MacroCiclo = (function(){
                 v.querySelector('span').textContent = base.periodizacion[i] +" semanas";
                 base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
             });
-            console.log(base.porcentajesKms);
             document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
             document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
             MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
@@ -274,12 +289,13 @@ MacroCiclo = (function(){
             MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
         },
         mostrarPorcentajesKilo: (base, pTrainer)=>{
-            const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva"];
-            //const colorClass = ["bg-color-teal", "bg-color-redLight", "bg-color-greenLight"];
+            const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva", "P. Tránsito"];
+            const periodizacionFinal = JSON.parse(JSON.stringify(base.periodizacion));
+            periodizacionFinal.push(MacroCicloGet.obtenerAdicionalSemsPT(base.distancia));//Plus
             let html = `<section class="">`;
-            html += base.periodizacion.map((v,i,k)=>{
+            html += periodizacionFinal.map((v,i,k)=>{
                 const kmsRef = $kilometrajeBase[i].kilometraje;
-                return `<div class="col col-4 padding-0 text-align-center">
+                return `<div class="col col-4 padding-0 text-align-center${i == 3 ? " hidden": ""}">
                             <h6 class="bg-color-white txt-color-gray font-md margin-bottom-10 padding-10 text-align-center">${nombresEtapa[i]}</h6>
                             ${MacroCicloSeccion.bodyPorcentajesKilo(k, pTrainer[i], i, kmsRef)}
                         </div>`
@@ -308,13 +324,19 @@ MacroCiclo = (function(){
             if( rdbVal == 10 || rdbVal == 21 || rdbVal == 42)
                 document.querySelector('#DistanciaCompetencia').value = rdbVal;
         },
-        generarRutinaCompleta: (e)=>{//Temp
+        generarRutinaCompleta: (e)=>{//Flujo básico
+
             if($('#KilometrajePromedioSemanal').val() != ""){
                 const $chelmoMacro = [];
                 //Semanas
-                const totalSemanas = FichaGet.obtenerBase().numSem;
+                const numSemBase = FichaGet.obtenerBase().numSem;
+                const numSemBaseIx = numSemBase -1;
+                const cantSemExcedentes = ($baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3);
+                const totalSemanas = numSemBase + cantSemExcedentes;
                 const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
-                const fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
+                let fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
+                fFin = parseFromStringToDate2(moment(fFin).add((cantSemExcedentes*7), 'd').format('DD/MM/YYYY'));
+
                 for(let i=0; i<totalSemanas;i++){
                     const refDia = fIni.getDay();
                     let diasParaFull = refDia==0?0:7-refDia;
@@ -351,6 +373,11 @@ MacroCiclo = (function(){
                 r.control = {};
                 r.control.kilometrajeTotal = document.querySelector('#KilometrajeTotal h1').textContent.trim();
                 r.control.kilometrajeActual = 0;
+                let emptyAvanceSemanas = new Array(numSemBase);
+                for(let i=0; i<numSemBase;i++){
+                    emptyAvanceSemanas[i] = "";
+                }
+                r.control.avanceSemanas = emptyAvanceSemanas;
                 const baseDistribucion = FichaGet.obtenerBase();
                 const dis1 = baseDistribucion.periodizacion[0];
                 const dis2 = dis1 + baseDistribucion.periodizacion[1];
@@ -364,37 +391,273 @@ MacroCiclo = (function(){
                     v.kilometrajeTotal = objs[fix].kms;
                     //Modificando indicadores de pulso y de tiempos
                     r.semanas[fix].metricas = JSON.stringify(mZC.map(v=>{
-                        return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
+                        if(fix < numSemBase)
+                            return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
+                       else
+                            return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[numSemBaseIx].max, min: v.indicadores[numSemBaseIx].min}}
                     }));
                     r.semanas[fix].metricasVelocidad = JSON.stringify(mVC.map(v=>{
-                        return {parcial: v.indicadores[fix].p};
+                        if(fix < numSemBase)
+                            return {parcial: v.indicadores[fix].p};
+                        else
+                            return {parcial: v.indicadores[numSemBaseIx].p};
                     }));
                 })
+                r.totalSemanas = Number(r.totalSemanas)+cantSemExcedentes;
                 guardarRutina(r, (btn = e.target));
             } else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
         },
-        validacion: (contenedorMK, contenedorMK2)=>{//contenedor de metricas de kilometraje
+    }
+})();
+
+MacroValidacion = (function(){
+    return {
+        principal: ()=>{
             let validado = false;
-            if(FichaDOMQueries.getProyecciones().querySelector('#TotalPeriodizacion2').parentElement.classList.contains('state-success'))
+            if(MacroValidacion.proyeccionesCompletas()){
                 validado = true;
-
-            if(contenedorMK.children.length == 1) {
-                contenedorMK.children[0].remove();
-            }
-
-            if(contenedorMK2.children.length == 1) {
-                contenedorMK2.children[0].remove();
-            }
-
-            const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
-            const totSemPerio = Number(document.querySelector('#TotalPeriodizacion2').value.trim());
-            if(validado && FichaGet.obtenerNivelAtleta() != undefined && totSem == totSemPerio) {
-                return true;
+                const totSem = document.querySelector('#MacroTotalSemanas').textContent.trim();
+                const totSemPerio = Number(document.querySelector('#TotalPeriodizacion2').value.trim());
+                if(validado && FichaGet.obtenerNivelAtleta() != undefined && totSem == totSemPerio){
+                    return true;
+                }
             }else{
+                $.smallBox({color: "alert", content: "Validación fallida"});
                 return false;
             }
+        },
+        proyeccionesCompletas:()=>{
+            const proy = FichaDOMQueries.getProyecciones();
+            return proy.querySelector('#TotalPeriodizacion1').parentElement.classList.contains('state-success') && proy.querySelector('#TotalVelocidad1').parentElement.classList.contains('state-success') && proy.querySelector('#TotalCadencia1').parentElement.classList.contains('state-success') && proy.querySelector('#TotalTcs1').parentElement.classList.contains('state-success') ? true : false;
+        },
+        onEdicionProyecciones:(input, valor, tipo, tipoProy)=>{
+            if(TipoDato.PORCENTUAL == tipo){
+                if(valor <= 100)
+                    return true;
+                else
+                    MacroValidacion.onEdicProyComun(input, tipo, tipoProy);
+
+            }
+
+            if(TipoDato.NUMERICO == tipo){
+                if(valor <= 28)
+                    return true;
+                else
+                    MacroValidacion.onEdicProyComun(input, tipo, tipoProy);
+            }
+        },
+        onEdicProyComun: (input, tipo, tipoProy)=>{
+            input.value = 0;
+            tipo == TipoDato.PORCENTUAL ? input.parentElement.parentElement.nextElementSibling.querySelector('input').value = 0 : input.parentElement.parentElement.previousElementSibling.querySelector('input').value = 0;
+            const msg =  tipo == TipoDato.PORCENTUAL ? htmlStringToElement(`<em>Máximo: <b>100</b></em>`) : htmlStringToElement(`<em>Máximo por etapa: <b>28</b></em>`);
+            input.nextElementSibling == undefined ? input.parentElement.append(msg) : '';
+            const contProyecciones = FichaDOMQueries.getProyecciones();
+            let idsProy = MacroCicloGet.obtenerIdsProyeccionesByTipo(tipoProy);
+            const t1 = CalcProyecciones.calcularTotalesDistribucion(contProyecciones, tipoProy, 1);
+            const t2 = CalcProyecciones.calcularTotalesDistribucion(contProyecciones, tipoProy, 2);
+            const contT1 = contProyecciones.querySelector(`${idsProy[1]}`);
+            const contT2 = contProyecciones.querySelector(`${idsProy[2]}`);
+            contT1.value = t1;
+            contT2.value = t2;
+            if(t1>=99.99 && t1<=100.1){
+                contT1.parentElement.classList.add('state-success');contT1.parentElement.classList.remove('state-error');
+                contT2.parentElement.classList.add('state-success');contT2.parentElement.classList.remove('state-error');
+            }else{
+                contT1.parentElement.classList.add('state-error');contT1.parentElement.classList.remove('state-success');
+                contT2.parentElement.classList.add('state-error');contT2.parentElement.classList.remove('state-success');
+            }
+            setTimeout(() => msg.remove(), 2000);
+        },
+        basicos: ()=>{
+            //Datos Generales: 1era columna
+            document.querySelector('#FrecuenciaCardiacaMinima').value;// > 0
+            document.querySelector('#FrecuenciaCardiacaMaxima').value;// > 0
+            document.querySelector('#NivelAtleta input:checked').value; //validos [1, 2, 3]
+            document.querySelector('#DistanciaRutina input:checked').value // validos [10, 21, 42];
+            document.querySelector('#MacroFechaInicio').value // > hoy;
+            document.querySelector('#MacroFechaFin').value; // > Fecha Inicio;
+            document.querySelector('#MacroTotalSemanas').textContent;// 4
+            //MacroTotalSemanas tiene que ser mayor o igual al resultado de la siguiente linea
+            //Math.ceil(moment(parseFromStringToDate(document.querySelector('#MacroFechaFin').value)).diff(moment(parseFromStringToDate(document.querySelector('#MacroFechaInicio').value)), 'd')/7)-1;
+
+            //Datos Generales-> Distancias base 1: 2da columna
+            document.querySelector('#DistanciaControl').value; // validos [2, 4, 10, 21, 42]
+            document.querySelector('#TiempoControl').value.toSeconds();// Mayor que 120 seg
+            document.querySelector('#CadenciaControl').value; // Mayor que 0
+            document.querySelector('#TcsControl').value; //Mayor que 0
+            document.querySelector('#FactorDesentrenamientoControl').value;// Mayor que 0
+            document.querySelector('#TiempoDesentrControl').value.toSeconds();// Calculado, mayor que #TiempoControl seg
+            //Datos Generales-> Distancias base 2: 3da columna
+            document.querySelector('#DistanciaCompetencia').value; // validos [10, 21, 42]
+            document.querySelector('#TiempoCompetencia').value; // [{10: >25min}, {21: > 01:04:21}, {42: > 02:00:10}]
+            document.querySelector('#CadenciaCompetencia').value; // Mayor que 0
+            document.querySelector('#TcsCompetencia').value; // Mayor que 0
+            document.querySelector('#FactorMejoria').value;//Calculado, mayor que 0
+
+            //Datos Generales->Bloque datos calculados
+            document.querySelector('#RitmoXKilometro'); // Mayor que 120 seg
+            document.querySelector('#RitmoCompetenciaActual'); //Mayor que 120 seg
+            document.querySelector('#RitmoAerobicoActual'); //Mayor que 120 seg
+            document.querySelector('#RitmoAerobicoPreComp'); //Mayor que 120 seg
+            document.querySelector('#LongitudPasoCA'); // Mayor que 0
+            document.querySelector('#KilometrajeTotalTemporada'); // Mayor que 0
+            document.querySelector('#KilometrajePromedioSemanal'); // Mayor que 0 && menor que KilometrajeTotalTemporada
+
+            document.querySelectorAll('#EstadisticasAdicionales .rcps'); // Mayor que 0 seg
+            document.querySelectorAll('#EstadisticasAdicionales .raps'); // Mayor que 0 seg
+            document.querySelectorAll('#EstadisticasAdicionales .cdcs'); // Mayor que 0
+            document.querySelectorAll('#EstadisticasAdicionales .lpcs'); // Mayor que 0
+            return true;
+        },
+        formulario: ()=>{
+            $.validator.addMethod('csTiempo', function (value, element, param) {//segundos
+                return value.toSeconds() > param.toSeconds();
+            }, '> {0}');
+
+            $.validator.addMethod("greaterThanDate",
+                function(value, element, params) {
+                    if (!/Invalid|NaN/.test(new Date(value))) {
+                        return new Date(value) > new Date($(params).val());
+                    }
+                    return isNaN(value) && isNaN($(params).val())
+                        || (Number(value) > Number($(params).val()));
+                },'Debe ser mayor a la fecha inicio');
+
+            $("#frm_registro").validate({
+                errorClass: errorClass,
+                errorElement: errorElement,
+                highlight: function (element) {
+                    $(element).parent().removeClass('state-success').addClass("state-error");
+                    $(element).removeClass('valid');
+                },
+                unhighlight: function (element) {
+                    $(element).parent().removeClass("state-error").addClass('state-success');
+                    $(element).addClass('valid');
+                },
+                ignore: ".ignore",
+                rules: {
+                    FrecuenciaCardiacaMinima: {
+                        required: true,
+                        min: 0,
+                        maxlength: 3,
+                    },
+                    FrecuenciaCardiacaMaxima: {
+                        required: true,
+                        min: 0,
+                        maxlength: 3,
+                    },
+                    NivelAtleta : {
+                        required: true,
+                    },
+                    DistanciaRutina : {
+                        required: true,
+                    },
+                    MacroFechaInicio: {
+                        required: true,
+                    },
+                    MacroFechaFin: {
+                        required: true,
+                        greaterThanDate: "#MacroFechaInicio",
+                    },
+                    DistanciaControl: {
+                        required: true,
+                    },
+                    TiempoControl: {
+                        required: true,
+                        csTiempo: "00:01:30",
+                    },
+                    CadenciaControl: {
+                        required: true,
+                    },
+                    TcsControl: {
+                        required: true,
+                    },
+                    FactorDesentrenamientoControl: {
+                        required: true,
+                    },
+                    TiempoDesentrControl: {
+                        required: true,
+                    },
+                    DistanciaCompetencia: {
+                        required: true,
+                    },
+                    TiempoCompetencia: {
+                        required: true,
+                    },
+                    CadenciaCompetencia: {
+                        required: true,
+                    },
+                    TcsCompetencia: {
+                        required: true,
+                    },
+                    FactorMejoria: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    FrecuenciaCardiacaMinima: {
+                        required: "El campo es obligatorio",
+                        min: $.validator.format("Valor mínimo 0"),
+                        maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                    },
+                    FrecuenciaCardiacaMaxima: {
+                        required: "El campo es obligatorio",
+                        min: $.validator.format("Valor mínimo 0"),
+                        maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
+                    },
+                    NivelAtleta : {
+                        required: "El campo es obligatorio",
+                    },
+                    DistanciaRutina : {
+                        required: "El campo es obligatorio",
+                    },
+                    MacroFechaInicio: {
+                        required: "El campo es obligatorio",
+                    },
+                    MacroFechaFin: {
+                        required: "El campo es obligatorio",
+                    },
+                    DistanciaControl: {
+                        required: "El campo es obligatorio",
+                    },
+                    TiempoControl: {
+                        required: "El campo es obligatorio",
+                    },
+                    CadenciaControl: {
+                        required: "El campo es obligatorio",
+                    },
+                    TcsControl: {
+                        required: "El campo es obligatorio",
+                    },
+                    FactorDesentrenamientoControl: {
+                        required: "El campo es obligatorio",
+                    },
+                    TiempoDesentrControl: {
+                        required: "El campo es obligatorio",
+                    },
+                    DistanciaCompetencia: {
+                        required: "El campo es obligatorio",
+                    },
+                    TiempoCompetencia: {
+                        required: "El campo es obligatorio",
+                    },
+                    CadenciaCompetencia: {
+                        required: "El campo es obligatorio",
+                    },
+                    TcsCompetencia: {
+                        required: "El campo es obligatorio",
+                    },
+                    FactorMejoria: {
+                        required: "El campo es obligatorio",
+                    }
+
+                },
+                submitHandler: function () {
+
+                }
+            });
         }
     }
 })();
@@ -404,9 +667,11 @@ MCGraficoData = (function(){
         paraTemporada: (objBase)=>{
             const dis1 = objBase.periodizacion[0];
             const dis2 = dis1 + objBase.periodizacion[1];
+            const dis3 = dis2 + objBase.periodizacion[2];
+
             //Dis kilometraje
             const data = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
-                const c = i < dis1 ? "rgba(131, 197, 255, 0.2)" : i < dis2 ? "rgba(232, 107, 10, 0.2)" : "rgba(164, 247, 144, 0.2)";
+                const c = i < dis1 ? "rgba(131, 197, 255, 0.2)" : i < dis2 ? "rgba(232, 107, 10, 0.2)" : i < dis3 ? "rgba(164, 247, 144, 0.2)" : "rgba(74, 78, 59, 0.2)";
                 return {numSem: i+1, kms: Number(v.textContent), color: c};
             });
 
@@ -414,6 +679,9 @@ MCGraficoData = (function(){
             document.querySelectorAll('#PorcentajesIntensidad label.perc-ints').forEach((v,i)=>{
                 data[i].perc = v.textContent.slice(0,-1);
             })
+            for(let i=dis3; i<(dis3+objBase.periodizacion[3]); i++){
+                data[i].perc = 0;
+            }
 
             //Reconstruyendo Semanas
             const t = getOnlyDate();//Pendiente
@@ -432,7 +700,7 @@ MCGraficoData = (function(){
         },
         paraMini: (porcentajes)=>{
             const lenP = porcentajes.length;
-            const data = [{title: "General", value: porcentajes[0], color: "#e6f3ff"}, {title: "Específica", value: porcentajes[1], color: "#fae1ce"}, {title: "Precompetitiva", value: porcentajes[2], color: "#edfde9"}];
+            const data = [{title: "General", value: porcentajes[0], color: "#E6F3FF"}, {title: "Específica", value: porcentajes[1], color: "#FAE1CE"}, {title: "Precompetitiva", value: porcentajes[2], color: "#EDFDE9"}, {title: "Tránsito", value: porcentajes[3], color: "#4A4E3B5E"}];
             const dF = new Array(lenP);
             for(let i=0; i<Object.keys(data).length;i++){
                 dF[i] = [];
@@ -448,11 +716,10 @@ MCGraficoData = (function(){
 MCGrafico = (function(){
     return {
         temporada: (data)=>{
-
             const avances =  data.filter(v=>{//Provisional
                 return (v.avance != undefined)
             }).map(({avance})=>avance);
-            avances.push(0);
+            avances.push(0);//Por conveniencia(estética)
 
             document.querySelector('#InicialMacro').classList.remove('hidden');
             document.querySelector('#ContainerVarVolumen').classList.remove('hidden');
@@ -767,7 +1034,10 @@ MacroCicloGet = (function(){
             const distancia = Number(document.querySelector('#DistanciaRutina .chkDistancia:checked').value);
             const porcentajes = Array.from(document.querySelectorAll('.perc')).map(v=>{return Number(v.textContent.slice(0, -1))})
             return base.periodizacion.map((v, i)=>{
-                return {indice: v-4, distancia: distancia, etapa:  i+1, porcentajes: porcentajes.splice(0, v).join()}
+                return {indice: v-2, distancia: distancia, etapa:  i+1, porcentajes: porcentajes.splice(0, v).join()}
+                //Explicacion(-2)
+                // - Uno es por que el indice de todo array comienza en 0
+                // - El último -uno es porque por regla de negocio cada periodo debe tener como mínimo 2 semanas entonces en base de datos se ha guardado como indice 0 la semana 2, indice 1 la semana 3 y así... por ello para evitar un arrayindexoutofboundsexception se resta - 2
             })
         },
         obtenerPorcentajesIntens: (periodizacion)=>{
@@ -775,6 +1045,29 @@ MacroCicloGet = (function(){
             for(let i=0; i<totSems; i++){
                 $porcentajesIntensidad.push(50);
             }
+        },
+        obtenerPorcentajePT: (dis)=>{
+            return BaseCalculo.porcentajesPeriodoTransito[dis == 10 ? 0 : dis == 21 ? 2 : 3]
+        },
+        obtenerAdicionalSemsPT: (dis)=>{
+            return dis == 10 ? 1 : dis == 21 ? 2 : 3;
+        },
+        obtenerIdsProyeccionesByTipo: (tipoProyeccion)=>{
+            let identificadores;
+            switch (tipoProyeccion) {
+                case 1:
+                    identificadores = [".periodizacion-calc", "#TotalPeriodizacion1", "#TotalPeriodizacion2"];
+                    break;
+                case 2:
+                    identificadores = [".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"];
+                    break;
+                case 3:
+                    identificadores = [".cadencia-calc", "#TotalCadencia1", "#TotalCadencia2"];
+                    break;
+                default:
+                    identificadores = [".tcs-calc", "#TotalTcs1", "#TotalTcs2"];
+            }
+            return identificadores;
         }
     }
 })();
@@ -802,46 +1095,36 @@ FichaSeeder = (function(){
 CalcProyecciones = (function(){
     return {
         calcular: (input, tipoProyeccion) => {
-            const ix = Number(input.getAttribute('data-index')), tipo = input.getAttribute('data-type'),
-                valor = input.value;
-            const contProyecciones = FichaDOMQueries.getProyecciones();
-            const totSem = document.querySelector('#MacroTotalSemanas').textContent;
-            let identificadores;
-            switch (tipoProyeccion) {
-                case 1:
-                    identificadores = [".periodizacion-calc", "#TotalPeriodizacion1", "#TotalPeriodizacion2"];
-                    break;
-                case 2:
-                    identificadores = [".velocidad-calc", "#TotalVelocidad1", "#TotalVelocidad2"];
-                    break;
-                case 3:
-                    identificadores = [".cadencia-calc", "#TotalCadencia1", "#TotalCadencia2"];
-                    break;
-                default:
-                    identificadores = [".tcs-calc", "#TotalTcs1", "#TotalTcs2"];
-            }
+            const valor = input.value;
+            const tipo = input.getAttribute('data-type');
+            if(MacroValidacion.onEdicionProyecciones(input, valor, tipo, tipoProyeccion)){
+                const ix = Number(input.getAttribute('data-index'));
+                const contProyecciones = FichaDOMQueries.getProyecciones();
+                const totSem = document.querySelector('#MacroTotalSemanas').textContent;
+                let identificadores = MacroCicloGet.obtenerIdsProyeccionesByTipo(tipoProyeccion);
 
-            if (tipo == 1) {
-                const totSems = CalcProyecciones.calcularNumSemByPorcentaje(valor, ix);
-                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix + 3}"]`).value = totSems;
-            } else {
-                const totPorc = CalcProyecciones.calcularPorcentajeByNumSem(valor, ix);
-                contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix - 3}"]`).value = totPorc;
-            }
+                if (tipo == 1) {
+                    const totSems = CalcProyecciones.calcularNumSemByPorcentaje(valor, ix);
+                    contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix + 3}"]`).value = totSems;
+                } else {
+                    const totPorc = CalcProyecciones.calcularPorcentajeByNumSem(valor, ix);
+                    contProyecciones.querySelector(`${identificadores[0]}[data-index="${ix - 3}"]`).value = totPorc;
+                }
 
-            const tot1 = CalcProyecciones.calcularTotalesDistribucion(tipoProyeccion, 1), tot2 = CalcProyecciones.calcularTotalesDistribucion(tipoProyeccion, 2);
-            const eleTot1 = contProyecciones.querySelector(` ${identificadores[1]}`), eleTot2 = contProyecciones.querySelector(` ${identificadores[2]}`);
-            eleTot1.value = tot1;
-            eleTot2.value = tot2;
-            if(tot1>=99.99 && tot1<=100.01){
-                eleTot1.parentElement.classList.add('state-success');eleTot1.parentElement.classList.remove('state-error');
-            }else{
-                eleTot1.parentElement.classList.add('state-error');eleTot1.parentElement.classList.remove('state-success');
-            }
-            if(Number(tot2)==Number(totSem)){
-                eleTot2.parentElement.classList.add('state-success');eleTot2.parentElement.classList.remove('state-error');
-            }else{
-                eleTot2.parentElement.classList.add('state-error');eleTot2.parentElement.classList.remove('state-success');
+                const tot1 = CalcProyecciones.calcularTotalesDistribucion(contProyecciones, tipoProyeccion, 1), tot2 = CalcProyecciones.calcularTotalesDistribucion(contProyecciones, tipoProyeccion, 2);
+                const eleTot1 = contProyecciones.querySelector(` ${identificadores[1]}`), eleTot2 = contProyecciones.querySelector(` ${identificadores[2]}`);
+                eleTot1.value = tot1;
+                eleTot2.value = tot2;
+                if(tot1>=99.99 && tot1<=100.1){
+                    eleTot1.parentElement.classList.add('state-success');eleTot1.parentElement.classList.remove('state-error');
+                }else{
+                    eleTot1.parentElement.classList.add('state-error');eleTot1.parentElement.classList.remove('state-success');
+                }
+                if(Number(tot2)==Number(totSem)){
+                    eleTot2.parentElement.classList.add('state-success');eleTot2.parentElement.classList.remove('state-error');
+                }else{
+                    eleTot2.parentElement.classList.add('state-error');eleTot2.parentElement.classList.remove('state-success');
+                }
             }
         },
         informacionSemanas: () => {
@@ -925,26 +1208,26 @@ CalcProyecciones = (function(){
                     return (((porcentaje * estadisticas.totDias) / 100) / 7).toFixed(2);
             }
         },
-        calcularTotalesDistribucion: (tipoCat, tipoCalc) => {
+        calcularTotalesDistribucion: (contProy, tipoCat, tipoCalc) => {
             let acum = 0;
             switch (tipoCat) {
                 case 1:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .periodizacion-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                    Array.from(contProy.querySelectorAll(`.periodizacion-calc[data-type="${tipoCalc}"]`)).forEach(v =>{
                         acum += !isNaN(v.value) ? Number(v.value) : 0;
                     });
                     break;
                 case 2:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .velocidad-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                    Array.from(contProy.querySelectorAll(`.velocidad-calc[data-type="${tipoCalc}"]`)).forEach(v =>{
                         acum += !isNaN(v.value) ? Number(v.value) : 0;
                     });
                     break;
                 case 3:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .cadencia-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                    Array.from(contProy.querySelectorAll(`.cadencia-calc[data-type="${tipoCalc}"]`)).forEach(v =>{
                         acum += !isNaN(v.value) ? Number(v.value) : 0;
                     });
                     break;
                 default:
-                    Array.from(document.querySelectorAll(`#tabFichaTecnica .tcs-calc[data-type="${tipoCalc}"]`)).forEach(v => {
+                    Array.from(contProy.querySelectorAll(`.tcs-calc[data-type="${tipoCalc}"]`)).forEach(v =>{
                         acum += !isNaN(v.value) ? Number(v.value) : 0;
                     });
             }
