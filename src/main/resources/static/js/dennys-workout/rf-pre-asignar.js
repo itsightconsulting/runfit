@@ -59,13 +59,8 @@ function init(){
     fFinMacro.addEventListener('change', FichaSet.setTotalSemanas);
     setFechaActual(document.querySelectorAll('input[type="date"]'));
     setTimeout(() => {
-        $('#MacroFechaInicio').val('2018-10-19');
-        $('#MacroFechaFin').val('2019-11-10');
-        FichaSet.setTotalSemanas();
-        setTimeout(() => {
-            obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
-        }, 1000);
-    }, 100);
+        obtenerKilometrajeBaseBD(Number(document.querySelector('#DistanciaRutina input:checked').value), Number(document.querySelector('#NivelAtleta input:checked').value));
+    }, 1100);
 }
 
 function instanciarTooltips(){

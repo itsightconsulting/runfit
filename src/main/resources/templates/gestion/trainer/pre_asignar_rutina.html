@@ -572,6 +572,18 @@
             background: #73F194 !important;
         }
 
+        #frm_registro label.input input{
+            border-radius: 10px !important;
+        }
+
+        #frm_registro label.label select{
+            border-radius: 10px !important;
+        }
+
+        #frm_registro label.input i{
+            border-radius: 10px !important;
+        }
+
     </style>
 </head>
 
@@ -628,7 +640,7 @@
                                     <fieldset>
                                         <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Datos Generales</h5>
                                         <div class="row">
-                                            <section class="col col-4">
+                                            <section class="col col-md-4 col-sm-3">
                                                 <label class="label">Nombres:</label>
                                                 <label class="input">
                                                     <input type="text" id="Nombres" readonly="readonly"/>
@@ -640,7 +652,7 @@
                                                     <input type="text" id="ApellidoPaterno" readonly="readonly"/>
                                                 </label>
                                             </section>
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-3">
                                                 <label class="label">Fecha nacimiento:</label>
                                                 <label class="input">
                                                     <input type="text" id="FechaNacimiento" readonly="readonly"/>
@@ -663,7 +675,7 @@
                                             <section class="col col-2 text-align-center">
                                                 <div class="container-fluid v-center">
                                                     <div class="col-md-6">
-                                                        <label class="input padding-left-20">
+                                                        <label class="input padding-left-10">
                                                             <input type="number" id="FrecuenciaCardiacaMinima" name="FrecuenciaCardiacaMinima" class="text-align-center"/>
                                                         </label>
                                                     </div>
@@ -676,7 +688,7 @@
                                             <section class="col col-2 text-align-center">
                                                 <div class="container-fluid v-center">
                                                     <div class="col-md-6">
-                                                        <label class="input padding-left-20">
+                                                        <label class="input padding-left-10">
                                                             <input type="number" id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" class="text-align-center"/>
                                                         </label>
                                                     </div>
@@ -735,9 +747,9 @@
                                             <section class="col col-2">
                                                 <section class="container-fluid text-align-center">
                                                     <label class="label text-align-center padding-top-5">Fecha inicio:</label>
-                                                    <label class="input"><input type="date" id="MacroFechaInicio" name="MacroFechaInicio"/></label>
+                                                    <label class="input"><i class="icon-append txt-color-blue fa fa-calendar"></i><input type="date" id="MacroFechaInicio" name="MacroFechaInicio"/></label>
                                                     <label class="label text-align-center padding-top-5">Fecha fin:</label>
-                                                    <label class="input"><input type="date" id="MacroFechaFin" name="MacroFechaFin"/></label>
+                                                    <label class="input"><i class="icon-append txt-color-blue fa fa-calendar"></i><input type="date" id="MacroFechaFin" name="MacroFechaFin"/></label>
                                                 </section>
                                             </section>
                                             <section class="col col-2">
@@ -855,7 +867,7 @@
                                         </div>
                                         <hr/>
                                         <div class="row padding-o-top-10">
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -878,7 +890,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -892,7 +904,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -907,7 +919,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -922,7 +934,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3">
+                                            <section class="col col-md-3 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -939,7 +951,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3">
+                                            <section class="col col-md-3 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1182,7 +1194,7 @@
                                         </div>
                                     </fieldset>
                                     <fieldset id="Proyecciones">
-                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Mejoras proyectadas</h5>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Periodización y mejoras proyectadas</h5>
                                         <div class="row padding-top-10" style="border-bottom: 1px solid grey; !important">
                                             <section class="col col-1"></section>
                                             <section class="col col-5" style="border-right: 1px solid grey; !important">
@@ -1201,10 +1213,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="35.05" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="20" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="3" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1212,10 +1224,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="36.08" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="20" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value= "" data-index="4" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1223,19 +1235,19 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="28.87" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="16" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="5" data-type="2"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
-                                                        <label class="input state-success"><input type="number" class="text-align-center input" value="100.00" readonly="readonly" id="TotalPeriodizacion1"/></label>
+                                                        <label class="input state-success"><input type="number" class="text-align-center input" value="" readonly="readonly" id="TotalPeriodizacion1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input state-success"><input type="number" class="text-align-center input" value="56.00" readonly="readonly" id="TotalPeriodizacion2"/></label>
+                                                        <label class="input state-success"><input type="number" class="text-align-center input" value="" readonly="readonly" id="TotalPeriodizacion2"/></label>
                                                     </div>
                                                 </div>
                                             </section>
@@ -1258,7 +1270,7 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1269,7 +1281,7 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1280,11 +1292,11 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
                                                         <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalVelocidad1"/></label>
                                                     </div>
@@ -1315,7 +1327,7 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1326,7 +1338,7 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1337,11 +1349,11 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
                                                         <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalCadencia1"/></label>
                                                     </div>
@@ -1369,7 +1381,7 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="0" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1380,7 +1392,7 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="1" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1391,11 +1403,11 @@
                                                         <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="2" data-type="1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
                                                         <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalTcs1"/></label>
                                                     </div>

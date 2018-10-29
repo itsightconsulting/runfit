@@ -180,7 +180,10 @@ RitmosSZC = (function(){
 RitmosSVYC = (function(){
     return {
         getMetricasVelocidades: ()=>{// PARCIALES PARA SESIONES DE VELOCIDAD Y RITMOS DE COMPETENCIA(REF: MACRO -> C39)
-            const base = FichaGet.obtenerBase();
+            const base = JSON.parse(JSON.stringify(FichaGet.obtenerBase()));
+            const proyecciones = FichaDOMQueries.getProyecciones();
+            //Reemplazando de distribución de kilometraje a distribución fijada en mejora de velocidades
+            base.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.velocidad-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
             const factorDesentrenamientoControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
             const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
             const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
@@ -190,7 +193,6 @@ RitmosSVYC = (function(){
             const metricasBase = BaseCalculo.ofMetricasBase;
             const factorDistanciaCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return Number(document.querySelector('#DistanciaCompetencia').value) == v.dist})[0].medida;
             const matriz = [];
-
 
             let ix1 = 0;
             metricasBase.forEach((v, fix)=>{
@@ -273,16 +275,19 @@ Calc = (function(){
             return arrRitmos;
         },
         getRitmosCadenciaCompetencia: (cadActual, cadCompetencia, base)=>{
+            const cBase = JSON.parse(JSON.stringify(base));
+            //Reemplazando de distribución de kilometraje a distribución fijada en mejora de cadencia
+            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.cadencia-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
             let ritmoBase = cadCompetencia - cadActual ;
             const arrRitmos = [];
             let it = 0;
-            base.periodizacion.forEach((v,i)=>{
+            cBase.periodizacion.forEach((v,i)=>{
                 for(let k=0; k<v; k++){
                     if(it == 0){
                         arrRitmos.push({factor: Math.round(cadActual), preciso: Math.round(cadActual)})
                     } else {
                         const anterior = arrRitmos[it-1].preciso;
-                        const x1 = base.distribucionPorcentaje[i]/v;
+                        const x1 = cBase.distribucionPorcentaje[i]/v;
                         const final = anterior + ritmoBase * x1;
                         arrRitmos.push({factor: Math.round(final), preciso: final})
                     }
@@ -297,16 +302,19 @@ Calc = (function(){
             })
         },
         getTCSs: (tcsActual, tcsCompetencia, base)=>{
+            const cBase = JSON.parse(JSON.stringify(base));
+            //Reemplazando de distribución de kilometraje a distribución fijada en mejora de TCS
+            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.tcs-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
             let tcsBase = tcsCompetencia - tcsActual ;
             const tcss = [];
             let it = 0;
-            base.periodizacion.forEach((v,i)=>{
+            cBase.periodizacion.forEach((v,i)=>{
                 for(let k=0; k<v; k++){
                     if(it == 0){
                         tcss.push({factor: Math.round(tcsActual), preciso: Math.round(tcsActual)})
                     } else {
                         const anterior = tcss[it-1].preciso;
-                        const x1 = base.distribucionPorcentaje[i]/v;
+                        const x1 = cBase.distribucionPorcentaje[i]/v;
                         const final = anterior + tcsBase * x1;
                         tcss.push({factor: Math.round(final), preciso: final})
                     }
