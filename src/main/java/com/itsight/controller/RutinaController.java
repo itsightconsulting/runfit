@@ -281,10 +281,12 @@ public class RutinaController {
             @RequestParam String diaIndice,
             @RequestParam String elementoIndice,
             @RequestParam String subElementoIndice,
+            @RequestParam double calorias,
+            @RequestParam double distancia,
              HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.eliminarSubElementoById(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice));
+        diaService.eliminarSubElementoById(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice), distancia, calorias);
         return ResponseCode.ELIMINACION.get();
     }
 

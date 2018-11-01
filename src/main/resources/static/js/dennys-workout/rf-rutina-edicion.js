@@ -1107,6 +1107,7 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('trash-sub-elemento')){
         const ixs = RutinaIx.getIxsForSubElemento(input);
+        RutinaDOMQueries.getSubElementoByIxs(ixs);
         SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
     }
     else if(clases.contains('agregar-kms')){
@@ -1326,6 +1327,15 @@ function principalesEventosClickRutina(e) {
         const diaIndex = input.getAttribute('data-index');
         DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
         DiaOpc.pegarElementosSeleccionados(diaIndex);
+    }
+    else if(clases.contains('agregar-objetivo')) {
+        const parent = input.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+        if(parent.children.length < 2){
+            const diaIndex = input.getAttribute('data-index');
+            const lastObjetivo = $rutina.semanas[Number($semActual.textContent)-1].objetivos.split(",")[diaIndex] != undefined ? 1 : 0
+            parent.insertBefore(htmlStringToElement(RutinaSeccion.newDiaObjetivo(diaIndex)), parent.children[0]);
+            parent.querySelector('.list-desp-objetivo').value = lastObjetivo;
+        }
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
@@ -2138,12 +2148,14 @@ function removerElementoBD(numSem, diaIndex, elementoIndex, minutos, distancia, 
     })
 }
 
-function removerSubElementoBD(numSem, diaIndex, eleIndex, subEleIndex){
+function removerSubElementoBD(numSem, diaIndex, eleIndex, subEleIndex, distancia, calorias){;
     let params = {}
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;
     params.subElementoIndice = subEleIndex;
+    params.distancia = distancia;
+    params.calorias = calorias;
     $.ajax({
         type: "PUT",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -2344,12 +2356,13 @@ function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, 
 }
 
 
-function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, totalKms, calorias) {
+function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, kms, totalKms, calorias) {
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
     params.subElementoIndice = subEleIndice;
+    params.distancia = kms;
     params.distanciaDia = totalKms;
     params.calorias = calorias;
     $.ajax({

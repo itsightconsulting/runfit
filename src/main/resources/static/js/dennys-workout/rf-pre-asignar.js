@@ -127,7 +127,10 @@ async function instanciarPorcentajesKilometraje(distancia){
     })
 }
 
-function actualizarPorcentajesKilometrajeBD(porcentajes){
+function actualizarPorcentajesKilometrajeBD(porcentajes, e){
+    e.classList.toggle('text-primary');
+    e.classList.toggle('txt-color-grey');
+    e.classList.toggle('actualizar-porcentajes');
     $.ajax({
         type: 'PUT',
         contentType: "application/json",
@@ -136,7 +139,11 @@ function actualizarPorcentajesKilometrajeBD(porcentajes){
         data: JSON.stringify(porcentajes),
         success: function (data) {
             if(notificacionesRutinaSegunResponseCode(data) != undefined){
-
+                $.smallBox({content: "<i>Actualización de porcentajes exitosa...</i>"})
+                setTimeout(()=>{
+                    e.classList.toggle('text-primary');
+                    e.classList.toggle('txt-color-grey');
+                    e.classList.toggle('actualizar-porcentajes');}, 2000);
             }
         },
         error: function (xhr) {
@@ -172,17 +179,13 @@ function principalesEventosTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
 
-    if(clases.contains('refrescar-grafico')){
+    if(clases.contains('actualizar-porcentajes')){
         e.preventDefault();
         e.stopPropagation();
         const base = FichaGet.obtenerBase();
-        MacroCiclo.instanciarInformacionTemporada(base);
-        MCGrafico.temporada(MCGraficoData.paraTemporada(base));
-        if(!$edcPorcIntensidad){//En construccion
-            actualizarPorcentajesKilometrajeBD(MacroCicloGet.obtenerPorcentajesParaActualizacion(base));
-        }else{
+        if(!$edcPorcIntensidad){//Provisional
+            actualizarPorcentajesKilometrajeBD(MacroCicloGet.obtenerPorcentajesParaActualizacion(base), input);
         }
-
     }else if(clases.contains('regular-intensidad')){
         e.preventDefault();
         e.stopPropagation();

@@ -237,9 +237,9 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void eliminarSubElementoById(int id, int eleIndice, int subEleIndice) {
+    public void eliminarSubElementoById(int id, int eleIndice, int subEleIndice, double distancia, double calorias) {
         String texto = "{"+eleIndice+",subElementos,"+subEleIndice+"}";
-        repository.deleteSubElementoById(id, texto);
+        repository.deleteSubElementoById(id, texto, distancia, calorias);
     }
 
     @Override

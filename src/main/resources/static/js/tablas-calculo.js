@@ -54,7 +54,7 @@ BaseCalculo = (function(){
             {min: .81, max: .89},
             {min: .90, max: .92},
             {min: .93, max: .95},
-            {min: .96, max: .100},
+            {min: .96, max: 1.0},
         ],
         factoresCaloricos: [
             {zona: "Z1", factor: 1.0700},
@@ -89,6 +89,8 @@ RitmosSZC = (function(){
     return {
         getMetricasZonasCardiacas: ()=>{
             const base = FichaGet.obtenerBase();
+            base.periodizacion = base.periodizacion.filter(v=>{return v>0});
+            base.distribucionPorcentaje = base.distribucionPorcentaje.filter(v=>{return v>0});
             const paramInit = RitmosSZC.getParametroInicial().toSeconds();
             const paramComp = RitmosSZC.getParametroCompetencia().toSeconds();
             const metricasBase = RitmosSZC.getMetricasBaseZonasCardiacas();
@@ -97,6 +99,8 @@ RitmosSZC = (function(){
             const factorPrimerElemento = BaseCalculo.factorZonasCardiacas[1].factor;
             const factorUltimoElemento = BaseCalculo.factorZonasCardiacas[BaseCalculo.factorZonasCardiacas.length-2].factor;
             const matriz = [];
+
+            base.periodizacion.filter(v=>{return v > 0});
             //Temp por conveniencia ya que tiene 7 elementos el array
             let ix1 = 0;//Se usa cuando el recorrido del segundo forEach se encuentra en indice 0
             metricasBase.forEach((v,fix, k)=>{
@@ -233,6 +237,9 @@ Calc = (function(){
             $('#RitmoCompetenciaActual').val(String(tiempoDesentrControl * Math.pow((medidaDisCompetencia/medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia).toHHMMSSM());
             $('#RitmoXKilometro').val(String(document.querySelector('#TiempoCompetencia').value.toSeconds()/medidaDisCompetencia).toHHMMSSM());
             $('#LongitudPasoCA').val(((3600*24*1000)/(String($('#RitmoCompetenciaActual').val()).toSeconds()*24*60*cadencia)).toFixed(2));
+            $('#PasoSubida').val(String(Number($('#RitmoXKilometro').val().toSeconds())+15).toHHMMSSM());
+            $('#PasoPlano').val(String(Number($('#RitmoXKilometro').val().toSeconds())).toHHMMSSM());
+            $('#PasoBajada').val(String(Number($('#RitmoXKilometro').val().toSeconds())-15).toHHMMSSM());
         },
         getDistribucionTiempoPlanificado: (base)=>{
             const meta = document.querySelector('#RitmoXKilometro').value.toSeconds();
