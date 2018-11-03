@@ -488,6 +488,14 @@ public class RutinaController {
         return ResponseCode.REGISTRO.get();
     }
 
+    @PutMapping(value = "/objetivo/dia/actualizar")
+    public @ResponseBody String actualizarObjetivoDia(@RequestParam String objetivos, @RequestParam String numSem, HttpSession session){
+        //Actualiza de raiz, los elementos. No tomando en consideracion los anteriores(si es que existian)
+        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numSem)];
+        semanaService.actualizarObjetivos(semanaId, objetivos);
+        return ResponseCode.REGISTRO.get();
+    }
+
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/nueva")
     public @ResponseBody
@@ -526,13 +534,7 @@ public class RutinaController {
                 }
                 //Agregando la lista de dias a la semana
                 semana1.setLstDia(dias);
-                String[] objsTemp = {"Carrera","Ejercicios","Técnica","Carrera","Ejercicios","Técnica","Descanso"};
-                String objs = "";
-                for(int i=0; i<semana1.getLstDia().size();i++){
-                    objs+=objsTemp[i] +",";
-                }
-                objs = objs.substring(0, objs.length() - 1);
-                semana1.setObjetivos(objs);
+                semana1.setObjetivos("0,0,0,0,0,0,0");//Se refiere al id del objetivo del día, en este caso inician como 0 o mejor dicho sin objetivo específico
             }
             //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
             objR.setLstSemana(semanas);

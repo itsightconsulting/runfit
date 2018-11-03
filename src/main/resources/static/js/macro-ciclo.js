@@ -600,7 +600,7 @@ MacroValidacion = (function(){
                         return parseFromStringToDate(value) >= new Date().setHours(0, 0, 0, 0);
                     }
                     return isNaN(value) && isNaN($(value).val());
-                },'Debe ser mayor a la fecha de hoy');
+                },'Debe ser mayor o igual a la fecha de hoy');
 
             $.validator.addMethod("greaterThanDate",
                 function(value, element, params) {

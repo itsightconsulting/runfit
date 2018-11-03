@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Objetivo;
 import com.itsight.service.ObjetivoService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -48,20 +49,19 @@ public class ObjetivoController {
     String nuevo(@ModelAttribute Objetivo objetivo) {
         if (objetivo.getId() == 0) {
             objetivoService.save(objetivo);
-            return "1";
+            return Enums.ResponseCode.REGISTRO.get();
         }
         objetivoService.update(objetivo);
-        return "2";
+        return Enums.ResponseCode.ACTUALIZACION.get();
     }
 
     @PutMapping(value = "/desactivar")
-    public @ResponseBody
-    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
+    public @ResponseBody String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             objetivoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return Enums.ResponseCode.EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return Enums.ResponseCode.EX_GENERIC.get();
         }
     }
 }

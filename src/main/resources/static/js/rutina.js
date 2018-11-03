@@ -1532,12 +1532,13 @@ DiaOpc = (function(){
             e.classList.toggle('rf-semanario-sels');
         },
         actualizarObjetivo: (e)=>{
+            const diaIndex = e.getAttribute('dia-index');
             if(e.parentElement.previousElementSibling.value == 0){
                 $.smallBox({color: "alert", content: '<i>No ha seleccionado objetivo...</i>'})
-            }else{
+            } else{
                 $(e.parentElement.parentElement.parentElement).slideUp('slow', ()=>{
                     e.parentElement.parentElement.parentElement.remove();
-                    $.smallBox({content: '<i>El objetivo ha sido actualizado...</i>'})
+                    actualizarDiaObjetivoBD(diaIndex, e.parentElement.previousElementSibling.value);
                 });
             }
         }
@@ -2325,11 +2326,11 @@ RutinaSeccion = (function (){
             });
             return elementosHTML;
         },
-        newDiaObjetivo: (diaIndex)=>{
+        newDiaObjetivo: (objetivos, diaIndex)=>{
             return `
                 <div class="col-sm-12 padding-o-bottom-10">
                     <div class="input-group input-group-md">
-                        <select class="form-control list-desp-objetivo" style="border-bottom: 2px solid skyblue;border-radius: 10px 0px 0px 10px!important;"><option value="0">-- Objetivo del día -- </option><option value="1">Carrera</option><option value="2">Ejercicios</option><option value="3">Técnica</option><option value="4">Carrera</option><option value="5">Ejercicios</option></select>
+                        <select class="form-control list-desp-objetivo" style="border-bottom: 2px solid skyblue;border-radius: 10px 0px 0px 10px!important;"><option value="0">-- Objetivo del día -- </option>${objetivos}</select>
                         <div class="input-group-btn">
                             <button onclick="DiaOpc.actualizarObjetivo(this)" class="btn btn-default" dia-index="${diaIndex}" type="button" style="border-bottom: 1px solid skyblue;border-radius: 0px 20px 20px 0px !important;"><strong><i class="fa fa-check text-success"></i></strong></button>
                         </div>

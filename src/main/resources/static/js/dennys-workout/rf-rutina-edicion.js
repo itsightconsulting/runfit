@@ -31,6 +31,7 @@ let $estilosCopiados = [];
 let $statusCopy = false;
 let $kilometrajeBase = [];
 let $semCalculoMacro = {};
+let $objetivos = [];
 
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
@@ -128,7 +129,7 @@ function avanzarRetrocederSemana(numSem, action){
 }
 
 async function obtenerSemanaInicialRutina(){
-    let promesa = new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
         $.ajax({
             type: 'GET',
             url: _ctx + 'gestion/rutina/primera-semana/edicion',
@@ -155,7 +156,6 @@ async function obtenerSemanaInicialRutina(){
             }
         });
     })
-    return promesa;
 }
 
 async function obtenerEspecificaSemana(semanaIndex, action){
@@ -1330,11 +1330,27 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('agregar-objetivo')) {
         const parent = input.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
-        if(parent.children.length < 2){
+        if (parent.children.length < 2) {
             const diaIndex = input.getAttribute('data-index');
-            const lastObjetivo = $rutina.semanas[Number($semActual.textContent)-1].objetivos.split(",")[diaIndex] != undefined ? 1 : 0
-            parent.insertBefore(htmlStringToElement(RutinaSeccion.newDiaObjetivo(diaIndex)), parent.children[0]);
-            parent.querySelector('.list-desp-objetivo').value = lastObjetivo;
+            const lastObjetivo = $rutina.semanas[Number($semActual.textContent) - 1].objetivos.split(",")[diaIndex];
+            if($objetivos.length==0){
+                obtenerObjetivosDiaBD().then(objs=>{
+                    const objetivos = objs.map(v=>`<option value="${v.id}">${v.nombre}</option>`).join('');
+                    parent.insertBefore(htmlStringToElement(RutinaSeccion.newDiaObjetivo(objetivos,diaIndex)), parent.children[0]);
+                    parent.querySelector('.list-desp-objetivo').value = lastObjetivo;
+                    $objetivos = objs;
+                })
+            }else{
+                const objetivos = $objetivos.map(v=>`<option value="${v.id}">${v.nombre}</option>`).join('');
+                parent.insertBefore(htmlStringToElement(RutinaSeccion.newDiaObjetivo(objetivos,diaIndex)), parent.children[0]);
+                parent.querySelector('.list-desp-objetivo').value = lastObjetivo;
+            }
+        }else{
+            input.classList.toggle('hidden');
+            $(parent.children[0]).slideUp('slow', ()=>{
+                parent.children[0].remove();
+                input.classList.toggle('hidden');
+            })
         }
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
@@ -2744,5 +2760,50 @@ function updateAudioFavoritos() {
         },
         complete: function () {
         }
+    })
+}
+
+
+
+async function obtenerObjetivosDiaBD() {
+    return new Promise((res, rej)=>{
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: _ctx + "gestion/objetivo/obtenerListado/0/true",
+            dataType: "json",
+            success: function (data) {
+                if(data != null){
+                    res(data);
+                }
+            },
+            error: function (xhr) {
+                rej("fail");
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        })
+    })
+}
+
+function actualizarDiaObjetivoBD(a, b){
+    const numSem = Number($semActual.textContent) -1;
+    const output = $rutina.semanas[numSem].objetivos.split(",");
+    output[a] = b;
+    $rutina.semanas[numSem].objetivos = output.toString();
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+        url: _ctx + "gestion/rutina/objetivo/dia/actualizar",
+        data: {objetivos: output.toString(), numSem: numSem},
+        dataType: "json",
+        success: function () {
+            $.smallBox({content: '<i>El objetivo ha sido actualizado...</i>'});
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
     })
 }

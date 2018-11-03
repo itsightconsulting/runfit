@@ -81,7 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .expiredUrl("/login?error=session-expired")
                 .maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry());
-
     }
 
     // Work around https://jira.spring.io/browse/SEC-2855
