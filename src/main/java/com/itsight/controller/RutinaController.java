@@ -56,11 +56,13 @@ public class RutinaController {
 
     private VideoAudioFavoritoService videoAudioFavoritoService;
 
+    private RuConsolidadoService ruConsolidadoService;
+
     @Value("${domain.name}")
     private String domainName;
 
     @Autowired
-    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService) {
+    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.rutinaService = rutinaService;
         this.diaService = diaService;
@@ -73,6 +75,7 @@ public class RutinaController {
         this.categoriaService = categoriaService;
         this.usuarioService = usuarioService;
         this.videoAudioFavoritoService = videoAudioFavoritoService;
+        this.ruConsolidadoService = ruConsolidadoService;
     }
 
     @GetMapping(value = "")
@@ -540,7 +543,14 @@ public class RutinaController {
             objR.setLstSemana(semanas);
             objR.setFlagActivo(false);
             objR.setTipoRutina(Enums.TipoRutina.RUNNING.get());
-            rutinaService.save(objR);
+            //rutinaService.save(objR);
+            RuConsolidado nR = new RuConsolidado();
+            nR.setGeneral(rutinaDto.getGeneral());
+            nR.setRutina(objR);
+            nR.setStats(rutinaDto.getStats());
+            nR.setMejoras(rutinaDto.getMejoras());
+            nR.setDtGrafico(rutinaDto.getDtGrafico());
+            ruConsolidadoService.save(nR);
             int[] qSemanaIds = new int[objR.getLstSemana().size()];
             for(int i=0; i<qSemanaIds.length;i++){
                 qSemanaIds[i] = objR.getLstSemana().get(i).getId();

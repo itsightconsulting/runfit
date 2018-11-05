@@ -1,11 +1,25 @@
 package com.itsight;
 
+import com.itsight.domain.RuConsolidado;
+import com.itsight.service.RuConsolidadoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/rest")
 public class RestDemoController {
+
+    @Autowired
+    private RuConsolidadoService ruConsolidadoService;
+
+    @GetMapping("/presentacion")
+    public @ResponseBody
+    RuConsolidado getConsolidadoRutina() {
+        return ruConsolidadoService.findOneWithFT(1);
+    }
 /*
     @Autowired
     private ProductoPresentacionService proPresentacionService;

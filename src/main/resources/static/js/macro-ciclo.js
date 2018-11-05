@@ -433,6 +433,12 @@ MacroCiclo = (function(){
                     }));
                 })
                 r.totalSemanas = Number(r.totalSemanas)+cantSemExcedentes;
+                const consolidado = MacroCicloGet.consolidado();
+                r.general = consolidado.general;
+                r.stats = consolidado.stats;
+                r.mejoras = consolidado.mejoras;
+                r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
+                console.log(r);
                 guardarRutina(r, (btn = e.target));
             } else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
@@ -861,13 +867,13 @@ MCGraficoData = (function(){
 MCGrafico = (function(){
     return {
         temporada: (data)=>{
+            data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.perc, bullet: v.bullet, avance: v.avance}});
             const avances =  data.filter(v=>{//Provisional
                 return (v.avance != undefined)
             }).map(({avance})=>avance);
             avances.push(0);//Por conveniencia(estética)
-
-            document.querySelector('#InicialMacro').classList.remove('hidden');
             document.querySelector('#ContainerVarVolumen').classList.remove('hidden');
+            document.querySelector('#InicialMacro').classList.remove('hidden');
             Chart.controllers.LineNoOffset = Chart.controllers.line.extend({
                 updateElement: function(point, index, reset) {
                     Chart.controllers.line.prototype.updateElement.call(this, point, index, reset);
@@ -984,7 +990,7 @@ MCGrafico = (function(){
             $chartTemporada = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: data.map(({numSem})=>numSem),
+                    labels: data.map((v, i)=>i),
                     datasets: [{
                         label: 'Kilometraje',
                         data: data.map(({kms})=>kms),
@@ -1182,6 +1188,70 @@ MacroCicloSeccion = (function(){
 
 MacroCicloGet = (function(){
     return {
+        consolidado: ()=>{
+            const rutinaData = {};
+            rutinaData.general= {};
+            rutinaData.general.freMin = document.querySelector('#FrecuenciaCardiacaMaxima').value;
+            rutinaData.general.freMax = document.querySelector('#FrecuenciaCardiacaMinima').value;
+            rutinaData.general.nvAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
+            rutinaData.general.distancia = document.querySelector('#DistanciaRutina input:checked').value;
+            //GEN - METRICAS CONTROL
+            rutinaData.general.disControl = Number(document.querySelector('#DistanciaControl').value);
+            rutinaData.general.tieControl = document.querySelector('#TiempoControl').value;
+            rutinaData.general.cadControl = document.querySelector('#CadenciaControl').value;
+            rutinaData.general.tcsControl = document.querySelector('#TcsControl').value;
+            rutinaData.general.facDesControl = document.querySelector('#FactorDesentrenamientoControl').value;
+            rutinaData.general.tieDesControl = document.querySelector('#TiempoDesentrControl').value;
+            //GEN - METRICAS CONTROL
+            rutinaData.general.disCompetencia = Number(document.querySelector('#DistanciaCompetencia').value);
+            rutinaData.general.tieCompetencia = document.querySelector('#TiempoCompetencia').value;
+            rutinaData.general.cadCompetencia = document.querySelector('#CadenciaCompetencia').value;
+            rutinaData.general.tcsCompetencia = document.querySelector('#TcsCompetencia').value;
+            rutinaData.general.facMejoria = document.querySelector('#FactorMejoria').value;
+
+            //ESTADISTICAS GENERADAS SEGÚN INFORMACIÓN GENERAL
+            rutinaData.stats = {};
+            rutinaData.stats.ritmoXkm = document.querySelector('#RitmoXKilometro').value;
+            rutinaData.stats.ritCompActual = document.querySelector('#RitmoCompetenciaActual').value;
+            rutinaData.stats.ritAerActual = document.querySelector('#RitmoAerobicoActual').value;
+            rutinaData.stats.ritAerProComp = document.querySelector('#RitmoAerobicoPreComp').value;
+            rutinaData.stats.lonPasoCompActual = Number(document.querySelector('#LongitudPasoCA').value);
+            rutinaData.stats.kilometrajeTotal = Number(document.querySelector('#KilometrajeTotalTemporada').value);
+            rutinaData.stats.kilometrajeProm = Number(document.querySelector('#KilometrajePromedioSemanal').value);
+            rutinaData.stats.pasoSubida = document.querySelector('#PasoSubida').value;
+            rutinaData.stats.pasoBajada = document.querySelector('#PasoBajada').value;
+            rutinaData.stats.pasoPlano = document.querySelector('#PasoPlano').value;
+            const cEstadsAdic = document.querySelector('#EstadisticasAdicionales');
+            rutinaData.stats.rcps = Array.from(cEstadsAdic.querySelectorAll('.rcps')).map(v=>v.value == "" ? 0 : v.value).join('|');
+            rutinaData.stats.raps = Array.from(cEstadsAdic.querySelectorAll('.raps')).map(v=>v.value == "" ? 0 : v.value).join('|');
+            rutinaData.stats.cdcs = Array.from(cEstadsAdic.querySelectorAll('.cdcs')).map(v=>v.value == "" ? 0 : v.value).join('|');
+            rutinaData.stats.lpcs = Array.from(cEstadsAdic.querySelectorAll('.lpcs')).map(v=>v.value == "" ? 0 : v.value).join('|');
+            //MEJORAS Y DISTRIBUCION DE KMS
+            const cProy = document.querySelector('#Proyecciones');
+
+            rutinaData.mejoras = {};
+            rutinaData.mejoras.porcGe = cProy.querySelector('.periodizacion-calc[data-type="1"][data-index="0"]').value;
+            rutinaData.mejoras.semGe = cProy.querySelector('.periodizacion-calc[data-type="2"][data-index="3"]').value;
+            rutinaData.mejoras.porcEs = cProy.querySelector('.periodizacion-calc[data-type="1"][data-index="1"]').value;
+            rutinaData.mejoras.semEs = cProy.querySelector('.periodizacion-calc[data-type="2"][data-index="4"]').value;
+            rutinaData.mejoras.porcPr = cProy.querySelector('.periodizacion-calc[data-type="1"][data-index="2"]').value;
+            rutinaData.mejoras.semPr = cProy.querySelector('.periodizacion-calc[data-type="2"][data-index="5"]').value;
+
+            rutinaData.mejoras.velPorcGe = cProy.querySelector('.velocidad-calc[data-type="1"][data-index="0"]').value;
+            rutinaData.mejoras.velPorcEs = cProy.querySelector('.velocidad-calc[data-type="1"][data-index="1"]').value;
+            rutinaData.mejoras.velPorcPr = cProy.querySelector('.velocidad-calc[data-type="1"][data-index="2"]').value;
+
+            rutinaData.mejoras.cadPorcGe = cProy.querySelector('.cadencia-calc[data-type="1"][data-index="0"]').value;
+            rutinaData.mejoras.cadPorcEs = cProy.querySelector('.cadencia-calc[data-type="1"][data-index="1"]').value;
+            rutinaData.mejoras.cadPorcPr = cProy.querySelector('.cadencia-calc[data-type="1"][data-index="2"]').value;
+
+            rutinaData.mejoras.tcsPorcGe = cProy.querySelector('.tcs-calc[data-type="1"][data-index="0"]').value;
+            rutinaData.mejoras.tcsPorcEs = cProy.querySelector('.tcs-calc[data-type="1"][data-index="1"]').value;
+            rutinaData.mejoras.tcsPorcPr = cProy.querySelector('.tcs-calc[data-type="1"][data-index="2"]').value;
+
+            rutinaData.grafTemporada = MCGraficoData.paraTemporada($baseAfterComprobacion);
+            return rutinaData;
+        },
         obtenerPorcentajesParaActualizacion: (base)=>{
             const distancia = Number(document.querySelector('#DistanciaRutina .chkDistancia:checked').value);
             const porcentajes = Array.from(document.querySelectorAll('.perc')).map(v=>{return Number(v.textContent.slice(0, -1))})
