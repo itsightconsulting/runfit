@@ -87,8 +87,7 @@ public class UsuarioController {
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody
-    String nuevo(@ModelAttribute Usuario usuario, @RequestParam String perfilId,@RequestParam String tipoDocumentoId,  @RequestParam String rols) {
+    public @ResponseBody String nuevo(@ModelAttribute Usuario usuario, @RequestParam String perfilId,@RequestParam String tipoDocumentoId,  @RequestParam String rols) {
         usuario.setTipoUsuario(Integer.parseInt(perfilId));
         usuario.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (usuario.getId() == 0) {
