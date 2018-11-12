@@ -56,11 +56,13 @@ public class RutinaController {
 
     private VideoAudioFavoritoService videoAudioFavoritoService;
 
+    private RuConsolidadoService ruConsolidadoService;
+
     @Value("${domain.name}")
     private String domainName;
 
     @Autowired
-    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService) {
+    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.rutinaService = rutinaService;
         this.diaService = diaService;
@@ -73,6 +75,7 @@ public class RutinaController {
         this.categoriaService = categoriaService;
         this.usuarioService = usuarioService;
         this.videoAudioFavoritoService = videoAudioFavoritoService;
+        this.ruConsolidadoService = ruConsolidadoService;
     }
 
     @GetMapping(value = "")
@@ -281,10 +284,12 @@ public class RutinaController {
             @RequestParam String diaIndice,
             @RequestParam String elementoIndice,
             @RequestParam String subElementoIndice,
+            @RequestParam double calorias,
+            @RequestParam double distancia,
              HttpSession session){
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.eliminarSubElementoById(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice));
+        diaService.eliminarSubElementoById(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice), distancia, calorias);
         return ResponseCode.ELIMINACION.get();
     }
 
@@ -486,6 +491,14 @@ public class RutinaController {
         return ResponseCode.REGISTRO.get();
     }
 
+    @PutMapping(value = "/objetivo/dia/actualizar")
+    public @ResponseBody String actualizarObjetivoDia(@RequestParam String objetivos, @RequestParam String numSem, HttpSession session){
+        //Actualiza de raiz, los elementos. No tomando en consideracion los anteriores(si es que existian)
+        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numSem)];
+        semanaService.actualizarObjetivos(semanaId, objetivos);
+        return ResponseCode.REGISTRO.get();
+    }
+
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/nueva")
     public @ResponseBody
@@ -524,19 +537,20 @@ public class RutinaController {
                 }
                 //Agregando la lista de dias a la semana
                 semana1.setLstDia(dias);
-                String[] objsTemp = {"Carrera","Ejercicios","Técnica","Carrera","Ejercicios","Técnica","Descanso"};
-                String objs = "";
-                for(int i=0; i<semana1.getLstDia().size();i++){
-                    objs+=objsTemp[i] +",";
-                }
-                objs = objs.substring(0, objs.length() - 1);
-                semana1.setObjetivos(objs);
+                semana1.setObjetivos("0,0,0,0,0,0,0");//Se refiere al id del objetivo del día, en este caso inician como 0 o mejor dicho sin objetivo específico
             }
             //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
             objR.setLstSemana(semanas);
             objR.setFlagActivo(false);
             objR.setTipoRutina(Enums.TipoRutina.RUNNING.get());
-            rutinaService.save(objR);
+            //rutinaService.save(objR);
+            RuConsolidado nR = new RuConsolidado();
+            nR.setGeneral(rutinaDto.getGeneral());
+            nR.setRutina(objR);
+            nR.setStats(rutinaDto.getStats());
+            nR.setMejoras(rutinaDto.getMejoras());
+            nR.setDtGrafico(rutinaDto.getDtGrafico());
+            ruConsolidadoService.save(nR);
             int[] qSemanaIds = new int[objR.getLstSemana().size()];
             for(int i=0; i<qSemanaIds.length;i++){
                 qSemanaIds[i] = objR.getLstSemana().get(i).getId();

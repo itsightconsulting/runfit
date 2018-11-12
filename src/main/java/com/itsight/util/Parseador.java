@@ -86,10 +86,10 @@ public class Parseador {
 
 	public static int getDecodeHash32Id(String schema,  String hash){
 		Hashids rfIdHash = new Hashids(schema, 32);
-		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash)[0]));
+		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
 	}
 	public static int getDecodeHash16Id(String schema,  String hash){
 		Hashids rfIdHash = new Hashids(schema, 16);
-		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash)[0]));
+		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
 	}
 }

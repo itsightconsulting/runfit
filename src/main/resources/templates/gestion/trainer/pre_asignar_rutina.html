@@ -619,11 +619,6 @@
                         <!-- end widget edit box -->
                         <!-- CABECERA PESTANAS-->
                         <ul id="myTab1" class="nav nav-tabs bordered">
-                            <li class="">
-                                <a href="#tabMacro" data-toggle="tab">
-                                    <i class="fa fa-fw fa-lg fa-play-circle txt-color-blueLight"></i> Macro
-                                </a>
-                            </li>
                             <li class="active principalD">
                                 <a href="#tabFichaTecnica" data-toggle="tab">
                                     <i class="fa fa-fw fa-lg fa-play-circle txt-color-blueLight"></i> Ficha Técnica
@@ -632,9 +627,6 @@
                         </ul>
                         <!-- FIN CABECERA PESTAÑAS-->
                         <div id="myTabRutina" class="tab-content">
-                            <div class="tab-pane fade in" id="tabMacro">
-                                Macro
-                            </div>
                             <div class="tab-pane fade in active" id="tabFichaTecnica">
                                 <form class="smart-form" id="frm_registro">
                                     <fieldset>
@@ -811,7 +803,6 @@
                                                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                                                         <span class="rf-dia-elemento-nombre padding-10">
                                                                             <i class="fa fa-lg fa-bar-chart-o pull-left text-primary padding-top-5"></i>
-                                                                            <i class="fa fa-lg fa-fw fa-refresh pull-right text-primary padding-top-5 refrescar-grafico" rel="tooltip" data-placement="bottom" data-original-title="Actualizar gráfico"></i>
                                                                             <span class="txt-color-white">Distribución de volumen de kilómetros por semana</span>
                                                                         </span>
                                                                     </a>
@@ -846,6 +837,7 @@
                                                                             <i class="fa fa-lg fa-cogs pull-left text-warning padding-top-5"></i>
                                                                             <i class="fa fa-lg fa-fw fa-15x pull-right txt-color-blueLight volver-kms-distribucion hidden padding-right-22 padding-top-5" rel="tooltip" data-placement="bottom" data-original-title="Regular los volumenes de distancia" style="font-size: 1.5em !important;">K.M.</i>
                                                                             <i class="fa fa-lg fa-fw fa-percent pull-right txt-color-blueLight padding-top-5 regular-intensidad" rel="tooltip" data-placement="bottom" data-original-title="Regular la intensidad"></i>
+                                                                            <i class="fa fa-lg fa-fw fa-refresh pull-right text-primary padding-top-5 actualizar-porcentajes" rel="tooltip" data-placement="bottom" data-original-title="Actualizar porcentajes"></i>
                                                                             <span class="txt-color-white">Regulador de porcentajes e intensidad</span>
                                                                         </span>
                                                                     </a>
@@ -866,6 +858,96 @@
                                             </div>
                                         </div>
                                         <hr/>
+                                        <div class="row padding-o-bottom-10 hidden" id="MetricasDetalladas">
+                                            <div class="container-fluid">
+                                                <section class="">
+                                                    <div class="panel-group smart-accordion-default">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseDetallados" class="collapsed bg-color-rfb" aria-expanded="false">
+                                                                        <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
+                                                                        <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
+                                                                        <span class="padding-10">
+                                                                            <i class="fa fa-lg fa-bar-chart pull-left text-success padding-top-5"></i>
+                                                                            <span class="txt-color-white">Métricas detalladas</span>
+                                                                        </span>
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseDetallados" class="panel-collapse collapse in" aria-expanded="true">
+                                                                <div class="panel-body" style="padding: 3px 0px !important">
+                                                                    <!--Mejoras de velocidades por distancia-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras de velocidades por distancia</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                            <div class="col"><b>200 m </b></div>
+                                                                            <div class="col"><b>400 m </b></div>
+                                                                            <div class="col"><b>800 m </b></div>
+                                                                            <div class="col"><b>1 KM </b></div>
+                                                                            <div class="col"><b>10 KM </b></div>
+                                                                            <div class="col"><b>15 KM </b></div>
+                                                                            <div class="col"><b>21 KM </b></div>
+                                                                            <div class="col"><b>42 KM </b></div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-velocidades">
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mejoras de la cadencia-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras de la cadencia</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-cadencia">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mejoras del T.C.S.-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras del T.C.S.</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-tcs">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mejoras en la longitud de paso-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras en la longitud de paso</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-long-paso">
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+
                                         <div class="row padding-o-top-10">
                                             <section class="col col-md-2 col-sm-3">
                                                 <section class="container-fluid">
@@ -874,7 +956,7 @@
                                                             <label class="control-label padding-top-5">Distancia de control</label>
                                                         </div>
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
-                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center">
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center padding-0">
                                                             <label class="label">
                                                                 <select class="select2 form-control" id="DistanciaControl" name="DistanciaControl">
                                                                     <option value="">-- Seleccione --</option>
@@ -896,7 +978,7 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Tiempo de control</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center padding-0">
                                                             <label class="input">
                                                                 <input value="00:00:00" type="time" id="TiempoControl" name="TiempoControl" class="tiempo-control" step="1"/>
                                                             </label>
@@ -970,14 +1052,14 @@
                                         </div>
                                         <hr/>
                                         <div class="row padding-o-top-10">
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Distancia de competencia</label>
                                                         </div>
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
-                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center">
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center padding-0">
                                                             <label class="label">
                                                                 <select class="select2 form-control" id="DistanciaCompetencia" name="DistanciaCompetencia">
                                                                     <option value="">-- Seleccione --</option>
@@ -991,13 +1073,13 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Tiempo de competencia</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center padding-0">
                                                             <label class="input">
                                                                 <input value="00:00:00" type="time" id="TiempoCompetencia" name="TiempoCompetencia" step="1"/>
                                                             </label>
@@ -1005,7 +1087,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1020,7 +1102,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-2">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1035,7 +1117,7 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3">
+                                            <section class="col col-md-3 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1119,6 +1201,30 @@
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
                                                             <input type="number" id="KilometrajePromedioSemanal" name="KilometrajePromedioSemanal" readonly="readonly"/>
                                                         </label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Paso en subida:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="PasoSubida" name="" step="1" readonly="readonly"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Paso en bajada:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="PasoBajada" name="" step="1" readonly="readonly"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Paso en plano:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="PasoPlano" name="PasoPlano" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                             </section>

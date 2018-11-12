@@ -27,7 +27,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void eliminarElementoById(int id, int listaIndice, int minutos, double distancia, double calorias);
 
-    void eliminarSubElementoById(int id, int eleIndice, int subEleIndice);
+    void eliminarSubElementoById(int id, int eleIndice, int subEleIndice, double distancia, double calorias);
 
     void insertarNuevoElemento(int id, String elemento);
 

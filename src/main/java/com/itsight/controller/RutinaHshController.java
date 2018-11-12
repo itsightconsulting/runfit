@@ -52,39 +52,40 @@ public class RutinaHshController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @GetMapping(value = "/edicion")
     public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) {
-
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
-        String codTrainer = session.getAttribute("codTrainer").toString();
-        String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-        if(codTrainer.equals(qCodTrainer)){
-            //Se obtiene la última rutina del cliente
-            Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
-            if(rutina.getId() != 0){
-                //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
-                session.setAttribute("edicionRutinaId", rutina.getId());
-                session.setAttribute("edicionUsuarioId", runneId);
-                session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
-                session.setAttribute("semanaIds", rutina.getSemanaIds());
-                model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());
-                model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
-                model.addAttribute("lstCategoriaPlantRutina", categoriaService.findByFlagActivo(true));
-                return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
+        if(redFitId > 0 && runneId > 0) {
+            String codTrainer = session.getAttribute("codTrainer").toString();
+            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+            if (codTrainer.equals(qCodTrainer)) {
+                //Se obtiene la última rutina del cliente
+                Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
+                if (rutina.getId() != 0) {
+                    //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
+                    session.setAttribute("edicionRutinaId", rutina.getId());
+                    session.setAttribute("edicionUsuarioId", runneId);
+                    session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
+                    session.setAttribute("semanaIds", rutina.getSemanaIds());
+                    model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());
+                    model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
+                    model.addAttribute("lstCategoriaPlantRutina", categoriaService.findByFlagActivo(true));
+                    return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
+                }
             }
-            return new ModelAndView(ViewConstant.ERROR404);
-        }else{
-            return new ModelAndView(ViewConstant.ERROR403);
         }
+        return new ModelAndView(ViewConstant.ERROR404);
     }
 
     @GetMapping(value = "/pre")
     public ModelAndView preAsignarRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, HttpSession session){
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
-        String codTrainer = session.getAttribute("codTrainer").toString();
-        String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-        if(codTrainer.equals(qCodTrainer)){
-            return new ModelAndView(ViewConstant.MAIN_TRAINER_NR_PRE_ASIGNAR);
+        if(redFitId > 0 && runneId > 0){
+            String codTrainer = session.getAttribute("codTrainer").toString();
+            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+            if(codTrainer.equals(qCodTrainer)){
+                return new ModelAndView(ViewConstant.MAIN_TRAINER_NR_PRE_ASIGNAR);
+            }
         }
         return new ModelAndView(ViewConstant.ERROR404);
     }

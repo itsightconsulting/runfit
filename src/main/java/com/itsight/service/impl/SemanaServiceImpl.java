@@ -109,4 +109,9 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     public List<Semana> findByRutinaIdOrderByIdDesc(int idrutina) {
         return repository.findByRutinaIdOrderByIdDesc(idrutina);
     }
+
+    @Override
+    public void actualizarObjetivos(int id, String objetivos) {
+        repository.updateObjetivoById(id, objetivos);
+    }
 }

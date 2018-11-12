@@ -97,6 +97,7 @@ class Rutina {
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Marca el día como día de descanso"><i class="fa fa-refresh text-warning marcar-descanso" data-index="${i}"></i></a></div>
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Guardar día en mis plantillas"><i class="fa fa-save txt-color-greenLight pre-guardar-dia" data-index="${i}"></i></a></div>
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Pegar elementos elegidos"><i class="fa fa-list-alt text-primary pegar-mini-listas" data-index="${i}"></i></a></div>
+								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Agregar objetivo"><i class="fa fa-dot-circle-o txt-color agregar-objetivo" data-index="${i}"></i></a></div>
 								            </div>
 								        </header>
 								        <div role="heading">
@@ -194,6 +195,7 @@ class Semana{
             this.metricas = obj.metricas != undefined ? obj.metricas != "" ? JSON.parse(obj.metricas) : "" : "";
             this.metricasVelocidad = obj.metricasVelocidad != undefined ? obj.metricasVelocidad != "" ? JSON.parse(obj.metricasVelocidad) : "" : "";
             this.kilometrajeTotal = obj.kilometrajeTotal;
+            this.objetivos = obj.objetivos;
         }else{
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
@@ -774,6 +776,25 @@ RutinaGet = (function(){
             k.kmPlanificado = parseNumberToDecimal(kmPlanificado, 2);
 
             return k;
+        },
+        getKilometrajesLessDiaIndex: (dIx)=>{
+            const k = {};
+            let kcalTotal = 0, kmPlanificado = 0;
+            const sIx = Number($semActual.textContent)-1;
+            $rutina.semanas[sIx].dias.forEach((v,i)=>{
+                if(dIx != i)
+                    kcalTotal+=v.calorias;
+            });
+
+            $rutina.semanas[sIx].dias.forEach((v,i)=>{
+                if(dIx != i)
+                    kmPlanificado+=v.distancia;
+            });
+            k.kcal = parseNumberToDecimal(kcalTotal, 2);
+            k.kmMacro = $rutina.semanas[sIx].kilometrajeTotal;
+            k.kmPlanificado = parseNumberToDecimal(kmPlanificado, 2);
+
+            return k;
         }
     }
 })();
@@ -1187,6 +1208,7 @@ DiaOpc = (function(){
             $rutina.semanas[numSem].dias[diaIndex].flagDescanso = true;
             $rutina.semanas[numSem].dias[diaIndex].elementos = [];
             modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso);
+            Indicadores.actualizarKilometrajesLessDiaIndex(diaIndex);
         },
         preGuardarDiaPlantilla: (ixs)=>{
             const numeroSemana = $semActual.textContent - 1;
@@ -1209,8 +1231,6 @@ DiaOpc = (function(){
                     return x+y;
                 });
 
-
-
                 const totMinutos = Array.from(dia.querySelectorAll(`.agregar-tiempo`)).map(v=>{
                     return Number(v.value);
                 }).reduce((x,y)=>{
@@ -1225,7 +1245,6 @@ DiaOpc = (function(){
             }
         },
         validPreActualizarFromNomEle: (e, ixs, posEle)=>{
-            const initNomEle = $nombreActualizar;
             const nombreOZonaCardiaca = e.toUpperCase();
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
@@ -1358,13 +1377,15 @@ DiaOpc = (function(){
                 actualizarDiaBD(ixs.numSem, ixs.diaIndex, posEle, totalKms, calorias);//Incluye gasto calorico
             else
                 actualizarDiaBD2(ixs.numSem, ixs.diaIndex, posEle, totalKms, calorias, totalMinutos);//Incluye gasto calorico y total minutos
+            Indicadores.actualizarKilometrajes();
         },
         actualizarFromSE: (elemento, nombre, kms, calorias, posEle, posSE, ixs)=>{
             elemento.setAttribute('data-kms', kms);
             const totalKms = DiaFunc.obtenerTotalKmsDia(ixs.diaIndex);
             RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector(`.distancia-total`).textContent = parseFloat(roundNumber(totalKms, 2)).toFixed(2);
             RutinaSet.setDiaAndSubEle(ixs.numSem, ixs.diaIndex, posEle, posSE, nombre, kms, totalKms, calorias)
-            actualizarDiaBD3(ixs.numSem, ixs.diaIndex, posEle, posSE, totalKms, calorias);//Incluye gasto calorico
+            actualizarDiaBD3(ixs.numSem, ixs.diaIndex, posEle, posSE, kms, totalKms, calorias);//Incluye gasto calorico
+            Indicadores.actualizarKilometrajes();
         },
         copiarMiniPlantillaDia: (e)=>{
             const diaPos = e.getAttribute('data-pos');
@@ -1387,6 +1408,7 @@ DiaOpc = (function(){
                 actualizarDiaCompletoBD(numSem, diaIndex);
                 instanciarElementosDiaTooltip(diaHTML);
                 instanciarElementosDiaPopover(diaHTML);
+                Indicadores.actualizarKilometrajes();
             }
             $diaPlantilla = {};
         },
@@ -1404,6 +1426,7 @@ DiaOpc = (function(){
                 diaHTML.querySelector(`.horas-totales`).textContent = parseNumberToHours(totMin);
                 RutinaSet.concatElementos(numSem, diaIndex, $eleListasElegidos);
                 actualizarDiaParcialBD(numSem, diaIndex,$eleListasElegidos.length);
+                Indicadores.actualizarKilometrajes();
             }
             $eleListasElegidos = [];
         },
@@ -1423,6 +1446,7 @@ DiaOpc = (function(){
                 RutinaSet.concatElementos(numSem, diaIndex, eleFinales);
                 actualizarDiaParcialBD(numSem, diaIndex,eleFinales.length);
                 document.querySelectorAll('#RutinaSemana .rf-dia-elemento-nombre').forEach(v=>{v.classList.remove('rf-semanario-sels');});
+                Indicadores.actualizarKilometrajes();
             }
             $eleElegidos = [];
         },
@@ -1506,6 +1530,17 @@ DiaOpc = (function(){
                 $subEleElegidos = $subEleElegidos.sort();
             }
             e.classList.toggle('rf-semanario-sels');
+        },
+        actualizarObjetivo: (e)=>{
+            const diaIndex = e.getAttribute('dia-index');
+            if(e.parentElement.previousElementSibling.value == 0){
+                $.smallBox({color: "alert", content: '<i>No ha seleccionado objetivo...</i>'})
+            } else{
+                $(e.parentElement.parentElement.parentElement).slideUp('slow', ()=>{
+                    e.parentElement.parentElement.parentElement.remove();
+                    actualizarDiaObjetivoBD(diaIndex, e.parentElement.previousElementSibling.value);
+                });
+            }
         }
     }
 })();
@@ -1557,6 +1592,7 @@ ElementoOpc = (function(){
                 }
             }
             RutinaSet.subtractDiaCalorias(numSem, diaIndex, calorias);
+            Indicadores.actualizarKilometrajes();
             removerElementoBD(numSem, diaIndex, (eleIndex = i), minutos, distancia, calorias);
 
             $(finalHTML).slideUp('slow', ()=>{
@@ -1834,22 +1870,38 @@ ElementoOpc = (function(){
 SubEleOpc = (function(){
     return {
         eliminarSubElemento: (numSem, diaIndex, eleIndex, subEleIndex)=>{
+            const dia = RutinaGet.dia(numSem, diaIndex);
             const ixs = RutinaParsers.constructorIndexObject(diaIndex, eleIndex, subEleIndex);
             let i=0, k=0;
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let eleInit = tempElemento;
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            const elemento = RutinaGet.elemento(numSem, diaIndex, (posEle=i));
             let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
             let subEleInit = tempSubEle;
             while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
             $rutina.semanas[numSem].dias[diaIndex].elementos[i].subElementos.splice(k, 1);
-            removerSubElementoBD(numSem, diaIndex, (elemIndex = i), (subElemIndex = k));
+            let distancia = 0;
+            let calorias = 0;
+            const minutos = eleInit.querySelector('.agregar-tiempo').value;
+            if(RutinaValidator.esZ($nombreActualizar.toUpperCase()) && minutos > 0){
+                distancia = DiaFunc.obtenerKilometraje(numSem, Number($nombreActualizar.substr(1)) - 1, minutos);
+                dia.distancia -= distancia;
+                calorias = DiaFunc.obtenerGastoCalorico(Number($nombreActualizar.substr(1)) - 1, minutos);
+                RutinaSet.subtractDiaCalorias(numSem, diaIndex, calorias);
+                Indicadores.actualizarKilometrajes();
+                eleInit.setAttribute('data-kms', '0');
+            }
+            removerSubElementoBD(numSem, diaIndex, (elemIndex = i), (subElemIndex = k), distancia, calorias);
             $(subEleInit).slideUp('fast', ()=>{
                 subEleInit.remove();
                 if(eleInit.querySelector(`.detalle-lista`).children.length==0){
                     eleInit.querySelector(`.in-init-sub-ele`).classList.toggle('hidden');
+                    RutinaSet.setDiaClean(numSem, diaIndex);
                 }
             });
+            //4. Totalizados
+            DiaOpc.actualizarTotalizadosDia(diaIndex);
         },
         eliminarMediaAudio: (ixs)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -2023,11 +2075,10 @@ DiaFunc = (function(){
                 }else if(v.tipo == ElementoTP.COMPUESTO && v.minutos > 0) {
                     if(v.distancia>0)
                         if(RutinaValidator.esZ(v.nombre))
-                            calorias += DiaFunc.obtenerGastoCalorico(Number(v.subElementos[0].nombre.substr(1)) - 1, v.minutos);
+                            calorias += DiaFunc.obtenerGastoCalorico(Number(v.nombre.substr(1)) - 1, v.minutos);
                         else{
                             calorias += DiaFunc.obtenerGastoCalorico(Number(v.subElementos.filter(w=>{return RutinaValidator.esZ(w.nombre)})[0].nombre.substr(1)) - 1, v.minutos);
                         }
-
                 }
             });
             return calorias;
@@ -2274,7 +2325,19 @@ RutinaSeccion = (function (){
                 elementosHTML+=ele.tipo==1?RutinaElementoHTML.elementoSimplePaste(ele, diaIndex) : RutinaElementoHTML.elementoCompuestoPaste(ele, diaIndex);
             });
             return elementosHTML;
+        },
+        newDiaObjetivo: (objetivos, diaIndex)=>{
+            return `
+                <div class="col-sm-12 padding-o-bottom-10">
+                    <div class="input-group input-group-md">
+                        <select class="form-control list-desp-objetivo" style="border-bottom: 2px solid skyblue;border-radius: 10px 0px 0px 10px!important;"><option value="0">-- Objetivo del día -- </option>${objetivos}</select>
+                        <div class="input-group-btn">
+                            <button onclick="DiaOpc.actualizarObjetivo(this)" class="btn btn-default" dia-index="${diaIndex}" type="button" style="border-bottom: 1px solid skyblue;border-radius: 0px 20px 20px 0px !important;"><strong><i class="fa fa-check text-success"></i></strong></button>
+                        </div>
+                    </div>
+                </div>`
         }
+
     }
 })();
 
@@ -2678,14 +2741,14 @@ Indicadores = (function(){
             const raw = `<hr class="margin-0" style="margin: 0px -10px !important"/>
                         <div>
                             <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.C.</h6></div>
-                            <div class="txt-color-blueLight text-align-center"><span><b>${k.kcal} kcal</b></span></div>
+                            <div class="txt-color-blueLight text-align-center"><span><b class="kcal">${k.kcal} kcal</b></span></div>
                             <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.M.</h6></div>
                             <div class="txt-color-blueLight text-align-center"><span><b>${k.kmMacro} K.M.</b></span></div>
                             <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.P.</h6></div>
-                            <div class="txt-color-blueLight text-align-center"><span><b>${k.kmPlanificado} K.M.</b></span></div>
+                            <div class="txt-color-blueLight text-align-center"><span><b class="km-planificado">${k.kmPlanificado} K.M.</b></span></div>
                         </div>
                         <hr class="margin-0" style="margin: 0px -10px !important"/>`;
-            document.querySelector('#Kilometrajes').innerHTML = raw;
+            document.querySelector('#tabRutina #OpsLaterales #Kilometrajes').innerHTML = raw;
         },
         abrirIndicador2: (metricas)=>{
             const iconIndi2 = document.querySelector('#IconIndicador2');
@@ -2725,6 +2788,18 @@ Indicadores = (function(){
                     v.tt = v.p
             });
             return metricas;
+        },
+        actualizarKilometrajes: ()=>{
+            const k = RutinaGet.getKilometrajes();
+            const kHTML = document.querySelector('#tabRutina #OpsLaterales #Kilometrajes');
+            kHTML.querySelector('.kcal').textContent = k.kcal+" kcal";
+            kHTML.querySelector('.km-planificado').textContent = k.kmPlanificado+" K.M.";
+        },
+        actualizarKilometrajesLessDiaIndex: (diaIndex)=>{
+            const k = RutinaGet.getKilometrajesLessDiaIndex(diaIndex);
+            const kHTML = document.querySelector('#tabRutina #OpsLaterales #Kilometrajes');
+            kHTML.querySelector('.kcal').textContent = k.kcal+" kcal";
+            kHTML.querySelector('.km-planificado').textContent = k.kmPlanificado+" K.M.";
         }
     }
 })();

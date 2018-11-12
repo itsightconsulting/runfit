@@ -88,8 +88,8 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void saveElementoPosEspecificaGeneric(int id, String texto, boolean insertarDespues, String elemento);
 
     @Modifying
-    @Query(value = "UPDATE dia SET elementos = (SELECT elementos #- CAST(?2 as text[]) FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
-    void deleteSubElementoById(int id, String texto);
+    @Query(value = "UPDATE dia SET calorias =  calorias - ?4, distancia = distancia - ?3, elementos = (SELECT elementos #- CAST(?2 as text[]) FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
+    void deleteSubElementoById(int id, String texto, double distancia, double calorias);
 
     @Modifying
     @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:elemento as jsonb), false) WHERE dia_id = :id", nativeQuery = true)

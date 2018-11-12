@@ -90,7 +90,6 @@ public class Rutina extends AuditingEntity {
     @Column(name = "control", columnDefinition = "jsonb")
     private RutinaControl control;
 
-
     @Transient
     private List<Semana> listaSemanas;
 

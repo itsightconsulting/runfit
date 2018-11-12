@@ -453,7 +453,7 @@ function notificacionesRutinaSegunResponseCode(resCode){
             return "success";
             break;
         case -3:
-            $.smallBox({content: "Eliminación satisfactoria"});
+            //Eliminación satisfactoria
             break;
         case -10:
             $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});

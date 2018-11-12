@@ -675,7 +675,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             //userRepository.save(secUserTrainer);
             usuarioService.cargarRutinarioCe(secUserTrainer.getId());
 
-
             //Agregando cliente a entrenador creado
             Usuario usuario1 = new Usuario();
             SecurityUser secUserCliente = new SecurityUser();
@@ -773,15 +772,16 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             usuarioFitness1.setViaConexion("Demo");
             usuarioFitness1.setTalla(166);
             List<CompetenciaRunner> comps = new ArrayList<>();
-            Integer[] tiempos = {10,21,42};
+            Integer[] distancias = {10,21,42};
             String[] fechas = {"2018-11-10","2018-12-10","2019-01-27"};
+            String[] tiempos = {"00:58", "02:10", "04:12"};
             for(int i=0; i<3;i++){
                 CompetenciaRunner cr = new CompetenciaRunner();
-                cr.setDistancia(tiempos[i]);
+                cr.setDistancia(distancias[i]);
                 cr.setFecha(fechas[i]);
                 cr.setNombre("Maratón "+i);
                 cr.setPrioridad(2);
-                cr.setTiempoObjetivo("01:55");
+                cr.setTiempoObjetivo(tiempos[i]);
                 comps.add(cr);
             }
             comps.get(2).setPrioridad(1);

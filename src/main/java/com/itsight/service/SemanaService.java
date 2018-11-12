@@ -9,4 +9,6 @@ public interface SemanaService extends BaseService<Semana> {
 
     Semana findOneWithDaysById(int id);
     List<Semana> findByRutinaIdOrderByIdDesc(int idrutina);
+
+    void actualizarObjetivos(int id, String objetivos);
 }
