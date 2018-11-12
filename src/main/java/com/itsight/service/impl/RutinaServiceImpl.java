@@ -147,5 +147,13 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         return repository.findByUsuarioIdOrderByIdDesc(id);
     }
 
+    @Override
+    public void updateAvance(int id, int indexsemana, String strdias, String avance) {
+        String texto = "{\"avanceSemanas\","+(indexsemana-1)+"}";
+        String textodia = "{\"actualizarAvance\"}";
+        int valor = Integer.parseInt(avance);
+        repository.updateAvanceSemanaIndex(id, String.valueOf(valor),texto, textodia, strdias);
+    }
+
 
 }

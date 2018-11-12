@@ -142,4 +142,10 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     public String findCodTrainerByIdAndRunnerId(int redFitId, int runneId) {
         return repository.findCodTrainerByIdAndRunnerId(redFitId, runneId);
     }
+
+    @Override
+    public List<String> findTrainerByIdUsuario(int id) {
+        return  repository.findTrainerByIdUsuario(id);
+    }
+
 }

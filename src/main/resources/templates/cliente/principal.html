@@ -753,6 +753,21 @@
 .td-abajo{
     padding-bottom: 6px !important;
 }
+        .borderless-esp{
+            padding: 0 3.4% !important;
+            cursor: default !important;
+        }
+
+    .span-border-dia, .span-border, .span-border-semana {
+        cursor: pointer;
+    }
+    .modal-dialog{
+        width: 400px !important;
+    }
+    .modal-body{
+        padding: 10px !important;
+    }
+
 </style>
 
 
@@ -779,12 +794,15 @@
                         <span class="label label-primary bg-green-rf" id="MesAnio"></span>
                     </div>
                     <div id="myTabRutina" class="widget-toolbar-2 borderless borderless-boton">
-                        <span class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana" aria-describedby="tooltip618524">
-                            <a href="javascript:IrSemanaAnterior();"><i class="fa fa-chevron-left retroceder-semana"></i></a>
-                        </span>
-                        <span class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana">
-                            <a href="javascript:IrSemanaSiguiente();"><i class="fa fa-chevron-right adelantar-semana"></i></a>
-                        </span>
+                        <a href="javascript:IrSemanaAnterior();" class="label label-success retroceder-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Retroceder una semana" aria-describedby="tooltip618524">
+                            <i class="fa fa-chevron-left retroceder-semana"></i>
+                            <!-- <a href="javascript:IrSemanaAnterior();"></a> -->
+                        </a>
+                        <a href="javascript:IrSemanaSiguiente();" class="label label-success adelantar-semana bg-green-rf" rel="tooltip" data-placement="bottom" data-original-title="Adelantar una semana">
+                            <!-- <a href="javascript:IrSemanaSiguiente();"></a> -->
+                                <i class="fa fa-chevron-right adelantar-semana"></i>
+
+                        </a>
                         <span class="label label-success hoy-semana bg-black-rf" rel="tooltip" data-placement="bottom" >
                             <a style="color: #fff;" href="javascript:IrSemanaDiaHoy();">Hoy</a></span>
                         <a style="font-size: 20px;margin-left: 30px;" href="javascript:void(0);"><i id="CalendarioRf" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-calendar abrir-calendario" data-original-title="" title=""></i></a>
@@ -792,6 +810,9 @@
                     </div>
                     <div class="widget-toolbar-2 borderless">
                         <span class="label label-primary bg-black-rf" >Semana <span id="SemanaActual"></span></span>
+                    </div>
+                    <div class="widget-toolbar-2 borderless" style="">
+                        <a href="javascript:IrActualizarAvance();" class="label label-primary bg-green-rf" style="background: #f2594a !important;">Actualizar Avance Semanal</a>
                     </div>
                 </div>
                 <div class="row">
@@ -854,7 +875,7 @@
     <!-- MODAL -->
     <div class="modal fade" id="modalrendimiento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content" style="width: 100%;height: 280px;" >
+            <div class="modal-content" style="width: 100%;height: 290px;" >
                 <div class="modal-body">
 
                     <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: center;">
@@ -862,22 +883,57 @@
                             <label>% Avance </label>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <input data-fgColor="#f2594a" data-width="125" data-height="150" id="dial" type="text" value="75" class="dial" />
+                            <input data-fgColor="#f2594a" data-width="125" data-height="150" id="dayAvance" type="text" value="0" class="dial dayAvance" />
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="">
                             <label>Actualizar mi avance semanal, cada :</label>
                         </div>
-                        <div class="widget-toolbar-2 borderless">
-                            <span class="label label-info bg-black-rf">Semana</span>
+                        <!-- <div id="divAlldays" class="col-lg-6 col-md-6 col-sm-6">
+                           <label>Todos los días :</label>
+                           <input type="checkbox" id="dayAllSelected" />
+                       </div>
+                       -->
+                   </div>
+                   <div class="col-lg-12 col-md-12 col-sm-12">
+                       <!--
+                           <div class="col-lg-6 col-md-6 col-sm-6">
+                               <div class="widget-toolbar-2 borderless borderless-esp ">
+                                   <span data-id="1" class="label label-info bg-green-rf span-border">Semana</span>
+                               </div>
+                             <div class="widget-toolbar-2 borderless borderless-esp">
+                                   <span data-id="2" class="label label-info bg-black-rf span-border">Quincena</span>
+                               </div>
+                               <div class="widget-toolbar-2 borderless borderless-esp">
+                                   <span data-id="3" class="label label-info bg-black-rf span-border">Mensual</span>
+                           </div>
+                       </div>
+                       -->
+
+                        <div id="divMes" class="divMes col-lg-6 col-md-6 col-sm-6 widget-toolbar-2 borderless borderless-esp">
+                            <span data-id="1" data-placement="bottom" data-toggle="popover" data-content="Semana 1" data-trigger="hover" class="label label-info bg-green-rf span-border-semana">1</span>
+                            <span data-id="2" data-placement="bottom" data-toggle="popover" data-content="Semana 2" data-trigger="hover" class="label label-info bg-black-rf span-border-semana">2</span>
+                            <span data-id="3" data-placement="bottom" data-toggle="popover" data-content="Semana 3" data-trigger="hover" class="label label-info bg-black-rf span-border-semana">3</span>
+                            <span data-id="4" data-placement="bottom" data-toggle="popover" data-content="Semana 4" data-trigger="hover" class="label label-info bg-black-rf span-border-semana">4</span>
                         </div>
-                        <div class="widget-toolbar-2 borderless">
-                            <span class="label label-info bg-black-rf">Quincena</span>
+                        <div id="divMes1" class="divMes col-lg-6 col-md-6 col-sm-6" >
                         </div>
-                        <div class="widget-toolbar-2 borderless">
-                            <span class="label label-info bg-black-rf">Mensual</span>
-                        </div>
+
+                            <div id="divDiario" class=" widget-toolbar-2 borderless borderless-esp" style="margin-left: 22%">
+                                <span id="spandia1" data-id="1" data-placement="bottom" data-toggle="popover" data-content="Lunes"     data-trigger="hover" class="label label-info bg-black-rf span-border-dia span-lunes">L</span>
+                                <span id="spandia2" data-id="2" data-placement="bottom" data-toggle="popover" data-content="Martes"    data-trigger="hover" class="label label-info bg-black-rf span-border-dia">M</span>
+                                <span id="spandia3" data-id="3" data-placement="bottom" data-toggle="popover" data-content="Miércoles" data-trigger="hover" class="label label-info bg-black-rf span-border-dia">Mi</span>
+                                <span id="spandia4" data-id="4" data-placement="bottom" data-toggle="popover" data-content="Jueves"    data-trigger="hover" class="label label-info bg-black-rf span-border-dia">J</span>
+                                <span id="spandia5" data-id="5" data-placement="bottom" data-toggle="popover" data-content="Viernes"   data-trigger="hover" class="label label-info bg-black-rf span-border-dia">V</span>
+                                <span id="spandia6" data-id="6" data-placement="bottom" data-toggle="popover" data-content="Sábado"    data-trigger="hover" class="label label-info bg-black-rf span-border-dia">S</span>
+                                <span id="spandia0" data-id="0" data-placement="bottom" data-toggle="popover" data-content="Domingo"   data-trigger="hover" class="label label-info bg-black-rf span-border-dia">D</span>
+                            </div>
+
+                            <div id="divQuincena" class="col-lg-6 col-md-6 col-sm-6 widget-toolbar-2 borderless borderless-esp">
+                                <span class="label label-info bg-red-rf">Todos los 15 de cada mes</span>
+                            </div>
+
                     </div>
                 </div>
             </div>
@@ -898,6 +954,13 @@
 <script th:src="@{/js/plugin/perfect-sb/perfect-scrollbar.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/summernote/summernote.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}+'?'+${version}"></script>
+
+<script th:src="@{/js/morris.js}+'?'+${version}"></script>
+<script th:src="@{/js/raphael-min.js}+'?'+${version}"></script>
+
+<script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
+<script th:src="@{/js/jquery.knob.min.js}+'?'+${version}"></script>
+
 <!--<script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>-->
 <script th:src="@{/js/cliente-principal.js}+'?'+${version}"></script>
 <script th:src="@{/js/calendarioRutina.js}+'?'+${version}"></script>
@@ -910,19 +973,12 @@
     var color_array = ['#7CA69E', '#F2594A', '#F28C4B', '#7E6F6A', '#36AFB2', '#9c6db2', '#d24a67', '#89a958', '#00739a', '#BDBDBD'];
 
     $(function() {
-        $("#modalrendimiento").modal('show');
 
         $('.divVideo').hide();
         $('.divAudio').hide();
 
         setTimeout(() => $('[data-toggle="popover"]').popover()  , 3000);
         setTimeout(() => $('[rel="tooltip"]').tooltip()  , 3000);
-
-        $("#dial").knob({
-            'format' : function (value) {
-                return value + '%';
-            }
-        });
 
     });
 </script>

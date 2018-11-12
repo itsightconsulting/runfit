@@ -105,6 +105,14 @@ public class Usuario extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<VideoAudioFavorito> lstMiFavorito;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    private List<MultimediaEntrenador> lstMultimediaentrenador;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    private List<MultimediaDetalle> lstMultimediadetalle;
+
     @Transient
     @JsonSerialize
     private String nombreCompleto;

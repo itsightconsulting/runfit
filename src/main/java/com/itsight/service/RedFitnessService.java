@@ -23,4 +23,6 @@ public interface RedFitnessService extends BaseService<RedFitness> {
     RedFitness findByTrainerCodigoTrainer(String codTrainer);
 
     String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
+
+    List<String> findTrainerByIdUsuario(int id);
 }

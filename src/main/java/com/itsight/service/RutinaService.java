@@ -21,6 +21,7 @@ public interface RutinaService extends BaseService<Rutina> {
 
     List<Rutina> getAllRutinasByUser(int id);
 
+    void updateAvance(int id, int indexsemana, String strdias, String avance);
 
 }
 
