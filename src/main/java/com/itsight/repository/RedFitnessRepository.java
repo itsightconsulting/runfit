@@ -43,4 +43,8 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
 
     @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1 AND R.integrante.id = ?2")
     String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
+
+    @Query("SELECT M.trainer.codigoTrainer FROM RedFitness M where M.integrante.id = ?1 and M.estadoPlan != 5")
+    List<String> findTrainerByIdUsuario(int id);
+
 }

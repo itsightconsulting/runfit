@@ -13,6 +13,6 @@ public class RutinaControl implements Serializable {
     private double kilometrajeTotal;
     private double kilometrajeActual;
     private List<String> avanceSemanas;
-
+    private String actualizarAvance;
 
 }

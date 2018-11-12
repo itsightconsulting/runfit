@@ -2,9 +2,8 @@ const tabPrincipal = document.querySelector('#myTabPrincipal');
 const semanas = [];
 var semanaEncontrada = {};
 let $rutina = {};
-const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-];
+let indexSemanaActual = 0;
+const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
 $(function () {
     Date.prototype.addDays = function(days) {
@@ -38,10 +37,99 @@ $(function () {
             });
         };
     }
+    $("#divQuincena").hide();
+    $(".divMes").hide();
 
+    $('#dayAllSelected').click(function () {
+        if ($(this).prop('checked')) {
+            $(".span-border-dia").removeClass("bg-green-rf");
+            $(".span-border-dia").removeClass("bg-black-rf");
+            $(".span-border-dia").addClass("bg-green-rf");
+        }
+        else {
+            $(".span-border-dia").removeClass("bg-green-rf");
+            $(".span-border-dia").addClass("bg-black-rf");
+            $(".span-lunes").removeClass("bg-black-rf");
+            $(".span-lunes").addClass("bg-green-rf");
+        }
+    });
 
+    $(".span-border").click(function () {
+        $(".span-border").removeClass("bg-green-rf");
+        $(".span-border").addClass("bg-black-rf");
+        $(this).removeClass("bg-black-rf");
+        $(this).addClass("bg-green-rf");
+
+        $(".divMes").hide();
+        $("#divAlldays").hide();
+        $("#divDiario").hide();
+        $("#divQuincena").hide();
+        if($(this).attr("data-id") == 1){
+            $("#divAlldays").show();
+            $("#divDiario").show();
+        }else if($(this).attr("data-id") == 2) {
+            $("#divQuincena").show();
+        }else if($(this).attr("data-id") == 3) {
+            $(".divMes").show();
+            $("#divAlldays").show();
+            $("#divDiario").show();
+        }
+        $(".span-border-dia").removeClass("bg-green-rf");
+        $(".span-border-dia").addClass("bg-black-rf");
+        $(".span-lunes").removeClass("bg-black-rf");
+        $(".span-lunes").addClass("bg-green-rf");
+    });
+    $(".span-border-dia").click(function () {
+        //var $span = $("span.span-border.bg-green-rf");
+
+        //if($span.attr("data-id") == "1" || $span.attr("data-id") == "3") {
+            if ($(this).hasClass("bg-green-rf")) {
+                $(this).removeClass("bg-green-rf");
+                $(this).addClass("bg-black-rf");
+            } else {
+                $(this).removeClass("bg-black-rf");
+                $(this).addClass("bg-green-rf");
+            }
+
+            if($("span.span-border-dia.bg-green-rf").length == 0){
+                $(".span-lunes").removeClass("bg-black-rf");
+                $(".span-lunes").addClass("bg-green-rf");
+            }
+
+        //}else{
+        //    $(".span-border-dia").removeClass("bg-green-rf");
+        //    $(".span-border-dia").addClass("bg-black-rf");
+        //    $(this).removeClass("bg-black-rf");
+        //    $(this).addClass("bg-green-rf");
+        //}
+    });
+
+    $(".span-border-semana").click(function () {
+        $(".span-border-semana").removeClass("bg-green-rf");
+        $(".span-border-semana").addClass("bg-black-rf");
+        $(this).removeClass("bg-black-rf");
+        $(this).addClass("bg-green-rf");
+    });
+
+    $('#modalrendimiento').on('hidden.bs.modal', function () {
+        var result = {};
+        var $dias = [];
+
+        $.each($(".span-border-dia.bg-green-rf"),function(i,item){
+            $dias.push($(this).attr("data-id"));
+        });
+
+        result.dias = $dias;
+
+        //console.log(JSON.stringify(result));
+        //console.log($('#dayAvance').val().replace("%",""));
+        GuardarAvanceSemanal(JSON.stringify(result),$('#dayAvance').val().replace("%",""));
+
+    });
 
 });
+
+
 
 function getRutinas(){
 
@@ -64,6 +152,8 @@ function getRutinas(){
                         getSemanas(data[0].id);
                         $rutina.fechaInicio = parseFromStringToDate2(data[0].fechaInicio);
                         $rutina.fechaFin = parseFromStringToDate2(data[0].fechaFin);
+                        $rutina.control = data[0].control;
+                        $rutina.id = data[0].id;
                     }
                 }
             }
@@ -128,8 +218,10 @@ function generarDias() {
                 semanaEncontrada = item;
                 semanaEncontradaSiguiente = semanas[i + 1];
                 flagEncontrado = true;
+
             }
             auxsemana += 1;
+            indexSemanaActual+=1;
         }
     });
 
@@ -139,6 +231,7 @@ function generarDias() {
         generarGraficoEmpty();
     }
     _init();
+    mostrarModal();
 }
 
 function generarSemana(semanaEncontradaSiguiente,auxsemana) {
@@ -153,6 +246,7 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
     var dateArraySemana = getDates(semanaEncontrada.fechaInicio, semanaEncontrada.fechaFin);
     var fechaActual = new Date();
 
+    var arraySemanaActual = [];
     var arrayDias = [1,2,3,4,5,6,0];
     var arrayDiasFaltan = [];
     var flagDiasAgregados = false;
@@ -162,102 +256,196 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
         });
         var arrayEncontrados = compare(arrayDias,arrayDiasFaltan);
         $.each(arrayEncontrados, function (i, item) {
-            var day = semanaEncontrada.fechaInicio.addDays(- parseInt(item));
+            var day = null;
+
+            if(semanas.length == auxsemana){
+                day = semanaEncontrada.fechaFin.addDays(+ parseInt(i+1));
+            }else{
+                day = semanaEncontrada.fechaInicio.addDays(- parseInt(item));
+            }
+
             dateArraySemana.push(day);
             flagDiasAgregados = true;
         });
         dateArraySemana.sort((a,b)=> a-b);
-    }
 
-    $.each(dateArraySemana, function (i, item) {
-        var daystr = item.getDay();
-        var day = item.getUTCDate();
-        var smonth = item.getMonth();
+        $.each(dateArraySemana, function (i, item) {
+            var objday = {};
+            var valor =  arrayDiasFaltan.find(function(element) {
+                return element == dateArraySemana[i].getDay();
+            });
+           if(valor != null){
+               objday.flagEncontrado = true;
+           }else{
+               objday.flagEncontrado = false;
+           }
+            objday.day = item;
+            arraySemanaActual.push(objday);
+        });
 
-        var cssSection = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
-        var dayPast = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? "section-dia-gray" : "section-dia";
-        var dayhtml = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>' : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>';
+        dateArraySemana = [];
+        $.each(arraySemanaActual, function (i, item) {
+            dateArraySemana.push(item.day);
+            var daystr = item.day.getDay();
+            var day = item.day.getUTCDate();
+            var smonth = item.day.getMonth();
+            var cssSection = "";
+            var dayPast = "";
+            var dayhtml = "";
+            var section = "";
 
-        var section = "";
-        if(flagDiasAgregados && semanaEncontrada.fechaInicio.getUTCDate() > day) {
-            section = GenerarSection(dias[daystr], day, "", "section-dia-gray", "");
-        }else{
-            section = GenerarSection(dias[daystr], dayhtml, (dateTmpdet.length > 1 ? dateTmpdet[auxdet] : ""), dayPast, cssSection);
-            auxdet += 1;
-        }
-        $("#semanaRutina").append(section);
-    });
+            cssSection = fechaActual.getFullYear() == item.day.getFullYear() && fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
 
-    if (dateArraySemana.length < 7) {
-        const dayfirst = dateArraySemana.length == 0 ?  new Date() : dateArraySemana[dateArraySemana.length-1];
-        var dateTmp = [];
-        for (var i = 0; i < 7 - dateArraySemana.length; i++) {
-            let result = new Date();
-            result.setDate(dayfirst.getDate() + (i + 1));
-            dateTmp.push(result);
-        }
+            dayPast = (fechaActual.getFullYear() == item.day.getFullYear() && fechaActual.getMonth() > item.day.getMonth() ? "section-dia-gray"
+                : (fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() > day  ? "section-dia-gray"
+                    : fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() <= day ? "section-dia"
+                        : "section-dia"));
 
-        dateTmp.sort((a, b) => a - b);
-        $.each(dateTmp, function (i, item) {
+            dayhtml = (fechaActual.getFullYear() == item.day.getFullYear() && fechaActual.getMonth() > item.day.getMonth() ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'
+                : (fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() > day  ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'
+                    : fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() <= day ? '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'
+                        : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'));
+
+
+            if(item.flagEncontrado){
+                section = GenerarSection(dias[daystr], dayhtml, (dateTmpdet.length > 1 ? dateTmpdet[auxdet] : ""), dayPast, cssSection);
+                auxdet += 1;
+            }else{
+                section = GenerarSection(dias[daystr], day, "", "section-dia-gray", "");
+            }
+
+            $("#semanaRutina").append(section);
+        });
+    }else {
+        $.each(dateArraySemana, function (i, item) {
             var daystr = item.getDay();
             var day = item.getUTCDate();
-            var detalle = "";
-            var cssSection =  "";
-            var dayPast = "section-dia-gray";
-            var section = GenerarSection(dias[daystr],day,detalle,dayPast,cssSection);
-            $("#semanaRutina").append(section);
+            var smonth = item.getMonth();
+
+            var cssSection = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
+
+            var dayPast = (fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() > item.getMonth() ? "section-dia-gray"
+                : (fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? "section-dia-gray"
+                    : fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() <= day ? "section-dia"
+                        : "section-dia"));
+
+            var dayhtml = (fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() > item.getMonth() ? '<a class="a-sinclick" href="javascript:getDayOfWeek(' + day + ',' + smonth + ')">' + day + '</a>'
+                : (fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? '<a class="a-sinclick" href="javascript:getDayOfWeek(' + day + ',' + smonth + ')">' + day + '</a>'
+                    : fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() <= day ? '<a href="javascript:getDayOfWeek(' + day + ',' + smonth + ')">' + day + '</a>'
+                        : '<a href="javascript:getDayOfWeek(' + day + ',' + smonth + ')">' + day + '</a>'));
+
+
+            section = GenerarSection(dias[daystr], dayhtml, (dateTmpdet.length > 1 ? dateTmpdet[auxdet] : ""), dayPast, cssSection);
             auxdet += 1;
+
+            $("#semanaRutina").append(section);
         });
-        dateArraySemana.sort((a,b)=> a-b);
     }
 
     if (semanaEncontradaSiguiente != null && semanaEncontradaSiguiente.fechaInicio != null && semanaEncontradaSiguiente.fechaFin != null) {
         var auxdetsig = 0;
         var dateTmpdetSiguiente = semanaEncontradaSiguiente.objetivos != "" && semanaEncontradaSiguiente.objetivos != null ? semanaEncontradaSiguiente.objetivos.split(",") : [];
         var dateArraySemanaSiguiente = getDates(semanaEncontradaSiguiente.fechaInicio, semanaEncontradaSiguiente.fechaFin);
-        $.each(dateArraySemanaSiguiente, function (i, item) {
-            var daystr = item.getDay();
-            var day = item.getUTCDate();
-            var smonth = item.getMonth();
 
+         arraySemanaActual = [];
+         arrayDias = [1,2,3,4,5,6,0];
+         arrayDiasFaltan = [];
+         flagDiasAgregados = false;
+        if(dateArraySemanaSiguiente.length != 7){
 
-            var cssSection = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
-            var dayPast = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? "section-dia-gray" : "section-dia";
-            var dayhtml = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() > day ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>' : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>';
-            var section = GenerarSection(dias[daystr],dayhtml,(dateTmpdetSiguiente.length>0 ? dateTmpdetSiguiente[auxdetsig] : ""),dayPast,cssSection);
-            $("#semanaRutinaSiguiente").append(section);
-            auxdetsig+=1;
-        });
-
-        if (dateArraySemanaSiguiente.length < 7) {
-            const dayfirst = dateArraySemanaSiguiente[dateArraySemanaSiguiente.length-1];
-            var dateTmp = [];
-            for (var i = 0; i < 7 - dateArraySemanaSiguiente.length; i++) {
-                let result = new Date();
-                result.setDate(dayfirst.getDate() + (i + 1));
-                dateTmp.push(result);
-            }
-
-            dateTmp.sort((a, b) => a - b);
-            $.each(dateTmp, function (i, item) {
-                var daystr = item.getDay();
-                var day = item.getUTCDate();
-                var detalle = "";
-                var cssSection =  "";
-                var dayPast = "section-dia-gray";
-                var section = GenerarSection(dias[daystr],day,detalle,dayPast,cssSection);
-                $("#semanaRutinaSiguiente").append(section);
-                auxdet += 1;
+            $.each(dateArraySemanaSiguiente, function (i, item) {
+                arrayDiasFaltan.push(item.getDay());
+            });
+            var arrayEncontrados = compare(arrayDias,arrayDiasFaltan);
+            $.each(arrayEncontrados, function (i, item) {
+                var day = semanaEncontradaSiguiente.fechaFin.addDays(+ parseInt(i+1));
+                dateArraySemanaSiguiente.push(day);
+                flagDiasAgregados = true;
             });
             dateArraySemanaSiguiente.sort((a,b)=> a-b);
+
+            $.each(dateArraySemanaSiguiente, function (i, item) {
+                var objday = {};
+                var valor =  arrayDiasFaltan.find(function(element) {
+                    return element == dateArraySemanaSiguiente[i].getDay();
+                });
+                if(valor != null){
+                    objday.flagEncontrado = true;
+                }else{
+                    objday.flagEncontrado = false;
+                }
+                objday.day = item;
+                arraySemanaActual.push(objday);
+            });
+
+
+            $.each(arraySemanaActual, function (i, item) {
+
+                var daystr = item.day.getDay();
+                var day = item.day.getUTCDate();
+                var smonth = item.day.getMonth();
+                var cssSection = "";
+                var dayPast = "";
+                var dayhtml = "";
+                var section = "";
+
+                cssSection = fechaActual.getFullYear() == item.day.getFullYear() && fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
+
+                dayPast = (fechaActual.getFullYear() == item.day.getFullYear() && fechaActual.getMonth() > item.day.getMonth() ? "section-dia-gray"
+                    : (fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() > day  ? "section-dia-gray"
+                        : fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() <= day ? "section-dia"
+                            : "section-dia"));
+
+                dayhtml = (fechaActual.getFullYear() == item.day.getFullYear() && fechaActual.getMonth() > item.day.getMonth() ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'
+                    : (fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() > day  ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'
+                        : fechaActual.getFullYear() == item.day.getFullYear() &&  fechaActual.getMonth() == item.day.getMonth() && fechaActual.getUTCDate() <= day ? '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'
+                            : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'));
+
+
+                if(item.flagEncontrado){
+                    section = GenerarSection(dias[daystr], dayhtml, (dateTmpdetSiguiente.length > 1 ? dateTmpdetSiguiente[auxdetsig] : ""), dayPast, cssSection);
+                    auxdetsig += 1;
+                }else{
+                    section = GenerarSection(dias[daystr], day, "", "section-dia-gray", "");
+                }
+
+                $("#semanaRutinaSiguiente").append(section);
+            });
+
+
+        }else{
+            $.each(dateArraySemanaSiguiente, function (i, item) {
+                var daystr = item.getDay();
+                var day = item.getUTCDate();
+                var smonth = item.getMonth();
+
+
+                var cssSection = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() >= item.getMonth() && fechaActual.getUTCDate() == day ? "section-dia-back" : "";
+
+                //var dayPast = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() < item.getMonth() ? "section-dia-gray" : (fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() <= day  ? "section-dia" : "section-dia-gray");
+
+                var dayPast = (fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() > item.getMonth() ? "section-dia-gray" :
+                    (fechaActual.getFullYear() == item.getFullYear() &&  fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() <= day  ? "section-dia" : "section-dia"));
+
+                // var dayhtml = fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() >= item.getMonth() && fechaActual.getUTCDate() > day ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>' : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>';
+
+                var dayhtml = (fechaActual.getFullYear() == item.getFullYear() && fechaActual.getMonth() > item.getMonth() ? '<a class="a-sinclick" href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>':
+                    (fechaActual.getFullYear() == item.getFullYear() &&  fechaActual.getMonth() == item.getMonth() && fechaActual.getUTCDate() <= day  ? '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>' : '<a href="javascript:getDayOfWeek('+day+','+smonth+')">' + day + '</a>'));
+
+
+                var section = GenerarSection(dias[daystr],dayhtml,(dateTmpdetSiguiente.length>0 ? dateTmpdetSiguiente[auxdetsig] : ""),dayPast,cssSection);
+                $("#semanaRutinaSiguiente").append(section);
+                auxdetsig+=1;
+            });
         }
     } else {
         const daylast = dateArraySemana[dateArraySemana.length - 1];
         var dateTmpS = [];
         for (var i = 0; i < 7; i++) {
-            let result = new Date();
-            result.setDate(daylast.getDate() + (i + 1));
-            dateTmpS.push(result);
+            //let result = new Date();
+            //result.setDate(daylast.getDate() + (i + 1));
+
+            dateTmpS.push(daylast.addDays((i+1)));
         }
         dateTmpS.sort((a, b) => a - b);
         $.each(dateTmpS, function (i, item) {
@@ -527,11 +715,69 @@ function generarMetricas(semana) {
     }
 }
 
+function GuardarAvanceSemanal(strAvance, porcentaje){
+    let params = {};
+    params.idrutina = $rutina.id;
+    params.indexsemana = indexSemanaActual;
+    params.stravance = JSON.stringify(strAvance);
+    params.porcentaje = porcentaje;
 
+    $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/updateAvance",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+        },
+        error: function (xhr) {
+            console.log(xhr);
+        },
+        complete: function () {}
+    })
+}
 
+function mostrarModal() {
 
+    var avance = indexSemanaActual == 0 ? 0 : ($rutina.control.avanceSemanas[(indexSemanaActual-1)] == "" ? 0 : $rutina.control.avanceSemanas[(indexSemanaActual-1)]);
+    var valor = JSON.parse($rutina.control.actualizarAvance);
+    if (valor != null) {
+        $("#dayAvance").val(avance);
+        $("#dayAvance").knob({
+            'format': function (value) {
+                return value + '%';
+            }
+        });
 
+        var fechaactual = new Date();
 
+        var flagencontrado = false;
+        $.each(valor.dias, function (i, item) {
+            if (fechaactual.getUTCDay() == parseInt(item)) {
+                flagencontrado = true;
+            }
+            $("#spandia" + parseInt(item)).removeClass("bg-black-rf");
+            $("#spandia" + parseInt(item)).addClass("bg-green-rf");
+        });
+
+        if (flagencontrado) {
+            $("#modalrendimiento").modal('show');
+        }
+    } else {
+        $("#dayAvance").val(0);
+        $("#dayAvance").knob({
+            'format': function (value) {
+                return value + '%';
+            }
+        });
+
+        $("#modalrendimiento").modal('show');
+    }
+}
+
+function IrActualizarAvance() {
+    $("#modalrendimiento").modal('show');
+}
 
 
 

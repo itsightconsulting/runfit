@@ -1,7 +1,6 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.TipoDocumento;
-import com.itsight.domain.TipoDocumento;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.TipoDocumentoRepository;
 import com.itsight.service.TipoDocumentoService;

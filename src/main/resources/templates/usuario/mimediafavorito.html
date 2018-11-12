@@ -9,9 +9,14 @@
     <!-- CSS FILES -->
     <link th:replace="html-commons/css :: fg-css"/>
 
+
     <style>
         .space-right{
             padding: 2% 3% 0 3%;
+        }
+        .space-left{
+            padding: 8% 3% 0% 3%;
+            text-align: center;
         }
         .td-min{
             font-size: 40px;
@@ -23,6 +28,20 @@
         .close {
             color: #f2594a !important;
             opacity: 2 !important;
+        }
+        .btn-glyphicon { padding:8px; background:#ffffff; margin-right:4px; }
+        .icon-btn { padding: 1px 15px 3px 2px; border-radius:50px;}
+        .abtn-multimedia {
+            margin: 0 4%;
+        }
+        th{
+            text-align: center;
+        }
+        .fa-heart{
+            color: #db4a67;
+        }
+        .disabled{
+            color: #999;
         }
     </style>
 
@@ -48,39 +67,23 @@
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="space-right">
                     <div class="row">
-                        <div class="col-lg-2 col-md-2 col-sm-2 td-min"> <a href="javascript:void(0)"><i class="fa fa-cloud-upload"></i></a></div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnVideos" type="button" class="btn btn-info">Vídeos</button> </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnAudios" type="button" class="btn btn-light">Audios</button></div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnTextos" type="button" class="btn btn-light">Textos</button></div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 td-min-h"><button id="btnAdd" type="button" class="btn btn-success">Agregar Texto</button></div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 td-min"> <a href="javascript:AgregarMultimedia()"><i class="fa fa-cloud-upload"></i></a></div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 td-min-h">
+                            <a id="btnAudios" data-id="1" class="btn icon-btn btn-warning" href="#">
+                                <span class="glyphicon btn-glyphicon glyphicon-music img-circle text-warning"></span>Audios</a>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 td-min-h">
+                            <a id="btnVideos"  data-id="2" class="btn icon-btn btn-success" href="#">
+                                <span class="glyphicon btn-glyphicon glyphicon-facetime-video img-circle text-success"></span>Vídeos</a></div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 td-min-h">
+                            <a id="btnTextos" data-id="3" class="btn icon-btn btn-danger" href="#">
+                                <span class="glyphicon btn-glyphicon glyphicon-list-alt img-circle text-danger"></span>Textos</a>
+                        </div>
                     </div>
                 </div>
                 <div class="space-right">
-                    <div id="registroTexto" class="row" style="padding-bottom: 3%;">
-
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <label>Titulo</label>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <input id="tTitulo" type="text" class="form-control"></input>
-                            </div>
-
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <button id="btnAgregar" type="button"  data-loading-text="Procesando..." class="btn btn-info">Agregar</button>
-                            </div>
-                            <br/><br/>
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <label>Descripción</label>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <textarea id="tDescripcion" class="form-control"></textarea>
-                            </div>
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <button id="btnCancelar" type="button"  data-loading-text="Procesando..." class="btn btn-info">Cancelar</button>
-                            </div>
-                    </div>
                     <div class="row">
-                     <table class="table table-wrap">
+                     <table class="table table-wrap" style="text-align: center;" >
                          <thead>
                          <th></th>
                          <th>#</th>
@@ -89,9 +92,30 @@
                          <th></th>
                          </thead>
                          <tbody id="tbVideoAudio">
-
                          </tbody>
                      </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="space-left">
+                    <div class="row" style="margin-bottom: 1.6%!important;">
+                        <span>Los 10 temas más gustados</span>
+                    </div>
+                </div>
+                <div class="space-right">
+                    <div class="row">
+                        <table class="table table-wrap" style="text-align: center;">
+                            <thead>
+                            <th></th>
+                            <th>#</th>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Puntuación</th>
+                            </thead>
+                            <tbody id="tbTop">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -101,6 +125,60 @@
     <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
+
+
+<!-- MODAL -->
+<div class="modal fade" id="modalmultimedia" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="width: 100%;height: 100%;" >
+            <div class="modal-body">
+                <div class="">
+                    <a data-id="1" class="abtn-multimedia btn icon-btn btn-danger" href="#"> <span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-music img-circle text-danger"></span>Agregar Audio</a>
+                    <a data-id="2" class="abtn-multimedia btn icon-btn btn-success" href="#"><span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-facetime-video img-circle text-success"></span>Agregar Vídeo</a>
+                    <a data-id="3" class="abtn-multimedia btn icon-btn btn-danger" href="#"> <span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-list-alt img-circle text-danger"></span>Agregar Texto</a>
+                </div>
+                <div id="registroTexto" class="row" style="padding: 5% 3% 0 3%;">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <label>Titulo</label>
+                    </div><button id="btnTexto" type="button" class="btn btn-primary pull-right">Guardar</button>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input id="tTitulo" type="text" class="form-control"/>
+                    </div>
+
+                    <br/><br/>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <label>Descripción</label>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <textarea id="tDescripcion" rows="5" class="form-control"></textarea>
+                    </div>
+                </div>
+                <!-- COMPONENT START -->
+                <form id="subirArchivo">
+                <div class="form-group" style="margin-top: 6%">
+                    <div class="input-group input-file" name="Fichier1">
+                        <input id="inputFile" onchange='getEventChange(this)' type="text" accept="video/mp4,video/x-m4v,video/*" class="form-control" placeholder='Seleccione un archivo...' />
+                        <audio id="Tiempo" style="display: none;"></audio>
+                        <video id="Tiempo2" style="display: none;"></video>
+                        <span class="input-group-btn">
+        		        <button class="btn btn-default btn-choose" type="button">Seleccionar</button>
+    		            </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button id="btnGuardarArchivo" type="button" class="btn btn-primary pull-right">Guardar Archivo</button>
+                    <button type="reset" class="btn btn-danger">Limpiar</button>
+                </div>
+                </form>
+                <!-- COMPONENT END -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL -->
+
+
 <!-- PAGE FOOTER -->
 <input type="hidden" id="userSession" value="" />
 <div th:replace="html-commons/footer :: fg-footer"></div>

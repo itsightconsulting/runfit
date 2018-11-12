@@ -806,6 +806,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 "/Videos",
                 "/Documentos",
                 "/Productos/Presentacion",
+                "/Multimedia",
         };
         Utilitarios.createDirectoryStartUp(context.getAttribute("MAIN_ROUTE").toString(), childPaths);
     }

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/perfect-scrollbar.css"/>
+<style>
+    @media (min-width: 544px)
+        .card-columns .card {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .card {
+            margin-bottom: 1.25rem;
+            box-shadow: 0 2px 3px rgba(0,0,0,.05);
+        }
+        .card {
+            position: relative;
+            display: block;
+            margin-bottom: .75rem;
+            background-color: #fff;
+            border: 1px solid #fbe7e7;
+            border-radius: 3px;
+        }
+    .card-block {
+        padding: 1.25rem;
+    }
+    .media:first-child {
+        margin-top: 0;
+    }
+    .m-b-1 {
+        margin-bottom: 1rem!important;
+    }
+    .media, .media-body {
+        overflow: hidden;
+        zoom: 1;
+    }
+    .media-left {
+        padding-right: 1.25rem;
+    }
+    .media-body {
+        line-height: normal;
+    }
+    .media-middle {
+        vertical-align: middle;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body {
+        width: 10000px;
+    }
+    .media, .media-body {
+        overflow: hidden;
+        zoom: 1;
+    }
+    .text-muted {
+        color: #a39d9c;
+    }
+        .card-footer {
+            padding: .75rem 1.25rem;
+            background-color: rgba(0, 0, 0, .03);
+        }
+
+        .btn-glyphicon { padding:8px; background:#ffffff; margin-right:4px; }
+        .icon-btn { padding: 1px 15px 3px 2px; border-radius:50px;}
+        .btn-aborder{
+        border: 1px solid #0000001c;
+    }
+
+</style>
+</head>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="col-md-5 card">
+                        <div class="h5">Publicaciones de tus Entranadores</div>
+                        <div class="h6 text-muted">Últimos publicados</div>
+                        <div class="list-cards">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+<script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/perfect-sb/perfect-scrollbar.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/summernote/summernote.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/cliente-novedades.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    pageSetUp();
+    /*]]>*/
+    var color_array = ['#7CA69E', '#F2594A', '#F28C4B', '#7E6F6A', '#36AFB2', '#9c6db2', '#d24a67', '#89a958', '#00739a', '#BDBDBD'];
+
+    $(function() {
+
+
+
+    });
+</script>
+</body>
+</html>
