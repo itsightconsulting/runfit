@@ -112,6 +112,7 @@ function init(){
         instanciarTooltips();
         modalEventos();
         setFechaActual(document.querySelectorAll('input[type="date"]'));
+        calendarioTmp();
     });
 }
 
@@ -1397,6 +1398,13 @@ function principalesEventosClickRutina(e) {
             const ixs = RutinaIx.getIxsForElemento(input);
             RutinaElementoHTML.adjuntarSubElementos(ixs, 2);
         }
+    }
+    else if(clases.contains('enviar-cliente')){
+        //e.preventDefault();
+        //e.stopPropagation();
+
+       console.log(input.getAttribute('data-id'));
+        console.log(input.getAttribute('data-mes'));
     }
 }
 

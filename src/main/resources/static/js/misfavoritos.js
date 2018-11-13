@@ -429,7 +429,13 @@ function RegistrarMultimedia(id) {
                 exception(xhr);
             },
             complete: function () {
-                ObtenerData(1);
+                if(tipo == "2") {
+                    ObtenerData(0);
+                }else if(tipo == "1"){
+                    ObtenerData(1);
+                }else{
+                    ObtenerData(2);
+                }
             }
         });
     }else{

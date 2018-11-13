@@ -71,6 +71,9 @@ public class Dia {
     @JoinColumn(name = "SemanaId")
     private Semana semana;
 
+    @Column
+    private boolean flagEnvioCliente;
+
     public Dia(){}
 
     public String getDiaLiteral(){

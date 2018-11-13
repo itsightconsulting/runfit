@@ -91,6 +91,9 @@ public class Semana {
     @Column
     private String metricasVelocidad;
 
+    @Column
+    private boolean flagEnvioCliente;
+
     public Semana(){}
 
 

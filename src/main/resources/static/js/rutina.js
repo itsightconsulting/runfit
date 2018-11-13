@@ -86,6 +86,9 @@ class Rutina {
         semana.dias.forEach((v, i) => {
             const val = v.elementos.length>0?undefined:'showInputsInit';//La validacion requiere un null;
             const flagDescanso = v.flagDescanso;
+            const mes = v.fecha.getMonth()+1;
+            const checked = v.flagEnvioCliente ? "checked='checked'": "";
+
             rawDias +=
                 `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia" data-index="${i}" data-fecha="${v.fechaCorta()}">            
 									<div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0" tabindex='${i}'>
@@ -98,6 +101,7 @@ class Rutina {
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Guardar día en mis plantillas"><i class="fa fa-save txt-color-greenLight pre-guardar-dia" data-index="${i}"></i></a></div>
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Pegar elementos elegidos"><i class="fa fa-list-alt text-primary pegar-mini-listas" data-index="${i}"></i></a></div>
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Agregar objetivo"><i class="fa fa-dot-circle-o txt-color agregar-objetivo" data-index="${i}"></i></a></div>
+								            <div class="widget-toolbar borderless" style="line-height: 38px;"><input ${checked} data-id="${v.dia}" data-mes="${mes}" class="enviar-cliente" type="checkbox" rel="tooltip" data-placement="bottom" data-original-title="Enviar al Cliente" /></div>
 								            </div>
 								        </header>
 								        <div role="heading">
@@ -196,6 +200,7 @@ class Semana{
             this.metricasVelocidad = obj.metricasVelocidad != undefined ? obj.metricasVelocidad != "" ? JSON.parse(obj.metricasVelocidad) : "" : "";
             this.kilometrajeTotal = obj.kilometrajeTotal;
             this.objetivos = obj.objetivos;
+            this.flagEnvioCliente = obj.flagEnvioCliente;
         }else{
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
@@ -203,6 +208,7 @@ class Semana{
             this.dias = this.instanciarDiasNuevaSemana();
             this.metricas = "";
             this.kilometrajeTotal = 0;
+            this.flagEnvioCliente = false;
         }
     }
 
@@ -236,6 +242,7 @@ class Dia{
             this.minutos = obj.minutos==undefined?0:obj.minutos;
             this.distancia = obj.distancia==undefined?0:obj.distancia;
             this.calorias = obj.calorias==undefined?0:obj.calorias;
+            this.flagEnvioCliente = obj.flagEnvioCliente;
         }else{
             this.fecha = fechaDia;
             this.dia = fechaDia.getDate();
@@ -245,6 +252,7 @@ class Dia{
             this.diaLiteral = this.literal + " " + this.dia;
             this.minutos = 0;
             this.distancia = 0;
+            this.flagEnvioCliente = false;
         }
     }
 
@@ -703,6 +711,9 @@ RutinaSet = (function(){
         },
         setAddDiaCalorias: (numSem, diaIndex, calorias)=>{
             $rutina.semanas[numSem].dias[diaIndex].calorias += calorias;
+        },
+        setDiaFlagEnvioCliente: (numSem, diaIndex, valor)=>{
+            $rutina.semanas[numSem].dias[diaIndex].flagEnvioCliente = valor;
         },
 
     }
