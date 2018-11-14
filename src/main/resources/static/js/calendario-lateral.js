@@ -11,6 +11,24 @@ $(function () {
         return date;
     }
 
+    $("#demo-setting").click(function () {
+        generarDiasEnviados();
+    });
+
+    $("#reset-smart-widget").click(function () {
+        guardarDiasEnviados();
+    });
+
+    $("#smart-fixed-header").click(function () {
+        if($("#smart-fixed-header").prop("checked"))
+        {
+            $(".fechas-calendar-tmp").addClass("day-selected");
+        }
+        else{
+            $(".fechas-calendar-tmp").removeClass("day-selected");
+        }
+    });
+
 });
 
 function calendarioTmp() {
@@ -31,6 +49,7 @@ function calendarioTmp() {
         const mes = $(this).attr('data-mes');
         const anio = $(this).parent().attr('data-anio');
         abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(anio, mes), true);
+        generarDiasEnviados();
     });
 }
 
@@ -45,6 +64,7 @@ function principalesEventosCalendario(e) {
     } else if(clases.contains('cal-retroceder-sem')){
         const qFechaInicio = getFechaInicioSemanaEspecifica($refIxsSemCalendar[0] - 1);
         abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
+        generarDiasEnviados();
     } else if(clases.contains('cal-adelantar-sem')){
         const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length-1];
         let qFecha;
@@ -55,6 +75,7 @@ function principalesEventosCalendario(e) {
             qFecha = getFechaFinSemanaEspecifica(semIxRef);
         }
         abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
+        generarDiasEnviados();
     } else if(clases.contains('fechas-calendar-tmp')) {
 
         var valordiaseleccionado = parseInt(input.getAttribute("data-dia"));
@@ -63,17 +84,17 @@ function principalesEventosCalendario(e) {
         if (input.classList.contains('day-selected')) {
             input.classList.remove('day-selected');
             var cant = $divCalendarioTmp.getElementsByClassName("day-selected").length;
+            //AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,false);
 
             for (let i = 0; i < cant ; i++) {
-                $("#dia"+(valordiaseleccionado+i)).removeClass("day-selected");
-                AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,false);
+                $("#dia"+(valordiaseleccionado+(i+1))+"_"+valormesseleccionado).removeClass("day-selected");
+                //AgregarQuitarDiaSeleccionado((valordiaseleccionado+(i+1)),valormesseleccionado,false);
             }
-
         } else {
             var cant = $divCalendarioTmp.getElementsByClassName("day-selected").length;
             if (cant == 0) {
                 input.classList.add('day-selected');
-                AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
+                //AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
             } else {
                 var ultimodia = 0;
 
@@ -83,7 +104,7 @@ function principalesEventosCalendario(e) {
 
                 if ((ultimodia + 1) == valordiaseleccionado) {
                     input.classList.add('day-selected');
-                    AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
+                    //AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
                 }
             }
         }
@@ -159,7 +180,7 @@ function abrirCalendariotmp(semanasIxs,edicion,mes) {
         if(semanasIxs[0] == 0){
             for(let x=0; x < v; x++){
                 if(d>= min && d<=max) {
-                    calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}" data-mes data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                    calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected" data-mes data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                 }else{
                     calendarBody+=`<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini txt-color-grayDark disabled-tmp text-align-center">${d++}</div>`;
                 }
@@ -170,7 +191,7 @@ function abrirCalendariotmp(semanasIxs,edicion,mes) {
         }else if(semanasIxs[semanasIxs.length-1] == $rutina.totalSemanas-1) {
             for(let x=0; x < v; x++) {
                 if (d <= max) {
-                    calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}"  data-mes data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                    calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected"  data-mes data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                 } else {
                     calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark disabled-tmp text-align-center" data-index="${i}">${d++}</div>`;
                 }
@@ -179,7 +200,7 @@ function abrirCalendariotmp(semanasIxs,edicion,mes) {
         //Los meses intermedios o full
         else{
             for (let x = 0; x < v; x++) {
-                calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}"  data-mes data-dia="${d}" data-index="${i}">
+                calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected"  data-mes data-dia="${d}" data-index="${i}">
                                             ${d++}
                                             <i class="fa fa-circle event-calendar"></i>
                                          </div>`;
@@ -241,6 +262,8 @@ function construirCalendarioTmp(dias, anio, mesInt, mesString){
     let classFini = "", classFfin = "";
 
     dias = dias.replaceAll('data-mes', 'data-mes="'+(mesInt+1)+'"');
+    dias = dias.replaceAll('_messelected', '_'+(mesInt+1)+'"');
+
 
     //Para la ocultación de las opciones de adelanto y atras en 1 mes del calendario
     if(mesInt == mesFechaInicio && mesInt == mesFechaFin && anio == anioFi && anio == anioFf ){
@@ -355,7 +378,7 @@ function getFechaInicioSemanaEspecifica(semIx) {
 }
 
 function AgregarQuitarDiaSeleccionado(dia, mes, flag) {
-
+    var arraydias = [6,0,1,2,3,4,5];
     var auxsemana = 0;
     var flagEncontrado = false;
     var dia_aux = 0;
@@ -363,9 +386,9 @@ function AgregarQuitarDiaSeleccionado(dia, mes, flag) {
         if(!flagEncontrado) {
             var arryaDias = getDates(item.fechaInicio, item.fechaFin);
             $.each(arryaDias,function(u,aux){
-                if (aux.getDate() == dia && (aux.getMonth()+1) == mes) {
+                if (aux.getUTCDate() == dia && (aux.getMonth()+1) == mes) {
                     flagEncontrado = true;
-                    dia_aux = aux.getUTCDay()-1;
+                    dia_aux = aux.getUTCDay();
                 }
             });
             if(!flagEncontrado) {
@@ -374,7 +397,7 @@ function AgregarQuitarDiaSeleccionado(dia, mes, flag) {
         }
     });
 
-    RutinaSet.setDiaFlagEnvioCliente(auxsemana,dia_aux,flag);
+    RutinaSet.setDiaFlagEnvioCliente(auxsemana,arraydias[dia_aux],flag);
 }
 
 function getDates(startDate, stopDate) {
@@ -386,3 +409,111 @@ function getDates(startDate, stopDate) {
     }
     return dateArray;
 }
+
+function generarDiasEnviados() {
+    if ($("#smart-fixed-header").prop("checked")) {
+        $(".fechas-calendar-tmp").addClass("day-selected");
+
+        $.each($rutina.semanas, function (i, item) {
+            $.each(item.dias, function (u, aux) {
+                $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", true);
+            });
+        });
+    }
+    else {
+        $(".fechas-calendar-tmp").removeClass("day-selected");
+
+        var arrselected = [];
+        var mes = $rutina.semanas.length > 0 ? $rutina.semanas[0].fechaInicio.getMonth() + 1 : 0;
+
+        $.each($rutina.semanas, function (i, item) {
+            $.each(item.dias, function (u, aux) {
+                if (aux.flagEnvioCliente && (aux.fecha.getMonth() + 1) == mes) {
+                    arrselected.push(aux.fecha.getUTCDate());
+                }
+            });
+        });
+
+        $.each(arrselected, function (u, aux) {
+            $("#dia" + aux + "_" + mes).addClass("day-selected");
+            $("#cdia" + aux + "_" + mes).prop("checked", true);
+        });
+    }
+}
+
+function guardarDiasEnviados() {
+    var arrselected = [];
+    var arraydias = [6, 0, 1, 2, 3, 4, 5];
+    var auxsemana = 0;
+    var cantidad = $divCalendarioTmp.getElementsByClassName("day-selected").length;
+
+    if(cantidad == 0)
+    {
+        $.smallBox({content: '<i>Debe de seleccionar al menos 1 día...</i>'});
+    }
+    else {
+
+        if ($("#smart-fixed-header").prop("checked")) {
+
+            $.each($rutina.semanas, function (i, item) {
+                $.each(item.dias, function (u, aux) {
+                    AgregarQuitarDiaSeleccionado(aux.fecha.getUTCDate(), (aux.fecha.getMonth() + 1), true);
+                    $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", true);
+                });
+            });
+
+        } else {
+
+            $.each($rutina.semanas, function (i, item) {
+                $.each(item.dias, function (u, aux) {
+                    AgregarQuitarDiaSeleccionado(aux.fecha.getUTCDate(), (aux.fecha.getMonth() + 1), false);
+                    $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", false);
+                });
+            });
+
+            $.each($divCalendarioTmp.getElementsByClassName("day-selected"), function (i, item) {
+                var valordiaseleccionado = parseInt(item.getAttribute("data-dia"));
+                var valormesseleccionado = parseInt(item.getAttribute("data-mes"));
+                AgregarQuitarDiaSeleccionado(valordiaseleccionado, valormesseleccionado, true);
+                $("#cdia" + valordiaseleccionado + "_" + valormesseleccionado).prop("checked", true);
+            });
+        }
+
+        $.each($rutina.semanas, function (i, item) {
+            $.each(item.dias, function (u, aux) {
+                if (aux.flagEnvioCliente) {
+                    let objs = {};
+                    objs.dia = aux.fecha.getUTCDate();
+                    objs.semana = auxsemana;
+                    arrselected.push(objs);
+                }
+            });
+            auxsemana += 1;
+        });
+
+        guardarDiasSeleccionados(arrselected)
+    }
+}
+
+function guardarDiasSeleccionados(arrselected) {
+    let params = {};
+    params.listjson = JSON.stringify(arrselected);
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/updateDiasSeleccionados",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+        },
+        error: function (xhr) {
+            console.log(xhr);
+        },
+        complete: function () {}
+    })
+
+}
+
+
+

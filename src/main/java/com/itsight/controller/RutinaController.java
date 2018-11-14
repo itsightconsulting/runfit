@@ -1,6 +1,8 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
@@ -12,6 +14,7 @@ import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import groovy.lang.Tuple2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -601,7 +605,7 @@ public class RutinaController {
         if (addedit == 0 && videoaudioexiste != null) {
             videoAudioFavoritoService.delete(videoaudioexiste.getId());
         }
-        return "Ok";
+        return ResponseCode.ACTUALIZACION.get();
     }
 
     @GetMapping(value = "/elemento/obtenermisfavoritos")
@@ -626,7 +630,8 @@ public class RutinaController {
         } else {
             videoAudioFavoritoService.delete(addedit);
         }
-        return "Ok";
+
+        return ResponseCode.ACTUALIZACION.get();
     }
 
     @PostMapping(value = "/elemento/updateAvance")
@@ -635,5 +640,34 @@ public class RutinaController {
         rutinaService.updateAvance(idrutina,indexsemana,stravance,porcentaje);
         return "Ok";
     }
+
+    @PostMapping(value = "/elemento/updateDiasSeleccionados")
+    public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, HttpSession session)
+    {
+        int idrutina = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
+        int[] sIds = (int[]) session.getAttribute("semanaIds");
+        List<DiaSemanaDto> listdias = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            listdias = mapper.readValue(listjson, new TypeReference<List<DiaSemanaDto>>(){});
+            List<Integer> intList = new ArrayList<Integer>();
+            for (int i : sIds)
+            {
+                intList.add(i);
+            }
+
+            rutinaService.updateResetDiasFlagEnvio(intList);
+
+            for (int i = 0; i < listdias.size() ; i++) {
+                int indexsemana = listdias.get(i).getSemana();
+                int indexdia = listdias.get(i).getDia();
+                rutinaService.updateDiasFlagEnvio(sIds[indexsemana],indexdia);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseCode.ACTUALIZACION.get();
+    }
+
 
 }

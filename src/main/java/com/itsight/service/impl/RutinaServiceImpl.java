@@ -155,5 +155,13 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         repository.updateAvanceSemanaIndex(id, String.valueOf(valor),texto, textodia, strdias);
     }
 
+    @Override
+    public void updateResetDiasFlagEnvio(List<Integer> id) {
+        repository.updateResetDiasFlagEnvio(id, false);
+    }
 
+    @Override
+    public void updateDiasFlagEnvio(int indexsemana, int indexdia) {
+        repository.updateDiasFlagEnvio(indexsemana,indexdia, true);
+    }
 }

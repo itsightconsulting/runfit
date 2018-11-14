@@ -124,8 +124,9 @@ function avanzarRetrocederSemana(numSem, action){
             $rutina = new Rutina(semana.rutina);
             $rutina.initEspecifico(semana, numSem);
             instanciarTooltips();
+            generarDiasEnviados();
         }
-    })
+    });
 
 }
 
@@ -1400,11 +1401,48 @@ function principalesEventosClickRutina(e) {
         }
     }
     else if(clases.contains('enviar-cliente')){
-        //e.preventDefault();
-        //e.stopPropagation();
+        e.preventDefault();
+        $(".span-setting").click();
+        e.stopPropagation();
 
-       console.log(input.getAttribute('data-id'));
-        console.log(input.getAttribute('data-mes'));
+        /*
+        var cantidad = $(".enviar-cliente:checked").length;
+        var valordiaseleccionado = input.getAttribute('data-id');
+        var valormesseleccionado = input.getAttribute('data-mes');
+
+        if(cantidad == 1 && input.checked){
+            AgregarQuitarDiaSeleccionado(input.getAttribute('data-id'),input.getAttribute('data-mes'),input.checked);
+        }else {
+            if (input.checked) {
+
+                var ultimodia = 0;
+
+                $.each($(".enviar-cliente:checked"), function (i, item) {
+                    if(valordiaseleccionado != parseInt(item.getAttribute("data-id"))) {
+                        ultimodia = parseInt(item.getAttribute("data-id"));
+                    }
+                });
+
+                if ((ultimodia + 1) == valordiaseleccionado) {
+                    AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
+                }else{
+                    input.checked = false;
+                }
+
+            } else {
+                AgregarQuitarDiaSeleccionado(valordiaseleccionado ,valormesseleccionado ,input.checked);
+
+                for (let i = 0; i < cantidad ; i++) {
+                    var diatmp = 0;
+                    var mestmp = 0;
+                    diatmp = $("#cdia"+(parseInt(valordiaseleccionado)+(i+1))).attr('data-id');
+                    mestmp = $("#cdia"+(parseInt(valordiaseleccionado)+(i+1))).attr('data-mes');
+                    AgregarQuitarDiaSeleccionado(diatmp, mestmp ,false);
+                    $("#cdia"+(diatmp)).prop("checked",false);
+                }
+            }
+        }*/
+
     }
 }
 
@@ -1666,7 +1704,6 @@ function principalesEventosTabRutina(e){
         }else{
             $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
         }
-
     }
     else if(clases.contains('adelantar-semana')){
         e.preventDefault();
@@ -1706,6 +1743,7 @@ function principalesEventosTabRutina(e){
                     },
                     complete: function () {
                         document.querySelectorAll('#divSmallBoxes')[0].innerHTML = '';
+
                     }
                 });
             })

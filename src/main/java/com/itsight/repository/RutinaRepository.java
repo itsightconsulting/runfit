@@ -44,5 +44,14 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
     @Query(value = "UPDATE Rutina SET control = jsonb_set(jsonb_set(control, CAST(:avance as text[]), CAST(:valorAvance as jsonb), false), CAST(:strdias as text[]), CAST(:valordias as jsonb), false) WHERE rutina_id = :id", nativeQuery = true)
     void updateAvanceSemanaIndex(@Param("id") int id, @Param("valorAvance") String valorAvance, @Param("avance") String avance, @Param("strdias") String strdias, @Param("valordias") String valordias );
 
+    @Modifying
+    @Query(value = "UPDATE Dia SET flag_envio_cliente = :flag WHERE semana_id in :ids", nativeQuery = true)
+    void updateResetDiasFlagEnvio(@Param("ids") List<Integer> ids, @Param("flag") boolean flag);
+
+    @Modifying
+    @Query(value = "UPDATE Dia SET flag_envio_cliente = :flag WHERE dia = :indexdia and semana_id = :indexsemana", nativeQuery = true)
+    void updateDiasFlagEnvio(@Param("indexsemana") int indexsemana, @Param("indexdia") int indexdia, @Param("flag") boolean flag);
+
+
 
 }

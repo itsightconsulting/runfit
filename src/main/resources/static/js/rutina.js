@@ -21,6 +21,7 @@ class Rutina {
         this.semanas[num] = new Semana(semana);
         this.mostrarSemana(this.semanas[num], num);
         this.completarFechasSemanas(true, num);
+
     }
 
     initEspecificoDesdeRutina(num){
@@ -101,7 +102,7 @@ class Rutina {
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Guardar día en mis plantillas"><i class="fa fa-save txt-color-greenLight pre-guardar-dia" data-index="${i}"></i></a></div>
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Pegar elementos elegidos"><i class="fa fa-list-alt text-primary pegar-mini-listas" data-index="${i}"></i></a></div>
 								            <div class="widget-toolbar borderless"><a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Agregar objetivo"><i class="fa fa-dot-circle-o txt-color agregar-objetivo" data-index="${i}"></i></a></div>
-								            <div class="widget-toolbar borderless" style="line-height: 38px;"><input ${checked} data-id="${v.dia}" data-mes="${mes}" class="enviar-cliente" type="checkbox" rel="tooltip" data-placement="bottom" data-original-title="Enviar al Cliente" /></div>
+								            <div class="widget-toolbar borderless" style="line-height: 38px;"><input ${checked} id="cdia${v.dia}_${mes}" data-id="${v.dia}" data-mes="${mes}" class="enviar-cliente" type="checkbox" rel="tooltip" data-placement="bottom" data-original-title="Enviar al Cliente" /></div>
 								            </div>
 								        </header>
 								        <div role="heading">
