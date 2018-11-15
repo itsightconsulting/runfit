@@ -156,8 +156,8 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public void updateResetDiasFlagEnvio(List<Integer> id) {
-        repository.updateResetDiasFlagEnvio(id, false);
+    public void updateResetDiasFlagEnvio(int anio, int mes) {
+        repository.updateResetDiasFlagEnvio(anio, mes, false);
     }
 
     @Override

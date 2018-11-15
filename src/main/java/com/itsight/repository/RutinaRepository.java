@@ -45,8 +45,10 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
     void updateAvanceSemanaIndex(@Param("id") int id, @Param("valorAvance") String valorAvance, @Param("avance") String avance, @Param("strdias") String strdias, @Param("valordias") String valordias );
 
     @Modifying
-    @Query(value = "UPDATE Dia SET flag_envio_cliente = :flag WHERE semana_id in :ids", nativeQuery = true)
-    void updateResetDiasFlagEnvio(@Param("ids") List<Integer> ids, @Param("flag") boolean flag);
+    @Query(value = "UPDATE Dia SET flagEnvioCliente = :flag WHERE  year(fecha) = :anio and month(fecha) = :mes")
+    void updateResetDiasFlagEnvio(@Param("anio") int anio, @Param("mes") int mes , @Param("flag") boolean flag);
+
+    // @Query("select e from Event e where year(e.eventDate) = ?1 and month(e.eventDate) = ?2")
 
     @Modifying
     @Query(value = "UPDATE Dia SET flag_envio_cliente = :flag WHERE dia = :indexdia and semana_id = :indexsemana", nativeQuery = true)

@@ -642,7 +642,7 @@ public class RutinaController {
     }
 
     @PostMapping(value = "/elemento/updateDiasSeleccionados")
-    public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, HttpSession session)
+    public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, @RequestParam int anio, @RequestParam int mes , HttpSession session)
     {
         int idrutina = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
         int[] sIds = (int[]) session.getAttribute("semanaIds");
@@ -656,7 +656,7 @@ public class RutinaController {
                 intList.add(i);
             }
 
-            rutinaService.updateResetDiasFlagEnvio(intList);
+            rutinaService.updateResetDiasFlagEnvio(anio,mes);
 
             for (int i = 0; i < listdias.size() ; i++) {
                 int indexsemana = listdias.get(i).getSemana();
@@ -669,5 +669,11 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
+
+    @GetMapping(value = "/get/obtenerSemanasPorRutina")
+    public @ResponseBody List<Semana> obtenerSemanasRutina(HttpSession session) {
+        int idrutina = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
+        return semanaService.findByRutinaIdOrderByIdDesc(idrutina);
+    }
 
 }

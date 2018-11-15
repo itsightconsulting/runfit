@@ -23,7 +23,7 @@ public interface RutinaService extends BaseService<Rutina> {
 
     void updateAvance(int id, int indexsemana, String strdias, String avance);
 
-    void updateResetDiasFlagEnvio(List<Integer> id);
+    void updateResetDiasFlagEnvio(int anio, int mes);
 
     void updateDiasFlagEnvio(int indexsemana, int indexdia);
 

@@ -304,12 +304,20 @@
 
         .mini{
             padding: 0px 5px;
-            margin: 0px 3px;
+            margin: 0px 3px; 
+        }
+        .txt-color-grayDark{
+            cursor: not-allowed;
+        }
+        .fechas-calendar:hover{
+            background: #89AD45 !important;
+            cursor: pointer;
         }
 
-        .mini:hover{
-            background: #89AD45 !important;
+        .fechas-calendar-tmp{
+            cursor: pointer;
         }
+
 
         .elegido{
             background-color:#46b9ca !important;
@@ -812,7 +820,7 @@
                         <span class="label label-primary bg-black-rf" >Semana <span id="SemanaActual"></span></span>
                     </div>
                     <div class="widget-toolbar-2 borderless" style="">
-                        <a href="javascript:IrActualizarAvance();" class="label label-primary bg-green-rf" style="background: #f2594a !important;">Actualizar Avance Semanal</a>
+                        <a id="aAvanceSemanal" href="javascript:IrActualizarAvance();" class="label label-primary bg-green-rf" style="background: #f2594a !important;">Actualizar Avance Semanal</a>
                     </div>
                 </div>
                 <div class="row">

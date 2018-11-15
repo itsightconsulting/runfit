@@ -32,6 +32,9 @@ let $statusCopy = false;
 let $kilometrajeBase = [];
 let $semCalculoMacro = {};
 let $objetivos = [];
+let $semanasEnviadas = [];
+let $diasSeleccionados = [];
+
 
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
@@ -112,7 +115,9 @@ function init(){
         instanciarTooltips();
         modalEventos();
         setFechaActual(document.querySelectorAll('input[type="date"]'));
+        obtenerSemanasEnviadas();
         calendarioTmp();
+
     });
 }
 
@@ -2852,4 +2857,40 @@ function actualizarDiaObjetivoBD(a, b){
         },
         complete: function () {}
     })
+}
+
+
+function obtenerSemanasEnviadas() {
+
+    $.ajax({
+        type: 'GET',
+        url: _ctx + 'gestion/rutina/get/obtenerSemanasPorRutina',
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                } else {
+                    $.each(data,function (i,item) {
+                        item.fechaInicio = parseFromStringToDate2(item.fechaInicio);
+                        item.fechaFin = parseFromStringToDate2(item.fechaFin);
+                        $.each(item.lstDia,function(o,day){
+                            day.fecha = parseFromStringToDate2(day.fecha);
+                            $diasSeleccionados.push(day.fecha);
+                        });
+                        $semanasEnviadas.push(item);
+                    });
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+        }
+    });
 }

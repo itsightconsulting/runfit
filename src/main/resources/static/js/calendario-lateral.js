@@ -1,6 +1,6 @@
-
 const $divCalendarioTmp = document.querySelector('#divCalendarioTmp');
 let semanasIxs = [];
+let diasSeleccionados = [];
 
 $(function () {
     $divCalendarioTmp.addEventListener('click', principalesEventosCalendario);
@@ -23,9 +23,18 @@ $(function () {
         if($("#smart-fixed-header").prop("checked"))
         {
             $(".fechas-calendar-tmp").addClass("day-selected");
+            $.each($rutina.semanas, function (i, item) {
+                $.each(item.dias, function (u, aux) {
+                    $diasSeleccionados.push(aux.fecha);
+                });
+            });
+            if($(".event-calendar").length == $(".day-selected").length) {
+                $("#mesanio" + valormesseleccionado + "" + valoranio).prop("checked", true);
+            }
         }
         else{
             $(".fechas-calendar-tmp").removeClass("day-selected");
+            $diasSeleccionados = [];
         }
     });
 
@@ -35,22 +44,20 @@ function calendarioTmp() {
 
     String.prototype.replaceAll = function(searchStr, replaceStr) {
         var str = this;
-
         // escape regexp special characters in search string
         searchStr = searchStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
         return str.replace(new RegExp(searchStr, 'gi'), replaceStr);
     }
 
     const qFechaInicio = getFechaInicioSemanaEdicionTmp();
     abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), false, qFechaInicio.mes);
 
-    $('.mes-calendar-tmp').click(function () {
-        const mes = $(this).attr('data-mes');
-        const anio = $(this).parent().attr('data-anio');
-        abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(anio, mes), true);
-        generarDiasEnviados();
-    });
+  // $('.mes-calendar-tmp').click(function () {
+  //     const mes = $(this).attr('data-mes');
+  //     const anio = $(this).parent().attr('data-anio');
+  //     abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(anio, mes), true);
+  //     generarDiasEnviados();
+  // });
 }
 
 function principalesEventosCalendario(e) {
@@ -61,52 +68,165 @@ function principalesEventosCalendario(e) {
         const mes = input.getAttribute('data-mes');
         const anio = input.parentElement.getAttribute('data-anio');
         abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(anio, mes),true);
-    } else if(clases.contains('cal-retroceder-sem')){
-        const qFechaInicio = getFechaInicioSemanaEspecifica($refIxsSemCalendar[0] - 1);
-        abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
-        generarDiasEnviados();
-    } else if(clases.contains('cal-adelantar-sem')){
-        const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length-1];
-        let qFecha;
-        if($rutina.semanas[semIxRef+1] != undefined) {
-            qFecha = getFechaInicioSemanaEspecifica(semIxRef + 1);
-        }
-        else {
-            qFecha = getFechaFinSemanaEspecifica(semIxRef);
-        }
-        abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
-        generarDiasEnviados();
-    } else if(clases.contains('fechas-calendar-tmp')) {
+        generarDiasEnviados2();
+    } else if(clases.contains('cal-retroceder-sem')) {
+        $(".fechas-calendar-tmp").addClass("day-selected");
 
+            const qFechaInicio = getFechaInicioSemanaEspecifica($refIxsSemCalendar[0] - 1);
+            abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
+            generarDiasEnviados2();
+
+    } else if(clases.contains('cal-adelantar-sem')){
+
+            const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length - 1];
+            let qFecha;
+            if ($rutina.semanas[semIxRef + 1] != undefined) {
+                qFecha = getFechaInicioSemanaEspecifica(semIxRef + 1);
+            }
+            else {
+                qFecha = getFechaFinSemanaEspecifica(semIxRef);
+            }
+            abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
+            generarDiasEnviados2();
+
+    } else if(clases.contains('fechas-calendar-tmp')) {
+        var valoranio = parseInt($("#anioMesActual").attr("data-anio"));
         var valordiaseleccionado = parseInt(input.getAttribute("data-dia"));
         var valormesseleccionado = parseInt(input.getAttribute("data-mes"));
 
         if (input.classList.contains('day-selected')) {
             input.classList.remove('day-selected');
             var cant = $divCalendarioTmp.getElementsByClassName("day-selected").length;
-            //AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,false);
+
+            $diasSeleccionados = $.grep($diasSeleccionados, function(o,x) {
+                return o.getUTCDate() === valordiaseleccionado && (o.getMonth() + 1) === valormesseleccionado && o.getFullYear() === valoranio;},true);
+            var tmpArray = [];
+            $.each($diasSeleccionados ,function (i,o) {
+
+                if(o.getUTCDate() > valordiaseleccionado && (o.getMonth() + 1) === valormesseleccionado && o.getFullYear() === valoranio){
+                    o = null;
+                }
+
+                if(o != null && (o.getMonth() + 1) > valormesseleccionado && o.getFullYear() === valoranio){
+                    o = null;
+                }
+
+                if(o != null && o.getFullYear() > valoranio){
+                    o = null;
+                }
+                tmpArray.push(o);
+            });
+
+            $diasSeleccionados = $.grep(tmpArray, function(o,x) {
+                                    return o === null;},true);
+
 
             for (let i = 0; i < cant ; i++) {
-                $("#dia"+(valordiaseleccionado+(i+1))+"_"+valormesseleccionado).removeClass("day-selected");
-                //AgregarQuitarDiaSeleccionado((valordiaseleccionado+(i+1)),valormesseleccionado,false);
+                $("#dia"+(valordiaseleccionado+(i+1))+"_"+valormesseleccionado+"_"+valoranio).removeClass("day-selected");
             }
-        } else {
-            var cant = $divCalendarioTmp.getElementsByClassName("day-selected").length;
-            if (cant == 0) {
-                input.classList.add('day-selected');
-                //AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
-            } else {
-                var ultimodia = 0;
 
-                $.each($divCalendarioTmp.getElementsByClassName("day-selected"), function (i, item) {
-                    ultimodia = parseInt(item.getAttribute("data-dia"));
+        }
+        else {
+            if ($diasSeleccionados.length == 0) {
+                input.classList.add('day-selected');
+
+                var nuevafecha = parseFromStringToDate2(valordiaseleccionado+"/"+valormesseleccionado+"/"+valoranio);
+                $diasSeleccionados.push(nuevafecha);
+
+            }else {
+                var ultimodia = $diasSeleccionados[$diasSeleccionados.length - 1].getUTCDate();
+                var ultimomes = $diasSeleccionados[$diasSeleccionados.length - 1].getMonth() + 1;
+                var ultimoanio = $diasSeleccionados[$diasSeleccionados.length - 1].getFullYear();
+
+                var nuevafecha = parseFromStringToDate2(ultimodia+"/"+ultimomes+"/"+ultimoanio);
+                var lastDayofMonth = new Date(nuevafecha.getFullYear(), nuevafecha.getMonth()+1, 0).getUTCDate();
+
+                if ((ultimodia + 1) == valordiaseleccionado && ultimomes == valormesseleccionado && ultimoanio == valoranio) {
+                    input.classList.add('day-selected');
+
+                    var nuevafecha = parseFromStringToDate2(valordiaseleccionado + "/" + valormesseleccionado + "/" + valoranio);
+                    $diasSeleccionados.push(nuevafecha);
+                }
+
+                var dayEncontrado = $diasSeleccionados.find(function(element) {
+                    return element.getUTCDate() == lastDayofMonth && (element.getMonth()+1) == ultimomes && element.getFullYear() == ultimoanio
                 });
 
-                if ((ultimodia + 1) == valordiaseleccionado) {
-                    input.classList.add('day-selected');
-                    //AgregarQuitarDiaSeleccionado(valordiaseleccionado,valormesseleccionado,true);
+                if (dayEncontrado != null && ultimomes < valormesseleccionado && ultimoanio == valoranio) {
+                    if (1 == valordiaseleccionado) {
+                        input.classList.add('day-selected');
+                        var nuevafecha = parseFromStringToDate2(valordiaseleccionado + "/" + valormesseleccionado + "/" + valoranio);
+                        $diasSeleccionados.push(nuevafecha);
+                    }
+                }
+
+                var dayEncontrado2 = $diasSeleccionados.find(function(element) {
+                    return element.getUTCDate() == 31 && (element.getMonth()+1) == 12 && element.getFullYear() == ultimoanio
+                });
+
+                if (dayEncontrado2 != null && ultimomes > valormesseleccionado && ultimoanio < valoranio) {
+                    if (1 == valordiaseleccionado) {
+                        input.classList.add('day-selected');
+                        var nuevafecha = parseFromStringToDate2(valordiaseleccionado + "/" + valormesseleccionado + "/" + valoranio);
+                        $diasSeleccionados.push(nuevafecha);
+                    }
                 }
             }
+        }
+
+        if($(".event-calendar").length == $(".day-selected").length) {
+            $("#mesanio" + valormesseleccionado + "" + valoranio).prop("checked", true);
+        }
+
+    } else if(clases.contains('selectedAllMonth'))
+    {
+        var valoranioseleccionado = parseInt(input.getAttribute("data-anio"));
+        var valormesseleccionado = parseInt(input.getAttribute("data-mes"));
+
+        var nuevafecha = parseFromStringToDate2(1 + "/" + (valormesseleccionado == 1 ? 12  : valormesseleccionado-1 ) + "/" + (valormesseleccionado == 1 ? valoranioseleccionado-1 :valoranioseleccionado) );
+        var lastDayofMonth = new Date(nuevafecha.getFullYear(), nuevafecha.getMonth()+1, 0).getUTCDate();
+
+        var dayEncontrado = $diasSeleccionados.find(function(element) {
+            return element.getUTCDate() == lastDayofMonth && (element.getMonth()+1) == (valormesseleccionado == 1 ? 12  : valormesseleccionado-1 ) && element.getFullYear() == (valormesseleccionado == 1 ? valoranioseleccionado-1 :valoranioseleccionado)
+        });
+
+        $diasSeleccionados = $.grep($diasSeleccionados, function (o, x) {
+            return (o.getMonth() + 1) === valormesseleccionado && o.getFullYear() === valoranioseleccionado;
+        }, true);
+
+        var tmpArray = [];
+        $.each($diasSeleccionados ,function (i,o) {
+
+            if((o.getMonth() + 1) > valormesseleccionado && o.getFullYear() === valoranioseleccionado){
+                o = null;
+            }
+
+            if(o != null && o.getFullYear() > valoranioseleccionado){
+                o = null;
+            }
+            tmpArray.push(o);
+        });
+
+        $diasSeleccionados = $.grep(tmpArray, function(o,x) {
+            return o === null;},true);
+
+        $(".fechas-calendar-tmp").removeClass("day-selected");
+
+        if(dayEncontrado != null) {
+            if (input.checked) {
+                $(".fechas-calendar-tmp").addClass("day-selected");
+
+                $.each($rutina.semanas, function (i, item) {
+                    $.each(item.dias, function (u, aux) {
+                        if ((aux.fecha.getMonth() + 1) == valormesseleccionado && aux.fecha.getFullYear() == valoranioseleccionado) {
+                            $diasSeleccionados.push(aux.fecha);
+                        }
+                    });
+                });
+
+            }
+        }else{
+            $("#mesanio" + valormesseleccionado + "" + valoranioseleccionado).prop("checked", false);
         }
     }
 }
@@ -180,7 +300,7 @@ function abrirCalendariotmp(semanasIxs,edicion,mes) {
         if(semanasIxs[0] == 0){
             for(let x=0; x < v; x++){
                 if(d>= min && d<=max) {
-                    calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected" data-mes data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                    calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected_anioselected" data-mes data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                 }else{
                     calendarBody+=`<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini txt-color-grayDark disabled-tmp text-align-center">${d++}</div>`;
                 }
@@ -191,7 +311,7 @@ function abrirCalendariotmp(semanasIxs,edicion,mes) {
         }else if(semanasIxs[semanasIxs.length-1] == $rutina.totalSemanas-1) {
             for(let x=0; x < v; x++) {
                 if (d <= max) {
-                    calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected"  data-mes data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                    calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected_anioselected"  data-mes data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                 } else {
                     calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark disabled-tmp text-align-center" data-index="${i}">${d++}</div>`;
                 }
@@ -200,7 +320,7 @@ function abrirCalendariotmp(semanasIxs,edicion,mes) {
         //Los meses intermedios o full
         else{
             for (let x = 0; x < v; x++) {
-                calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected"  data-mes data-dia="${d}" data-index="${i}">
+                calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar-tmp text-align-center" id="dia${d}_messelected_anioselected"  data-mes data-dia="${d}" data-index="${i}">
                                             ${d++}
                                             <i class="fa fa-circle event-calendar"></i>
                                          </div>`;
@@ -262,7 +382,8 @@ function construirCalendarioTmp(dias, anio, mesInt, mesString){
     let classFini = "", classFfin = "";
 
     dias = dias.replaceAll('data-mes', 'data-mes="'+(mesInt+1)+'"');
-    dias = dias.replaceAll('_messelected', '_'+(mesInt+1)+'"');
+    dias = dias.replaceAll('_messelected', '_'+(mesInt+1));
+    dias = dias.replaceAll('_anioselected', '_'+(anio));
 
 
     //Para la ocultación de las opciones de adelanto y atras en 1 mes del calendario
@@ -275,10 +396,12 @@ function construirCalendarioTmp(dias, anio, mesInt, mesString){
     }
 
     return `<div class="container-fluid padding-0 its-calendar">
-                                    <div class="container-fluid padding-0 padding-bottom-10">
+                                    <div class="container-fluid padding-0 padding-bottom-10">                                           
                                         <h6 class="">
-                                            <span class="pull-left padding-bottom-10">${mesString} <span>${anio}</span></span>
-                                            <i class="fa fa-caret-down fa-fw" style="font-size: 0.8em" data-anio="${anio}" onclick="javascript:buscadorCalendarioTmp(this)"></i>
+                                            <span class="pull-left padding-bottom-10">
+                                            <input id="mesanio${(mesInt+1)}${anio}" type="checkbox" style="margin-right:5px;" data-mes="${(mesInt+1)}"  data-anio="${anio}"  class="selectedAllMonth"/>
+                                            ${mesString} <span>${anio}</span></span>
+                                            <i id="anioMesActual" class="fa fa-caret-down fa-fw" style="font-size: 0.8em" data-mes="${(mesInt+1)}"  data-anio="${anio}" onclick="javascript:buscadorCalendarioTmp(this)"></i>
                                             <span class="pull-right padding-bottom-10"><i class="fa fa-arrow-circle-left fa-fw cal-retroceder-sem ${classFini}" title="Mes anterior"></i><i class="fa fa-arrow-circle-right fa-fw cal-adelantar-sem ${classFfin}" title="Mes siguiente"></i></span>
                                         </h6>
                                     </div>
@@ -312,92 +435,73 @@ function obtenerDiasByMes(y, m){
 }
 
 function buscadorCalendarioTmp(input) {
-    const anioBase = input.getAttribute('data-anio');
-    input.classList.toggle('fa-caret-down');
-    input.classList.toggle('fa-caret-up');
 
-    const contenedorPadreBase = input.parentElement.parentElement;
-    contenedorPadreBase.nextElementSibling.classList.toggle('hidden');
-    if(contenedorPadreBase.parentElement.children.length == 3){
-        contenedorPadreBase.parentElement.children[2].remove();
-    }else{
-        //1.
-        const y1 = $rutina.fechaInicio.getFullYear(), y2 = $rutina.fechaFin.getFullYear(), f1 = $rutina.fechaInicio, f2 = $rutina.fechaFin;
-        const finals = [];
-        for(let i=0; i<y2-y1;i++){
-            finals.push([y1 + i, []]);
+        const anioBase = input.getAttribute('data-anio');
+        input.classList.toggle('fa-caret-down');
+        input.classList.toggle('fa-caret-up');
+
+        const contenedorPadreBase = input.parentElement.parentElement;
+        contenedorPadreBase.nextElementSibling.classList.toggle('hidden');
+        if (contenedorPadreBase.parentElement.children.length == 3) {
+            contenedorPadreBase.parentElement.children[2].remove();
         }
-        finals.push([y2,[]]);
-        //2.
-        finals.forEach((v,i,t)=>{
-            //Primer y último año
-            if(i== 0 || i==t.length-1)
-                if(i==0)
-                    if(y1 == y2)
-                        for(let ii=0;ii<f2.getMonth()-f1.getMonth()+1;ii++) {
-                            finals[i][1].push(f1.getMonth() + ii);
-                        }
+        else {
+            //1.
+            const y1 = $rutina.fechaInicio.getFullYear(), y2 = $rutina.fechaFin.getFullYear(), f1 = $rutina.fechaInicio,
+                f2 = $rutina.fechaFin;
+            const finals = [];
+            for (let i = 0; i < y2 - y1; i++) {
+                finals.push([y1 + i, []]);
+            }
+            finals.push([y2, []]);
+            //2.
+            finals.forEach((v, i, t) => {
+                //Primer y último año
+                if (i == 0 || i == t.length - 1)
+                    if (i == 0)
+                        if (y1 == y2)
+                            for (let ii = 0; ii < f2.getMonth() - f1.getMonth() + 1; ii++) {
+                                finals[i][1].push(f1.getMonth() + ii);
+                            }
+                        else
+                            for (let ii = 0; ii < 11 - f1.getMonth() + 1; ii++) {
+                                finals[i][1].push(f1.getMonth() + ii);
+                            }
                     else
-                        for(let ii=0;ii<11-f1.getMonth()+1;ii++){
-                            finals[i][1].push(f1.getMonth() + ii);
+                        for (let ii = 0; ii < f2.getMonth() + 1; ii++) {
+                            finals[i][1].push(ii);
                         }
-                else
-                    for(let ii=0;ii<f2.getMonth()+1;ii++){
-                        finals[i][1].push(ii);
-                    }
-            else//Intermedios
-                finals[i][1] = [0,1,2,3,4,5,6,7,8,9,10,11];
-        })
+                else//Intermedios
+                    finals[i][1] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            })
 
-        let filtros =   `<div class="container-fluid padding-0 cal-acordeon-query">
+            let filtros = `<div class="container-fluid padding-0 cal-acordeon-query">
                                     <div class="panel-group smart-accordion-default smart-form" id="accordionX1">
-                                    ${finals.map((v,i,k)=>{
-            const claseIn = v[0]==anioBase?'in':'', claseCollap = v[0]==anioBase?'':'class="collapsed"';
-            return `<div class="panel panel-default">
+                                    ${finals.map((v, i, k) => {
+                const claseIn = v[0] == anioBase ? 'in' : '', claseCollap = v[0] == anioBase ? '' : 'class="collapsed"';
+                return `<div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title"><a class="txt-color-blue" data-toggle="collapse" data-parent="#accordionX1" href="#collapCal${i}" ${claseCollap}> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> ${v[0]} </a></h4>
                                                     </div>
                                                     <div id="collapCal${i}" class="panel-collapse collapse ${claseIn}">
-                                                        <div class="panel-body" data-anio="${Number(k[0][0])+i}" style="padding: 0px !important;">
-                                                        ${v[1].map(z=>{
-                return `<div class="col col-md-3 bg-color-white txt-color-blue bordered mes-calendar-tmp" data-mes="${z}">${meses[z].substr(0,3).toUpperCase()}</div>`
-            }).join('')}
+                                                        <div class="panel-body" data-anio="${Number(k[0][0]) + i}" style="padding: 0px !important;">
+                                                        ${v[1].map(z => {
+                    return `<div class="col col-md-3 bg-color-white txt-color-blue bordered mes-calendar-tmp" data-mes="${z}">${meses[z].substr(0, 3).toUpperCase()}</div>`
+                }).join('')}
                                                         </div>
                                                     </div>
                                                 </div>`
-        }).join('')}
+            }).join('')}
                                     </div>
                                  </div>`;
-        contenedorPadreBase.parentElement.appendChild(htmlStringToElement(filtros));
-    }
+            contenedorPadreBase.parentElement.appendChild(htmlStringToElement(filtros));
+        }
+
 }
 
 function getFechaInicioSemanaEspecifica(semIx) {
     const objSem = $rutina.semanas[semIx].fechaInicio;
     return {fechaInicio: objSem, anio: objSem.getFullYear(), mes: objSem.getMonth()}
-}
-
-function AgregarQuitarDiaSeleccionado(dia, mes, flag) {
-    var arraydias = [6,0,1,2,3,4,5];
-    var auxsemana = 0;
-    var flagEncontrado = false;
-    var dia_aux = 0;
-    $.each($rutina.semanas,function(i,item){
-        if(!flagEncontrado) {
-            var arryaDias = getDates(item.fechaInicio, item.fechaFin);
-            $.each(arryaDias,function(u,aux){
-                if (aux.getUTCDate() == dia && (aux.getMonth()+1) == mes) {
-                    flagEncontrado = true;
-                    dia_aux = aux.getUTCDay();
-                }
-            });
-            if(!flagEncontrado) {
-                auxsemana += 1;
-            }
-        }
-    });
-
-    RutinaSet.setDiaFlagEnvioCliente(auxsemana,arraydias[dia_aux],flag);
 }
 
 function getDates(startDate, stopDate) {
@@ -411,33 +515,50 @@ function getDates(startDate, stopDate) {
 }
 
 function generarDiasEnviados() {
-    if ($("#smart-fixed-header").prop("checked")) {
-        $(".fechas-calendar-tmp").addClass("day-selected");
-
-        $.each($rutina.semanas, function (i, item) {
-            $.each(item.dias, function (u, aux) {
-                $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", true);
-            });
-        });
-    }
-    else {
+    //if ($("#smart-fixed-header").prop("checked")) {
+    //    $(".fechas-calendar-tmp").addClass("day-selected");
+//
+    //
+    //    $.each(diasSeleccionados, function (u, aux) {
+    //        $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", true);
+    //    });
+    //
+    //}
+    //else {
         $(".fechas-calendar-tmp").removeClass("day-selected");
 
-        var arrselected = [];
-        var mes = $rutina.semanas.length > 0 ? $rutina.semanas[0].fechaInicio.getMonth() + 1 : 0;
-
-        $.each($rutina.semanas, function (i, item) {
-            $.each(item.dias, function (u, aux) {
-                if (aux.flagEnvioCliente && (aux.fecha.getMonth() + 1) == mes) {
-                    arrselected.push(aux.fecha.getUTCDate());
+        var mes = parseInt($("#anioMesActual").attr("data-mes"));
+        var anio = parseInt($("#anioMesActual").attr("data-anio"));
+        $diasSeleccionados = [];
+        $.each($semanasEnviadas, function (i, item) {
+            $.each(item.lstDia, function (u, aux) {
+                if ((aux.fecha.getMonth() + 1) == mes && aux.fecha.getFullYear() == anio) {
+                    $("#dia" + aux.fecha.getUTCDate() + "_" + mes + "_" + anio).addClass("day-selected");
+                    $("#cdia" + aux.fecha.getUTCDate() + "_" + mes + "_" + anio).prop("checked", true);
                 }
+                $diasSeleccionados.push(aux.fecha);
             });
         });
 
-        $.each(arrselected, function (u, aux) {
-            $("#dia" + aux + "_" + mes).addClass("day-selected");
-            $("#cdia" + aux + "_" + mes).prop("checked", true);
-        });
+    if($(".event-calendar").length == $(".day-selected").length) {
+        $("#mesanio" + mes + "" + anio).prop("checked", true);
+    }
+}
+function generarDiasEnviados2() {
+    $(".fechas-calendar-tmp").removeClass("day-selected");
+
+    var mes = parseInt($("#anioMesActual").attr("data-mes"));
+    var anio = parseInt($("#anioMesActual").attr("data-anio"));
+
+    $.each($diasSeleccionados, function (u, aux) {
+        if ((aux.getMonth() + 1) == mes && aux.getFullYear() == anio) {
+            $("#dia" + aux.getUTCDate() + "_" + mes + "_" + anio).addClass("day-selected");
+            $("#cdia" + aux.getUTCDate() + "_" + mes + "_" + anio).prop("checked", true);
+        }
+    });
+
+    if($(".event-calendar").length == $(".day-selected").length) {
+        $("#mesanio" + mes + "" + anio).prop("checked", true);
     }
 }
 
@@ -445,7 +566,7 @@ function guardarDiasEnviados() {
     var arrselected = [];
     var arraydias = [6, 0, 1, 2, 3, 4, 5];
     var auxsemana = 0;
-    var cantidad = $divCalendarioTmp.getElementsByClassName("day-selected").length;
+    var cantidad = $diasSeleccionados.length;
 
     if(cantidad == 0)
     {
@@ -453,35 +574,15 @@ function guardarDiasEnviados() {
     }
     else {
 
-        if ($("#smart-fixed-header").prop("checked")) {
-
-            $.each($rutina.semanas, function (i, item) {
-                $.each(item.dias, function (u, aux) {
-                    AgregarQuitarDiaSeleccionado(aux.fecha.getUTCDate(), (aux.fecha.getMonth() + 1), true);
-                    $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", true);
-                });
-            });
-
-        } else {
-
-            $.each($rutina.semanas, function (i, item) {
-                $.each(item.dias, function (u, aux) {
-                    AgregarQuitarDiaSeleccionado(aux.fecha.getUTCDate(), (aux.fecha.getMonth() + 1), false);
-                    $("#cdia" + aux.fecha.getUTCDate() + "_" + (aux.fecha.getMonth() + 1)).prop("checked", false);
-                });
-            });
-
-            $.each($divCalendarioTmp.getElementsByClassName("day-selected"), function (i, item) {
-                var valordiaseleccionado = parseInt(item.getAttribute("data-dia"));
-                var valormesseleccionado = parseInt(item.getAttribute("data-mes"));
-                AgregarQuitarDiaSeleccionado(valordiaseleccionado, valormesseleccionado, true);
-                $("#cdia" + valordiaseleccionado + "_" + valormesseleccionado).prop("checked", true);
-            });
-        }
+        // $diasSeleccionados
 
         $.each($rutina.semanas, function (i, item) {
             $.each(item.dias, function (u, aux) {
-                if (aux.flagEnvioCliente) {
+                var dayEncontrado = $diasSeleccionados.find(function(element) {
+                    return element.getUTCDate() == aux.fecha.getUTCDate() && (element.getMonth()+1) == (aux.fecha.getMonth()+1) && element.getFullYear() == aux.fecha.getFullYear()
+                });
+
+                if (dayEncontrado != null) {
                     let objs = {};
                     objs.dia = aux.fecha.getUTCDate();
                     objs.semana = auxsemana;
@@ -498,6 +599,8 @@ function guardarDiasEnviados() {
 function guardarDiasSeleccionados(arrselected) {
     let params = {};
     params.listjson = JSON.stringify(arrselected);
+    params.anio = parseInt($("#anioMesActual").attr("data-anio"));
+    params.mes = parseInt($("#anioMesActual").attr("data-mes"));
 
     $.ajax({
         type: "POST",
@@ -506,14 +609,14 @@ function guardarDiasSeleccionados(arrselected) {
         dataType: "json",
         data: params,
         success: function (data) {
+            $.smallBox({content: '<i>Se han enviado la rutina al Cliente...</i>'});
         },
         error: function (xhr) {
             console.log(xhr);
         },
-        complete: function () {}
+        complete: function () {
+            obtenerSemanasEnviadas();
+        }
     })
 
 }
-
-
-
