@@ -66,32 +66,7 @@ function mostrarSemana(sem, sIndex, diasemanaactual){
 
     //semana.lstDia = dayEncontrado;
 
-    dayEncontrado.forEach((v, i) => {
-        const val = v.elementos == null ? undefined : (v.elementos.length>0?undefined:'showInputsInit');//La validacion requiere un null;
-        const flagDescanso = v.flagDescanso;
-        rawDias +=
-            `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia" data-index="${i}" data-fecha="${v.fecha}">            
-									<div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0" tabindex='${i}'>
-										<header role="heading" class="heading-dia">
-								            <span class="widget-icon"><i class="fa fa-calendar-o txt-color-blue copiar-dia" data-index="${i}"></i></span>
-								            <h2 class="titulo-dia">${v.literal} ${v.dia}</h2>								             
-								        </header>
-								        <div role="heading">
-								            <div class="col-sm-12">
-								            	<i class="fa fa-clock-o fa-fw pull-left fa-15x"></i><span class="pull-left horas-totales padding-bottom-10">${parseNumberToHours(v.minutos)}</span>
-								            	<span class="pull-right fa fa-fw txt-color-blue fa-15x margin-right-13" style="font-family: 'Open Sans',Arial,Helvetica,Sans-Serif">KM</span><span class="pull-right distancia-total padding-bottom-10 margin-right-5">${parseNumberToDecimal(v.distancia, 2)}</span>
-								            </div>					    		
-								        </div>
-								        <!-- widget div-->
-								        <div class="padding-0">
-								            <!-- widget content -->	
-								            ${RutinaDiaHTML.full(v.elementos, i, val, flagDescanso)}
-								            <!-- end widget content -->											
-								        </div>
-								        <!-- end widget div -->
-									</div>
-								</article>`;
-    });
+    rawDias = armarHtmlDayEncontrado(dayEncontrado);
 
     let RutinaSemanaDiv = document.createElement('div');
     //Ccn esta condición nos aseguramos que siempre que la primera semana de toda la rutina empiece por un día diferente a martes, los primeros días vacíos vayan al inicio
@@ -367,6 +342,37 @@ function indicador1Body(metricas, t) {
     return raw;
 }
 
+function armarHtmlDayEncontrado(dayEncontrado) {
+    let rawDias = '';
+    dayEncontrado.forEach((v, i) => {
+        const val = v.elementos == null ? undefined : (v.elementos.length>0?undefined:'showInputsInit');//La validacion requiere un null;
+        const flagDescanso = v.flagDescanso;
+        rawDias +=
+            `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia" data-index="${i}" data-fecha="${v.fecha}">            
+									<div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0" tabindex='${i}'>
+										<header role="heading" class="heading-dia">
+								            <span class="widget-icon"><i class="fa fa-calendar-o txt-color-blue copiar-dia" data-index="${i}"></i></span>
+								            <h2 class="titulo-dia">${v.literal} ${v.dia}</h2>								             
+								        </header>
+								        <div role="heading">
+								            <div class="col-sm-12">
+								            	<i class="fa fa-clock-o fa-fw pull-left fa-15x"></i><span class="pull-left horas-totales padding-bottom-10">${parseNumberToHours(v.minutos)}</span>
+								            	<span class="pull-right fa fa-fw txt-color-blue fa-15x margin-right-13" style="font-family: 'Open Sans',Arial,Helvetica,Sans-Serif">KM</span><span class="pull-right distancia-total padding-bottom-10 margin-right-5">${parseNumberToDecimal(v.distancia, 2)}</span>
+								            </div>					    		
+								        </div>
+								        <!-- widget div-->
+								        <div class="padding-0">
+								            <!-- widget content -->	
+								            ${RutinaDiaHTML.full(v.elementos, i, val, flagDescanso)}
+								            <!-- end widget content -->											
+								        </div>
+								        <!-- end widget div -->
+									</div>
+								</article>`;
+    });
+
+    return rawDias;
+}
 
 
 

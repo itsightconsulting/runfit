@@ -120,4 +120,11 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     public int findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(int id, int esSubCatId) {
         return repository.findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(id, esSubCatId);
     }
+
+    @Override
+    public List<MiniPlantilla> findAllByListUsuarioId(List<Integer> list) {
+        return repository.findAllByListUsuarioId(list);
+    }
+
+
 }

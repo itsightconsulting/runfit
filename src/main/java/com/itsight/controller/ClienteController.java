@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -30,19 +31,28 @@ public class ClienteController {
     private MultimediaEntrenadorService multimediaEntrenadorService;
     private RedFitnessService redFitnessService;
     private MultimediaDetalleRepository multimediaDetalleRepository;
+    private MiniPlantillaService miniPlantillaService;
+    private DiaRutinarioService diaRutinarioService;
+    private EspecificacionSubCategoriaService especificacionSubCategoriaService;
 
 
     @Value("${main.repository}")
     private String mainRoute;
 
     @Autowired
-    public ClienteController(SemanaService semanaService, RutinaService rutinaService,UsuarioService usuarioService,MultimediaEntrenadorService multimediaEntrenadorService, RedFitnessService redFitnessService,MultimediaDetalleRepository multimediaDetalleRepository ){
+    public ClienteController(SemanaService semanaService, RutinaService rutinaService,UsuarioService usuarioService,
+                             MultimediaEntrenadorService multimediaEntrenadorService, RedFitnessService redFitnessService,MultimediaDetalleRepository multimediaDetalleRepository,
+                             MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService,
+                             EspecificacionSubCategoriaService especificacionSubCategoriaService){
         this.semanaService = semanaService;
         this.rutinaService = rutinaService;
         this.usuarioService = usuarioService;
         this.multimediaEntrenadorService = multimediaEntrenadorService;
         this.redFitnessService = redFitnessService;
         this.multimediaDetalleRepository = multimediaDetalleRepository;
+        this.miniPlantillaService = miniPlantillaService;
+        this.diaRutinarioService = diaRutinarioService;
+        this.especificacionSubCategoriaService = especificacionSubCategoriaService;
     }
 
     @GetMapping(value = "")
@@ -65,6 +75,11 @@ public class ClienteController {
     @GetMapping(value = "/novedades")
     public ModelAndView pageNovedades(Model model) {
         return new ModelAndView(ViewConstant.CLIENTE_NOVEDADES);
+    }
+
+    @GetMapping(value = "/misRutinas")
+    public ModelAndView pageMisRutinas(Model model) {
+        return new ModelAndView(ViewConstant.CLIENTE_MIS_RUTINAS);
     }
 
 
@@ -114,6 +129,44 @@ public class ClienteController {
         }
         return "Ok";
     }
+
+
+
+
+    @GetMapping(value = "/get/subcategorias")
+    public @ResponseBody List<EspecificacionSubCategoria> entrenadorSubCategorias(HttpSession session) {
+        int id = (int)session.getAttribute("id");
+        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(id);
+        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioId(listEntrenadores);
+
+        List<Integer> diaIds = new ArrayList<>();
+        List<EspecificacionSubCategoria> lstresult = new ArrayList<>();
+        for (int i=0; i< listMiniPlantilla.size() ;i++){
+            diaIds.add(listMiniPlantilla.get(i).getId());
+        }
+        lstresult = especificacionSubCategoriaService.findByIdsIn(diaIds);
+
+        return lstresult;
+    }
+
+
+
+    @GetMapping(value = "/get/miniplantillasentrenador")
+    public @ResponseBody List<DiaRutinario> miniPlantillaEntrenador(HttpSession session) {
+        int id = (int)session.getAttribute("id");
+        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(id);
+        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioId(listEntrenadores);
+
+        List<Integer> diaIds = new ArrayList<>();
+        for (int i=0; i< listMiniPlantilla.size() ;i++){
+            for (int j = 0; j < listMiniPlantilla.get(i).getDiaRutinarioIds().size(); j++) {
+                diaIds.add(listMiniPlantilla.get(i).getDiaRutinarioIds().get(j).getId());
+            }
+        }
+        return diaRutinarioService.findByIdsIn(diaIds);
+    }
+
+
 
 
 }

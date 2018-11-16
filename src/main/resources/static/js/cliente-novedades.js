@@ -2,7 +2,7 @@
 $(function () {
     listarMultimediaEntrenadores();
 
-    setInterval(function(){ listarMultimediaEntrenadores(); }, 35000);
+    setInterval(function(){ listarMultimediaEntrenadores(); }, 135000);
 });
 
 function listarMultimediaEntrenadores() {

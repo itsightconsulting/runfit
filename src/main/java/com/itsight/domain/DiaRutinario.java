@@ -1,7 +1,11 @@
 package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.jsonb.Elemento;
+import com.itsight.json.JsonDateSimpleDeserializer;
+import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -26,6 +30,8 @@ public class DiaRutinario implements Serializable {
     @Column(name = "DiaRutinarioId")
     private int id;
 
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;

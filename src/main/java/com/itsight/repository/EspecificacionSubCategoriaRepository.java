@@ -59,4 +59,10 @@ public interface EspecificacionSubCategoriaRepository extends JpaRepository<Espe
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND E.flagActivo = ?3 ORDER BY 1")
     List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(int categoriaEjercicioId, String comodin, Boolean flagActivo);
+
+
+    //@Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
+    //        "WHERE E.subCategoriaEjercicio.id in ?1 ORDER BY 1")
+    //List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioId(List<Integer> Ids);
+
 }

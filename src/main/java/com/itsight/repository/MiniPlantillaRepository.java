@@ -27,4 +27,8 @@ public interface MiniPlantillaRepository extends JpaRepository<MiniPlantilla, In
 
     @Query(value = "SELECT count(ids) FROM mini_plantilla, jsonb_array_elements(dia_rutinario_ids) as ids  WHERE especificacion_sub_categoria_id=?2 and usuario_id=?1 order by 1;", nativeQuery = true)
     int findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(int id, int esSubCatId);
+
+
+    @Query("SELECT M FROM MiniPlantilla M INNER JOIN FETCH M.especificacionSubCategoria SS  INNER JOIN FETCH SS.subCategoriaEjercicio SC INNER JOIN FETCH SC.categoriaEjercicio CE INNER JOIN FETCH CE.forest WHERE M.usuario.id in ?1 and M.diaRutinarioIds is not null ORDER BY SS.id,SC.id")
+    List<MiniPlantilla> findAllByListUsuarioId(List<Integer> list);
 }
