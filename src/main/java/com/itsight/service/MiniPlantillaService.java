@@ -18,4 +18,6 @@ public interface MiniPlantillaService extends BaseService<MiniPlantilla> {
     int findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(int trainerId, int esSubCatId);
 
     List<MiniPlantilla> findAllByListUsuarioId(List<Integer> list);
+
+    List<MiniPlantilla> findAllByListUsuarioIdBySubCategoriaId(List<Integer> list,int idsubcategoria);
 }

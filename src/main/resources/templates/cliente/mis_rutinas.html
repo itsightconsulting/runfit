@@ -687,7 +687,78 @@
             float: none;
             border-left : 0px;
         }
+
+        .icon {
+            background: #f8f8fa;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            padding: 25px 5px;
+        }
+
+        .icon.active {
+            background: #00c3da;
+            color: #fff;
+            z-index: 10;
+            opacity: 1;
+        }
+
+        .icon-box {
+            width: 12.5%;
+            display: block;
+            float: left;
+            text-align: center;
+            position: relative;
+            margin: 10px;
+        }
+
+        .icon {
+            background: #f8f8fa;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            padding: 25px 5px;
+        }
+        .icon i {
+            font-size: 42px;
+            line-height: 1;
+        }
+
+        .icon h5.icon__name {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #8a8793;
+            line-height: 1;
+            font-weight: 600;
+            padding: 0;
+            margin: 10px 0 0;
+            white-space: nowrap;
+            /*overflow: hidden;*/
+            text-overflow: ellipsis;
+        }
+
+
+        .icon.active h5.icon__name {
+            color: #fff;
+        }
+
+        .icon .add-to-collection-plus-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 16px;
+            display: none;
+            z-index: 11;
+        }
+        .btn-success{
+            margin: 10px;
+        }
+        .btn{
+            text-align: left;
+        }
+
     </style>
+
 
 </head>
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">
@@ -708,24 +779,38 @@
 
             <div class="row">
                 <div class="col-md-12">
-
-                    <div class="col-md-3 card">
+                    <div class="col-md-3">
                         <div class="h5">Rutinas de mis Entrenadores</div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 subcategoria-icons-box" >
 
-            <div style="margin: 4%;">
-                <div class="row padding-0" id="scrollRutina">
-                    <div class="of_carousel" id="rutinaDiaSemana">
-                        <!-- D I A S  D E  S E M A N A -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <div class="col-md-2">
+                    <div class="">
+                        <div class="btn-group btn-group-vertical"></div>
                     </div>
-                    <div class="" id="Metricas">
-                        <!-- D I A S  D E  S E M A N A -->
-                    </div>
-                    <div class="divVideo">
-                    </div>
-                    <div class="divAudio">
+                </div>
+                    <div class="col-md-10">
+                        <div style="margin: 4%;">
+                            <div class="row padding-0" id="scrollRutina">
+                                <div class="of_carousel" id="rutinaDiaSemana">
+                                    <!-- D I A S  D E  S E M A N A -->
+                                </div>
+                                <div class="" id="Metricas">
+                                    <!-- D I A S  D E  S E M A N A -->
+                                </div>
+                                <div class="divVideo">
+                                </div>
+                                <div class="divAudio">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -755,7 +840,9 @@
 
     $(function() {
 
+
     });
+
 </script>
 </body>
 </html>

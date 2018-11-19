@@ -61,8 +61,17 @@ public interface EspecificacionSubCategoriaRepository extends JpaRepository<Espe
     List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(int categoriaEjercicioId, String comodin, Boolean flagActivo);
 
 
-    //@Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
-    //        "WHERE E.subCategoriaEjercicio.id in ?1 ORDER BY 1")
-    //List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioId(List<Integer> Ids);
+    @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
+            "WHERE E.id in ?1 ORDER BY 1")
+    List<EspecificacionSubCategoria> findAllBySubCategoriaId(List<Integer> Ids);
 
-}
+
+    @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
+            "WHERE E.subCategoriaEjercicio.id = ?1 ORDER BY 1")
+    List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(int id);
+
+
+
+
+
+    }

@@ -94,7 +94,7 @@ public class EspecificacionSubCategoriaServiceImpl extends BaseServiceImpl<Espec
     @Override
     public List<EspecificacionSubCategoria> findByIdsIn(List<Integer> ids) {
         // TODO Auto-generated method stub
-        return repository.findAllBySubCategoriaEjercicioId(ids);
+        return repository.findAllBySubCategoriaId(ids);
     }
 
     @Override
@@ -147,4 +147,10 @@ public class EspecificacionSubCategoriaServiceImpl extends BaseServiceImpl<Espec
     public List<EspecificacionSubCategoria> listarPorSubCategoria(int subCategoriaEjercicioId) {
         return repository.findBySubCategoriaId(subCategoriaEjercicioId);
     }
+
+    @Override
+    public List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(int id) {
+        return repository.findBySubCategoriaEjercicioId(id);
+    }
+
 }

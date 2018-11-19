@@ -149,13 +149,11 @@ public class ClienteController {
         return lstresult;
     }
 
-
-
     @GetMapping(value = "/get/miniplantillasentrenador")
-    public @ResponseBody List<DiaRutinario> miniPlantillaEntrenador(HttpSession session) {
-        int id = (int)session.getAttribute("id");
-        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(id);
-        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioId(listEntrenadores);
+    public @ResponseBody List<DiaRutinario> miniPlantillaEntrenador(@RequestParam int id,HttpSession session) {
+        int idUser = (int)session.getAttribute("id");
+        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(idUser);
+        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioIdBySubCategoriaId(listEntrenadores,id);
 
         List<Integer> diaIds = new ArrayList<>();
         for (int i=0; i< listMiniPlantilla.size() ;i++){
@@ -166,6 +164,10 @@ public class ClienteController {
         return diaRutinarioService.findByIdsIn(diaIds);
     }
 
+    @GetMapping(value = "/get/subcategoriasespecificacion")
+    public @ResponseBody List<EspecificacionSubCategoria> subCategoriasEspecificacion(@RequestParam int id) {
+        return especificacionSubCategoriaService.findBySubCategoriaEjercicioId(id);
+    }
 
 
 

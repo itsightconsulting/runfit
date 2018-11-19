@@ -31,4 +31,7 @@ public interface MiniPlantillaRepository extends JpaRepository<MiniPlantilla, In
 
     @Query("SELECT M FROM MiniPlantilla M INNER JOIN FETCH M.especificacionSubCategoria SS  INNER JOIN FETCH SS.subCategoriaEjercicio SC INNER JOIN FETCH SC.categoriaEjercicio CE INNER JOIN FETCH CE.forest WHERE M.usuario.id in ?1 and M.diaRutinarioIds is not null ORDER BY SS.id,SC.id")
     List<MiniPlantilla> findAllByListUsuarioId(List<Integer> list);
+
+    @Query("SELECT M FROM MiniPlantilla M INNER JOIN FETCH M.especificacionSubCategoria SS  INNER JOIN FETCH SS.subCategoriaEjercicio SC INNER JOIN FETCH SC.categoriaEjercicio CE INNER JOIN FETCH CE.forest WHERE M.usuario.id in ?1 and M.especificacionSubCategoria.id = ?2 and M.diaRutinarioIds is not null ORDER BY SS.id,SC.id")
+    List<MiniPlantilla> findAllByListUsuarioIdBySubCategoriaId(List<Integer> list, int idsubcategoria);
 }

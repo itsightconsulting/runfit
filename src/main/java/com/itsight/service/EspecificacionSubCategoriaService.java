@@ -8,4 +8,5 @@ import java.util.List;
 public interface EspecificacionSubCategoriaService extends BaseService<EspecificacionSubCategoria> {
 
     List<EspecificacionSubCategoria> listarPorSubCategoria(int subCategoriaEjercicioId);
+    List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(int id);
 }
