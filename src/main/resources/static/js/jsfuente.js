@@ -180,7 +180,7 @@ function exception(xhr, errorName) {
                         buttons: '[OK]'
                     }, function (ButtonPressed) {
                         if(ButtonPressed == 'OK'){
-                            window.location.href = '/login';
+                            window.location.href = _ctx+'login';
                         }
                     })
                 }
@@ -248,6 +248,23 @@ function agregarModalParaVisualizacionImagen() {
     document.body.append(modalImagenServer);
 }
 
+function spinnerSwitchTab(){
+    $.SmartMessageBox({
+        title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+        content: "" +
+            "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +
+            "<div class='row'><img class='pull-left' height='80px' src='/workout/media/image/grupo-video/gt/1/3/1ee8d403-aec5-4fbf-9b55-49fd964d6824.png'><div class='row text-center'><i class='fa fa-spinner fa-spin fa-3x text-center'></i></div>",
+        buttons: '[]'
+    }, function (ButtonPressed) {
+        if (ButtonPressed === "Cancelar") {
+            setTimeout(()=>{
+                if(document.querySelector('.divMessageBox') != undefined) document.querySelector('.divMessageBox').classList.add('hidden');
+            }, 250);
+        }
+    })
+    setTimeout(()=>$('#bot1-Msg1').toggleClass('hidden'), 100);
+}
+
 function spinnerUpload(xhr) {
     $.SmartMessageBox({
         title: "<i class='fa fa-bullhorn'></i> Workout Notification",
@@ -269,7 +286,6 @@ function spinnerUpload(xhr) {
     setTimeout(() => {
         if (document.querySelectorAll('.MessageBoxContainer').length > 1) document.querySelectorAll('.MessageBoxContainer')[0].remove();
     }, 100);
-
 }
 
 $(document).ajaxSend(function (e, xhr, options) {
@@ -454,6 +470,8 @@ function notificacionesRutinaSegunResponseCode(resCode){
             break;
         case -3:
             //Eliminación satisfactoria
+            break;
+        case -4:
             break;
         case -10:
             $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});

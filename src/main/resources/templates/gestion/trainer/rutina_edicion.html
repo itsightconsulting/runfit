@@ -335,6 +335,10 @@
             margin: 0px 3px;
         }
 
+        .mini:hover{
+            background: #89AD45 !important;
+        }
+
         .fechas-calendar:hover{
             background: #89AD45 !important;
             cursor: pointer;
@@ -650,6 +654,33 @@
             padding-right: 22px !important;
         }
 
+        #frm_registro label.input input{
+            border-radius: 10px !important;
+        }
+
+        #frm_registro label.label select{
+            border-radius: 10px !important;
+        }
+
+        #frm_registro label.input i{
+            border-radius: 10px !important;
+        }
+
+        .bg-color-rfb{
+            background: #4A4E3B !important;
+        }
+
+        .bg-color-rfg{
+            background: #73F194 !important;
+        }
+
+
+
+        #GraficoTemporada {
+            height: 230px !important;
+            text-align: center;
+        }
+
     </style>
 </head>
 
@@ -713,7 +744,6 @@
                                 </div>
                             </div>
                         </a>
-
                     </div>
                 </article>
                 <article class="col-sm-12 col-md-12 col-lg-12">
@@ -957,11 +987,11 @@
                                 Macro
                             </div>
                             <div class="tab-pane fade in" id="tabFichaTecnica">
-                                <form class="smart-form">
+                                <form class="smart-form" id="frm_registro">
                                     <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">1. Datos Generales</h6>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Datos Generales</h5>
                                         <div class="row">
-                                            <section class="col col-4">
+                                            <section class="col col-md-4 col-sm-3">
                                                 <label class="label">Nombres:</label>
                                                 <label class="input">
                                                     <input type="text" id="Nombres" readonly="readonly"/>
@@ -973,7 +1003,7 @@
                                                     <input type="text" id="ApellidoPaterno" readonly="readonly"/>
                                                 </label>
                                             </section>
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-3">
                                                 <label class="label">Fecha nacimiento:</label>
                                                 <label class="input">
                                                     <input type="text" id="FechaNacimiento" readonly="readonly"/>
@@ -986,18 +1016,18 @@
                                                 </label>
                                             </section>
                                             <section class="col col-2">
-                                                    <label class="label">Sexo:</label>
+                                                <label class="label">Sexo:</label>
                                                 <label class="input">
                                                     <input type="text" readonly="readonly" id="Sexo"/>
                                                 </label>
                                             </section>
                                         </div>
-                                        <div class="row">
+                                        <div class="row padding-o-bottom-10" style="border-bottom: 1px solid rgba(0,0,0,.1)">
                                             <section class="col col-2 text-align-center">
                                                 <div class="container-fluid v-center">
                                                     <div class="col-md-6">
-                                                        <label class="input padding-left-20">
-                                                            <input type="number" id="FrecuenciaCardiacaMinima" class="text-align-center"/>
+                                                        <label class="input padding-left-10">
+                                                            <input type="number" id="FrecuenciaCardiacaMinima" name="FrecuenciaCardiacaMinima" class="text-align-center"/>
                                                         </label>
                                                     </div>
                                                     <div class="col-md-6">
@@ -1009,8 +1039,8 @@
                                             <section class="col col-2 text-align-center">
                                                 <div class="container-fluid v-center">
                                                     <div class="col-md-6">
-                                                        <label class="input padding-left-20">
-                                                            <input type="number" id="FrecuenciaCardiacaMaxima" class="text-align-center"/>
+                                                        <label class="input padding-left-10">
+                                                            <input type="number" id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" class="text-align-center"/>
                                                         </label>
                                                     </div>
                                                     <div class="col-md-6">
@@ -1068,9 +1098,9 @@
                                             <section class="col col-2">
                                                 <section class="container-fluid text-align-center">
                                                     <label class="label text-align-center padding-top-5">Fecha inicio:</label>
-                                                    <label class="input"><input type="date" id="MacroFechaInicio"/></label>
+                                                    <label class="input"><i class="icon-append txt-color-blue fa fa-calendar"></i><input type="date" id="MacroFechaInicio" name="MacroFechaInicio" readonly="readonly"/></label>
                                                     <label class="label text-align-center padding-top-5">Fecha fin:</label>
-                                                    <label class="input"><input type="date" id="MacroFechaFin"/></label>
+                                                    <label class="input"><i class="icon-append txt-color-blue fa fa-calendar"></i><input type="date" id="MacroFechaFin" name="MacroFechaFin" readonly="readonly"/></label>
                                                 </section>
                                             </section>
                                             <section class="col col-2">
@@ -1079,89 +1109,188 @@
                                                     <h1 class="text-align-center"><span id="MacroTotalSemanas">0</span></h1>
                                                 </section>
                                                 <section class="container-fluid text-align-center">
-                                                    <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5" id="btnComprobar"><i class="fa fa-check fa-fw fa-15x"></i>Calcular</a>
-                                                    <a href="javascript:void(0);" class="btn btn-primary margin-top-5 padding-5 disabled" id="btnGenerarRutina" title="Primero comprobar"><i class="fa fa-save fa-fw fa-15x"></i></a>
+                                                    <div></div>
+                                                    <a href="javascript:void(0);" class="btn btn-default margin-top-5 padding-5 disabled" id="btnComprobar"><i class="fa fa-check fa-fw fa-15x"></i>Calcular</a>
+                                                    <a href="javascript:void(0);" class="btn btn-primary margin-top-5 padding-5 disabled" id="btnGenerarRutina" title="Primero comprobar"><i class="fa fa-refresh fa-fw fa-15x"></i></a>
                                                 </section>
                                             </section>
                                         </div>
                                         <!-- GRAFICO TEMPORADA-->
-                                        <div class="row hidden padding-o-bottom-10" id="InicialMacro">
+                                        <div class="row hidden padding-o-top-10" id="InicialMacro">
+                                            <div class="container-fluid padding-o-bottom-10" id="DistribucionDetallado">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center" id="KilometrajeTotal">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje total</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. General)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Específica)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Competitiva)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center dist-etapa">
+                                                        <h5 class="text-align-center txt-color-rfb">Kilometraje(P. Tránsito)</h5>
+                                                        <h1 class="text-align-center padding-10 font-400 txt-color-rfg">0</h1>
+                                                        <span class="text-align-center txt-color-rfb">0 semanas</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
+                                                        <h5 class="text-align-center txt-color-rfb"><b>Distribución</b></h5>
+                                                        <canvas id="MiniGraficoDistribucion"></canvas>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                             <div class="container-fluid">
-                                                <section class="">
+                                                <section class="margin-0">
                                                     <div class="panel-group smart-accordion-default ">
-                                                        <div class="panel panel-default rf-dia-elemento " data-index="1" data-type="2" data-kms="0">
+                                                        <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseXWY" class="" aria-expanded="true">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseXWY" class="bg-color-rfb" aria-expanded="true">
                                                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
                                                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                                                         <span class="rf-dia-elemento-nombre padding-10">
                                                                             <i class="fa fa-lg fa-bar-chart-o pull-left text-primary padding-top-5"></i>
-                                                                            <i class="fa fa-lg fa-fw fa-refresh pull-right text-primary padding-top-5 refrescar-grafico"></i>
-                                                                            Distribución de volumen de kilómetros por semana
+                                                                            <span class="txt-color-white">Distribución de volumen de kilómetros por semana</span>
                                                                         </span>
                                                                     </a>
                                                                 </h4>
                                                             </div>
                                                             <div id="collapseXWY" class="panel-collapse collapse in" aria-expanded="true">
-                                                                <div class="panel-body" id="GraficoTemporada" style="padding: 3px 0px !important"></div>
+                                                                <div class="panel-body" style="padding: 3px 0px !important">
+                                                                    <div class="container-fluid">
+                                                                        <div class="col-md-12">
+                                                                            <canvas id="GraficoTemporada" height="350"></canvas>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </div>
-                                            <div class="container-fluid" id="DistribucionDetallado">
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center" id="KilometrajeTotal">
-                                                        <h5 class="text-align-center txt-color-orange">Kilometraje total</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center dist-etapa">
-                                                        <h5 class="text-align-center">Kilometraje(P. General)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center dist-etapa">
-                                                        <h5 class="text-align-center">Kilometraje(P. Específica)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center dist-etapa">
-                                                        <h5 class="text-align-center">Kilometraje(P. Competitiva)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">0</h1>
-                                                        <span class="text-align-center">0 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center">
-                                                        <h5 class="text-align-center">Kilometraje(P. Tránsito)</h5>
-                                                        <h1 class="text-align-center padding-10 font-400">2</h1>
-                                                        <span class="text-align-center">2 semanas</span>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center">
-                                                        <h5 class="text-align-center txt-color-blueLight"><b>Distribución</b></h5>
-                                                        <div id="MiniGraficoDistribucion"></div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                         </div>
                                         <!-- END GRAFICO TEMPORADA-->
-                                        <div class="row">
-                                            <div class="container-fluid" id="PorcentajesKilometraje">
+                                        <div class="row padding-o-bottom-10 hidden" id="ContainerVarVolumen">
+                                            <div class="container-fluid">
+                                                <section class="">
+
+                                                </section>
                                             </div>
                                         </div>
                                         <hr/>
+                                        <div class="row padding-o-bottom-10 hidden" id="MetricasDetalladas">
+                                            <div class="container-fluid">
+                                                <section class="">
+                                                    <div class="panel-group smart-accordion-default">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseDetallados" class="collapsed bg-color-rfb" aria-expanded="false">
+                                                                        <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
+                                                                        <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
+                                                                        <span class="padding-10">
+                                                                            <i class="fa fa-lg fa-bar-chart pull-left text-success padding-top-5"></i>
+                                                                            <span class="txt-color-white">Métricas detalladas</span>
+                                                                        </span>
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseDetallados" class="panel-collapse collapse in" aria-expanded="true">
+                                                                <div class="panel-body" style="padding: 3px 0px !important">
+                                                                    <!--Mejoras de velocidades por distancia-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras de velocidades por distancia</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                            <div class="col"><b>200 m </b></div>
+                                                                            <div class="col"><b>400 m </b></div>
+                                                                            <div class="col"><b>800 m </b></div>
+                                                                            <div class="col"><b>1 KM </b></div>
+                                                                            <div class="col"><b>10 KM </b></div>
+                                                                            <div class="col"><b>15 KM </b></div>
+                                                                            <div class="col"><b>21 KM </b></div>
+                                                                            <div class="col"><b>42 KM </b></div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-velocidades">
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mejoras de la cadencia-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras de la cadencia</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-cadencia">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mejoras del T.C.S.-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras del T.C.S.</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-tcs">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Mejoras en la longitud de paso-->
+                                                                    <div class="container-fluid padding-o-bottom-10">
+                                                                        <div class="col">
+                                                                            <h6>Mejoras en la longitud de paso</h6>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row padding-o-bottom-10">
+                                                                        <div class="col col-md-1">
+                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
+                                                                        </div>
+                                                                        <div class="col col-md-11 detallados-long-paso">
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+
                                         <div class="row padding-o-top-10">
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Distancia de control</label>
                                                         </div>
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
-                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center">
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center padding-0">
                                                             <label class="label">
-                                                                <select class="select2 form-control" id="DistanciaControl">
+                                                                <select class="select2 form-control" id="DistanciaControl" name="DistanciaControl">
                                                                     <option value="">-- Seleccione --</option>
                                                                     <option value="2">2 KM</option>
                                                                     <option value="4">4 KM</option>
@@ -1175,21 +1304,21 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Tiempo de control</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center padding-0">
                                                             <label class="input">
-                                                                <input value="00:00:00" type="time" id="TiempoControl" step="1"/>
+                                                                <input value="00:00:00" type="time" id="TiempoControl" name="TiempoControl" class="tiempo-control" step="1"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1198,27 +1327,28 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
                                                             <label class="input">
                                                                 <i class="icon-append txt-color-blue" style="font-style: normal"><h6>PPS</h6></i>
-                                                                <input type="number" id="CadenciaControl"/>
+                                                                <input type="number" id="CadenciaControl" name="CadenciaControl"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-3">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">T.C.S.</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
                                                             <label class="input">
-                                                                <input type="text"/>
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>TCS</h6></i>
+                                                                <input type="number" id="TcsControl" name="TcsControl"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3">
+                                            <section class="col col-md-3 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1228,14 +1358,14 @@
                                                         <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                             <label class="input">
                                                                 <i class="icon-append txt-color-blue" style="font-style: normal"><h6>%</h6></i>
-                                                                <input type="number" id="FactorDesentrenamientoControl"/>
+                                                                <input type="number" id="FactorDesentrenamientoControl" name="FactorDesentrenamientoControl" class="factor-desentrenamiento"/>
                                                             </label>
                                                         </div>
                                                         <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3">
+                                            <section class="col col-md-3 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1244,7 +1374,7 @@
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
                                                         <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                             <label class="input padding-top-5">
-                                                                <input value="00:00:00" type="time" id="TiempoDesentrControl" step="1"/>
+                                                                <input value="00:00:00" type="time" id="TiempoDesentrControl" name="TiempoDesentrControl" step="1" readonly="readonly"/>
                                                             </label>
                                                         </div>
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
@@ -1254,16 +1384,16 @@
                                         </div>
                                         <hr/>
                                         <div class="row padding-o-top-10">
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Distancia de competencia</label>
                                                         </div>
                                                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2 text-align-center"></div>
-                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center">
+                                                        <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-8 text-align-center padding-0">
                                                             <label class="label">
-                                                                <select class="select2 form-control" id="DistanciaCompetencia">
+                                                                <select class="select2 form-control" id="DistanciaCompetencia" name="DistanciaCompetencia">
                                                                     <option value="">-- Seleccione --</option>
                                                                     <option value="10">10 KM</option>
                                                                     <option value="21">21 KM</option>
@@ -1275,21 +1405,21 @@
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-2">
+                                            <section class="col col-md-2 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">Tiempo de competencia</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center padding-0">
                                                             <label class="input">
-                                                                <input value="00:00:00" type="time" id="TiempoCompetencia" step="1"/>
+                                                                <input value="00:00:00" type="time" id="TiempoCompetencia" name="TiempoCompetencia" step="1"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1298,27 +1428,28 @@
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
                                                             <label class="input">
                                                                 <i class="icon-append txt-color-blue" style="font-style: normal"><h6>PPS</h6></i>
-                                                                <input type="number" id="CadenciaCompetencia"/>
+                                                                <input type="number" id="CadenciaCompetencia" name="CadenciaCompetencia"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-1">
+                                            <section class="col col-md-1 col-sm-2">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
                                                             <label class="control-label padding-top-5">T.C.S.</label>
                                                         </div>
-                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
+                                                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-0">
                                                             <label class="input">
-                                                                <input type="text"/>
+                                                                <i class="icon-append txt-color-blue" style="font-style: normal"><h6>TCS</h6></i>
+                                                                <input type="number" id="TcsCompetencia" name="TcsCompetencia"/>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </section>
                                             </section>
-                                            <section class="col col-3">
+                                            <section class="col col-md-3 col-sm-4">
                                                 <section class="container-fluid">
                                                     <div class="form-group">
                                                         <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-bottom-10 text-align-center">
@@ -1328,7 +1459,7 @@
                                                         <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                             <label class="input">
                                                                 <i class="icon-append txt-color-blue" style="font-style: normal"><h6>%</h6></i>
-                                                                <input type="number"/>
+                                                                <input type="number" id="FactorMejoria" name="FactorMejoria" readonly="readonly"/>
                                                             </label>
                                                         </div>
                                                         <div class="col col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
@@ -1345,7 +1476,7 @@
                                                         <label class="label padding-top-5">Ritmo por kilómetro proyectado para la competencia:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoXKilometro" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoXKilometro" name="RitmoXKilometro" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1353,7 +1484,7 @@
                                                         <label class="label padding-top-5">Ritmo de competencia actual:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoCompetenciaActual" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoCompetenciaActual" name="RitmoCompetenciaActual" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1361,7 +1492,7 @@
                                                         <label class="label padding-top-5">Ritmo de entrenamiento aeróbico actual:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoActual" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoActual" name="RitmoAerobicoActual" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1369,7 +1500,7 @@
                                                         <label class="label padding-top-5">Ritmo de entrenamiento aeróbico precompetitivo:</label>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoPreComp" step="1"/></label>
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="RitmoAerobicoPreComp" name="RitmoAerobicoPreComp" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1379,7 +1510,7 @@
                                                     <div class="col col-md-4 padding-top-5">
                                                         <label class="input">
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>m</h6></i>
-                                                        <input type="number" id="LongitudPasoCA"/></label>
+                                                            <input type="number" id="LongitudPasoCA" name="LongitudPasoCA" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1389,7 +1520,7 @@
                                                     <div class="col col-md-4 padding-top-5">
                                                         <label class="input">
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
-                                                            <input type="number" id="KilometrajeTotalTemporada"/>
+                                                            <input type="number" id="KilometrajeTotalTemporada" name="KilometrajeTotalTemporada" readonly="readonly"/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1400,8 +1531,32 @@
                                                     <div class="col col-md-4 padding-top-5">
                                                         <label class="input">
                                                             <i class="icon-append txt-color-blue" style="font-style: normal"><h6>KM</h6></i>
-                                                            <input type="number" id="KilometrajePromedioSemanal"/>
+                                                            <input type="number" id="KilometrajePromedioSemanal" name="KilometrajePromedioSemanal" readonly="readonly"/>
                                                         </label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Paso en subida:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="PasoSubida" name="" step="1" readonly="readonly"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Paso en bajada:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="PasoBajada" name="" step="1" readonly="readonly"/></label>
+                                                    </div>
+                                                </div>
+                                                <div class="container-fluid">
+                                                    <div class="col col-md-8">
+                                                        <label class="label padding-top-5">Paso en plano:</label>
+                                                    </div>
+                                                    <div class="col col-md-4">
+                                                        <label class="input padding-top-5"><input value="00:00:00" type="time" id="PasoPlano" name="PasoPlano" step="1" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                             </section>
@@ -1410,22 +1565,22 @@
                                                     <label class="label text-align-center">Preparación General</label>
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
-                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                        <input type="time" class="text-align-right rcps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
-                                                        <input type="time" class="text-align-right raps"/></label>
+                                                        <input type="time" class="text-align-right raps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>C.D.C.</h6></i>
-                                                        <input type="number" class="text-align-center cdcs"/></label>
+                                                        <input type="number" class="text-align-center cdcs" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>L.P.C.</h6></i>
-                                                        <input type="number" class="text-align-center lpcs" step="0.1"/></label>
+                                                        <input type="number" class="text-align-center lpcs" step="0.1" readonly="readonly"/></label>
                                                 </div>
                                             </section>
                                             <section class="col col-2">
@@ -1433,22 +1588,22 @@
                                                     <label class="label text-align-center">Preparación Específica</label>
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
-                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                        <input type="time" class="text-align-right rcps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
-                                                        <input type="time" class="text-align-right raps"/></label>
+                                                        <input type="time" class="text-align-right raps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>C.D.C.</h6></i>
-                                                        <input type="number" class="text-align-center cdcs"/></label>
+                                                        <input type="number" class="text-align-center cdcs" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>L.P.C.</h6></i>
-                                                        <input type="number" class="text-align-center lpcs" step="0.1"/></label>
+                                                        <input type="number" class="text-align-center lpcs" step="0.1" readonly="readonly"/></label>
                                                 </div>
                                             </section>
                                             <section class="col col-2">
@@ -1456,32 +1611,32 @@
                                                     <label class="label text-align-center">Preparación Competitiva</label>
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.C.P.</h6></i>
-                                                        <input type="time" class="text-align-right rcps"/></label>
+                                                        <input type="time" class="text-align-right rcps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>R.A.P.</h6></i>
-                                                        <input type="time" class="text-align-right raps"/></label>
+                                                        <input type="time" class="text-align-right raps" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>C.D.C.</h6></i>
-                                                        <input type="number" class="text-align-center cdcs"/></label>
+                                                        <input type="number" class="text-align-center cdcs" readonly="readonly"/></label>
                                                 </div>
                                                 <div class="col col-md-12 padding-top-5">
                                                     <label class="input">
                                                         <i class="icon-prepend txt-color-blue padding-right-22" style="font-style: normal"><h6>L.P.C.</h6></i>
-                                                        <input type="number" class="text-align-center lpcs" step="0.1"/></label>
+                                                        <input type="number" class="text-align-center lpcs" step="0.1" readonly="readonly"/></label>
                                                 </div>
                                             </section>
                                         </div>
                                     </fieldset>
                                     <fieldset id="Proyecciones">
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">2. Mejoras proyectadas</h6>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Periodización y mejoras proyectadas</h5>
                                         <div class="row padding-top-10" style="border-bottom: 1px solid grey; !important">
                                             <section class="col col-1"></section>
                                             <section class="col col-5" style="border-right: 1px solid grey; !important">
-                                                <label class="label text-align-center"><b>Periodización del entrenamiento(Ingresar mínimo 4 semanas por etapa)</b></label>
+                                                <label class="label text-align-center"><b>Periodización del entrenamiento</b></label>
                                                 <div class="container-fluid">
                                                     <div class="col col-md-6"></div>
                                                     <div class="col col-md-3">
@@ -1496,10 +1651,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="0" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1507,10 +1662,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="1" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value= "" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1518,19 +1673,19 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="2" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center periodizacion-calc" value="" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
-                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalPeriodizacion1"/></label>
+                                                        <label class="input state-success"><input type="number" class="text-align-center input" value="" readonly="readonly" id="TotalPeriodizacion1"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalPeriodizacion2"/></label>
+                                                        <label class="input state-success"><input type="number" class="text-align-center input" value="" readonly="readonly" id="TotalPeriodizacion2"/></label>
                                                     </div>
                                                 </div>
                                             </section>
@@ -1550,10 +1705,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="0" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1561,10 +1716,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="1" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1572,14 +1727,14 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="2" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center velocidad-calc" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
                                                         <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalVelocidad1"/></label>
                                                     </div>
@@ -1607,10 +1762,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="0" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1618,10 +1773,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="1" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1629,14 +1784,14 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="2" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center cadencia-calc" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
                                                         <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalCadencia1"/></label>
                                                     </div>
@@ -1661,10 +1816,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación general:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="0" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="0" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="3" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="3" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1672,10 +1827,10 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación específica:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="1" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="1" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="4" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="4" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
@@ -1683,14 +1838,14 @@
                                                         <label class="label text-align-right padding-top-5">% Preparación competitiva:</label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="2" data-type="1"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="2" data-type="1" readonly="readonly"/></label>
                                                     </div>
                                                     <div class="col col-md-3">
-                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="5" data-type="2"/></label>
+                                                        <label class="input padding-top-5"><input type="number" class="text-align-center tcs-calc" data-index="5" data-type="2" readonly="readonly"/></label>
                                                     </div>
                                                 </div>
                                                 <div class="container-fluid">
-                                                    <div class="col col-md-6"></div>
+                                                    <div class="col col-md-6 padding-0"></div>
                                                     <div class="col col-md-3">
                                                         <label class="input"><input type="number" class="text-align-center" readonly="readonly" id="TotalTcs1"/></label>
                                                     </div>
@@ -1702,19 +1857,19 @@
                                         </div>
                                     </fieldset>
                                     <fieldset>
-                                        <h6 class="bg-color-teal txt-color-white font-md margin-bottom-10 padding-10">3. Competiciones a participar</h6>
+                                        <h5 class="bg-color-rfb txt-color-white font-md margin-bottom-10 padding-10"><i class="fa fa-caret-right fa-fw"></i> Competiciones a participar</h5>
                                         <div class="row padding-top-10">
                                             <div class="col col-md-12">
                                                 <table id="TablaCompetencias" class="table table-bordered table-responsive-md table-striped text-center">
                                                     <thead>
-                                                        <tr>
-                                                            <th class="text-center">N° <a id="PopDescripcion" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
-                                                            <th class="text-center">Fecha <a id="PopCantidad" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
-                                                            <th class="text-center">Distancia(KM) <a id="PopUND" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
-                                                            <th class="text-center">Nombre <a id="PopCantidad2" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
-                                                            <th class="text-center">Tiempo Objetivo<a id="PopCantidad3" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
-                                                            <th class="text-center">Prioridad <a id="PopCantidad33" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th class="text-center">N° <a id="PopDescripcion" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                        <th class="text-center">Fecha <a id="PopCantidad" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                        <th class="text-center">Distancia(KM) <a id="PopUND" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                        <th class="text-center">Nombre <a id="PopCantidad2" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                        <th class="text-center">Tiempo Objetivo<a id="PopCantidad3" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                        <th class="text-center">Prioridad <a id="PopCantidad33" href="javascript:void(0);" data-toggle="popover" title="Información"></a></th>
+                                                    </tr>
                                                     </thead>
                                                 </table>
                                             </div>
@@ -1991,17 +2146,11 @@ you can add as many as you like
 <script th:src="@{/js/macro-ciclo.js}+'?'+${version}"></script>
 <script th:src="@{/js/tablas-calculo.js}+'?'+${version}"></script>
 <script th:src="@{/js/dennys-workout/rf-rutina-edicion.js}+'?'+${version}"></script>
-<script th:src="@{/js/calendario-lateral.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     pageSetUp();
     /*]]>*/
-
-    $(function() {
-
-    });
-
-
 </script>
 
 </body>

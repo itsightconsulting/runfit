@@ -21,7 +21,7 @@ Ficha = (function(){
             Calc.setRestantes();
             //Recreando tabla de listado de competencias
             tbCompetencias.appendChild(FichaSeccion.newListadoCompetencias(comps));//global variable
-        }
+        },
     }
 })();
 
@@ -114,6 +114,104 @@ FichaSet = (function(){
             document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
             MacroValidacion.cleanDistribucion();
         },
+        instanciarDatosFicha: (ficha)=>{
+            const comps = ficha.competencias;
+            $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
+            document.querySelector('#Nombres').value = ficha.usuario.nombres;
+            document.querySelector('#ApellidoPaterno').value = ficha.usuario.apellidoPaterno;
+            document.querySelector('#FechaNacimiento').value = ficha.usuario.fechaNacimiento;
+            document.querySelector('#Edad').value = calcularEdadByFechaNacimiento(ficha.usuario.fechaNacimiento);
+            document.querySelector('#MacroFechaFin').value = getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia));
+            document.querySelector('#Sexo').value = ficha.sexo == 1 ? "Masculino" : "Femenino";
+            FichaSet.setMaximoDistanciaCompetencia(comps);
+            FichaSet.setTotalSemanas();
+            tbCompetencias.appendChild(FichaSeccion.newListadoCompetencias(comps));
+        },
+        instanciarConsolidado: (consolidado)=>{
+
+            const totSems = Number(document.querySelector('#MacroTotalSemanas').textContent.trim());
+            $ruConsolidado = consolidado;
+            const general = consolidado.general;
+            const stats = consolidado.stats;
+            const mejoras = consolidado.mejoras;
+
+            FichaSet.nivelAtleta(general.nvAtleta);
+
+            document.querySelector('#FrecuenciaCardiacaMinima').value = general.freMin;
+            document.querySelector('#FrecuenciaCardiacaMaxima').value = general.freMax;
+
+            document.querySelector('#DistanciaControl').value = general.disControl;
+            document.querySelector('#TiempoControl').value = general.tieControl;
+            document.querySelector('#CadenciaControl').value = general.cadControl;
+            document.querySelector('#TcsControl').value = general.tcsControl;
+            document.querySelector('#FactorDesentrenamientoControl').value = general.cadControl;
+            document.querySelector('#TiempoDesentrControl').value = general.tieDesControl;
+
+            document.querySelector('#TiempoCompetencia').value = general.tieCompetencia;
+            document.querySelector('#CadenciaCompetencia').value = general.cadCompetencia;
+            document.querySelector('#TcsCompetencia').value = general.tcsCompetencia;
+            document.querySelector('#FactorMejoria').value = general.facMejoria;
+
+            document.querySelector('#RitmoXKilometro').value = stats.ritmoXkm;
+            document.querySelector('#RitmoCompetenciaActual').value = stats.ritCompActual;
+            document.querySelector('#RitmoAerobicoActual').value = stats.ritAerActual;
+            document.querySelector('#RitmoAerobicoPreComp').value = stats.ritAerPreComp;
+
+            document.querySelector('#LongitudPasoCA').value = stats.lonPasoCompActual;
+            document.querySelector('#KilometrajeTotalTemporada').value = stats.kilometrajeTotal;
+            document.querySelector('#KilometrajePromedioSemanal').value = stats.kilometrajeProm;
+
+            document.querySelector('#PasoSubida').value = stats.pasoSubida;
+            document.querySelector('#PasoBajada').value = stats.pasoBajada;
+            document.querySelector('#PasoPlano').value = stats.pasoPlano;
+
+            const cEstadsAdic = document.querySelector('#EstadisticasAdicionales');
+            stats.rcps.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.rcps')[i].value = v== "0" ? 0 : v);
+            stats.raps.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.raps')[i].value = v== "0" ? 0 : v);
+            stats.cdcs.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.cdcs')[i].value = v== "0" ? 0 : v);
+            stats.lpcs.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.lpcs')[i].value = v== "0" ? 0 : v);
+
+            const proy = FichaDOMQueries.getProyecciones();
+            proy.querySelector('.periodizacion-calc[data-index="0"]').value = mejoras.porcGe;
+            proy.querySelector('.periodizacion-calc[data-index="1"]').value = mejoras.porcEs;
+            proy.querySelector('.periodizacion-calc[data-index="2"]').value = mejoras.porcPr;
+            proy.querySelector('#TotalPeriodizacion1').value = 100;
+
+            proy.querySelector('.periodizacion-calc[data-index="3"]').value = mejoras.semGe;
+            proy.querySelector('.periodizacion-calc[data-index="4"]').value = mejoras.semEs;
+            proy.querySelector('.periodizacion-calc[data-index="5"]').value = mejoras.semPr;
+            proy.querySelector('#TotalPeriodizacion2').value = totSems;
+
+            proy.querySelector('.velocidad-calc[data-index="0"]').value = mejoras.velPorcGe;
+            proy.querySelector('.velocidad-calc[data-index="1"]').value = mejoras.velPorcEs;
+            proy.querySelector('.velocidad-calc[data-index="2"]').value = mejoras.velPorcPr;
+            proy.querySelector('.velocidad-calc[data-index="3"]').value = mejoras.semGe;
+            proy.querySelector('.velocidad-calc[data-index="4"]').value = mejoras.semEs;
+            proy.querySelector('.velocidad-calc[data-index="5"]').value = mejoras.semPr;
+            proy.querySelector('#TotalVelocidad1').value = 100;
+            proy.querySelector('#TotalVelocidad2').value = totSems;
+
+            proy.querySelector('.cadencia-calc[data-index="0"]').value = mejoras.cadPorcGe;
+            proy.querySelector('.cadencia-calc[data-index="1"]').value = mejoras.cadPorcEs;
+            proy.querySelector('.cadencia-calc[data-index="2"]').value = mejoras.cadPorcPr;
+            proy.querySelector('.cadencia-calc[data-index="3"]').value = mejoras.semGe;
+            proy.querySelector('.cadencia-calc[data-index="4"]').value = mejoras.semEs;
+            proy.querySelector('.cadencia-calc[data-index="5"]').value = mejoras.semPr;
+            proy.querySelector('#TotalCadencia1').value = 100;
+            proy.querySelector('#TotalCadencia2').value = totSems;
+
+            proy.querySelector('.tcs-calc[data-index="0"]').value = mejoras.cadPorcGe;
+            proy.querySelector('.tcs-calc[data-index="1"]').value = mejoras.cadPorcEs;
+            proy.querySelector('.tcs-calc[data-index="2"]').value = mejoras.cadPorcPr;
+            proy.querySelector('.tcs-calc[data-index="3"]').value = mejoras.semGe;
+            proy.querySelector('.tcs-calc[data-index="4"]').value = mejoras.semEs;
+            proy.querySelector('.tcs-calc[data-index="5"]').value = mejoras.semPr;
+            proy.querySelector('#TotalTcs1').value = 100;
+            proy.querySelector('#TotalTcs2').value = totSems;
+
+            //Graficos
+            MacroCiclo.instanciarInformacionTemporadaPost();
+        }
     }
 })();
 
@@ -155,7 +253,7 @@ MacroCiclo = (function(){
                     const porcentajesTrainer = new Array(cantPeriodos +1);//+1 por el periodo de transito
                     for(let i=0; i<porcentajesTrainer.length;i++){
                             if (i != 3){
-                                if ($baseAfterComprobacion.periodizacion[i] != undefined) {
+                                if ($baseAfterComprobacion.periodizacion[i] != undefined){
                                     porcentajesTrainer[i] = porcentajes.porcKiloTipos[i].semanas[$baseAfterComprobacion.periodizacion[i] - 2];
                                 }
                                 //Explicacion(-2)
@@ -251,10 +349,12 @@ MacroCiclo = (function(){
                     document.querySelector('#btnGenerarRutina').setAttribute('title','Generar rutina');
                     //Cuadros HTML RAW
                     const pTransito = $baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3;
-                    document.querySelector('#collapseDetallados .detallados-velocidades').innerHTML = MacroSeccion.velocidadesByDistancia(mVC);
-                    document.querySelector('#collapseDetallados .detallados-cadencia').innerHTML = MacroSeccion.cadencia(ritmosCadencia.slice(0, -pTransito));
-                    document.querySelector('#collapseDetallados .detallados-tcs').innerHTML = MacroSeccion.tcs(valoresTCSs.slice(0, -pTransito));
-                    document.querySelector('#collapseDetallados .detallados-long-paso').innerHTML = MacroSeccion.longitudPaso(longitudesPaso.slice(0, -pTransito));
+                    const collapseDetallados = document.querySelector('#collapseDetallados');
+                    const detVeloc = collapseDetallados.querySelector('.detallados-velocidades');
+                    detVeloc.children.length == 0 ? detVeloc.appendChild(MacroSeccion.velocidadesByDistancia(mVC)) : detVeloc.children[0].remove() == undefined ? detVeloc.appendChild(MacroSeccion.velocidadesByDistancia(mVC)) : "";
+                    collapseDetallados.querySelector('.detallados-cadencia').appendChild(MacroSeccion.cadencia(ritmosCadencia.slice(0, -pTransito)));
+                    collapseDetallados.querySelector('.detallados-tcs').appendChild(MacroSeccion.tcs(valoresTCSs.slice(0, -pTransito)));
+                    collapseDetallados.querySelector('.detallados-long-paso').appendChild(MacroSeccion.longitudPaso(longitudesPaso.slice(0, -pTransito)));
                     document.querySelector('#MetricasDetalladas').classList.remove('hidden');
                     unlockButton(e.target);
                 })
@@ -262,7 +362,6 @@ MacroCiclo = (function(){
         },
         instanciarInformacionTemporada: (base)=>{
             //base.periodizacion.push(base.distancia == 10 ? 1 : base.distancia == 21 ? 2 : 3);//42: 3 semanas;
-
             const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
             const sumKms = allKms.reduce((a,b)=>{return a+b});
             const kmsParts = base.periodizacion.map((v)=>{
@@ -285,6 +384,34 @@ MacroCiclo = (function(){
             document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
             document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
             MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
+        },
+        instanciarInformacionTemporadaPost: ()=>{
+            const base = FichaGet.obtenerBase();
+            base.periodizacion.push(MacroCicloGet.obtenerAdicionalSemsPT(base.distancia));
+
+            const allKms = $ruConsolidado.dtGrafico.map(({kms})=>kms);
+            const sumKms = allKms.reduce((a,b)=>{return a+b});
+            const kmsParts = base.periodizacion.map((v)=>{
+                return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
+            });
+            base.porcentajesKms = [];
+            const kiloTotal = document.querySelector('#KilometrajeTotal');
+            kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
+            kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
+            document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
+                if(base.periodizacion[i] != undefined) {
+                    const kmsEsp = parseFloat(kmsParts[i].reduce((a, b) => {
+                        return a + b
+                    }))
+                    v.querySelector('h1').textContent = kmsEsp.toFixed(1);
+                    v.querySelector('span').textContent = base.periodizacion[i] + " semanas";
+                    base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
+                }
+            });
+            document.querySelector('#KilometrajeTotalTemporada').value = parseFloat(sumKms).toFixed(1);
+            document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
+            MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
+            MCGrafico.temporada(MCGraficoData.paraTemporadaPost(base));
         },
         actualizarInformacionKilometrajeTemporada: ()=>{
             const base = $baseAfterComprobacion;
@@ -332,7 +459,7 @@ MacroCiclo = (function(){
             return html;
         },
         mostrarPorcentajesIntensidad: (base, pTrainer)=>{
-            const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva"];
+            const nombresEtapa = ["Preparación General", "Preparación Específica", "Preparación Precompetitiva", "P. Tránsito"];
             let html = `<section class="">`;
             html += base.periodizacion.map((v,i,k)=>{
                 return `<div class="col col-4 padding-0 text-align-center">
@@ -353,7 +480,6 @@ MacroCiclo = (function(){
                 document.querySelector('#DistanciaCompetencia').value = rdbVal;
         },
         generarRutinaCompleta: (e)=>{//Flujo básico
-
             if($('#frm_registro').valid() && $('#KilometrajePromedioSemanal').val() != ""){
                 const $chelmoMacro = [];
                 //Semanas
@@ -415,12 +541,12 @@ MacroCiclo = (function(){
                     return {numSem: i+1, kms: Number(v.textContent), color: c}
                 });
                 const mZC = RitmosSZC.getMetricasZonasCardiacas();
-                const mVC = RitmosSVYC. getMetricasVelocidades();
+                const mVC = RitmosSVYC.getMetricasVelocidades();
                 r.semanas.forEach((v,fix)=>{
                     v.kilometrajeTotal = objs[fix].kms;
                     //Modificando indicadores de pulso y de tiempos
                     r.semanas[fix].metricas = JSON.stringify(mZC.map(v=>{
-                        if(fix < numSemBase)
+                       if(fix < numSemBase)
                             return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
                        else
                             return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[numSemBaseIx].max, min: v.indicadores[numSemBaseIx].min}}
@@ -433,14 +559,18 @@ MacroCiclo = (function(){
                     }));
                 })
                 r.totalSemanas = Number(r.totalSemanas)+cantSemExcedentes;
-                const consolidado = MacroCicloGet.consolidado();
+                const consolidado = MacroCicloGet.consolidado(mVC);
                 r.general = consolidado.general;
                 r.stats = consolidado.stats;
                 r.mejoras = consolidado.mejoras;
+                r.matrizMejoraVelocidades = consolidado.matrizMejoraVelocidades;
                 r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
-                console.log(r);
+                for(let i=0; i<cantSemExcedentes;i++){
+                    const iBase = r.dtGrafico.length - cantSemExcedentes;
+                    r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
+                }
                 guardarRutina(r, (btn = e.target));
-            } else{
+            } else {
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
         },
@@ -460,7 +590,7 @@ MacroValidacion = (function(){
                 }
                 return validado;
             }else{
-                $.smallBox({color: "alert", content: "Validación fallida"});
+                $.smallBox({color: "alert", content: "<i>Por favor completar los campos vacios y revisar que las mejoras <br/> y periodización se hayan llenado correctamente.</i>"});
                 return false;
             }
         },
@@ -787,25 +917,48 @@ MacroValidacion = (function(){
 
 MacroSeccion = (function(){
     return {
-        velocidadesByDistancia: (metricas)=>{
-            const cabecera = `<div class='row padding-o-bottom-10 text-align-center'>${metricas[0].indicadores.map((y, i) =>{return `<div class="col col-md-1"><b>S - ${i+1}</b></div>`}).join('')}</div>`
-            return cabecera + metricas.map(v=>
-                    `<div class='row text-align-center'>
-                        ${v.indicadores.map(w=>`<div class="col col-md-1">${w.p}</div>`).join('')}
-                     </div>`
-            ).join('');
+        velocidadesByDistancia: (mVC)=>{
+            if($baseAfterComprobacion.numSem <=12)
+                return htmlStringToElement(`<div style="margin-right: 10px;">
+                    ${mVC[0].indicadores.map((v,i)=>{
+                        return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'SEM '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                                ${mVC.map((v,ii)=>{
+                                    return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
+                                }).join('')}</div></div>`;
+                    }).join('')}</div>`);
+            else
+                return htmlStringToElement(`<div style="margin-right: 10px;">
+                    ${mVC[0].indicadores.map((v,i)=>{
+                        return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'MES '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                                ${mVC.map((v,ii)=>{
+                                    return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
+                                }).join('')}</div></div>`:'';
+                    }).join('')}</div>`);
         },
         cadencia: (metricas)=>{
-            const cabecera = `<div class='row padding-o-bottom-10 text-align-center'>${metricas.map((y, i) =>{return `<div class="col col-md-1"><b>S - ${i+1}</b></div>`}).join('')}</div>`
-            return cabecera + '<div class=\'row text-align-center\'>'+metricas.map(v=>`<div class="col col-md-1">${v.factor}</div>`).join('')+'</div>';
+            if($baseAfterComprobacion.numSem <=12)
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">SEM ${(i+1)}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`}).join('') + '</div>');
+            else
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">MES ${(i+1)/4}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`:''}).join('') + '</div>');
+
         },
         tcs: (metricas)=>{
-            const cabecera = `<div class='row padding-o-bottom-10 text-align-center'>${metricas.map((y, i) =>{return `<div class="col col-md-1"><b>S - ${i+1}</b></div>`}).join('')}</div>`
-            return cabecera + '<div class=\'row text-align-center\'>'+metricas.map(v=>`<div class="col col-md-1">${v.factor}</div>`).join('')+'</div>';
+            if($baseAfterComprobacion.numSem <=12)
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">SEM ${(i+1)}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`}).join('') + '</div>');
+            else
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">MES ${(i+1)/4}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`:''}).join('') + '</div>');
         },
         longitudPaso:  (metricas)=>{
-            const cabecera = `<div class='row padding-o-bottom-10 text-align-center'>${metricas.map((y, i) =>{return `<div class="col col-md-1"><b>S - ${i+1}</b></div>`}).join('')}</div>`
-            return cabecera + '<div class=\'row text-align-center\'>'+metricas.map(v=>`<div class="col col-md-1">${v}</div>`).join('')+'</div>';
+            if($baseAfterComprobacion.numSem <=12)
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">SEM ${(i+1)}</div><div class="col col-md-6 col-sm-6 text-align-left">${v}</div></div>`}).join('') + '</div>');
+            else
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">MES ${(i+1)/4}</div><div class="col col-md-6 col-sm-6 text-align-left">${v}</div></div>`:''}).join('') + '</div>');
         }
     }
 })();
@@ -846,7 +999,31 @@ MCGraficoData = (function(){
             })
             return data;
         },
-        paraMini: (porcentajes)=>{
+        paraTemporadaPost: (objBase)=>{
+            const dis1 = objBase.periodizacion[0] == undefined ? 0 : objBase.periodizacion[0];
+            const dis2 = dis1 + (objBase.periodizacion[1] == undefined ? 0 : objBase.periodizacion[1]);
+            const dis3 = dis2 + objBase.periodizacion[2];
+            //Dis kilometraje // Color
+            const data = $ruConsolidado.dtGrafico.map((v,i)=>{
+                const c = i < dis1 ? "rgba(131, 197, 255, 0.2)" : i < dis2 ? "rgba(232, 107, 10, 0.2)" : i < dis3 ? "rgba(164, 247, 144, 0.2)" : "rgba(74, 78, 59, 0.2)";
+                return {numSem: i+1, perc: v.percInts,kms: v.kms, color: v.color};
+            });
+
+            //Reconstruyendo Semanas
+            const t = getOnlyDate();//Pendiente
+            RutinaGet.getRegeneracionSemanas(moment(objBase.fechaInicio).format('DD/MM/YYYY'), moment(objBase.fechaFin).format('DD/MM/YYYY'), objBase.numSem).forEach((v, i, k)=>{
+                $fechasCompetencia.forEach(w=>{
+                    if(v.fechaInicio<=w.fecha && v.fechaFin>=w.fecha)
+                        data[i].bullet = w.prioridad == 1 ? `${_ctx}img/gold-medal.png` : `${_ctx}img/silver-medal.png`;
+                })
+                if(t>=v.fechaFin)
+                    data[i].avance=0;
+                else if(t>=v.fechaInicio)
+                    data[i].avance=0;
+            })
+            return data;
+        },
+        paraMini: (porcentajes)=> {
             const difVal = 4 - porcentajes.length;
             const lenP = porcentajes.length;
             const data = [{title: "General", value: "", color: "#E6F3FF"}, {title: "Específica", value: "", color: "#FAE1CE"}, {title: "Precompetitiva", value: "", color: "#EDFDE9"}, {title: "Tránsito", value: "", color: "#4A4E3B5E"}];
@@ -955,7 +1132,6 @@ MCGrafico = (function(){
                                             let padding = 0;
                                             let position = element.tooltipPosition();
                                             ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-
                                         });
                                     }
                                 }
@@ -986,11 +1162,10 @@ MCGrafico = (function(){
             }
 
             let ctx = document.getElementById('GraficoTemporada').getContext('2d');
-
             $chartTemporada = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: data.map((v, i)=>i),
+                    labels: data.map((v, i)=>i+1),
                     datasets: [{
                         label: 'Kilometraje',
                         data: data.map(({kms})=>kms),
@@ -1035,11 +1210,12 @@ MCGrafico = (function(){
                         onlyShowForDatasetIndex: [0, 1],
                         callbacks: {
                             title: function(tooltipItem) {
+                                const fix = $fechasCompetencia.length - $idsComp.length
                                 let mIx;
                                 return $idsComp.filter((v,i) => {
                                     if(v == tooltipItem[0].index)
                                         return String(mIx = i);//Se convierte en String para evitar problemas cuando el indice sea 0, ya que js considera en el caso de filter el 0 como undef/null
-                                }).length == 0 ? this._data.labels[tooltipItem[0].index] : $fechasCompetencia[mIx].nombre;
+                                }).length == 0 ? this._data.labels[tooltipItem[0].index] : $fechasCompetencia[mIx+fix].nombre;
                             },
                         }
                     },
@@ -1188,7 +1364,7 @@ MacroCicloSeccion = (function(){
 
 MacroCicloGet = (function(){
     return {
-        consolidado: ()=>{
+        consolidado: (mVC)=>{
             const rutinaData = {};
             rutinaData.general= {};
             rutinaData.general.freMin = document.querySelector('#FrecuenciaCardiacaMaxima').value;
@@ -1214,7 +1390,7 @@ MacroCicloGet = (function(){
             rutinaData.stats.ritmoXkm = document.querySelector('#RitmoXKilometro').value;
             rutinaData.stats.ritCompActual = document.querySelector('#RitmoCompetenciaActual').value;
             rutinaData.stats.ritAerActual = document.querySelector('#RitmoAerobicoActual').value;
-            rutinaData.stats.ritAerProComp = document.querySelector('#RitmoAerobicoPreComp').value;
+            rutinaData.stats.ritAerPreComp = document.querySelector('#RitmoAerobicoPreComp').value;
             rutinaData.stats.lonPasoCompActual = Number(document.querySelector('#LongitudPasoCA').value);
             rutinaData.stats.kilometrajeTotal = Number(document.querySelector('#KilometrajeTotalTemporada').value);
             rutinaData.stats.kilometrajeProm = Number(document.querySelector('#KilometrajePromedioSemanal').value);
@@ -1250,6 +1426,7 @@ MacroCicloGet = (function(){
             rutinaData.mejoras.tcsPorcPr = cProy.querySelector('.tcs-calc[data-type="1"][data-index="2"]').value;
 
             rutinaData.grafTemporada = MCGraficoData.paraTemporada($baseAfterComprobacion);
+            rutinaData.matrizMejoraVelocidades = JSON.stringify(mVC.map(v=>{return {dist: v.nombre, ind: v.indicadores.map(w=>w.p)}}));
             return rutinaData;
         },
         obtenerPorcentajesParaActualizacion: (base)=>{
@@ -1354,9 +1531,19 @@ CalcProyecciones = (function(){
 
                     eleTot1.value = roundNumber(tot1, 0);
                     eleTot2.value = roundNumber(tot2, 0);
-                    if (tot1 >= 99.99 && tot1 <= 100.1) {
+                    if(tot1 == 100){
                         eleTot1.parentElement.classList.add('state-success');
                         eleTot1.parentElement.classList.remove('state-error');
+                    } else if (tot1 == 99 || tot1 == 101) {
+                        eleTot1.parentElement.classList.add('state-success');
+                        eleTot1.parentElement.classList.remove('state-error');
+                        if(tot1 == 99){
+                            eleTot1.value = 100;
+                            contProyecciones.querySelector(`${identificadores[0]}[data-index="${2}"]`).value = 1+Number(contProyecciones.querySelector(`${identificadores[0]}[data-index="${2}"]`).value);
+                        }else if(tot1 == 101){
+                            eleTot1.value = 100;
+                            contProyecciones.querySelector(`${identificadores[0]}[data-index="${2}"]`).value = -1+Number(contProyecciones.querySelector(`${identificadores[0]}[data-index="${2}"]`).value);
+                        }
 
                     } else {
                         eleTot1.parentElement.classList.add('state-error');
@@ -1392,32 +1579,34 @@ CalcProyecciones = (function(){
                 obj.tipoCalculo = 4;//Semanas regulares, todas con 7 días
             return obj;
         },
-        calcularPorcentajeByNumSem: (numSem, index) => {
+        calcularPorcentajeByNumSem: (cant, index) => {
+            if(cant == 0) return 0;
             const estadisticas = CalcProyecciones.informacionSemanas();
+            if(cant == estadisticas.semanas) return 100;
             let situacion = estadisticas.tipoCalculo;
             if (situacion == 1) {
                 if(index == 3){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
+                    --cant;
+                    return ((((cant*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
                 }else
-                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
+                    return (((cant*7)*100)/estadisticas.totDias).toFixed(2);
             } else if (situacion == 2){
-                return (numSem * 100 / estadisticas.semanas).toFixed(2);
+                return (cant * 100 / estadisticas.semanas).toFixed(2);
             } else if (situacion == 3) {
                 if(index == 5){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
+                    --cant;
+                    return ((((cant*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
                 }else
-                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
+                    return (((cant*7)*100)/estadisticas.totDias).toFixed(2);
             } else if (situacion == 4) {
                 if(index == 3){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
+                    --cant;
+                    return ((((cant*7)+estadisticas.diasPrimeraSemana)*100)/estadisticas.totDias).toFixed(2);
                 }else if(index == 5){
-                    --numSem;
-                    return ((((numSem*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
+                    --cant;
+                    return ((((cant*7)+estadisticas.diasUltimaSemana)*100)/estadisticas.totDias).toFixed(2);
                 }else
-                    return (((numSem*7)*100)/estadisticas.totDias).toFixed(2);
+                    return (((cant*7)*100)/estadisticas.totDias).toFixed(2);
             }
         },
         calcularNumSemByPorcentaje: (porcentaje, index)=>{

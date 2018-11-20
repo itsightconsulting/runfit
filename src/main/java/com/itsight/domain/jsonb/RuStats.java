@@ -11,7 +11,7 @@ public class RuStats implements Serializable {
     private String ritmoXkm;
     private String ritCompActual;
     private String ritAerActual;
-    private String ritAerProComp;
+    private String ritAerPreComp;
     private double lonPasoCompActual;
     private double kilometrajeTotal;
     private double kilometrajeProm;

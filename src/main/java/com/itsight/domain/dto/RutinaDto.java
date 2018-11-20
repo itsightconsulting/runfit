@@ -29,6 +29,7 @@ public class RutinaDto implements Serializable {
     private int dias;
     private int tipoRutina;
     private int contadorRutinas;
+    private String matrizMejoraVelocidades;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaInicio;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)

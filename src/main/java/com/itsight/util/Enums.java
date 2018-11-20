@@ -7,6 +7,7 @@ public class Enums {
         ACTUALIZACION(-2),
         ELIMINACION(-3),
         EXITO_GENERICA(-4),
+        EX_VALIDATION_FAILED(-5),
         EX_GENERIC(-9),
         EX_NULL_POINTER(-10),
         EX_JACKSON_INVALID_FORMAT(-11),

@@ -204,6 +204,14 @@ function principalesEventosTabFichaTecnica(e){
         document.querySelector('#PorcentajesKilometraje').classList.toggle('hidden');
         document.querySelector('#PorcentajesIntensidad').classList.toggle('hidden');
         clases.toggle('hidden');
+    }else if(clases.contains('periodizacion-calc')) {
+        input.select();
+    }else if(clases.contains('velocidad-calc')) {
+        input.select();
+    }else if(clases.contains('cadencia-calc')) {
+        input.select();
+    }else if(clases.contains('tcs-calc')) {
+        input.select();
     }
 }
 function principalesEventosFocusOutTabFichaTecnica(e){
@@ -231,6 +239,7 @@ function principalesEventosFocusOutTabFichaTecnica(e){
 }
 
 function guardarRutina(rutina, btn){
+    console.log(rutina);
     $(btn).button('loading');
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');

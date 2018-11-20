@@ -136,6 +136,15 @@
             padding: 0px 0px 10px !important;
         }
 
+        .margin-o-bottom-10{
+            margin-bottom: 10px !important;
+        }
+
+        .margin-o-bottom-10-w-bb{
+            margin-bottom: 10px !important;
+            border-bottom: 1px solid lightgray;
+        }
+
         .padding-o-bottom-40{
             padding: 0px 0px 40px !important;
         }
@@ -318,16 +327,16 @@
             font-size: 0.8em;
         }
 
-        .mini{
+        .mini {
             padding: 0px 5px;
             margin: 0px 3px;
         }
 
-        .mini:hover{
+        .mini:hover {
             background: #89AD45 !important;
         }
 
-        .elegido{
+        .elegido {
             background-color:#46b9ca !important;
         }
 
@@ -416,6 +425,22 @@
 
         .cat-video{
             border-bottom: 3px solid #baf3c6;
+        }
+
+        .header-met-vel{
+            background: #4fd46b;
+            color: white;
+            border-bottom: 3px solid #baf3c6;
+            border-right: 1px solid;
+        }
+
+        .header-lateral-met-vel{
+            background: #4fd46b;
+            color: white;
+            border-bottom: 1px solid #baf3c6;
+            border-right: 1px solid;
+            margin-left: 10px;
+            margin-bottom: 4px;
         }
 
         .cat-mi-rutina{
@@ -582,6 +607,17 @@
 
         #frm_registro label.input i{
             border-radius: 10px !important;
+        }
+
+        .padding-bottom-5{
+            padding-bottom: 5px;
+        }
+
+        .hd-column{
+            background: #c8f14f;
+            color: #262548;
+            font-weight: bold;
+            margin-left: 5px;
         }
 
     </style>
@@ -884,60 +920,63 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row padding-o-bottom-10">
-                                                                        <div class="col col-md-1">
-                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
-                                                                            <div class="col"><b>200 m </b></div>
-                                                                            <div class="col"><b>400 m </b></div>
-                                                                            <div class="col"><b>800 m </b></div>
-                                                                            <div class="col"><b>1 KM </b></div>
-                                                                            <div class="col"><b>10 KM </b></div>
-                                                                            <div class="col"><b>15 KM </b></div>
-                                                                            <div class="col"><b>21 KM </b></div>
-                                                                            <div class="col"><b>42 KM </b></div>
+                                                                        <div class="col col-md-1 col-sm-1">
+                                                                            <div class="container-fluid text-align-center padding-o-bottom-10">
+                                                                                <div style="padding-bottom: 3px"></div>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="col col-md-11 detallados-velocidades">
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--Mejoras de la cadencia-->
-                                                                    <div class="container-fluid padding-o-bottom-10">
-                                                                        <div class="col">
-                                                                            <h6>Mejoras de la cadencia</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row padding-o-bottom-10">
-                                                                        <div class="col col-md-1">
-                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
-                                                                        </div>
-                                                                        <div class="col col-md-11 detallados-cadencia">
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--Mejoras del T.C.S.-->
-                                                                    <div class="container-fluid padding-o-bottom-10">
-                                                                        <div class="col">
-                                                                            <h6>Mejoras del T.C.S.</h6>
+                                                                        <div class="col col-md-11 col-sm-11">
+                                                                            <div class="container-fluid text-align-center padding-o-bottom-10" style="margin-right: 10px !important;">
+                                                                                <div class="col-md-6 col-sm-6">
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">200 m</div>
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">400 m</div>
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">800 m</div>
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">1 KM</div>
+                                                                                </div>
+                                                                                <div class="col-md-6 col-sm-6">
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">10 KM</div>
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">15 KM</div>
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">21 KM</div>
+                                                                                    <div class="col col-md-3 col-sm-3 header-met-vel">42 KM</div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row padding-o-bottom-10">
-                                                                        <div class="col col-md-1">
-                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
-                                                                        </div>
-                                                                        <div class="col col-md-11 detallados-tcs">
-
+                                                                        <div class="detallados-velocidades">
                                                                         </div>
                                                                     </div>
-                                                                    <!--Mejoras en la longitud de paso-->
-                                                                    <div class="container-fluid padding-o-bottom-10">
-                                                                        <div class="col">
-                                                                            <h6>Mejoras en la longitud de paso</h6>
-                                                                        </div>
+                                                                    <div class="container-fluid text-align-right">
+                                                                        <h6 class="padding-right-22">Mejoras de velocidad proyectada</h6>
+                                                                        <div class="col-md-9"></div>
+                                                                        <div class="col-md-3 text-align-center"><span class="txt-color-orange font-lg"><i class="fa fa-info-circle fa-fw"></i>11%</span></div>
                                                                     </div>
-                                                                    <div class="row padding-o-bottom-10">
-                                                                        <div class="col col-md-1">
-                                                                            <div class="col padding-bottom-10" style="color: transparent;">0</div>
-                                                                        </div>
-                                                                        <div class="col col-md-11 detallados-long-paso">
+                                                                    <!--Mejoras de cadencia | tcs | longitud de paso -->
+                                                                    <hr/>
+                                                                    <div class="container-fluid padding-vertical-10">
+                                                                        <div class="col col-md-4">
+                                                                            <div class="text-align-left padding-o-bottom-10">
+                                                                                <h6>Mejoras de la cadencia</h6>
+                                                                            </div>
+                                                                            <div class="row detallados-cadencia">
 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col col-md-4">
+                                                                            <div class="text-align-left padding-o-bottom-10">
+                                                                                <h6>Mejoras del T.C.S.</h6>
+                                                                            </div>
+                                                                            <div class="row detallados-tcs">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col col-md-4">
+                                                                            <div class="text-align-left padding-o-bottom-10">
+                                                                                <h6>Mejoras en la longitud de paso</h6>
+                                                                            </div>
+                                                                            <div class="row detallados-long-paso">
+
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>

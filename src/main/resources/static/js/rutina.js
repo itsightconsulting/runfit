@@ -21,7 +21,6 @@ class Rutina {
         this.semanas[num] = new Semana(semana);
         this.mostrarSemana(this.semanas[num], num);
         this.completarFechasSemanas(true, num);
-
     }
 
     initEspecificoDesdeRutina(num){
@@ -464,8 +463,10 @@ RutinaOpc = (function(){
                 setTimeout(() => {
                     matches.forEach(v=>{
                         const diaCalendario = document.querySelector('#CalendarioRf').nextElementSibling.querySelector(`div[data-dia="${v.fecha.getDate()}"]`);
-                        diaCalendario.children[0].classList.toggle('event-calendar');
-                        diaCalendario.children[0].classList.toggle('event-calendar-c');
+                        if(diaCalendario != undefined){
+                            diaCalendario.children[0].classList.toggle('event-calendar');
+                            diaCalendario.children[0].classList.toggle('event-calendar-c');
+                        }
                     })
                 }, 100);
             //seleccionado día de hoy(según se de el caso)

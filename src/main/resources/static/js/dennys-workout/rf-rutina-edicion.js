@@ -32,9 +32,12 @@ let $statusCopy = false;
 let $kilometrajeBase = [];
 let $semCalculoMacro = {};
 let $objetivos = [];
+let $ruConsolidado;
+let $chartTemporada = {};
+let $chartMiniPorc = {};
+let $idsComp = [];
 let $semanasEnviadas = [];
 let $diasSeleccionados = [];
-
 
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
@@ -660,10 +663,9 @@ function instanciarDatosFitnessCliente(){
                         timeout: 4500,
                         color: "alert",
                     });
-                }else{
+                } else {
                     if(data.id != 0) {
-                        Ficha.instanciar(data);
-                        FichaSet.setTotalSemanas();
+                        FichaSet.instanciarDatosFicha(data);
                     }
                 }
             }
@@ -706,9 +708,10 @@ function instanciarGrupoVideos(){
 
 
                     });
-                    rawHTMLCabecera +='</div>'
+                    rawHTMLCabecera +='</div>';
 
                     document.querySelector('#ArbolGrupoVideo').appendChild(htmlStringToElement(rawHTMLCabecera));
+                    $('#bot1-Msg1').click();
                 }
             }
         },
@@ -895,6 +898,7 @@ function instanciarMiniPlantillas(){
                     });
                     rawHTML += '</div>'
                     document.querySelector('#ArbolRutinario').appendChild(htmlStringToElement(rawHTML));
+                    $('#bot1-Msg1').click();
                 }
             }
         },
@@ -906,9 +910,8 @@ function instanciarMiniPlantillas(){
 }
 
 function generandoSubCategoriasRutinarioCe(cat){
-
     let rawSubCategoriasHTML = '';
-    cat.lstSubCategoriaEjercicio.forEach(subCat=> {
+    cat.lstSubCategoriaEjercicio.forEach(subCat=>{
         rawSubCategoriasHTML += `<h6 class="txt-color-grayDark font-lg" style="padding-left: 67px;" > ${subCat.nombre}</h6>
                                 <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 sub-cat${subCat.id}">
                                     ${separandoEspecificacionesSubCategoriaPorNivel(subCat)}
@@ -1748,7 +1751,6 @@ function principalesEventosTabRutina(e){
                     },
                     complete: function () {
                         document.querySelectorAll('#divSmallBoxes')[0].innerHTML = '';
-
                     }
                 });
             })
@@ -2700,18 +2702,23 @@ function principalesAlCambiarTab(e){
         $videosElegidos = [];
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
-        if (document.querySelector('#ArbolGrupoVideo').children.length == 0)
+        if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
+            spinnerSwitchTab();
             instanciarGrupoVideos();
+        }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
-        if(document.querySelector('#ArbolRutinario').children.length == 0)
+        if(document.querySelector('#ArbolRutinario').children.length == 0) {
+            spinnerSwitchTab();
             instanciarMiniPlantillas();
+        }
     }
     else if(e.target.tagName === "A"){
         document.querySelector('#OpsAdic').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
-            if($kilometrajeBase.length == 0){
-                FichaGet.obtenerBase();
+            if($ruConsolidado == undefined){
+                spinnerSwitchTab();
+                obtenerRutinaConsolidadoBD();
             }
         }
     }
@@ -2856,6 +2863,27 @@ function actualizarDiaObjetivoBD(a, b){
             exception(xhr);
         },
         complete: function () {}
+    })
+}
+
+function obtenerRutinaConsolidadoBD(){
+    const id = getParamFromURL('key');
+    const rn = getParamFromURL('rn');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: _ctx + "rutina/obtenerConsolidado?key="+id + "&rn="+rn,
+        dataType: "json",
+        success: function (d) {
+            notificacionesRutinaSegunResponseCode(d.responseCode);
+            FichaSet.instanciarConsolidado(d.data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+            $('#bot1-Msg1').click();
+        }
     })
 }
 
