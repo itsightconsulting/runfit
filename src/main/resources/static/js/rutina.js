@@ -57,7 +57,7 @@ class Rutina {
                 rawDiasRestantes +=
                     `<article class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rf-dia-off" >            
 									<div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0">
-										<header role="heading">
+										<header role="heading" class="heading-off">
 								            <h2>${v.literal} ${v.dia}</h2>
 								            ${!semana.flagFull ?
                                     `<div class="widget-toolbar borderless" onclick="focoARutina();">

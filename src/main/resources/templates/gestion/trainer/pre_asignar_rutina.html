@@ -13,6 +13,15 @@
     <!-- END CSS FILES -->
     <style type="text/css">
 
+        .mej-perc{
+            margin-right: 12%;
+            background: #c8f14f !important;
+        }
+
+        .padding-20{
+            padding: 20px !important;
+        }
+
         .txt-color-rfb {
             color: #4A4E3B !important;
         }
@@ -134,6 +143,10 @@
 
         .padding-o-bottom-10{
             padding: 0px 0px 10px !important;
+        }
+
+        .padding-o-bottom-20{
+            padding: 0px 0px 20px !important;
         }
 
         .margin-o-bottom-10{
@@ -432,6 +445,8 @@
             color: white;
             border-bottom: 3px solid #baf3c6;
             border-right: 1px solid;
+            border-radius: 25%;
+            font-weight: bold;
         }
 
         .header-lateral-met-vel{
@@ -618,6 +633,7 @@
             color: #262548;
             font-weight: bold;
             margin-left: 5px;
+            border-radius: 45% 45% 0% 0%;
         }
 
     </style>
@@ -946,32 +962,34 @@
                                                                         <div class="detallados-velocidades">
                                                                         </div>
                                                                     </div>
-                                                                    <div class="container-fluid text-align-right">
+                                                                    <div class="container-fluid text-align-right padding-o-bottom-10">
                                                                         <h6 class="padding-right-22">Mejoras de velocidad proyectada</h6>
                                                                         <div class="col-md-9"></div>
-                                                                        <div class="col-md-3 text-align-center"><span class="txt-color-orange font-lg"><i class="fa fa-info-circle fa-fw"></i>11%</span></div>
+                                                                        <div class="col-md-3 text-align-right">
+                                                                            <span id="PorcMejoraVel" class="badge padding-7 mej-perc font-md"><i class="fa fa-info-circle fa-fw"></i>0%</span>
+                                                                        </div>
                                                                     </div>
                                                                     <!--Mejoras de cadencia | tcs | longitud de paso -->
                                                                     <hr/>
                                                                     <div class="container-fluid padding-vertical-10">
-                                                                        <div class="col col-md-4">
-                                                                            <div class="text-align-left padding-o-bottom-10">
+                                                                        <div class="col col-md-4 col-sm-4 col-xs-12">
+                                                                            <div class="text-align-left padding-o-bottom-20">
                                                                                 <h6>Mejoras de la cadencia</h6>
                                                                             </div>
                                                                             <div class="row detallados-cadencia">
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col col-md-4">
-                                                                            <div class="text-align-left padding-o-bottom-10">
+                                                                        <div class="col col-md-4 col-sm-4 col-xs-12">
+                                                                            <div class="text-align-left padding-o-bottom-20">
                                                                                 <h6>Mejoras del T.C.S.</h6>
                                                                             </div>
                                                                             <div class="row detallados-tcs">
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col col-md-4">
-                                                                            <div class="text-align-left padding-o-bottom-10">
+                                                                        <div class="col col-md-4 col-sm-4 col-xs-12">
+                                                                            <div class="text-align-left padding-o-bottom-20">
                                                                                 <h6>Mejoras en la longitud de paso</h6>
                                                                             </div>
                                                                             <div class="row detallados-long-paso">

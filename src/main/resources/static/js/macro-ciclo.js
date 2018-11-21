@@ -352,9 +352,12 @@ MacroCiclo = (function(){
                     const collapseDetallados = document.querySelector('#collapseDetallados');
                     const detVeloc = collapseDetallados.querySelector('.detallados-velocidades');
                     detVeloc.children.length == 0 ? detVeloc.appendChild(MacroSeccion.velocidadesByDistancia(mVC)) : detVeloc.children[0].remove() == undefined ? detVeloc.appendChild(MacroSeccion.velocidadesByDistancia(mVC)) : "";
-                    collapseDetallados.querySelector('.detallados-cadencia').appendChild(MacroSeccion.cadencia(ritmosCadencia.slice(0, -pTransito)));
-                    collapseDetallados.querySelector('.detallados-tcs').appendChild(MacroSeccion.tcs(valoresTCSs.slice(0, -pTransito)));
-                    collapseDetallados.querySelector('.detallados-long-paso').appendChild(MacroSeccion.longitudPaso(longitudesPaso.slice(0, -pTransito)));
+                    const detCaden = collapseDetallados.querySelector('.detallados-cadencia');
+                    detCaden.children.length == 0 ? detCaden.appendChild(MacroSeccion.cadencia(ritmosCadencia.slice(0, -pTransito))) : detCaden.children[0].remove() == undefined ? detCaden.appendChild(MacroSeccion.cadencia(ritmosCadencia.slice(0, -pTransito))) : "";
+                    const detTcs = collapseDetallados.querySelector('.detallados-tcs');
+                    detTcs.children.length == 0 ? detTcs.appendChild(MacroSeccion.tcs(valoresTCSs.slice(0, -pTransito))) : detTcs.children[0].remove() == undefined ? detTcs.appendChild(MacroSeccion.tcs(valoresTCSs.slice(0, -pTransito))) : "";
+                    const detLongPaso = collapseDetallados.querySelector('.detallados-long-paso');
+                    detLongPaso.children.length == 0 ? detLongPaso.appendChild(MacroSeccion.longitudPaso(longitudesPaso.slice(0, -pTransito))) : detLongPaso.children[0].remove() == undefined ? detLongPaso.appendChild(MacroSeccion.longitudPaso(longitudesPaso.slice(0, -pTransito))) : "";
                     document.querySelector('#MetricasDetalladas').classList.remove('hidden');
                     unlockButton(e.target);
                 })
@@ -918,10 +921,13 @@ MacroValidacion = (function(){
 MacroSeccion = (function(){
     return {
         velocidadesByDistancia: (mVC)=>{
+            //Calculando el porcentaje de mejora de velocidad y seteandolo
+            document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].indicadores[0].p.toSeconds())*42)/((mVC[7].indicadores[(mVC[7].indicadores.length)-1].p.toSeconds())*42)))-1)*100,1) + " %";
+
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].indicadores.map((v,i)=>{
-                        return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'SEM '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                        return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
                                     return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
                                 }).join('')}</div></div>`;
@@ -929,36 +935,39 @@ MacroSeccion = (function(){
             else
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].indicadores.map((v,i)=>{
-                        return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'MES '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                        return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'M '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
                                     return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
                                 }).join('')}</div></div>`:'';
                     }).join('')}</div>`);
         },
         cadencia: (metricas)=>{
+            const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1].factor) / metricas[0].factor)-1)*100), 1) + " %";
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">SEM ${(i+1)}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`}).join('') + '</div>');
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
             else
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">MES ${(i+1)/4}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`:''}).join('') + '</div>');
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
 
         },
         tcs: (metricas)=>{
+            const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1].factor) / metricas[0].factor)-1)*100), 1) + " %";
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">SEM ${(i+1)}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`}).join('') + '</div>');
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
             else
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">MES ${(i+1)/4}</div><div class="col col-md-6 col-sm-6 text-align-left">${v.factor}</div></div>`:''}).join('') + '</div>');
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
         },
         longitudPaso:  (metricas)=>{
+            const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">SEM ${(i+1)}</div><div class="col col-md-6 col-sm-6 text-align-left">${v}</div></div>`}).join('') + '</div>');
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel ">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
             else
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-6 col-sm-6 text-align-right">MES ${(i+1)/4}</div><div class="col col-md-6 col-sm-6 text-align-left">${v}</div></div>`:''}).join('') + '</div>');
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
         }
     }
 })();
