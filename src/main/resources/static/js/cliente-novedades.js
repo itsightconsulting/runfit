@@ -42,13 +42,18 @@ function GenerarDiv(item){
     var estado = "";
     var divestado = "";
     var estilo = "";
-    var ruta = `${_ctx}workout/multimedia`;
+
+
+    var ruta = `${_ctx}`+`workout/multimedia/`;
+
     if(item.tipo == "1"){
         estado = "público";
-        divestado = '<audio id=" " preload="none" controls="" controlslist="nodownload" autoplay="" width="100%" height="100%"><source id="AudioReproduccion" src="'+ ruta +"/audio/gt/" + item.rutaWeb +'" type="audio/mpeg"/></audio>';
+        divestado = '<audio id=" " preload="none" controls="" controlslist="nodownload" autoplay="none" width="100%" height="100%"><source id="AudioReproduccion" ' +
+                    'src="'+ ruta +"audio/" + item.rutaWeb +'" type="audio/mpeg"/></audio>';
     }else if(item.tipo == "2"){
         estado = "público";
-        divestado = '<video id="somevid" controls="controls" autoplay="autoplay" controlslist="nodownload" width="100%" height="100%"><source id="VideoReproduccion" src="'+ ruta +"/video/gt/" + item.rutaWeb +'" type="video/mp4"/></video>';
+        divestado = '<video id="somevid" controls="controls" autoplay="none" controlslist="nodownload" width="100%" height="100%"><source id="VideoReproduccion" ' +
+                    'src="'+ ruta +'video/'+ item.rutaWeb +'" type="video/mp4"/></video>';
     }else{
         estado = "<span>escribió </span><span> "+item.titulo+"</span>";
         divestado = "<h5>"+item.descripcion+"</h5>";
