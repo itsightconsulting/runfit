@@ -247,6 +247,8 @@ MacroCiclo = (function(){
     return {
         comprobar: (e)=>{
             if(MacroValidacion.principal() && MacroValidacion.basicos()) {
+
+                if(e != null)
                 blockButton(e.target);
 
                 const contenedorMK = document.querySelector('#PorcentajesKilometraje');//metricas de kilometraje
@@ -284,6 +286,7 @@ MacroCiclo = (function(){
                     }
                     contenedorMK.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesKilo($baseAfterComprobacion, porcentajesTrainer, cantPeriodos)));
                     contenedorMK2.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajesIntensidad($baseAfterComprobacion, porcentajesTrainer)));
+
                     //ModificandoBase en caso semana inicial y final no esten completas
                     $semCalculoMacro = CalcProyecciones.informacionSemanas();
                     if($semCalculoMacro.diasPrimeraSemana < 7) {
@@ -435,6 +438,21 @@ MacroCiclo = (function(){
             document.querySelector('#KilometrajePromedioSemanal').value = parseFloat(sumKms/base.numSem).toFixed(1);
             MCGrafico.miniPorcentual(MCGraficoData.paraMini(base.porcentajesKms));
             MCGrafico.temporada(MCGraficoData.paraTemporadaPost(base));
+
+            const contenedorM = document.querySelector('#PorcentajesMetricas');//metricas de kilometraje
+
+            if(contenedorM.children.length == 1) {
+                contenedorM.children[0].remove();
+            }
+
+            contenedorM.appendChild(htmlStringToElement(MacroCiclo.mostrarPorcentajeMetrica()));
+            $slideType = 3;
+            $('.slider').slider();
+            $("div.slider-horizontal > div.slider-track").css("background-color","#1acd49");
+            $("#TotalPeriodizacion1").parent().addClass("state-success");
+            $("#TotalVelocidad1").parent().addClass("state-success");
+            $("#TotalCadencia1").parent().addClass("state-success");
+            $("#TotalTcs1").parent().addClass("state-success");
         },
         actualizarInformacionKilometrajeTemporada: ()=>{
             const base = $baseAfterComprobacion;
@@ -601,6 +619,19 @@ MacroCiclo = (function(){
             } else {
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
+        },
+        mostrarPorcentajeMetrica : ()=>{
+            var tiempo = parseInt(document.getElementById('TiempoControl').value.toSeconds());
+            var tiempototal = totalsegundos; // 1 hora
+            let porcentaje = tiempo/tiempototal * 100;
+            let html = `<section class="">
+                        <div class="col col-4 padding-0 text-align-center">
+                            <h6 class="bg-color-white txt-color-gray font-md margin-bottom-10 padding-10 text-align-center">Porcentaje de Metricas</h6>
+                            ${MacroCicloSeccion.bodyPorcentajesMetricas(porcentaje)}
+                        </div>`;
+            html+=`</section>`;
+
+            return html;
         },
     }
 })();
@@ -1441,7 +1472,28 @@ MacroCicloSeccion = (function(){
             }
             all+=`</div>`;
             return all;
-        }
+        },
+        bodyPorcentajesMetricas: (porcentaje)=> {
+            const colorClass = "slider-success";
+            let all = `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">`;
+
+            const fIx = 1;
+            all += `<div class="col-xs-12 col-sm-12 col-md-11 col-lg-12">`;
+            const fixVal = porcentaje;
+            all += `<div><label class="padding-5 porcentaje-metrica" data-index="${fIx}">${(porcentaje).toFixed(1)}</label></div>`;
+            all += `<div><span class="padding-5 text-align-left">`;
+            all += `<input type="text" class="slider metrica ${colorClass}" value="" data-slider-min="0" 
+                    data-slider-max="100" data-slider-step="1" data-slider-value="${fixVal}" 
+                    data-slider-orientation="horizontal" data-slider-selection="after" 
+                    data-slider-handle="round" data-slider-tooltip="hide" data-index="${fIx}" 
+                    data-kms="100" /></span></div>`;
+            all += `<div><label class="padding-5 perc hidden" data-index="${fIx}">${porcentaje}%</label></div>`;
+            all += `<div><label class="padding-10"> </label></div>`;
+            all += "</div>";
+
+            all += `</div>`;
+            return all;
+        },
     }
 })();
 

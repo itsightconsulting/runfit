@@ -157,10 +157,12 @@ function verVideo(val) {
     $(".divVideo").remove();
 
     const mediaVideo = input.attr("data-media");
+
+    var src = `${_ctx}`+`workout/media/file/video/gt/1`+ mediaVideo ;
     let html =`<div id="divvideos${id}"  class="divVideo" style="text-align: center;     width: 86%;padding-left: 8%;position: absolute;z-index: 9;">
                <button id="btnCerrarVideo" data-id="${id}" type="button" style="margin: -16px;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <video id="somevid" preload="none" controls="controls" autoplay="" controlslist="nodownload" width="100%" height="100%" style="margin: -6px;border: 5px solid #e8f2f3; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <source id="VideoReproduccion" src="${mediaVideo}" type="video/mp4">
+                            <source id="VideoReproduccion" src="${src}" type="video/mp4">
                         </video>
                 </div>`;
 
@@ -182,10 +184,11 @@ function verAudio(val) {
     $(".divAudio").remove();
 
     const mediaAudio = input.attr("data-media");
+    var src = `${_ctx}`+`workout/media/audio`+ mediaAudio;
     let html = `<div id="divaudio${id}" class="divAudio" style="text-align: center;     width: 50%;padding-left: 8%;position: absolute;z-index: 9;">
                <button id="btnCerrarAudio" data-id="${id}" type="button" style="margin: -19px -160px 0 0;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                        <audio id="someaud" preload="none" controls="" controlsList="nodownload" autoplay="" width="100%" height="100%">
-                       <source id="AudioReproduccion" src="${mediaAudio}" type="audio/mpeg"/></audio>
+                       <source id="AudioReproduccion" src="${src}" type="audio/mpeg"/></audio>
                 </div>`;
 
     input.after(html);

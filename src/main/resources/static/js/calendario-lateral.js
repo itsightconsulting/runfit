@@ -28,6 +28,9 @@ $(function () {
                     $diasSeleccionados.push(aux.fecha);
                 });
             });
+
+            var valormesseleccionado = parseInt($("#anioMesActual").attr("data-dia"));
+            var valoranio = parseInt($("#anioMesActual").attr("data-mes"));
             if($(".event-calendar").length == $(".day-selected").length) {
                 $("#mesanio" + valormesseleccionado + "" + valoranio).prop("checked", true);
             }
@@ -186,33 +189,50 @@ function principalesEventosCalendario(e) {
         var nuevafecha = parseFromStringToDate2(1 + "/" + (valormesseleccionado == 1 ? 12  : valormesseleccionado-1 ) + "/" + (valormesseleccionado == 1 ? valoranioseleccionado-1 :valoranioseleccionado) );
         var lastDayofMonth = new Date(nuevafecha.getFullYear(), nuevafecha.getMonth()+1, 0).getUTCDate();
 
-        var dayEncontrado = $diasSeleccionados.find(function(element) {
-            return element.getUTCDate() == lastDayofMonth && (element.getMonth()+1) == (valormesseleccionado == 1 ? 12  : valormesseleccionado-1 ) && element.getFullYear() == (valormesseleccionado == 1 ? valoranioseleccionado-1 :valoranioseleccionado)
-        });
+        if($diasSeleccionados.length>0) {
+            var dayEncontrado = $diasSeleccionados.find(function (element) {
+                return element.getUTCDate() == lastDayofMonth && (element.getMonth() + 1) == (valormesseleccionado == 1 ? 12 : valormesseleccionado - 1) && element.getFullYear() == (valormesseleccionado == 1 ? valoranioseleccionado - 1 : valoranioseleccionado)
+            });
 
-        $diasSeleccionados = $.grep($diasSeleccionados, function (o, x) {
-            return (o.getMonth() + 1) === valormesseleccionado && o.getFullYear() === valoranioseleccionado;
-        }, true);
+            $diasSeleccionados = $.grep($diasSeleccionados, function (o, x) {
+                return (o.getMonth() + 1) === valormesseleccionado && o.getFullYear() === valoranioseleccionado;
+            }, true);
 
-        var tmpArray = [];
-        $.each($diasSeleccionados ,function (i,o) {
+            var tmpArray = [];
+            $.each($diasSeleccionados, function (i, o) {
 
-            if((o.getMonth() + 1) > valormesseleccionado && o.getFullYear() === valoranioseleccionado){
-                o = null;
+                if ((o.getMonth() + 1) > valormesseleccionado && o.getFullYear() === valoranioseleccionado) {
+                    o = null;
+                }
+
+                if (o != null && o.getFullYear() > valoranioseleccionado) {
+                    o = null;
+                }
+                tmpArray.push(o);
+            });
+
+            $diasSeleccionados = $.grep(tmpArray, function (o, x) {
+                return o === null;
+            }, true);
+
+            $(".fechas-calendar-tmp").removeClass("day-selected");
+
+            if (dayEncontrado != null) {
+                if (input.checked) {
+                    $(".fechas-calendar-tmp").addClass("day-selected");
+
+                    $.each($rutina.semanas, function (i, item) {
+                        $.each(item.dias, function (u, aux) {
+                            if ((aux.fecha.getMonth() + 1) == valormesseleccionado && aux.fecha.getFullYear() == valoranioseleccionado) {
+                                $diasSeleccionados.push(aux.fecha);
+                            }
+                        });
+                    });
+                }
+            } else {
+                $("#mesanio" + valormesseleccionado + "" + valoranioseleccionado).prop("checked", false);
             }
-
-            if(o != null && o.getFullYear() > valoranioseleccionado){
-                o = null;
-            }
-            tmpArray.push(o);
-        });
-
-        $diasSeleccionados = $.grep(tmpArray, function(o,x) {
-            return o === null;},true);
-
-        $(".fechas-calendar-tmp").removeClass("day-selected");
-
-        if(dayEncontrado != null) {
+        }else{
             if (input.checked) {
                 $(".fechas-calendar-tmp").addClass("day-selected");
 
@@ -223,11 +243,9 @@ function principalesEventosCalendario(e) {
                         }
                     });
                 });
-
             }
-        }else{
-            $("#mesanio" + valormesseleccionado + "" + valoranioseleccionado).prop("checked", false);
         }
+
     }
 }
 

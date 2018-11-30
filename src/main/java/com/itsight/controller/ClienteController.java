@@ -138,14 +138,15 @@ public class ClienteController {
         int id = (int)session.getAttribute("id");
         List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(id);
         List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioId(listEntrenadores);
-
-        List<Integer> diaIds = new ArrayList<>();
         List<EspecificacionSubCategoria> lstresult = new ArrayList<>();
-        for (int i=0; i< listMiniPlantilla.size() ;i++){
-            diaIds.add(listMiniPlantilla.get(i).getId());
-        }
-        lstresult = especificacionSubCategoriaService.findByIdsIn(diaIds);
+        if(listEntrenadores.size() >0 && listMiniPlantilla.size()>0) {
+            List<Integer> diaIds = new ArrayList<>();
 
+            for (int i = 0; i < listMiniPlantilla.size(); i++) {
+                diaIds.add(listMiniPlantilla.get(i).getId());
+            }
+            lstresult = especificacionSubCategoriaService.findByIdsIn(diaIds);
+        }
         return lstresult;
     }
 
