@@ -42,6 +42,12 @@ public class RuConsolidado implements Serializable {
     @Lob
     @Column(nullable = false)
     private String matrizMejoraVelocidades;
+    @Column(nullable = false)
+    private String matrizMejoraCadencia;
+    @Column(nullable = false)
+    private String matrizMejoraTcs;
+    @Column(nullable = false)
+    private String matrizMejoraLonPaso;
     @Column(columnDefinition = "jsonb")
     @Type(type = "jsonb")
     private List<RuDataGrafico> dtGrafico;

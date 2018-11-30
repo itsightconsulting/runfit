@@ -252,41 +252,50 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void insertACategoriaVideo() {
         if(categoriaVideoService.findOne(1) == null) categoriaVideoService.save(new CategoriaVideo("Cuádriceps",1, true));
         if(categoriaVideoService.findOne(2) == null) categoriaVideoService.save(new CategoriaVideo("Glúteos",1, true));
-        if(categoriaVideoService.findOne(3) == null) categoriaVideoService.save(new CategoriaVideo("Glúteo Medio",1, true));
-        if(categoriaVideoService.findOne(4) == null) categoriaVideoService.save(new CategoriaVideo("Isquiotibiales",1, true));
-        if(categoriaVideoService.findOne(5) == null) categoriaVideoService.save(new CategoriaVideo("Flexóres de la cadera",1, true));
-        if(categoriaVideoService.findOne(6) == null) categoriaVideoService.save(new CategoriaVideo("Pliométricos",1, true));
-        if(categoriaVideoService.findOne(7) == null) categoriaVideoService.save(new CategoriaVideo("Tríceps sural",1, true));
-        if(categoriaVideoService.findOne(8) == null) categoriaVideoService.save(new CategoriaVideo("Tibiales",1, true));
-        if(categoriaVideoService.findOne(9) == null) categoriaVideoService.save(new CategoriaVideo("Tobillos",1, true));
-        if(categoriaVideoService.findOne(10) == null) categoriaVideoService.save(new CategoriaVideo("Plantares",1, true));
-        if(categoriaVideoService.findOne(11) == null) categoriaVideoService.save(new CategoriaVideo("Rotadores",1, true));
-        if(categoriaVideoService.findOne(12) == null) categoriaVideoService.save(new CategoriaVideo("B. Iliotibial",1, true));
+        if(categoriaVideoService.findOne(3) == null) categoriaVideoService.save(new CategoriaVideo("Isquiotibiales",1, true));
+        if(categoriaVideoService.findOne(4) == null) categoriaVideoService.save(new CategoriaVideo("Flexóres de la cadera",1, true));
+        if(categoriaVideoService.findOne(5) == null) categoriaVideoService.save(new CategoriaVideo("Pliométricos",1, true));
+        if(categoriaVideoService.findOne(6) == null) categoriaVideoService.save(new CategoriaVideo("Tríceps sural",1, true));
+        if(categoriaVideoService.findOne(7) == null) categoriaVideoService.save(new CategoriaVideo("Tibiales",1, true));
+        if(categoriaVideoService.findOne(8) == null) categoriaVideoService.save(new CategoriaVideo("Tobillos",1, true));
+        if(categoriaVideoService.findOne(9) == null) categoriaVideoService.save(new CategoriaVideo("Plantares",1, true));
+        if(categoriaVideoService.findOne(10) == null) categoriaVideoService.save(new CategoriaVideo("Rotadores",1, true));
+        if(categoriaVideoService.findOne(11) == null) categoriaVideoService.save(new CategoriaVideo("Tensor y B. Iliotibial",1, true));
+        if(categoriaVideoService.findOne(12) == null) categoriaVideoService.save(new CategoriaVideo("Aductores",1, true));
 
         if(categoriaVideoService.findOne(13) == null) categoriaVideoService.save(new CategoriaVideo("Cuello",2, true));
         if(categoriaVideoService.findOne(14) == null) categoriaVideoService.save(new CategoriaVideo("Deltoides",2, true));
         if(categoriaVideoService.findOne(15) == null) categoriaVideoService.save(new CategoriaVideo("Espalda",2, true));
         if(categoriaVideoService.findOne(16) == null) categoriaVideoService.save(new CategoriaVideo("Pectorales",2, true));
-        if(categoriaVideoService.findOne(17) == null) categoriaVideoService.save(new CategoriaVideo("Flaxóres del codo tríceps",2, true));
-        if(categoriaVideoService.findOne(18) == null) categoriaVideoService.save(new CategoriaVideo("Flaxóres de la cadera recto",2, true));
-        if(categoriaVideoService.findOne(19) == null) categoriaVideoService.save(new CategoriaVideo("Oblicuos",2, true));
-        if(categoriaVideoService.findOne(20) == null) categoriaVideoService.save(new CategoriaVideo("Transverso",2, true));
+        if(categoriaVideoService.findOne(17) == null) categoriaVideoService.save(new CategoriaVideo("Flexores del codo",2, true));
+        if(categoriaVideoService.findOne(18) == null) categoriaVideoService.save(new CategoriaVideo("Tríceps",2, true));
+        if(categoriaVideoService.findOne(19) == null) categoriaVideoService.save(new CategoriaVideo("Core",2, true));
+        if(categoriaVideoService.findOne(20) == null) categoriaVideoService.save(new CategoriaVideo("Braceo",2, true));
+        if(categoriaVideoService.findOne(21) == null) categoriaVideoService.save(new CategoriaVideo("Globales",2, true));
 
-        if(categoriaVideoService.findOne(21) == null) categoriaVideoService.save(new CategoriaVideo("Zancada",3, true));
-        if(categoriaVideoService.findOne(22) == null) categoriaVideoService.save(new CategoriaVideo("Coordinativos Movilidad",3, true));
-        if(categoriaVideoService.findOne(23) == null) categoriaVideoService.save(new CategoriaVideo("Potencia",3, true));
-        if(categoriaVideoService.findOne(24) == null) categoriaVideoService.save(new CategoriaVideo("Postulares",3, true));
-        if(categoriaVideoService.findOne(25) == null) categoriaVideoService.save(new CategoriaVideo("Braceo",3, true));
+        if(categoriaVideoService.findOne(22) == null) categoriaVideoService.save(new CategoriaVideo("Zancada",3, true));
+        if(categoriaVideoService.findOne(23) == null) categoriaVideoService.save(new CategoriaVideo("Coordinativos", 3, true));
+        if(categoriaVideoService.findOne(24) == null) categoriaVideoService.save(new CategoriaVideo("Trotes",3, true));
+        if(categoriaVideoService.findOne(25) == null) categoriaVideoService.save(new CategoriaVideo("Potencia",3, true));
+        if(categoriaVideoService.findOne(26) == null) categoriaVideoService.save(new CategoriaVideo("Postulares",3, true));
+        if(categoriaVideoService.findOne(27) == null) categoriaVideoService.save(new CategoriaVideo("Braceo",3, true));
+        if(categoriaVideoService.findOne(28) == null) categoriaVideoService.save(new CategoriaVideo("ABC", 3, true));
+        if(categoriaVideoService.findOne(29) == null) categoriaVideoService.save(new CategoriaVideo("Piques", 3, true));
 
-        if(categoriaVideoService.findOne(26) == null) categoriaVideoService.save(new CategoriaVideo("Cuello",4, true));
-        if(categoriaVideoService.findOne(27) == null) categoriaVideoService.save(new CategoriaVideo("Brazos",4, true));
-        if(categoriaVideoService.findOne(28) == null) categoriaVideoService.save(new CategoriaVideo("Lumbar",4, true));
-        if(categoriaVideoService.findOne(29) == null) categoriaVideoService.save(new CategoriaVideo("Caderas",4, true));
-        if(categoriaVideoService.findOne(30) == null) categoriaVideoService.save(new CategoriaVideo("Rodillas",4, true));
-        if(categoriaVideoService.findOne(31) == null) categoriaVideoService.save(new CategoriaVideo("Tobillos",4, true));
-        if(categoriaVideoService.findOne(32) == null) categoriaVideoService.save(new CategoriaVideo("Cadenas",4, true));
-        if(categoriaVideoService.findOne(33) == null) categoriaVideoService.save(new CategoriaVideo("Dinámicos",4, true));
-        if(categoriaVideoService.findOne(33) == null) categoriaVideoService.save(new CategoriaVideo("Masajes",4, true));
+        if(categoriaVideoService.findOne(30) == null) categoriaVideoService.save(new CategoriaVideo("Brazos",4, true));
+        if(categoriaVideoService.findOne(31) == null) categoriaVideoService.save(new CategoriaVideo("Cadenas. M.",4, true));
+        if(categoriaVideoService.findOne(32) == null) categoriaVideoService.save(new CategoriaVideo("Caderas",4, true));
+        if(categoriaVideoService.findOne(33) == null) categoriaVideoService.save(new CategoriaVideo("Cervical",4, true));
+        if(categoriaVideoService.findOne(34) == null) categoriaVideoService.save(new CategoriaVideo("Dinámicos",4, true));
+        if(categoriaVideoService.findOne(35) == null) categoriaVideoService.save(new CategoriaVideo("Lumbar",4, true));
+        if(categoriaVideoService.findOne(36) == null) categoriaVideoService.save(new CategoriaVideo("Masajes",4, true));
+        if(categoriaVideoService.findOne(37) == null) categoriaVideoService.save(new CategoriaVideo("Movilidad",4, true));
+        if(categoriaVideoService.findOne(38) == null) categoriaVideoService.save(new CategoriaVideo("Rodilla",4, true));
+        if(categoriaVideoService.findOne(39) == null) categoriaVideoService.save(new CategoriaVideo("Tobillos",4, true));
+
+        if(categoriaVideoService.findOne(40) == null) categoriaVideoService.save(new CategoriaVideo("En pelotas",5, true));
+        if(categoriaVideoService.findOne(41) == null) categoriaVideoService.save(new CategoriaVideo("Miembros superiores",5, true));
+        if(categoriaVideoService.findOne(42) == null) categoriaVideoService.save(new CategoriaVideo("Clásicos",5, true));
     }
 
     public void insertASubCategoriaVideo(){

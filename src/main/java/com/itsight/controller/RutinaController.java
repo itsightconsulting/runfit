@@ -555,6 +555,9 @@ public class RutinaController {
             nR.setMejoras(rutinaDto.getMejoras());
             nR.setDtGrafico(rutinaDto.getDtGrafico());
             nR.setMatrizMejoraVelocidades(rutinaDto.getMatrizMejoraVelocidades());
+            nR.setMatrizMejoraCadencia(rutinaDto.getMatrizMejoraCadencia());
+            nR.setMatrizMejoraTcs(rutinaDto.getMatrizMejoraTcs());
+            nR.setMatrizMejoraLonPaso(rutinaDto.getMatrizMejoraLonPaso());
             ruConsolidadoService.save(nR);
             int[] qSemanaIds = new int[objR.getLstSemana().size()];
             for(int i=0; i<qSemanaIds.length;i++){

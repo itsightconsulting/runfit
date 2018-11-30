@@ -117,7 +117,7 @@ function init(){
         instanciaPerfectScrollBar();
         instanciarTooltips();
         modalEventos();
-        setFechaActual(document.querySelectorAll('input[type="date"]'));
+        //setFechaActual(document.querySelectorAll('input[type="date"]'));
         obtenerSemanasEnviadas();
         calendarioTmp();
 
@@ -135,7 +135,6 @@ function avanzarRetrocederSemana(numSem, action){
             generarDiasEnviados();
         }
     });
-
 }
 
 async function obtenerSemanaInicialRutina(){
@@ -2695,10 +2694,12 @@ function principalesAlCambiarTab(e){
 
     if(e.target.classList.contains('main-tab')){
         document.querySelector('#OpsAdic').classList.remove('hidden');
+        document.querySelector('#demo-setting').classList.remove('hidden');
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
         e.preventDefault();
         document.querySelector('#OpsAdic').classList.add('hidden');
+        document.querySelector('#demo-setting').classList.add('hidden');
         $videosElegidos = [];
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
@@ -2708,6 +2709,7 @@ function principalesAlCambiarTab(e){
         }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
+        document.querySelector('#demo-setting').classList.add('hidden');
         if(document.querySelector('#ArbolRutinario').children.length == 0) {
             spinnerSwitchTab();
             instanciarMiniPlantillas();
@@ -2715,6 +2717,7 @@ function principalesAlCambiarTab(e){
     }
     else if(e.target.tagName === "A"){
         document.querySelector('#OpsAdic').classList.add('hidden');
+        document.querySelector('#demo-setting').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($ruConsolidado == undefined){
                 spinnerSwitchTab();

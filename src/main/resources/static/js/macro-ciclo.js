@@ -209,6 +209,26 @@ FichaSet = (function(){
             proy.querySelector('#TotalTcs1').value = 100;
             proy.querySelector('#TotalTcs2').value = totSems;
 
+            document.querySelector('#MacroFechaInicio').value = getFechaFormatoString($rutina.fechaInicio);
+            document.querySelector('#MacroFechaFin').value = getFechaFormatoString($rutina.fechaFin);
+            document.querySelector('#MacroTotalSemanas').textContent = $rutina.totalSemanas;
+
+            const mVC = JSON.parse(consolidado.matrizMejoraVelocidades);
+            //Métricas detalladas
+            //const pTransito = $baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3;
+            const collapseDetallados = document.querySelector('#collapseDetallados');
+            const detVeloc = collapseDetallados.querySelector('.detallados-velocidades');
+            detVeloc.children.length == 0 ? detVeloc.appendChild(MacroSeccion.velocidadesByDistancia2(mVC)) : detVeloc.children[0].remove() == undefined ? detVeloc.appendChild(MacroSeccion.velocidadesByDistancia2(mVC)) : "";
+            const detCaden = collapseDetallados.querySelector('.detallados-cadencia');
+            const ritmosCadencia = JSON.parse(consolidado.matrizMejoraCadencia);
+            detCaden.children.length == 0 ? detCaden.appendChild(MacroSeccion.cadencia2(ritmosCadencia)) : detCaden.children[0].remove() == undefined ? detCaden.appendChild(MacroSeccion.cadencia2(ritmosCadencia)) : "";
+            const detTcs = collapseDetallados.querySelector('.detallados-tcs');
+            const valoresTCSs = JSON.parse(consolidado.matrizMejoraTcs);
+            detTcs.children.length == 0 ? detTcs.appendChild(MacroSeccion.tcs2(valoresTCSs)) : detTcs.children[0].remove() == undefined ? detTcs.appendChild(MacroSeccion.tcs2(valoresTCSs)) : "";
+            const detLongPaso = collapseDetallados.querySelector('.detallados-long-paso');
+            const longitudesPaso = JSON.parse(consolidado.matrizMejoraLonPaso);
+            detLongPaso.children.length == 0 ? detLongPaso.appendChild(MacroSeccion.longitudPaso2(longitudesPaso)) : detLongPaso.children[0].remove() == undefined ? detLongPaso.appendChild(MacroSeccion.longitudPaso2(longitudesPaso)) : "";
+            document.querySelector('#MetricasDetalladas').classList.remove('hidden');
             //Graficos
             MacroCiclo.instanciarInformacionTemporadaPost();
         }
@@ -567,6 +587,11 @@ MacroCiclo = (function(){
                 r.stats = consolidado.stats;
                 r.mejoras = consolidado.mejoras;
                 r.matrizMejoraVelocidades = consolidado.matrizMejoraVelocidades;
+
+                r.matrizMejoraCadencia = consolidado.matrizMejoraCadencia;
+                r.matrizMejoraTcs = consolidado.matrizMejoraTcs;
+                r.matrizMejoraLonPaso = consolidado.matrizMejoraLonPaso;
+
                 r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
                 for(let i=0; i<cantSemExcedentes;i++){
                     const iBase = r.dtGrafico.length - cantSemExcedentes;
@@ -920,6 +945,26 @@ MacroValidacion = (function(){
 
 MacroSeccion = (function(){
     return {
+        velocidadesByDistancia2: (mVC)=>{
+            //Calculando el porcentaje de mejora de velocidad y seteandolo
+            document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].ind[0].toSeconds())*42)/((mVC[7].ind[(mVC[7].ind.length)-1].toSeconds())*42)))-1)*100,1) + " %";
+            if($rutina.totalSemanas <=12)
+                return htmlStringToElement(`<div style="margin-right: 10px;">
+                    ${mVC[0].ind.map((v,i)=>{
+                    return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                                ${mVC.map((v,ii)=>{
+                        return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
+                    }).join('')}</div></div>`;
+                }).join('')}</div>`);
+            else
+                return htmlStringToElement(`<div style="margin-right: 10px;">
+                    ${mVC[0].ind.map((v,i)=>{
+                    return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'M '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                                ${mVC.map((v,ii)=>{
+                        return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
+                    }).join('')}</div></div>`:'';
+                }).join('')}</div>`);
+        },
         velocidadesByDistancia: (mVC)=>{
             //Calculando el porcentaje de mejora de velocidad y seteandolo
             document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].indicadores[0].p.toSeconds())*42)/((mVC[7].indicadores[(mVC[7].indicadores.length)-1].p.toSeconds())*42)))-1)*100,1) + " %";
@@ -941,33 +986,62 @@ MacroSeccion = (function(){
                                 }).join('')}</div></div>`:'';
                     }).join('')}</div>`);
         },
+        cadencia2: (metricas)=>{
+            const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
+            if($rutina.totalSemanas <=12)
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-cad">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+            else
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${i+1}</div><div class="col col-md-3 col-sm-3 text-align-center mt-perc-cad">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join(''));
+
+        },
         cadencia: (metricas)=>{
             const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1].factor) / metricas[0].factor)-1)*100), 1) + " %";
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-cad">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
             else
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center mt-perc-cad">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
 
+        },
+        tcs2: (metricas)=>{
+            const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
+            if($rutina.totalSemanas <=12)
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-tcs">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+            else
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center mt-perc-tcs">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join(''));
         },
         tcs: (metricas)=>{
             const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1].factor) / metricas[0].factor)-1)*100), 1) + " %";
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-tcs">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
             else
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center mt-perc-tcs">${v.factor}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+        },
+
+        longitudPaso2:  (metricas)=>{
+            const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
+            if($rutina.totalSemanas <=12)
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-lon">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+            else
+                return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-lon">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join(''));
         },
         longitudPaso:  (metricas)=>{
             const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
             if($baseAfterComprobacion.numSem <=12)
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel ">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+                    return `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">S ${(i+1)}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-lon">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
             else
                 return htmlStringToElement('<div class="container-fluid">'+metricas.map((v,i)=>{
-                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
+                    return (i+1)%4 == 0 ? `<div class="container-fluid text-align-center"><div class="col col-md-3 col-sm-3"></div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel">M ${(i+1)/4}</div><div class="col col-md-3 col-sm-3 text-align-center header-met-vel mt-perc-lon">${v}</div><div class="col col-md-3 col-sm-3"></div></div>`:''}).join('') + `<div class="container-fluid text-align-center"><h1 class="padding-10 text-align-right bg-circle-redLight"><span class="badge padding-7 mej-perc font-xs">${porcMejora}</span></h1></div></div>`);
         }
     }
 })();
@@ -1435,7 +1509,16 @@ MacroCicloGet = (function(){
             rutinaData.mejoras.tcsPorcPr = cProy.querySelector('.tcs-calc[data-type="1"][data-index="2"]').value;
 
             rutinaData.grafTemporada = MCGraficoData.paraTemporada($baseAfterComprobacion);
+            //Métricas detalladas
             rutinaData.matrizMejoraVelocidades = JSON.stringify(mVC.map(v=>{return {dist: v.nombre, ind: v.indicadores.map(w=>w.p)}}));
+            const collapseDetallados = document.querySelector('#collapseDetallados');
+            const detCaden = collapseDetallados.querySelector('.detallados-cadencia');
+            rutinaData.matrizMejoraCadencia = JSON.stringify(Array.from(detCaden.querySelectorAll('.mt-perc-cad')).map(v=>v.textContent));
+            const detTcs = collapseDetallados.querySelector('.detallados-tcs');
+            rutinaData.matrizMejoraTcs = JSON.stringify(Array.from(detTcs.querySelectorAll('.mt-perc-tcs')).map(v=>v.textContent));
+            const detLongPaso = collapseDetallados.querySelector('.detallados-long-paso');
+            rutinaData.matrizMejoraLonPaso = JSON.stringify(Array.from(detLongPaso.querySelectorAll('.mt-perc-lon')).map(v=>v.textContent));
+
             return rutinaData;
         },
         obtenerPorcentajesParaActualizacion: (base)=>{

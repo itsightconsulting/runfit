@@ -1,4 +1,5 @@
 const tabPrincipal = document.querySelector('#myTabPrincipal');
+let $objetivosDia;
 const semanas = [];
 var semanaEncontrada = {};
 let $rutina = {};
@@ -15,74 +16,76 @@ $(function () {
     const d = new Date();
     $("#MesAnio").text(monthNames[d.getMonth()] +" "+ d.getFullYear());
 
-    getRutinas();
+    getObjetivos().then((objs)=>{
+        $objetivosDia = objs;
+        getRutinas();
 
-    String.prototype.replaceAll = function(searchStr, replaceStr) {
-        var str = this;
+        String.prototype.replaceAll = function(searchStr, replaceStr) {
+            var str = this;
 
-        // escape regexp special characters in search string
-        searchStr = searchStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            // escape regexp special characters in search string
+            searchStr = searchStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-        return str.replace(new RegExp(searchStr, 'gi'), replaceStr);
-    }
-
-    if (!String.Format) {
-        Semana  = function(format) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            return format.replace(/{(\d+)}/g, function(match, number) {
-                return typeof args[number] != 'undefined'
-                    ? args[number]
-                    : match
-                    ;
-            });
-        };
-    }
-    $("#divQuincena").hide();
-    $(".divMes").hide();
-
-    $('#dayAllSelected').click(function () {
-        if ($(this).prop('checked')) {
-            $(".span-border-dia").removeClass("bg-green-rf");
-            $(".span-border-dia").removeClass("bg-black-rf");
-            $(".span-border-dia").addClass("bg-green-rf");
+            return str.replace(new RegExp(searchStr, 'gi'), replaceStr);
         }
-        else {
+
+        if (!String.Format) {
+            Semana  = function(format) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                return format.replace(/{(\d+)}/g, function(match, number) {
+                    return typeof args[number] != 'undefined'
+                        ? args[number]
+                        : match
+                        ;
+                });
+            };
+        }
+        $("#divQuincena").hide();
+        $(".divMes").hide();
+
+        $('#dayAllSelected').click(function () {
+            if ($(this).prop('checked')) {
+                $(".span-border-dia").removeClass("bg-green-rf");
+                $(".span-border-dia").removeClass("bg-black-rf");
+                $(".span-border-dia").addClass("bg-green-rf");
+            }
+            else {
+                $(".span-border-dia").removeClass("bg-green-rf");
+                $(".span-border-dia").addClass("bg-black-rf");
+                $(".span-lunes").removeClass("bg-black-rf");
+                $(".span-lunes").addClass("bg-green-rf");
+            }
+        });
+
+        $(".span-border").click(function () {
+            $(".span-border").removeClass("bg-green-rf");
+            $(".span-border").addClass("bg-black-rf");
+            $(this).removeClass("bg-black-rf");
+            $(this).addClass("bg-green-rf");
+
+            $(".divMes").hide();
+            $("#divAlldays").hide();
+            $("#divDiario").hide();
+            $("#divQuincena").hide();
+            if($(this).attr("data-id") == 1){
+                $("#divAlldays").show();
+                $("#divDiario").show();
+            }else if($(this).attr("data-id") == 2) {
+                $("#divQuincena").show();
+            }else if($(this).attr("data-id") == 3) {
+                $(".divMes").show();
+                $("#divAlldays").show();
+                $("#divDiario").show();
+            }
             $(".span-border-dia").removeClass("bg-green-rf");
             $(".span-border-dia").addClass("bg-black-rf");
             $(".span-lunes").removeClass("bg-black-rf");
             $(".span-lunes").addClass("bg-green-rf");
-        }
-    });
+        });
+        $(".span-border-dia").click(function () {
+            //var $span = $("span.span-border.bg-green-rf");
 
-    $(".span-border").click(function () {
-        $(".span-border").removeClass("bg-green-rf");
-        $(".span-border").addClass("bg-black-rf");
-        $(this).removeClass("bg-black-rf");
-        $(this).addClass("bg-green-rf");
-
-        $(".divMes").hide();
-        $("#divAlldays").hide();
-        $("#divDiario").hide();
-        $("#divQuincena").hide();
-        if($(this).attr("data-id") == 1){
-            $("#divAlldays").show();
-            $("#divDiario").show();
-        }else if($(this).attr("data-id") == 2) {
-            $("#divQuincena").show();
-        }else if($(this).attr("data-id") == 3) {
-            $(".divMes").show();
-            $("#divAlldays").show();
-            $("#divDiario").show();
-        }
-        $(".span-border-dia").removeClass("bg-green-rf");
-        $(".span-border-dia").addClass("bg-black-rf");
-        $(".span-lunes").removeClass("bg-black-rf");
-        $(".span-lunes").addClass("bg-green-rf");
-    });
-    $(".span-border-dia").click(function () {
-        //var $span = $("span.span-border.bg-green-rf");
-
-        //if($span.attr("data-id") == "1" || $span.attr("data-id") == "3") {
+            //if($span.attr("data-id") == "1" || $span.attr("data-id") == "3") {
             if ($(this).hasClass("bg-green-rf")) {
                 $(this).removeClass("bg-green-rf");
                 $(this).addClass("bg-black-rf");
@@ -96,39 +99,60 @@ $(function () {
                 $(".span-lunes").addClass("bg-green-rf");
             }
 
-        //}else{
-        //    $(".span-border-dia").removeClass("bg-green-rf");
-        //    $(".span-border-dia").addClass("bg-black-rf");
-        //    $(this).removeClass("bg-black-rf");
-        //    $(this).addClass("bg-green-rf");
-        //}
-    });
-
-    $(".span-border-semana").click(function () {
-        $(".span-border-semana").removeClass("bg-green-rf");
-        $(".span-border-semana").addClass("bg-black-rf");
-        $(this).removeClass("bg-black-rf");
-        $(this).addClass("bg-green-rf");
-    });
-
-    $('#modalrendimiento').on('hidden.bs.modal', function () {
-        var result = {};
-        var $dias = [];
-
-        $.each($(".span-border-dia.bg-green-rf"),function(i,item){
-            $dias.push($(this).attr("data-id"));
+            //}else{
+            //    $(".span-border-dia").removeClass("bg-green-rf");
+            //    $(".span-border-dia").addClass("bg-black-rf");
+            //    $(this).removeClass("bg-black-rf");
+            //    $(this).addClass("bg-green-rf");
+            //}
         });
 
-        result.dias = $dias;
+        $(".span-border-semana").click(function () {
+            $(".span-border-semana").removeClass("bg-green-rf");
+            $(".span-border-semana").addClass("bg-black-rf");
+            $(this).removeClass("bg-black-rf");
+            $(this).addClass("bg-green-rf");
+        });
 
-        //console.log(JSON.stringify(result));
-        //console.log($('#dayAvance').val().replace("%",""));
-        GuardarAvanceSemanal(JSON.stringify(result),$('#dayAvance').val().replace("%",""));
+        $('#modalrendimiento').on('hidden.bs.modal', function () {
+            var result = {};
+            var $dias = [];
 
-    });
+            $.each($(".span-border-dia.bg-green-rf"),function(i,item){
+                $dias.push($(this).attr("data-id"));
+            });
 
+            result.dias = $dias;
+
+            //console.log(JSON.stringify(result));
+            //console.log($('#dayAvance').val().replace("%",""));
+            GuardarAvanceSemanal(JSON.stringify(result),$('#dayAvance').val().replace("%",""));
+
+        });
+    })
 });
 
+async function getObjetivos(){
+    return new Promise((resolve, reject)=>{
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'gestion/objetivo/obtenerListado/0/true',
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    resolve(data);
+                }
+            },
+            error: function (xhr) {
+                reject(xhr);
+                exception(xhr);
+            },
+            complete: function () {
+
+            }
+        });
+    })
+}
 
 
 function getRutinas(){
@@ -473,9 +497,15 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
     }
 
     var ka = parseInt(semanaEncontrada.kilometrajeActual);
-    $("#spanKilometrajeSemanal").text(ka + "Km");
-    $("#spanHorasSemanales").text("0h");
-    $("#spanKilometrajeCalorico").text("0Km");
+
+    let kilometrajeCalorico=0, horasSemanales=0;
+    semanaEncontrada.lstDia.forEach((v)=>{
+        kilometrajeCalorico += v.calorias;
+        horasSemanales += v.minutos;
+    });
+    $("#spanKilometrajeSemanal").text(0 + " Km");
+    $("#spanHorasSemanales").text(parseNumberToDecimal((parseFloat(horasSemanales/60)),1) + " h");
+    $("#spanKilometrajeCalorico").text(kilometrajeCalorico + " Kcal");
     $("#spanCaloriasSemanales").text("0");
     generarGrafico(semanaEncontrada);
     //setTimeout(() => {
@@ -567,6 +597,7 @@ function generarGraficoEmpty() {
 }
 
 function GenerarSection(strDia, dia , detalle, dayPast,cssSection ){
+    detalle = detalle != "" && detalle != undefined && detalle != 0 ? $objetivosDia.filter(v=>v.id==detalle)[0].nombre : "";
 return '<div class="col col-sm-2 ' + dayPast  +' '+ cssSection  +'" >\
         <div ><span >'+strDia+'</span><span class="label-dia">\
         <span style="margin: 0;">'+dia+'</span></span>\
