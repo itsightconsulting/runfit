@@ -99,12 +99,6 @@ $(function () {
                 $(".span-lunes").addClass("bg-green-rf");
             }
 
-            //}else{
-            //    $(".span-border-dia").removeClass("bg-green-rf");
-            //    $(".span-border-dia").addClass("bg-black-rf");
-            //    $(this).removeClass("bg-black-rf");
-            //    $(this).addClass("bg-green-rf");
-            //}
         });
 
         $(".span-border-semana").click(function () {
@@ -127,7 +121,7 @@ $(function () {
             //console.log(JSON.stringify(result));
             //console.log($('#dayAvance').val().replace("%",""));
             GuardarAvanceSemanal(JSON.stringify(result),$('#dayAvance').val().replace("%",""));
-
+            CalcularGraficos($('#dayAvance').val().replace("%",""));
         });
     })
 });
@@ -525,8 +519,8 @@ function getDates(startDate, stopDate) {
 
 function generarGrafico(datos) {
 
-    var actual = ((datos.kilometrajeActual / (datos.kilometrajeTotal == 0 ? 100 : datos.kilometrajeTotal))* 100).toFixed(0);
-    var total = 100 - actual;
+    var actual = 0;
+    var total =  100;
 
     Morris.Donut({
         element: 'graphCumplimiento',
@@ -844,7 +838,40 @@ function IrActualizarAvance() {
     $("#modalrendimiento").modal('show');
 }
 
+function CalcularGraficos(valor){
 
+    $("#graphCumplimiento").html("");
+    $("#graphKilometraje").html("");
+
+    let totalSemana = 100 - valor;
+    let totalGeneral = semanas.length * 100;
+    let valorTotalSemanas = valor/totalGeneral * 100;
+    let totalGeneralPorcentaje = 100 - valorTotalSemanas;
+
+    Morris.Donut({
+        element: 'graphCumplimiento',
+        data: [
+            {value: valor, label: 'Cumplido'},
+            {value: totalSemana, label: 'Restante'},
+        ],
+        colors : color_array,
+        formatter: function (x) { return x + "%"}
+    }).on('click', function(i, row){
+        console.log(i, row);
+    });
+
+    Morris.Donut({
+        element: 'graphKilometraje',
+        data: [
+            {value: valorTotalSemanas.toFixed(0), label: 'Cumplido'},
+            {value: totalGeneralPorcentaje.toFixed(0), label: 'Restante'},
+        ],
+        colors : color_array,
+        formatter: function (x) { return x + "%"}
+    }).on('click', function(i, row){
+        console.log(i, row);
+    });
+}
 
 
 
