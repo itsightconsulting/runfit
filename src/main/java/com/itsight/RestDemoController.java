@@ -1,25 +1,27 @@
 package com.itsight;
 
-import com.itsight.domain.RuConsolidado;
-import com.itsight.service.RuConsolidadoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/rest")
 public class RestDemoController {
 
-    @Autowired
+    /*@Autowired
     private RuConsolidadoService ruConsolidadoService;
 
     @GetMapping("/presentacion")
     public @ResponseBody
     RuConsolidado getConsolidadoRutina() {
         return ruConsolidadoService.findOneWithFT(1);
-    }
+    }*/
 /*
     @Autowired
     private ProductoPresentacionService proPresentacionService;
@@ -137,4 +139,19 @@ public class RestDemoController {
     public @ResponseBody List<PorcentajesKilometraje> obtenerPorceKiloByTrainerId(HttpSession session) {
         return porcentajesKilometrajeService.findAllByUsuarioId((int) session.getAttribute("id"));
     }*/
+
+    @GetMapping("/sp")
+    public @ResponseBody String obtenerPorceKiloByTrainerId() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        final SimpleJdbcCall updateEmployeeCall = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_employee");
+        final Map<String, Object> params = new HashMap<>();
+        params.put("p_id", null);
+        params.put("p_name", "John");
+        params.put("p_age", 28);
+        params.put("p_salary", 150000);
+
+        final Map<String, Object> result = updateEmployeeCall.execute(params);
+        System.out.println(result.get("returnvalue"));
+        return "1";
+    }
 }

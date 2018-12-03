@@ -2793,7 +2793,6 @@ function updateAudioFavoritos() {
         dataType: "json",
         success: function (data) {
             if(data != null){
-                console.log(data);
                 let listaAudios = [];
                 let listaVideos = [];
                 $.each(data,function (i,item) {

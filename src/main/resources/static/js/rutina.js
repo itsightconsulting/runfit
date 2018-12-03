@@ -617,7 +617,9 @@ RutinaOpc = (function(){
             let ops = "";
             for(let i=0; i<totalSemanas;i++){
                 if(i != semActual)
-                    ops+= `<option value="${i}">Semana ${i+1}</option>`
+                    ops+= `<option value="${i}">${i+1} | ${$rutina.semanas[i].fechaInicio.toDateString()}</option>`
+                else
+                    ops+= `<option value="${i}" disabled="disabled">${i+1} | ${$rutina.semanas[i].fechaInicio.toDateString()}</option>`
             }
             return `<form style='min-width:170px' class=''>
                         <div class='input-group input-group-sm'>
