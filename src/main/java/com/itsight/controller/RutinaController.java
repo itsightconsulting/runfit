@@ -570,6 +570,20 @@ public class RutinaController {
         return ResponseCode.EX_GENERIC.get();
     }
 
+    @PutMapping(value = "/metricas/velocidad/actualizar")
+    public @ResponseBody String actualizarMetricasVelocidad(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestParam(name = "mVz") String mVz, HttpSession session){
+        int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
+        int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+        String codTrainer = session.getAttribute("codTrainer").toString();
+        String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+        if(codTrainer.equals(qCodTrainer)) {
+            int rutinaId = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
+            ruConsolidadoService.updateMatrizMejoraVelocidades(rutinaId, mVz);
+
+        }
+        return ResponseCode.ACTUALIZACION.get();
+    }
+
     @PutMapping(value = "/semana-completa/actualizar/{semIxDesde}/{semIxPara}")
     public @ResponseBody String actualizarSemanaCompletaDesdeOtra(@PathVariable int semIxDesde, @PathVariable int semIxPara, HttpSession session){
         semIxDesde = ((int[]) session.getAttribute("semanaIds"))[semIxDesde];

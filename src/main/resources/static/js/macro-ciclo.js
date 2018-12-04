@@ -171,7 +171,7 @@ FichaSet = (function(){
             stats.lpcs.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.lpcs')[i].value = v== "0" ? 0 : v);
 
             const proy = FichaDOMQueries.getProyecciones();
-            const totSems = mejoras.semGe + mejoras.semGe + mejoras.semGe;
+            const totSems = mejoras.semGe + mejoras.semEs + mejoras.semPr;
             proy.querySelector('.periodizacion-calc[data-index="0"]').value = mejoras.porcGe;
             proy.querySelector('.periodizacion-calc[data-index="1"]').value = mejoras.porcEs;
             proy.querySelector('.periodizacion-calc[data-index="2"]').value = mejoras.porcPr;
@@ -962,7 +962,7 @@ MacroSeccion = (function(){
             document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].ind[0].toSeconds())*42)/((mVC[7].ind[(mVC[7].ind.length)-1].toSeconds())*42)))-1)*100,1) + " %";
             const rgs= `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc">
                             <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
-                                <div class="padding-bottom-5 hd-column">Regulador</div>
+                                <div class="padding-bottom-5 hd-column">R</div>
                             </div>
                          </div>
                          <div class="col col-md-11 col-sm-11">
@@ -972,7 +972,7 @@ MacroSeccion = (function(){
                                         <div>
                                             <span class="padding-5 text-align-left">
                                             <input type="text" class="slider metrica slider-success" value="" data-slider-min="0" 
-                                                                data-slider-max="100" data-slider-step="1" data-slider-value="50" 
+                                                                data-slider-max="100" data-slider-step="0.25" data-slider-value="50" 
                                                                 data-slider-orientation="horizontal" data-slider-selection="after" 
                                                                 data-slider-handle="round" data-slider-tooltip="hide" data-index="${i+1}"/>
                                             </span>
@@ -985,7 +985,7 @@ MacroSeccion = (function(){
                     ${mVC[0].ind.map((v,i)=>{
                     return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
-                        return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
+                        return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
                     }).join('')}</div></div>`;
                 }).join('')}${rgs}</div>`);
             else
@@ -993,7 +993,7 @@ MacroSeccion = (function(){
                     ${mVC[0].ind.map((v,i)=>{
                     return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'M '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
-                        return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
+                        return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
                     }).join('')}</div></div>`:'';
                 }).join('')}${rgs}</div>`);
         },

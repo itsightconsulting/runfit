@@ -107,4 +107,9 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
     public void actualizarFlagActivoById(int id, boolean flagActivo) {
 
     }
+
+    @Override
+    public void updateMatrizMejoraVelocidades(int rutinaId, String mVz) {
+        repository.updateMatrizMejoraVelocidades(rutinaId, mVz);
+    }
 }

@@ -68,6 +68,7 @@ const nivelAtletaRdBtn = document.querySelector('#NivelAtleta');
 const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
 const fInitMacro = document.querySelector('#MacroFechaInicio');
 const fFinMacro = document.querySelector('#MacroFechaFin');
+const btnActualizarMvz = document.querySelector('#btnActualizarMvz');
 
 $(function () {
     init();
@@ -100,6 +101,7 @@ function init(){
         cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla);
         selectorFzEditor.addEventListener('change', ajustarFuenteElemento);
         btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
+        btnActualizarMvz.addEventListener('click', actualizarMetricasVelocidadBD);
         shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         miniEditor.addEventListener('click', principalesMiniEditor);
@@ -2844,6 +2846,31 @@ async function obtenerObjetivosDiaBD() {
             complete: function () {
             }
         })
+    })
+}
+
+function actualizarMetricasVelocidadBD(){
+    //FALTA ACTUALIZAR LAS VELOCIDADES POR CADA SEMANA DE RUTINA Y FALTA VER EL FLUJO ALTERNO CUANDO LAS METRICAS SON AGRUPADAS POR MESES
+    const id = getParamFromURL('key');
+    const rn = getParamFromURL('rn');
+
+    const nVelsArr = [{dist: "200 m", ind: []}, {dist: "400 m", ind: []}, {dist: "800 m", ind: []}, {dist: "1 KM", ind: []}, {dist: "10 KM", ind: []}, {dist: "15 KM", ind: []}, {dist: "21 KM", ind: []}, {dist: "42 KM", ind: []}];
+    Array.from(document.querySelector('#MetricasDetalladas .detallados-velocidades').firstElementChild.querySelectorAll('.col-md-11')).slice(0,-1).forEach(v=>{v.querySelectorAll('.col-md-3').forEach((v,i)=>{ nVelsArr[i].ind.push(v.textContent.trim()); }) })
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+        url: _ctx + "gestion/rutina/metricas/velocidad/actualizar?key="+id + "&rn="+rn,
+        data: {mVz: JSON.stringify(nVelsArr)},
+        dataType: "json",
+        success: function () {
+            document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((nVelsArr[7].ind[0].toSeconds())*42)/((nVelsArr[7].ind[(nVelsArr[7].ind.length)-1].toSeconds())*42)))-1)*100,1) + " %";
+            $.smallBox({content: '<i>Las métricas de velocidades han sido actuaizadas satisfactoriamente...</i>'});
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
     })
 }
 
