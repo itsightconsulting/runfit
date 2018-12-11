@@ -239,8 +239,6 @@ function principalesEventosFocusOutTabFichaTecnica(e){
 }
 
 function guardarRutina(rutina, btn){
-    console.log(rutina);
-    $(btn).button('loading');
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
     $.ajax({
@@ -258,6 +256,9 @@ function guardarRutina(rutina, btn){
         error: function (xhr) {
             exception(xhr);
         },
-        complete: function () {}
+        complete: function () {
+            btn.removeAttribute("disabled");
+        }
     })
+    btn.removeAttribute("disabled");
 }

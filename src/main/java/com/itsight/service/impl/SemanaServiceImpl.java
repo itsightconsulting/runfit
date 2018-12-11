@@ -114,4 +114,9 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     public void actualizarObjetivos(int id, String objetivos) {
         repository.updateObjetivoById(id, objetivos);
     }
+
+    @Override
+    public void actualizarMetsVelocidadesMultiple(String ids, String metsVel) {
+        repository.actualizarMetsVelocidadByIds(ids, metsVel);
+    }
 }

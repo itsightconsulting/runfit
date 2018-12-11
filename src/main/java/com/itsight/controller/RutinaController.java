@@ -10,6 +10,7 @@ import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.domain.jsonb.SubElemento;
+import com.itsight.domain.pojo.MetricaVelPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -571,7 +573,7 @@ public class RutinaController {
     }
 
     @PutMapping(value = "/metricas/velocidad/actualizar")
-    public @ResponseBody String actualizarMetricasVelocidad(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestParam(name = "mVz") String mVz, HttpSession session){
+    public @ResponseBody String actualizarMetricasVelocidad(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestParam(name = "mVz") String mVz, HttpSession session) throws IOException{
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         String codTrainer = session.getAttribute("codTrainer").toString();
@@ -579,8 +581,32 @@ public class RutinaController {
         if(codTrainer.equals(qCodTrainer)) {
             int rutinaId = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
             ruConsolidadoService.updateMatrizMejoraVelocidades(rutinaId, mVz);
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        MetricaVelPOJO[] pojos = objectMapper.readValue(mVz, MetricaVelPOJO[].class);
+        List<MetricaVelPOJO> lstMetricaVel = Arrays.asList(pojos);
+        StringBuilder builderVels = new StringBuilder();
+        int iteBase = lstMetricaVel.get(0).getInd().length;
+        for(int i=0; i<iteBase; i++){
+
+            //"[{"parcial":"00:00:48"},{"parcial":"00:01:47"}]"
+            builderVels.append("[");
+
+            String trick = "";
+            for (MetricaVelPOJO vel: lstMetricaVel) {
+                builderVels.append(trick);
+                trick = ",";
+                builderVels.append("{");
+                builderVels.append("\"parcial\":");
+                builderVels.append("\"" +vel.getInd()[i] + "\"");
+                builderVels.append("}");
+
+            }
+            builderVels.append("] ");//Importante el espacio
 
         }
+        int[] ids = Arrays.copyOfRange((int[])session.getAttribute("semanaIds"), 0, iteBase);
+        semanaService.actualizarMetsVelocidadesMultiple(Arrays.toString(ids).substring(1, Arrays.toString(ids).length()-1), builderVels.substring(0, builderVels.length()-1));
         return ResponseCode.ACTUALIZACION.get();
     }
 

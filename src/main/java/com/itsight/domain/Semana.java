@@ -87,8 +87,9 @@ public class Semana {
     @Column
     private String metricas;
 
-    @Lob
-    @Column
+    //@Lob
+    //@Type(type="org.hibernate.type.StringClobType")
+    @Column(columnDefinition = "text")
     private String metricasVelocidad;
 
     @Column

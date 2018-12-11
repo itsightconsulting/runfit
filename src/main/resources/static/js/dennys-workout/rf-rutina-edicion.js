@@ -2849,29 +2849,40 @@ async function obtenerObjetivosDiaBD() {
     })
 }
 
-function actualizarMetricasVelocidadBD(){
-    //FALTA ACTUALIZAR LAS VELOCIDADES POR CADA SEMANA DE RUTINA Y FALTA VER EL FLUJO ALTERNO CUANDO LAS METRICAS SON AGRUPADAS POR MESES
-    const id = getParamFromURL('key');
-    const rn = getParamFromURL('rn');
-
-    const nVelsArr = [{dist: "200 m", ind: []}, {dist: "400 m", ind: []}, {dist: "800 m", ind: []}, {dist: "1 KM", ind: []}, {dist: "10 KM", ind: []}, {dist: "15 KM", ind: []}, {dist: "21 KM", ind: []}, {dist: "42 KM", ind: []}];
-    Array.from(document.querySelector('#MetricasDetalladas .detallados-velocidades').firstElementChild.querySelectorAll('.col-md-11')).slice(0,-1).forEach(v=>{v.querySelectorAll('.col-md-3').forEach((v,i)=>{ nVelsArr[i].ind.push(v.textContent.trim()); }) })
-
-    $.ajax({
-        type: "PUT",
-        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-        url: _ctx + "gestion/rutina/metricas/velocidad/actualizar?key="+id + "&rn="+rn,
-        data: {mVz: JSON.stringify(nVelsArr)},
-        dataType: "json",
-        success: function () {
-            document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((nVelsArr[7].ind[0].toSeconds())*42)/((nVelsArr[7].ind[(nVelsArr[7].ind.length)-1].toSeconds())*42)))-1)*100,1) + " %";
-            $.smallBox({content: '<i>Las métricas de velocidades han sido actuaizadas satisfactoriamente...</i>'});
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {}
-    })
+function actualizarMetricasVelocidadBD(e){
+    if(!e.target.parentElement.hasAttribute("disabled")){
+        e.target.parentElement.setAttribute("disabled", "disabled");
+        //FALTA ACTUALIZAR LAS VELOCIDADES POR CADA SEMANA DE RUTINA Y FALTA VER EL FLUJO ALTERNO CUANDO LAS METRICAS SON AGRUPADAS POR MESES
+        const id = getParamFromURL('key');
+        const rn = getParamFromURL('rn');
+        const contBase = document.querySelector('#MetricasDetalladas .detallados-velocidades');
+        const nVelsArr = [{dist: "200 m", ind: []}, {dist: "400 m", ind: []}, {dist: "800 m", ind: []}, {dist: "1 KM", ind: []}, {dist: "10 KM", ind: []}, {dist: "15 KM", ind: []}, {dist: "21 KM", ind: []}, {dist: "42 KM", ind: []}];
+        Array.from(contBase.firstElementChild.querySelectorAll('.col-md-11')).slice(0,-1).forEach(v=>{v.querySelectorAll('.col-md-3').forEach((v,i)=>{ nVelsArr[i].ind.push(v.textContent.trim()); }) })
+        console.log(nVelsArr);
+        $.ajax({
+            type: "PUT",
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            url: _ctx + "gestion/rutina/metricas/velocidad/actualizar?key="+id + "&rn="+rn,
+            data: {mVz: JSON.stringify(nVelsArr)},
+            dataType: "json",
+            success: function () {
+                const porcMejora = parseNumberToDecimal(nVelsArr.map((v,i)=>{
+                    return Number(parseNumberToDecimal((((((nVelsArr[i].ind[0].toSeconds())*$ruConsolidado.general.distancia)/((nVelsArr[i].ind[(nVelsArr[i].ind.length)-1].toSeconds())*$ruConsolidado.general.distancia)))-1)*100,1))
+                }).reduce((a,b)=>a+b, 1)/nVelsArr.length,1);
+                document.querySelector('#PorcMejoraVel').textContent = porcMejora + " %";
+                $ruConsolidado.matrizMejoraVelocidades = JSON.stringify(nVelsArr);
+                contBase.querySelectorAll('.slider-handle.round').forEach(v=>{v.style.left = "50%";});
+                contBase.querySelectorAll('.slider-track .slider-selection').forEach(v=>{v.style.left = "50%";v.style.width = "50%";});
+                $.smallBox({content: '<i>Las métricas de velocidades han sido actuaizadas satisfactoriamente...</i>'});
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+                setTimeout(()=>e.target.parentElement.removeAttribute("disabled"), 1000);
+            }
+        })
+    }
 }
 
 function actualizarDiaObjetivoBD(a, b){

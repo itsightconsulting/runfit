@@ -515,7 +515,9 @@ MacroCiclo = (function(){
                 document.querySelector('#DistanciaCompetencia').value = rdbVal;
         },
         generarRutinaCompleta: (e)=>{//Flujo básico
-            if($('#frm_registro').valid() && $('#KilometrajePromedioSemanal').val() != ""){
+            const btnGuardar = e.target;
+            if($('#frm_registro').valid() && $('#KilometrajePromedioSemanal').val() != "" && !btnGuardar.hasAttribute("disabled")){
+                btnGuardar.setAttribute("disabled", "disabled");
                 const $chelmoMacro = [];
                 //Semanas
                 const numSemBase = FichaGet.obtenerBase().numSem;
@@ -609,7 +611,7 @@ MacroCiclo = (function(){
                     const iBase = r.dtGrafico.length - cantSemExcedentes;
                     r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
                 }
-                guardarRutina(r, (btn = e.target));
+                guardarRutina(r, btnGuardar);
             } else {
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }
@@ -959,7 +961,10 @@ MacroSeccion = (function(){
     return {
         velocidadesByDistancia2: (mVC)=>{
             //Calculando el porcentaje de mejora de velocidad y seteandolo
-            document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].ind[0].toSeconds())*42)/((mVC[7].ind[(mVC[7].ind.length)-1].toSeconds())*42)))-1)*100,1) + " %";
+            const porcMejora = parseNumberToDecimal(mVC.map((v,i)=>{
+                return Number(parseNumberToDecimal((((((mVC[i].ind[0].toSeconds())*$ruConsolidado.general.distancia)/((mVC[i].ind[(mVC[i].ind.length)-1].toSeconds())*$ruConsolidado.general.distancia)))-1)*100,1))
+            }).reduce((a,b)=>a+b, 1)/mVC.length,1);
+            document.querySelector('#PorcMejoraVel').textContent = porcMejora + " %";
             const rgs= `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc">
                             <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 <div class="padding-bottom-5 hd-column">R</div>
