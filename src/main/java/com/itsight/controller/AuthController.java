@@ -33,7 +33,7 @@ public class AuthController {
                 model.addAttribute("error", "error");
             }
         }
-        return "login";
+        return ViewConstant.LOGIN;
     }
 
     //	@PreAuthorize("hasAnyRole({'ADMIN','USER'}) or hasAuthority('READ_PRIVILEGE')")

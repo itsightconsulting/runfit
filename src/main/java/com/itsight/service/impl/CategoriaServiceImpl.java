@@ -4,10 +4,13 @@ import com.itsight.domain.Categoria;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.CategoriaRepository;
 import com.itsight.service.CategoriaService;
+import com.itsight.util.Enums;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.itsight.util.Utilitarios.customResponse;
 
 @Service
 @Transactional
@@ -116,13 +119,17 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     @Override
     public String registrar(Categoria entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        return customResponse(Enums.ResponseCode.REGISTRO.get(), String.valueOf(repository.save(entity).getId()));
     }
 
     @Override
     public String actualizar(Categoria entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        Categoria qCategoria = repository.findOne(entity.getId());
+        entity.setRutaReal(qCategoria.getRutaReal());
+        entity.setRutaWeb(qCategoria.getRutaWeb());
+        entity.setUuid(qCategoria.getUuid());
+        return customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(entity.getId()));
     }
 
     @Override

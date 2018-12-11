@@ -3,7 +3,7 @@ package com.itsight.controller;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CapacidadMejora;
 import com.itsight.service.CapacidadMejoraService;
-import com.itsight.util.Enums;
+import com.itsight.util.Enums.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+
+import static com.itsight.util.Utilitarios.customResponse;
 
 @Controller
 @RequestMapping("/gestion/capacidad-mejora")
@@ -54,11 +56,11 @@ public class CapacidadMejoraController {
     String nuevo(@ModelAttribute CapacidadMejora capacidadMejora) {
         if (capacidadMejora.getId() == 0) {
             capacidadMejoraService.save(capacidadMejora);
-            return Enums.ResponseCode.REGISTRO.get()+","+String.valueOf(capacidadMejora.getId());
-        } else {
-            capacidadMejoraService.update(capacidadMejora);
-            return Enums.ResponseCode.ACTUALIZACION.get()+","+String.valueOf(capacidadMejora.getId());
+            return customResponse(ResponseCode.REGISTRO.get(), String.valueOf(capacidadMejora.getId()));
         }
+        capacidadMejoraService.update(capacidadMejora);
+        return customResponse(ResponseCode.ACTUALIZACION.get(), String.valueOf(capacidadMejora.getId()));
+
     }
 
     @PutMapping(value = "/desactivar")
@@ -66,9 +68,9 @@ public class CapacidadMejoraController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             capacidadMejoraService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return ResponseCode.EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return ResponseCode.EX_GENERIC.get();
         }
     }
 }

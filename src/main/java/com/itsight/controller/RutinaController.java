@@ -44,10 +44,6 @@ public class RutinaController {
 
     private DiaService diaService;
 
-    private TipoAudioService tipoAudioService;
-
-    private CategoriaEjercicioService categoriaEjercicioService;
-
     private RutinaPlantillaService rutinaPlantillaService;
 
     private RedFitnessService redFitnessService;
@@ -55,10 +51,6 @@ public class RutinaController {
     private SemanaService semanaService;
 
     private EmailService emailService;
-
-    private VideoService videoService;
-
-    private CategoriaService categoriaService;
 
     private VideoAudioFavoritoService videoAudioFavoritoService;
 
@@ -68,17 +60,13 @@ public class RutinaController {
     private String domainName;
 
     @Autowired
-    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService, VideoService videoService, CategoriaService categoriaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
+    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.rutinaService = rutinaService;
         this.diaService = diaService;
-        this.tipoAudioService = tipoAudioService;
-        this.categoriaEjercicioService = categoriaEjercicioService;
         this.redFitnessService = redFitnessService;
         this.emailService = emailService;
         this.semanaService = semanaService;
-        this.videoService = videoService;
-        this.categoriaService = categoriaService;
         this.usuarioService = usuarioService;
         this.videoAudioFavoritoService = videoAudioFavoritoService;
         this.ruConsolidadoService = ruConsolidadoService;
@@ -209,19 +197,6 @@ public class RutinaController {
         int semanaId = ((Integer[]) session.getAttribute("rpSemanaIds"))[Integer.parseInt(ixSem)];
         return ResponseCode.REGISTRO.get();
     }
-
-    /*@PutMapping(value = "/elemento/actualizar")
-    public @ResponseBody String actualizarElemento(
-            @RequestParam String nombre,
-            @RequestParam String numeroSemana,
-            @RequestParam String diaIndice,
-            @RequestParam String listaIndice,
-            @RequestParam String elementoIndice, HttpSession session){
-        int semanaId = ((Integer[]) session.getAttribute("rpSemanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.actualizarNombreElementoByListaIndexAndElementoIndexAndId(diaId, Integer.parseInt(listaIndice), Integer.parseInt(elementoIndice), nombre);
-        return ResponseCode.ACTUALIZACION.get();
-    }*/
 
     @PostMapping(value = "/elemento/agregar")
     public @ResponseBody String agregarNuevoElemento(

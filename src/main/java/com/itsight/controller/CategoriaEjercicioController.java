@@ -7,6 +7,7 @@ import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.service.CategoriaEjercicioService;
 import com.itsight.util.Enums;
+import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +52,7 @@ public class CategoriaEjercicioController {
     public @ResponseBody
     List<CategoriaEjercicio> listarConFiltro(
             @PathVariable("comodin") String comodin,
-            @PathVariable("estado") String estado) throws JsonProcessingException {
+            @PathVariable("estado") String estado) {
         return categoriaEjercicioService.listarPorFiltro(comodin, estado, null);
     }
 
@@ -65,15 +66,9 @@ public class CategoriaEjercicioController {
     public @ResponseBody
     String nuevo(@ModelAttribute CategoriaEjercicio categoriaEjercicio) {
         if (categoriaEjercicio.getId() == 0) {
-            categoriaEjercicio.setForest(1);//Padre-artificio|Valor final
-            return Enums.ResponseCode.REGISTRO.get()+","+String.valueOf(categoriaEjercicioService.save(categoriaEjercicio).getId());
+            return categoriaEjercicioService.registrar(categoriaEjercicio, null);
         }
-        categoriaEjercicio.setForest(1);//Padre-artificio|Valor final
-        CategoriaEjercicio qCatEjercicio = categoriaEjercicioService.findOne(categoriaEjercicio.getId());
-        categoriaEjercicio.setRutaWeb(qCatEjercicio.getRutaWeb());
-        categoriaEjercicio.setRutaReal(qCatEjercicio.getRutaReal());
-        categoriaEjercicioService.update(categoriaEjercicio);
-        return Enums.ResponseCode.ACTUALIZACION.get()+","+categoriaEjercicio.getId();
+        return categoriaEjercicioService.actualizar(categoriaEjercicio, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -81,9 +76,9 @@ public class CategoriaEjercicioController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             categoriaEjercicioService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return ResponseCode.EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return ResponseCode.EX_GENERIC.get();
         }
     }
 
@@ -92,12 +87,10 @@ public class CategoriaEjercicioController {
     String guardarArchivo(
             @RequestPart MultipartFile imagen,
             @RequestParam(value = "categoriaId") Integer categoriaId) {
-
         if (imagen != null) {
             guardarFile(imagen, categoriaId);
         }
-        return "1";
-
+        return ResponseCode.EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int categoriaId) {

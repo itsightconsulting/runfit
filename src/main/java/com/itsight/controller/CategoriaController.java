@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+import static com.itsight.util.Enums.ResponseCode;
+
 
 @Controller
 @RequestMapping("/gestion/categoria")
@@ -69,15 +70,9 @@ public class CategoriaController {
     public @ResponseBody
     String nuevo(@ModelAttribute Categoria categoria) {
         if (categoria.getId() == 0) {
-            categoriaService.save(categoria);
-            return String.valueOf(categoria.getId());
+            return categoriaService.registrar(categoria, null);
         }
-        Categoria qCategoria = categoriaService.findOne(categoria.getId());
-        categoria.setRutaReal(qCategoria.getRutaReal());
-        categoria.setRutaWeb(qCategoria.getRutaWeb());
-        categoria.setUuid(qCategoria.getUuid());
-        categoriaService.update(categoria);
-        return String.valueOf(categoria.getId());
+        return categoriaService.actualizar(categoria, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -85,9 +80,9 @@ public class CategoriaController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             categoriaService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return ResponseCode.EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return ResponseCode.EX_GENERIC.get();
         }
     }
 
@@ -100,8 +95,7 @@ public class CategoriaController {
         if (imagen != null) {
             guardarFile(imagen, categoriaId);
         }
-        return "1";
-
+        return ResponseCode.EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int categoriaId) {

@@ -2,7 +2,6 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.itsight.controller.BagForest;
 import com.itsight.util.EntityVisitor;
 import com.itsight.util.Identifiable;
 import lombok.Data;

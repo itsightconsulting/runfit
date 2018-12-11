@@ -132,13 +132,13 @@ public class AudioServiceImpl extends BaseServiceImpl<AudioRepository> implement
     @Override
     public String registrar(Audio entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        return String.valueOf(repository.save(entity).getId());
     }
 
     @Override
     public String actualizar(Audio entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        return String.valueOf(repository.saveAndFlush(entity).getId());
     }
 
     @Override

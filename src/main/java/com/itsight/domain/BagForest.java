@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.itsight.controller;
+package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.itsight.domain.CategoriaEjercicio;
-import com.itsight.domain.GrupoVideo;
 import com.itsight.util.EntityVisitor;
 import com.itsight.util.Identifiable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.itsight.repository;
 
-import com.itsight.controller.BagForest;
+import com.itsight.domain.BagForest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

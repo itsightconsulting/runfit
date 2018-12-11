@@ -4,6 +4,8 @@ import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.CategoriaEjercicioRepository;
 import com.itsight.service.CategoriaEjercicioService;
+import com.itsight.util.Enums;
+import com.itsight.util.Utilitarios;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,13 +117,19 @@ public class CategoriaEjercicioServiceImpl extends BaseServiceImpl<CategoriaEjer
     @Override
     public String registrar(CategoriaEjercicio entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        entity.setForest(1);//Padre-artificio|Valor final
+        return Utilitarios.customResponse(Enums.ResponseCode.REGISTRO.get(), String.valueOf(repository.save(entity).getId()));
     }
 
     @Override
     public String actualizar(CategoriaEjercicio entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        entity.setForest(1);//Padre-artificio|Valor final
+        CategoriaEjercicio qCatEjercicio = repository.findOne(entity.getId());
+        entity.setRutaWeb(qCatEjercicio.getRutaWeb());
+        entity.setRutaReal(qCatEjercicio.getRutaReal());
+        repository.saveAndFlush(entity);
+        return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(repository.save(entity).getId()));
     }
 
     @Override

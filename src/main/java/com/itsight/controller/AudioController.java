@@ -1,9 +1,7 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Audio;
-import com.itsight.domain.TipoAudio;
 import com.itsight.service.AudioService;
 import com.itsight.service.TipoAudioService;
 import com.itsight.util.Utilitarios;
@@ -22,6 +20,8 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
+import static com.itsight.util.Enums.ResponseCode;
+
 @Controller
 @RequestMapping("/gestion/audio")
 public class AudioController {
@@ -37,7 +37,6 @@ public class AudioController {
     public AudioController(AudioService audioService,
                            TipoAudioService tipoAudioService) {
         // TODO Auto-generated constructor stub
-        this.mainRoute = mainRoute;
         this.audioService = audioService;
         this.tipoAudioService = tipoAudioService;
     }
@@ -76,16 +75,13 @@ public class AudioController {
     public @ResponseBody
     String nuevo(@ModelAttribute Audio audio, String tipoAudioId) {
         audio.setTipoAudio(Integer.parseInt(tipoAudioId));
-        if (audio.getId() == 0) {
-            audioService.save(audio);
-            return String.valueOf(audio.getId());
-        } else {
-            Audio qAudio = audioService.findOne(audio.getId());
-            audio.setRutaWeb(qAudio.getRutaWeb());
-            audio.setRutaReal(qAudio.getRutaReal());
-            audioService.update(audio);
-            return String.valueOf(audio.getId());
-        }
+        if (audio.getId() == 0)
+            return audioService.registrar(audio, null);
+        Audio qAudio = audioService.findOne(audio.getId());
+        audio.setRutaWeb(qAudio.getRutaWeb());
+        audio.setRutaReal(qAudio.getRutaReal());
+        return audioService.actualizar(audio, null);
+
     }
 
     @PutMapping(value = "/desactivar")
@@ -93,9 +89,9 @@ public class AudioController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             audioService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return ResponseCode.EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return ResponseCode.EX_GENERIC.get();
         }
     }
 
@@ -104,11 +100,10 @@ public class AudioController {
     String guardarArchivo(
             @RequestPart MultipartFile audio,
             @RequestParam Integer audioId) {
-
         if (audio != null) {
             guardarFile(audio, audioId);
         }
-        return "1";
+        return ResponseCode.EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int audioId) {
