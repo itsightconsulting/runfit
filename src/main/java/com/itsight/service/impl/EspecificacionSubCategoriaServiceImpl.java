@@ -3,19 +3,27 @@ package com.itsight.service.impl;
 import com.itsight.domain.EspecificacionSubCategoria;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
+import com.itsight.repository.MiniPlantillaRepository;
 import com.itsight.service.EspecificacionSubCategoriaService;
+import com.itsight.service.MiniPlantillaService;
+import com.itsight.util.Enums;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Service
 @Transactional
 public class EspecificacionSubCategoriaServiceImpl extends BaseServiceImpl<EspecificacionSubCategoriaRepository> implements EspecificacionSubCategoriaService {
 
+    private MiniPlantillaRepository miniPlantillaRepository;
 
-    public EspecificacionSubCategoriaServiceImpl(EspecificacionSubCategoriaRepository repository) {
+    public EspecificacionSubCategoriaServiceImpl(EspecificacionSubCategoriaRepository repository, MiniPlantillaRepository miniPlantillaRepository) {
         super(repository);
+        this.miniPlantillaRepository = miniPlantillaRepository;
         // TODO Auto-generated constructor stub
     }
 
@@ -128,13 +136,23 @@ public class EspecificacionSubCategoriaServiceImpl extends BaseServiceImpl<Espec
     @Override
     public String registrar(EspecificacionSubCategoria entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        List<Integer> ids = new ArrayList<>();
+        for (int i=1; i<4;i++){
+            EspecificacionSubCategoria obj = new EspecificacionSubCategoria(entity.getNombre(), Integer.parseInt(wildcard), i);
+            repository.save(obj);
+            ids.add(obj.getId());
+        }
+        for (int i=0; i<3;i++){
+            miniPlantillaRepository.saveEspecificacionesMiniPlantilla(ids.get(i));
+        }
+        return REGISTRO.get();
     }
 
     @Override
     public String actualizar(EspecificacionSubCategoria entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.saveAndFlush(entity);
+        return ACTUALIZACION.get();
     }
 
     @Override

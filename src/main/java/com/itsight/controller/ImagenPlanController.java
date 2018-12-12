@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ImagenPlan;
 import com.itsight.service.ImagenPlanService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -49,7 +50,7 @@ public class ImagenPlanController {
 
         List<ImagenPlan> lstImagenPlan = imagenPlanService.findByPlanId(planId);
         if (lstImagenPlan.isEmpty()) {
-            return "-1";
+            return Enums.ResponseCode.EMPTY_RESPONSE.get();
         }
         return objectMapper.writeValueAsString(lstImagenPlan);
     }
@@ -57,31 +58,22 @@ public class ImagenPlanController {
     @PostMapping(value = "/agregar")
     public @ResponseBody
     String addImagenPlan(@ModelAttribute ImagenPlan imagenPlan) {
-
-        if (imagenPlan.getId() == 0) {
-
-            imagenPlanService.add(imagenPlan);
-            return "1";
-        } else {
-            imagenPlanService.update(imagenPlan);
-            return "2";
-        }
+        if (imagenPlan.getId() == 0)
+            return imagenPlanService.registrar(imagenPlan, null);
+        return imagenPlanService.actualizar(imagenPlan, null);
     }
 
     @RequestMapping(value = "/cargarImagen", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(
-            @RequestPart(value = "fileImagenPlan", required = true) MultipartFile fileImagenPlan,
-            @RequestParam(value = "planId", required = true) Integer planId,
-            @RequestParam(value = "tipoImagenId", required = true) Integer tipoImagenId, HttpServletRequest request) {
-
-//		logger.debug("PARAMS| planId: " + planId);
+            @RequestPart(value = "fileImagenPlan") MultipartFile fileImagenPlan,
+            @RequestParam(value = "planId") Integer planId,
+            @RequestParam(value = "tipoImagenId") Integer tipoImagenId, HttpServletRequest request) {
 
         if (fileImagenPlan != null) {
             guardarFile(fileImagenPlan, planId, tipoImagenId);
         }
-
-        return "1";
+        return Enums.ResponseCode.EXITO_GENERICA.get();
 
     }
 
@@ -91,7 +83,7 @@ public class ImagenPlanController {
 
                 String[] splitNameFile = file.getOriginalFilename().split("\\.");
                 String extension = "." + splitNameFile[splitNameFile.length - 1];
-                String fullPath = "";
+                String fullPath;
 
                 String rutaBase = String.valueOf(context.getAttribute("MAIN_ROUTE"));
 

@@ -1,8 +1,10 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.ImagenPlan;
+import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ImagenPlanRepository;
 import com.itsight.service.ImagenPlanService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,51 +13,116 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ImagenPlanServiceImpl implements ImagenPlanService {
+public class ImagenPlanServiceImpl extends BaseServiceImpl<ImagenPlanRepository> implements ImagenPlanService {
 
-
-    private ImagenPlanRepository imagenPlanRepository;
-
-    @Autowired
-    public ImagenPlanServiceImpl(ImagenPlanRepository imagenPlanRepository) {
-        this.imagenPlanRepository = imagenPlanRepository;
-        // TODO Auto-generated constructor stub
+    public ImagenPlanServiceImpl(ImagenPlanRepository repository){
+        super(repository);
     }
 
     @Override
     public List<ImagenPlan> listAll() {
         // TODO Auto-generated method stub
-        return imagenPlanRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public List<ImagenPlan> findByPlanId(int planId) {
         // TODO Auto-generated method stub
-        return imagenPlanRepository.findByPlanId(planId);
-    }
-
-    @Override
-    public ImagenPlan getImagenPlanById(int imagenPlanId) {
-        // TODO Auto-generated method stub
-        return imagenPlanRepository.findOne(new Integer(imagenPlanId));
+        return repository.findByPlanId(planId);
     }
 
     @Override
     public ImagenPlan add(ImagenPlan imagenPlan) {
         // TODO Auto-generated method stub
-        return imagenPlanRepository.save(imagenPlan);
+        return repository.save(imagenPlan);
     }
 
     @Override
     public ImagenPlan update(ImagenPlan imagenPlan) {
         // TODO Auto-generated method stub
-        return imagenPlanRepository.saveAndFlush(imagenPlan);
+        return repository.saveAndFlush(imagenPlan);
     }
 
     @Override
     public void delete(int imagenPlanId) {
         // TODO Auto-generated method stub
-        imagenPlanRepository.delete(new Integer(imagenPlanId));
+        repository.delete(new Integer(imagenPlanId));
     }
 
+    @Override
+    public ImagenPlan save(ImagenPlan entity) {
+        return null;
+    }
+
+    @Override
+    public ImagenPlan findOne(int id) {
+        return null;
+    }
+
+    @Override
+    public ImagenPlan findOneWithFT(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Integer> findIdsByFlagActivo(boolean flagActivo) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findAll() {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findByNombre(String nombre) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findByNombreContainingIgnoreCase(String nombre) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findByDescripcionContainingIgnoreCase(String descripcion) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findByFlagActivo(boolean flagActivo) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findByFlagEliminado(boolean flagEliminado) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> findByIdsIn(List<Integer> ids) {
+        return null;
+    }
+
+    @Override
+    public List<ImagenPlan> listarPorFiltro(String comodin, String estado, String fk) {
+        return null;
+    }
+
+    @Override
+    public String registrar(ImagenPlan entity, String wildcard) {
+        repository.save(entity);
+        return Enums.ResponseCode.REGISTRO.get();
+    }
+
+    @Override
+    public String actualizar(ImagenPlan entity, String wildcard) {
+        repository.saveAndFlush(entity);
+        return Enums.ResponseCode.ACTUALIZACION.get();
+    }
+
+    @Override
+    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+
+    }
 }

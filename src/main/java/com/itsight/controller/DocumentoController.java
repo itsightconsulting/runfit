@@ -21,6 +21,9 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+
 @Controller
 @RequestMapping("/gestion/documento")
 public class DocumentoController {
@@ -36,19 +39,17 @@ public class DocumentoController {
     public DocumentoController(
             DocumentoService documentoService) {
         // TODO Auto-generated constructor stub
-        this.mainRoute = mainRoute;
         this.documentoService = documentoService;
     }
 
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView principal(Model model) {
+    public ModelAndView principal() {
         return new ModelAndView(ViewConstant.MAIN_DOCUMENTO);
     }
 
     @GetMapping(value = "/listarTodos")
-    public @ResponseBody
-    List<Documento> listar() throws JsonProcessingException {
+    public @ResponseBody List<Documento> listar() {
         return documentoService.findAll();
     }
 
@@ -56,7 +57,7 @@ public class DocumentoController {
     public @ResponseBody
     List<Documento> listarConFiltro(
             @PathVariable("comodin") String comodin,
-            @PathVariable("estado") String estado) throws JsonProcessingException {
+            @PathVariable("estado") String estado) {
         return documentoService.listarPorFiltro(comodin, estado, null);
     }
 
@@ -72,15 +73,9 @@ public class DocumentoController {
             @ModelAttribute Documento documento) {
 
         if (documento.getId() == 0) {
-            documentoService.save(documento);
-            return String.valueOf(documento.getId());
+            return documentoService.registrar(documento, null);
         }
-        Documento qDocumento = documentoService.findOne(documento.getId());
-        qDocumento.setNombre(documento.getNombre());
-        qDocumento.setRutaWeb(documento.getRutaWeb());
-        qDocumento.setRutaReal(documento.getRutaReal());
-        documentoService.update(qDocumento);
-        return String.valueOf(qDocumento.getId());
+        return documentoService.actualizar(documento, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -88,22 +83,21 @@ public class DocumentoController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             documentoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(
-            @RequestPart(value = "documento", required = true) MultipartFile documento,
-            @RequestParam(value = "documentoId", required = true) Integer documentoId, HttpServletRequest request) {
-
+            @RequestPart(value = "documento") MultipartFile documento,
+            @RequestParam(value = "documentoId") Integer documentoId, HttpServletRequest request) {
         if (documento != null) {
             guardarFile(documento, documentoId);
         }
-        return "1";
+        return EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int id) {
@@ -113,7 +107,7 @@ public class DocumentoController {
                 UUID uuid = UUID.randomUUID();
                 String[] splitNameFile = file.getOriginalFilename().split("\\.");
                 String extension = "." + splitNameFile[splitNameFile.length - 1];
-                String fullPath = "";
+                String fullPath;
                 String rutaBase = mainRoute;
                 fullPath = rutaBase + "/Documentos/" + id;
                 Utilitarios.createDirectory(fullPath);

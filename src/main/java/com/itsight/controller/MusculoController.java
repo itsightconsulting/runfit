@@ -12,6 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+
 @Controller
 @RequestMapping("/gestion/musculo")
 public class MusculoController {
@@ -53,12 +56,9 @@ public class MusculoController {
     public @ResponseBody
     String nuevo(@ModelAttribute Musculo musculo) {
         if (musculo.getId() == 0) {
-            musculoService.save(musculo);
-            return Enums.ResponseCode.REGISTRO.get()+","+String.valueOf(musculo.getId());
-        } else {
-            musculoService.update(musculo);
-            return Enums.ResponseCode.ACTUALIZACION.get()+","+String.valueOf(musculo.getId());
+            return musculoService.registrar(musculo, null);
         }
+        return musculoService.actualizar(musculo, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -66,9 +66,9 @@ public class MusculoController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             musculoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

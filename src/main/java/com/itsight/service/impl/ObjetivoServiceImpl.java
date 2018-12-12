@@ -4,6 +4,7 @@ import com.itsight.domain.Objetivo;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ObjetivoRepository;
 import com.itsight.service.ObjetivoService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> implements ObjetivoService {
-
 
     @Autowired
     public ObjetivoServiceImpl(ObjetivoRepository repository) {
@@ -103,7 +103,7 @@ public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> imp
     @Override
     public List<Objetivo> listarPorFiltro(String comodin, String estado, String fk) {
         // TODO Auto-generated method stub
-        List<Objetivo> lstObjetivo = new ArrayList<Objetivo>();
+        List<Objetivo> lstObjetivo;
         if (comodin.equals("0") && estado.equals("-1")) {
             lstObjetivo = repository.findAll();
         } else {
@@ -128,13 +128,15 @@ public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> imp
     @Override
     public String registrar(Objetivo entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.save(entity);
+        return Enums.ResponseCode.REGISTRO.get();
     }
 
     @Override
     public String actualizar(Objetivo entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.saveAndFlush(entity);
+        return Enums.ResponseCode.ACTUALIZACION.get();
     }
 
     @Override

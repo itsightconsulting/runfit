@@ -1,10 +1,11 @@
 package com.itsight.service;
 
 import com.itsight.domain.ImagenPlan;
+import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface ImagenPlanService {
+public interface ImagenPlanService extends BaseService<ImagenPlan> {
 
     List<ImagenPlan> listAll();
 
@@ -15,7 +16,5 @@ public interface ImagenPlanService {
     ImagenPlan update(ImagenPlan imagenPlan);
 
     void delete(int imagenPlanId);
-
-    ImagenPlan getImagenPlanById(int imagenPlanId);
 
 }

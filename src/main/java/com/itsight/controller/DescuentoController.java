@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.itsight.util.Enums.ResponseCode.*;
+
 @Controller
 @RequestMapping("/gestion/descuento")
 public class DescuentoController {
@@ -35,23 +37,12 @@ public class DescuentoController {
     @PostMapping(value = "/agregar")
     public @ResponseBody
     String nuevo(@ModelAttribute Descuento descuento, String tipoDescuentoId, String productoId) {
-
         if (descuento.getId() == 0) {
             descuento.setTipoDescuento(Integer.parseInt(tipoDescuentoId));
             descuento.setProductoPresentacion(Integer.parseInt(productoId));
-            descuentoService.save(descuento);
-            return String.valueOf(descuento.getId());
+            return descuentoService.registrar(descuento, null);
         }
-        Descuento qDescuento = descuentoService.findOne(descuento.getId());
-        qDescuento.setTipoDescuento(Integer.parseInt(tipoDescuentoId));
-        qDescuento.setProductoPresentacion(Integer.parseInt(productoId));
-        qDescuento.setPrecioInicial(descuento.getPrecioInicial());
-        qDescuento.setDscto(descuento.getDscto());
-        qDescuento.setPrecioFinal(descuento.getPrecioFinal());
-        qDescuento.setFechaInicio(descuento.getFechaInicio());
-        qDescuento.setFechaFin(descuento.getFechaFin());
-        descuentoService.update(qDescuento);
-        return String.valueOf(qDescuento.getId());
+        return descuentoService.actualizar(descuento, tipoDescuentoId + "," + productoId);
     }
 
     @PutMapping(value = "/desactivar")
@@ -59,9 +50,9 @@ public class DescuentoController {
     String desactivar(@RequestParam(value = "id") int id,@RequestParam boolean flagActivo) {
         try {
             descuentoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

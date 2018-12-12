@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Utilitarios.customResponse;
+
 @Service
 @Transactional
 public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> implements DocumentoService {
@@ -59,7 +63,7 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
     @Override
     public List<Documento> findAll() {
         // TODO Auto-generated method stub
-        return null;
+        return repository.findAll();
     }
 
     @Override
@@ -120,13 +124,18 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
     @Override
     public String registrar(Documento entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.save(entity);
+        return customResponse(REGISTRO.get(), String.valueOf(entity.getId()));
     }
 
     @Override
     public String actualizar(Documento entity, String wildcard) {
-        // TODO Auto-generated method stub
-        return null;
+        Documento qDocumento = repository.findOne(entity.getId());
+        qDocumento.setNombre(entity.getNombre());
+        qDocumento.setRutaWeb(entity.getRutaWeb());
+        qDocumento.setRutaReal(entity.getRutaReal());
+        return customResponse(ACTUALIZACION.get(), String.valueOf(qDocumento.getId()));
+
     }
 
     @Override

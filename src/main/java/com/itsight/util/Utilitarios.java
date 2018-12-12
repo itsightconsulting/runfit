@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class Utilitarios {
@@ -199,6 +200,13 @@ public class Utilitarios {
         }
         nuevoArray[inArray.length] = nuevoElemento;
         return nuevoArray;
+    }
+
+    public static boolean objExists(Object object){
+        Optional<Object> cxtObject = Optional.ofNullable(object);
+        if(cxtObject.isPresent())
+            return true;
+        return false;
     }
 
 

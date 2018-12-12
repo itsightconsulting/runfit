@@ -25,7 +25,7 @@ import java.util.List;
 public class FacturacionController {
 
     @GetMapping(value = "")
-    public ModelAndView facturacionMensual(Model model) {
+    public ModelAndView facturacionMensual() {
         return new ModelAndView(ViewConstant.FACTURACION_MENSUAL);
     }
 

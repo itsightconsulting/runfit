@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-import static com.itsight.util.Enums.ResponseCode;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/audio")
@@ -89,9 +89,9 @@ public class AudioController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             audioService.actualizarFlagActivoById(id, flagActivo);
-            return ResponseCode.EXITO_GENERICA.get();
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return ResponseCode.EX_GENERIC.get();
+            return EX_GENERIC.get();
         }
     }
 
@@ -103,7 +103,7 @@ public class AudioController {
         if (audio != null) {
             guardarFile(audio, audioId);
         }
-        return ResponseCode.EXITO_GENERICA.get();
+        return EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int audioId) {

@@ -1,10 +1,8 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.MultimediaEntrenador;
 import com.itsight.service.MultimediaEntrenadorService;
-import com.itsight.service.TipoAudioService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
@@ -20,10 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/multimedia")
@@ -39,7 +37,6 @@ public class MultimediaEntrenadorController {
     @Autowired
     public MultimediaEntrenadorController(MultimediaEntrenadorService multimediaEntrenadorService) {
         // TODO Auto-generated constructor stub
-        this.mainRoute = mainRoute;
         this.multimediaEntrenadorService = multimediaEntrenadorService;
     }
 
@@ -62,9 +59,8 @@ public class MultimediaEntrenadorController {
         if(file.exists()) {
             file.delete();
         }
-
         multimediaEntrenadorService.delete(id);
-        return "1";
+        return EXITO_GENERICA.get();
     }
 
     @GetMapping(value = "/obtenerListadoMultimedia")
@@ -106,7 +102,7 @@ public class MultimediaEntrenadorController {
             objencontrado.setTipo(Enums.TipoMedia.TEXTO.get());
             multimediaEntrenadorService.update(objencontrado);
         }
-        return "1";
+        return EXITO_GENERICA.get();
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -117,7 +113,7 @@ public class MultimediaEntrenadorController {
         if (multimedia != null) {
             guardarFile(multimedia, id, titulo, descripcion, tipo, idUser, duracion, peso);
         }
-        return "1";
+        return EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int id, String titulo, String descripcion, int tipo, int idUser, String duracion, String peso) {
@@ -195,9 +191,6 @@ public class MultimediaEntrenadorController {
             int cantidad = multimediaEntrenadorService.findDetalleTopCantidad(obj.getId());
             obj.setCantidadLikes(cantidad);
         }
-
         return lista;
     }
-
-
 }

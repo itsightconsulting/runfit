@@ -76,7 +76,6 @@ public class MiniRutinaController {
         miMiniRutinaPks.add(new MiRutinaPk(miMiniRutina.getId()));
         //Agregando la lista jsonb con la nueva lista agregada
         miniRutina.setMiRutinaIds(miMiniRutinaPks);
-
         miniRutinaService.save(miniRutina);
         return REGISTRO.get();
     }

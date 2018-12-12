@@ -23,10 +23,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,7 @@ import static com.itsight.util.Enums.ResponseCode;
 public class RutinaController {
 
     private UsuarioService usuarioService;
+
     private RutinaService rutinaService;
 
     private DiaService diaService;
@@ -74,12 +77,12 @@ public class RutinaController {
 
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView principal(Model model) {
+    public ModelAndView principal() {
         return new ModelAndView(ViewConstant.MAIN_RUTINA_PLANTILLA);
     }
 
     @GetMapping(value = "/trainer")
-    public ModelAndView principalTrainer(Model model) {
+    public ModelAndView principalTrainer() {
         return new ModelAndView(ViewConstant.MAIN_TRAINER_RUTINA_PLANTILLA);
     }
 
@@ -113,28 +116,27 @@ public class RutinaController {
     @GetMapping(value = "/primera-semana/edicion")
     public @ResponseBody Semana obtenerPrimeraSemanaRutina(HttpSession session) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaRutinaId"));
-        if(sessionValor.isPresent()){
-            return semanaService.findOneWithDaysById((int) session.getAttribute("semanaRutinaId"));
-        }else{//En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
+        if(sessionValor.isPresent())
+            return semanaService.findOneWithDaysById((int) sessionValor.get());
+        else//En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
               // desde un simple peticion get y no desde su vista de red fitness
             return new Semana();
-        }
     }
 
     @GetMapping(value = "/semana/obtener/{semanaIndice}")
     public @ResponseBody Semana obtenerEspecificaSemana(@PathVariable String semanaIndice, HttpSession session) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
-            int[] sIds = (int[]) session.getAttribute("semanaIds");
+            int[] sIds = (int[]) sessionValor.get();
             int sIx = Integer.parseInt(semanaIndice);
             if(sIx <sIds.length)
                 return semanaService.findOneWithDaysById(sIds[sIx]);
             else
                 return new Semana();
-        }else{//En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
-            // desde un simple peticion get y no desde su vista de red fitness
-            return new Semana();
         }
+        //En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
+        // desde un simple peticion get y no desde su vista de red fitness
+        return new Semana();
     }
 
     @PostMapping(value = "/agregar/semana")
@@ -150,29 +152,19 @@ public class RutinaController {
             //se referencie en el registro del día
             dia.setSemana(semana);
         }
-        int rutinaId = (int) session.getAttribute("edicionRutinaId");
-        semana.setRutina(rutinaId);
-        semana.setLstDia(dias);
-        semanaService.update(semana);
-        Rutina qRutina = rutinaService.findOne(rutinaId);
-        qRutina.setTotalSemanas(nuevaSemana.getTotalSemanas());
-        qRutina.setFechaFin(nuevaSemana.getFechaFin());
-        int[] qSemanaIds = Utilitarios.agregarElementoArray(qRutina.getSemanaIds(), semana.getId());
-        qRutina.setSemanaIds(qSemanaIds);
-        qRutina.setDias(qRutina.getDias()+7);
-        rutinaService.update(qRutina);
-        session.setAttribute("semanaIds", qSemanaIds);
-        //Actualizar última fecha de planificación
-        int redFitnessId = rutinaService.obtenerRedFitnessIdById(rutinaId);
-        redFitnessService.actualizarUltimaFechaPlanificacionById(redFitnessId, nuevaSemana.getFechaFin());
-        return ResponseCode.REGISTRO.get();
+        Optional<Object> sessionValor = Optional.of(session.getAttribute("edicionRutinaId"));
+        if(sessionValor.isPresent()){
+            int rutinaId = (int) sessionValor.get();
+            return semanaService.agregarSemana(semana, dias, rutinaId, nuevaSemana.getTotalSemanas(), nuevaSemana.getFechaFin());
+        }
+        return ResponseCode.EX_GENERIC.get();
+
     }
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/agregar")
-    public @ResponseBody
-    String nuevo(@RequestParam int rutinaPlantillaId, @RequestParam String correo, HttpSession session) {
-        int clienteId = Integer.parseInt(session.getAttribute("clienteId").toString());
+    public @ResponseBody String nuevo(@RequestParam int rutinaPlantillaId, @RequestParam String correo, HttpSession session) {
+        /*int clienteId = Integer.parseInt(session.getAttribute("clienteId").toString());
         int redFitnessId = Integer.parseInt(session.getAttribute("redFitnessId").toString());
         RutinaPlantilla rp = rutinaPlantillaService.findOne(rutinaPlantillaId);
         Rutina rutina = new Rutina();
@@ -188,90 +180,41 @@ public class RutinaController {
         sb.append("<p>Su entrenador acaba de asignarle una rutina que se encuentra disponible en nuestra plataforma, esperemos que obtenga los mejores resultados de esta.<br> Que siga teniendo un buen día.</p><br>");
         sb.append("<div class='' style='text-align: center;'><a style='text-decoration:none;width: 115px;height: 25px;background: #28a745;padding: 10px;text-align: center;border-radius: 5px;color: white;font-weight: bold;' class='' href=\""+domainName+"/login/\" target=\"_blanket\">Plataforma Workout</a></div>");
         sb.append("<h4>Dennys Workout, <br> Los Eucaliptos, Los Olivos 15008, Perú.</h4>");
-        emailService.enviarCorreoInformativo("Dennys Workout Notification", correo, sb.toString());
-        return ResponseCode.REGISTRO.get();
-    }
-
-    @GetMapping(value = "/obtenerSemana")
-    public @ResponseBody String obtenerSemanaRutina(@RequestParam String ixSem, HttpSession session){
-        int semanaId = ((Integer[]) session.getAttribute("rpSemanaIds"))[Integer.parseInt(ixSem)];
+        emailService.enviarCorreoInformativo("Dennys Workout Notification", correo, sb.toString());*/
         return ResponseCode.REGISTRO.get();
     }
 
     @PostMapping(value = "/elemento/agregar")
     public @ResponseBody String agregarNuevoElemento(
-            @RequestBody Elemento elemento, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        //Seteamos las variables primitivas int con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
-        elemento.setNumeroSemana(0);
-        elemento.setDiaIndice(0);
-        diaService.insertarNuevoElemento(diaId, new ObjectMapper().writeValueAsString(elemento));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody Elemento elemento) throws JsonProcessingException {
+        return diaService.insertarNuevoElemento(elemento);
     }
 
     @PostMapping(value = "/elemento/agregar/pos-especifica")
     public @ResponseBody String agregarNuevoElementoPosicionEspecifica(
-            @RequestBody ElementoEspecifico elemento, HttpSession session) throws JsonProcessingException {
-        //System.out.println("INSERTAR DESPUES: "+elemento.getInsertarDespues());
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        int posElementoReferencial = elemento.getRefElementoIndice();
-        boolean insertarDespues = elemento.getInsertarDespues();
-        //Seteamos las variables primitivas/no-pri con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
-        elemento.setNumeroSemana(0);
-        elemento.setDiaIndice(0);
-        elemento.setInsertarDespues(null);
-        elemento.setRefElementoIndice(0);
-        diaService.insertarNuevoElementoPosEspecifica(diaId, posElementoReferencial, insertarDespues, new ObjectMapper().writeValueAsString(elemento));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody ElementoEspecifico elemento) throws JsonProcessingException {
+        return diaService.insertarNuevoElementoPosEspecifica(elemento);
     }
 
     @PostMapping(value = "/sub-elemento/agregar/pos-especifica")
     public @ResponseBody String agregarNuevoSubElementoPosicionEspecifica(
-            @RequestBody SubElementoEspecifico subElemento, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[subElemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(subElemento.getDiaIndice());
-        int elementoIndice = subElemento.getElementoIndice();
-        int posSubElementoReferencial = subElemento.getRefSubElementoIndice();
-        boolean insertarDespues = subElemento.getInsertarDespues();
-        //Seteamos las variables primitivas/no-pri con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
-        subElemento.setNumeroSemana(0);
-        subElemento.setDiaIndice(0);
-        subElemento.setInsertarDespues(null);
-        subElemento.setElementoIndice(0);
-        subElemento.setRefSubElementoIndice(0);
-        diaService.insertarNuevoSubElementoPosEspecifica(diaId, elementoIndice ,posSubElementoReferencial, insertarDespues, new ObjectMapper().writeValueAsString(subElemento));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody SubElementoEspecifico subElemento) throws JsonProcessingException {
+        return diaService.insertarNuevoSubElementoPosEspecifica(subElemento);
     }
 
     @PutMapping(value = "/elemento/eliminar")
-    public @ResponseBody String eliminarElemento(
-            @RequestParam String numeroSemana,
-            @RequestParam String diaIndice,
-            @RequestParam String elementoIndice,
-            @RequestParam int minutos,
-            @RequestParam double distancia,
-            @RequestParam double calorias, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.eliminarElementoById(diaId, Integer.parseInt(elementoIndice), minutos, distancia, calorias);
-        return ResponseCode.ELIMINACION.get();
+    public @ResponseBody String eliminarElemento(@ModelAttribute ElementoDelDto elementoDel){
+        return diaService.eliminarElementoById(elementoDel);
     }
 
     @PutMapping(value = "/sub-elemento/eliminar")
-    public @ResponseBody String eliminarElemento(
-            @RequestParam String numeroSemana,
-            @RequestParam String diaIndice,
-            @RequestParam String elementoIndice,
-            @RequestParam String subElementoIndice,
-            @RequestParam double calorias,
-            @RequestParam double distancia,
-             HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.eliminarSubElementoById(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice), distancia, calorias);
-        return ResponseCode.ELIMINACION.get();
+    public @ResponseBody String eliminarSubElemento(@ModelAttribute @Valid ElementoDelDto elementoDel, BindingResult bindingResult){
+        if(!bindingResult.hasErrors()){
+            return diaService.eliminarSubElementoById(elementoDel);
+        }
+        bindingResult.getModel().forEach((key, value)-> System.out.println("Key : " + key + " Value : " + value));
+        return ResponseCode.EX_VALIDATION_FAILED.get();
+
     }
 
     @PutMapping(value = "/elemento/actualizar")

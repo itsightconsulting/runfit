@@ -1,10 +1,8 @@
 package com.itsight.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Dia;
-import com.itsight.domain.dto.ElementoDto;
-import com.itsight.domain.dto.ElementoMediaDto;
-import com.itsight.domain.dto.SubElementoDto;
-import com.itsight.domain.dto.SubElementoMediaDto;
+import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.generic.BaseService;
@@ -25,11 +23,11 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int id, int listaIndice, int elementoIndice, String nombre);
 
-    void eliminarElementoById(int id, int listaIndice, int minutos, double distancia, double calorias);
+    String eliminarElementoById(ElementoDelDto elementoDel);
 
-    void eliminarSubElementoById(int id, int eleIndice, int subEleIndice, double distancia, double calorias);
+    String eliminarSubElementoById(ElementoDelDto elementoDelDto);
 
-    void insertarNuevoElemento(int id, String elemento);
+    String insertarNuevoElemento(Elemento elemento) throws JsonProcessingException;
 
     void actualizarNombreElementoByListaIndexAndId(String nombre, int elementoIndicice, int diaId);
 
@@ -37,7 +35,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nombre);
 
-    void insertarNuevoElementoPosEspecifica(int id, int posElementoReferencial, boolean insertarDespues, String elemento);
+    String insertarNuevoElementoPosEspecifica(ElementoEspecifico elemento) throws JsonProcessingException;
 
     void actualizarTiempoElementoByListaIndexAndId(int tiempo, int elementoIndice, int id, int minutosTotales);
 
@@ -47,7 +45,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarNotaElementoByListaIndexAndId(String nota, int elementoIndice, int id);
 
-    void insertarNuevoSubElementoPosEspecifica(int id, int elementoIndice, int posSubElementoReferencial, boolean insertarDespues, String subElemento);
+    String insertarNuevoSubElementoPosEspecifica(SubElementoEspecifico subElementoEspecifico) throws JsonProcessingException;
 
     void actualizarAudioElementoByListaIndexAndId(String mediaAudio, int elementoIndice, int id);
 

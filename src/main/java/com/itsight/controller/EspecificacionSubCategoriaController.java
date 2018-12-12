@@ -10,6 +10,7 @@ import com.itsight.service.MiniPlantillaService;
 import com.itsight.util.ClassId;
 import com.itsight.util.EntityGraphBuilder;
 import com.itsight.util.EntityVisitor;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/especificacion-sub-categoria-ejercicio")
@@ -45,7 +49,7 @@ public class EspecificacionSubCategoriaController {
     String obtenerArbolMiniPlantilla(HttpSession session) throws JsonProcessingException {
         List<MiniPlantilla> minis = miniPlantillaService.findAllByUsuarioId(Integer.parseInt(session.getAttribute("id").toString()));
         if(minis.isEmpty()){
-            return "-9";
+            return Enums.ResponseCode.EMPTY_RESPONSE.get();
         }
         BagForest forest = reconstructForest(minis, 1);
         ObjectMapper mapper = new ObjectMapper();
@@ -95,20 +99,9 @@ public class EspecificacionSubCategoriaController {
 
         especificacionSubCategoria.setSubCategoriaEjercicio(new SubCategoriaEjercicio(subCategoriaEjercicioId));
         if (especificacionSubCategoria.getId() == 0) {
-            List<Integer> ids = new ArrayList<>();
-            for (int i=1; i<4;i++){
-                EspecificacionSubCategoria obj = new EspecificacionSubCategoria(especificacionSubCategoria.getNombre(), subCategoriaEjercicioId, i);
-                especificacionSubCategoriaService.save(obj);
-                ids.add(obj.getId());
-
-            }
-            for (int i=0; i<3;i++){
-                miniPlantillaService.relacionarNuevasEspecificaciones(ids.get(i));
-            }
-            return "1";
+            return especificacionSubCategoriaService.registrar(especificacionSubCategoria, String.valueOf(subCategoriaEjercicioId));
         }
-        especificacionSubCategoriaService.update(especificacionSubCategoria);
-        return "2";
+        return especificacionSubCategoriaService.actualizar(especificacionSubCategoria, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -116,9 +109,9 @@ public class EspecificacionSubCategoriaController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             especificacionSubCategoriaService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

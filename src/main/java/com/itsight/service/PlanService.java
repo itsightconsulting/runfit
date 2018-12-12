@@ -1,10 +1,11 @@
 package com.itsight.service;
 
 import com.itsight.domain.Plan;
+import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface PlanService {
+public interface PlanService extends BaseService<Plan> {
 
     List<Plan> listAll();
 

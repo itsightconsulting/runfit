@@ -23,9 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/plan")
@@ -58,7 +59,7 @@ public class PlanController {
 
     @GetMapping(value = "/listarTodos")
     public @ResponseBody
-    List<Plan> listAllPlanWithoutFilters() throws JsonProcessingException {
+    List<Plan> listAllPlanWithoutFilters() {
         return planService.readAll();
     }
 
@@ -68,7 +69,7 @@ public class PlanController {
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado) throws JsonProcessingException {
 
-        List<Plan> lstPlan = new ArrayList<Plan>();
+        List<Plan> lstPlan;
         ObjectMapper objMapper = (new ObjectMapper()).registerModule(new Hibernate5Module());
 
         if (comodin.equals("0") && estado.equals("-1")) {
@@ -106,41 +107,31 @@ public class PlanController {
     @PostMapping(value = "/agregar")
     public @ResponseBody
     String addPlan(@ModelAttribute Plan plan) {
-
-        if (plan.getId() == 0) {
-
-            planService.add(plan);
-            return "1";
-        } else {
-            planService.update(plan);
-            return "2";
-        }
+        if (plan.getId() == 0)
+            return planService.registrar(plan, null);
+        return planService.actualizar(plan, null);
     }
 
-    @PostMapping(value = "/desactivarPlan")
+    @PostMapping(value = "/desactivar")
     public @ResponseBody
     String disabledPlan(@RequestParam(value = "id") int planId) {
         Plan plan = planService.getPlanById(planId);
-
-        if (plan.isFlagActivo()) {
+        if (plan.isFlagActivo())
             plan.setFlagActivo(false);
-        } else {
+        else
             plan.setFlagActivo(true);
-        }
-        planService.update(plan);
-
-        return "1";
+        planService.actualizarFlagActivoById(plan.getId(), plan.isFlagActivo());
+        return EXITO_GENERICA.get();
     }
 
     @RequestMapping(value = "/cargarImagen", method = RequestMethod.POST)
     public @ResponseBody
     String registrarFileVigenciaPoder(
-            @RequestParam(value = "imagen", required = true) MultipartFile imagen,
-            @RequestParam(value = "planId", required = true) Integer planId,
-            @RequestParam(value = "tipoImagenId", required = true) Integer tipoImagenId, HttpServletRequest request) {
+            @RequestParam(value = "imagen") MultipartFile imagen,
+            @RequestParam(value = "planId") Integer planId,
+            @RequestParam(value = "tipoImagenId") Integer tipoImagenId, HttpServletRequest request) {
 
         if (imagen != null) {
-
             switch (tipoImagenId) {
                 case 1:
                     guardarFile(imagen, planId, "ABC");
@@ -159,7 +150,7 @@ public class PlanController {
             }
         }
 
-        return "1";
+        return EXITO_GENERICA.get();
 
     }
 
@@ -169,7 +160,7 @@ public class PlanController {
 
                 String[] splitNameFile = file.getOriginalFilename().split("\\.");
                 String extension = "." + splitNameFile[splitNameFile.length - 1];
-                String fullPath = "";
+                String fullPath;
 
                 String rutaBase = String.valueOf(context.getAttribute("MAIN_ROUTE"));
 
@@ -202,7 +193,7 @@ public class PlanController {
 
     @GetMapping(value = "/listarTodosPlanes")
     public @ResponseBody
-    List<Plan> getAllPlans() throws JsonProcessingException {
+    List<Plan> getAllPlans() {
         return planService.findAllByFlagActivo(true);
     }
 
@@ -220,7 +211,6 @@ public class PlanController {
         usuarioplan.setMes(plan.getCantidadMeses());
 
         usuarioplanService.add(usuarioplan);
-
         return usuarioplan;
     }
 

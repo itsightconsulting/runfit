@@ -4,6 +4,8 @@ import com.itsight.domain.Musculo;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.MusculoRepository;
 import com.itsight.service.MusculoService;
+import com.itsight.util.Enums;
+import com.itsight.util.Utilitarios;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,12 +97,12 @@ public class MusculoServiceImpl extends BaseServiceImpl<MusculoRepository> imple
 
     @Override
     public String registrar(Musculo entity, String wildcard) {
-        return null;
+        return Utilitarios.customResponse(Enums.ResponseCode.REGISTRO.get(), String.valueOf(repository.save(entity).getId()));
     }
 
     @Override
     public String actualizar(Musculo entity, String wildcard) {
-        return null;
+        return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(repository.saveAndFlush(entity).getId()));
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-import static com.itsight.util.Enums.ResponseCode;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 
 @Controller
@@ -80,9 +80,9 @@ public class CategoriaController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             categoriaService.actualizarFlagActivoById(id, flagActivo);
-            return ResponseCode.EXITO_GENERICA.get();
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return ResponseCode.EX_GENERIC.get();
+            return EX_GENERIC.get();
         }
     }
 
@@ -95,7 +95,7 @@ public class CategoriaController {
         if (imagen != null) {
             guardarFile(imagen, categoriaId);
         }
-        return ResponseCode.EXITO_GENERICA.get();
+        return EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int categoriaId) {

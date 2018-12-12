@@ -9,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Utilitarios.customResponse;
+
 @Service
 @Transactional
 public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> implements DescuentoService {
@@ -111,13 +115,24 @@ public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> i
     @Override
     public String registrar(Descuento entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.save(entity);
+        return customResponse(REGISTRO.get(), String.valueOf(entity.getId()));
     }
 
     @Override
     public String actualizar(Descuento entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        String[] fkIds = wildcard.split(",");
+        Descuento qDescuento = repository.findOne(entity.getId());
+        qDescuento.setTipoDescuento(Integer.parseInt(fkIds[0]));
+        qDescuento.setProductoPresentacion(Integer.parseInt(fkIds[1]));
+        qDescuento.setPrecioInicial(entity.getPrecioInicial());
+        qDescuento.setDscto(entity.getDscto());
+        qDescuento.setPrecioFinal(entity.getPrecioFinal());
+        qDescuento.setFechaInicio(entity.getFechaInicio());
+        qDescuento.setFechaFin(entity.getFechaFin());
+        repository.saveAndFlush(qDescuento);
+        return customResponse(ACTUALIZACION.get(), String.valueOf(qDescuento.getId()));
     }
 
     @Override

@@ -30,11 +30,8 @@ public class RedFitnessController {
 
     private RedFitnessService redFitnessService;
 
-    private RutinaService rutinaService;
-
-    public RedFitnessController(RedFitnessService redFitnessService, RutinaService rutinaService){
+    public RedFitnessController(RedFitnessService redFitnessService){
         this.redFitnessService = redFitnessService;
-        this.rutinaService = rutinaService;
     }
 
     @GetMapping("")

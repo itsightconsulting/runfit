@@ -1,30 +1,36 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
-import com.itsight.domain.dto.ElementoDto;
-import com.itsight.domain.dto.ElementoMediaDto;
-import com.itsight.domain.dto.SubElementoDto;
-import com.itsight.domain.dto.SubElementoMediaDto;
+import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.DiaRepository;
 import com.itsight.service.DiaService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
+import static com.itsight.util.Enums.ResponseCode.*;
 import static com.itsight.util.Enums.TipoMedia.AUDIO;
 
 @Service
 @Transactional
 public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements DiaService {
 
+    private HttpSession session;
+
     @Autowired
-    public DiaServiceImpl(DiaRepository repository) {
+    public DiaServiceImpl(DiaRepository repository, HttpSession session) {
         super(repository);
+        this.session = session;
     }
 
     @Override
@@ -150,13 +156,31 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void eliminarElementoById(int id, int listaIndice, int minutos, double distancia, double calorias) {
-        repository.deleteElementoById(id, listaIndice, minutos, distancia, calorias);
+    public String eliminarElementoById(ElementoDelDto elementoDel) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()){
+            int semanaId = ((int[]) sessionValor.get())[Integer.parseInt(elementoDel.getNumeroSemana())];
+            int diaId = repository.findIdBySemanaId(semanaId).get(Integer.parseInt(elementoDel.getDiaIndice()));
+            repository.deleteElementoById(diaId, Integer.parseInt(elementoDel.getElementoIndice()), elementoDel.getMinutos(), elementoDel.getDistancia(), elementoDel.getCalorias());
+            return ELIMINACION.get();
+        }
+        return EMPTY_RESPONSE.get();
     }
 
     @Override
-    public void insertarNuevoElemento(int diaId, String elemento) {
-        repository.saveElemento(diaId, elemento);
+    public String insertarNuevoElemento(Elemento elemento) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()){
+            int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            //Seteamos las variables primitivas int con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
+            elemento.setNumeroSemana(0);
+            elemento.setDiaIndice(0);
+            repository.saveElemento(diaId, new ObjectMapper().writeValueAsString(elemento));
+            return REGISTRO.get();
+        }
+        return EMPTY_RESPONSE.get();
+
     }
 
     @Override
@@ -178,9 +202,23 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void insertarNuevoElementoPosEspecifica(int id, int posElementoReferencial, boolean insertarDespues, String elemento) {
-        String texto = "{"+posElementoReferencial+"}";
-        repository.saveElementoPosEspecificaGeneric(id, texto, insertarDespues, elemento);
+    public String insertarNuevoElementoPosEspecifica(ElementoEspecifico elemento) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()){
+            int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            int posElementoReferencial = elemento.getRefElementoIndice();
+            boolean insertarDespues = elemento.getInsertarDespues();
+            //Seteamos las variables primitivas/no-pri con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
+            elemento.setNumeroSemana(0);
+            elemento.setDiaIndice(0);
+            elemento.setInsertarDespues(null);
+            elemento.setRefElementoIndice(0);
+            String texto = "{"+posElementoReferencial+"}";
+            repository.saveElementoPosEspecificaGeneric(diaId, texto, insertarDespues, new ObjectMapper().writeValueAsString(elemento));
+            return REGISTRO.get();
+        }
+        return EMPTY_RESPONSE.get();
     }
 
     @Override
@@ -218,10 +256,25 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void insertarNuevoSubElementoPosEspecifica(int id, int elementoIndice, int posSubElementoReferencial, boolean insertarDespues, String subElemento) {
-        String texto = "{"+elementoIndice+",\"subElementos\""+","+posSubElementoReferencial+"}";
-        repository.saveElementoPosEspecificaGeneric(id, texto, insertarDespues, subElemento);
-
+    public String insertarNuevoSubElementoPosEspecifica(SubElementoEspecifico subElemento) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            int elementoIndice = subElemento.getElementoIndice();
+            int posSubElementoReferencial = subElemento.getRefSubElementoIndice();
+            boolean insertarDespues = subElemento.getInsertarDespues();
+            //Seteamos las variables primitivas/no-pri con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
+            subElemento.setNumeroSemana(0);
+            subElemento.setDiaIndice(0);
+            subElemento.setInsertarDespues(null);
+            subElemento.setElementoIndice(0);
+            subElemento.setRefSubElementoIndice(0);
+            String texto = "{"+elementoIndice+",\"subElementos\""+","+posSubElementoReferencial+"}";
+            repository.saveElementoPosEspecificaGeneric(diaId, texto, insertarDespues, new ObjectMapper().writeValueAsString(subElemento));
+            return REGISTRO.get();
+        }
+        return EMPTY_RESPONSE.get();
     }
 
     @Override
@@ -237,9 +290,16 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void eliminarSubElementoById(int id, int eleIndice, int subEleIndice, double distancia, double calorias) {
-        String texto = "{"+eleIndice+",subElementos,"+subEleIndice+"}";
-        repository.deleteSubElementoById(id, texto, distancia, calorias);
+    public String eliminarSubElementoById(ElementoDelDto elementoDel) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[Integer.parseInt(elementoDel.getNumeroSemana())];
+            int diaId = repository.findIdBySemanaId(semanaId).get(Integer.parseInt(elementoDel.getDiaIndice()));
+            String texto = "{"+elementoDel.getElementoIndice()+",subElementos,"+elementoDel.getSubElementoIndice()+"}";
+            repository.deleteSubElementoById(diaId, texto, elementoDel.getDistancia(), elementoDel.getCalorias());
+            return ELIMINACION.get();
+        }
+        return EMPTY_RESPONSE.get();
     }
 
     @Override

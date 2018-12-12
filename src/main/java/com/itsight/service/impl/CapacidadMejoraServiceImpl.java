@@ -9,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Utilitarios.customResponse;
+
 @Service
 @Transactional
 public class CapacidadMejoraServiceImpl extends BaseServiceImpl<CapacidadMejoraRepository> implements CapacidadMejoraService {
@@ -95,12 +99,13 @@ public class CapacidadMejoraServiceImpl extends BaseServiceImpl<CapacidadMejoraR
 
     @Override
     public String registrar(CapacidadMejora entity, String wildcard) {
-        return null;
+        repository.save(entity);
+        return customResponse(REGISTRO.get(), String.valueOf(entity.getId()));
     }
 
     @Override
     public String actualizar(CapacidadMejora entity, String wildcard) {
-        return null;
+        return customResponse(ACTUALIZACION.get(), String.valueOf(entity.getId()));
     }
 
     @Override

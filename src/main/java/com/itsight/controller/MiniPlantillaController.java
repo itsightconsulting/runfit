@@ -28,16 +28,13 @@ public class MiniPlantillaController {
 
     private MiniPlantillaService miniPlantillaService;
 
-    private ListaPlantillaSimpleService plantillaListaService;
-
     private DiaRutinarioService diaRutinarioService;
 
     private DiaService diaService;
 
     @Autowired
-    public MiniPlantillaController(MiniPlantillaService miniPlantillaService, ListaPlantillaSimpleService plantillaListaService, DiaRutinarioService diaRutinarioService, DiaService diaService) {
+    public MiniPlantillaController(MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService, DiaService diaService) {
         this.miniPlantillaService = miniPlantillaService;
-        this.plantillaListaService = plantillaListaService;
         this.diaRutinarioService = diaRutinarioService;
         this.diaService = diaService;
     }

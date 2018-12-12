@@ -473,6 +473,9 @@ function notificacionesRutinaSegunResponseCode(resCode){
             break;
         case -4:
             break;
+        case -5:
+            $.smallBox({color: "alert",content: "La validación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            break;
         case -10:
             $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
             break;

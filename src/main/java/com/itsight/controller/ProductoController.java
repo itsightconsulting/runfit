@@ -1,6 +1,5 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Producto;
 import com.itsight.domain.ProductoPresentacion;
@@ -10,7 +9,6 @@ import com.itsight.service.CategoriaService;
 import com.itsight.service.ProductoPresentacionService;
 import com.itsight.service.ProductoService;
 import com.itsight.service.VideoService;
-import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,10 +21,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/producto")
@@ -65,7 +64,6 @@ public class ProductoController {
     public ModelAndView principal(Model model) {
         model.addAttribute("lstCategoria", categoriaService.findAll());
         model.addAttribute("lstTipoDescuento", tipoDescuentoRepository.findAll());
-        //model.addAttribute("productos", productoService.listarPorFiltro("0","-1","0"));
         return new ModelAndView(ViewConstant.MAIN_PRODUCTO);
     }
 
@@ -74,7 +72,7 @@ public class ProductoController {
     List<Producto> listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
-            @PathVariable("categoria") String categoria) throws JsonProcessingException {
+            @PathVariable("categoria") String categoria) {
         return productoService.listarPorFiltro(comodin, estado, categoria);
     }
 
@@ -95,7 +93,7 @@ public class ProductoController {
     String nuevo(@ModelAttribute Producto producto, @ModelAttribute ProductoPresentacion presentacion, String categoriaId) {
         producto.setProductoPresentacion(presentacion);
         if (producto.getId() == 0)
-            return Utilitarios.customResponse(Enums.ResponseCode.REGISTRO.get(), productoService.registrar(producto, categoriaId));
+            return productoService.registrar(producto, categoriaId);
         return productoService.actualizar(producto, categoriaId);
     }
 
@@ -104,20 +102,20 @@ public class ProductoController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             productoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 
     @RequestMapping(value = "/upload/presentacion", method = RequestMethod.POST)
     public @ResponseBody
     String subirArchivo(
-            @RequestPart(required = true) MultipartFile imagenPresentacion,
+            @RequestPart MultipartFile imagenPresentacion,
             @RequestPart(required = false) MultipartFile videoPresentacion,
-            @RequestParam(value = "productoId", required = true) Integer id, HttpServletRequest request) {
+            @RequestParam(value = "productoId") Integer id) {
 
-        int tipo = 0;
+        int tipo;
         if (imagenPresentacion != null) {
             tipo = 1;
             guardarFile(imagenPresentacion, id, tipo);//1|imagen
@@ -128,7 +126,7 @@ public class ProductoController {
             guardarFile(videoPresentacion, id, tipo);//2|video
         }
 
-        return "1";
+        return EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int id, int tipo) {

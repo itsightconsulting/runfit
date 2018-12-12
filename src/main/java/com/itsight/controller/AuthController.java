@@ -68,7 +68,6 @@ public class AuthController {
     @GetMapping(value = "/jsonb/rutina/{id}")
     public @ResponseBody
     RutinaPlantilla jsonBResponseRutina(@PathVariable int id){
-        RutinaPlantilla obj = new RutinaPlantilla();
         return rutinaService.findOne(new Integer(id));
     }
 }

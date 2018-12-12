@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Paquete;
 import com.itsight.service.PaqueteService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/paquete")
@@ -50,7 +53,7 @@ public class PaqueteController {
             @PathVariable("estado") String estado,
             @PathVariable("perfil") String perfil) throws JsonProcessingException {
 
-        List<Paquete> lstPaquete = new ArrayList<Paquete>();
+        List<Paquete> lstPaquete;
         ObjectMapper objMapper = new ObjectMapper();
         objMapper.registerModule(new Hibernate5Module());
 
@@ -96,53 +99,38 @@ public class PaqueteController {
     public @ResponseBody
     String addPackage(@ModelAttribute Paquete paquete) {
         paquete.setPlan(paquete.getFkPlan());
-
         if (paquete.getId() == 0) {
-            paquete.setNombreContrato("");
-            paquete.setRutaContrato("");
-            paqueteService.add(paquete);
-            return String.valueOf(paquete.getId());
-        } else {
-            Paquete qPaquete = paqueteService.findRouteNamesById(paquete.getId());
-            paquete.setNombreContrato(qPaquete.getNombreContrato());
-            paquete.setRutaContrato(qPaquete.getRutaContrato());
-            paqueteService.update(paquete);
-            return String.valueOf(paquete.getId());
+            return paqueteService.registrar(paquete, String.valueOf(paquete.getFkPlan()));
         }
+        return paqueteService.actualizar(paquete, String.valueOf(paquete.getFkPlan()));
     }
 
-    @PostMapping(value = "/desactivarPaquete")
+    @PostMapping(value = "/desactivar")
     public @ResponseBody
     String disabledPackage(@RequestParam(value = "id") int paqueteId) {
         Paquete paquete = paqueteService.getPaqueteById(paqueteId);
-
-        if (paquete.isFlagActivo()) {
+        if (paquete.isFlagActivo())
             paquete.setFlagActivo(false);
-        } else {
+        else
             paquete.setFlagActivo(true);
-        }
-
-        paqueteService.update(paquete);
-
-        return "1";
+        paqueteService.actualizarFlagActivoById(paqueteId, paquete.isFlagActivo());
+        return EXITO_GENERICA.get();
     }
 
     @RequestMapping(value = "/cargarContrato", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(
             @RequestPart(value = "fileContrato", required = false) MultipartFile fileContrato,
-            @RequestParam(value = "paqueteId", required = true) Integer paqueteId,
-            @ModelAttribute Paquete paquete, HttpServletRequest request) {
+            @RequestParam(value = "paqueteId") Integer paqueteId,
+            @ModelAttribute Paquete paquete) {
 
-//		logger.debug("PARAMS| paqueteId: " + paqueteId);
         System.out.println("> PAQ: " + paquete.toString());
-        if (fileContrato != null) {
+        if (fileContrato != null)
             guardarFile(fileContrato, paqueteId);
-        } else {
+        else
             System.out.println("FILE IS NULL");
-        }
 
-        return "1";
+        return EXITO_GENERICA.get();
 
     }
 
@@ -152,7 +140,7 @@ public class PaqueteController {
 
                 String[] splitNameFile = file.getOriginalFilename().split("\\.");
                 String extension = "." + splitNameFile[splitNameFile.length - 1];
-                String fullPath = "";
+                String fullPath;
 
                 String rutaBase = String.valueOf(context.getAttribute("MAIN_ROUTE"));
 

@@ -4,7 +4,6 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CategoriaVideo;
 import com.itsight.domain.GrupoVideo;
 import com.itsight.service.CategoriaVideoService;
-import com.itsight.service.EspecificacionSubCategoriaService;
 import com.itsight.service.GrupoVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/categoria-video")
@@ -57,11 +58,9 @@ public class CategoriaVideoController {
 
         categoriaVideo.setGrupoVideo(new GrupoVideo(grupoVideoId));
         if (categoriaVideo.getId() == 0) {
-            categoriaVideoService.save(categoriaVideo);
-            return "1";
+            return categoriaVideoService.registrar(categoriaVideo, null);
         }
-        categoriaVideoService.update(categoriaVideo);
-        return "2";
+        return categoriaVideoService.actualizar(categoriaVideo, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -69,9 +68,9 @@ public class CategoriaVideoController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             categoriaVideoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

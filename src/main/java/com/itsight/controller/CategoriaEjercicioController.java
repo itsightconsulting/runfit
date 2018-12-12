@@ -1,13 +1,8 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.Audio;
-import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.service.CategoriaEjercicioService;
-import com.itsight.util.Enums;
-import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,15 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/categoria-ejercicio")
@@ -76,9 +72,9 @@ public class CategoriaEjercicioController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             categoriaEjercicioService.actualizarFlagActivoById(id, flagActivo);
-            return ResponseCode.EXITO_GENERICA.get();
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return ResponseCode.EX_GENERIC.get();
+            return EX_GENERIC.get();
         }
     }
 
@@ -90,7 +86,7 @@ public class CategoriaEjercicioController {
         if (imagen != null) {
             guardarFile(imagen, categoriaId);
         }
-        return ResponseCode.EXITO_GENERICA.get();
+        return EXITO_GENERICA.get();
     }
 
     private void guardarFile(MultipartFile file, int categoriaId) {

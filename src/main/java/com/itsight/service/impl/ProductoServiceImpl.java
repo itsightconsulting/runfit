@@ -5,6 +5,8 @@ import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ProductoPresentacionRepository;
 import com.itsight.repository.ProductoRepository;
 import com.itsight.service.ProductoService;
+import com.itsight.util.Enums;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,7 +149,7 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
         producto.setCategoria(Integer.parseInt(categoriaId));
         producto.setCodigo("PRO-" + UUID.randomUUID());
         producto.addProductoPresentacion(producto.getProductoPresentacion());
-        return String.valueOf(productoPresentacionRepository.save(producto.getProductoPresentacion()).getId());
+        return Utilitarios.customResponse(Enums.ResponseCode.REGISTRO.get(), String.valueOf(repository.save(producto).getId()));
     }
 
     @Override
@@ -155,8 +157,7 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
         // TODO Auto-generated method stub
         Producto qProducto = repository.findOne(producto.getId());
         qProducto.setCategoria(Integer.parseInt(categoriaId));
-        repository.saveAndFlush(qProducto);
-        return "1";
+        return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(repository.saveAndFlush(qProducto).getId()));
     }
 
     @Override

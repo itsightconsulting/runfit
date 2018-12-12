@@ -4,11 +4,8 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.repository.MultimediaDetalleRepository;
 import com.itsight.service.*;
-import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/cliente")
@@ -27,7 +24,6 @@ public class ClienteController {
 
     private SemanaService semanaService;
     private RutinaService rutinaService;
-    private UsuarioService usuarioService;
     private MultimediaEntrenadorService multimediaEntrenadorService;
     private RedFitnessService redFitnessService;
     private MultimediaDetalleRepository multimediaDetalleRepository;
@@ -40,13 +36,12 @@ public class ClienteController {
     private String mainRoute;
 
     @Autowired
-    public ClienteController(SemanaService semanaService, RutinaService rutinaService,UsuarioService usuarioService,
+    public ClienteController(SemanaService semanaService, RutinaService rutinaService,
                              MultimediaEntrenadorService multimediaEntrenadorService, RedFitnessService redFitnessService,MultimediaDetalleRepository multimediaDetalleRepository,
                              MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService,
                              EspecificacionSubCategoriaService especificacionSubCategoriaService){
         this.semanaService = semanaService;
         this.rutinaService = rutinaService;
-        this.usuarioService = usuarioService;
         this.multimediaEntrenadorService = multimediaEntrenadorService;
         this.redFitnessService = redFitnessService;
         this.multimediaDetalleRepository = multimediaDetalleRepository;
@@ -127,7 +122,7 @@ public class ClienteController {
                 multimediaDetalleRepository.delete(detalle.getId());
             }
         }
-        return "Ok";
+        return ACTUALIZACION.get();
     }
 
 
@@ -169,7 +164,4 @@ public class ClienteController {
     public @ResponseBody List<EspecificacionSubCategoria> subCategoriasEspecificacion(@RequestParam int id) {
         return especificacionSubCategoriaService.findBySubCategoriaEjercicioId(id);
     }
-
-
-
 }

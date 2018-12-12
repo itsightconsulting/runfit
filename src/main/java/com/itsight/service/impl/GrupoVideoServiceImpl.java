@@ -4,6 +4,8 @@ import com.itsight.domain.GrupoVideo;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.GrupoVideoRepository;
 import com.itsight.service.GrupoVideoService;
+import com.itsight.util.Enums;
+import com.itsight.util.Utilitarios;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,13 +116,19 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     @Override
     public String registrar(GrupoVideo entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        entity.setForest(2);//Padre-artificio|Valor final
+        return Utilitarios.customResponse(Enums.ResponseCode.REGISTRO.get(), String.valueOf(repository.save(entity).getId()));
     }
 
     @Override
     public String actualizar(GrupoVideo entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        entity.setForest(2);//Padre-artificio|Valor final
+        GrupoVideo qGrupoVideo = repository.findOne(entity.getId());
+        entity.setRutaWeb(qGrupoVideo.getRutaWeb());
+        entity.setRutaReal(qGrupoVideo.getRutaReal());
+        repository.saveAndFlush(entity);
+        return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(entity.getId()));
     }
 
     @Override
