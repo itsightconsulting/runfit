@@ -9,6 +9,7 @@ public class Enums {
         EXITO_GENERICA(-4),
         EX_VALIDATION_FAILED(-5),
         EMPTY_RESPONSE(-6),
+        SESSION_VALUE_NOT_FOUND(-7),
         EX_GENERIC(-9),
         EX_NULL_POINTER(-10),
         EX_JACKSON_INVALID_FORMAT(-11),

@@ -164,7 +164,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
             repository.deleteElementoById(diaId, Integer.parseInt(elementoDel.getElementoIndice()), elementoDel.getMinutos(), elementoDel.getDistancia(), elementoDel.getCalorias());
             return ELIMINACION.get();
         }
-        return EMPTY_RESPONSE.get();
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -179,14 +179,21 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
             repository.saveElemento(diaId, new ObjectMapper().writeValueAsString(elemento));
             return REGISTRO.get();
         }
-        return EMPTY_RESPONSE.get();
+        return SESSION_VALUE_NOT_FOUND.get();
 
     }
 
     @Override
-    public void actualizarNombreElementoByListaIndexAndId(String nombre, int elementoIndice, int diaId) {
-        String texto = "{"+elementoIndice+",\"nombre\"}";
-        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(diaId, nombre, texto);
+    public String actualizarNombreElementoByListaIndexAndId(Elemento elemento) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            String texto = "{"+elemento.getElementoIndice()+",\"nombre\"}";
+            repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(diaId, elemento.getNombre(), texto);
+            return Enums.ResponseCode.ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -218,7 +225,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
             repository.saveElementoPosEspecificaGeneric(diaId, texto, insertarDespues, new ObjectMapper().writeValueAsString(elemento));
             return REGISTRO.get();
         }
-        return EMPTY_RESPONSE.get();
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -274,7 +281,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
             repository.saveElementoPosEspecificaGeneric(diaId, texto, insertarDespues, new ObjectMapper().writeValueAsString(subElemento));
             return REGISTRO.get();
         }
-        return EMPTY_RESPONSE.get();
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -299,7 +306,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
             repository.deleteSubElementoById(diaId, texto, elementoDel.getDistancia(), elementoDel.getCalorias());
             return ELIMINACION.get();
         }
-        return EMPTY_RESPONSE.get();
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -344,9 +351,20 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarElementoByListaIndexAndId(String elemento, int elementoIndice, int diaId) {
-        String texto = "{"+elementoIndice+"}";
-        repository.updateAllJsonBGenericoByQueryTextAndId(diaId, elemento, texto);
+    public String actualizarElementoByListaIndexAndId(ElementoDto elemento) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            int eleIndice = elemento.getElementoIndice();
+            elemento.setElementoIndice(0);
+            elemento.setDiaIndice(0);
+            elemento.setNumeroSemana(0);
+            String texto = "{"+elemento.getElementoIndice()+"}";
+            repository.updateAllJsonBGenericoByQueryTextAndId(diaId, new ObjectMapper().writeValueAsString(elemento), texto);
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -415,9 +433,16 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarElementosEstilosFull(String estilos, int elementoIndice, int id) {
-        String texto = "{"+elementoIndice+",\"estilos\""+"}";
-        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndIdInt(id, estilos, texto);
+    public String actualizarElementosEstilosFull(Elemento elemento) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            String texto = "{"+elemento.getElementoIndice()+",\"estilos\""+"}";
+            repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndIdInt(diaId, new ObjectMapper().writeValueAsString(elemento.getEstilos()), texto);
+            return Enums.ResponseCode.ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override

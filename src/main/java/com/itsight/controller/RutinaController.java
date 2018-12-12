@@ -29,11 +29,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.itsight.util.Enums.ResponseCode;
 
@@ -214,37 +217,26 @@ public class RutinaController {
         }
         bindingResult.getModel().forEach((key, value)-> System.out.println("Key : " + key + " Value : " + value));
         return ResponseCode.EX_VALIDATION_FAILED.get();
-
     }
 
     @PutMapping(value = "/elemento/actualizar")
-    public @ResponseBody String actualizarElementoDia(@RequestBody Elemento elemento, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarNombreElementoByListaIndexAndId(elemento.getNombre(), elemento.getElementoIndice(), diaId);
-        return ResponseCode.ACTUALIZACION.get();
+    public @ResponseBody String actualizarElementoDia(@RequestBody @Valid Elemento elemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarNombreElementoByListaIndexAndId(elemento);
+        bindingResult.getModel().forEach((key, value)-> System.out.println("Key : " + key + " Value : " + value));
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/estilos/actualizar")
     public @ResponseBody String actualizarEstilosElementoDia(
-            @RequestBody Elemento elemento, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarElementosEstilosFull(new ObjectMapper().writeValueAsString(elemento.getEstilos()), elemento.getElementoIndice(), diaId);
-        return ResponseCode.ACTUALIZACION.get();
+            @RequestBody Elemento elemento) throws JsonProcessingException {
+        return diaService.actualizarElementosEstilosFull(elemento);
     }
 
     @PutMapping(value = "/elemento/actualizar/2")
     public @ResponseBody String actualizarElementoNomAndTipoDia(
-            @RequestBody ElementoDto elemento, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        int eleIndice = elemento.getElementoIndice();
-        elemento.setElementoIndice(0);
-        elemento.setDiaIndice(0);
-        elemento.setNumeroSemana(0);
-        diaService.actualizarElementoByListaIndexAndId(new ObjectMapper().writeValueAsString(elemento), eleIndice, diaId);
-        return ResponseCode.ACTUALIZACION.get();
+            @RequestBody ElementoDto elemento) throws JsonProcessingException {
+        return diaService.actualizarElementoByListaIndexAndId(elemento);
     }
 
     @PutMapping(value = "/elemento/tiempo/actualizar")

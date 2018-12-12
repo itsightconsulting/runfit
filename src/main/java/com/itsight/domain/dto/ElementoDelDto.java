@@ -15,10 +15,8 @@ public class ElementoDelDto implements Serializable {
     private String diaIndice;
     private String elementoIndice;
     private String subElementoIndice;
-    @Max(value = 50)
     private int minutos;
     private double distancia;
-    @Max(value = 300)
     private double calorias;
 
 }

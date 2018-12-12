@@ -29,7 +29,7 @@ public interface DiaService extends BaseService<Dia> {
 
     String insertarNuevoElemento(Elemento elemento) throws JsonProcessingException;
 
-    void actualizarNombreElementoByListaIndexAndId(String nombre, int elementoIndicice, int diaId);
+    String actualizarNombreElementoByListaIndexAndId(Elemento elemento);
 
     void insertarSubElementoById(int id, int elementoIndice, int subElementoIndice, String elemento);
 
@@ -59,7 +59,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nota);
 
-    void actualizarElementoByListaIndexAndId(String elemento, int elementoIndice, int id);
+    String actualizarElementoByListaIndexAndId(ElementoDto elemento) throws JsonProcessingException;
 
     void actualizarMediaElemento2(ElementoDto elemento, int id);
 
@@ -71,7 +71,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarDiaRaizDesdePlantilla(int id, double calorias,double distancia, int minutos, String writeValueAsString);
 
-    void actualizarElementosEstilosFull(String estilos, int elementoIndice, int id);
+    String actualizarElementosEstilosFull(Elemento elemento) throws JsonProcessingException;
 
     void actualizarDiaAndSubElementoById(int id, double calorias, double distanciaDia, double distanciaEle, int elementoIndice, int subElementoIndice, String subEle);
 
