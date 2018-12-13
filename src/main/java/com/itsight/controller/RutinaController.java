@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -222,7 +223,7 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/estilos/actualizar")
     public @ResponseBody String actualizarEstilosElementoDia(
-            @RequestBody Elemento elemento) throws JsonProcessingException {
+            @RequestBody EleEstilosUpd elemento) throws JsonProcessingException {
         return diaService.actualizarElementosEstilosFull(elemento);
     }
 

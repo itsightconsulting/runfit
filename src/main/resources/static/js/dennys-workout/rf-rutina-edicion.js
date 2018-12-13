@@ -2335,8 +2335,8 @@ function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIn
 }
 
 function actualizarElementoNombreBD(numSem, diaIndex, eleIndex) {
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
-    //params.
+    let params = {};
+    params.nombre = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].nombre;
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;
@@ -2648,12 +2648,11 @@ function modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso){
 }
 
 function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
-    let ele = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
     let params = {};
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;
-    params.estilos = ele.estilos;
+    params.estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
     $.ajax({
         type: "PUT",
         contentType: "application/json",

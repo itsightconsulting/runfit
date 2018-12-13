@@ -2,6 +2,7 @@ package com.itsight.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Dia;
+import com.itsight.domain.EleEstilosUpd;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.generic.BaseService;
@@ -70,7 +71,7 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarDiaRaizDesdePlantilla(int id, double calorias,double distancia, int minutos, String writeValueAsString);
 
-    String actualizarElementosEstilosFull(Elemento elemento) throws JsonProcessingException;
+    String actualizarElementosEstilosFull(EleEstilosUpd elemento) throws JsonProcessingException;
 
     void actualizarDiaAndSubElementoById(int id, double calorias, double distanciaDia, double distanciaEle, int elementoIndice, int subElementoIndice, String subEle);
 

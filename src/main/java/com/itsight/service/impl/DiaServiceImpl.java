@@ -3,6 +3,7 @@ package com.itsight.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
+import com.itsight.domain.EleEstilosUpd;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.generic.BaseServiceImpl;
@@ -355,11 +356,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
             int diaId = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
-            int eleIndice = elemento.getElementoIndice();
+            int tempEleIndice = elemento.getElementoIndice();//Trick
             elemento.setElementoIndice(0);
             elemento.setDiaIndice(0);
             elemento.setNumeroSemana(0);
-            String texto = "{"+elemento.getElementoIndice()+"}";
+            String texto = "{"+tempEleIndice+"}";
             repository.updateAllJsonBGenericoByQueryTextAndId(diaId, new ObjectMapper().writeValueAsString(elemento), texto);
             return ACTUALIZACION.get();
         }
@@ -432,7 +433,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarElementosEstilosFull(Elemento elemento) throws JsonProcessingException {
+    public String actualizarElementosEstilosFull(EleEstilosUpd elemento) throws JsonProcessingException {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
