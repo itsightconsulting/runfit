@@ -2336,6 +2336,7 @@ function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIn
 
 function actualizarElementoNombreBD(numSem, diaIndex, eleIndex) {
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
+    //params.
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = eleIndex;

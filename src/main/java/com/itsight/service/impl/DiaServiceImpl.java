@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
-import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.DiaRepository;
 import com.itsight.service.DiaService;
@@ -156,12 +155,12 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String eliminarElementoById(ElementoDelDto elementoDel) {
+    public String eliminarElementoById(ElementoDel elementoDel) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
-            int semanaId = ((int[]) sessionValor.get())[Integer.parseInt(elementoDel.getNumeroSemana())];
-            int diaId = repository.findIdBySemanaId(semanaId).get(Integer.parseInt(elementoDel.getDiaIndice()));
-            repository.deleteElementoById(diaId, Integer.parseInt(elementoDel.getElementoIndice()), elementoDel.getMinutos(), elementoDel.getDistancia(), elementoDel.getCalorias());
+            int semanaId = ((int[]) sessionValor.get())[elementoDel.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elementoDel.getDiaIndice());
+            repository.deleteElementoById(diaId, elementoDel.getElementoIndice(), elementoDel.getMinutos(), elementoDel.getDistancia(), elementoDel.getCalorias());
             return ELIMINACION.get();
         }
         return SESSION_VALUE_NOT_FOUND.get();
@@ -184,7 +183,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarNombreElementoByListaIndexAndId(Elemento elemento) {
+    public String actualizarNombreElementoByListaIndexAndId(ElementoUpd elemento) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
@@ -297,11 +296,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String eliminarSubElementoById(ElementoDelDto elementoDel) {
+    public String eliminarSubElementoById(ElementoDel elementoDel) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
-            int semanaId = ((int[]) sessionValor.get())[Integer.parseInt(elementoDel.getNumeroSemana())];
-            int diaId = repository.findIdBySemanaId(semanaId).get(Integer.parseInt(elementoDel.getDiaIndice()));
+            int semanaId = ((int[]) sessionValor.get())[elementoDel.getNumeroSemana()];
+            int diaId = repository.findIdBySemanaId(semanaId).get(elementoDel.getDiaIndice());
             String texto = "{"+elementoDel.getElementoIndice()+",subElementos,"+elementoDel.getSubElementoIndice()+"}";
             repository.deleteSubElementoById(diaId, texto, elementoDel.getDistancia(), elementoDel.getCalorias());
             return ELIMINACION.get();

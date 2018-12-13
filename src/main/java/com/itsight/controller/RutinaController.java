@@ -2,7 +2,6 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
@@ -14,29 +13,23 @@ import com.itsight.domain.pojo.MetricaVelPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
-import com.itsight.util.Utilitarios;
-import groovy.lang.Tuple2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.itsight.util.Enums.ResponseCode;
 
@@ -206,12 +199,12 @@ public class RutinaController {
     }
 
     @PutMapping(value = "/elemento/eliminar")
-    public @ResponseBody String eliminarElemento(@ModelAttribute ElementoDelDto elementoDel){
+    public @ResponseBody String eliminarElemento(@ModelAttribute ElementoDel elementoDel){
         return diaService.eliminarElementoById(elementoDel);
     }
 
     @PutMapping(value = "/sub-elemento/eliminar")
-    public @ResponseBody String eliminarSubElemento(@ModelAttribute @Valid ElementoDelDto elementoDel, BindingResult bindingResult){
+    public @ResponseBody String eliminarSubElemento(@ModelAttribute @Valid ElementoDel elementoDel, BindingResult bindingResult){
         if(!bindingResult.hasErrors()){
             return diaService.eliminarSubElementoById(elementoDel);
         }
@@ -220,7 +213,7 @@ public class RutinaController {
     }
 
     @PutMapping(value = "/elemento/actualizar")
-    public @ResponseBody String actualizarElementoDia(@RequestBody @Valid Elemento elemento, BindingResult bindingResult){
+    public @ResponseBody String actualizarElementoDia(@RequestBody @Valid ElementoUpd elemento, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.actualizarNombreElementoByListaIndexAndId(elemento);
         bindingResult.getModel().forEach((key, value)-> System.out.println("Key : " + key + " Value : " + value));

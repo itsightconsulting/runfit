@@ -2,7 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### CUSTOM IGNORES ###
-/workoutlogs/
+workoutlogs/
 ### STS ###
 .apt_generated
 .classpath

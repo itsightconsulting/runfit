@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Dia;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
-import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.generic.BaseService;
 
 import java.util.List;
@@ -23,13 +22,13 @@ public interface DiaService extends BaseService<Dia> {
 
     void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int id, int listaIndice, int elementoIndice, String nombre);
 
-    String eliminarElementoById(ElementoDelDto elementoDel);
+    String eliminarElementoById(ElementoDel elementoDel);
 
-    String eliminarSubElementoById(ElementoDelDto elementoDelDto);
+    String eliminarSubElementoById(ElementoDel elementoDel);
 
     String insertarNuevoElemento(Elemento elemento) throws JsonProcessingException;
 
-    String actualizarNombreElementoByListaIndexAndId(Elemento elemento);
+    String actualizarNombreElementoByListaIndexAndId(ElementoUpd elemento);
 
     void insertarSubElementoById(int id, int elementoIndice, int subElementoIndice, String elemento);
 
