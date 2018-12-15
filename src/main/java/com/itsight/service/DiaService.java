@@ -2,9 +2,9 @@ package com.itsight.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Dia;
-import com.itsight.domain.EleEstilosUpd;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
+import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.generic.BaseService;
 
 import java.util.List;
@@ -13,15 +13,7 @@ public interface DiaService extends BaseService<Dia> {
 
     List<Integer> encontrarIdPorSemanaId(int semanaId);
 
-    void actualizarNombreListaByListaIndexAndId(String nombre, int listaIndice, int id);
-
-    void insertarNuevoElementoById(int id, int listaIndice, int elementoIndice, String elemento);
-
-    void insertarNuevosElementosById(int id, int listaIndice, String elemento);
-
     void actualizarFlagDescanso(int id, boolean flagDescanso);
-
-    void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int id, int listaIndice, int elementoIndice, String nombre);
 
     String eliminarElementoById(ElementoDel elementoDel);
 
@@ -37,23 +29,19 @@ public interface DiaService extends BaseService<Dia> {
 
     String insertarNuevoElementoPosEspecifica(ElementoEspecifico elemento) throws JsonProcessingException;
 
-    void actualizarTiempoElementoByListaIndexAndId(int tiempo, int elementoIndice, int id, int minutosTotales);
+    String actualizarTiempoElementoByListaIndexAndId(ElementoUpd elemento, int minutosDia);
 
-    void actualizarDiaAndElementoById(int id, double calorias, double distanciaTotal, String nombre, double distancia, int elementoIndice);
+    String actualizarDiaAndElementoById(ElementoUpd elemento, double distanciaDia);
 
-    void actualizarDiaAndElemento2ById(int id, double calorias, double distanciaTotal, int minutosTotal, String nombre, double distancia, int minutos, int elementoIndice);
+    String actualizarDiaAndElemento2ById(ElementoUpd elemento, double distanciaDia, int minutosDia);
 
-    void actualizarNotaElementoByListaIndexAndId(String nota, int elementoIndice, int id);
+    String actualizarNotaElementoByListaIndexAndId(ElementoUpd elemento);
 
     String insertarNuevoSubElementoPosEspecifica(SubElementoEspecifico subElementoEspecifico) throws JsonProcessingException;
 
-    void actualizarAudioElementoByListaIndexAndId(String mediaAudio, int elementoIndice, int id);
+    String eliminarMediaElemento(ElementoMediaDto elemento);
 
-    void actualizarVideoElementoByListaIndexAndId(String mediaVideo, int elementoIndice, int id);
-
-    void actualizarMediaSubElemento(SubElementoMediaDto subElemento, int id);
-
-    void actualizarMediaElemento(ElementoMediaDto elemento, int id);
+    String actualizarMediaElemento(ElementoMediaDto elemento);
 
     void actualizarDiaFromPlantilla(int id, double calorias, double distanciaTot, int minutosTot, String elementos);
 
@@ -61,19 +49,19 @@ public interface DiaService extends BaseService<Dia> {
 
     String actualizarElementoByListaIndexAndId(ElementoDto elemento) throws JsonProcessingException;
 
-    void actualizarMediaElemento2(ElementoDto elemento, int id);
+    String agregarMediaElemento(ElementoDto elemento);
 
-    void actualizarMediaElemento3(ElementoMediaDto elemento, int id);//Que en el controller sirve para la "/v2"
+    String actualizarMediaSubElemento(SubElementoMediaDto subEle);
 
-    void actualizarMediaSubElemento2(SubElementoMediaDto subEle, int id);
+    String eliminarMediaSubElemento(SubElementoMediaDto subEle);
 
     void actualizarSubElementos(int id, int elementoIndice, String subEles);
 
     void actualizarDiaRaizDesdePlantilla(int id, double calorias,double distancia, int minutos, String writeValueAsString);
 
-    String actualizarElementosEstilosFull(EleEstilosUpd elemento) throws JsonProcessingException;
+    String actualizarElementosEstilosFull(EleEstiloUpd elemento) throws JsonProcessingException;
 
-    void actualizarDiaAndSubElementoById(int id, double calorias, double distanciaDia, double distanciaEle, int elementoIndice, int subElementoIndice, String subEle);
+    String actualizarDiaAndSubElementoById(SubElemento subElemento) throws JsonProcessingException;
 
     void actualizarSemanaCompletaDesdeOtra(int semIdDesde, int semIdPara);
 }

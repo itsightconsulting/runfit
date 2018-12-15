@@ -474,22 +474,28 @@ function notificacionesRutinaSegunResponseCode(resCode){
         case -4:
             break;
         case -5:
-            $.smallBox({color: "alert",content: "La validación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({color: "alert",content: "<i> La validación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
+            break;
+        case -6:
+            $.smallBox({color: "alert",content: "<i> La validación ha fallado, respuesta vacía... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
+            break;
+        case -7:
+            $.smallBox({color: "alert",content: "<i> La sessión interna ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -10:
-            $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -11:
-            $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -99:
-            $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -100:
-            $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -101:
-            $.smallBox({color: "alert",content: "La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde."});
+            $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         default:
             break;

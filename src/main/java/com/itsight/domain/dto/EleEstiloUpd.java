@@ -1,24 +1,22 @@
 package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.itsight.domain.jsonb.Estilo;
 import lombok.Data;
 
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class ElementoUpd implements Serializable {
+public class EleEstiloUpd implements Serializable {
 
-    @Size(max = 300)
-    private String nombre;
-    private String nota;
     private int diaIndice;
     private int elementoIndice;
     private int subElementoIndice;
     private int numeroSemana;
-    private int minutos;
-    private double distancia;
-    private double calorias;
+    @Valid
+    private Set<Estilo> estilos;
 
 }

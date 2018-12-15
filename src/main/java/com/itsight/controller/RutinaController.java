@@ -223,8 +223,11 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/estilos/actualizar")
     public @ResponseBody String actualizarEstilosElementoDia(
-            @RequestBody EleEstilosUpd elemento) throws JsonProcessingException {
-        return diaService.actualizarElementosEstilosFull(elemento);
+            @RequestBody @Valid EleEstiloUpd elemento, BindingResult bindingResult) throws JsonProcessingException {
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarElementosEstilosFull(elemento);
+        bindingResult.getModel().forEach((key, value)-> System.out.println("Key : " + key + " Value : " + value));
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/actualizar/2")
@@ -235,82 +238,83 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/tiempo/actualizar")
     public @ResponseBody String actualizarTiempoElemento(
-            @RequestBody Elemento elemento, HttpSession session){
-        int minutosDia = elemento.getMinutosDia();
-        elemento.setMinutosDia(0);//Para no ser tomado en cuenta en la serializacion
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarTiempoElementoByListaIndexAndId(elemento.getMinutos(), elemento.getElementoIndice(), diaId, minutosDia);
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoUpd elemento, @RequestParam int minutosDia, BindingResult bindingResult){
+        if(!bindingResult.hasErrors()){
+            return diaService.actualizarTiempoElementoByListaIndexAndId(elemento, minutosDia);
+        }
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/actualizar")
     public @ResponseBody String actualizarDia(
-            @RequestBody Elemento elemento, HttpSession session){
-        double distanciaDia = elemento.getDistanciaDia();
-        elemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarDiaAndElementoById(diaId, elemento.getCalorias(), distanciaDia, elemento.getNombre(), elemento.getDistancia(), elemento.getElementoIndice());
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoUpd elemento, @RequestParam double distanciaDia, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarDiaAndElementoById(elemento, distanciaDia);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/actualizar2")
     public @ResponseBody String actualizarDiaPlusTiempo(
-            @RequestBody Elemento elemento, HttpSession session){
-        double distanciaDia = elemento.getDistanciaDia();
-        elemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarDiaAndElemento2ById(diaId, elemento.getCalorias(), distanciaDia, elemento.getMinutosDia(), elemento.getNombre(), elemento.getDistancia(), elemento.getMinutos(), elemento.getElementoIndice());
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoUpd elemento, double distanciaDia, int minutosDia, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarDiaAndElemento2ById(elemento, distanciaDia, minutosDia);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/actualizar3")
     public @ResponseBody String actualizarDiaFromSubEle(
-            @RequestBody SubElemento subElemento, HttpSession session) throws JsonProcessingException{
-        double distanciaDia = subElemento.getDistanciaDia();
-        subElemento.setDistanciaDia(0);//Para no ser tomado en cuenta en la serializacion
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[subElemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(subElemento.getDiaIndice());
-        diaService.actualizarDiaAndSubElementoById(diaId, subElemento.getCalorias(), distanciaDia, subElemento.getDistancia(),  subElemento.getElementoIndice(), subElemento.getSubElementoIndice(), new ObjectMapper().writeValueAsString(new SubElemento(subElemento.getNombre(), subElemento.getMediaAudio(),subElemento.getMediaVideo(), subElemento.getTipo())));
-        return ResponseCode.ACTUALIZACION.get();
+            @RequestBody @Valid SubElemento subElemento, BindingResult bindingResult) throws JsonProcessingException{
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarDiaAndSubElementoById(subElemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/nota/actualizar")
     public @ResponseBody String actualizarNotaElemento(
-            @RequestBody Elemento elemento, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarNotaElementoByListaIndexAndId(elemento.getNota(), elemento.getElementoIndice(), diaId);
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoUpd elemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarNotaElementoByListaIndexAndId(elemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
+    }
+
+    @PutMapping(value = "/elemento/media/eliminar")
+    public @ResponseBody String eliminarMediaElemento(
+            @ModelAttribute @Valid ElementoMediaDto elemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.eliminarMediaElemento(elemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/media/actualizar")
     public @ResponseBody String actualizarMediaElemento(
-            @ModelAttribute ElementoMediaDto elemento, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarMediaElemento(elemento, diaId);
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoMediaDto elemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarMediaElemento(elemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/media/agregar")
     public @ResponseBody String agregarMediaElemento(
-            @RequestBody ElementoDto elemento, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarMediaElemento2(elemento, diaId);
-        return ResponseCode.ACTUALIZACION.get();
+            @RequestBody @Valid ElementoDto elemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.agregarMediaElemento(elemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
-    @PutMapping(value = "/sub-elemento/media/agregar")
-    public @ResponseBody String agregarMediaSubElemento(
-            @RequestBody SubElementoMediaDto subEle, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[subEle.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(subEle.getDiaIndice());
-        diaService.actualizarMediaSubElemento2(subEle, diaId);
-        return ResponseCode.ACTUALIZACION.get();
+    @PutMapping(value = "/sub-elemento/media/actualizar")
+    public @ResponseBody String actualizarSubElementoMedia(
+            @ModelAttribute @Valid SubElementoMediaDto subEle, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarMediaSubElemento(subEle);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
+    }
+
+    @PutMapping(value = "/sub-elemento/media/eliminar")
+    public @ResponseBody String eliminarMediaSubElemento(
+            @RequestBody @Valid SubElementoMediaDto subEle, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.eliminarMediaSubElemento(subEle);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PostMapping(value = "/sub-elemento/agregar")
@@ -354,14 +358,6 @@ public class RutinaController {
         int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
         int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
         diaService.actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice), nota);
-        return ResponseCode.ACTUALIZACION.get();
-    }
-
-    @PutMapping(value = "/sub-elemento/media/actualizar")
-    public @ResponseBody String actualizarSubElementoMedia(@RequestBody SubElementoMediaDto subElemento, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[subElemento.getNumeroSemana()];
-        int id = diaService.encontrarIdPorSemanaId(semanaId).get(subElemento.getDiaIndice());
-        diaService.actualizarMediaSubElemento2(subElemento, id);
         return ResponseCode.ACTUALIZACION.get();
     }
 
@@ -592,13 +588,12 @@ public class RutinaController {
     @PostMapping(value = "/elemento/updateDiasSeleccionados")
     public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, @RequestParam int anio, @RequestParam int mes , HttpSession session)
     {
-        int idrutina = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
         int[] sIds = (int[]) session.getAttribute("semanaIds");
-        List<DiaSemanaDto> listdias = new ArrayList<>();
+        List<DiaSemanaDto> listdias;
         ObjectMapper mapper = new ObjectMapper();
         try {
             listdias = mapper.readValue(listjson, new TypeReference<List<DiaSemanaDto>>(){});
-            List<Integer> intList = new ArrayList<Integer>();
+            List<Integer> intList = new ArrayList<>();
             for (int i : sIds)
             {
                 intList.add(i);

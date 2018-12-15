@@ -2085,7 +2085,8 @@ function actualizarElementoStrategyBD2(numSem, diaIndex, eleIndex, tipoElemento)
 }
 
 function actualizarElementoStrategyBD(numSem, diaIndex, eleIndex, tipoMedia, tipoElemento){
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex];
+    let params = {};
+    params.nombre = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].nombre;
     if(tipoMedia == TipoElemento.AUDIO){
         params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].mediaAudio;
     }else{//VIDEO
@@ -2114,7 +2115,8 @@ function actualizarElementoStrategyBD(numSem, diaIndex, eleIndex, tipoMedia, tip
 }
 
 function actualizarSubElementoStrategyBD(numSem, diaIndex, eleIndex, subEleIndex, tipoMedia){
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex];
+    let params = {};
+    params.nombre = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].nombre;
     if(tipoMedia == TipoElemento.AUDIO){
         params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].mediaAudio;
     }else{//VIDEO
@@ -2357,17 +2359,18 @@ function actualizarElementoNombreBD(numSem, diaIndex, eleIndex) {
 }
 
 function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) {
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    let params = {};
+    params.minutos = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].minutos
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
     params.minutosDia = totalMin;
     $.ajax({
         type: "PUT",
-        contentType: "application/json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + "gestion/rutina/elemento/tiempo/actualizar",
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },
@@ -2379,18 +2382,21 @@ function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) 
 }
 
 function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    const ele = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    let params = {};
+    params.nombre = ele.nombre;
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
+    params.distancia = ele.distancia;
     params.distanciaDia = totalKms;
     params.calorias = calorias;
     $.ajax({
         type: "PUT",
-        contentType: "application/json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + "gestion/rutina/dia/actualizar",
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },
@@ -2402,20 +2408,23 @@ function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
 }
 
 function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, totalMinutos) {
-
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    const ele = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    let params = {};
+    params.nombre = ele.nombre;
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
+    params.distancia = ele.distancia;
     params.distanciaDia = totalKms;
     params.calorias = calorias;
+    params.minutos = ele.minutos;
     params.minutosDia = totalMinutos;
     $.ajax({
         type: "PUT",
-        contentType: "application/json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + "gestion/rutina/dia/actualizar2",
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },
@@ -2428,7 +2437,9 @@ function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, 
 
 
 function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, kms, totalKms, calorias) {
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    const ele = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    let params = {};
+    params.nombre = ele.nombre;
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
@@ -2436,6 +2447,7 @@ function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, kms, t
     params.distancia = kms;
     params.distanciaDia = totalKms;
     params.calorias = calorias;
+    params.tipo = ele.tipo;
     $.ajax({
         type: "PUT",
         contentType: "application/json",
@@ -2453,16 +2465,17 @@ function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, kms, t
 }
 
 function actualizarNotaElementoBD(numSem, diaIndex, elementoIndice) {
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    let params = {};
+    params.nota = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].nota;
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
     $.ajax({
         type: "PUT",
-        contentType: "application/json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + "gestion/rutina/elemento/nota/actualizar",
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },
@@ -2473,7 +2486,7 @@ function actualizarNotaElementoBD(numSem, diaIndex, elementoIndice) {
     })
 }
 
-function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
+function eliminarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
     let params = {};
     if(tipoMedia == TipoElemento.AUDIO){
         params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
@@ -2488,7 +2501,7 @@ function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
     $.ajax({
         type: "PUT",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + "gestion/rutina/elemento/media/actualizar",
+        url: _ctx + "gestion/rutina/elemento/media/eliminar",
         dataType: "json",
         data: params,
         success: function (data) {
@@ -2501,7 +2514,7 @@ function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
     })
 }
 
-function actualizarMediaElementoBD2(numSem, diaIndex, elementoIndice, tipoMedia, nombre){
+function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia, nombre){
     let params = {};
     if(tipoMedia == TipoElemento.AUDIO){
         params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
@@ -2531,19 +2544,20 @@ function actualizarMediaElementoBD2(numSem, diaIndex, elementoIndice, tipoMedia,
     })
 }
 
-function actualizarMediaSubElementoBD(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
+function eliminarMediaSubElementoBD(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = elementoIndice;
     params.subElementoIndice = subEleIndice;
-    params.tipo = tipoMedia;
+    params.tipoMedia = tipoMedia;
+    params.tipo = 3;
     $.ajax({
         type: "PUT",
-        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/media/eliminar",
         dataType: "json",
-        data: params,
+        data: JSON.stringify(params),
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },
@@ -2566,10 +2580,10 @@ function actualizarMediaSubElementoBD2(numSem, diaIndex, elementoIndice, subEleI
     params.tipoMedia = tipoMedia;
     $.ajax({
         type: "PUT",
-        contentType: "application/json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },

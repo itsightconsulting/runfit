@@ -1632,7 +1632,7 @@ ElementoOpc = (function(){
                 while((tempElemento = tempElemento.previousElementSibling) != null) i++;
                 RutinaSet.setElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex = i), '');
                 iconoMedia.remove();
-                actualizarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.AUDIO);
+                eliminarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.AUDIO);
             }
         },
         eliminarMediaVideo: (ixs)=>{
@@ -1643,7 +1643,7 @@ ElementoOpc = (function(){
                 while((tempElemento = tempElemento.previousElementSibling) != null) i++;
                 RutinaSet.setElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex = i), '');
                 iconoMedia.remove();
-                actualizarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.VIDEO);
+                eliminarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.VIDEO);
             }
         },
         verDistanciaElemento: (ixs, input)=>{
@@ -1745,7 +1745,7 @@ ElementoOpc = (function(){
                 }else{//Para registrar
                     iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
                 }
-                actualizarMediaElementoBD2(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.AUDIO, $mediaNombre);
+                actualizarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.AUDIO, $mediaNombre);
                 $mediaAudio = '';
             }else if ($tipoMedia == TipoElemento.VIDEO) {
                 RutinaSet.setElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex=i), $mediaVideo, $mediaNombre);
@@ -1754,7 +1754,7 @@ ElementoOpc = (function(){
                 }else{//Para registrar
                     iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
                 }
-                actualizarMediaElementoBD2(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.VIDEO, $mediaNombre);
+                actualizarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.VIDEO, $mediaNombre);
                 $mediaVideo = '';
             }
             initTempElemento.querySelector('.rf-dia-elemento-nombre').textContent = $mediaNombre;
@@ -1928,7 +1928,7 @@ SubEleOpc = (function(){
                 while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
                 RutinaSet.setSubElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), '');
                 iconoMedia.remove();
-                actualizarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
+                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
             }
         },
         eliminarMediaVideo: (ixs)=>{
@@ -1941,11 +1941,12 @@ SubEleOpc = (function(){
                 while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
                 RutinaSet.setSubElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), '');
                 iconoMedia.remove();
-                actualizarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
+                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
             }
         },
         agregarMediaToSubElemento: (ixs, input)=>{
-            const assetsElemento = input.parentElement;
+            console.log('deprecated...');
+            /*const assetsElemento = input.parentElement;
             const iconoOpc = assetsElemento.querySelector('.sub-ele-ops');
             const iconoMedia = assetsElemento.querySelector('.rf-media');
 
@@ -1961,7 +1962,7 @@ SubEleOpc = (function(){
                 }else{//Para registrar
                     iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
                 }
-                actualizarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
+                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
                 $mediaAudio = '';
             }else if ($tipoMedia == TipoElemento.VIDEO) {
                 RutinaSet.setSubElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex=i), (subEleIndex=k), $mediaVideo);
@@ -1970,9 +1971,9 @@ SubEleOpc = (function(){
                 }else{//Para registrar
                     iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
                 }
-                actualizarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
+                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
                 $mediaVideo = '';
-            }
+            }*/
         },
         agregarMediaToSubElemento2: (ixs, input)=>{
             const assetsElemento = input.parentElement;
@@ -2503,8 +2504,8 @@ RutinaElementoHTML = (function(){
                                     <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                     <span class="txt-color-black lista-title">
                                         <span class="pull-left">
-                                            ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
-                                            ${ele.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
+                                            ${ele.mediaVideo != undefined && ele.mediaVideo != ''?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
+                                            ${ele.mediaAudio != undefined && ele.mediaAudio != ''?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                             <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                             <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                         </span>
@@ -2531,8 +2532,8 @@ RutinaElementoHTML = (function(){
                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
                                         <span class="txt-color-blue lista-title">
                                             <span class="pull-left">                                         
-                                                ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
-                                                ${ele.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
+                                                ${ele.mediaVideo != undefined && ele.mediaVideo != ''?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
+                                                ${ele.mediaAudio != undefined && ele.mediaAudio != ''?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                                 <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                                 <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento2(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                             </span>
@@ -2565,8 +2566,8 @@ RutinaElementoHTML = (function(){
                 subElementosHTML += `
                     <div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
                         <span class="pull-left">
-                             ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                             ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
+                             ${sEle.mediaVideo != undefined && sEle.mediaVideo != '' ? RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
+                             ${sEle.mediaAudio != undefined && sEle.mediaAudio != '' ? RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
                              <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
                              <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
                         </span>
