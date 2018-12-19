@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Utilitarios {
 
@@ -209,6 +210,24 @@ public class Utilitarios {
         return false;
     }
 
+    public static Optional<Integer> parseInt(String toParse) {
+        try {
+            return Optional.of(Integer.parseInt(toParse));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
 
+    public static boolean onlyIntegers(String value){
+        try {
+            if(value.split(",").length == 7)
+                Arrays.stream(value.split(",")).forEach(x-> Integer.parseInt(x));
+            else
+                return false;
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
 

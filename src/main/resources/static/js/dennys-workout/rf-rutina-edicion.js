@@ -1567,7 +1567,6 @@ function principalesEventosFocusOutSemanario(e) {
             instanciarSubElementoTooltip(subEle);
             instanciarSubElementoPopover(subEle);
             actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
-            //DiaOpc.validPreActualizarFromNomSubEle(valor, ixs, i);
             initTempSubEleRef.remove();
         }
     }
@@ -2131,10 +2130,10 @@ function actualizarSubElementoStrategyBD(numSem, diaIndex, eleIndex, subEleIndex
 
     $.ajax({
         type: "PUT",
-        contentType: "application/json",
-        url: _ctx + "gestion/rutina/sub-elemento/media/agregar",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (data) {
             notificacionesRutinaSegunResponseCode(data);
         },
@@ -2314,7 +2313,7 @@ function actualizarElementoParcialBD(numSem, diaIndex, eleIndex, cantUltimos){
 }
 
 function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIndex){
-    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaIndex].subElementos[elementoIndex]
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaIndex].subElementos[elementoIndex];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = listaIndex;
@@ -2910,8 +2909,8 @@ function actualizarDiaObjetivoBD(a, b){
         url: _ctx + "gestion/rutina/objetivo/dia/actualizar",
         data: {objetivos: output.toString(), numSem: numSem},
         dataType: "json",
-        success: function () {
-            $.smallBox({content: '<i>El objetivo ha sido actualizado...</i>'});
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
         },
         error: function (xhr) {
             exception(xhr);

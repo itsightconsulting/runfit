@@ -13,7 +13,7 @@ public interface SemanaService extends BaseService<Semana> {
 
     List<Semana> findByRutinaIdOrderByIdDesc(int idrutina);
 
-    void actualizarObjetivos(int id, String objetivos);
+    String actualizarObjetivos(int numSem, String objetivos);
 
     void actualizarMetsVelocidadesMultiple(String ids, String metsVel);
 

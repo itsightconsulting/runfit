@@ -13,6 +13,7 @@ import com.itsight.domain.pojo.MetricaVelPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -319,90 +320,71 @@ public class RutinaController {
 
     @PostMapping(value = "/sub-elemento/agregar")
     public @ResponseBody String obtenerListaElementoNueva(
-            @RequestBody SubElemento subElemento, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[subElemento.getNumeroSemana()];
-        int diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(subElemento.getDiaIndice());
-        diaService.insertarSubElementoById(diaPlantillaId, subElemento.getElementoIndice(), subElemento.getSubElementoIndice(), new ObjectMapper().writeValueAsString(new SubElemento(subElemento.getNombre(), subElemento.getMediaAudio(),subElemento.getMediaVideo(), subElemento.getTipo())));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody @Valid SubElemento subElemento, BindingResult bindingResult) throws JsonProcessingException {
+            if(!bindingResult.hasErrors())
+                return diaService.insertarSubElementoById(subElemento);
+            return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/sub-elemento/multiple/agregar")
     public @ResponseBody String agregarMultipleSubElementos(
-            @RequestBody ElementoDto elemento, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[elemento.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(elemento.getDiaIndice());
-        diaService.actualizarSubElementos(diaId, elemento.getElementoIndice(), new ObjectMapper().writeValueAsString(elemento.getSubElementos()));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody @Valid ElementoDto elemento, BindingResult bindingResult) throws JsonProcessingException {
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarSubElementos(elemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/sub-elemento/actualizar")
     public @ResponseBody String actualizarSubElementoNombre(
-            @RequestParam String nombre,
-            @RequestParam String numeroSemana,
-            @RequestParam String diaIndice,
-            @RequestParam String elementoIndice,
-            @RequestParam String subElementoIndice, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice), nombre);
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoUpd subElemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(subElemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/sub-elemento/nota/actualizar")
     public @ResponseBody String actualizarSubElementoNota(
-            @RequestParam String nota,
-            @RequestParam String numeroSemana,
-            @RequestParam String diaIndice,
-            @RequestParam String elementoIndice,
-            @RequestParam String subElementoIndice, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        diaService.actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(diaId, Integer.parseInt(elementoIndice), Integer.parseInt(subElementoIndice), nota);
-        return ResponseCode.ACTUALIZACION.get();
+            @ModelAttribute @Valid ElementoUpd subElemento, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(subElemento);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/actualizar/flag-descanso")
     public @ResponseBody String actualizarFlagDescanso(
             @RequestParam String numeroSemana,
             @RequestParam String diaIndice,
-            @RequestParam String flagDescanso, HttpSession session){
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
+            @RequestParam String flagDescanso) {
+        boolean validation = numeroSemana.length()>0 && diaIndice.length()>0 && Utilitarios.parseInt(numeroSemana).isPresent() && Utilitarios.parseInt(diaIndice).isPresent() ? true : false;
         boolean flag = Boolean.valueOf(flagDescanso);
-        //Incluye vaciar las listas del dia que se hayan creado
-        diaService.actualizarFlagDescanso(diaId, flag);
-        return ResponseCode.ACTUALIZACION.get();
+        if(validation)
+            return diaService.actualizarFlagDescanso(Integer.parseInt(numeroSemana), Integer.parseInt(diaIndice), flag);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/from-plantilla/actualizar")
     public @ResponseBody String actualizarDiaDesdePlantillaDia(
-            @RequestBody DiaDto diaDto, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[diaDto.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(diaDto.getDiaIndice());
-        diaDto.setNumeroSemana(0);
-        diaDto.setDiaIndice(0);
-        diaService.actualizarDiaFromPlantilla(diaId, diaDto.getCalorias(), diaDto.getDistancia(), diaDto.getMinutos(), new ObjectMapper().writeValueAsString(diaDto.getElementos()));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody @Valid DiaDto diaDto, BindingResult bindingResult) throws JsonProcessingException {
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarDiaFromPlantilla(diaDto);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/from-plantilla/actualizar/full")
     public @ResponseBody String actualizarDiaDesdePlantillaDia2(
-            @RequestBody DiaDto diaDto, HttpSession session) throws JsonProcessingException {
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[diaDto.getNumeroSemana()];
-        int diaId = diaService.encontrarIdPorSemanaId(semanaId).get(diaDto.getDiaIndice());
-        diaDto.setNumeroSemana(0);
-        diaDto.setDiaIndice(0);
-        //Actualiza de raiz, los elementos. No tomando en consideracion los anteriores(si es que existian)
-        diaService.actualizarDiaRaizDesdePlantilla(diaId, diaDto.getCalorias(), diaDto.getDistancia(), diaDto.getMinutos(), new ObjectMapper().writeValueAsString(diaDto.getElementos()));
-        return ResponseCode.REGISTRO.get();
+            @RequestBody DiaDto diaDto, BindingResult bindingResult) throws JsonProcessingException {
+        if(!bindingResult.hasErrors())
+            return diaService.actualizarDiaRaizDesdePlantilla(diaDto);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/objetivo/dia/actualizar")
-    public @ResponseBody String actualizarObjetivoDia(@RequestParam String objetivos, @RequestParam String numSem, HttpSession session){
-        //Actualiza de raiz, los elementos. No tomando en consideracion los anteriores(si es que existian)
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numSem)];
-        semanaService.actualizarObjetivos(semanaId, objetivos);
-        return ResponseCode.REGISTRO.get();
+    public @ResponseBody String actualizarObjetivoDia(
+        @RequestParam String objetivos, @RequestParam String numSem){
+        boolean validation = numSem.length()>0 && Utilitarios.onlyIntegers(objetivos) ? true : false;
+        if(validation)
+            return semanaService.actualizarObjetivos(Integer.parseInt(numSem), objetivos);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")

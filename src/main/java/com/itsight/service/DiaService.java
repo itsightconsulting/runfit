@@ -13,7 +13,7 @@ public interface DiaService extends BaseService<Dia> {
 
     List<Integer> encontrarIdPorSemanaId(int semanaId);
 
-    void actualizarFlagDescanso(int id, boolean flagDescanso);
+    String actualizarFlagDescanso(int numSem, int diaIndice, boolean flagDescanso);
 
     String eliminarElementoById(ElementoDel elementoDel);
 
@@ -23,9 +23,9 @@ public interface DiaService extends BaseService<Dia> {
 
     String actualizarNombreElementoByListaIndexAndId(ElementoUpd elemento);
 
-    void insertarSubElementoById(int id, int elementoIndice, int subElementoIndice, String elemento);
+    String insertarSubElementoById(SubElemento subElemento) throws JsonProcessingException;
 
-    void actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nombre);
+    String actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(ElementoUpd subElemento);
 
     String insertarNuevoElementoPosEspecifica(ElementoEspecifico elemento) throws JsonProcessingException;
 
@@ -43,9 +43,9 @@ public interface DiaService extends BaseService<Dia> {
 
     String actualizarMediaElemento(ElementoMediaDto elemento);
 
-    void actualizarDiaFromPlantilla(int id, double calorias, double distanciaTot, int minutosTot, String elementos);
+    String actualizarDiaFromPlantilla(DiaDto dia) throws JsonProcessingException;
 
-    void actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nota);
+    String actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(ElementoUpd subElemento);
 
     String actualizarElementoByListaIndexAndId(ElementoDto elemento) throws JsonProcessingException;
 
@@ -55,9 +55,9 @@ public interface DiaService extends BaseService<Dia> {
 
     String eliminarMediaSubElemento(SubElementoMediaDto subEle);
 
-    void actualizarSubElementos(int id, int elementoIndice, String subEles);
+    String actualizarSubElementos(ElementoDto elemento) throws JsonProcessingException ;
 
-    void actualizarDiaRaizDesdePlantilla(int id, double calorias,double distancia, int minutos, String writeValueAsString);
+    String actualizarDiaRaizDesdePlantilla(DiaDto dia) throws JsonProcessingException;
 
     String actualizarElementosEstilosFull(EleEstiloUpd elemento) throws JsonProcessingException;
 

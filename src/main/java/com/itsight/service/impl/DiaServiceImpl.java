@@ -127,8 +127,15 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarFlagDescanso(int id, boolean flagDescanso) {
-        repository.updateFlagDescanso(id, flagDescanso);
+    public String actualizarFlagDescanso(int numSem, int diaIndice, boolean flagDescanso) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()){
+            int semanaId = ((int[]) sessionValor.get())[numSem];
+            int id = repository.findIdBySemanaId(semanaId).get(diaIndice);
+            repository.updateFlagDescanso(id, flagDescanso);
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -167,21 +174,35 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
             int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String texto = "{"+elemento.getElementoIndice()+",\"nombre\"}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, elemento.getNombre(), texto);
-            return Enums.ResponseCode.ACTUALIZACION.get();
+            return ACTUALIZACION.get();
         }
         return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
-    public void insertarSubElementoById(int id, int elementoIndice, int subElementoIndice, String elemento) {
-        String texto = "{"+elementoIndice+",\"subElementos\""+","+subElementoIndice+"}";
-        repository.saveSubElemento(id, texto, elemento);
+    public String insertarSubElementoById(SubElemento subElemento) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
+            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            String texto = "{"+subElemento.getElementoIndice()+",\"subElementos\""+","+subElemento.getSubElementoIndice()+"}";
+            repository.saveSubElemento(id, texto, new ObjectMapper().writeValueAsString(new SubElemento(subElemento.getNombre(), subElemento.getMediaAudio(),subElemento.getMediaVideo(), subElemento.getTipo())));
+            return REGISTRO.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
-    public void actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nombre) {
-        String texto = "{"+elementoIndice+",\"subElementos\""+","+subElementoIndice+",\"nombre\"}";
-        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, nombre, texto);
+    public String actualizarNombreSubElementoByElementoIndexAndSubElementoIndexAndId(ElementoUpd subElemento) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
+            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            String texto = "{"+subElemento.getElementoIndice()+",\"subElementos\""+","+subElemento.getSubElementoIndice()+",\"nombre\"}";
+            repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, subElemento.getNombre(), texto);
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -342,14 +363,29 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarDiaFromPlantilla(int id, double calorias, double distanciaTot, int minutosTot, String elementos) {
-        repository.updateDiaFromTemplate(id, calorias, distanciaTot, minutosTot, elementos);
+    public String actualizarDiaFromPlantilla(DiaDto dia) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[dia.getNumeroSemana()];
+            int id = repository.findIdBySemanaId(semanaId).get(dia.getDiaIndice());
+            repository.updateDiaFromTemplate(id, dia.getCalorias(), dia.getDistancia(), dia.getMinutos(), new ObjectMapper().writeValueAsString(dia.getElementos()));
+            return Enums.ResponseCode.ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
+
     }
 
     @Override
-    public void actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(int id, int elementoIndice, int subElementoIndice, String nota) {
-        String texto = "{"+elementoIndice+",\"subElementos\""+","+subElementoIndice+",\"nota\"}";
-        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, nota, texto);
+    public String actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(ElementoUpd subElemento) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
+            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            String texto = "{"+subElemento.getElementoIndice()+",\"subElementos\""+","+subElemento.getSubElementoIndice()+",\"nota\"}";
+            repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, subElemento.getNota(), texto);
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
@@ -418,14 +454,29 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarSubElementos(int id, int elementoIndice, String subEles) {
-        String texto = "{"+elementoIndice+",\"subElementos\"}";
-        repository.updateSubElementos(id, texto, subEles);
+    public String actualizarSubElementos(ElementoDto elemento) throws JsonProcessingException  {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
+            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            String texto = "{"+elemento.getElementoIndice()+",\"subElementos\"}";
+            repository.updateSubElementos(id, texto, new ObjectMapper().writeValueAsString(elemento.getSubElementos()));
+            return ACTUALIZACION.get();
+
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
-    public void actualizarDiaRaizDesdePlantilla(int id, double calorias, double distancia, int minutos, String elementos) {
-        repository.updateDiaRootFromTemplate(id, calorias, distancia, minutos, elementos);
+    public String actualizarDiaRaizDesdePlantilla(DiaDto dia) throws JsonProcessingException {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semanaId = ((int[]) sessionValor.get())[dia.getNumeroSemana()];
+            int id = repository.findIdBySemanaId(semanaId).get(dia.getDiaIndice());
+            repository.updateDiaRootFromTemplate(id, dia.getCalorias(), dia.getDistancia(), dia.getMinutos(), new ObjectMapper().writeValueAsString(dia.getElementos()));
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override

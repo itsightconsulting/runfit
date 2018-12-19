@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Semana;
@@ -16,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.SESSION_VALUE_NOT_FOUND;
 
 @Service
 @Transactional
@@ -128,8 +133,14 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     }
 
     @Override
-    public void actualizarObjetivos(int id, String objetivos) {
-        repository.updateObjetivoById(id, objetivos);
+    public String actualizarObjetivos(int numSem, String objetivos) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int id = ((int[]) sessionValor.get())[numSem];
+            repository.updateObjetivoById(id, objetivos);
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     @Override
