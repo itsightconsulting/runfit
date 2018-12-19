@@ -10,6 +10,7 @@ import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ public class RutinaDto implements Serializable {
     private int dias;
     private int tipoRutina;
     private int contadorRutinas;
+    @Size(max = 10)
     private String matrizMejoraVelocidades;
     private String matrizMejoraCadencia;
     private String matrizMejoraTcs;

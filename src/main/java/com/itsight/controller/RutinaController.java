@@ -390,68 +390,20 @@ public class RutinaController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/nueva")
     public @ResponseBody
-    String nuevo(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestBody RutinaDto rutinaDto, HttpSession session) {
-        int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
-        int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
-        String codTrainer = session.getAttribute("codTrainer").toString();
-        String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-        if(codTrainer.equals(qCodTrainer)){
-            Rutina objR = new Rutina();
-            //Pasando del Dto al objeto
-            RutinaControl rc = new RutinaControl();
-            BeanUtils.copyProperties(rutinaDto.getControl(), rc);
-            BeanUtils.copyProperties(rutinaDto, objR);
-            objR.setUsuario(runneId);
-            objR.setRedFitness(redFitId);
-            objR.setControl(rc);
-            //Instanciando lista de semanas
-            List<Semana> semanas = new ArrayList<>();
-            for (SemanaPlantillaDto semana: rutinaDto.getSemanas()) {
-                Semana semana1 = new Semana();
-                BeanUtils.copyProperties(semana, semana1);
-                semanas.add(semana1);
-                //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
-                //se referencie en el registro de la semana
-                semana1.setRutina(objR);
-                //Insertando dias de la semana a su respectiva lista de dias
-                List<Dia> dias = new ArrayList<>();
-                for(DiaPlantillaDto dia: semana.getDias()){
-                    Dia objDia = new Dia();
-                    BeanUtils.copyProperties(dia, objDia);
-                    dias.add(objDia);
-                    //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
-                    //se referencie en el registro del día
-                    objDia.setSemana(semana1);
-                }
-                //Agregando la lista de dias a la semana
-                semana1.setLstDia(dias);
-                semana1.setObjetivos("0,0,0,0,0,0,0");//Se refiere al id del objetivo del día, en este caso inician como 0 o mejor dicho sin objetivo específico
+    String nuevo(@RequestParam(name = "key") String redFitnessId,
+                @RequestParam(name = "rn") String runnerId,
+                @RequestBody @Valid RutinaDto rutinaDto,
+                HttpSession session, BindingResult bindingResult) {
+        if(!bindingResult.hasErrors()){
+            int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
+            int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+            String codTrainer = session.getAttribute("codTrainer").toString();
+            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+            if(codTrainer.equals(qCodTrainer)){
+                return rutinaService.registrarByCascada(rutinaDto, redFitId, runneId);
             }
-            //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
-            objR.setLstSemana(semanas);
-            objR.setFlagActivo(false);
-            objR.setTipoRutina(Enums.TipoRutina.RUNNING.get());
-            //rutinaService.save(objR);
-            RuConsolidado nR = new RuConsolidado();
-            nR.setGeneral(rutinaDto.getGeneral());
-            nR.setRutina(objR);
-            nR.setStats(rutinaDto.getStats());
-            nR.setMejoras(rutinaDto.getMejoras());
-            nR.setDtGrafico(rutinaDto.getDtGrafico());
-            nR.setMatrizMejoraVelocidades(rutinaDto.getMatrizMejoraVelocidades());
-            nR.setMatrizMejoraCadencia(rutinaDto.getMatrizMejoraCadencia());
-            nR.setMatrizMejoraTcs(rutinaDto.getMatrizMejoraTcs());
-            nR.setMatrizMejoraLonPaso(rutinaDto.getMatrizMejoraLonPaso());
-            ruConsolidadoService.save(nR);
-            int[] qSemanaIds = new int[objR.getLstSemana().size()];
-            for(int i=0; i<qSemanaIds.length;i++){
-                qSemanaIds[i] = objR.getLstSemana().get(i).getId();
-            }
-            rutinaService.updateSemanaIds(objR.getId(), qSemanaIds);
-            redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutinaDto.getFechaFin(), 1);
-            return ResponseCode.REGISTRO.get();
         }
-        return ResponseCode.EX_GENERIC.get();
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/metricas/velocidad/actualizar")

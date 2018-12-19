@@ -57,4 +57,17 @@ public class RuConsolidado implements Serializable {
     @JoinColumn(name = "RutinaId")
     private Rutina rutina;
 
+    public RuConsolidado(){}
+
+    public RuConsolidado(RuGeneral general, RuStats stats, RuMejoras mejoras, String matrizMejoraVelocidades, String matrizMejoraCadencia, String matrizMejoraTcs, String matrizMejoraLonPaso, List<RuDataGrafico> dtGrafico, Rutina rutina) {
+        this.general = general;
+        this.stats = stats;
+        this.mejoras = mejoras;
+        this.matrizMejoraVelocidades = matrizMejoraVelocidades;
+        this.matrizMejoraCadencia = matrizMejoraCadencia;
+        this.matrizMejoraTcs = matrizMejoraTcs;
+        this.matrizMejoraLonPaso = matrizMejoraLonPaso;
+        this.dtGrafico = dtGrafico;
+        this.rutina = rutina;
+    }
 }

@@ -1,6 +1,8 @@
 package com.itsight.service;
 
+import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
+import com.itsight.domain.dto.RutinaDto;
 import com.itsight.generic.BaseService;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public interface RutinaService extends BaseService<Rutina> {
     void updateResetDiasFlagEnvio(int anio, int mes);
 
     void updateDiasFlagEnvio(int indexsemana, int indexdia);
+
+    String registrarByCascada(RutinaDto rutinaDto, int redFitId, int runneId);
 
 }
 
