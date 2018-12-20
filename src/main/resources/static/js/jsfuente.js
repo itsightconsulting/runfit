@@ -248,12 +248,12 @@ function agregarModalParaVisualizacionImagen() {
     document.body.append(modalImagenServer);
 }
 
-function spinnerSwitchTab(){
+function spinnerSwitchTab(effect){
     $.SmartMessageBox({
         title: "<i class='fa fa-bullhorn'></i> Workout Notification",
         content: "" +
-            "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +
-            "<div class='row'><img class='pull-left' height='80px' src='/workout/media/image/grupo-video/gt/1/3/1ee8d403-aec5-4fbf-9b55-49fd964d6824.png'><div class='row text-center'><i class='fa fa-spinner fa-spin fa-3x text-center'></i></div>",
+            "<br/><i style='font-size: 1.2em;'>La acción solicitada ha iniciado. Por favor espere...</i><i class='fa fa-spinner fa-spin fa-15x pull-right'></i><br/>" +
+            "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='http://4.bp.blogspot.com/-lt--oWaKhWM/UtZTNXQkeYI/AAAAAAAAtsU/8liEKT5YJBw/s1600/deatlet13.gif'><div class='row text-center'></div>",
         buttons: '[]'
     }, function (ButtonPressed) {
         if (ButtonPressed === "Cancelar") {
@@ -262,7 +262,9 @@ function spinnerSwitchTab(){
             }, 250);
         }
     })
-    setTimeout(()=>$('#bot1-Msg1').toggleClass('hidden'), 100);
+    return setTimeout(()=>{
+        $('#bot1-Msg1').toggleClass('hidden');
+        return effect();}, 100);
 }
 
 function spinnerUpload(xhr) {
@@ -504,6 +506,9 @@ function notificacionesRutinaSegunResponseCode(resCode, wildcard){
             $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -101:
+            $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
+            break;
+        case -102:
             $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         default:

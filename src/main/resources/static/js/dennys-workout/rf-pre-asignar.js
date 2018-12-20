@@ -238,7 +238,7 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     }
 }
 
-function guardarRutina(rutina, btn){
+function guardarRutina(rutina, btn, interval){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
         $.ajax({
@@ -248,13 +248,14 @@ function guardarRutina(rutina, btn){
             dataType: "json",
             data: JSON.stringify(rutina),
             success: function (data) {
+                window.clearInterval(interval);
                 const resWithErrors = getResponseCodeWithErrors(data);
                 resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
-                data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn : setTimeout(()=>btn.removeAttribute("disabled"), 1000) && $('#bot1-Msg1').click();//res.id para el caso = redFitnessId;
+                data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn : setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
             },
             error: function (xhr) {
-                setTimeout(()=>btn.removeAttribute("disabled"), 1000);
                 $('#bot1-Msg1').click();
+                window.clearInterval(interval);
                 exception(xhr);
             },
             complete: function () {}

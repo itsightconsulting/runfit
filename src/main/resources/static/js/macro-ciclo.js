@@ -165,8 +165,8 @@ FichaSet = (function(){
             document.querySelector('#PasoPlano').value = stats.pasoPlano;
 
             const cEstadsAdic = document.querySelector('#EstadisticasAdicionales');
-            stats.rcps.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.rcps')[i].value = v== "0" ? 0 : v);
-            stats.raps.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.raps')[i].value = v== "0" ? 0 : v);
+            stats.rcps.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.rcps')[i].value = v== "0" ? "00:00" : v);
+            stats.raps.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.raps')[i].value = v== "0" ? "00:00" : v);
             stats.cdcs.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.cdcs')[i].value = v== "0" ? 0 : v);
             stats.lpcs.split("|").forEach((v,i)=>cEstadsAdic.querySelectorAll('.lpcs')[i].value = v== "0" ? 0 : v);
 
@@ -518,104 +518,101 @@ MacroCiclo = (function(){
 
             const btnGuardar = e.target.tagName == "I" ? e.target.parentElement : e.target;
             if($('#frm_registro').valid() && $('#KilometrajePromedioSemanal').val() != ""){
-                if(!btnGuardar.hasAttribute("disabled")){
-                    spinnerSwitchTab();
-                    btnGuardar.setAttribute("disabled", "disabled");
-                    const $chelmoMacro = [];
-                    //Semanas
-                    const numSemBase = FichaGet.obtenerBase().numSem;
-                    const numSemBaseIx = numSemBase -1;
-                    const cantSemExcedentes = ($baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3);
-                    const totalSemanas = numSemBase + cantSemExcedentes;
-                    const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
-                    let fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
-                    fFin = parseFromStringToDate2(moment(fFin).add((cantSemExcedentes*7), 'd').format('DD/MM/YYYY'));
+                const intervalEffect = spinnerSwitchTab(RutinaOpc.effectImage);
+                const $chelmoMacro = [];
+                //Semanas
+                const numSemBase = FichaGet.obtenerBase().numSem;
+                const numSemBaseIx = numSemBase -1;
+                const cantSemExcedentes = ($baseAfterComprobacion.distancia == 10 ? 1 : $baseAfterComprobacion.distancia == 21 ? 2 : 3);
+                const totalSemanas = numSemBase + cantSemExcedentes;
+                const fIni = parseFromStringToDate(document.querySelector('#MacroFechaInicio').value);
+                let fFin = parseFromStringToDate(document.querySelector('#MacroFechaFin').value);
+                fFin = parseFromStringToDate2(moment(fFin).add((cantSemExcedentes*7), 'd').format('DD/MM/YYYY'));
 
-                    for(let i=0; i<totalSemanas;i++){
-                        const refDia = fIni.getDay();
-                        let diasParaFull = refDia==0?0:7-refDia;
-                        if(i == 0){
-                            const objFirtsWeek = {};
-                            objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
-                            objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
-                            objFirtsWeek.flagFull = diasParaFull == 1 ? true : false;
-                            const literales = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
-                            const dias = [];
-                            for(let i=0; i<diasParaFull+1; i++){
-                                const fechaParse = parseFromStringToDate2(moment(fIni).add((i), 'd').format('DD/MM/YYYY'));
-                                dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY'), dia: fechaParse.getDate(), flagDescanso: false, literal: literales[fechaParse.getDay()], diaLiteral: fechaParse.getDate() + " "+ literales[fechaParse.getDay()]});
-                            }
-                            objFirtsWeek.lstDia = dias;
-                            $chelmoMacro.push(new Semana(objFirtsWeek))
-                        }else{
-                            $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
+                for(let i=0; i<totalSemanas;i++){
+                    const refDia = fIni.getDay();
+                    let diasParaFull = refDia==0?0:7-refDia;
+                    if(i == 0){
+                        const objFirtsWeek = {};
+                        objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
+                        objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
+                        objFirtsWeek.flagFull = diasParaFull == 1 ? true : false;
+                        const literales = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
+                        const dias = [];
+                        for(let i=0; i<diasParaFull+1; i++){
+                            const fechaParse = parseFromStringToDate2(moment(fIni).add((i), 'd').format('DD/MM/YYYY'));
+                            dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY'), dia: fechaParse.getDate(), flagDescanso: false, literal: literales[fechaParse.getDay()], diaLiteral: fechaParse.getDate() + " "+ literales[fechaParse.getDay()]});
                         }
+                        objFirtsWeek.lstDia = dias;
+                        $chelmoMacro.push(new Semana(objFirtsWeek))
+                    }else{
+                        $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
                     }
-
-                    //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
-                    $chelmoMacro[totalSemanas-1].fechaFin = fFin;
-                    //Rutina
-                    const r = {};
-                    r.fechaInicio = fIni;
-                    r.fechaFin = fFin;
-                    r.meses = 4;
-                    r.anios = 0;
-                    r.totalSemanas = $('#MacroTotalSemanas').text().trim();
-                    r.dias = 200;
-                    r.semanas = $chelmoMacro;
-                    r.tipoRutina = 1;
-                    r.control = {};
-                    r.control.kilometrajeTotal = document.querySelector('#KilometrajeTotal h1').textContent.trim();
-                    r.control.kilometrajeActual = 0;
-                    let emptyAvanceSemanas = new Array(numSemBase);
-                    for(let i=0; i<numSemBase;i++){
-                        emptyAvanceSemanas[i] = "";
-                    }
-                    r.control.avanceSemanas = emptyAvanceSemanas;
-                    r.control.intensidades = Array.from(document.querySelectorAll('#PorcentajesIntensidad label.perc-ints')).map((v,i)=> v.textContent.slice(0,-1));
-                    const baseDistribucion = FichaGet.obtenerBase();
-                    const dis1 = baseDistribucion.periodizacion[0];
-                    const dis2 = dis1 + baseDistribucion.periodizacion[1];
-                    const objs = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
-                        const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
-                        return {numSem: i+1, kms: Number(v.textContent), color: c}
-                    });
-                    const mZC = RitmosSZC.getMetricasZonasCardiacas();
-                    const mVC = RitmosSVYC.getMetricasVelocidades();
-                    r.semanas.forEach((v,fix)=>{
-                        v.kilometrajeTotal = objs[fix].kms;
-                        //Modificando indicadores de pulso y de tiempos
-                        r.semanas[fix].metricas = JSON.stringify(mZC.map(v=>{
-                            if(fix < numSemBase)
-                                return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
-                            else
-                                return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[numSemBaseIx].max, min: v.indicadores[numSemBaseIx].min}}
-                        }));
-                        r.semanas[fix].metricasVelocidad = JSON.stringify(mVC.map(v=>{
-                            if(fix < numSemBase)
-                                return {parcial: v.indicadores[fix].p};
-                            else
-                                return {parcial: v.indicadores[numSemBaseIx].p};
-                        }));
-                    })
-                    r.totalSemanas = Number(r.totalSemanas)+cantSemExcedentes;
-                    const consolidado = MacroCicloGet.consolidado(mVC);
-                    r.general = consolidado.general;
-                    r.stats = consolidado.stats;
-                    r.mejoras = consolidado.mejoras;
-                    r.matrizMejoraVelocidades = consolidado.matrizMejoraVelocidades;
-
-                    r.matrizMejoraCadencia = consolidado.matrizMejoraCadencia;
-                    r.matrizMejoraTcs = consolidado.matrizMejoraTcs;
-                    r.matrizMejoraLonPaso = consolidado.matrizMejoraLonPaso;
-
-                    r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
-                    for(let i=0; i<cantSemExcedentes;i++){
-                        const iBase = r.dtGrafico.length - cantSemExcedentes;
-                        r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
-                    }
-                    guardarRutina(r, btnGuardar);
                 }
+
+                //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
+                $chelmoMacro[totalSemanas-1].fechaFin = fFin;
+                //Rutina
+                const r = {};
+                r.fechaInicio = fIni;
+                r.fechaFin = fFin;
+                r.meses = 4;
+                r.anios = 0;
+                r.totalSemanas = $('#MacroTotalSemanas').text().trim();
+                r.dias = 200;
+                r.semanas = $chelmoMacro;
+                r.tipoRutina = 1;
+                r.control = {};
+                r.control.kilometrajeTotal = document.querySelector('#KilometrajeTotal h1').textContent.trim();
+                r.control.kilometrajeActual = 0;
+                let emptyAvanceSemanas = new Array(numSemBase);
+                for(let i=0; i<numSemBase;i++){
+                    emptyAvanceSemanas[i] = "";
+                }
+                r.control.avanceSemanas = emptyAvanceSemanas;
+                r.control.intensidades = Array.from(document.querySelectorAll('#PorcentajesIntensidad label.perc-ints')).map((v,i)=> v.textContent.slice(0,-1));
+                const baseDistribucion = FichaGet.obtenerBase();
+                const dis1 = baseDistribucion.periodizacion[0];
+                const dis2 = dis1 + baseDistribucion.periodizacion[1];
+                const objs = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
+                    const c = i < dis1 ? "#83c5ff" : i < dis2 ? "#e86b6b" : "#a4f790";
+                    return {numSem: i+1, kms: Number(v.textContent), color: c}
+                });
+                const mZC = RitmosSZC.getMetricasZonasCardiacas();
+                const mVC = RitmosSVYC.getMetricasVelocidades();
+                r.semanas.forEach((v,fix)=>{
+                    v.kilometrajeTotal = objs[fix].kms;
+                    //Modificando indicadores de pulso y de tiempos
+                    r.semanas[fix].metricas = JSON.stringify(mZC.map(v=>{
+                        if(fix < numSemBase)
+                            return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[fix].max, min: v.indicadores[fix].min}}
+                        else
+                            return {nombre: v.nombre, min: v.pMin, max: v.pMax, indicadores: {max: v.indicadores[numSemBaseIx].max, min: v.indicadores[numSemBaseIx].min}}
+                    }));
+                    r.semanas[fix].metricasVelocidad = JSON.stringify(mVC.map(v=>{
+                        if(fix < numSemBase)
+                            return {parcial: v.indicadores[fix].p};
+                        else
+                            return {parcial: v.indicadores[numSemBaseIx].p};
+                    }));
+                })
+                r.totalSemanas = Number(r.totalSemanas)+cantSemExcedentes;
+                const consolidado = MacroCicloGet.consolidado(mVC);
+                r.general = consolidado.general;
+                r.stats = consolidado.stats;
+                r.mejoras = consolidado.mejoras;
+                r.matrizMejoraVelocidades = consolidado.matrizMejoraVelocidades;
+
+                r.matrizMejoraCadencia = consolidado.matrizMejoraCadencia;
+                r.matrizMejoraTcs = consolidado.matrizMejoraTcs;
+                r.matrizMejoraLonPaso = consolidado.matrizMejoraLonPaso;
+
+                r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
+                for(let i=0; i<cantSemExcedentes;i++){
+                    const iBase = r.dtGrafico.length - cantSemExcedentes;
+                    r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
+                }
+                guardarRutina(r, intervalEffect);
             } else {
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});
             }

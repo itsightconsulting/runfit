@@ -1,25 +1,29 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Semana;
+import com.itsight.domain.pojo.MetricaVelPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RedFitnessRepository;
 import com.itsight.repository.RutinaRepository;
 import com.itsight.repository.SemanaRepository;
+import com.itsight.service.RuConsolidadoService;
 import com.itsight.service.SemanaService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
+import com.itsight.util.Validador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 import static com.itsight.util.Enums.ResponseCode.SESSION_VALUE_NOT_FOUND;
 
 @Service
@@ -30,12 +34,15 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
 
     private RedFitnessRepository redFitnessRepository;
 
+    private RuConsolidadoService ruConsolidadoService;
+
     private HttpSession session;
 
-    public SemanaServiceImpl(SemanaRepository repository, RutinaRepository rutinaRepository, RedFitnessRepository redFitnessRepository, HttpSession session) {
+    public SemanaServiceImpl(SemanaRepository repository, RutinaRepository rutinaRepository, RedFitnessRepository redFitnessRepository, RuConsolidadoService ruConsolidadoService, HttpSession session) {
         super(repository);
         this.rutinaRepository = rutinaRepository;
         this.redFitnessRepository = redFitnessRepository;
+        this.ruConsolidadoService = ruConsolidadoService;
         this.session = session;
     }
 
@@ -165,5 +172,61 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
         int redFitnessId = rutinaRepository.findRedFitnessIdById(rutinaId);
         redFitnessRepository.updateUltimaFechaPlanificacionById(redFitnessId, fechaFin);
         return Enums.ResponseCode.REGISTRO.get();
+    }
+
+    @Override
+    public String actualizarFullMetricasVelocidad(String mVz) throws IOException {
+        if(Validador.isValidJSON(mVz)){
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                MetricaVelPOJO[] pojos = objectMapper.readValue(mVz, MetricaVelPOJO[].class);
+                if(pojos.length == 8){
+                    String patternTime = "(?:[0]{2}):(?:[01]\\d):(?:[012345]\\d)";
+                    int indi = 0;
+                    for(int i=0; i<2;i++){
+                        MetricaVelPOJO metValid = pojos[new Random().nextInt(8)];
+                        if(metValid.getInd().length > 0){
+                            for (int k=0; k<2;k++){
+                                String indValid = metValid.getInd()[new Random().nextInt(metValid.getInd().length)];
+                                if(indValid != null && indValid.matches(patternTime)){
+                                    indi++;
+                                }
+                            }
+                        }
+                    }
+
+                    if(indi == 4){
+                        int rutinaId = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
+                        ruConsolidadoService.updateMatrizMejoraVelocidades(rutinaId, mVz);
+
+                        List<MetricaVelPOJO> lstMetricaVel = Arrays.asList(pojos);
+                        StringBuilder builderVels = new StringBuilder();
+                        int iteBase = lstMetricaVel.get(0).getInd().length;
+                        String trick = "";
+                        for(int i=0; i<iteBase; i++){
+                            builderVels.append(trick);
+                            builderVels.append("[");
+                            trick = "";
+                            for (MetricaVelPOJO vel: lstMetricaVel) {
+                                builderVels.append(trick);
+                                trick = ",";
+                                builderVels.append("{");
+                                builderVels.append("\"parcial\":");
+                                builderVels.append("\"" +vel.getInd()[i] + "\"");
+                                builderVels.append("}");
+                            }
+                            trick = " ";
+                            builderVels.append("]");//Importante el espacio para el posterior split
+                        }
+                        int[] ids = Arrays.copyOfRange((int[])session.getAttribute("semanaIds"), 0, iteBase);
+                        repository.actualizarMetsVelocidadByIds(Arrays.toString(ids).substring(1, Arrays.toString(ids).length()-1), builderVels.toString());
+                        return ACTUALIZACION.get();
+                    }
+                }
+            }catch (JsonMappingException ex){
+                ex.printStackTrace();
+            }
+        }
+        return EX_VALIDATION_FAILED.get();
     }
 }

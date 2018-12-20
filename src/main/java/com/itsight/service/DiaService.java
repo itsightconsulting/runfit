@@ -63,5 +63,5 @@ public interface DiaService extends BaseService<Dia> {
 
     String actualizarDiaAndSubElementoById(SubElemento subElemento) throws JsonProcessingException;
 
-    void actualizarSemanaCompletaDesdeOtra(int semIdDesde, int semIdPara);
+    String actualizarSemanaCompletaDesdeOtra(int semIxDesde, int semIxPara);
 }

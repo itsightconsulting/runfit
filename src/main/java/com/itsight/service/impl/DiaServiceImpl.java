@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -493,8 +492,15 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarSemanaCompletaDesdeOtra(int semIdDesde, int semIdPara) {
-        repository.updateSemanaFromAnother(semIdDesde, semIdPara);
+    public String actualizarSemanaCompletaDesdeOtra(int semIxDesde, int semIxPara) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()) {
+            int semIdDesde = ((int[]) sessionValor.get())[semIxDesde];
+            int semIdPara = ((int[]) sessionValor.get())[semIxPara];
+            repository.updateSemanaFromAnother(semIdDesde, semIdPara);
+            return Enums.ResponseCode.ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 
     private String[] validarMedia(int tipoMedia, String inMedia, String inVideo){

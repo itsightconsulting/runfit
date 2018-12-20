@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
@@ -13,6 +14,7 @@ import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import com.itsight.util.Validador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,14 +32,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import static com.itsight.util.Enums.ResponseCode;
 
 @Controller
+@PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
 @RequestMapping("/gestion/rutina")
 public class RutinaController {
 
@@ -47,36 +48,26 @@ public class RutinaController {
 
     private DiaService diaService;
 
-    private RutinaPlantillaService rutinaPlantillaService;
-
     private RedFitnessService redFitnessService;
 
     private SemanaService semanaService;
 
-    private EmailService emailService;
-
     private VideoAudioFavoritoService videoAudioFavoritoService;
-
-    private RuConsolidadoService ruConsolidadoService;
 
     @Value("${domain.name}")
     private String domainName;
 
     @Autowired
-    public RutinaController(RutinaPlantillaService rutinaPlantillaService, RutinaService rutinaService, DiaService diaService, RedFitnessService redFitnessService, EmailService emailService, SemanaService semanaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
-        this.rutinaPlantillaService = rutinaPlantillaService;
+    public RutinaController(RutinaService rutinaService, DiaService diaService, RedFitnessService redFitnessService, SemanaService semanaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
         this.rutinaService = rutinaService;
         this.diaService = diaService;
         this.redFitnessService = redFitnessService;
-        this.emailService = emailService;
         this.semanaService = semanaService;
         this.usuarioService = usuarioService;
         this.videoAudioFavoritoService = videoAudioFavoritoService;
-        this.ruConsolidadoService = ruConsolidadoService;
     }
 
     @GetMapping(value = "")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal() {
         return new ModelAndView(ViewConstant.MAIN_RUTINA_PLANTILLA);
     }
@@ -124,7 +115,7 @@ public class RutinaController {
     }
 
     @GetMapping(value = "/semana/obtener/{semanaIndice}")
-    public @ResponseBody Semana obtenerEspecificaSemana(@PathVariable String semanaIndice, HttpSession session) {
+    public @ResponseBody Semana obtenerEspecificaSemana(@PathVariable String semanaIndice, HttpSession session) throws InterruptedException{
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
             int[] sIds = (int[]) sessionValor.get();
@@ -428,43 +419,14 @@ public class RutinaController {
         String codTrainer = session.getAttribute("codTrainer").toString();
         String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
         if(codTrainer.equals(qCodTrainer)) {
-            int rutinaId = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
-            ruConsolidadoService.updateMatrizMejoraVelocidades(rutinaId, mVz);
+            return semanaService.actualizarFullMetricasVelocidad(mVz);
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        MetricaVelPOJO[] pojos = objectMapper.readValue(mVz, MetricaVelPOJO[].class);
-        List<MetricaVelPOJO> lstMetricaVel = Arrays.asList(pojos);
-        StringBuilder builderVels = new StringBuilder();
-        int iteBase = lstMetricaVel.get(0).getInd().length;
-        for(int i=0; i<iteBase; i++){
-
-            //"[{"parcial":"00:00:48"},{"parcial":"00:01:47"}]"
-            builderVels.append("[");
-
-            String trick = "";
-            for (MetricaVelPOJO vel: lstMetricaVel) {
-                builderVels.append(trick);
-                trick = ",";
-                builderVels.append("{");
-                builderVels.append("\"parcial\":");
-                builderVels.append("\"" +vel.getInd()[i] + "\"");
-                builderVels.append("}");
-
-            }
-            builderVels.append("] ");//Importante el espacio
-
-        }
-        int[] ids = Arrays.copyOfRange((int[])session.getAttribute("semanaIds"), 0, iteBase);
-        semanaService.actualizarMetsVelocidadesMultiple(Arrays.toString(ids).substring(1, Arrays.toString(ids).length()-1), builderVels.substring(0, builderVels.length()-1));
-        return ResponseCode.ACTUALIZACION.get();
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/semana-completa/actualizar/{semIxDesde}/{semIxPara}")
-    public @ResponseBody String actualizarSemanaCompletaDesdeOtra(@PathVariable int semIxDesde, @PathVariable int semIxPara, HttpSession session){
-        semIxDesde = ((int[]) session.getAttribute("semanaIds"))[semIxDesde];
-        semIxPara = ((int[]) session.getAttribute("semanaIds"))[semIxPara];
-        diaService.actualizarSemanaCompletaDesdeOtra(semIxDesde, semIxPara);
-        return ResponseCode.ACTUALIZACION.get();
+    public @ResponseBody String actualizarSemanaCompletaDesdeOtra(@PathVariable int semIxDesde, @PathVariable int semIxPara){
+        return diaService.actualizarSemanaCompletaDesdeOtra(semIxDesde, semIxPara);
     }
 
     @PostMapping(value = "/elemento/adddeletefavorito")
@@ -488,7 +450,6 @@ public class RutinaController {
             if (audioid != 0) {
                 videoaudio.setTipo(Enums.TipoMedia.AUDIO.get());
                 videoaudio.setAudio(audioid);
-
             }
             videoaudio.setFlagActivo(true);
             videoaudio.setUsuario(objuse.getId());
@@ -561,11 +522,9 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
-
     @GetMapping(value = "/get/obtenerSemanasPorRutina")
     public @ResponseBody List<Semana> obtenerSemanasRutina(HttpSession session) {
         int idrutina = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
         return semanaService.findByRutinaIdOrderByIdDesc(idrutina);
     }
-
 }

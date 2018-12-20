@@ -126,7 +126,7 @@ function init(){
     });
 }
 
-function avanzarRetrocederSemana(numSem, action){
+function avanzarRetrocederSemana(numSem, action, parentDiv){
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
         if(semana != undefined) {
             $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
@@ -135,6 +135,7 @@ function avanzarRetrocederSemana(numSem, action){
             $rutina.initEspecifico(semana, numSem);
             instanciarTooltips();
             generarDiasEnviados();
+            parentDiv.removeAttribute('hidden');
         }
     });
 }
@@ -195,6 +196,9 @@ async function obtenerEspecificaSemana(semanaIndex, action){
                         else
                             $semActual.textContent = Number($semActual.textContent.trim()) - 1;
                         resolve(data);
+                        const semDiv = document.querySelector('#Semanas');
+                        semDiv.style.border = "3px solid gold";
+                        setTimeout(() => semDiv.style.border = "", 3000);
                     }
                 }
             },
@@ -679,7 +683,7 @@ function instanciarDatosFitnessCliente(){
 }
 
 
-function instanciarGrupoVideos(){
+function instanciarGrupoVideos(effImg){
 
     $.ajax({
         type: 'GET',
@@ -688,6 +692,7 @@ function instanciarGrupoVideos(){
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
+                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -717,6 +722,7 @@ function instanciarGrupoVideos(){
             }
         },
         error: function (xhr) {
+            window.setInterval(effImg);
             exception(xhr);
         },
         complete: function () {
@@ -872,7 +878,7 @@ function generandoVideosCuerpo(subCatVideo){
 
 }
 
-function instanciarMiniPlantillas(){
+function instanciarMiniPlantillas(effImg){
 
     $.ajax({
         type: 'GET',
@@ -881,6 +887,7 @@ function instanciarMiniPlantillas(){
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
+                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -904,6 +911,7 @@ function instanciarMiniPlantillas(){
             }
         },
         error: function (xhr) {
+            window.setInterval(effImg);
             exception(xhr);
         },
         complete: function () {}
@@ -1708,7 +1716,9 @@ function principalesEventosTabRutina(e){
         e.preventDefault();
         let numSem = Number($semActual.textContent);
         if(numSem != 1){
-            avanzarRetrocederSemana(numSem-2, 2);
+            const parentDiv = input.tagName == "I" ? input.parentElement.parentElement : input.parentElement;
+            parentDiv.setAttribute('hidden','hidden');
+            avanzarRetrocederSemana(numSem-2, 2, parentDiv);
         }else{
             $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
         }
@@ -1762,7 +1772,9 @@ function principalesEventosTabRutina(e){
             })
         }else{
             //No es necesario crear la semana, pues no es una nueva semana
-            avanzarRetrocederSemana(numSem, 1);
+            const parentDiv = input.tagName == "I" ? input.parentElement.parentElement : input.parentElement;
+            parentDiv.setAttribute('hidden','hidden');
+            avanzarRetrocederSemana(numSem, 1, parentDiv);
         }
     }
     else if(clases.contains('abrir-calendario')){
@@ -2724,15 +2736,15 @@ function principalesAlCambiarTab(e){
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
         if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
-            spinnerSwitchTab();
-            instanciarGrupoVideos();
+            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
+            instanciarGrupoVideos(effImg);
         }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
         document.querySelector('#demo-setting').classList.add('hidden');
         if(document.querySelector('#ArbolRutinario').children.length == 0) {
-            spinnerSwitchTab();
-            instanciarMiniPlantillas();
+            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
+            instanciarMiniPlantillas(effImg);
         }
     }
     else if(e.target.tagName === "A"){
@@ -2740,8 +2752,8 @@ function principalesAlCambiarTab(e){
         document.querySelector('#demo-setting').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($ruConsolidado == undefined){
-                spinnerSwitchTab();
-                obtenerRutinaConsolidadoBD();
+                const effImg = spinnerSwitchTab(RutinaOpc.effectImage)
+                obtenerRutinaConsolidadoBD(effImg);
             }
         }
     }
@@ -2869,36 +2881,46 @@ async function obtenerObjetivosDiaBD() {
 
 function actualizarMetricasVelocidadBD(e){
     if(!e.target.parentElement.hasAttribute("disabled")){
-        e.target.parentElement.setAttribute("disabled", "disabled");
         //FALTA ACTUALIZAR LAS VELOCIDADES POR CADA SEMANA DE RUTINA Y FALTA VER EL FLUJO ALTERNO CUANDO LAS METRICAS SON AGRUPADAS POR MESES
-        const id = getParamFromURL('key');
-        const rn = getParamFromURL('rn');
         const contBase = document.querySelector('#MetricasDetalladas .detallados-velocidades');
-        const nVelsArr = [{dist: "200 m", ind: []}, {dist: "400 m", ind: []}, {dist: "800 m", ind: []}, {dist: "1 KM", ind: []}, {dist: "10 KM", ind: []}, {dist: "15 KM", ind: []}, {dist: "21 KM", ind: []}, {dist: "42 KM", ind: []}];
-        Array.from(contBase.firstElementChild.querySelectorAll('.col-md-11')).slice(0,-1).forEach(v=>{v.querySelectorAll('.col-md-3').forEach((v,i)=>{ nVelsArr[i].ind.push(v.textContent.trim()); }) })
-        $.ajax({
-            type: "PUT",
-            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-            url: _ctx + "gestion/rutina/metricas/velocidad/actualizar?key="+id + "&rn="+rn,
-            data: {mVz: JSON.stringify(nVelsArr)},
-            dataType: "json",
-            success: function () {
-                const porcMejora = parseNumberToDecimal(nVelsArr.map((v,i)=>{
-                    return Number(parseNumberToDecimal((((((nVelsArr[i].ind[0].toSeconds())*$ruConsolidado.general.distancia)/((nVelsArr[i].ind[(nVelsArr[i].ind.length)-1].toSeconds())*$ruConsolidado.general.distancia)))-1)*100,1))
-                }).reduce((a,b)=>a+b, 1)/nVelsArr.length,1);
-                document.querySelector('#PorcMejoraVel').textContent = porcMejora + " %";
-                $ruConsolidado.matrizMejoraVelocidades = JSON.stringify(nVelsArr);
-                contBase.querySelectorAll('.slider-handle.round').forEach(v=>{v.style.left = "50%";});
-                contBase.querySelectorAll('.slider-track .slider-selection').forEach(v=>{v.style.left = "50%";v.style.width = "50%";});
-                $.smallBox({content: '<i>Las métricas de velocidades han sido actuaizadas satisfactoriamente...</i>'});
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-                setTimeout(()=>e.target.parentElement.removeAttribute("disabled"), 1000);
-            }
-        })
+        const sliders = contBase.querySelectorAll('.slider-handle.round:not(.hide)');
+        const countVal = Array.from(sliders).reduce((a,b)=> a+= b.style.left == "50%" ? 1 : 0, 0);
+        if(countVal < sliders.length) {
+            e.target.parentElement.setAttribute("disabled", "disabled");
+            const id = getParamFromURL('key');
+            const rn = getParamFromURL('rn');
+            const nVelsArr = [{dist: "200 m", ind: []}, {dist: "400 m", ind: []}, {dist: "800 m", ind: []}, {dist: "1 KM", ind: []}, {dist: "10 KM", ind: []}, {dist: "15 KM", ind: []}, {dist: "21 KM", ind: []}, {dist: "42 KM", ind: []}];
+            Array.from(contBase.firstElementChild.querySelectorAll('.col-md-11')).slice(0,-1).forEach(v=>{v.querySelectorAll('.col-md-3').forEach((v,i)=>{ nVelsArr[i].ind.push(v.textContent.trim()); }) })
+            $.ajax({
+                type: "PUT",
+                contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                url: _ctx + "gestion/rutina/metricas/velocidad/actualizar?key="+id + "&rn="+rn,
+                data: {mVz: JSON.stringify(nVelsArr)},
+                dataType: "json",
+                success: function (data) {
+                    if(data == "-2"){
+                        const porcMejora = parseNumberToDecimal(nVelsArr.map((v,i)=>{
+                            return Number(parseNumberToDecimal((((((nVelsArr[i].ind[0].toSeconds())*$ruConsolidado.general.distancia)/((nVelsArr[i].ind[(nVelsArr[i].ind.length)-1].toSeconds())*$ruConsolidado.general.distancia)))-1)*100,1))
+                        }).reduce((a,b)=>a+b, 1)/nVelsArr.length,1);
+                        document.querySelector('#PorcMejoraVel').textContent = porcMejora + " %";
+                        $ruConsolidado.matrizMejoraVelocidades = JSON.stringify(nVelsArr);
+                        contBase.querySelectorAll('.slider-handle.round').forEach(v=>{v.style.left = "50%";});
+                        contBase.querySelectorAll('.slider-track .slider-selection').forEach(v=>{v.style.left = "50%";v.style.width = "50%";});
+                        $.smallBox({content: '<i>Las métricas de velocidades han sido actualizadas satisfactoriamente...</i>'});
+                    }else{
+                        notificacionesRutinaSegunResponseCode(data);
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    setTimeout(()=>e.target.parentElement.removeAttribute("disabled"), 1000);
+                }
+            })
+        }else
+            $.smallBox({color: 'info', content: '<i>Las métricas no han sido modificadas no es necasaria su actualización...</i>'});
+
     }
 }
 
@@ -2923,7 +2945,7 @@ function actualizarDiaObjetivoBD(a, b){
     })
 }
 
-function obtenerRutinaConsolidadoBD(){
+function obtenerRutinaConsolidadoBD(effImg){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
     $.ajax({
@@ -2932,6 +2954,7 @@ function obtenerRutinaConsolidadoBD(){
         url: _ctx + "rutina/obtenerConsolidado?key="+id + "&rn="+rn,
         dataType: "json",
         success: function (d) {
+            window.setInterval(effImg);
             notificacionesRutinaSegunResponseCode(d.responseCode);
             FichaSet.instanciarConsolidado(d.data);
         },
@@ -2939,6 +2962,7 @@ function obtenerRutinaConsolidadoBD(){
             exception(xhr);
         },
         complete: function () {
+            window.setInterval(effImg);
             $('#bot1-Msg1').click();
         }
     })

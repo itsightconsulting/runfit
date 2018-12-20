@@ -16,6 +16,7 @@ public class Enums {
         EX_NUMBER_FORMAT(-99),
         EX_MAX_SIZE_MULTIPART(-100),
         EX_MAX_UPLOAD_SIZE(-101),
+        EX_ARRAY_INDEX_OUT(-102),
         VF_USUARIO_REPETIDO(-150);
 
         final int code;

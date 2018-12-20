@@ -81,5 +81,11 @@ public class ExceptionControllerAdvice {
         return Utilitarios.customErrorResponse(Enums.ResponseCode.EX_VALIDATION_FAILED.get(), ex.getMessage());//;
     }
 
+    @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
+    public @ResponseBody String handlerArrayIndexOutOfBoundsException(HttpServletRequest req, Exception ex) {
+        logger.warn(req.getRequestURL());
+        logger.warn("Resolved exception caused by Handler execution: java.lang.ArrayIndexOutOfBoundsException: "+ex.getMessage());
+        return EX_ARRAY_INDEX_OUT.get();
+    }
 }
 
