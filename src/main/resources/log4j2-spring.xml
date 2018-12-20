@@ -28,13 +28,13 @@
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="com.itsight" level="info" additivity="false">
+        <Logger name="com.itsight.aop" level="info" additivity="false">
             <AppenderRef ref="AppFileAppender"/>
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
-        <!--          <Logger name="com.itsight.controller" level="warn" additivity="false"> -->
-        <!--             <AppenderRef ref="AppFileAppenderWarn"/> -->
-        <!--          </Logger> -->
+                  <Logger name="com.itsight.advice" level="warn" additivity="false">
+                     <AppenderRef ref="AppFileAppenderWarn"/>
+                  </Logger>
         <Root level="info">
             <AppenderRef ref="ConsoleAppender"/>
         </Root>

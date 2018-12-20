@@ -241,24 +241,23 @@ function principalesEventosFocusOutTabFichaTecnica(e){
 function guardarRutina(rutina, btn){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: _ctx + "gestion/rutina/nueva?key="+id + "&rn="+rn,
-        dataType: "json",
-        data: JSON.stringify(rutina),
-        success: function (data) {
-            if(data == "-1")
-                window.location.href = _ctx+'rutina/edicion?key='+id + '&rn='+rn;//res.id para el caso = redFitnessId;
-            else
-                $.smallBox({color: "alert", content: "Algo ha salido mal, por favor comunicarse con el administrador de la plataforma."})
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {
-            btn.removeAttribute("disabled");
-        }
-    })
-    btn.removeAttribute("disabled");
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: _ctx + "gestion/rutina/nueva?key=" + id + "&rn=" + rn,
+            dataType: "json",
+            data: JSON.stringify(rutina),
+            success: function (data) {
+                const resWithErrors = getResponseCodeWithErrors(data);
+                resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
+                data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn : setTimeout(()=>btn.removeAttribute("disabled"), 1000) && $('#bot1-Msg1').click();//res.id para el caso = redFitnessId;
+            },
+            error: function (xhr) {
+                setTimeout(()=>btn.removeAttribute("disabled"), 1000);
+                $('#bot1-Msg1').click();
+                exception(xhr);
+            },
+            complete: function () {}
+        })
+
 }

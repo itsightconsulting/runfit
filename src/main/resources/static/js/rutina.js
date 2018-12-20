@@ -1568,6 +1568,9 @@ RutinaParsers = (function(){
             ixs.eleIndex = eleIndex;
             ixs.subEleIndex = subEleIndex;
             return ixs;
+        },
+        obtenerErroresValidacion(errors){
+            return errors.split("default message").filter(v=>v.trim().startsWith("[")).map((v,i,k)=>{if(i%2==0) return {"campo": v.slice(2, v.indexOf("]")).replace(/^./, str => str.toUpperCase()), "msg": k[i+1].slice(2, k[i+1].indexOf("]")).replace(/^./, str => str.toUpperCase())}}).filter(x=>x!=undefined)
         }
     }
 })();

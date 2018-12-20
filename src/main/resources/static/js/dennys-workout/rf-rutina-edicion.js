@@ -2371,7 +2371,8 @@ function actualizarTiempoElementoBD(numSem, diaIndex, elementoIndice, totalMin) 
         dataType: "json",
         data: params,
         success: function (data) {
-            notificacionesRutinaSegunResponseCode(data);
+            const resWithErrors = getResponseCodeWithErrors(data);
+            resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
         },
         error: function (xhr) {
             exception(xhr);
@@ -2390,6 +2391,7 @@ function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
     params.distancia = ele.distancia;
     params.distanciaDia = totalKms;
     params.calorias = calorias;
+
     $.ajax({
         type: "PUT",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -2397,7 +2399,8 @@ function actualizarDiaBD(numSem, diaIndex, elementoIndice, totalKms, calorias) {
         dataType: "json",
         data: params,
         success: function (data) {
-            notificacionesRutinaSegunResponseCode(data);
+                const resWithErrors = getResponseCodeWithErrors(data);
+                resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
         },
         error: function (xhr) {
             exception(xhr);
@@ -2425,7 +2428,8 @@ function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, 
         dataType: "json",
         data: params,
         success: function (data) {
-            notificacionesRutinaSegunResponseCode(data);
+            const resWithErrors = getResponseCodeWithErrors(data);
+            resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
         },
         error: function (xhr) {
             exception(xhr);
@@ -2623,6 +2627,7 @@ function actualizarSubElementoNotaBD(nota, numSem, diaIndex, posElemento, postSu
     params.diaIndice = diaIndex;
     params.elementoIndice = posElemento;
     params.subElementoIndice = postSubElemento;
+
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -2871,7 +2876,6 @@ function actualizarMetricasVelocidadBD(e){
         const contBase = document.querySelector('#MetricasDetalladas .detallados-velocidades');
         const nVelsArr = [{dist: "200 m", ind: []}, {dist: "400 m", ind: []}, {dist: "800 m", ind: []}, {dist: "1 KM", ind: []}, {dist: "10 KM", ind: []}, {dist: "15 KM", ind: []}, {dist: "21 KM", ind: []}, {dist: "42 KM", ind: []}];
         Array.from(contBase.firstElementChild.querySelectorAll('.col-md-11')).slice(0,-1).forEach(v=>{v.querySelectorAll('.col-md-3').forEach((v,i)=>{ nVelsArr[i].ind.push(v.textContent.trim()); }) })
-        console.log(nVelsArr);
         $.ajax({
             type: "PUT",
             contentType: "application/x-www-form-urlencoded;charset=UTF-8",

@@ -7,7 +7,6 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
-import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.domain.jsonb.SubElemento;
 import com.itsight.domain.pojo.MetricaVelPOJO;
 import com.itsight.service.*;
@@ -20,13 +19,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -134,7 +136,7 @@ public class RutinaController {
         }
         //En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
         // desde un simple peticion get y no desde su vista de red fitness
-        return new Semana();
+        return null;
     }
 
     @PostMapping(value = "/agregar/semana")
@@ -184,25 +186,33 @@ public class RutinaController {
 
     @PostMapping(value = "/elemento/agregar")
     public @ResponseBody String agregarNuevoElemento(
-            @RequestBody Elemento elemento) throws JsonProcessingException {
-        return diaService.insertarNuevoElemento(elemento);
+            @RequestBody @Valid Elemento elemento, BindingResult bindingResult) throws JsonProcessingException {
+            if(!bindingResult.hasErrors())
+                return diaService.insertarNuevoElemento(elemento);
+            return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PostMapping(value = "/elemento/agregar/pos-especifica")
     public @ResponseBody String agregarNuevoElementoPosicionEspecifica(
-            @RequestBody ElementoEspecifico elemento) throws JsonProcessingException {
-        return diaService.insertarNuevoElementoPosEspecifica(elemento);
+            @RequestBody @Valid ElementoEspecifico elemento, BindingResult bindingResult) throws JsonProcessingException {
+            if(!bindingResult.hasErrors())
+                return diaService.insertarNuevoElementoPosEspecifica(elemento);
+            return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PostMapping(value = "/sub-elemento/agregar/pos-especifica")
     public @ResponseBody String agregarNuevoSubElementoPosicionEspecifica(
-            @RequestBody SubElementoEspecifico subElemento) throws JsonProcessingException {
-        return diaService.insertarNuevoSubElementoPosEspecifica(subElemento);
+            @RequestBody @Valid SubElementoEspecifico subElemento, BindingResult bindingResult) throws JsonProcessingException {
+            if(!bindingResult.hasErrors())
+                return diaService.insertarNuevoSubElementoPosEspecifica(subElemento);
+            return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/eliminar")
-    public @ResponseBody String eliminarElemento(@ModelAttribute ElementoDel elementoDel){
-        return diaService.eliminarElementoById(elementoDel);
+    public @ResponseBody String eliminarElemento(@ModelAttribute @Valid ElementoDel elementoDel, BindingResult bindingResult){
+        if(!bindingResult.hasErrors())
+            return diaService.eliminarElementoById(elementoDel);
+        return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/sub-elemento/eliminar")
@@ -233,16 +243,17 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/actualizar/2")
     public @ResponseBody String actualizarElementoNomAndTipoDia(
-            @RequestBody ElementoDto elemento) throws JsonProcessingException {
-        return diaService.actualizarElementoByListaIndexAndId(elemento);
+            @RequestBody @Valid ElementoDto elemento, BindingResult bindingResult) throws JsonProcessingException {
+            if(!bindingResult.hasErrors())
+                return diaService.actualizarElementoByListaIndexAndId(elemento);
+            return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/elemento/tiempo/actualizar")
     public @ResponseBody String actualizarTiempoElemento(
             @ModelAttribute @Valid ElementoUpd elemento, @RequestParam int minutosDia, BindingResult bindingResult){
-        if(!bindingResult.hasErrors()){
+        if(!bindingResult.hasErrors())
             return diaService.actualizarTiempoElementoByListaIndexAndId(elemento, minutosDia);
-        }
         return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
@@ -319,7 +330,7 @@ public class RutinaController {
     }
 
     @PostMapping(value = "/sub-elemento/agregar")
-    public @ResponseBody String obtenerListaElementoNueva(
+    public @ResponseBody String agregarSubElemento(
             @RequestBody @Valid SubElemento subElemento, BindingResult bindingResult) throws JsonProcessingException {
             if(!bindingResult.hasErrors())
                 return diaService.insertarSubElementoById(subElemento);
@@ -347,11 +358,12 @@ public class RutinaController {
             @ModelAttribute @Valid ElementoUpd subElemento, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(subElemento);
+        bindingResult.getModel().forEach((key, value)-> System.out.println("Key : " + key + " Value : " + value));
         return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/dia/actualizar/flag-descanso")
-    public @ResponseBody String actualizarFlagDescanso(
+    public @ResponseBody String actualizarDiaFlagDescanso(
             @RequestParam String numeroSemana,
             @RequestParam String diaIndice,
             @RequestParam String flagDescanso) {
@@ -390,9 +402,9 @@ public class RutinaController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/nueva")
     public @ResponseBody
-    String nuevo(@RequestParam(name = "key") String redFitnessId,
-                @RequestParam(name = "rn") String runnerId,
-                @RequestBody @Valid RutinaDto rutinaDto,
+    String nueva(@RequestBody @Valid RutinaDto rutinaDto,
+                 @RequestParam(name = "key") String redFitnessId,
+                 @RequestParam(name = "rn") String runnerId,
                 HttpSession session, BindingResult bindingResult) {
         if(!bindingResult.hasErrors()){
             int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
@@ -407,7 +419,10 @@ public class RutinaController {
     }
 
     @PutMapping(value = "/metricas/velocidad/actualizar")
-    public @ResponseBody String actualizarMetricasVelocidad(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestParam(name = "mVz") String mVz, HttpSession session) throws IOException{
+    public @ResponseBody String actualizarMetricasVelocidad(
+                @RequestParam(name = "key") String redFitnessId,
+                @RequestParam(name = "rn") String runnerId,
+                @RequestParam(name = "mVz") String mVz, HttpSession session) throws IOException{
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         String codTrainer = session.getAttribute("codTrainer").toString();

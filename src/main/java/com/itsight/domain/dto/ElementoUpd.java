@@ -12,6 +12,7 @@ public class ElementoUpd implements Serializable {
 
     @Size(max = 300)
     private String nombre;
+    @Size(max = 300)
     private String nota;
     private int diaIndice;
     private int elementoIndice;

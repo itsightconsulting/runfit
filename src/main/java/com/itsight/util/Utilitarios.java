@@ -183,8 +183,12 @@ public class Utilitarios {
         return nombre;
     }
 
+    public static String customErrorResponse(String code, String validErrors) {
+        return code + "|" + validErrors;
+    }
+
     public static String customResponse(String code, String domainPk) {
-        return "{\"code\": \"" + code + "\", \"id\": \"" + domainPk + "\"}";
+        return code + "|" + domainPk;
     }
 
     public static String[] filterStringArray(String[] array){

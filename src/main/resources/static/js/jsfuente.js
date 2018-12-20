@@ -417,10 +417,14 @@ function limpiarBusqueda() {
 }
 
 function getResponseCodeWithId(res){
-    let t = res.split(',');
-    return {code: t[0], id: t[1]};
+    let t = res.split('|');
+    return {code: t[0].trim(), id: t[1].trim()};
 }
 
+function getResponseCodeWithErrors(res){
+    let t = res.split('|');
+    return t.length == 1 ? false : {code: t[0].trim(), errors: t[1].trim()};
+}
 function sumarDiasAespecificoDia(fecha, dias){
     const y = fecha.getFullYear();
     const m = fecha.getMonth()+1<10?"0"+(fecha.getMonth()+1):fecha.getMonth()+1;
@@ -461,7 +465,7 @@ function htmlStringToElement(rawHTML){
     return elemento.content.firstElementChild;
 }
 
-function notificacionesRutinaSegunResponseCode(resCode){
+function notificacionesRutinaSegunResponseCode(resCode, wildcard){
     const code = Number(resCode);
     switch (code){
         case -1:
@@ -474,7 +478,12 @@ function notificacionesRutinaSegunResponseCode(resCode){
         case -4:
             break;
         case -5:
-            $.smallBox({color: "alert",content: "<i> La validación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
+            if(wildcard == undefined)
+                $.smallBox({color: "alert",content: "<i> La validación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
+            else//wildcard == validation errors
+                $.smallBox({color: "alert", content: `Datos enviados inválidos, total: ${wildcard.length}</br>
+                ${wildcard.map(v=>'<i class="fa fa-times"></i> <b>'+v.campo + ':</b> '+ v.msg + '</br>').join('')}
+            `, timeout: 10000})
             break;
         case -6:
             $.smallBox({color: "alert",content: "<i> La validación ha fallado, respuesta vacía... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});

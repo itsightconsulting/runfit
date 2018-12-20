@@ -30,7 +30,6 @@ public class RutinaDto implements Serializable {
     private int dias;
     private int tipoRutina;
     private int contadorRutinas;
-    @Size(max = 10)
     private String matrizMejoraVelocidades;
     private String matrizMejoraCadencia;
     private String matrizMejoraTcs;
