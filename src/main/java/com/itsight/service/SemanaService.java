@@ -16,8 +16,6 @@ public interface SemanaService extends BaseService<Semana> {
 
     String actualizarObjetivos(int numSem, String objetivos);
 
-    void actualizarMetsVelocidadesMultiple(String ids, String metsVel);
-
     String agregarSemana(Semana semana, List<Dia> dias, int rutinaId, int totalSemanas, Date fechaFin);
 
     String actualizarFullMetricasVelocidad(String mVz) throws IOException;

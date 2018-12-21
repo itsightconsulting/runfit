@@ -9,6 +9,7 @@ class Rutina {
         this.dias = obj.dias;
         this.semanas = new Array(this.totalSemanas);
         this.tipoRutina = obj.tipoRutina;
+        this.control = obj.control;
     }
 
     init(primeraSemana) {
@@ -148,6 +149,7 @@ class Rutina {
         Indicadores.instanciarIndicadores1();
         Indicadores.instanciarIndicadores2();
         Indicadores.instanciarKilometrajes();
+        Indicadores.instanciarPorcentajeAvance();
     }
 
     agregarNuevaSemana() {
@@ -2783,6 +2785,18 @@ Indicadores = (function(){
                         </div>
                         <hr class="margin-0" style="margin: 0px -10px !important"/>`;
             document.querySelector('#tabRutina #OpsLaterales #Kilometrajes').innerHTML = raw;
+        },
+        instanciarPorcentajeAvance: ()=>{
+            const porcAvance = document.querySelector('#PorcentajeAvanceSemana');
+            const porcActual = Number($rutina.control.avanceSemanas[Number($semActual.textContent)-1]);
+            porcAvance.textContent = Number($rutina.control.avanceSemanas[Number($semActual.textContent)-1]) + "%";
+            if(porcActual < 80) {
+                porcAvance.classList.add('txt-color-redLight');
+                porcAvance.classList.remove('txt-color-greenLight');
+            }else{
+                porcAvance.classList.add('txt-color-greenLight');
+                porcAvance.classList.remove('txt-color-redLight');
+            }
         },
         abrirIndicador2: (metricas)=>{
             const iconIndi2 = document.querySelector('#IconIndicador2');

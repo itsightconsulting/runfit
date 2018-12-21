@@ -151,11 +151,6 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     }
 
     @Override
-    public void actualizarMetsVelocidadesMultiple(String ids, String metsVel) {
-        repository.actualizarMetsVelocidadByIds(ids, metsVel);
-    }
-
-    @Override
     public String agregarSemana(Semana semana, List<Dia> dias, int rutinaId, int totalSemanas, Date fechaFin) {
         semana.setRutina(rutinaId);
         semana.setLstDia(dias);

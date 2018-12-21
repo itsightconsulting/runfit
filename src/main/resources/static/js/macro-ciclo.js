@@ -961,6 +961,7 @@ MacroValidacion = (function(){
 MacroSeccion = (function(){
     return {
         velocidadesByDistancia2: (mVC)=>{
+            const semsTransito = $ruConsolidado.distancia == 10 ? 1 : $ruConsolidado.distancia == 21 ? 2 : 3;
             //Calculando el porcentaje de mejora de velocidad y seteandolo
             const porcMejora = parseNumberToDecimal(mVC.map((v,i)=>{
                 return Number(parseNumberToDecimal((((((mVC[i].ind[0].toSeconds())*$ruConsolidado.general.distancia)/((mVC[i].ind[(mVC[i].ind.length)-1].toSeconds())*$ruConsolidado.general.distancia)))-1)*100,1))
@@ -985,22 +986,22 @@ MacroSeccion = (function(){
                                         </div></div>${i==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${i==7?'</div>':''}`;
                                 }).join('')}
                             </div>
-                         </div>`
-            if($rutina.totalSemanas <=12)
+                         </div>`;
+            if(($rutina.totalSemanas-semsTransito) <=12)
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].ind.map((v,i)=>{
-                    return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
-                                ${mVC.map((v,ii)=>{
-                        return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
-                    }).join('')}</div></div>`;
-                }).join('')}${rgs}</div>`);
+                        return `<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'S '+ (i+1)}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
+                                    ${mVC.map((v,ii)=>{
+                            return `${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`;
+                        }).join('')}</div></div>`;
+                    }).join('')}${rgs}</div>`);
             else
                 return htmlStringToElement(`<div style="margin-right: 10px;">
                     ${mVC[0].ind.map((v,i)=>{
                     return (i+1)%4 == 0 ?`<div class="col col-md-1 col-sm-1 sems-o-mes-det-veloc"><div class="container-fluid text-align-center margin-o-bottom-10-w-bb"> <div class="padding-bottom-5 hd-column">${'M '+(i+1)/4}</div> </div> </div> <div class="col col-md-11 col-sm-11"> <div class="container-fluid text-align-center margin-o-bottom-10-w-bb">
                                 ${mVC.map((v,ii)=>{
                         return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
-                    }).join('')}</div></div>`:'';
+                    }).join('')}</div></div>`:`<i class="hidden col-md-11">${mVC.map((v,ii)=>{ return `<i class="col-md-3 dt-ix${ii+1}">${v.ind[i]}</i>`}).join('')}</i>`;
                 }).join('')}${rgs}</div>`);
         },
         velocidadesByDistancia: (mVC)=>{

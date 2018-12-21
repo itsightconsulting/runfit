@@ -68,12 +68,12 @@ public class ClienteController {
     }
 
     @GetMapping(value = "/novedades")
-    public ModelAndView pageNovedades(Model model) {
+    public ModelAndView pageNovedades() {
         return new ModelAndView(ViewConstant.CLIENTE_NOVEDADES);
     }
 
     @GetMapping(value = "/misRutinas")
-    public ModelAndView pageMisRutinas(Model model) {
+    public ModelAndView pageMisRutinas() {
         return new ModelAndView(ViewConstant.CLIENTE_MIS_RUTINAS);
     }
 

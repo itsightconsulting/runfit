@@ -488,8 +488,13 @@ public class RutinaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
+    @PreAuthorize("hasRole('RUNNER')")
     @PostMapping(value = "/elemento/updateAvance")
-    public @ResponseBody String actualizarAvance(@RequestParam int idrutina, @RequestParam int indexsemana, @RequestParam String stravance,@RequestParam String porcentaje)
+    public @ResponseBody String actualizarAvance(
+            @RequestParam int idrutina,
+            @RequestParam int indexsemana,
+            @RequestParam String stravance,
+            @RequestParam String porcentaje)
     {
         rutinaService.updateAvance(idrutina,indexsemana,stravance,porcentaje);
         return "Ok";

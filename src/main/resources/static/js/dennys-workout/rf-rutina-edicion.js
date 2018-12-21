@@ -1819,6 +1819,26 @@ function principalesEventosTabRutina(e){
         const metricas = $rutina.semanas[semIndex].metricasVelocidad;
         Indicadores.abrirIndicador2(metricas);
     }
+    else if(clases.contains('aumentar-zoom')){
+        let zm = window.parent.document.body.style.zoom;
+        window.parent.document.body.style.zoom = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1;
+        if(zm == "1.1") {
+            input.parentElement.classList.add('disabled');
+        }else{
+            input.parentElement.parentElement.nextElementSibling.children[0].classList.remove('disabled');
+            input.parentElement.classList.remove('disabled');
+        }
+    }
+    else if(clases.contains('reducir-zoom')){
+        let zm = window.parent.document.body.style.zoom;
+        window.parent.document.body.style.zoom = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
+        if(zm == "0.9") {
+            input.parentElement.classList.add('disabled');
+        }else{
+            input.parentElement.classList.remove('disabled');
+            input.parentElement.parentElement.previousElementSibling.children[0].classList.remove('disabled');
+        }
+    }
 }
 
 function principalesEventosTabGrupoVideos(e){
@@ -2920,7 +2940,6 @@ function actualizarMetricasVelocidadBD(e){
             })
         }else
             $.smallBox({color: 'info', content: '<i>Las métricas no han sido modificadas no es necasaria su actualización...</i>'});
-
     }
 }
 

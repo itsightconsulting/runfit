@@ -777,7 +777,7 @@ function generarMetricas(semana) {
 function GuardarAvanceSemanal(strAvance, porcentaje){
     let params = {};
     params.idrutina = $rutina.id;
-    params.indexsemana = indexSemanaActual;
+    params.indexsemana = Number(document.querySelector('#SemanaActual').textContent);
     params.stravance = JSON.stringify(strAvance);
     params.porcentaje = porcentaje;
 
