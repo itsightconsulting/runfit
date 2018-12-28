@@ -11,4 +11,7 @@ public interface MiniRutinaService extends BaseService<MiniRutina> {
 
     List<MiniRutina> findAllByUsuarioId(int usuarioId);
 
+    List<Integer> findAllCategoriaIdByUsuarioId(int usuarioId);
+
+    MiniRutina findByCategoriaIdAndUsuarioId(int catId, int usuarioId);
 }

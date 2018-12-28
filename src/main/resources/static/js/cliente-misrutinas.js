@@ -15,6 +15,7 @@ function listarSubCategorias() {
         url: _ctx + 'cliente/get/subcategorias',
         dataType: "json",
         success: function (data, textStatus) {
+            console.log(data);
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({

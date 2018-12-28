@@ -186,6 +186,17 @@ width:11.285714285714285714285714285714% !important;
     border-radius: 3%;
 }
 
+.i-btn {
+    cursor: pointer; /* Add a mouse pointer on hover */
+}
+
+.i-btn.disabled{
+    cursor: not-allowed;
+    opacity: .65;
+    filter: alpha(opacity=65);
+    box-shadow: none
+}
+
 .padding-top-3{
     padding-top: 3px !important;
 }
@@ -515,7 +526,7 @@ h2.titulo-dia{
 }
 
 .img-cat-rutina:hover{
-    border: 3px solid #baf3c6;
+    opacity: 0.65;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -703,4 +714,9 @@ button.note-color-fuente, button.note-bg-color {
 #PrincipalesTabs .btn-md{
     border-radius: 0% 0% 34% 34%;
     border-bottom: 3px solid #baf3c6;
+}
+
+.mini-editor{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    float: left !important;
 }

@@ -21,7 +21,7 @@
         -->
 
         <ul>
-            <li class="top-menu-invisible" sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')">
+            <li class="top-menu-invisible" sec:authorize="hasRole('ADMIN') OR hasRole('TRAINER')">
                 <a href="#" title="GestionRunFit"><i class="fa fa-lg fa-fw fa-th txt-color-blueLight"></i> <span class="menu-item-parent">Gestión RunFit</span></a>
                 <ul>
                     <li>
@@ -147,7 +147,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="top-menu-invisible" sec:authorize="hasRole('ROLE_TRAINER')">
+            <li class="top-menu-invisible" sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">
                 <a href="#" title="GestionRutinasRunFit"><i class="fa fa-lg fa-fw fa-child txt-color-orange"></i> <span
                         class="menu-item-parent">Entrenadores</span></a>
                 <ul>
@@ -172,9 +172,12 @@
                     <li>
                         <a th:href="@{/gestion/usuario/mimediafavorito}" title="Mi audios/videos favoritos"><i class="fa fa-music"></i><span class="menu-item-parent"> Mi favoritos</span></a>
                     </li>
+                    <li>
+                        <a th:href="@{/gestion/mini-rutina}" title="Mis Rutinas"><i class="icofont-gym-alt-3"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
+                    </li>
                 </ul>
             </li>
-            <li class="top-menu-invisible">
+            <li class="top-menu-invisible" sec:authorize="hasRole('RUNNER') OR hasRole('ADMIN')">
                 <a href="#" title="GestionCliente"><i class="fa fa-lg fa-fw fa-user txt-color-redLight"></i> <span
                         class="menu-item-parent">Clientes</span></a>
                 <ul>

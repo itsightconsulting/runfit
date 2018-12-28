@@ -136,7 +136,7 @@ function detail_hide() {
     });
 }
 
-function irRegistro() {
+function irRegistro(wildcard) {
     $('#btnNuevo').css('display', 'none');
     $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         $('#view_list').hide();
@@ -144,7 +144,7 @@ function irRegistro() {
         $("#view_register").show().removeClass().addClass('fadeInLeftBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         });
     });
-    limpiarMainForm();
+    wildcard != undefined ? "" : limpiarMainForm();
 }
 
 function irListado(x) {
@@ -498,6 +498,9 @@ function notificacionesRutinaSegunResponseCode(resCode, wildcard){
             break;
         case -11:
             $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
+            break;
+        case -12:
+            $.smallBox({color: "alert",content: "<i> No se ha encontrado coincidencias con los datos enviados... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});
             break;
         case -99:
             $.smallBox({color: "alert",content: "<i> La operación ha fallado... Comuníquese con el administrador o intentelo nuevamente más tarde.</i>"});

@@ -31,5 +31,7 @@ public interface RutinaService extends BaseService<Rutina> {
 
     String registrarByCascada(RutinaDto rutinaDto, int redFitId, int runneId);
 
+    String actualizarFlagActivo(boolean flagActivo);
+
 }
 

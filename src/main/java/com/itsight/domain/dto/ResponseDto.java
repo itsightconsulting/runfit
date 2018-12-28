@@ -5,34 +5,34 @@ public class ResponseDto {
     /// <summary>
     /// Codigo de la petición
     /// </summary>
-    private int ResponseCode;
+    private int responseCode;
 
     /// <summary>
     /// Objeto que contiene toda la data
     /// </summary>
-    private Object Data;
+    private Object data;
 
     public ResponseDto(){}
 
+    public ResponseDto(int responseCode, Object data) {
+        this.responseCode = responseCode;
+        this.data = data;
+    }
+
     public int getResponseCode() {
-        return ResponseCode;
+        return responseCode;
     }
 
     public void setResponseCode(int responseCode) {
-        ResponseCode = responseCode;
+        this.responseCode = responseCode;
     }
 
     public Object getData() {
-        return Data;
+        return data;
     }
 
     public void setData(Object data) {
-        Data = data;
-    }
-
-    public ResponseDto(int responseCode, Object data) {
-        ResponseCode = responseCode;
-        Data = data;
+        this.data = data;
     }
 }
 

@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -110,5 +107,25 @@ public class RutinaHshController {
             }
         }
         return new ResponseDto(Integer.parseInt(Enums.ResponseCode.EX_VALIDATION_FAILED.get()), "El usuario ha intentado acceder a un recurso o inexistente o que no tiene acceso");
+    }
+
+    @PutMapping(value = "/actualizarEstado/{flag}")
+    public @ResponseBody String actualizarFlagActivo(
+                @PathVariable(name = "flag") String flagActivo,
+                @RequestParam(name = "key") String redFitnessId,
+                @RequestParam(name = "rn") String runnerId,
+                HttpSession session){
+        if(flagActivo != null && flagActivo.equals("1") || flagActivo.equals("0")){
+            int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
+            int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+            if(redFitId > 0 && runneId > 0) {
+                String codTrainer = session.getAttribute("codTrainer").toString();
+                String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
+                if(codTrainer.equals(qCodTrainer)) {
+                    return rutinaService.actualizarFlagActivo(flagActivo.equals("1") ? true : false);
+                }
+            }
+        }
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 }

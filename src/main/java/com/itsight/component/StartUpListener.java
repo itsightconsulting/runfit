@@ -350,16 +350,16 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     public void addingCategoriaTable() {
         if (categoriaService.findOne(1) == null) {
-            categoriaService.save(new Categoria(0, "Performance", "Performance", true, "", "", null));
+            categoriaService.save(new Categoria(0, "Performance", "Performance", true, "/1/b94d05e5-8101-492d-9105-e32c75cf0ab0.png", "C://WorkoutAppRepository/Categorias/1/b94d05e5-8101-492d-9105-e32c75cf0ab0.png", UUID.fromString("b94d05e5-8101-492d-9105-e32c75cf0ab0")));
         }
         if (categoriaService.findOne(2) == null) {
-            categoriaService.save(new Categoria(0, "Técnica", "Técnica", true, "", "", null));
+            categoriaService.save(new Categoria(0, "Técnica", "Técnica", true, "/2/5830a767-611f-4a3e-a2c5-34b5831afa88.jpg", "C://WorkoutAppRepository/Categorias/2/5830a767-611f-4a3e-a2c5-34b5831afa88.jpg", UUID.fromString("5830a767-611f-4a3e-a2c5-34b5831afa88")));
         }
         if (categoriaService.findOne(3) == null) {
-            categoriaService.save(new Categoria(0, "Fortalecimiento", "Fortalecimiento", true, "", "", null));
+            categoriaService.save(new Categoria(0, "Fortalecimiento", "Fortalecimiento", true, "/3/61a3a05e-ec3c-48f0-b978-92ab3d1155f3.jpg", "C://WorkoutAppRepository/Categorias/3/61a3a05e-ec3c-48f0-b978-92ab3d1155f3.jpg", UUID.fromString("61a3a05e-ec3c-48f0-b978-92ab3d1155f3")));
         }
         if (categoriaService.findOne(4) == null) {
-            categoriaService.save(new Categoria(0, "Metodología", "Metodología", true, "", "", null));
+            categoriaService.save(new Categoria(0, "Metodología", "Metodología", true, "/4/977fe861-828e-40a5-a4cf-509b1adb5fcb.jpg", "C://WorkoutAppRepository/Categorias/4/977fe861-828e-40a5-a4cf-509b1adb5fcb.jpg", UUID.fromString("977fe861-828e-40a5-a4cf-509b1adb5fcb")));
         }
     }
 

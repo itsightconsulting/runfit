@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
@@ -20,10 +21,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.itsight.util.Enums.ResponseCode.SESSION_VALUE_NOT_FOUND;
 
 @Service
 @Transactional
@@ -33,11 +38,14 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
     private RedFitnessService redFitnessService;
 
+    private HttpSession session;
+
     @Autowired
-    public RutinaServiceImpl(RutinaRepository repository, RuConsolidadoService ruConsolidadoService, RedFitnessService redFitnessService) {
+    public RutinaServiceImpl(RutinaRepository repository, RuConsolidadoService ruConsolidadoService, RedFitnessService redFitnessService, HttpSession session) {
         super(repository);
         this.ruConsolidadoService = ruConsolidadoService;
         this.redFitnessService = redFitnessService;
+        this.session = session;
     }
 
     @Override
@@ -234,5 +242,16 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         nueSem.setLstDia(dias);
         nueSem.setObjetivos("0,0,0,0,0,0,0");
         return nueSem;
+    }
+
+    @Override
+    public String actualizarFlagActivo(boolean flagActivo) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("edicionRutinaId"));
+        if(sessionValor.isPresent()) {
+            int rutinaId = (int) sessionValor.get();
+            repository.updateFlagActivo(rutinaId, flagActivo);
+            return Enums.ResponseCode.ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
     }
 }

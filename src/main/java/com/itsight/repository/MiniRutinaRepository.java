@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.MiniRutina;
+import com.itsight.domain.jsonb.MiRutinaPk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,9 @@ public interface MiniRutinaRepository extends JpaRepository<MiniRutina, Integer>
     @Query("SELECT M FROM MiniRutina M WHERE M.usuario.id = ?1 AND M.categoria.id = ?2")
     MiniRutina findByUsuarioIdAndEspecificacionSubCategoriaId(int usuarioId, int especificacionSubCatId);
 
+    @Query("SELECT M.categoria.id FROM MiniRutina M WHERE M.usuario.id = ?1")
+    List<Integer> findAllCategoriaIdByUsuarioId(int usuarioId);
+
+    @Query("SELECT M FROM MiniRutina M WHERE M.categoria.id = ?1 AND M.usuario.id = ?2")
+    MiniRutina findByCategoriaIdAndUsuarioId(int catId, int usuarioId);
 }

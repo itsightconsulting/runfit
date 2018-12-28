@@ -1,11 +1,7 @@
 package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.itsight.domain.jsonb.DiaRutinarioPk;
-import com.itsight.domain.jsonb.ListaPlantillaSimplePk;
 import com.itsight.domain.jsonb.MiRutinaPk;
-import com.itsight.util.EntityVisitor;
-import com.itsight.util.Identifiable;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -14,7 +10,6 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

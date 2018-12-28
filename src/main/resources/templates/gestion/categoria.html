@@ -20,7 +20,6 @@
 <!-- Note: This width of the aside area can be adjusted through LESS variables -->
 <div th:replace="html-commons/left-panel :: fg-left-panel"></div>
 <!-- END NAVIGATION -->
-
 <!-- MAIN PANEL -->
 <div id="main" role="main">
     <!-- MAIN CONTENT -->
@@ -290,8 +289,9 @@
                 url: _ctx + 'gestion/categoria/agregar',
                 dataType: "json",
                 data: params,
-                success: function (data) {
-                    addImage(data, params.id);
+                success: function (d) {
+                    const res = getResponseCodeWithId(d);
+                    addImage(res.id, params.id);
                     if (params.id > 0) {
                         $.smallBox({
                             content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
@@ -414,11 +414,9 @@
                     }
                     return myXhr;
                 },
-                success: function (data, textStatus) {
+                success: function (d, textStatus) {
                     if (textStatus == "success") {
-                        if (data == "-99") {
-                            $.smallBox({content: "La imagen no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
-                        }
+                        notificacionesRutinaSegunResponseCode(d);
                         if (initId <= 0)
                             $.smallBox({});
                     }

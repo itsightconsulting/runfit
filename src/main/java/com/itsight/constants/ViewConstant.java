@@ -38,6 +38,8 @@ public class ViewConstant {
     public static final String MAIN_ASSETS_CATEGORIA_VIDEO = "gestion/categoria_video";
     public static final String MAIN_ASSETS_SUB_CATEGORIA_VIDEO = "gestion/sub_categoria_video";
 
+    public static final String MAIN_MIS_RUTINAS_TRAINER = "trainer/mis_rutinas";
+
     public static final String INF_CONSTANCIA_CONTRIBUYENTE = "informativas/constanciacontribuyente";
     public static final String INF_CONSTANCIA_NO_ADEUDO = "informativas/constancianoadeudo";
     public static final String INF_CERTIFICADO_JURISDICCION = "informativas/certificadojurisdiccion";

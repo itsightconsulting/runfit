@@ -9,7 +9,7 @@
     <!-- CSS FILES -->
     <link th:replace="html-commons/css :: fg-css"/>
     <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/perfect-scrollbar.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}"/>
 
     <!-- END CSS FILES -->
     <style type="text/css">
@@ -45,18 +45,15 @@
                 <!-- NEW WIDGET START -->
                 <!-- Reemplaza a los botones para cambiar de ventana-->
                 <article class="col-sm-12 col-md-12 col-lg-12">
-                    <div class="container-fluid padding-0" id="PrincipalesTabs">
-                        <a href="#tabRutina" class="btn btn-default btn-md bg-black-rf txt-color-white main-tab" style="width: 9.83% !important; " data-toggle="tab">Rutina</a>
-                        <a href="#tabRutinarioCe" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83%; !important" data-toggle="tab">Rutinario<i id="ShortcutRutinario" class="fa fa-lg fa-fw fa-hand-o-up txt-color-white"></i></a>
-                        <a href="#tabGrupoVideos" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important; " data-toggle="tab">G. Videos</a>
-                        <a href="#tabGrupoAudios" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important; " data-toggle="tab">G. Audios</a>
-                        <a href="#tabMacro" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important; " data-toggle="tab">Macro</a>
-                        <a href="#tabFichaTecnica" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important;" data-toggle="tab">Ficha Técnica</a>
-                        <a id="OpsAdic">
-                            <div class="widget-toolbar borderless">
-                                <span class="label label-primary bg-green-rf" id="MesAnio"></span>
-                            </div>
-                            <div class="widget-toolbar borderless" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"><div class="container-fluid note-btn-group btn-group note-font text-align-center padding-0" id="MiniEditor">
+                    <div class="col-sm-12 col-md-12 col-lg-12 padding-o-bottom-10" id="DivEditor">
+                        <div class="col-sm-2 col-md-1 col-lg-1 col-xs-4 padding-top-3 text-align-center">
+                            <a href="javascript:void(0);" rel='tooltip' data-original-title='Enviar rutina' data-trigger="hover"><i class="i-btn fa fa-2x fa-fw fa-calendar-plus-o txt-color-greenLight" onclick="RutinaOpc.cambiarEstado(this, 1)"></i></a>
+                            <a href="javascript:void(0);" rel='tooltip' data-original-title='Retirar rutina' data-trigger="hover"><i class="i-btn fa fa-2x fa-calendar-minus-o txt-color-redLight" onclick="RutinaOpc.cambiarEstado(this, 0)"></i></a>
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <a href="javascript:void(0);" class="pull-left"><i class="fa fa-2x fa-fw fa-save" style="padding-top: 3px; padding-right: 10px;"></i></a>
+                            <div class="widget-toolbar borderless mini-editor">
+                                <div class="container-fluid note-btn-group btn-group note-font text-align-center padding-0">
                                 <button type="button" data-index="1" class="note-btn btn btn-default btn-sm note-btn-bold btn-bold" title="" data-original-title="Bold (CTRL+B)" style="margin-top: 0px;"><i class="note-icon-bold btn-bold" data-index="1"></i></button>
                                 <button type="button" data-index="2" class="note-btn btn btn-default btn-sm note-btn-italic btn-italic" title="" data-original-title="Italic (CTRL+I)"><i class="note-icon-italic btn-italic" data-index="2"></i></button>
                                 <button type="button" data-index="3" class="note-btn btn btn-default btn-sm note-btn-underline btn-underline" title="" data-original-title="Underline (CTRL+U)"><i class="note-icon-underline btn-underline" data-index="3"></i></button>
@@ -81,6 +78,23 @@
                                 </select>
                                 <button type="button" data-index="9" class="note-btn btn btn-default btn-sm note-btn-margen" rel="popover" data-toggle="popover" data-placement="right" data-content="" data-html="true" data-original-title="" title=""><i data-index="9" class="fa fa-indent note-btn-margen"></i></button>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3">
+                            <i class="i-btn fa fa-plus-circle fa-15x txt-color-blueDark pull-right aumentar-zoom" rel="tooltip" data-placement="bottom" data-original-title="Aumentar zoom"></i>
+                            <i class="i-btn fa fa-minus-circle fa-15x txt-color-blueDark pull-right reducir-zoom" rel="tooltip" data-placement="bottom" data-original-title="Reducir zoom"></i>
+                        </div>
+                    </div>
+                    <div class="container-fluid padding-0" id="PrincipalesTabs">
+                        <a href="#tabRutina" class="btn btn-default btn-md bg-black-rf txt-color-white main-tab" style="width: 9.83% !important; " data-toggle="tab">Rutina</a>
+                        <a href="#tabRutinarioCe" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83%; !important" data-toggle="tab">Rutinario<i id="ShortcutRutinario" class="fa fa-lg fa-fw fa-external-link-square txt-color-white bg-color-redLight" style="margin-left: 6px"></i></a>
+                        <a href="#tabGrupoVideos" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important; " data-toggle="tab">G. Videos</a>
+                        <a href="#tabGrupoAudios" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important; " data-toggle="tab">G. Audios</a>
+                        <a href="#tabMacro" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important; " data-toggle="tab">Macro</a>
+                        <a href="#tabFichaTecnica" class="btn btn-default btn-md bg-black-rf txt-color-white" style="width: 9.83% !important;" data-toggle="tab">Ficha Técnica</a>
+                        <a id="OpsAdic">
+                            <div class="widget-toolbar borderless">
+                                <span class="label label-primary bg-green-rf" id="MesAnio"></span>
                             </div>
                         </a>
                     </div>
@@ -132,10 +146,7 @@
                             <div class="tab-pane fade in active" id="tabRutina">
                                 <div class="col-md-12 padding-0">
                                     <div class="col-md-1" id="OpsLaterales">
-                                        <div class="ops-laterales">
-                                            <div class="container-fluid text-align-center padding-top-8">
-                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="CopySemana"></div>
-                                            </div>
+                                        <div class="ops-laterales padding-o-top-10">
                                             <div class="container-fluid padding-o-bottom-10 text-align-center">
                                                 <div>
                                                     <span class="label label-primary bg-green-rf" onclick="moverAInicio();" rel="tooltip" data-placement="bottom" data-original-title="Mover hasta el primer día de este semana"><i class="fa fa-mail-reply"></i></span>
@@ -160,14 +171,16 @@
                                                 </div>
                                             </div>
                                             <div class="container-fluid text-align-center padding-10">
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="IndicadorIntensidad"></div>
                                                 <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="SemanasLineal"></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Kilometrajes"></div>
                                                 <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Indicadores1"></div>
                                                 <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Indicadores2"></div>
-                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="Kilometrajes"></div>
-                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2"><div class="row"><i class="fa fa-fw fa-pinterest fa-2x txt-color-redLight"></i><i class="fa fa-15x txt-color-greenLight" id="PorcentajeAvanceSemana">0%</i></div></div>
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2"><div class="row"><i class="fa fa-fw fa-pinterest fa-2x txt-color-redLight" rel="tooltip" data-original-title="% de cumplimiento del cliente" data-toggle="hover"></i><i class="fa fa-15x txt-color-greenLight" id="PorcentajeAvanceSemana">0%</i></div></div>
                                                 <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);"><i class="fa fa-comment-o fa-2x txt-color-green"></i></a></div>
-                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);" class="btn btn-circle"><i class="fa fa-plus-circle fa-2x txt-color-blueDark aumentar-zoom"></i></a></div>
-                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2"><a href="javascript:void(0);" class="btn btn-circle"><i class="fa fa-minus-circle fa-2x txt-color-blueDark reducir-zoom"></i></a></div>
+                                            </div>
+                                            <div class="container-fluid text-align-center">
+                                                <div class="padding-o-bottom-10 col-md-12 col-xs-2" id="CopySemana"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1233,8 +1246,8 @@
     </div>
     <!-- END MAIN CONTENT -->
     <!-- CONSULTAS A LOS PRODUCTOS INTERNOS -->
-    <div class="demo"><span id="demo-setting" class="span-setting"><i class="fa fa-check-square-o txt-color-greenLight"></i></span>
-        <form><legend class="no-padding margin-bottom-10">Seleccionar los días para la rutina del Cliente</legend>
+    <div class="demo"><span id="demo-setting" class="span-setting hidden"><i class="fa fa-check-square-o txt-color-greenLight"></i></span>
+        <form><legend class="no-padding margin-bottom-10">Seleccionar los días para la rutina del Cliente<i class="i-btn fa fa-close pull-right txt-color-blue" onclick="document.getElementById('demo-setting').click()"></i></legend>
             <section>
                 <label><input name="subscription" id="smart-fixed-header" type="checkbox" class="checkbox style-0" />
                     <span>Toda la rutina</span>
@@ -1346,15 +1359,15 @@
     <div class="modal-dialog modal-lg">
         <div class="">
             <form class="smart-form">
-                <h6 class="text-align-center txt-color-white padding-10" style="background: #afe096">Categorías</h6>
+                <h6 class="text-align-center txt-color-white padding-10" style="background: #afe096">Categorías <i class="i-btn fa fa-close fa-15x txt-color-blueLight pull-right" data-dismiss="modal"></i></h6>
                 <fieldset>
                     <section class="">
                         <i id="CatRutinasDiaIndex" data-dia-index=""></i>
-                        <div class="container-fluid padding-0" id="CatMisRutinas">
+                        <div class="container-fluid padding-0 text-align-center" id="CatMisRutinas">
                             <th:block th:each="cr: ${lstCategoriaPlantRutina}">
                                     <div class="col col-md-3">
                                         <h1 th:text="${cr.nombre}" class="padding-bottom-10 cat-mi-rutina"></h1>
-                                        <a href="javascript:void(0);"><img th:src="@{/workout/media/image/categoria/gt/0} + ${cr.rutaWeb}" height="150" th:attr="data-index=${cr.id}" class="img-cat-rutina"/></a>
+                                        <a href="javascript:void(0);"><img th:src="@{/workout/media/image/categoria/gt/0} + ${cr.rutaWeb}" height="150" width="100%" th:attr="data-index=${cr.id}" class="img-cat-rutina"/></a>
                                     </div>
                             </th:block>
                         </div>
@@ -1389,7 +1402,7 @@
     <div class="modal-dialog modal-sm">
         <div class="">
             <form class="smart-form">
-                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Elegir Mini Plantilla</h6>
+                <h6 class="text-align-center txt-color-white padding-10" style="background: #a09071">Atajo a Mini Plantillas</h6>
                 <fieldset>
                     <section class="">
                         <label class="label">Sub Categoría:</label>

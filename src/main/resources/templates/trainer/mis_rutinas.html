@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+</head>
+<style>
+    h1.cat-mi-rutina{
+        margin: 20px 0px 0px;
+    }
+    .cat-mi-rutina {
+        border-bottom: 3px solid #6f54ff;
+    }
+
+    .img-cat-rutina:hover{
+        opacity: 0.65;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .img-cat-rutina-empty{
+        opacity: 0.50;
+        cursor: not-allowed;
+    }
+    .span-disabled{
+        cursor: not-allowed;
+    }
+
+    .i-btn {
+        cursor: pointer; /* Add a mouse pointer on hover */
+    }
+
+    .span-center-on-img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: bold;
+        font-size: 1.75em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        opacity: .9;
+    }
+
+    .badge-custom-nvl{
+        background-color: #ffffff;
+        color: black;
+        border: 1px solid orange;
+        background: linear-gradient(to right, #f6f6f6 25%, #f3f3f3 25%, #f7f7f7 50%, #fdfdfd 50%, #bcbcbc 75%, #bcbcbc 75%);
+        margin: 2px;
+    }
+
+    .opacity{
+        opacity: 0.3;
+    }
+</style>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="icofont-gym-alt-3 fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Mis Mini Rutinas</b>
+										</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-1 col-md-1 col-lg-1">&nbsp;</div>
+                    <div class="col-sm-10 col-md-10 col-lg-10 text-align-center">
+                        <div th:each=" cat : ${lstCategorias}">
+                            <div class="col col-md-6" style="padding: 0px;border: 1px solid #b9ffd4;">
+                                <a href="javascript:void(0);"><img height="200" width="100%" class="img-cat-rutina-empty" th:attr="data-index=${cat.id}" th:src="@{'/workout/media/image/categoria/gt/0'+${cat.rutaWeb}}"/><span th:attr="data-index=${cat.id}" class="span-center-on-img span-disabled" th:text="${cat.nombre}"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1">&nbsp;</div>
+                </div>
+                <div class="row" id="view_register">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <span class="padding-right-10" style="">
+                                        <a href="javascript:void(0);">
+                                            <span data-index="1" class="badge badge-custom-nvl font-md opacity">1</span>
+                                        </a>
+                                        <a href="javascript:void(0);">
+                                            <span data-index="2" class="badge badge-custom-nvl font-md">2</span>
+                                        </a>
+                                        <a href="javascript:void(0);">
+                                            <span data-index="3" class="badge badge-custom-nvl font-md">3</span>
+                                        </a>
+                                        <a href="javascript:void(0);">
+                                            <span data-index="4" class="badge badge-custom-nvl font-md">4</span>
+                                        </a>
+                                        <a href="javascript:void(0);">
+                                            <span data-index="5" class="badge badge-custom-nvl font-md">5</span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h1 style="color: #8dbcd0; font-weight: bold"></h1>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col col-md-4">
+                                <div class="icon-addon addon-md">
+                                    <input id="inptBusqueda" class="form-control" placeholder="Ingrese un título a buscar..." type="text" style="border-radius: 10px !important;"/>
+                                    <label class="glyphicon glyphicon-search lbl-btn-buscar-mini i-btn" rel="tooltip" title="Buscar"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-sm-6 col-md-6 col-lg-6 text-align-left" id="dvMisRutinas">
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 text-align-center" id="divRutina">
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+<script th:src="@{/js/dennys-workout/rf-trainer-mis-rutinas.js}+'?'+${version}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    pageSetUp();
+    /*]]>*/
+</script>
+</body>
+</html>

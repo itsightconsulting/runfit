@@ -111,4 +111,14 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     public List<MiniRutina> findAllByUsuarioId(int usuarioId) {
         return repository.findAllByUsuarioId(usuarioId);
     }
+
+    @Override
+    public List<Integer> findAllCategoriaIdByUsuarioId(int usuarioId) {
+        return repository.findAllCategoriaIdByUsuarioId(usuarioId);
+    }
+
+    @Override
+    public MiniRutina findByCategoriaIdAndUsuarioId(int catId, int usuarioId) {
+        return repository.findByCategoriaIdAndUsuarioId(catId, usuarioId);
+    }
 }

@@ -58,7 +58,7 @@ const catRutinasDiaIndex = document.querySelector('#CatRutinasDiaIndex');
 const catMisRutinas = document.querySelector('#CatMisRutinas');
 const shortcutRutinario = document.querySelector('#ShortcutRutinario');
 const mainTabs = document.querySelector('#PrincipalesTabs');
-const miniEditor = document.querySelector('#MiniEditor');
+const divEditor = document.querySelector('#DivEditor');
 const selectorFzEditor = document.querySelector('#SelectorFzEditor');
 const tbCompetencias = document.querySelector('#TablaCompetencias');
 const btnVerDetSemanas = document.querySelector('#btnVerDetalleSemanas');
@@ -104,7 +104,7 @@ function init(){
         btnActualizarMvz.addEventListener('click', actualizarMetricasVelocidadBD);
         shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
         mainTabs.addEventListener('click', principalesAlCambiarTab);
-        miniEditor.addEventListener('click', principalesMiniEditor);
+        divEditor.addEventListener('click', principalesDivEditor);
         btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
         btnComprobarMacro.addEventListener('click', MacroCiclo.comprobar);
         btnGenerarRutinaCompleta.addEventListener('click', MacroCiclo.generarRutinaCompleta);
@@ -470,43 +470,70 @@ function guardarEnMisRutinas(e){
 
     const valId = Number(params.categoriaId);
     if(!isNaN(valId) && valId > 0){
-        catRutinasDiaIndex.innerHTML = spinnerHTMLRawCsMessage("Cargando... Por favor espere...");
-        catMisRutinas.classList.toggle('hidden');
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-            url: _ctx + 'gestion/mini-rutina/agregar/dia-rutinario',
-            dataType: "json",
-            data: params,
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    if (data == ResponseCode.EX_GENERIC) {
-                        $.smallBox({
-                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                            timeout: 4500,
-                            color: "alert",
-                        });
-                    }
-                    if (data == ResponseCode.EX_NUMBER_FORMAT) {
-                        $.smallBox({
-                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                            timeout: 4500,
-                            color: "alert",
-                        });
-                    } else {
-                        $.smallBox({content: "<i>El día se ha guardado en mis rutinas satisfactoriamente...</i>"});
-                    }
+        $('#modalCategoriasRutinas').modal('hide');
+        $.SmartMessageBox({
+            title : "Workout Notification",
+            content : "Por favor ingrese un título para la mini rutina",
+            buttons : "[Cancelar][Guardar]",
+            input : "text",
+            placeholder : "Ingrese un título"
+        }, function(buttonPress, value) {
+            const nivel = document.querySelector('#slctNvlMini').value;
+            const btnSave =  document.querySelector('#bot2-Msg1');
+            if(buttonPress != "Cancelar" && value != undefined && value.trim().length > 5 && nivel != undefined && Number(nivel)>0 && Number(nivel) <6){
+                if(!btnSave.classList.contains('disabled')){
+                    btnSave.classList.add('disabled');
+                    params.nombre = value.trim();
+                    params.nivel = nivel;
+                    $.ajax({
+                        type: 'POST',
+                        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                        url: _ctx + 'gestion/mini-rutina/agregar/dia-rutinario',
+                        dataType: "json",
+                        data: params,
+                        success: function (data, textStatus) {
+                            if (textStatus == "success") {
+                                if (data == ResponseCode.EX_GENERIC) {
+                                    $.smallBox({
+                                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                                        timeout: 4500,
+                                        color: "alert",
+                                    });
+                                }
+                                if (data == ResponseCode.EX_NUMBER_FORMAT) {
+                                    $.smallBox({
+                                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                                        timeout: 4500,
+                                        color: "alert",
+                                    });
+                                } else {
+                                    $.smallBox({content: "<i>El día se ha guardado en mis rutinas satisfactoriamente...</i>"});
+                                }
+                            }
+                        },
+                        error: function (xhr) {
+                            exception(xhr);
+                        },
+                        complete: function () {
+                            catRutinasDiaIndex.innerHTML = '';
+                            $('#modalCategoriasRutinas').modal('hide');
+                        }
+                    });
                 }
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-                catRutinasDiaIndex.innerHTML = '';
-                catMisRutinas.classList.toggle('hidden');
-                $('#modalCategoriasRutinas').modal('hide');
+            }else{
+                $('#modalCategoriasRutinas').modal('show');
+                buttonPress == "Cancelar" ? "" : $.smallBox({color: "alert", content: "<i>La operación no se ha realizado porque o bien el título ingresado no cuenta con un mínimo de 6 letras o no se ha seleccionado un nivel válido...</i>", timeout: 8000});
             }
         });
+        let assurance = 0;
+        const interval = setInterval(()=>{
+            assurance+=1;
+            if(document.querySelector('#txt1') != undefined){
+                document.querySelector('#txt1').insertAdjacentHTML('afterend', '</br><select class="form-control" id="slctNvlMini"><option value="">-- Selecciona un nivel --</option><option value="1"> -- Nivel 01 -- </option><option value="2"> -- Nivel 02 -- </option><option value="3"> -- Nivel 03 -- </option><option value="4"> -- Nivel 04 -- </option><option value="5"> -- Nivel 05 -- </option></select>');
+                window.clearInterval(interval);
+            }
+            assurance>15 ? window.clearInterval(interval) : "";
+        }, 100);
     } else{}
 }
 
@@ -1819,26 +1846,6 @@ function principalesEventosTabRutina(e){
         const metricas = $rutina.semanas[semIndex].metricasVelocidad;
         Indicadores.abrirIndicador2(metricas);
     }
-    else if(clases.contains('aumentar-zoom')){
-        let zm = window.parent.document.body.style.zoom;
-        window.parent.document.body.style.zoom = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1;
-        if(zm == "1.1") {
-            input.parentElement.classList.add('disabled');
-        }else{
-            input.parentElement.parentElement.nextElementSibling.children[0].classList.remove('disabled');
-            input.parentElement.classList.remove('disabled');
-        }
-    }
-    else if(clases.contains('reducir-zoom')){
-        let zm = window.parent.document.body.style.zoom;
-        window.parent.document.body.style.zoom = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
-        if(zm == "0.9") {
-            input.parentElement.classList.add('disabled');
-        }else{
-            input.parentElement.classList.remove('disabled');
-            input.parentElement.parentElement.previousElementSibling.children[0].classList.remove('disabled');
-        }
-    }
 }
 
 function principalesEventosTabGrupoVideos(e){
@@ -2743,15 +2750,14 @@ function cambiarATabRutina(){
 
 function principalesAlCambiarTab(e){
     const input = e.target;
-
     if(e.target.classList.contains('main-tab')){
         document.querySelector('#OpsAdic').classList.remove('hidden');
-        document.querySelector('#demo-setting').classList.remove('hidden');
+        document.querySelector('#DivEditor').classList.remove('hidden');
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
         e.preventDefault();
         document.querySelector('#OpsAdic').classList.add('hidden');
-        document.querySelector('#demo-setting').classList.add('hidden');
+        document.querySelector('#DivEditor').classList.add('hidden');
         $videosElegidos = [];
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
@@ -2761,7 +2767,7 @@ function principalesAlCambiarTab(e){
         }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
-        document.querySelector('#demo-setting').classList.add('hidden');
+        document.querySelector('#DivEditor').classList.add('hidden');
         if(document.querySelector('#ArbolRutinario').children.length == 0) {
             const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
             instanciarMiniPlantillas(effImg);
@@ -2769,7 +2775,7 @@ function principalesAlCambiarTab(e){
     }
     else if(e.target.tagName === "A"){
         document.querySelector('#OpsAdic').classList.add('hidden');
-        document.querySelector('#demo-setting').classList.add('hidden');
+        document.querySelector('#DivEditor').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($ruConsolidado == undefined){
                 const effImg = spinnerSwitchTab(RutinaOpc.effectImage)
@@ -2779,7 +2785,7 @@ function principalesAlCambiarTab(e){
     }
 }
 
-function principalesMiniEditor(e){
+function principalesDivEditor(e){
     const input = e.target;
     const clases = input.classList;
     const ix = e.target.getAttribute('data-index');
@@ -2834,6 +2840,28 @@ function principalesMiniEditor(e){
         e.preventDefault();
         e.stopPropagation();
         RutinaEditor.agregarOeliminarEstiloToElemento(ix, 4);
+    }
+    else if(clases.contains('aumentar-zoom')){
+        e.stopPropagation();
+        let zm = window.parent.document.body.style.zoom;
+        window.parent.document.body.style.zoom = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1;
+        if(zm == "1.1") {
+            input.classList.add('disabled');
+        }else{
+            input.parentElement.querySelector('.reducir-zoom').classList.remove('disabled');
+            if(zm != "1.2") input.classList.remove('disabled');
+        }
+    }
+    else if(clases.contains('reducir-zoom')){
+        e.stopPropagation();
+        let zm = window.parent.document.body.style.zoom;
+        window.parent.document.body.style.zoom = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
+        if(zm == "0.9") {
+            input.classList.add('disabled');
+        }else{
+            input.parentElement.querySelector('.aumentar-zoom').classList.remove('disabled');
+            if(zm != "0.8") input.classList.remove('disabled');
+        }
     }
 }
 
@@ -3021,4 +3049,36 @@ function obtenerSemanasEnviadas() {
         complete: function () {
         }
     });
+}
+
+function cambiarEstadoBD(flag, e){
+    if(!e.classList.contains('disabled')){
+        const id = getParamFromURL('key');
+        const rn = getParamFromURL('rn');
+        $.ajax({
+            type: "PUT",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + "rutina/actualizarEstado/"+flag+"?key="+id + "&rn="+rn,
+            dataType: "json",
+            success: function (d) {
+                notificacionesRutinaSegunResponseCode(d);
+                if(d == "-2") {
+                    if (flag == "1") {
+                        e.classList.add('disabled');
+                        e.parentElement.parentElement.querySelector('.fa-calendar-minus-o').classList.remove('disabled');
+                        $rutina.flagActivo = true;
+                    } else {
+                        e.classList.add('disabled');
+                        e.parentElement.previousElementSibling.querySelector('.fa-calendar-plus-o').classList.remove('disabled');
+                        $rutina.flagActivo = false;
+                    }
+                }
+                $.smallBox({content: "<i>Actualización exitosa...</i>"});
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {}
+        })
+    }
 }

@@ -10,6 +10,7 @@ class Rutina {
         this.semanas = new Array(this.totalSemanas);
         this.tipoRutina = obj.tipoRutina;
         this.control = obj.control;
+        this.flagActivo = obj.flagActivo;
     }
 
     init(primeraSemana) {
@@ -146,6 +147,8 @@ class Rutina {
         instanciarPopovers();
         instanciarTooltips();
         RutinaOpc.instanciarCopiarSemanaCompleta();
+        RutinaOpc.instanciarFlagActivo();
+        Indicadores.instanciarIndicador0();
         Indicadores.instanciarIndicadores1();
         Indicadores.instanciarIndicadores2();
         Indicadores.instanciarKilometrajes();
@@ -612,7 +615,17 @@ RutinaOpc = (function(){
         },
         instanciarCopiarSemanaCompleta: ()=>{
             const cs = document.querySelector('#myTabRutina #CopySemana');
-            cs.innerHTML = `<div class="col-md-12 col-xs-2"><a href="javascript:void(0);" rel="tooltip" data-original-title="Copiar semana completa" data-placement="bottom"><i class="fa fa-copyright fa-2x txt-color-redLight copiar-full-semana" id="CopiarSemana" rel="popover" data-placement="right" data-content="" data-html="true"></i></a></div>`;
+            if(cs != undefined) cs.innerHTML = `<div class="col-md-12 col-xs-2"><a href="javascript:void(0);" rel="tooltip" data-original-title="Copiar semana completa" data-placement="bottom"><i class="fa fa-copyright fa-2x txt-color-redLight copiar-full-semana" id="CopiarSemana" rel="popover" data-placement="right" data-content="" data-html="true"></i></a></div>`;
+        },
+        instanciarFlagActivo: ()=>{
+            const div = document.getElementById('DivEditor');
+            if($rutina.flagActivo == true){
+                const icon = div.querySelector('.fa-calendar-plus-o');
+                icon.classList.add('disabled');
+            } else{
+                const icon = div.querySelector('.fa-calendar-minus-o');
+                icon.classList.add('disabled');
+            }
         },
         bodyCopiarSemana: (totalSemanas)=>{
             const semActual = Number($semActual.textContent) -1;
@@ -646,6 +659,9 @@ RutinaOpc = (function(){
                 }
             }, 100);
             return intervalLoading;
+        },
+        cambiarEstado: (e, flag)=>{
+            cambiarEstadoBD(flag, e);
         }
     }
 })();
@@ -2720,6 +2736,11 @@ RutinaPS = (function () {
 //Indicadores de tiempo y distancia
 Indicadores = (function(){
     return {
+        instanciarIndicador0: ()=>{
+            const intensidad = $rutina.control.intensidades[Number($semActual.textContent)-1];
+            const ind = intensidad < 61 ? "B" : intensidad < 85 ? "M" : "A";
+            document.querySelector('#IndicadorIntensidad').innerHTML = `<a href="javascript:void(0);"><i id="CalendarioRf" rel="tooltip" class="fa fa-2x txt-color-red" data-original-title="${intensidad} %" style="font-weight: bold;">${ind}</i></a>`;
+        },
         instanciarIndicadores1: ()=>{
             const raw = `<a href="javascript:void(0);"><i id="IconIndicador1" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-heartbeat txt-color-red fa-2x abrir-indicador-1"></i></a>`;
             document.querySelector('#Indicadores1').innerHTML = raw;
@@ -2813,9 +2834,9 @@ Indicadores = (function(){
             for(let i=0; i<metricas.length;i++){
                 raw += `<div class="col-md-3 col-sm-3 col-xs-3 padding-7">
                             <div class="row padding-5 text-align-center">
-                                <span class="txt-color-blue"><b>${BaseCalculo.ofMetricasBase[i].n}</b></span>
-                                ${metricas[i].p}<br/>
-                                <span class="txt-color-orange">${metricas[i].tt}</span><br/>
+                                <span class="txt-color-blue font-md" style="border-bottom: 2px solid lightgrey; display: block;"><b>${BaseCalculo.ofMetricasBase[i].n}</b></span>
+                                <span class="font-md">${metricas[i].p}</span><br/>
+                                <span class="txt-color-orange font-md">${metricas[i].tt}</span><br/>
                             </div>
                         </div>`
                         if((i+1)%4 == 0 && (i+1) == metricas.length){
