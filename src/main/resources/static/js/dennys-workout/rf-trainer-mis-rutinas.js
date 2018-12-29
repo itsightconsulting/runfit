@@ -1,6 +1,7 @@
 const viewList = document.querySelector('#view_list');
 const viewRegister = document.querySelector('#view_register');
 const divRutina = document.querySelector('#divRutina');
+const divRegistros = document.querySelector('#dvMisRutinas');
 let $minis;
 let $nvl = 1;
 $(function () {
@@ -40,29 +41,32 @@ function principalesViewRegister(e){
     }
     else if(clases.contains('lbl-btn-buscar-mini')){
         const queryValue = input.previousElementSibling.value;
-        /*if(queryValue != undefined && queryValue.length > 2){*/
-            filtrarCoincidencias(queryValue);
-        /*}else
-            $.smallBox({color: "alert",content: "<i>Las consultas deben tener mínimo 3 letras...</i>"})*/
+        const tempMinis = JSON.parse(JSON.stringify($minis));
+        customPaginacion(tempMinis.filter(v => v.nvl == $nvl && v.nombre.toLowerCase().includes(queryValue.toLowerCase())), divRegistros, 0, 0);
     }
     else if(clases.contains('badge-custom-nvl')){
         input.parentElement.parentElement.querySelectorAll('.badge-custom-nvl').forEach(v=>v.classList.remove('opacity'));
         clases.add('opacity');
         $nvl = Number(input.getAttribute('data-index'));
-        filtrarCoincidencias('');
+        const tempMinis = JSON.parse(JSON.stringify($minis));
+        customPaginacion(tempMinis.filter(v => v.nvl == $nvl), divRegistros, 0, 0);
     }
     else if(clases.contains('back-listado')){
         $nvl = 1;
     }
+    else if(clases.contains('page-number')){
+        Number(input.textContent.trim());
+        const tempMinis = JSON.parse(JSON.stringify($minis));
+        customPaginacion(tempMinis.filter(v => v.nvl == $nvl), divRegistros, Number(input.textContent.trim())-1, Number(input.textContent.trim())-1);
+    }
 }
 
 function filtrarCoincidencias(value){
-    const divRegistros = document.querySelector('#dvMisRutinas');
     const coincidencias = $minis.filter(v=>{return v.nvl === $nvl && v.nombre.toLowerCase().includes(value.toLowerCase())});
     if(coincidencias.length > 0) {
         divRegistros.innerHTML = coincidencias.map((v, i) => `<a href="javascript:void(0);"><h6 class="mini-rutina" data-index="${v.hash}"><i class="fa fa-fw"><b>${++i}.</b></i> ${v.nombre}</h6></a>`).join('');
         $(document.querySelector('#view_register .i-btn')).tooltip();
-    }else
+    } else
         divRegistros.innerHTML = '<div class="col" style="padding-top: 10px;"><span class="font-md txt-color-blueLight"><i class="fa fa-fw fa-info-circle"></i> No se encontraron coincidencias...</span></div>';
 }
 
@@ -99,17 +103,9 @@ function obtenerMisRutinasByCategoria(catId, nombreCat){
                 const minis = d.data.sort((a,b)=>{return a.nombre.localeCompare(b.nombre)})
                 $minis = minis;
                 const view_register = document.querySelector('#view_register');
-                const divRegistros = view_register.querySelector('#dvMisRutinas');
                 view_register.querySelector('h1').innerHTML = '<i class="i-btn fa fa-fw fa-angle-left back-listado" rel="tooltip" data-original-title="Regresar" data-toggle="hover" onclick="javascript:irListado([{\'defaultValue\':0}])"></i>'+nombreCat;
                 const coincidencias = minis.filter(v=>v.nvl === $nvl);
-                if(coincidencias.length >0) {
-                    if( 0 && coincidencias.length < 10){
-                        divRegistros.innerHTML = coincidencias.map((v, i) => `<a href="javascript:void(0);"><h6 class="mini-rutina" data-index="${v.hash}"><i class="fa fa-fw"><b>${++i}.</b></i> ${v.nombre}</h6></a>`).join('');
-                        $(document.querySelector('#view_register .i-btn')).tooltip();
-                    }else
-                        customPaginacion(coincidencias, divRegistros, 0);
-                }else
-                    divRegistros.innerHTML = '<div class="col" style="padding-top: 10px;"><span class="font-md txt-color-blueLight"><i class="fa fa-fw fa-info-circle"></i> No se encontraron coincidencias...</span></div>';
+                customPaginacion(coincidencias, divRegistros, 0, 0);
             }else
                 notificacionesRutinaSegunResponseCode(d.responseCode);
         },
@@ -147,25 +143,36 @@ function obtenerCategoriasIdsByUsuario(){
     });
 }
 
-function customPaginacion(arrMiniRutinas, divRegistros, activeIx){
-    const pags = Math.ceil(arrMiniRutinas.length/10);
-    let pagsHTML = '<div class="row"><div class="col-md-12 text-align-right">';
-    pagsHTML += `<div class="fixed-table-pagination" style="">
+function customPaginacion(arrMiniRutinas, divRegistros, activeIx, pagina){
+    if(arrMiniRutinas.length > 10){
+        const desde = (pagina*10)+1;
+        let hasta = ((pagina+1)*10);
+        hasta = hasta>arrMiniRutinas.length ? arrMiniRutinas.length : hasta;
+        const pags = Math.ceil(arrMiniRutinas.length/10);
+        let pagsHTML = '<div class="row"><div class="col-md-12 text-align-right">';
+        pagsHTML += `<div class="fixed-table-pagination" style="">
                     <div class="pull-left pagination-detail">
-                        <span class="pagination-info"><i>Mostrando de 1 a 10 de un total de ${arrMiniRutinas.length} rutinas </i></span>
+                        <span class="pagination-info"><i>Mostrando de ${desde} a ${hasta} de un total de ${arrMiniRutinas.length} rutinas </i></span>
                     </div>
                     <div class="pull-right pagination">
                         <ul class="pagination">
                             <li class="page-pre">
                                 <a href="javascript:void(0)">‹</a>
                             </li>
-                            ${Array(pags).fill().map((v,i)=>i+1).map((v,ii)=>`<li class="page-number ${ii == activeIx? 'active':''}"><a href="javascript:void(0)">${ii+1}</a></li>`).join('')}
+                            ${Array(pags).fill().map((v,i)=>i+1).map((v,ii)=>`<li class="${ii == activeIx? 'active':''}"><a class="page-number" href="javascript:void(0)">${ii+1}</a></li>`).join('')}
                             <li class="page-next">
                                 <a href="javascript:void(0)">›</a>
                             </li>
                         </ul>
                     </div>
                  </div>`;
-    pagsHTML += '</div></div>';
-    divRegistros.innerHTML = arrMiniRutinas.splice(0,10).map((v, i) => `<a href="javascript:void(0);"><h6 class="mini-rutina" data-index="${v.hash}"><i class="fa fa-fw"><b>${++i}.</b></i> ${v.nombre}</h6></a>`).join('') + pagsHTML;
+        pagsHTML += '</div></div>';
+        const minisCopy = JSON.parse(JSON.stringify(arrMiniRutinas));
+        divRegistros.innerHTML = minisCopy.splice(pagina*10, 10).map((v, i) => `<a href="javascript:void(0);"><h6 class="mini-rutina" data-index="${v.hash}"><i class="fa fa-fw"><b>${++i}.</b></i> ${v.nombre}</h6></a>`).join('') + pagsHTML;
+    }else if(arrMiniRutinas.length == 0){
+        divRegistros.innerHTML = '<div class="col" style="padding-top: 10px;"><span class="font-md txt-color-blueLight"><i class="fa fa-fw fa-info-circle"></i> No se encontraron coincidencias...</span></div>';
+    }else{
+        divRegistros.innerHTML = arrMiniRutinas.map((v, i) => `<a href="javascript:void(0);"><h6 class="mini-rutina" data-index="${v.hash}"><i class="fa fa-fw"><b>${++i}.</b></i> ${v.nombre}</h6></a>`).join('');
+        $(document.querySelector('#view_register .i-btn')).tooltip();
+    }
 }
