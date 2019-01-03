@@ -975,7 +975,7 @@ RutinaEditor = (function(){
                                                 <div class="note-color-row">
                                                     <button type="button" class="note-color-fuente" style="background-color:white" data-index="100" data-class="rf-ct-white"></button><!--
                                                  --><button type="button" class="note-color-fuente" style="background-color:black" data-index="101" data-class="rf-ct-black"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:gray" data-index="102" data-class="rf-ct-gray"></button><!--
+        git l                                         --><button type="button" class="note-color-fuente" style="background-color:gray" data-index="102" data-class="rf-ct-gray"></button><!--
                                                  --><button type="button" class="note-color-fuente" style="background-color:#003366" data-index="103" data-class="rf-ct-navyblue"></button><!--
                                                  --><button type="button" class="note-color-fuente" style="background-color:skyblue" data-index="104" data-class="rf-ct-skyblue"></button><!--
                                                  --><button type="button" class="note-color-fuente" style="background-color:orange" data-index="105" data-class="rf-ct-orange"></button><!--
@@ -1133,7 +1133,7 @@ RutinaIx = (function(){
         },
         getIxsForElemento: (e)=>{
             let ixs = {};
-            ixs.numSem = $semActual.textContent -1;
+            ixs.numSem = typeof $semActual === 'undefined' ? '0' : $semActual.textContent -1;
             ixs.diaIndex = e.getAttribute('data-dia-index');
             ixs.eleIndex = e.getAttribute('data-index')==undefined?'':e.getAttribute('data-index');
             ixs.refEleIndex = e.getAttribute('data-ele-ref-index')==undefined?'':e.getAttribute('data-ele-ref-index');
@@ -2739,7 +2739,7 @@ Indicadores = (function(){
         instanciarIndicador0: ()=>{
             const intensidad = $rutina.control.intensidades[Number($semActual.textContent)-1];
             const ind = intensidad < 61 ? "B" : intensidad < 85 ? "M" : "A";
-            document.querySelector('#IndicadorIntensidad').innerHTML = `<a href="javascript:void(0);"><i id="CalendarioRf" rel="tooltip" class="fa fa-2x txt-color-red" data-original-title="${intensidad} %" style="font-weight: bold;">${ind}</i></a>`;
+            document.querySelector('#IndicadorIntensidad').innerHTML = `<a href="javascript:void(0);"><i rel="tooltip" class="fa fa-2x txt-color-red" data-original-title="${intensidad} %" style="font-weight: bold;">${ind}</i></a>`;
         },
         instanciarIndicadores1: ()=>{
             const raw = `<a href="javascript:void(0);"><i id="IconIndicador1" rel="popover" data-toggle="popover" data-placement="right" data-html="true" data-content="" class="fa fa-heartbeat txt-color-red fa-2x abrir-indicador-1"></i></a>`;

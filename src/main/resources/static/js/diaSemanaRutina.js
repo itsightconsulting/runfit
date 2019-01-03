@@ -93,6 +93,7 @@ function mostrarSemana(sem, sIndex, diasemanaactual){
     //$('#RutinaSemana').attr('data-index', sIndex);
     $('[data-toggle="popover"]').popover();
 }
+
 RutinaDiaHTML = (function(){
     return {
         full: (elementos, diaIndex, init, flagDescanso)=>{//init se usa para cuando se recrea la semana desde la instancia del objeto Rutina

@@ -1619,11 +1619,8 @@ function principalesEventosFocusOutSemanario(e) {
                 //Indices con respecto a la posicion en la que se encuentran con respecto a su contenedor padre y sus hermanos
                 DiaOpc.validPreActualizarFromNomEle(valor, ixs, (posElemento = i));
             }
-        }else{
-            console.log("No es necesario actualizar");
         }
         $nombreActualizar = valor;
-
     }
     else if(clases.contains('rf-sub-elemento-nombre')){
         const valor = input.textContent.trim();
@@ -1713,8 +1710,6 @@ function principalesEventosFocusOutSemanario(e) {
         if($tiempoActualizar != tiempo && gIx == $gIndex && !isNaN(tiempo)){
             let ixs = RutinaIx.getIxsForElemento(input)
             ElementoOpc.actualizarTiempoElemento(ixs, tiempo);
-        }else{
-            console.log("No es necesario actualizar");
         }
         $tiempoActualizar = tiempo;
     }

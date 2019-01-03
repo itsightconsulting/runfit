@@ -10,6 +10,10 @@
     <link th:replace="html-commons/css :: fg-css"/>
 </head>
 <style>
+    .padding-o-bottom-5{
+        padding-bottom: 5px;
+    }
+
     h1.cat-mi-rutina{
         margin: 20px 0px 0px;
     }
@@ -56,6 +60,62 @@
     .opacity{
         opacity: 0.3;
     }
+
+    span.mini-rutina{
+        font-size: 15px;
+        margin: 10px 0;
+        font-weight: 700;
+        line-height: normal;
+    }
+    /* MiniRutina */
+
+    #MainMini .badge-custom-enum{
+        color: white !important;
+        border: 1px solid #f2ffce;
+        background: #323830;
+        margin: 2px;
+        border-radius: 50%;
+    }
+
+    #MainMini input.agregar-tiempo{
+        border: none;
+        width: 15%;
+        text-align: center;
+        background: transparent;
+    }
+
+    #MainMini .heading-dia{
+        border-radius: 12px 12px 0px 0px;
+    }
+
+    #MainMini .padding-0{
+        border-radius: 0px 0px 12px 12px;
+    }
+
+    #MainMini .header-mini .header-title{
+        font-size: 1.25em;
+        font-weight: bold;
+        padding: 5px 0px;
+    }
+
+    #MainMini .check-nota{
+        font-size: 0.6em;
+        position: absolute;
+        right: 0px;
+        top: 3px;
+        display: -webkit-box;
+        color: #f57b4c;
+        clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+
+    #MainMini h4{
+        position: relative;
+    }
+
+    #MainMini .rf-listas .rf-dia-elemento-nombre {
+        font-size: 13px !important;
+    }
+
 </style>
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">
 <!-- HEADER -->
@@ -100,47 +160,55 @@
                     <div class="col-sm-1 col-md-1 col-lg-1">&nbsp;</div>
                 </div>
                 <div class="row" id="view_register">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-12">
-                                <div class="col-md-6">
-                                    <span class="padding-right-10" style="">
-                                        <a href="javascript:void(0);">
-                                            <span data-index="1" class="badge badge-custom-nvl font-md opacity">1</span>
-                                        </a>
-                                        <a href="javascript:void(0);">
-                                            <span data-index="2" class="badge badge-custom-nvl font-md">2</span>
-                                        </a>
-                                        <a href="javascript:void(0);">
-                                            <span data-index="3" class="badge badge-custom-nvl font-md">3</span>
-                                        </a>
-                                        <a href="javascript:void(0);">
-                                            <span data-index="4" class="badge badge-custom-nvl font-md">4</span>
-                                        </a>
-                                        <a href="javascript:void(0);">
-                                            <span data-index="5" class="badge badge-custom-nvl font-md">5</span>
-                                        </a>
-                                    </span>
+                    <div class="col-md-12">
+                        <div class="row col-md-6">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <span class="padding-right-10" style="">
+                                                    <a href="javascript:void(0);">
+                                                        <span data-index="1" class="badge badge-custom-nvl font-md opacity">1</span>
+                                                    </a>
+                                                    <a href="javascript:void(0);">
+                                                        <span data-index="2" class="badge badge-custom-nvl font-md">2</span>
+                                                    </a>
+                                                    <a href="javascript:void(0);">
+                                                        <span data-index="3" class="badge badge-custom-nvl font-md">3</span>
+                                                    </a>
+                                                    <a href="javascript:void(0);">
+                                                        <span data-index="4" class="badge badge-custom-nvl font-md">4</span>
+                                                    </a>
+                                                    <a href="javascript:void(0);">
+                                                        <span data-index="5" class="badge badge-custom-nvl font-md">5</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h1 style="color: #8dbcd0; font-weight: bold"></h1>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col col-md-8">
+                                            <div class="icon-addon addon-md">
+                                                <input id="inptBusqueda" class="form-control" placeholder="Ingrese un título a buscar..." type="text" style="border-radius: 10px !important;"/>
+                                                <label class="glyphicon glyphicon-search lbl-btn-buscar-mini i-btn" rel="tooltip" title="Buscar"></label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <h1 style="color: #8dbcd0; font-weight: bold"></h1>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col col-md-4">
-                                <div class="icon-addon addon-md">
-                                    <input id="inptBusqueda" class="form-control" placeholder="Ingrese un título a buscar..." type="text" style="border-radius: 10px !important;"/>
-                                    <label class="glyphicon glyphicon-search lbl-btn-buscar-mini i-btn" rel="tooltip" title="Buscar"></label>
-                                </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 padding-10 text-align-left" id="dvMisRutinas">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="col-sm-6 col-md-6 col-lg-6 text-align-left" id="dvMisRutinas">
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 text-align-center" id="divRutina">
-
+                        <!-- tabRutina & RutinaSemana @Por conveniencia -->
+                        <div class="col-md-6" id="tabRutina">
+                            <div id="RutinaSemana">
+                                <div class="col-sm-1 col-md-1 col-lg-1">&nbsp;</div>
+                                <div class="col-sm-11 col-md-11 col-lg-11" id="divRutina"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,6 +217,19 @@
     </div>
     <!-- END MAIN CONTENT -->
 </div>
+<!-- FINAL MODAL VISUALIZACION DE VIDEO -->
+<!-- MODAL REPRODUCCION DE AUDIO -->
+<div class="modal fade" id="myModalAudio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="">
+            <div class="text-align-center" style="padding-top: 200px;">
+                <audio id="someaud" controls="" controlsList="nodownload" autoplay="" width="100%" height="100%">
+                    <source id="AudioReproduccion" src="" type="audio/mpeg"/>
+                </audio>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- END MAIN PANEL -->
 <!-- PAGE FOOTER -->
 <div th:replace="html-commons/footer :: fg-footer"></div>
@@ -156,6 +237,8 @@
 <!-- IMPORTS JAVASCRIPT -->
 <script th:replace="html-commons/js :: fg-js"/>
 <script th:src="@{/js/dennys-workout/rf-trainer-mis-rutinas.js}+'?'+${version}"></script>
+<script th:src="@{/js/dennys-workout/rf-mis-rutinas.js}+'?'+${version}"></script>
+<script th:src="@{/js/rutina.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     pageSetUp();
