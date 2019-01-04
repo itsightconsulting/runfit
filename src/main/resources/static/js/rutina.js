@@ -2161,6 +2161,10 @@ DiaFunc = (function(){
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
                 return $rutina.semanas[ixs.numSem].dias[v[0]].elementos[i]
             });
+        },
+        obtenerTiempoCarreraReferencia: (diaIndex)=>{
+            const firstElementoCarrera = Array.from(RutinaDOMQueries.getDiaByIx(diaIndex).querySelectorAll('.rf-dia-elemento')).find(v=>Number(v.getAttribute('data-kms'))>0);
+            return firstElementoCarrera != undefined ? String(60/(Number(firstElementoCarrera.getAttribute('data-kms')) / firstElementoCarrera.querySelector('input.agregar-tiempo').value)).toHHMMSSM() : "00:06:20";
         }
     }
 })();

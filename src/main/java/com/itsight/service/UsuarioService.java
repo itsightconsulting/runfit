@@ -3,6 +3,7 @@ package com.itsight.service;
 import com.itsight.domain.PorcentajesKilometraje;
 import com.itsight.domain.Usuario;
 import com.itsight.domain.VideoAudioFavorito;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseService;
 
 import java.util.Date;
@@ -14,7 +15,7 @@ public interface UsuarioService extends BaseService<Usuario> {
 
     String findPasswordById(int id);
 
-    void actualizarFechaUltimoAcceso(Date date, String userName);
+    void actualizarFechaUltimoAcceso(Date date, String id);
 
     String cargarRutinarioCe(int usuarioId);
 
@@ -28,5 +29,5 @@ public interface UsuarioService extends BaseService<Usuario> {
 
     Usuario findByUsername(String username);
 
-
+    List<UsuarioPOJO> chelmo();
 }

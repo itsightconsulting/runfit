@@ -47,6 +47,6 @@ public class PorcentajesKilometraje implements Serializable {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId", updatable = false)
-    private Usuario trainer;
+    private Trainer trainer;
 
 }

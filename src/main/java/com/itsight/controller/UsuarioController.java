@@ -3,6 +3,7 @@ package com.itsight.controller;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Usuario;
 import com.itsight.domain.dto.PasswordDto;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.RolService;
 import com.itsight.service.TipoDocumentoService;
@@ -65,12 +66,12 @@ public class UsuarioController {
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<Usuario> listarConFiltro(
+    List<UsuarioPOJO> listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
             @PathVariable("perfil") String perfil) {
-
-        return usuarioService.listarPorFiltro(comodin, estado, perfil);
+        return usuarioService.chelmo();
+        //return usuarioService.listarPorFiltro(comodin, estado, perfil);
     }
 
     @GetMapping(value = "/obtener")

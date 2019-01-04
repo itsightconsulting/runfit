@@ -1,7 +1,6 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.MiniPlantilla;
-import com.itsight.domain.jsonb.DiaRutinarioPk;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.MiniPlantillaRepository;
 import com.itsight.service.MiniPlantillaService;
@@ -102,13 +101,13 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     }
 
     @Override
-    public MiniPlantilla findByUsuarioIdAndEspecificacionSubCategoriaId(int id, int espSubCatId) {
-        return repository.findByUsuarioIdAndEspecificacionSubCategoriaId(id, espSubCatId);
+    public MiniPlantilla findByTrainerIdAndEspecificacionSubCategoriaId(int id, int espSubCatId) {
+        return repository.findByTrainerIdAndEspecificacionSubCategoriaId(id, espSubCatId);
     }
 
     @Override
-    public List<MiniPlantilla> findAllByUsuarioId(int usuarioId) {
-        return repository.findAllByUsuarioId(usuarioId);
+    public List<MiniPlantilla> findAllByTrainerId(int trainerId) {
+        return repository.findAllByTrainerId(trainerId);
     }
 
     @Override
@@ -117,18 +116,18 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     }
 
     @Override
-    public int findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(int id, int esSubCatId) {
-        return repository.findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(id, esSubCatId);
+    public int findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(int id, int esSubCatId) {
+        return repository.findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(id, esSubCatId);
     }
 
     @Override
-    public List<MiniPlantilla> findAllByListUsuarioId(List<Integer> list) {
-        return repository.findAllByListUsuarioId(list);
+    public List<MiniPlantilla> findAllByListTrainerId(List<Integer> list) {
+        return repository.findAllByListTrainerId(list);
     }
 
     @Override
-    public List<MiniPlantilla> findAllByListUsuarioIdBySubCategoriaId(List<Integer> list,int idsubcategoria) {
-        return repository.findAllByListUsuarioIdBySubCategoriaId(list,idsubcategoria);
+    public List<MiniPlantilla> findAllByListTrainerIdBySubCategoriaId(List<Integer> list,int idsubcategoria) {
+        return repository.findAllByListTrainerIdBySubCategoriaId(list,idsubcategoria);
     }
 
 

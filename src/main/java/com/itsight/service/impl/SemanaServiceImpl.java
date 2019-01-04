@@ -176,14 +176,13 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
             try {
                 MetricaVelPOJO[] pojos = objectMapper.readValue(mVz, MetricaVelPOJO[].class);
                 if(pojos.length == 8){
-                    String patternTime = "(?:[0]{2}):(?:[01]\\d):(?:[012345]\\d)";
                     int indi = 0;
                     for(int i=0; i<2;i++){
                         MetricaVelPOJO metValid = pojos[new Random().nextInt(8)];
                         if(metValid.getInd().length > 0){
                             for (int k=0; k<2;k++){
                                 String indValid = metValid.getInd()[new Random().nextInt(metValid.getInd().length)];
-                                if(indValid != null && indValid.matches(patternTime)){
+                                if(indValid != null && indValid.matches(Validador.velMetricaPattern)){
                                     indi++;
                                 }
                             }

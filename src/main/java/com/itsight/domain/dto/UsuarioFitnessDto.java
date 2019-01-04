@@ -43,5 +43,6 @@ public class UsuarioFitnessDto implements Serializable {
     private String viaConexion;
     private UsuarioDto usuario;
     private String entrenadorId;
+    private String trainerId;
 
 }

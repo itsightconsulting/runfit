@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -32,6 +33,35 @@ import java.util.List;
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
 @EqualsAndHashCode(callSuper = false)
+@SqlResultSetMapping(
+        name="usuarioPojo",
+        classes={
+                @ConstructorResult(
+                        targetClass=UsuarioPOJO.class,
+                        columns={
+                                @ColumnResult(name="id"),
+                                @ColumnResult(name="fechaCreacion"),
+                                @ColumnResult(name="nombreCompleto"),
+                                @ColumnResult(name="flagActivo"),
+                                @ColumnResult(name="correo"),
+                                @ColumnResult(name="username"),
+                                @ColumnResult(name="fechaUltimoAcceso"),
+                                @ColumnResult(name="tipoUsuario")
+                        }
+                )
+        }
+)
+@NamedNativeQuery(name = "Usuario.getAllFromNativeQuery", query = "" +
+        "select gen.id, gen.fechaCreacion, gen.nombreCompleto, gen.flagActivo, gen.correo, gen.username, gen.fechaUltimoAcceso, p.nombre tipoUsuario from (select t.security_user_id id, t.fecha_creacion fechaCreacion," +
+        "concat(t.apellido_paterno,' ',t.apellido_materno,' ', t.nombres) nombreCompleto," +
+        "t.flag_activo flagActivo, t.correo, t.username, t.tipo_usuario_id, t.fecha_ultimo_acceso fechaUltimoAcceso " +
+        "from trainer t " +
+        "union all " +
+        "select u.security_user_id id, u.fecha_creacion fechaCreacion, " +
+        "concat(u.apellido_paterno,' ',u.apellido_materno,' ', u.nombres) nombreCompleto," +
+        "u.flag_activo flagActivo, u.correo, u.username, u.tipo_usuario_id, u.fecha_ultimo_acceso fechaUltimoAcceso " +
+        "from usuario u " +
+        "order by 1) gen inner join tipo_usuario p on gen.tipo_usuario_id=p.tipo_usuario_id where flagActivo=true", resultSetMapping = "usuarioPojo")
 public class Usuario extends AuditingEntity implements Serializable {
 
     @Id
@@ -82,10 +112,6 @@ public class Usuario extends AuditingEntity implements Serializable {
     private SecurityUser securityUser;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<RedFitness> lstRedFitness;
-
-    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "integrante")
     private List<RedFitness> lstRedIntegrante;
 
@@ -96,10 +122,6 @@ public class Usuario extends AuditingEntity implements Serializable {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<UsuarioPlan> lstUsuarioPlan;
-
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<PorcentajesKilometraje> lstPorcentajesKilo;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")

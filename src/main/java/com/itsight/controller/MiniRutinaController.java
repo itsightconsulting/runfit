@@ -14,6 +14,7 @@ import com.itsight.service.MiniRutinaService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import com.itsight.util.Validador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -64,42 +65,48 @@ public class MiniRutinaController {
                     @RequestParam String categoriaId,
                     @RequestParam String nombre,
                     @RequestParam String nivel,
+                    @RequestParam String metrica,
                     HttpSession session) {
-        //Obteniendo el diaId
-        int usuarioId = Integer.parseInt(session.getAttribute("id").toString());
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-        int diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
-        MiMiniRutina miMiniRutina = new MiMiniRutina();
-        Dia qDia = diaService.findOne(diaPlantillaId);
-        miMiniRutina.setElementos(qDia.getElementos());
-        miMiniRutina.setMinutos(qDia.getMinutos());
-        miMiniRutina.setDistancia(qDia.getDistancia());
-        miMiniRutina.setFechaCreacion();
-        miMiniRutina.setNivel(Integer.parseInt(nivel));
-        miMiniRutinaService.save(miMiniRutina);
+        if(metrica.matches(Validador.velMetricaPattern)){
+            //Obteniendo el diaId
+            int usuarioId = Integer.parseInt(session.getAttribute("id").toString());
+            int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
+            int diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
+            MiMiniRutina miMiniRutina = new MiMiniRutina();
+            Dia qDia = diaService.findOne(diaPlantillaId);
+            miMiniRutina.setElementos(qDia.getElementos());
+            miMiniRutina.setMinutos(qDia.getMinutos());
+            miMiniRutina.setDistancia(qDia.getDistancia());
+            miMiniRutina.setFechaCreacion();
+            miMiniRutina.setNivel(Integer.parseInt(nivel));
+            miMiniRutina.setMetrica(metrica);
+            miMiniRutinaService.save(miMiniRutina);
 
-        MiniRutina miniRutina = miniRutinaService.findByUsuarioIdAndCategoriaId(usuarioId, Integer.parseInt(categoriaId));
-        List<MiRutinaPk> miMiniRutinaPks;
-        //Verificamos que aún no se haya insertado alguna mini plantilla a lstMiniRutina
-        if(miniRutina != null && miniRutina.getMiRutinaIds() != null && miniRutina.getMiRutinaIds().size()> 0){
-            miMiniRutinaPks = miniRutina.getMiRutinaIds();
-        }else{
-            miniRutina = new MiniRutina();
-            miniRutina.setCategoria(Integer.parseInt(categoriaId));
-            miniRutina.setUsuario(usuarioId);
-            miMiniRutinaPks = new ArrayList<>();
+            MiniRutina miniRutina = miniRutinaService.findByUsuarioIdAndCategoriaId(usuarioId, Integer.parseInt(categoriaId));
+            List<MiRutinaPk> miMiniRutinaPks;
+            //Verificamos que aún no se haya insertado alguna mini plantilla a lstMiniRutina
+            if(miniRutina != null && miniRutina.getMiRutinaIds() != null && miniRutina.getMiRutinaIds().size()> 0){
+                miMiniRutinaPks = miniRutina.getMiRutinaIds();
+            }else{
+                miniRutina = new MiniRutina();
+                miniRutina.setCategoria(Integer.parseInt(categoriaId));
+                miniRutina.setUsuario(usuarioId);
+                miMiniRutinaPks = new ArrayList<>();
+            }
+            //Registrando primero el dia rutinario
+
+            miMiniRutina.setFechaCreacion();
+            /*miMiniRutinaService.save(miMiniRutina);*/
+            //Agregando el id de la nueva listaPlantilla generada en la lista de ids
+            String hashId = Parseador.getEncodeHash32Id("wk-mis-rutinas",miMiniRutina.getId());
+            miMiniRutinaPks.add(new MiRutinaPk(miMiniRutina.getId(), nombre, hashId, Integer.parseInt(nivel)));
+            //Agregando la lista jsonb con la nueva lista agregada
+            miniRutina.setMiRutinaIds(miMiniRutinaPks);
+            miniRutinaService.save(miniRutina);
+            return REGISTRO.get();
         }
-        //Registrando primero el dia rutinario
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
 
-        miMiniRutina.setFechaCreacion();
-        /*miMiniRutinaService.save(miMiniRutina);*/
-        //Agregando el id de la nueva listaPlantilla generada en la lista de ids
-        String hashId = Parseador.getEncodeHash32Id("wk-mis-rutinas",miMiniRutina.getId());
-        miMiniRutinaPks.add(new MiRutinaPk(miMiniRutina.getId(), nombre, hashId, Integer.parseInt(nivel)));
-        //Agregando la lista jsonb con la nueva lista agregada
-        miniRutina.setMiRutinaIds(miMiniRutinaPks);
-        miniRutinaService.save(miniRutina);
-        return REGISTRO.get();
     }
 
     @GetMapping("/obtenerCategoriasId/ByUsuario")

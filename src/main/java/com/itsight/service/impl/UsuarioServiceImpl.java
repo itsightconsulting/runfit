@@ -1,12 +1,10 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.PorcentajesKilometraje;
-import com.itsight.domain.SecurityRole;
-import com.itsight.domain.SecurityUser;
-import com.itsight.domain.Usuario;
+import com.itsight.domain.*;
 import com.itsight.domain.jsonb.PorcKiloTipo;
 import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
 import com.itsight.repository.SecurityRoleRepository;
@@ -229,7 +227,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
             if(flagTrainer == 1){
                 cargarRutinarioCe(usuario.getId());
                 //Generando los porcentajes kilometricos para macro-ciclo
-                agregandoPorcentajesK(usuario);
+                //agregandoPorcentajesK(usuario);
             }
 
             //Enviando correo al nuevo usuario
@@ -344,9 +342,9 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public void actualizarFechaUltimoAcceso(Date date, String username) {
+    public void actualizarFechaUltimoAcceso(Date date, String id) {
         // TODO Auto-generated method stub
-        repository.updateFechaUltimoAcceso(date, username);
+        repository.updateFechaUltimoAcceso(date, Integer.parseInt(id));
     }
 
     @Override
@@ -381,7 +379,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
         return repository.findByUsername(username);
     }
 
-    public void agregandoPorcentajesK(Usuario trainer){
+    public void agregandoPorcentajesK(Trainer trainer){
         PorcentajesKilometraje porcentajes;
         Integer[] maratonDistancias = {10, 21, 42};
 
@@ -412,4 +410,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
         }
     }
 
+    @Override
+    public List<UsuarioPOJO> chelmo() {
+        return repository.getAllFromNativeQuery();
+    }
 }

@@ -60,14 +60,14 @@ public class RedFitness implements Serializable {
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Temporal(TemporalType.DATE)
     private Date ultimoDiaTemporada;
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TrainerId", referencedColumnName = "codigoTrainer")
-    private Usuario trainer;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IntegranteId", referencedColumnName = "SecurityUserId")
     private Usuario integrante;
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
+    private Trainer trainer;
     @Temporal(TemporalType.TIMESTAMP)
     @JsonSerialize(using=JsonDateSimpleSerializer.class)
     @JsonDeserialize(using=JsonDateSimpleDeserializer.class)
@@ -84,10 +84,10 @@ public class RedFitness implements Serializable {
         this.id = id;
     }
 
-    public RedFitness(String codigoTrainer, int integrante){
-        Usuario obj = new Usuario(integrante, codigoTrainer);
-        this.trainer = obj;
-        this.integrante = obj;
+    public RedFitness(int trainerId, int integranteId){
+        Usuario integrante = new Usuario(integranteId);
+        this.trainer = new Trainer(trainerId);
+        this.integrante = integrante;
         this.fechaCreacion = new Date();
         this.estadoPlan = EstadoPlan.SIN_PLAN.get();
     }

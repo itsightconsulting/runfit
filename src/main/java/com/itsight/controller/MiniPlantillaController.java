@@ -59,7 +59,7 @@ public class MiniPlantillaController {
         int adicionales = Integer.parseInt(evaluacion[1]);
 
         //La diferencia la hace el usuarioId que esta en session
-        MiniPlantilla miniPlantilla = miniPlantillaService.findByUsuarioIdAndEspecificacionSubCategoriaId(Integer.parseInt(session.getAttribute("id").toString()), subCategoriaId);
+        MiniPlantilla miniPlantilla = miniPlantillaService.findByTrainerIdAndEspecificacionSubCategoriaId(Integer.parseInt(session.getAttribute("id").toString()), subCategoriaId);
 
         List<Integer> diaIds = new ArrayList<>();
         for (int i=0; i<adicionales+1;i++){
@@ -75,7 +75,7 @@ public class MiniPlantillaController {
     public @ResponseBody String obtenerReferenciasDeMiniPlantilla(@RequestParam String espSubCatId, HttpSession session) {
         int esSubCatId = Integer.parseInt(espSubCatId);
         int trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        int totalMiniPlantillas = miniPlantillaService.findPlantillaIdsByUsuarioIdAndEspecificacionSubCategoriaId(trainerId, esSubCatId);
+        int totalMiniPlantillas = miniPlantillaService.findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(trainerId, esSubCatId);
         return String.valueOf(totalMiniPlantillas);
 
     }
@@ -93,7 +93,7 @@ public class MiniPlantillaController {
         diaRutinario.setDistancia(qDia.getDistancia());
         diaRutinario.setCalorias(qDia.getCalorias());
 
-        MiniPlantilla miniPlantilla = miniPlantillaService.findByUsuarioIdAndEspecificacionSubCategoriaId(Integer.parseInt(session.getAttribute("id").toString()), Integer.parseInt(especificacionSubCategoriaId));
+        MiniPlantilla miniPlantilla = miniPlantillaService.findByTrainerIdAndEspecificacionSubCategoriaId(Integer.parseInt(session.getAttribute("id").toString()), Integer.parseInt(especificacionSubCategoriaId));
         List<DiaRutinarioPk> diaRutinarioPks;
         //Verificamos que aún no se haya insertado alguna mini plantilla a lstMiniPlantilla
         if(miniPlantilla.getDiaRutinarioIds() != null && miniPlantilla.getDiaRutinarioIds().size()> 0){

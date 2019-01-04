@@ -1,17 +1,16 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
-import com.itsight.domain.Musculo;
-import com.itsight.domain.Objetivo;
-import com.itsight.domain.Rol;
-import com.itsight.domain.jsonb.*;
+import com.itsight.domain.jsonb.CompetenciaRunner;
+import com.itsight.domain.jsonb.CondicionAnatomica;
+import com.itsight.domain.jsonb.PorcKiloTipo;
+import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TipoDescuentoRepository;
 import com.itsight.service.*;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -28,6 +27,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private SecurityUserRepository userRepository;
+
+    @Autowired
+    private TrainerService trainerService;
 
     @Autowired
     private ParametroService parametroService;
@@ -637,13 +639,14 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             userRepository.save(secUser);
 
             //Agregando el primer entrenador
+            /* T R A I N E R */
             SecurityUser secUserTrainer = new SecurityUser();
-            secUserTrainer.setUsername("info@runfit.pe");
+            secUserTrainer.setUsername("trainer@runfit.pe");
             secUserTrainer.setPassword(new BCryptPasswordEncoder().encode("runfit"));
             secUserTrainer.setEnabled(true);
 
             //Lista Roles
-            Set<SecurityRole> lstRoles = new HashSet<>();
+            Set<SecurityRole>  lstRoles = new HashSet<>();
             //Roles
             SecurityRole rol = new SecurityRole();
             rol.setRole("ROLE_ADMIN");
@@ -654,16 +657,16 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             //Añadiendo roles al secUser
             secUserTrainer.setRoles(lstRoles);
             //Añadiendole los datos detalle del entrenador(TB: Usuario)
-            Usuario usuario = new Usuario();
-            usuario.setNombres("Petter");
-            usuario.setApellidoPaterno("Carranza");
-            usuario.setApellidoMaterno("Camino");
-            usuario.setMovil("51 987654321");
-            usuario.setTelefonoFijo("5532133");
-            usuario.setFlagRutinarioCe(true);
-            usuario.setCorreo("info@runfit.pe");
-            usuario.setNumeroDocumento("44444444");
-            usuario.setUsername("info@runfit.pe");
+            Trainer trainer = new Trainer();
+            trainer.setNombres("Pedro");
+            trainer.setApellidoPaterno("Carpio");
+            trainer.setApellidoMaterno("Molina");
+            trainer.setMovil("51 976721983");
+            trainer.setTelefonoFijo("5432133");
+            trainer.setFlagRutinarioCe(true);
+            trainer.setCorreo("trainer@runfit.pe");
+            trainer.setNumeroDocumento("55555555");
+            trainer.setUsername("trainer@runfit.pe");
             List<com.itsight.domain.jsonb.Rol> lstR = new ArrayList<>();
             com.itsight.domain.jsonb.Rol rr = new com.itsight.domain.jsonb.Rol();
             rr.setNombre("ROLE_ADMIN");
@@ -673,14 +676,15 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             r.setId(2);
             lstR.add(r);
             lstR.add(rr);
-            usuario.setRoles(lstR);
-            usuario.setTipoDocumento(1);
-            usuario.setTipoUsuario(2);
-            usuario.setFlagActivo(true);
-            usuario.setCodigoTrainer("info@runfit.pe");
-            usuario.setSecurityUser(secUserTrainer);
-            //secUserTrainer.addUsuario(usuario);
-            usuarioService.save(usuario);
+            trainer.setRoles(lstR);
+            trainer.setTipoDocumento(1);
+            trainer.setTipoUsuario(2);
+            trainer.setFlagActivo(true);
+            trainer.setCodigoTrainer("TRAINER008");
+            trainer.setSecurityUser(secUserTrainer);
+            trainerService.save(trainer);
+
+            /* T R A I N E R */
             //userRepository.save(secUserTrainer);
             usuarioService.cargarRutinarioCe(secUserTrainer.getId());
 
@@ -723,8 +727,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             usuario1.setSecurityUser(secUserCliente);
             usuarioService.save(usuario1);
             //userRepository.save(secUserCliente);
+
+
             //Guardando al cliente en la red del entrenador creado anteriormente
-            redFitnessService.save( new RedFitness(usuario.getUsername(), usuario1.getId()));
+            redFitnessService.save( new RedFitness(trainer.getId(), usuario1.getId()));
 
             //Agregando sus porcentajes base para la creación de macro-ciclos
             if(porcentajesKilometrajeService.findOne(1) == null){
@@ -734,7 +740,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 for(int i=0; i<3; i++){
                     porcentajes = new PorcentajesKilometraje();
                     porcentajes.setDistancia(maratonDistancias[i]);
-                    porcentajes.setTrainer(new Usuario(2));
+                    porcentajes.setTrainer(new Trainer(2));
                     List<PorcKiloTipo> lstPorcKiloTipo = new ArrayList<>();
                     for(int k=1; k<4; k++){
                         PorcKiloTipo porcKiloTipo = new PorcKiloTipo();

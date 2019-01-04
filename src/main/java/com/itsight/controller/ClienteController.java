@@ -132,7 +132,7 @@ public class ClienteController {
     public @ResponseBody List<EspecificacionSubCategoria> entrenadorSubCategorias(HttpSession session) {
         int id = (int)session.getAttribute("id");
         List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(id);
-        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioId(listEntrenadores);
+        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListTrainerId(listEntrenadores);
         List<EspecificacionSubCategoria> lstresult = new ArrayList<>();
         if(listEntrenadores.size() >0 && listMiniPlantilla.size()>0) {
             List<Integer> diaIds = new ArrayList<>();
@@ -149,7 +149,7 @@ public class ClienteController {
     public @ResponseBody List<DiaRutinario> miniPlantillaEntrenador(@RequestParam int id,HttpSession session) {
         int idUser = (int)session.getAttribute("id");
         List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(idUser);
-        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListUsuarioIdBySubCategoriaId(listEntrenadores,id);
+        List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListTrainerIdBySubCategoriaId(listEntrenadores,id);
 
         List<Integer> diaIds = new ArrayList<>();
         for (int i=0; i< listMiniPlantilla.size() ;i++){

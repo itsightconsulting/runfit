@@ -39,6 +39,9 @@ public class MiMiniRutina implements Serializable {
     @Column(nullable = false)
     private int nivel;
 
+    @Column(nullable = false)
+    private String metrica;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private List<Elemento> elementos;

@@ -143,7 +143,7 @@ public class UsuarioFitnessServiceImpl extends BaseServiceImpl<UsuarioFitnessRep
         usuarioFitness1.setUsuario(usuario);
         repository.save(usuarioFitness1);
         //Añadiendo al usuario a la rUsuarioed del entrenador que eligio
-        redFitnessService.save(new RedFitness(usuarioFitness.getEntrenadorId(), usuario.getId()));
+        redFitnessService.save(new RedFitness(Integer.parseInt(usuarioFitness.getTrainerId()), usuario.getId()));
         return Enums.ResponseCode.REGISTRO.get() +","+ "1";
     }
 

@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 public class Validador {
 
+    public static final String velMetricaPattern = "(?:[0]{2}):(?:[01]\\d):(?:[012345]\\d)";//00:19:59
+
     public static boolean esListaVacia(List<?> lista) {
         if (lista == null || lista.size() == 0)
             return true;

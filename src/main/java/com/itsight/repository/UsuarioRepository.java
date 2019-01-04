@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Usuario;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
@@ -32,8 +33,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
     void updateFlagActivoById(int id, boolean flagActivo);
 
     @Modifying
-    @Query(value = "UPDATE Usuario U SET U.fechaUltimoAcceso =?1 WHERE U.username = ?2")
-    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, String username);
+    @Query(value = "UPDATE Usuario U SET U.fechaUltimoAcceso =?1 WHERE U.id = ?2")
+    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, int id);
 
     @Modifying
     @Query(value = "UPDATE Usuario U SET U.flagRutinarioCe =?2 WHERE U.id = ?1")
@@ -51,4 +52,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
     @Query(value = "SELECT U FROM Usuario U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE U.username = ?1")
     Usuario findByUsername(String username);
 
+    @Query(nativeQuery = true)
+    List<UsuarioPOJO> getAllFromNativeQuery();
 }

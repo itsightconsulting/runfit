@@ -29,7 +29,6 @@ public class SecurityServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
         try {
-
             SecurityUser user = securityUserRepository.findByUsername(username);
             if (user != null) {
                 return buildUser(user, buildAuthorities(user.getRoles()));
@@ -44,7 +43,7 @@ public class SecurityServiceImpl implements UserDetailsService {
 
     private User buildUser(SecurityUser securityUser, Set<GrantedAuthority> lstRole) {
         return
-                new User(securityUser.getUsername(),
+                new User(securityUser.getUsername() + "|"+securityUser.getId(),
                         securityUser.getPassword(),
                         securityUser.isEnabled(),
                         true,
@@ -55,7 +54,7 @@ public class SecurityServiceImpl implements UserDetailsService {
     private Set<GrantedAuthority> buildAuthorities(Set<SecurityRole> roles) {
         Set<GrantedAuthority> lstRole = new HashSet<>();
         for (SecurityRole role : roles) {
-            System.out.println("> USER ROLE: " + role.getRole());
+            //System.out.println("> USER ROLE: " + role.getRole());
             LOGGER.debug("> USER ROLE: " + role.getRole());
             lstRole.add(new SimpleGrantedAuthority(role.getRole()));
             for (SecurityPrivilege privilege : role.getPrivileges()) {

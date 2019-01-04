@@ -52,8 +52,8 @@ public class MiniPlantilla implements Identifiable {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", referencedColumnName = "SecurityUserId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId", updatable = false)
+    private Trainer trainer;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

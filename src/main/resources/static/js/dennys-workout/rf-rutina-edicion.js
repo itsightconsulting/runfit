@@ -485,31 +485,17 @@ function guardarEnMisRutinas(e){
                     btnSave.classList.add('disabled');
                     params.nombre = value.trim();
                     params.nivel = nivel;
+                    params.metrica = DiaFunc.obtenerTiempoCarreraReferencia(params.diaIndice);
                     $.ajax({
                         type: 'POST',
                         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
                         url: _ctx + 'gestion/mini-rutina/agregar/dia-rutinario',
                         dataType: "json",
                         data: params,
-                        success: function (data, textStatus) {
-                            if (textStatus == "success") {
-                                if (data == ResponseCode.EX_GENERIC) {
-                                    $.smallBox({
-                                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                                        timeout: 4500,
-                                        color: "alert",
-                                    });
-                                }
-                                if (data == ResponseCode.EX_NUMBER_FORMAT) {
-                                    $.smallBox({
-                                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                                        timeout: 4500,
-                                        color: "alert",
-                                    });
-                                } else {
-                                    $.smallBox({content: "<i>El día se ha guardado en mis rutinas satisfactoriamente...</i>"});
-                                }
-                            }
+                        success: function (data) {
+                            notificacionesRutinaSegunResponseCode(data);
+                            if(data == "-1")
+                                $.smallBox({content: "<i>El día se ha guardado en mis rutinas satisfactoriamente...</i>"});
                         },
                         error: function (xhr) {
                             exception(xhr);
