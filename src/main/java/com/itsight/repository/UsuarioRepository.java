@@ -36,22 +36,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
     @Query(value = "UPDATE Usuario U SET U.fechaUltimoAcceso =?1 WHERE U.id = ?2")
     void updateFechaUltimoAcceso(Date fechaUltimoAcceso, int id);
 
-    @Modifying
-    @Query(value = "UPDATE Usuario U SET U.flagRutinarioCe =?2 WHERE U.id = ?1")
-    void updateFlagRutinarioCeById(int id, boolean flagRutinarioCe);
-
     @Query(value = "SELECT U.correo FROM Usuario U WHERE U.correo = ?1")
     List<Usuario> findAllByCorreo(String correo);
-
-    @Query(value = "SELECT U.codigoTrainer FROM Usuario U WHERE U.id = ?1")
-    String findCodigoTrainerById(int id);
-
-    @Query(value = "SELECT NEW Usuario(codigoTrainer, nombres, apellidoPaterno, apellidoMaterno) FROM Usuario U WHERE U.tipoUsuario.id = 2")
-    List<Usuario> findAllTrainers();
 
     @Query(value = "SELECT U FROM Usuario U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE U.username = ?1")
     Usuario findByUsername(String username);
 
-    @Query(nativeQuery = true)
-    List<UsuarioPOJO> getAllFromNativeQuery();
 }

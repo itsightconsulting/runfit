@@ -2,6 +2,7 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +14,27 @@ import java.util.Set;
                         })
 })
 @Entity
+@SqlResultSetMappings({
+    @SqlResultSetMapping(
+        name="allUsers",
+        classes = {
+                @ConstructorResult(
+                        targetClass = UsuarioPOJO.class,
+                        columns = {
+                                @ColumnResult(name = "id"),
+                                @ColumnResult(name = "fechaCreacion"),
+                                @ColumnResult(name = "nombreCompleto"),
+                                @ColumnResult(name = "flagActivo"),
+                                @ColumnResult(name = "correo"),
+                                @ColumnResult(name = "username"),
+                                @ColumnResult(name = "fechaUltimoAcceso"),
+                                @ColumnResult(name = "tipoUsuarioId"),
+                                @ColumnResult(name = "tipoUsuario")
+                        }
+                )
+        }
+    ),
+})
 public class SecurityUser{
 
     @Id
@@ -43,6 +65,10 @@ public class SecurityUser{
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private Usuario usuario;
+
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
+    private Trainer trainer;
 
     public SecurityUser() {
     }
@@ -97,6 +123,14 @@ public class SecurityUser{
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     public Set<SecurityRole> getRoles() {

@@ -9,6 +9,8 @@
     <!-- CSS FILES -->
     <link th:replace="html-commons/css :: fg-css"/>
     <!-- END CSS FILES -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
+
 </head>
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">
 
@@ -20,7 +22,6 @@
 <!-- Note: This width of the aside area can be adjusted through LESS variables -->
 <div th:replace="html-commons/left-panel :: fg-left-panel"></div>
 <!-- END NAVIGATION -->
-
 <!-- MAIN PANEL -->
 <div id="main" role="main">
     <!-- MAIN CONTENT -->
@@ -95,7 +96,7 @@
                                 <th data-field="username" data-halign="left" data-valign="middle" data-align="left"
                                     data-width="120">Usuario
                                 </th>
-                                <th data-field="tipoUsuario" data-halign="left" data-valign="middle"
+                                <th data-formatter="formatterTipoUsuario" data-halign="left" data-valign="middle"
                                     data-align="left" data-width="120">Perfil
                                 </th>
                                 <th data-field="fechaCreacion" data-halign="left" data-valign="middle"
@@ -376,9 +377,9 @@
         $("#btnNuevo").click(function () {
             $('#Operacion').text('Registrar');
             $('#Username').removeAttr('readonly');
-            $('#Username').removeAttr('style');
             $('#Correo').removeAttr('readonly');
-            $('#Correo').removeAttr('style');
+            $('#PerfilId').removeAttr('disabled');
+            $('#PerfilId').removeAttr('style');
             $('#PassUser').css('display', '');
             irRegistro();
         });
@@ -415,7 +416,7 @@
 
             $table.bootstrapTable('destroy');
 
-            var comodin = $("#txtFiltro").val();
+            var comodin = $("#txtFiltro").val().trim();
             var estado = $("#Estado").val();
             var perfil = $("#Perfil").val();
 
@@ -423,15 +424,19 @@
             if (comodin == null || comodin == "") {
                 comodin = "0";
             }
+
             if (estado == null) {
                 estado = "-1";
             }
+
             if (perfil == null || perfil == "") {
                 perfil = "0";
             }
+            let entidad = perfil == "0" ? "sec-user" : perfil == "2" ? "trainer" : perfil == "3" ? "usuario" : "administrador";
+            perfil = entidad == "sec-user" ? "" : perfil;
 
             $table.bootstrapTable({
-                url: _ctx + 'gestion/usuario/obtenerListado/' + comodin + '/' + estado + '/' + perfil,
+                url: _ctx + 'gestion/'+entidad+'/obtenerListado/' + comodin + '/' + estado + '/' + perfil,
                 pagination: true,
                 sidePagination: 'client',
                 pageSize: 10,
@@ -457,13 +462,15 @@
             //validarCorreo al ser un metodo de un eventListener, por defecto envia el elemento como parametro en la primera posicion y
             // para hacer el metodo reutilizable es necesario enviarle en el primer argumento un valor cualsea(para el caso null)
             const promise = new Promise((resolve, reject) => validarCorreo(null, resolve, reject));
+            params.perfilId = $('#PerfilId').val();
+            const tipoUsuarioUrl = params.perfilId == 2 ? 'trainer' : params.perfilId == 3 ? 'usuario' : 'administrador';
 
             //Luego esperamos que la promesa se cumpla con resolve para finalmente registrar
             promise.then(()=>{
                 $.ajax({
                     type: 'POST',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/agregar',
+                    url: _ctx + 'gestion/'+tipoUsuarioUrl+'/agregar',
                     dataType: "json",
                     data: params,
                     success: function (data, textStatus) {
@@ -498,52 +505,24 @@
         }
     }
 
-    function registroRutinarioCe(id){
-        let params = {};
-        params.id = id;
-
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/usuario/agregar/rutinario-ce',
-            dataType: "json",
-            data: params,
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    if (data == "-9") {
-                        $.smallBox({color: "alert", content: "<i> La operación ha fallado, comuníquese con el administrador...</i>"});
-                    } else {
-                        $.smallBox({});
-                    }
-                }
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-                irListado($index);
-                listarRegistros();
-            }
-        });
-    }
-
-    function editar(id) {
+    function editar(id, tp) {
         irRegistro();
         $('#Operacion').text('Actualizar');
         $('#Username').attr('readonly', 'readonly');
-        $('#Username').css('background-color', '#eee');
+        $('#PerfilId').attr('disabled', 'disabled');
+        $('#PerfilId').css('background-color', '#eee');
         $('#Correo').attr('readonly', 'readonly');
-        $('#Correo').css('background-color', '#eee');
 
-        var param = new Object();
-        param.id = id;
+        var params = new Object();
+        params.id = id;
+        params.tipoUsuario = tp;
 
         $.ajax({
             type: 'GET',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/usuario/obtener',
+            url: _ctx + 'gestion/sec-user/obtener',
             dataType: "json",
-            data: param,
+            data: params,
             success: function (data, textStatus) {
                 if (textStatus == "success") {
                     $("#Id").val(data.id);
@@ -558,7 +537,6 @@
                     $("#NumeroDocumento").val(data.numeroDocumento);
                     $("#TelefonoFijo").val(data.telefonoFijo);
                     $("#Nombres").val(data.nombres);
-                    console.log(data.roles);
                     data.roles.forEach(v=>{
                         Array.from($('.checkbox input[type="checkbox"]'))[v.id-1].click();//se le resta menos uno para igualarlo ya que el array comienza desde 0
                     })
@@ -578,7 +556,7 @@
         });
     }
 
-    function desactivar(id, ix, username) {
+    function desactivar(id, ix, username, tipoUsu) {
         var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
         $.SmartMessageBox({
             title: "<i class='fa fa-bullhorn'></i> Workout Notification",
@@ -590,11 +568,12 @@
                 params.id = id;
                 params.flagActivo = actualStatus == "Activo" ? false : true;
                 params.username = username;
+                params.tipoUsuario = tipoUsu;
 
                 $.ajax({
                     type: 'PUT',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/desactivar',
+                    url: _ctx + 'gestion/sec-user/desactivar',
                     dataType: "json",
                     data: params,
                     success: function (data, textStatus) {
@@ -632,7 +611,7 @@
                 $.ajax({
                     type: 'GET',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/validacion-correo',
+                    url: _ctx + 'gestion/sec-user/validacion-correo',
                     dataType: "json",
                     data: params,
                     success: function (data) {
@@ -667,8 +646,8 @@
         }
     }
 
-    function cambiarContrasena(id, username) {
-        $('#DatosCambioPass').val(id + '|' + username);
+    function cambiarContrasena(id, username, tipoUsuario) {
+        $('#DatosCambioPass').val(id + '|' + username + '|' + tipoUsuario);
     }
 
     function confirmarCambio() {
@@ -678,13 +657,14 @@
             $('#btnCambioContrasena').attr('disabled', 'disabled');
             $('#btnCambioContrasena').text('Cargando...');
             var params = getFormData($('#frm_cambio'));
-            params.userId = $('#DatosCambioPass').val().split('|')[0]
+            params.userId = $('#DatosCambioPass').val().split('|')[0];
             params.username = $('#DatosCambioPass').val().split('|')[1];
+            params.tipoUsuario = $('#DatosCambioPass').val().split('|')[2];
 
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                url: _ctx + 'gestion/usuario/cambio-contrasena',
+                url: _ctx + 'gestion/sec-user/cambio-contrasena',
                 dataType: "json",
                 data: params,
                 success: function (data, textStatus) {
@@ -723,18 +703,24 @@
     }
 
     function linkFormatter(value, row) {
-        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombreCompleto + '</a>', value);
+        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuarioId;
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +","+tipoUsuario+')" title="Editar">' + row.nombreCompleto + '</a>', value);
     }
 
     function Opciones(value, row, index) {
+        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuarioId;
         var desactivar = '';
 
         if (row.id > 0) {
-            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
-									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id},"${row.username}");' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
+            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}",${tipoUsuario});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
+									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id},"${row.username}",${tipoUsuario});' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
         }
 
         return desactivar;
+    }
+
+    function formatterTipoUsuario(value, row){
+        return typeof row.tipoUsuario === 'object' ? row.tipoUsuario.nombre : row.tipoUsuario;
     }
 
     function isActived(value, row) {

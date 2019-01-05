@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "multimedia_detalle"),
         @NamedEntityGraph(name = "multimedia_detalle.all", attributeNodes = {
-                @NamedAttributeNode(value = "usuario"),
+                @NamedAttributeNode(value = "trainer"),
         })
 })
 @Data
@@ -48,8 +48,8 @@ public class MultimediaDetalle extends AuditingEntity implements Serializable {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "TrainerId", updatable = false)
+    private Trainer trainer;
 
     public int getId() {
         return id;
@@ -67,12 +67,12 @@ public class MultimediaDetalle extends AuditingEntity implements Serializable {
         this.multimediaentrenador = new MultimediaEntrenador(multimediaentrenador);
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Trainer getTrainer() {
+        return trainer;
     }
 
-    public void setUsuario(int usuario) {
-        this.usuario = new Usuario(usuario);
+    public void setTrainer(int trainer) {
+        this.trainer = new Trainer(trainer);
     }
 
     public MultimediaDetalle(int id) {

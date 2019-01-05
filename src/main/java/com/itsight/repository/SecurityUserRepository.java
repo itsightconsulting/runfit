@@ -1,7 +1,6 @@
 package com.itsight.repository;
 
 import com.itsight.domain.SecurityUser;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,8 +21,8 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
 
     List<SecurityUser> findByRolesRoleLike(String nombre);
 
-    @Query("UPDATE SecurityUser SET enabled = ?1  WHERE username = ?2")
     @Modifying
+    @Query("UPDATE SecurityUser SET enabled = ?1  WHERE username = ?2")
     void saveUserStatusByUsername(boolean status, String username);
 
     @Modifying
@@ -39,4 +38,5 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
 
     @Query("SELECT S.id FROM SecurityUser S WHERE S.username = ?1")
     Integer findUsernameByUsername(String username);
+
 }

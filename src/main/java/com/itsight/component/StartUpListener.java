@@ -686,7 +686,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
             /* T R A I N E R */
             //userRepository.save(secUserTrainer);
-            usuarioService.cargarRutinarioCe(secUserTrainer.getId());
+            trainerService.cargarRutinarioCe(secUserTrainer.getId());
 
             //Agregando cliente a entrenador creado
             Usuario usuario1 = new Usuario();
@@ -709,7 +709,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             usuario1.setApellidoMaterno("Alcantará");
             usuario1.setMovil("51 987654321");
             usuario1.setTelefonoFijo("5532133");
-            usuario1.setFlagRutinarioCe(true);
             usuario1.setCorreo("pernio16.carranza@itsight.pe");
             usuario1.setNumeroDocumento("44444444");
             usuario1.setUsername("pernio16");

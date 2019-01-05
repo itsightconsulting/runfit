@@ -54,7 +54,6 @@ public class SecurityServiceImpl implements UserDetailsService {
     private Set<GrantedAuthority> buildAuthorities(Set<SecurityRole> roles) {
         Set<GrantedAuthority> lstRole = new HashSet<>();
         for (SecurityRole role : roles) {
-            //System.out.println("> USER ROLE: " + role.getRole());
             LOGGER.debug("> USER ROLE: " + role.getRole());
             lstRole.add(new SimpleGrantedAuthority(role.getRole()));
             for (SecurityPrivilege privilege : role.getPrivileges()) {

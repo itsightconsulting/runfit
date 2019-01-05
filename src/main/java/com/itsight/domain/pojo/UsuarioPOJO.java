@@ -30,5 +30,7 @@ public class UsuarioPOJO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaUltimoAcceso;
 
+    private int tipoUsuarioId;
+
     private String tipoUsuario;
 }

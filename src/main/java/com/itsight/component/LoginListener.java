@@ -1,5 +1,6 @@
 package com.itsight.component;
 
+import com.itsight.service.AdministradorService;
 import com.itsight.service.TrainerService;
 import com.itsight.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     @Autowired
     private TrainerService trainerService;
 
+    @Autowired
+    private AdministradorService administradorService;
+
 /*    @Autowired
     private SecurityUserRepository securityUserRepository;*/
 
@@ -43,6 +47,8 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                     session.setAttribute("codTrainer", optionalCodTrainer.get());
                 }
                 trainerService.actualizarFechaUltimoAcceso(new Date(), id);
+            }else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+                administradorService.actualizarFechaUltimoAcceso(new Date(), id);
             }else
                 usuarioService.actualizarFechaUltimoAcceso(new Date(), id);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, login.getAuthentication().getCredentials(), SecurityContextHolder.getContext().getAuthentication().getAuthorities());

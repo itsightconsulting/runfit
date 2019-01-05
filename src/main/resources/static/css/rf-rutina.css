@@ -658,6 +658,10 @@ button.note-color-fuente, button.note-bg-color {
     border-radius: 10px !important;
 }
 
+#frm_registro label select{
+    border-radius: 10px !important;
+}
+
 #frm_registro label.input i{
     border-radius: 10px !important;
 }

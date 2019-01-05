@@ -10,4 +10,8 @@ public interface TrainerService extends BaseService<Trainer> {
     String findCodigoTrainerById(int id);
 
     void actualizarFechaUltimoAcceso(Date date, String id);
+
+    String cargarRutinarioCe(int usuarioId);
+
+    String validarCorreo(String correo);
 }

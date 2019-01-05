@@ -1,6 +1,5 @@
 package com.itsight.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
@@ -20,19 +19,19 @@ import java.util.List;
 
 @Entity
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "trainer.tipoUsuario", attributeNodes = {
+        @NamedEntityGraph(name = "administrador.tipoUsuario", attributeNodes = {
                 @NamedAttributeNode(value = "tipoUsuario")}),
-        @NamedEntityGraph(name = "trainer.all", attributeNodes = {
+        @NamedEntityGraph(name = "administrador.all", attributeNodes = {
                 @NamedAttributeNode(value = "tipoUsuario"),
                 @NamedAttributeNode(value = "tipoDocumento")}),
-        @NamedEntityGraph(name = "trainer"),
+        @NamedEntityGraph(name = "administrador"),
 })
 @Data
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
 @EqualsAndHashCode(callSuper = false)
-public class Trainer extends AuditingEntity implements Serializable {
+public class Administrador extends AuditingEntity implements Serializable {
 
     @Id
     private int id;
@@ -55,10 +54,6 @@ public class Trainer extends AuditingEntity implements Serializable {
     private Date fechaNacimiento;
     @Column(nullable = false, updatable = false)
     private String username;
-    @Column(updatable = false)
-    private String codigoTrainer;
-    @Column(nullable = false)
-    private boolean flagRutinarioCe;
     @Type(type = "jsonb")
     @Column(nullable = false, columnDefinition = "jsonb")
     private List<Rol> roles;
@@ -81,47 +76,29 @@ public class Trainer extends AuditingEntity implements Serializable {
     @JoinColumn(name = "SecurityUserId")
     private SecurityUser securityUser;
 
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<RedFitness> lstRedIntegrante;
-
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<PorcentajesKilometraje> lstPorcentajesKilo;
-
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<MultimediaEntrenador> lstMultimediaentrenador;
-
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<MultimediaDetalle> lstMultimediadetalle;
+    @Transient
+    @JsonSerialize
+    private String nombreCompleto;
 
     @Transient
     private String password;
 
-    public Trainer() {
+    public Administrador() {
         // TODO Auto-generated constructor stub
     }
 
-    public Trainer(int id) {
+    public Administrador(int id) {
         // TODO Auto-generated constructor stub
         this.id = id;
     }
 
-    public Trainer(String codigoTrainer, String nombres, String apellidoPaterno, String apellidoMaterno) {
+    public Administrador(String nombres, String apellidoPaterno, String apellidoMaterno) {
         // TODO Auto-generated constructor stub
-        this.codigoTrainer = codigoTrainer;
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public Trainer(int id, String codigoTrainer) {
-        // TODO Auto-generated constructor stub
-        this.id = id;
-        this.codigoTrainer = codigoTrainer;
-    }
 
     public void setTipoUsuario(int id) {
         this.tipoUsuario = new TipoUsuario(id);

@@ -1,18 +1,16 @@
 package com.itsight.service.impl;
 
+import com.itsight.domain.Administrador;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
-import com.itsight.domain.Usuario;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.generic.BaseServiceImpl;
-import com.itsight.repository.EspecificacionSubCategoriaRepository;
+import com.itsight.repository.AdministradorRepository;
 import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
-import com.itsight.repository.UsuarioRepository;
+import com.itsight.service.AdministradorService;
 import com.itsight.service.EmailService;
-import com.itsight.service.PorcentajesKilometrajeService;
 import com.itsight.service.RolService;
-import com.itsight.service.UsuarioService;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -28,88 +26,80 @@ import static com.itsight.util.Enums.ResponseCode;
 
 @Service
 @Transactional
-public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> implements UsuarioService {
+public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepository> implements AdministradorService {
 
     private SecurityUserRepository securityUserRepository;
 
     private SecurityRoleRepository securityRoleRepository;
 
-    private EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository;
-
     private RolService rolService;
 
     private EmailService emailService;
 
-    private PorcentajesKilometrajeService porcentajesKilometrajeService;
-
     @Autowired
-    private UsuarioService usuarioService;
+    private AdministradorService administradorService;
 
     @Value("${domain.name}")
     private String domainName;
 
-    public UsuarioServiceImpl(
-            UsuarioRepository repository,
+    public AdministradorServiceImpl(
+            AdministradorRepository repository,
             SecurityUserRepository securityUserRepository,
             SecurityRoleRepository securityRoleRepository,
-            EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository,
             RolService rolService,
-            EmailService emailService,
-            PorcentajesKilometrajeService porcentajesKilometrajeService) {
+            EmailService emailService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
         this.securityUserRepository = securityUserRepository;
-        this.especificacionSubCategoriaRepository = especificacionSubCategoriaRepository;
         this.rolService = rolService;
         this.emailService = emailService;
-        this.porcentajesKilometrajeService = porcentajesKilometrajeService;
     }
 
     @Override
-    public List<Usuario> findAll() {
+    public List<Administrador> findAll() {
         // TODO Auto-generated method stub
         return repository.findAllByOrderByIdDesc();
     }
 
     @Override
-    public List<Usuario> findByFlagActivo(boolean flagActivo) {
+    public List<Administrador> findByFlagActivo(boolean flagActivo) {
         // TODO Auto-generated method stub
         return repository.findAllByFlagActivoOrderByIdDesc(flagActivo);
     }
 
     @Override
-    public Usuario findOne(int id) {
+    public Administrador findOne(int id) {
         // TODO Auto-generated method stub
         return repository.findOne(new Integer(id));
     }
 
     @Override
-    public Usuario findOneWithFT(int id) {
+    public Administrador findOneWithFT(int id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
 
     @Override
-    public Usuario save(Usuario usuario) {
+    public Administrador save(Administrador administrador) {
         // TODO Auto-generated method stub
-        return repository.save(usuario);
+        return repository.save(administrador);
     }
 
     @Override
-    public Usuario update(Usuario usuario) {
+    public Administrador update(Administrador administrador) {
         // TODO Auto-generated method stub
-        return repository.saveAndFlush(usuario);
+        return repository.saveAndFlush(administrador);
     }
 
     @Override
-    public void delete(int usuarioId) {
+    public void delete(int administradorId) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(usuarioId));
+        repository.delete(new Integer(administradorId));
     }
 
     @Override
-    public List<Usuario> findByNombreCompleto(String nombreCompleto) {
+    public List<Administrador> findByNombreCompleto(String nombreCompleto) {
         // TODO Auto-generated method stub
         return repository.findByNombreCompleto(nombreCompleto);
     }
@@ -127,102 +117,102 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public List<Usuario> findByNombre(String nombre) {
+    public List<Administrador> findByNombre(String nombre) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByNombreContainingIgnoreCase(String nombre) {
+    public List<Administrador> findByNombreContainingIgnoreCase(String nombre) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByDescripcionContainingIgnoreCase(String descripcion) {
+    public List<Administrador> findByDescripcionContainingIgnoreCase(String descripcion) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByFlagEliminado(boolean flagEliminado) {
+    public List<Administrador> findByFlagEliminado(boolean flagEliminado) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByIdsIn(List<Integer> ids) {
+    public List<Administrador> findByIdsIn(List<Integer> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> listarPorFiltro(String comodin, String estado, String fk) {//fk:perfil
+    public List<Administrador> listarPorFiltro(String comodin, String estado, String fk) {//fk:perfil
         // TODO Auto-generated method stub
 
-        List<Usuario> lstUsuario;
+        List<Administrador> lstAdministrador;
 
         if (comodin.equals("0") && estado.equals("-1") && fk.equals("0")) {
-            lstUsuario = repository.findAllByOrderByIdDesc();
+            lstAdministrador = repository.findAllByOrderByIdDesc();
         } else {
             if (comodin.equals("0") && fk.equals("0")) {
-                lstUsuario = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
+                lstAdministrador = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
             } else {
                 comodin = comodin.equals("0") ? "" : comodin;//Necesario para que la url de la request no viaje // y viaje /0/(otro parametro)
 
-                lstUsuario = repository.findByNombreCompleto(comodin);
+                lstAdministrador = repository.findByNombreCompleto(comodin);
 
                 if (!estado.equals("-1")) {
-                    lstUsuario = lstUsuario.stream()
+                    lstAdministrador = lstAdministrador.stream()
                             .filter(x -> Boolean.valueOf(estado).equals(x.isFlagActivo()))
                             .collect(Collectors.toList());
                 }
 
                 if (!fk.equals("0")) {
-                    lstUsuario = lstUsuario.stream()
+                    lstAdministrador = lstAdministrador.stream()
                             .filter(x -> fk.equals(String.valueOf(x.getTipoUsuario().getId())))
                             .collect(Collectors.toList());
                 }
             }
         }
-        return lstUsuario;
+        return lstAdministrador;
     }
 
     @Override
-    public String registrar(Usuario usuario, String rols) {
+    public String registrar(Administrador administrador, String rols) {
         // TODO Auto-generated method stub
-        if (securityUserRepository.findByUsername(usuario.getUsername()) == null) {
+        if (securityUserRepository.findByUsername(administrador.getUsername()) == null) {
             try{
-                if(usuario.getTipoUsuario().getId() == 3){//3: Cliente
-                    String originalPassword = usuario.getPassword();
+                if(administrador.getTipoUsuario().getId() == 1 ){//1: Administrador
+                    String originalPassword = administrador.getPassword();
                     String[] arrRoles = rols.split(",");
                     List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
                     List<Rol> lstJsonRoles = lstRoles.stream()
                             .map(rol -> new Rol(rol.getId(), rol.getRol()))
                             .collect(Collectors.toList());
-                    usuario.setRoles(lstJsonRoles);
+                    administrador.setRoles(lstJsonRoles);
 
-                    usuario.setPassword(Utilitarios.encoderPassword(usuario.getPassword()));
+                    administrador.setPassword(Utilitarios.encoderPassword(administrador.getPassword()));
                     //Añadiendo las credenciales de ingreso
-                    SecurityUser secUser = new SecurityUser(usuario.getUsername(), usuario.getPassword(), usuario.isFlagActivo());
+                    SecurityUser secUser = new SecurityUser(administrador.getUsername(), administrador.getPassword(), administrador.isFlagActivo());
                     //Añadiendo el role de colaborador
                     Set<SecurityRole> listSr = new HashSet<>();
-                    for (Rol rol : usuario.getRoles()){
+                    for (Rol rol : administrador.getRoles()){
                         listSr.add(new SecurityRole(rol.getNombre(), secUser));
                     }
                     //Adding to User
                     secUser.setRoles(listSr);
-                    //secUser.addUsuario(usuario);
+                    //secUser.addAdministrador(administrador);
                     //Validamos si presenta un rol de entrenador
-                    int flagTrainer = usuario.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
-                    //Guardando usuario de autenticacion
-                    usuario.setSecurityUser(secUser);
-                    usuarioService.save(usuario);
+                    int flagTrainer = administrador.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
+                    //Guardando administrador de autenticacion
+                    administrador.setSecurityUser(secUser);
+                    administradorService.save(administrador);
 
-                    //Enviando correo al nuevo usuario
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(usuario.getUsername(), originalPassword, usuario.getTipoUsuario().getId(), domainName);
-                    emailService.enviarCorreoInformativo("Dennys Workout Platform", usuario.getCorreo(), sb.toString());
-                    return ResponseCode.REGISTRO.get()+','+String.valueOf(usuario.getId())+','+flagTrainer;
+                    //Enviando correo al nuevo administrador
+                    StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, administrador.getTipoUsuario().getId(), domainName);
+                    emailService.enviarCorreoInformativo("Dennys Workout Platform", administrador.getCorreo(), sb.toString());
+                    return ResponseCode.REGISTRO.get()+','+String.valueOf(administrador.getId())+','+flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();
             }catch (Exception e){
@@ -233,20 +223,20 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public String actualizar(Usuario usuario, String rols) {
+    public String actualizar(Administrador administrador, String rols) {
         // TODO Auto-generated method stub
         try {
-            Usuario qUsuario = repository.findOne(usuario.getId());
-            usuario.setFechaUltimoAcceso(qUsuario.getFechaUltimoAcceso());
-            usuario.setCreador(qUsuario.getCreador());
-            usuario.setRowVersion(qUsuario.getRowVersion());
-            usuario.setRoles(qUsuario.getRoles());
-            usuario.setCorreo(qUsuario.getCorreo());
-            usuario.setFlagEliminado(qUsuario.isFlagEliminado());
+            Administrador qAdministrador = repository.findOne(administrador.getId());
+            administrador.setFechaUltimoAcceso(qAdministrador.getFechaUltimoAcceso());
+            administrador.setCreador(qAdministrador.getCreador());
+            administrador.setRowVersion(qAdministrador.getRowVersion());
+            administrador.setRoles(qAdministrador.getRoles());
+            administrador.setCorreo(qAdministrador.getCorreo());
+            administrador.setFlagEliminado(qAdministrador.isFlagEliminado());
 
             // - Verificando si hubo cambio de roles -
             //Los roles antiguos
-            Integer[] rolesIniciales = usuario.getRoles().stream().map(rol -> rol.getId()).toArray(Integer[]::new);
+            Integer[] rolesIniciales = administrador.getRoles().stream().map(rol -> rol.getId()).toArray(Integer[]::new);
             //rols representa los roles que vienen de la vista como un string separados con ","
             //Los roles nuevos
             Integer[] rolesFinales = Parseador.stringArrayToIntArray(rols.split(","));
@@ -284,19 +274,19 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
             if(nuevosInsert.size()>0)
                 for (Integer n : nuevosInsert){
                 com.itsight.domain.Rol rol = rolService.findOne(n);
-                securityRoleRepository.save(new SecurityRole(rol.getRol(), usuario.getId()));
+                securityRoleRepository.save(new SecurityRole(rol.getRol(), administrador.getId()));
                 lstRolesNueva.add(new Rol(n, rol.getRol()));
                 }
 
             if(debenEliminarse.size()>0) {
                 for (Integer n : debenEliminarse) {
                     com.itsight.domain.Rol rol = rolService.findOne(n);
-                    int id = securityRoleRepository.findBySecurityUserIdAndRole(qUsuario.getId(), rol.getRol()).getId();
+                    int id = securityRoleRepository.findBySecurityUserIdAndRole(qAdministrador.getId(), rol.getRol()).getId();
                     securityRoleRepository.deleteById(id);
                 }
                 //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
                 //Ya estaremos borrando de la columna jsonb los que ya se hayan eliminado de la tabla
-                for (Rol r: usuario.getRoles()) {
+                for (Rol r: administrador.getRoles()) {
                     for (Integer x : noRequierenActualizacion){
                         if(r.getId() == x){
                             lstRolesNueva.add(r);
@@ -305,13 +295,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
                 }
             }else{//En caso no se elimine ningun roles transfiere todos los roles "antiguos" a una nueva lista
                 //que posiblemente ya tenga algunos elementos en el caso se hayan agregado nuevos roles
-                lstRolesNueva.addAll(usuario.getRoles());
+                lstRolesNueva.addAll(administrador.getRoles());
             }
             //Finalmente volvemos a setear los roles con la nueva lista y guardamos
-            usuario.setRoles(lstRolesNueva);
-            if(qUsuario.isFlagActivo() != usuario.isFlagActivo())
-                securityUserRepository.updateEstadoByUsername(usuario.getUsername(), usuario.isFlagActivo());
-            repository.saveAndFlush(usuario);
+            administrador.setRoles(lstRolesNueva);
+            if(qAdministrador.isFlagActivo() != administrador.isFlagActivo())
+                securityUserRepository.updateEstadoByUsername(administrador.getUsername(), administrador.isFlagActivo());
+            repository.saveAndFlush(administrador);
             return ResponseCode.ACTUALIZACION.get();
         } catch (Exception e) {
             // TODO: handle exception
@@ -342,7 +332,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public Usuario findByUsername(String username) {
+    public Administrador findByUsername(String username) {
         return repository.findByUsername(username);
     }
 

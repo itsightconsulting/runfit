@@ -17,17 +17,10 @@ public interface UsuarioService extends BaseService<Usuario> {
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 
-    String cargarRutinarioCe(int usuarioId);
-
     String validarCorreo(String correo);
-
-    String findCodigoTrainerById(int id);
-
-    List<Usuario> listarEntrenadores();
 
     String validarUsername(String username);
 
     Usuario findByUsername(String username);
 
-    List<UsuarioPOJO> chelmo();
 }

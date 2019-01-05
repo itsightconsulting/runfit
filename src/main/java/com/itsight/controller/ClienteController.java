@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.itsight.util.Enums.ResponseCode.*;
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
 
 @Controller
 @RequestMapping("/cliente")
@@ -82,12 +82,12 @@ public class ClienteController {
     @GetMapping(value = "/get/publicacionesentrenador")
     public @ResponseBody List<MultimediaEntrenador> obtenerMultimediaEntrenador(HttpSession session) {
         int id = (int)session.getAttribute("id");
-        List<String> listaCodigosEntranadores = redFitnessService.findTrainerByIdUsuario(id);
+        List<String> listaCodigosEntranadores = redFitnessService.findTrainerByUsuarioId(id);
         List<MultimediaEntrenador> lista =  multimediaEntrenadorService.findByListEntrenador(listaCodigosEntranadores);
         String fullPath = mainRoute +"/Multimedia/";
         for (MultimediaEntrenador obj : lista) {
             if (obj.getNombreArchivoUnico() != null) {
-                String nuevaruta = obj.getUsuario().getId() +"/" + obj.getNombreArchivoUnico()+obj.getExtension();
+                String nuevaruta = obj.getTrainer().getId() +"/" + obj.getNombreArchivoUnico()+obj.getExtension();
                 obj.setRutaWeb(nuevaruta);
             }
 
@@ -97,7 +97,7 @@ public class ClienteController {
             obj.setMylike(false);
 
             for(MultimediaDetalle p : detalle) {
-                if(p.getUsuario().getId() == id) {
+                if(p.getTrainer().getId() == id) {
                     obj.setMylike(true);
                     break;
                 }
@@ -112,12 +112,12 @@ public class ClienteController {
         MultimediaDetalle detalle = new MultimediaDetalle();
 
         if (estado == 0) {
-            detalle.setUsuario(iduser);
+            detalle.setTrainer(iduser);
             detalle.setMultimediaentrenador(id);
             detalle.setFlagActivo(true);
             multimediaDetalleRepository.save(detalle);
         } else {
-            detalle =  multimediaDetalleRepository.findbyUsuarioByEntrenador(id,iduser);
+            detalle =  multimediaDetalleRepository.findbyTrainerByEntrenador(id,iduser);
             if(detalle  != null){
                 multimediaDetalleRepository.delete(detalle.getId());
             }
@@ -131,7 +131,7 @@ public class ClienteController {
     @GetMapping(value = "/get/subcategorias")
     public @ResponseBody List<EspecificacionSubCategoria> entrenadorSubCategorias(HttpSession session) {
         int id = (int)session.getAttribute("id");
-        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(id);
+        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByUsuarioId(id);
         List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListTrainerId(listEntrenadores);
         List<EspecificacionSubCategoria> lstresult = new ArrayList<>();
         if(listEntrenadores.size() >0 && listMiniPlantilla.size()>0) {
@@ -148,7 +148,7 @@ public class ClienteController {
     @GetMapping(value = "/get/miniplantillasentrenador")
     public @ResponseBody List<DiaRutinario> miniPlantillaEntrenador(@RequestParam int id,HttpSession session) {
         int idUser = (int)session.getAttribute("id");
-        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByIdUsuario(idUser);
+        List<Integer> listEntrenadores = redFitnessService.findTrainerIdByUsuarioId(idUser);
         List<MiniPlantilla> listMiniPlantilla = miniPlantillaService.findAllByListTrainerIdBySubCategoriaId(listEntrenadores,id);
 
         List<Integer> diaIds = new ArrayList<>();

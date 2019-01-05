@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-import static com.itsight.util.Enums.ResponseCode.*;
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
 
 @Controller
 @RequestMapping("/gestion/multimedia")
@@ -67,7 +67,7 @@ public class MultimediaEntrenadorController {
     public @ResponseBody
     List<MultimediaEntrenador> listarMultimediaEntrenador(HttpSession session) {
         int idUser = Integer.parseInt(session.getAttribute("id").toString());
-        List<MultimediaEntrenador> lista = multimediaEntrenadorService.findByUsuario(idUser);
+        List<MultimediaEntrenador> lista = multimediaEntrenadorService.findByTrainer(idUser);
         String fullPath = mainRoute +"/Multimedia/"+idUser+"/";
         for (MultimediaEntrenador obj : lista) {
             if (obj.getNombreArchivoUnico() != null) {
@@ -88,7 +88,7 @@ public class MultimediaEntrenadorController {
 
         if (id == 0) {
             MultimediaEntrenador qmul = new MultimediaEntrenador();
-            qmul.setUsuario(idUser);
+            qmul.setTrainer(idUser);
             qmul.setTitulo(titulo);
             qmul.setDescripcion(descripcion);
             qmul.setTipo(Enums.TipoMedia.TEXTO.get());
@@ -96,7 +96,7 @@ public class MultimediaEntrenadorController {
             multimediaEntrenadorService.save(qmul);
         } else {
             MultimediaEntrenador objencontrado = multimediaEntrenadorService.findOne(id);
-            objencontrado.setUsuario(idUser);
+            objencontrado.setTrainer(idUser);
             objencontrado.setTitulo(titulo);
             objencontrado.setDescripcion(descripcion);
             objencontrado.setTipo(Enums.TipoMedia.TEXTO.get());
@@ -132,7 +132,7 @@ public class MultimediaEntrenadorController {
 
                     // Agregando la ruta a la base de datos
                     MultimediaEntrenador qmul = new MultimediaEntrenador();
-                    qmul.setUsuario(idUser);
+                    qmul.setTrainer(idUser);
                     qmul.setNombreArchivoUnico(uuid.toString());
                     qmul.setExtension(extension);
                     qmul.setTitulo(nombrefile);
@@ -154,7 +154,7 @@ public class MultimediaEntrenadorController {
 
                     // Agregando la ruta a la base de datos
 
-                    objencontrado.setUsuario(idUser);
+                    objencontrado.setTrainer(idUser);
                     objencontrado.setNombreArchivoUnico(uuid.toString());
                     objencontrado.setExtension(extension);
                     objencontrado.setTitulo(nombrefile);
@@ -180,7 +180,7 @@ public class MultimediaEntrenadorController {
     public @ResponseBody
     List<MultimediaEntrenador> listarMultimediaTop(HttpSession session) {
         int idUser = Integer.parseInt(session.getAttribute("id").toString());
-        List<MultimediaEntrenador> lista = multimediaEntrenadorService.findByUsuarioTop(idUser);
+        List<MultimediaEntrenador> lista = multimediaEntrenadorService.findByTrainerTop(idUser);
 
         String fullPath = mainRoute +"/Multimedia/"+idUser+"/";
         for (MultimediaEntrenador obj : lista) {

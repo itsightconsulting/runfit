@@ -8,6 +8,8 @@ spring:
           strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
+        proc:
+          param_null_passing: true
         order_inserts: true
         order_updates: true
         ejb:

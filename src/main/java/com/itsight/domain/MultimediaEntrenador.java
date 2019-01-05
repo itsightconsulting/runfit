@@ -18,7 +18,7 @@ import java.util.List;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "multimedia_entrenador"),
         @NamedEntityGraph(name = "multimedia_entrenador.all", attributeNodes = {
-                @NamedAttributeNode(value = "usuario"),
+                @NamedAttributeNode(value = "trainer"),
         })
 })
 @Data
@@ -27,6 +27,7 @@ import java.util.List;
 })
 @EqualsAndHashCode(callSuper = false)
 public class MultimediaEntrenador  extends AuditingEntity implements Serializable {
+
     @Id
     @GeneratedValue(generator = "multimedia_entrenador_seq")
     @GenericGenerator(
@@ -45,8 +46,8 @@ public class MultimediaEntrenador  extends AuditingEntity implements Serializabl
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "TrainerId", updatable = false)
+    private Trainer trainer;
 
     @Column
     private int Tipo;
@@ -106,12 +107,12 @@ public class MultimediaEntrenador  extends AuditingEntity implements Serializabl
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Trainer getTrainer() {
+        return trainer;
     }
 
-    public void setUsuario(int id) {
-        this.usuario = new Usuario(id);
+    public void setTrainer(int id) {
+        this.trainer = new Trainer(id);
     }
 
     public int getTipo() {
@@ -185,6 +186,7 @@ public class MultimediaEntrenador  extends AuditingEntity implements Serializabl
     public void setLstMultimediadetalle(List<MultimediaDetalle> lstMultimediadetalle) {
         this.lstMultimediadetalle = lstMultimediadetalle;
     }
+
     public MultimediaEntrenador(int id){
         this.id = id;
     }

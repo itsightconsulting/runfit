@@ -6,6 +6,7 @@ public class PasswordDto {
     private String nuevaPasswordRe;
     private String userId;
     private String username;
+    private int tipoUsuario;
 
     public String getNuevaPassword() {
         return nuevaPassword;
@@ -37,5 +38,13 @@ public class PasswordDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(int tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 }

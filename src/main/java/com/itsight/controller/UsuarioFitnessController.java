@@ -27,17 +27,15 @@ public class UsuarioFitnessController {
 
     private TipoDocumentoService tipoDocumentoService;
 
-    private UsuarioService usuarioService;
-
-    private PlanService planService;
+    private TrainerService trainerService;
 
     @Autowired
-    public UsuarioFitnessController(UsuarioFitnessService usuarioFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService, UsuarioService usuarioService) {
+    public UsuarioFitnessController(UsuarioFitnessService usuarioFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService,  TrainerService trainerService) {
         this.usuarioFitnessService = usuarioFitnessService;
         this.objetivosService = objetivosService;
         this.musculoService = musculoService;
         this.tipoDocumentoService = tipoDocumentoService;
-        this.usuarioService = usuarioService;
+        this.trainerService = trainerService;
     }
 
     @GetMapping(value = "")
@@ -45,7 +43,7 @@ public class UsuarioFitnessController {
         model.addAttribute("lstObjetivos", objetivosService.findAll());
         model.addAttribute("lstMusculos", musculoService.findAll());
         model.addAttribute("lstTd", tipoDocumentoService.findAll());
-        model.addAttribute("lstEntrenadores", usuarioService.listarEntrenadores());
+        model.addAttribute("lstEntrenadores", trainerService.findAll());
         return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
     }
 

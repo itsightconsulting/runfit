@@ -8,9 +8,7 @@ import com.itsight.service.MultimediaEntrenadorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -106,13 +104,13 @@ public class MultimediaEntrenadorImpl extends BaseServiceImpl<MultimediaEntrenad
     }
 
     @Override
-    public List<MultimediaEntrenador> findByUsuario(int id) {
-        return  repository.findAllbyUsuario(id);
+    public List<MultimediaEntrenador> findByTrainer(int id) {
+        return  repository.findAllbyTrainer(id);
     }
 
     @Override
-    public List<MultimediaEntrenador> findByUsuarioTop(int id) {
-        return  repository.findAllbyUsuarioTop(id);
+    public List<MultimediaEntrenador> findByTrainerTop(int id) {
+        return  repository.findAllbyTrainerTop(id);
     }
 
     @Override

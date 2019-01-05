@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface MultimediaEntrenadorService extends BaseService<MultimediaEntrenador> {
 
-    List<MultimediaEntrenador> findByUsuario(int id);
-    List<MultimediaEntrenador> findByUsuarioTop(int id);
+    List<MultimediaEntrenador> findByTrainer(int id);
+    List<MultimediaEntrenador> findByTrainerTop(int id);
     int findDetalleTopCantidad(int id);
     List<MultimediaEntrenador> findByListEntrenador(List<String> list);
     List<MultimediaDetalle> findByIdEntrenador(int id);
