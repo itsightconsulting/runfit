@@ -159,7 +159,7 @@
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/usuario/agregar/rutinario-ce',
+            url: _ctx + 'gestion/cliente/agregar/rutinario-ce',
             dataType: "json",
             data: params,
             success: function (data, textStatus) {
@@ -197,7 +197,7 @@
                 $.ajax({
                     type: 'PUT',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/desactivar',
+                    url: _ctx + 'gestion/cliente/desactivar',
                     dataType: "json",
                     data: params,
                     success: function (data, textStatus) {
@@ -235,7 +235,7 @@
                 $.ajax({
                     type: 'GET',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/validacion-correo',
+                    url: _ctx + 'gestion/cliente/validacion-correo',
                     dataType: "json",
                     data: params,
                     success: function (data) {
@@ -272,50 +272,6 @@
 
     function cambiarContrasena(id, username) {
         $('#DatosCambioPass').val(id + '|' + username);
-    }
-
-    function confirmarCambio() {
-
-        if ($("#frm_cambio").valid()) {
-            $('#spCambio').html(spinnerHTMLRaw());
-            $('#btnCambioContrasena').attr('disabled', 'disabled');
-            $('#btnCambioContrasena').text('Cargando...');
-            var params = getFormData($('#frm_cambio'));
-            params.userId = $('#DatosCambioPass').val().split('|')[0]
-            params.username = $('#DatosCambioPass').val().split('|')[1];
-
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                url: _ctx + 'gestion/usuario/cambio-contrasena',
-                dataType: "json",
-                data: params,
-                success: function (data, textStatus) {
-                    if (textStatus == "success") {
-                        if (data == "-9") {
-                            $.smallBox({
-                                content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                                timeout: 4500,
-                                color: "alert",
-                            });
-                        } else {
-                            $.smallBox({content: "<i>La contraseña se actualizó con éxito</i>"});
-                        }
-                    }
-                },
-                error: function (xhr) {
-                    exception(xhr);
-                },
-                complete: function () {
-                    $('#btnCambioContrasena').removeAttr('disabled');
-                    $('#btnCambioContrasena').text('Confirmar');
-                    $('#spCambio').html('');
-                    $('#CambioContrasena.modal').modal('hide');
-                    $('#frm_cambio').trigger("reset");
-                    $("#frm_cambio").validate().resetForm();
-                }
-            });
-        }
     }
 
     function linkFormatter(value, row) {

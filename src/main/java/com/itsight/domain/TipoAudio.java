@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonAudioSerializer;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @NamedEntityGraphs({
@@ -17,9 +19,12 @@ public class TipoAudio {
     @Column(name = "TipoAudioId")
     private int id;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String nombre;
 
+    @Size(max = 255)
     @Column(nullable = false)
     private String descripcion;
 

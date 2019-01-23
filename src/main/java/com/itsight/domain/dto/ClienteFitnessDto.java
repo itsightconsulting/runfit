@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UsuarioFitnessDto implements Serializable {
+public class ClienteFitnessDto implements Serializable {
 
     private String correoSecundario;
     private int estadoCivil;

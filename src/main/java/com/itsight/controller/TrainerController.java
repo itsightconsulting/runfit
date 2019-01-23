@@ -2,8 +2,6 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Trainer;
-import com.itsight.domain.Usuario;
-import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.RolService;
 import com.itsight.service.TipoDocumentoService;
 import com.itsight.service.TipoUsuarioService;
@@ -73,9 +71,11 @@ public class TrainerController {
         return new ModelAndView(ViewConstant.MI_MEDIA_FAVORITO);
     }
 
-
-    @GetMapping(value = "/validacion-correo")
-    public @ResponseBody String validarCorreoUnico(@RequestParam String correo){
-        return trainerService.validarCorreo(correo);
+    @GetMapping(value = "/micuenta")
+    public ModelAndView miUsuario(Model model) {
+        model.addAttribute("lstTipoDocumento", tipoDocumentoService.findAll());
+        model.addAttribute("lstTipoUsuario", perfilService.listAll());
+        model.addAttribute("lstRol", rolService.findAll());
+        return new ModelAndView(ViewConstant.MI_USUARIO);
     }
 }

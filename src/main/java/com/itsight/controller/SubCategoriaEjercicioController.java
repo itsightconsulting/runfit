@@ -6,14 +6,20 @@ import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.domain.SubCategoriaEjercicio;
 import com.itsight.service.CategoriaEjercicioService;
 import com.itsight.service.SubCategoriaEjercicioService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/sub-categoria-ejercicio")
@@ -53,16 +59,15 @@ public class SubCategoriaEjercicioController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute SubCategoriaEjercicio subCategoriaEjercicio, @RequestParam int categoriaEjercicioId) {
-
-        subCategoriaEjercicio.setCategoriaEjercicio(new CategoriaEjercicio(categoriaEjercicioId));
-        if (subCategoriaEjercicio.getId() == 0) {
-
-            subCategoriaEjercicioService.save(subCategoriaEjercicio);
-            return "1";
+    String nuevo(@ModelAttribute @Valid SubCategoriaEjercicio subCategoriaEjercicio, BindingResult bindingResult, @RequestParam int categoriaEjercicioId) {
+        if(!bindingResult.hasErrors()){
+            subCategoriaEjercicio.setCategoriaEjercicio(new CategoriaEjercicio(categoriaEjercicioId));
+            if (subCategoriaEjercicio.getId() == 0) {
+                return subCategoriaEjercicioService.registrar(subCategoriaEjercicio, null);
+            }
+            return subCategoriaEjercicioService.actualizar(subCategoriaEjercicio, null);
         }
-        subCategoriaEjercicioService.update(subCategoriaEjercicio);
-        return "2";
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/desactivar")
@@ -70,9 +75,9 @@ public class SubCategoriaEjercicioController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             subCategoriaEjercicioService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

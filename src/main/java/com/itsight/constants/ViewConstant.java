@@ -56,13 +56,13 @@ public class ViewConstant {
     public static final String LOGIN = "login";
     public static final String RECUPERAR_PASSWORD = "recuperar-password";
     public static final String NUEVA_PASSWORD = "nueva-password";
-    public static final String FORM_USUARIO = "usuario";
+    public static final String FORM_USUARIO = "cliente";
     public static final String LOGOUT = "login";
     public static final String INDEX = "pagina-inicio";
-    public static final String FORM_USER = "administracion/mtn-usuario";
+    public static final String FORM_USER = "administracion/mtn-cliente";
     public static final String ADD_USER = "registro-inicial";
-    public static final String VSL_USER = "administracion/edt-usuario";
-    public static final String SHOW_PERFIL = "administracion/cnt-usuario";
+    public static final String VSL_USER = "administracion/edt-cliente";
+    public static final String SHOW_PERFIL = "administracion/cnt-cliente";
     public static final String VERIFICACION = "registro-verificacion";
     public static final String VISA_PORTAL = "visa/visa-pago";
     public static final String INTRANET = "login-colaborador";
@@ -70,10 +70,10 @@ public class ViewConstant {
     public static final String ERROR404 = "error/404";
     public static final String ERROR404PARAMEXCEP = "error/404RE";
     public static final String ERROR500 = "error/500";
-    public static final String FORM_BANDEJA_USUARIO = "administracion/bdj-usuario";
+    public static final String FORM_BANDEJA_USUARIO = "administracion/bdj-cliente";
     public static final String FORM_BANDEJA_COMPARTIDA = "administracion/bdj-compartida";
 
-//	public static final String FORM_BANDEJA_USUARIO_GET = "usuario/bandeja";
+//	public static final String FORM_BANDEJA_USUARIO_GET = "cliente/bandeja";
 
 
     public static final String FORM_AREA = "gestion/gst-areas";
@@ -109,14 +109,14 @@ public class ViewConstant {
     public static final String REDIRECT_FORM_FALLO_VISA = "redirect:/visa/status";
     public static final String REDIRECT_FORM_CONFIRMATION_VISA = "redirect:/visa/consolidado";
     public static final String REDIRECT_FORM_BANDEJA_ADM = "redirect:/atencion/bandeja";
-    public static final String REDIRECT_FORM_BANDEJA_USER = "redirect:/usuario/bandeja";
+    public static final String REDIRECT_FORM_BANDEJA_USER = "redirect:/cliente/bandeja";
     public static final String REDIRECT_INDEX = "redirect:/inicio";
 
 
 
-    public static final String MI_USUARIO = "usuario/micuenta";
+    public static final String MI_USUARIO = "cliente/micuenta";
     public static final String FACTURACION_MENSUAL = "portal/facturacion_mensual";
-    public static final String MI_MEDIA_FAVORITO = "usuario/mimediafavorito";
+    public static final String MI_MEDIA_FAVORITO = "cliente/mimediafavorito";
 
     public static final int ACTIVO = 1;
     public static final int INACTIVO = 0;

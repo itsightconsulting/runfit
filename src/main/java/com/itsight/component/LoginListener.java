@@ -2,7 +2,7 @@ package com.itsight.component;
 
 import com.itsight.service.AdministradorService;
 import com.itsight.service.TrainerService;
-import com.itsight.service.UsuarioService;
+import com.itsight.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class LoginListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
     @Autowired
     private TrainerService trainerService;
@@ -50,7 +50,7 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             }else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);
             }else
-                usuarioService.actualizarFechaUltimoAcceso(new Date(), id);
+                clienteService.actualizarFechaUltimoAcceso(new Date(), id);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, login.getAuthentication().getCredentials(), SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e){

@@ -1,16 +1,12 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.Audio;
-import com.itsight.domain.Video;
 import com.itsight.domain.VideoAudioFavorito;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoAudioFavoritoRepository;
 import com.itsight.service.VideoAudioFavoritoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.itsight.repository.*;
 
-import java.util.EnumSet;
 import java.util.List;
 
 
@@ -110,25 +106,25 @@ public class VideoAudioFavoritoServiceImpl extends BaseServiceImpl<VideoAudioFav
     }
 
     @Override
-    public VideoAudioFavorito getVideoAudioFavoritoAudio(int idusuario, int idaudio)
+    public VideoAudioFavorito getVideoAudioFavoritoAudio(int clienteId, int idaudio)
     {
-        return repository.findByUsuarioAudio(idusuario,idaudio);
+        return repository.findByClienteAudio(clienteId,idaudio);
     }
     @Override
-    public VideoAudioFavorito getVideoAudioFavoritoVideo(int idusuario, int idvideo)
+    public VideoAudioFavorito getVideoAudioFavoritoVideo(int clienteId, int idvideo)
     {
-        return repository.findByUsuarioVideo(idusuario,idvideo);
+        return repository.findByClienteVideo(clienteId,idvideo);
     }
 
 
     @Override
-    public List<VideoAudioFavorito> findAllByUsuarioByTipo(int idusuario, int tipo) {
-        return repository.findAllByUsuarioByTipo(idusuario, tipo);
+    public List<VideoAudioFavorito> findAllByClienteByTipo(int clienteId, int tipo) {
+        return repository.findAllByClienteByTipo(clienteId, tipo);
     }
 
     @Override
-    public List<VideoAudioFavorito> findByUsuarioId(int idusuario) {
-        return repository.findByUsuarioId(idusuario);
+    public List<VideoAudioFavorito> findByClienteId(int clienteId) {
+        return repository.findByClienteId(clienteId);
     }
 
 

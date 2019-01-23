@@ -152,10 +152,10 @@
                                             </div>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Nombre de usuario: </label>
+                                                    <label class="label">Nombre de cliente: </label>
                                                     <label class="input"><i class="icon-append fa fa-user"></i>
                                                         <input id="Username" name="Username" type="text"
-                                                               placeholder="Nombre de usuario" class="" maxlength="24"
+                                                               placeholder="Nombre de cliente" class="" maxlength="24"
                                                                autocomplete="off"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     </label>
@@ -278,7 +278,7 @@
         $.ajax({
             type: 'GET',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/usuario/obtenerUsuarioSession',
+            url: _ctx + 'gestion/cliente/obtenerUsuarioSession',
             dataType: "json",
             success: function (data, textStatus) {
                 if (textStatus == "success") {
@@ -477,13 +477,13 @@
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                url: _ctx + 'gestion/usuario/agregar',
+                url: _ctx + 'gestion/cliente/agregar',
                 dataType: "json",
                 data: params,
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
                         if (data == "-150") {
-                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de usuario ya existe en el sistema...</i>",});
+                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",});
                         } else {
                             $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
                             window.location.reload();

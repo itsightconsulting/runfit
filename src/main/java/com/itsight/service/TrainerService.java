@@ -11,7 +11,7 @@ public interface TrainerService extends BaseService<Trainer> {
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 
-    String cargarRutinarioCe(int usuarioId);
+    String cargarRutinarioCe(int trainerId);
 
     String validarCorreo(String correo);
 }

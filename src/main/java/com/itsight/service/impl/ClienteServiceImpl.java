@@ -1,18 +1,18 @@
 package com.itsight.service.impl;
 
+import com.itsight.domain.Cliente;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
-import com.itsight.domain.Usuario;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
 import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
-import com.itsight.repository.UsuarioRepository;
+import com.itsight.repository.ClienteRepository;
 import com.itsight.service.EmailService;
 import com.itsight.service.PorcentajesKilometrajeService;
 import com.itsight.service.RolService;
-import com.itsight.service.UsuarioService;
+import com.itsight.service.ClienteService;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -28,7 +28,7 @@ import static com.itsight.util.Enums.ResponseCode;
 
 @Service
 @Transactional
-public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> implements UsuarioService {
+public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> implements ClienteService {
 
     private SecurityUserRepository securityUserRepository;
 
@@ -43,13 +43,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     private PorcentajesKilometrajeService porcentajesKilometrajeService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
     @Value("${domain.name}")
     private String domainName;
 
-    public UsuarioServiceImpl(
-            UsuarioRepository repository,
+    public ClienteServiceImpl(
+            ClienteRepository repository,
             SecurityUserRepository securityUserRepository,
             SecurityRoleRepository securityRoleRepository,
             EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository,
@@ -67,39 +67,39 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public List<Usuario> findAll() {
+    public List<Cliente> findAll() {
         // TODO Auto-generated method stub
         return repository.findAllByOrderByIdDesc();
     }
 
     @Override
-    public List<Usuario> findByFlagActivo(boolean flagActivo) {
+    public List<Cliente> findByFlagActivo(boolean flagActivo) {
         // TODO Auto-generated method stub
         return repository.findAllByFlagActivoOrderByIdDesc(flagActivo);
     }
 
     @Override
-    public Usuario findOne(int id) {
+    public Cliente findOne(int id) {
         // TODO Auto-generated method stub
         return repository.findOne(new Integer(id));
     }
 
     @Override
-    public Usuario findOneWithFT(int id) {
+    public Cliente findOneWithFT(int id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
 
     @Override
-    public Usuario save(Usuario usuario) {
+    public Cliente save(Cliente cliente) {
         // TODO Auto-generated method stub
-        return repository.save(usuario);
+        return repository.save(cliente);
     }
 
     @Override
-    public Usuario update(Usuario usuario) {
+    public Cliente update(Cliente cliente) {
         // TODO Auto-generated method stub
-        return repository.saveAndFlush(usuario);
+        return repository.saveAndFlush(cliente);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public List<Usuario> findByNombreCompleto(String nombreCompleto) {
+    public List<Cliente> findByNombreCompleto(String nombreCompleto) {
         // TODO Auto-generated method stub
         return repository.findByNombreCompleto(nombreCompleto);
     }
@@ -127,102 +127,102 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public List<Usuario> findByNombre(String nombre) {
+    public List<Cliente> findByNombre(String nombre) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByNombreContainingIgnoreCase(String nombre) {
+    public List<Cliente> findByNombreContainingIgnoreCase(String nombre) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByDescripcionContainingIgnoreCase(String descripcion) {
+    public List<Cliente> findByDescripcionContainingIgnoreCase(String descripcion) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByFlagEliminado(boolean flagEliminado) {
+    public List<Cliente> findByFlagEliminado(boolean flagEliminado) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> findByIdsIn(List<Integer> ids) {
+    public List<Cliente> findByIdsIn(List<Integer> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Usuario> listarPorFiltro(String comodin, String estado, String fk) {//fk:perfil
+    public List<Cliente> listarPorFiltro(String comodin, String estado, String fk) {//fk:perfil
         // TODO Auto-generated method stub
 
-        List<Usuario> lstUsuario;
+        List<Cliente> lstCliente;
 
         if (comodin.equals("0") && estado.equals("-1") && fk.equals("0")) {
-            lstUsuario = repository.findAllByOrderByIdDesc();
+            lstCliente = repository.findAllByOrderByIdDesc();
         } else {
             if (comodin.equals("0") && fk.equals("0")) {
-                lstUsuario = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
+                lstCliente = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
             } else {
                 comodin = comodin.equals("0") ? "" : comodin;//Necesario para que la url de la request no viaje // y viaje /0/(otro parametro)
 
-                lstUsuario = repository.findByNombreCompleto(comodin);
+                lstCliente = repository.findByNombreCompleto(comodin);
 
                 if (!estado.equals("-1")) {
-                    lstUsuario = lstUsuario.stream()
+                    lstCliente = lstCliente.stream()
                             .filter(x -> Boolean.valueOf(estado).equals(x.isFlagActivo()))
                             .collect(Collectors.toList());
                 }
 
                 if (!fk.equals("0")) {
-                    lstUsuario = lstUsuario.stream()
+                    lstCliente = lstCliente.stream()
                             .filter(x -> fk.equals(String.valueOf(x.getTipoUsuario().getId())))
                             .collect(Collectors.toList());
                 }
             }
         }
-        return lstUsuario;
+        return lstCliente;
     }
 
     @Override
-    public String registrar(Usuario usuario, String rols) {
+    public String registrar(Cliente cliente, String rols) {
         // TODO Auto-generated method stub
-        if (securityUserRepository.findByUsername(usuario.getUsername()) == null) {
+        if (securityUserRepository.findByUsername(cliente.getUsername()) == null) {
             try{
-                if(usuario.getTipoUsuario().getId() == 3){//3: Cliente
-                    String originalPassword = usuario.getPassword();
+                if(cliente.getTipoUsuario().getId() == 3){//3: Cliente
+                    String originalPassword = cliente.getPassword();
                     String[] arrRoles = rols.split(",");
                     List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
                     List<Rol> lstJsonRoles = lstRoles.stream()
                             .map(rol -> new Rol(rol.getId(), rol.getRol()))
                             .collect(Collectors.toList());
-                    usuario.setRoles(lstJsonRoles);
+                    cliente.setRoles(lstJsonRoles);
 
-                    usuario.setPassword(Utilitarios.encoderPassword(usuario.getPassword()));
+                    cliente.setPassword(Utilitarios.encoderPassword(cliente.getPassword()));
                     //Añadiendo las credenciales de ingreso
-                    SecurityUser secUser = new SecurityUser(usuario.getUsername(), usuario.getPassword(), usuario.isFlagActivo());
+                    SecurityUser secUser = new SecurityUser(cliente.getUsername(), cliente.getPassword(), cliente.isFlagActivo());
                     //Añadiendo el role de colaborador
                     Set<SecurityRole> listSr = new HashSet<>();
-                    for (Rol rol : usuario.getRoles()){
+                    for (Rol rol : cliente.getRoles()){
                         listSr.add(new SecurityRole(rol.getNombre(), secUser));
                     }
                     //Adding to User
                     secUser.setRoles(listSr);
-                    //secUser.addUsuario(usuario);
+                    //secUser.addUsuario(cliente);
                     //Validamos si presenta un rol de entrenador
-                    int flagTrainer = usuario.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
-                    //Guardando usuario de autenticacion
-                    usuario.setSecurityUser(secUser);
-                    usuarioService.save(usuario);
+                    int flagTrainer = cliente.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
+                    //Guardando cliente de autenticacion
+                    cliente.setSecurityUser(secUser);
+                    clienteService.save(cliente);
 
-                    //Enviando correo al nuevo usuario
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(usuario.getUsername(), originalPassword, usuario.getTipoUsuario().getId(), domainName);
-                    emailService.enviarCorreoInformativo("Dennys Workout Platform", usuario.getCorreo(), sb.toString());
-                    return ResponseCode.REGISTRO.get()+','+String.valueOf(usuario.getId())+','+flagTrainer;
+                    //Enviando correo al nuevo cliente
+                    StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, cliente.getTipoUsuario().getId(), domainName);
+                    emailService.enviarCorreoInformativo("Dennys Workout Platform", cliente.getCorreo(), sb.toString());
+                    return ResponseCode.REGISTRO.get()+','+String.valueOf(cliente.getId())+','+flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();
             }catch (Exception e){
@@ -233,20 +233,20 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public String actualizar(Usuario usuario, String rols) {
+    public String actualizar(Cliente cliente, String rols) {
         // TODO Auto-generated method stub
         try {
-            Usuario qUsuario = repository.findOne(usuario.getId());
-            usuario.setFechaUltimoAcceso(qUsuario.getFechaUltimoAcceso());
-            usuario.setCreador(qUsuario.getCreador());
-            usuario.setRowVersion(qUsuario.getRowVersion());
-            usuario.setRoles(qUsuario.getRoles());
-            usuario.setCorreo(qUsuario.getCorreo());
-            usuario.setFlagEliminado(qUsuario.isFlagEliminado());
+            Cliente qCliente = repository.findOne(cliente.getId());
+            cliente.setFechaUltimoAcceso(qCliente.getFechaUltimoAcceso());
+            cliente.setCreador(qCliente.getCreador());
+            cliente.setRowVersion(qCliente.getRowVersion());
+            cliente.setRoles(qCliente.getRoles());
+            cliente.setCorreo(qCliente.getCorreo());
+            cliente.setFlagEliminado(qCliente.isFlagEliminado());
 
             // - Verificando si hubo cambio de roles -
             //Los roles antiguos
-            Integer[] rolesIniciales = usuario.getRoles().stream().map(rol -> rol.getId()).toArray(Integer[]::new);
+            Integer[] rolesIniciales = cliente.getRoles().stream().map(rol -> rol.getId()).toArray(Integer[]::new);
             //rols representa los roles que vienen de la vista como un string separados con ","
             //Los roles nuevos
             Integer[] rolesFinales = Parseador.stringArrayToIntArray(rols.split(","));
@@ -284,19 +284,19 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
             if(nuevosInsert.size()>0)
                 for (Integer n : nuevosInsert){
                 com.itsight.domain.Rol rol = rolService.findOne(n);
-                securityRoleRepository.save(new SecurityRole(rol.getRol(), usuario.getId()));
+                securityRoleRepository.save(new SecurityRole(rol.getRol(), cliente.getId()));
                 lstRolesNueva.add(new Rol(n, rol.getRol()));
                 }
 
             if(debenEliminarse.size()>0) {
                 for (Integer n : debenEliminarse) {
                     com.itsight.domain.Rol rol = rolService.findOne(n);
-                    int id = securityRoleRepository.findBySecurityUserIdAndRole(qUsuario.getId(), rol.getRol()).getId();
+                    int id = securityRoleRepository.findBySecurityUserIdAndRole(qCliente.getId(), rol.getRol()).getId();
                     securityRoleRepository.deleteById(id);
                 }
                 //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
                 //Ya estaremos borrando de la columna jsonb los que ya se hayan eliminado de la tabla
-                for (Rol r: usuario.getRoles()) {
+                for (Rol r: cliente.getRoles()) {
                     for (Integer x : noRequierenActualizacion){
                         if(r.getId() == x){
                             lstRolesNueva.add(r);
@@ -305,13 +305,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
                 }
             }else{//En caso no se elimine ningun roles transfiere todos los roles "antiguos" a una nueva lista
                 //que posiblemente ya tenga algunos elementos en el caso se hayan agregado nuevos roles
-                lstRolesNueva.addAll(usuario.getRoles());
+                lstRolesNueva.addAll(cliente.getRoles());
             }
             //Finalmente volvemos a setear los roles con la nueva lista y guardamos
-            usuario.setRoles(lstRolesNueva);
-            if(qUsuario.isFlagActivo() != usuario.isFlagActivo())
-                securityUserRepository.updateEstadoByUsername(usuario.getUsername(), usuario.isFlagActivo());
-            repository.saveAndFlush(usuario);
+            cliente.setRoles(lstRolesNueva);
+            if(qCliente.isFlagActivo() != cliente.isFlagActivo())
+                securityUserRepository.updateEstadoByUsername(cliente.getUsername(), cliente.isFlagActivo());
+            repository.saveAndFlush(cliente);
             return ResponseCode.ACTUALIZACION.get();
         } catch (Exception e) {
             // TODO: handle exception
@@ -342,7 +342,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public Usuario findByUsername(String username) {
+    public Cliente findByUsername(String username) {
         return repository.findByUsername(username);
     }
 

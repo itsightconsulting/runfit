@@ -1,6 +1,5 @@
 package com.itsight.service;
 
-import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.dto.RutinaDto;
 import com.itsight.generic.BaseService;
@@ -8,8 +7,6 @@ import com.itsight.generic.BaseService;
 import java.util.List;
 
 public interface RutinaService extends BaseService<Rutina> {
-
-    List<Rutina> listarPorFiltroPT(int clienteId);
 
     Rutina findLastByRedFitnessId(int id);
 

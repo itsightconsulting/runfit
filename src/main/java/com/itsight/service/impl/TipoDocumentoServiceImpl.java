@@ -4,6 +4,7 @@ import com.itsight.domain.TipoDocumento;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.TipoDocumentoRepository;
 import com.itsight.service.TipoDocumentoService;
+import com.itsight.util.Enums;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,12 +96,14 @@ public class TipoDocumentoServiceImpl extends BaseServiceImpl<TipoDocumentoRepos
 
     @Override
     public String registrar(TipoDocumento entity, String wildcard) {
-        return null;
+        TipoDocumento tp = repository.save(entity);
+        return Enums.ResponseCode.REGISTRO.get()+","+ tp.getId();
     }
 
     @Override
     public String actualizar(TipoDocumento entity, String wildcard) {
-        return null;
+        TipoDocumento tp = repository.saveAndFlush(entity);
+        return Enums.ResponseCode.ACTUALIZACION.get()+","+ tp.getId();
     }
 
     @Override

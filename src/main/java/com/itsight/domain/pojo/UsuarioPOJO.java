@@ -6,6 +6,10 @@ import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
 import java.io.Serializable;
 import java.util.Date;
 

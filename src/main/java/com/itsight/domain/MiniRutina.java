@@ -29,8 +29,8 @@ public class MiniRutina implements Serializable {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", referencedColumnName = "SecurityUserId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId", updatable = false)
+    private Trainer trainer;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,12 +41,12 @@ public class MiniRutina implements Serializable {
     @Column(columnDefinition = "jsonb")
     private List<MiRutinaPk> miRutinaIds;
 
-    public void setUsuario(Usuario usuario){
-        this.usuario = usuario;
+    public void setTrainer(Trainer trainer){
+        this.trainer = trainer;
     }
 
-    public void setUsuario(int usuarioId){
-        this.usuario = new Usuario(usuarioId);
+    public void setTrainer(int trainerId){
+        this.trainer = new Trainer(trainerId);
     }
 
     public void setCategoria(Categoria categoria){

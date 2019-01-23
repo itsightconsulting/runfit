@@ -1,15 +1,11 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.Plan;
-import com.itsight.domain.Usuario;
-import com.itsight.domain.UsuarioPlan;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.PlanRepository;
-import com.itsight.repository.UsuarioPlanRepository;
 import com.itsight.service.PlanService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

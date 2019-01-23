@@ -22,8 +22,8 @@ import java.util.List;
 
 
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "rutinaPlantilla.usuario", attributeNodes = {
-                @NamedAttributeNode(value = "usuario")}),
+        @NamedEntityGraph(name = "rutinaPlantilla.trainer", attributeNodes = {
+                @NamedAttributeNode(value = "trainer")}),
         @NamedEntityGraph(name = "rutinaPlantilla"),
 })
 @TypeDefs({
@@ -68,8 +68,8 @@ public class RutinaPlantilla extends AuditingEntity {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", referencedColumnName = "SecurityUserId")
-    private Usuario usuario;
+    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
+    private Trainer trainer;
     @JsonIgnoreProperties
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -77,8 +77,8 @@ public class RutinaPlantilla extends AuditingEntity {
 
     public RutinaPlantilla(){}
 
-    public void setUsuario(int userId) {
-        this.usuario = new Usuario(userId);
+    public void setTrainer(int trainerId) {
+        this.trainer = new Trainer(trainerId);
     }
 
 }

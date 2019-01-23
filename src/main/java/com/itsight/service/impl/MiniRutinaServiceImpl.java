@@ -103,22 +103,22 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public MiniRutina findByUsuarioIdAndCategoriaId(int id, int espSubCatId) {
-        return repository.findByUsuarioIdAndEspecificacionSubCategoriaId(id, espSubCatId);
+    public MiniRutina findByTrainerIdAndCategoriaId(int id, int espSubCatId) {
+        return repository.findByTrainerIdAndEspecificacionSubCategoriaId(id, espSubCatId);
     }
 
     @Override
-    public List<MiniRutina> findAllByUsuarioId(int usuarioId) {
-        return repository.findAllByUsuarioId(usuarioId);
+    public List<MiniRutina> findAllByTrainerId(int usuarioId) {
+        return repository.findAllByTrainerId(usuarioId);
     }
 
     @Override
-    public List<Integer> findAllCategoriaIdByUsuarioId(int usuarioId) {
-        return repository.findAllCategoriaIdByUsuarioId(usuarioId);
+    public List<Integer> findAllCategoriaIdByTrainerId(int usuarioId) {
+        return repository.findAllCategoriaIdByTrainerId(usuarioId);
     }
 
     @Override
-    public MiniRutina findByCategoriaIdAndUsuarioId(int catId, int usuarioId) {
-        return repository.findByCategoriaIdAndUsuarioId(catId, usuarioId);
+    public MiniRutina findByCategoriaIdAndTrainerId(int catId, int usuarioId) {
+        return repository.findByCategoriaIdAndTrainerId(catId, usuarioId);
     }
 }

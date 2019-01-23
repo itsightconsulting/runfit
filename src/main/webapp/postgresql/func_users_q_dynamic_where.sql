@@ -55,7 +55,7 @@ select
 											  		 u.username,
 											  		 u.tipo_usuario_id,
 											    	 u.fecha_ultimo_acceso fechaUltimoAcceso
-											  from usuario u
+											  from cliente u
 											  WHERE ($1 IS NULL OR lower(concat(u.apellido_paterno,' ',u.apellido_materno,' ', u.nombres)) like lower(CONCAT('%',$1,'%')))
 											  AND ($2 IS NULL OR u.flag_activo = $2)
 											  order by 1) a

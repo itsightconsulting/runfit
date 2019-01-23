@@ -1,9 +1,8 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.Plan;
-import com.itsight.domain.UsuarioFitness;
-import com.itsight.domain.dto.UsuarioFitnessDto;
+import com.itsight.domain.ClienteFitness;
+import com.itsight.domain.dto.ClienteFitnessDto;
 import com.itsight.service.*;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
-@RequestMapping("/gestion/usuario-fitness")
-public class UsuarioFitnessController {
+@RequestMapping("/gestion/cliente-fitness")
+public class ClienteFitnessController {
 
-    private UsuarioFitnessService usuarioFitnessService;
+    private ClienteFitnessService clienteFitnessService;
 
     private ObjetivoService objetivosService;
 
@@ -30,8 +28,8 @@ public class UsuarioFitnessController {
     private TrainerService trainerService;
 
     @Autowired
-    public UsuarioFitnessController(UsuarioFitnessService usuarioFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService,  TrainerService trainerService) {
-        this.usuarioFitnessService = usuarioFitnessService;
+    public ClienteFitnessController(ClienteFitnessService clienteFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService, TrainerService trainerService) {
+        this.clienteFitnessService = clienteFitnessService;
         this.objetivosService = objetivosService;
         this.musculoService = musculoService;
         this.tipoDocumentoService = tipoDocumentoService;
@@ -49,26 +47,26 @@ public class UsuarioFitnessController {
 
     @GetMapping(value = "/obtener")
     public @ResponseBody
-    UsuarioFitness obtenerPorId(@RequestParam(value = "id") int usuarioId) {
-        return usuarioFitnessService.findOne(usuarioId);
+    ClienteFitness obtenerPorId(@RequestParam(value = "id") int clienteId) {
+        return clienteFitnessService.findOne(clienteId);
     }
 
     //Edicion de rutinas
     @GetMapping(value = "/obtener/secundario/{runnerId}")
     public @ResponseBody
-    UsuarioFitness obtenerPorUsuarioId(@PathVariable(name = "runnerId") String runnerId, HttpSession session) {
+    ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "runnerId") String runnerId, HttpSession session) {
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
-        return usuarioFitnessService.findByUsuarioId(runneId);
+        return clienteFitnessService.findByClienteId(runneId);
     }
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@RequestBody UsuarioFitnessDto usuarioFitDto) {
-        return usuarioFitnessService.registrar(usuarioFitDto);
+    String nuevo(@RequestBody ClienteFitnessDto clienteFitDto) {
+        return clienteFitnessService.registrar(clienteFitDto);
     }
 
     @GetMapping(value = "/planes")
-    public ModelAndView principalplanes(Model model) {
+    public ModelAndView principalplanes() {
         return new ModelAndView(ViewConstant.MAIN_PLANES);
     }
 

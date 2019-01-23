@@ -206,7 +206,7 @@ function obtenerMisRutinasByCategoria(catId, nombreCat){
 function obtenerCategoriasIdsByUsuario(){
     $.ajax({
         type: 'GET',
-        url: _ctx + 'gestion/mini-rutina/obtenerCategoriasId/ByUsuario',
+        url: _ctx + 'gestion/mini-rutina/obtenerCategoriasId/byTrainer',
         dataType: "json",
         success: function (d) {
             if(typeof d === 'object'){

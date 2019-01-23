@@ -1,11 +1,9 @@
 package com.itsight.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Semana;
-import com.itsight.domain.dto.DiaPlantillaDto;
 import com.itsight.domain.dto.RutinaDto;
 import com.itsight.domain.dto.SemanaPlantillaDto;
 import com.itsight.domain.jsonb.RutinaControl;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.itsight.util.Enums.ResponseCode.SESSION_VALUE_NOT_FOUND;
 
@@ -121,11 +118,6 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public List<Rutina> listarPorFiltroPT(int trainerId) {
-        return repository.findByUsuarioIdOrderByIdDesc(trainerId);
-    }
-
-    @Override
     public String registrar(Rutina entity, String wildcard) {
         return null;
     }
@@ -172,7 +164,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
     @Override
     public List<Rutina> getAllRutinasByUser(int id) {
-        return repository.findByUsuarioIdOrderByIdDesc(id);
+        return repository.findByClienteIdOrderByIdDesc(id);
     }
 
     @Override
@@ -200,7 +192,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         RutinaControl rc = new RutinaControl();
         BeanUtils.copyProperties(rutinaDto.getControl(), rc);
         BeanUtils.copyProperties(rutinaDto, nueRutina);
-        nueRutina.setUsuario(runneId);
+        nueRutina.setCliente(runneId);
         nueRutina.setRedFitness(redFitId);
         nueRutina.setControl(rc);
         //Instanciando lista de semanas

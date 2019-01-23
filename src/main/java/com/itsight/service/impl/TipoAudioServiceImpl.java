@@ -108,12 +108,14 @@ public class TipoAudioServiceImpl extends BaseServiceImpl<TipoAudioRepository> i
 
     @Override
     public String registrar(TipoAudio entity, String wildcard) {
-        return null;
+        TipoAudio ta = repository.save(entity);
+        return ""+ta.getId();
     }
 
     @Override
     public String actualizar(TipoAudio entity, String wildcard) {
-        return null;
+        TipoAudio ta = repository.saveAndFlush(entity);
+        return ""+ta.getId();
     }
 
     @Override

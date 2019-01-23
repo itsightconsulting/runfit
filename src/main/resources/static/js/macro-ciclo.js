@@ -5,10 +5,10 @@ Ficha = (function(){
         instanciar: (ficha)=>{
             const comps = ficha.competencias;
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
-            $('#Nombres').val(ficha.usuario.nombres);
-            $('#ApellidoPaterno').val(ficha.usuario.apellidoPaterno);
-            $('#FechaNacimiento').val(ficha.usuario.fechaNacimiento);
-            $('#Edad').val(calcularEdadByFechaNacimiento(ficha.usuario.fechaNacimiento));
+            $('#Nombres').val(ficha.cliente.nombres);
+            $('#ApellidoPaterno').val(ficha.cliente.apellidoPaterno);
+            $('#FechaNacimiento').val(ficha.cliente.fechaNacimiento);
+            $('#Edad').val(calcularEdadByFechaNacimiento(ficha.cliente.fechaNacimiento));
             $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
             $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
             $('#MacroFechaFin').val(getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia)));
@@ -117,10 +117,10 @@ FichaSet = (function(){
         instanciarDatosFicha: (ficha)=>{
             const comps = ficha.competencias;
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
-            document.querySelector('#Nombres').value = ficha.usuario.nombres;
-            document.querySelector('#ApellidoPaterno').value = ficha.usuario.apellidoPaterno;
-            document.querySelector('#FechaNacimiento').value = ficha.usuario.fechaNacimiento;
-            document.querySelector('#Edad').value = calcularEdadByFechaNacimiento(ficha.usuario.fechaNacimiento);
+            document.querySelector('#Nombres').value = ficha.cliente.nombres;
+            document.querySelector('#ApellidoPaterno').value = ficha.cliente.apellidoPaterno;
+            document.querySelector('#FechaNacimiento').value = ficha.cliente.fechaNacimiento;
+            document.querySelector('#Edad').value = calcularEdadByFechaNacimiento(ficha.cliente.fechaNacimiento);
             document.querySelector('#MacroFechaFin').value = getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia));
             document.querySelector('#Sexo').value = ficha.sexo == 1 ? "Masculino" : "Femenino";
             FichaSet.setMaximoDistanciaCompetencia(comps);

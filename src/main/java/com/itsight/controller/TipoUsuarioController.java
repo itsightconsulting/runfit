@@ -20,7 +20,7 @@ public class TipoUsuarioController {
 
     @GetMapping(value = "/listarTodos")
     public @ResponseBody
-    List<TipoUsuario> listAllProfiles() throws JsonProcessingException {
+    List<TipoUsuario> listAllProfiles() {
         return tipoUsuarioService.listAll();
     }
 

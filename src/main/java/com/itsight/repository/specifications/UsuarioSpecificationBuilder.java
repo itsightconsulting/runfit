@@ -1,6 +1,6 @@
 package com.itsight.repository.specifications;
 
-import com.itsight.domain.Usuario;
+import com.itsight.domain.Cliente;
 import com.itsight.util.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
@@ -21,17 +21,17 @@ public class UsuarioSpecificationBuilder {
         return this;
     }
 
-    public Specification<Usuario> build() {
+    public Specification<Cliente> build() {
         if (params.size() == 0) {
             return null;
         }
 
-        List<Specification<Usuario>> specs = new ArrayList<>();
+        List<Specification<Cliente>> specs = new ArrayList<>();
         for (SearchCriteria param : params) {
             specs.add(new UsuarioSpecification(param));
         }
 
-        Specification<Usuario> result = specs.get(0);
+        Specification<Cliente> result = specs.get(0);
         for (int i = 1; i < specs.size(); i++) {
             result = Specifications.where(result).and(specs.get(i));
         }

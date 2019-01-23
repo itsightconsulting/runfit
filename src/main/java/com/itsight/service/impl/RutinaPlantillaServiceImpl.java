@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -94,7 +93,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
 
     @Override
     public List<RutinaPlantilla> listarPorFiltroPT(int trainerId) {
-        return repository.findByUsuarioIdOrderByIdDesc(trainerId);
+        return repository.findByTrainerIdOrderByIdDesc(trainerId);
     }
 
     @Override

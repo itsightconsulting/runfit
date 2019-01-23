@@ -36,7 +36,7 @@ public interface SubCategoriaVideoRepository extends JpaRepository<SubCategoriaV
     List<SubCategoriaVideo> findByCategoriaId(int categoriaId);
 
     @Modifying
-    @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, usuario_id) SELECT especificacion_sub_categoria_id, :id FROM especificacion_sub_categoria order by 1", nativeQuery = true)
+    @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT especificacion_sub_categoria_id, :id FROM especificacion_sub_categoria order by 1", nativeQuery = true)
     void registrarEspecificacionNuevoEntrenador(@Param("id") int id);
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +

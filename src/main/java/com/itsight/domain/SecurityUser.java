@@ -35,6 +35,14 @@ import java.util.Set;
         }
     ),
 })
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(name = "fn_validacion_correo",
+        procedureName = "check_correo_existe",
+        parameters = {
+            @StoredProcedureParameter(name = "_correo", mode = ParameterMode.IN, type = String.class),
+            @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
+        })
+})
 public class SecurityUser{
 
     @Id
@@ -64,7 +72,7 @@ public class SecurityUser{
 
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
-    private Usuario usuario;
+    private Cliente cliente;
 
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
@@ -117,12 +125,12 @@ public class SecurityUser{
         this.enabled = enabled;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Trainer getTrainer() {
@@ -142,11 +150,6 @@ public class SecurityUser{
             x.setSecurityUser(this);
         }
         this.roles = roles;
-    }
-
-    public void addUsuario(Usuario usuario) {
-        usuario.setSecurityUser(this);
-        this.usuario = usuario;
     }
 
     public int getId() {

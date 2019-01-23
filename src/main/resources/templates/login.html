@@ -105,7 +105,7 @@
                                     <input type="text" name="username" placeholder="Username"/>
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                                     <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>
-                                        Ingresa tu nombre de usuario</b></label>
+                                        Ingresa tu nombre de cliente</b></label>
                             </section>
 
                             <section>
@@ -119,10 +119,10 @@
                                 </div>
                             </section>
                             <div th:if="${error =='error'}" class="alert alert-danger" role="alert"><i
-                                    class="fa fa-warning"></i> Inválido usuario o password o cuenta inactiva
+                                    class="fa fa-warning"></i> Inválido cliente o password o cuenta inactiva
                             </div>
                             <div th:if="${error =='expired'}" class="alert alert-danger" role="alert"><i
-                                    class="fa fa-warning"></i> Inválido usuario o password
+                                    class="fa fa-warning"></i> Inválido cliente o password
                             </div>
                             <section>
                                 <label class="checkbox">

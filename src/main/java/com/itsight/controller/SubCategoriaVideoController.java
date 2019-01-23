@@ -1,26 +1,23 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.*;
-import com.itsight.service.CategoriaVideoService;
+import com.itsight.domain.SubCategoriaVideo;
 import com.itsight.service.GrupoVideoService;
 import com.itsight.service.SubCategoriaVideoService;
-import com.itsight.service.MiniPlantillaService;
-import com.itsight.util.ClassId;
-import com.itsight.util.EntityGraphBuilder;
-import com.itsight.util.EntityVisitor;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/sub-categoria-video")
@@ -68,16 +65,17 @@ public class SubCategoriaVideoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute SubCategoriaVideo subCategoriaVideo, @RequestParam int categoriaVideoId) {
-
-        subCategoriaVideo.setCategoriaVideo(new CategoriaVideo(categoriaVideoId));
-        if (subCategoriaVideo.getId() == 0) {
-            SubCategoriaVideo obj = new SubCategoriaVideo(subCategoriaVideo.getNombre(), categoriaVideoId);
-            subCategoriaVideoService.save(obj);
-            return "1";
+    String nuevo(@ModelAttribute @Valid SubCategoriaVideo subCategoriaVideo,
+                 @RequestParam int categoriaVideoId,
+                 BindingResult bindingResult) {
+        if(!bindingResult.hasErrors()){
+            if (subCategoriaVideo.getId() == 0) {
+                SubCategoriaVideo obj = new SubCategoriaVideo(subCategoriaVideo.getNombre(), categoriaVideoId);
+                return subCategoriaVideoService.registrar(obj, null);
+            }
+            return subCategoriaVideoService.actualizar(subCategoriaVideo, null);
         }
-        subCategoriaVideoService.update(subCategoriaVideo);
-        return "2";
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/desactivar")
@@ -85,9 +83,9 @@ public class SubCategoriaVideoController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             subCategoriaVideoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

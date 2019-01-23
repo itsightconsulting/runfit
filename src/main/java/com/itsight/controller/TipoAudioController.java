@@ -1,20 +1,21 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.TipoAudio;
-import com.itsight.domain.TipoAudio;
 import com.itsight.service.TipoAudioService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/tipo-audio")
@@ -57,14 +58,15 @@ public class TipoAudioController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute TipoAudio tipoAudio) {
-        if (tipoAudio.getId() == 0) {
-            tipoAudioService.save(tipoAudio);
-            return String.valueOf(tipoAudio.getId());
-        } else {
-            tipoAudioService.update(tipoAudio);
-            return String.valueOf(tipoAudio.getId());
+    String nuevo(@ModelAttribute @Valid TipoAudio tipoAudio, BindingResult bindingResult) {
+        if(!bindingResult.hasErrors()){
+            if (tipoAudio.getId() == 0) {
+                return tipoAudioService.registrar(tipoAudio, null);
+            } else {
+                return tipoAudioService.actualizar(tipoAudio, null);
+            }
         }
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/desactivar")
@@ -72,9 +74,9 @@ public class TipoAudioController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             tipoAudioService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

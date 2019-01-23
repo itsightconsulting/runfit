@@ -38,6 +38,7 @@ let $chartMiniPorc = {};
 let $idsComp = [];
 let $semanasEnviadas = [];
 let $diasSeleccionados = [];
+let isDg = "n";//Importante iniciarlo con n
 
 //Contenedores y constantes
 const $semActual = document.querySelector('#SemanaActual');
@@ -671,7 +672,7 @@ function instanciarDatosFitnessCliente(){
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + 'gestion/usuario-fitness/obtener/secundario/'+ getParamFromURL('rn'),
+        url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
@@ -3062,4 +3063,40 @@ function cambiarEstadoBD(flag, e){
             complete: function () {}
         })
     }
+}
+
+async function verificarMaxRole(){
+    return new Promise((res, rej)=>{
+        $.ajax({
+            type: "GET",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx + "gestion/usuario/verificar/max-role",
+            dataType: "json",
+            success: function (d) {
+                res(d);
+            },
+            error: function () {},
+            complete: function () {}
+        })
+    })
+}
+
+function reconstruirCategoriasMisRutinasDg(){
+    $.ajax({
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/categoria/listarTodos",
+        dataType: "json",
+        success: function (res) {
+            const cats = res;
+            document.querySelector('#CatMisRutinas').innerHTML = cats.map(c => `
+                    <div class="col col-md-3">
+                        <h1 class="padding-bottom-10 cat-mi-rutina">${c.nombre}</h1>
+                        <a href="javascript:void(0);"><img src="${_ctx}workout/media/image/categoria/gt/0${c.rutaWeb}" height="150" width="100%" data-index="${c.id}" class="img-cat-rutina"/></a>
+                    </div>`
+            ).join('');
+        },
+        error: function () {},
+        complete: function () {}
+    })
 }

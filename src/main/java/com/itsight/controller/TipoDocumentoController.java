@@ -7,10 +7,15 @@ import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/tipo-documento")
@@ -51,14 +56,15 @@ public class TipoDocumentoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute TipoDocumento tipoDocumento) {
-        if (tipoDocumento.getId() == 0) {
-            tipoDocumentoService.save(tipoDocumento);
-            return Enums.ResponseCode.REGISTRO.get()+","+String.valueOf(tipoDocumento.getId());
-        } else {
-            tipoDocumentoService.update(tipoDocumento);
-            return Enums.ResponseCode.ACTUALIZACION.get()+","+String.valueOf(tipoDocumento.getId());
+    String nuevo(@ModelAttribute @Valid TipoDocumento tipoDocumento, BindingResult bindingResult) {
+        if(!bindingResult.hasErrors()){
+            if (tipoDocumento.getId() == 0) {
+                return tipoDocumentoService.registrar(tipoDocumento, null);
+            } else {
+                return tipoDocumentoService.actualizar(tipoDocumento, null);
+            }
         }
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @PutMapping(value = "/desactivar")
@@ -66,9 +72,9 @@ public class TipoDocumentoController {
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             tipoDocumentoService.actualizarFlagActivoById(id, flagActivo);
-            return "1";
+            return EXITO_GENERICA.get();
         } catch (Exception e) {
-            return "-9";
+            return EX_GENERIC.get();
         }
     }
 }

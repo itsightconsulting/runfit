@@ -11,5 +11,5 @@ import java.util.List;
 public interface RutinaPlantillaRepository extends JpaRepository<RutinaPlantilla, Integer> {
 
     @EntityGraph(value = "rutinaPlantilla")
-    List<RutinaPlantilla> findByUsuarioIdOrderByIdDesc(int trainerId);
+    List<RutinaPlantilla> findByTrainerIdOrderByIdDesc(int trainerId);
 }

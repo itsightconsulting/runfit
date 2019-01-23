@@ -1261,10 +1261,30 @@ DiaOpc = (function(){
         preGuardarDiaPlantilla: (ixs)=>{
             const numeroSemana = $semActual.textContent - 1;
             if($rutina.semanas[numeroSemana].dias[ixs.diaIndex].elementos.length>0) {
-                $('#modalPreGuardarMini').modal('show');
-                $('#EspecificacionSubCategoriaId').html('<option value=""> -- Seleccione -- </option>')
-                btnGuardarMini.setAttribute('data-dia-index', ixs.diaIndex);
-                catRutinasDiaIndex.setAttribute('data-dia-index', ixs.diaIndex);
+                if(isDg == "n"){
+                    verificarMaxRole().then((res)=>{
+                        if(res){
+                            isDg = res;
+                            $('#modalPreGuardarMini').modal('show');
+                            catRutinasDiaIndex.setAttribute('data-dia-index', ixs.diaIndex);
+                            reconstruirCategoriasMisRutinasDg();
+                        }else{
+                            isDg = res;
+                            $('.elegir-rutinario').click();
+                            $('#EspecificacionSubCategoriaId').html('<option value=""> -- Seleccione -- </option>')
+                            btnGuardarMini.setAttribute('data-dia-index', ixs.diaIndex);
+                        }
+                    })
+                }else{
+                    if(isDg){
+                        $('#modalPreGuardarMini').modal('show');
+                        catRutinasDiaIndex.setAttribute('data-dia-index', ixs.diaIndex);
+                    }else{
+                        $('.elegir-rutinario').click();
+                        $('#EspecificacionSubCategoriaId').html('<option value=""> -- Seleccione -- </option>')
+                        btnGuardarMini.setAttribute('data-dia-index', ixs.diaIndex);
+                    }
+                }
             }else{
                 $.smallBox({color: "alert", content: "<i>No es posible guardar el día pues este no cuenta con<br/> ningún elemento...</i>"});
             }

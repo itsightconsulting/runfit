@@ -20,19 +20,19 @@ import java.util.List;
 
 @Entity
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "usuario.tipoUsuario", attributeNodes = {
+        @NamedEntityGraph(name = "cliente.tipoUsuario", attributeNodes = {
                 @NamedAttributeNode(value = "tipoUsuario")}),
-        @NamedEntityGraph(name = "usuario.all", attributeNodes = {
+        @NamedEntityGraph(name = "cliente.all", attributeNodes = {
                 @NamedAttributeNode(value = "tipoUsuario"),
                 @NamedAttributeNode(value = "tipoDocumento")}),
-        @NamedEntityGraph(name = "usuario"),
+        @NamedEntityGraph(name = "cliente")
 })
 @Data
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
 @EqualsAndHashCode(callSuper = false)
-public class Usuario extends AuditingEntity implements Serializable {
+public class Cliente extends AuditingEntity implements Serializable {
 
     @Id
     private int id;
@@ -82,15 +82,15 @@ public class Usuario extends AuditingEntity implements Serializable {
     private List<RedFitness> lstRedIntegrante;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-    private List<UsuarioFitness> lstUsuarioFitness;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
+    private List<ClienteFitness> lstClienteFitnesses;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-    private List<UsuarioPlan> lstUsuarioPlan;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
+    private List<ClientePlan> lstClientePlan;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
     private List<VideoAudioFavorito> lstMiFavorito;
 
     @Transient
@@ -100,16 +100,16 @@ public class Usuario extends AuditingEntity implements Serializable {
     @Transient
     private String password;
 
-    public Usuario() {
+    public Cliente() {
         // TODO Auto-generated constructor stub
     }
 
-    public Usuario(int id) {
+    public Cliente(int id) {
         // TODO Auto-generated constructor stub
         this.id = id;
     }
 
-    public Usuario(String nombres, String apellidoPaterno, String apellidoMaterno) {
+    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno) {
         // TODO Auto-generated constructor stub
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;

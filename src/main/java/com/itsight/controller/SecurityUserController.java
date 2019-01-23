@@ -1,26 +1,34 @@
 package com.itsight.controller;
 
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.PasswordDto;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.repository.SecurityUserRepository;
-import com.itsight.service.AdministradorService;
-import com.itsight.service.SecUserProcedureInvoker;
-import com.itsight.service.TrainerService;
-import com.itsight.service.UsuarioService;
+import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping("/gestion/sec-user")
+@RequestMapping("/gestion/usuario")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class SecurityUserController {
 
     private SecUserProcedureInvoker secUserProcedureInvoker;
 
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
     private TrainerService trainerService;
 
@@ -28,13 +36,38 @@ public class SecurityUserController {
 
     private SecurityUserRepository securityUserRepository;
 
+    private TipoUsuarioService perfilService;
+
+    private TipoDocumentoService tipoDocumentoService;
+
+    private RolService rolService;
+
     @Autowired
-    public SecurityUserController(SecUserProcedureInvoker secUserProcedureInvoker, UsuarioService usuarioService, TrainerService trainerService, SecurityUserRepository securityUserRepository, AdministradorService administradorService){
+    public SecurityUserController(SecUserProcedureInvoker secUserProcedureInvoker,
+             ClienteService clienteService,
+             TrainerService trainerService,
+             SecurityUserRepository securityUserRepository,
+             AdministradorService administradorService,
+             TipoUsuarioService perfilService,
+             RolService rolService,
+             TipoDocumentoService tipoDocumentoService){
         this.secUserProcedureInvoker = secUserProcedureInvoker;
-        this.usuarioService = usuarioService;
+        this.clienteService = clienteService;
         this.trainerService = trainerService;
         this.securityUserRepository = securityUserRepository;
         this.administradorService = administradorService;
+        this.perfilService = perfilService;
+        this.tipoDocumentoService = tipoDocumentoService;
+        this.rolService = rolService;
+    }
+
+    @GetMapping(value = "")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView principal(Model model) {
+        model.addAttribute("lstTipoDocumento", tipoDocumentoService.findAll());
+        model.addAttribute("lstTipoUsuario", perfilService.listAll());
+        model.addAttribute("lstRol", rolService.findAll());
+        return new ModelAndView(ViewConstant.MAIN_USUARIO);
     }
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}")
@@ -57,7 +90,7 @@ public class SecurityUserController {
             else if(tipoUsuario == 2)
                 trainerService.actualizarFlagActivoById(id, flagActivo);
             else if(tipoUsuario == 3)
-                usuarioService.actualizarFlagActivoById(id, flagActivo);
+                clienteService.actualizarFlagActivoById(id, flagActivo);
             securityUserRepository.updateEstadoByUsername(username, flagActivo);
             return "1";
         } catch (Exception e) {
@@ -80,16 +113,16 @@ public class SecurityUserController {
                     val = true;
             }
         }else if(password.getTipoUsuario() == 3){
-            if (usuarioService.findOne(Integer.parseInt(password.getUserId())).getUsername().trim().equals(password.getUsername().trim())) {
+            if (clienteService.findOne(Integer.parseInt(password.getUserId())).getUsername().trim().equals(password.getUsername().trim())) {
                 if (password.getNuevaPassword().equals(password.getNuevaPasswordRe()))
                     val = true;
             }
         }
         if(val) {
             securityUserRepository.actualizarPassword(Utilitarios.encoderPassword(password.getNuevaPassword()), Integer.parseInt(password.getUserId()));
-            return "1";
+            return Enums.ResponseCode.EXITO_GENERICA.get();
         }
-        return "-9";
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
     @GetMapping(value = "/obtener")
@@ -100,12 +133,23 @@ public class SecurityUserController {
         else if(tipoUsuario == 2)
             return trainerService.findOneWithFT(usuarioId);
         else if(tipoUsuario == 3)
-            return usuarioService.findOneWithFT(usuarioId);
+            return clienteService.findOneWithFT(usuarioId);
         return null;
     }
 
     @GetMapping(value = "/validacion-correo")
-    public @ResponseBody String validarCorreoUnico(@RequestParam String correo){
-        return null;
+    public @ResponseBody Boolean validarCorreoUnico(@RequestParam String correo){
+        return securityUserRepository.findCorreoExist(correo);
+    }
+
+    @GetMapping(value = "/validacion-username")
+    public @ResponseBody Boolean validarUsernameUnico(@RequestParam String username){
+        return Optional.ofNullable(securityUserRepository.findIdByUsername(username)).isPresent();
+    }
+
+    @GetMapping(value = "/verificar/max-role")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    public @ResponseBody Boolean verificarMaxRoleDG(){
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_DG"));
     }
 }

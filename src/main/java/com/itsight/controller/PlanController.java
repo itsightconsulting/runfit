@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Plan;
-import com.itsight.domain.Usuario;
-import com.itsight.domain.UsuarioPlan;
+import com.itsight.domain.Cliente;
+import com.itsight.domain.ClientePlan;
 import com.itsight.service.PlanService;
-import com.itsight.service.UsuarioService;
-import com.itsight.service.UsuarioPlanService;
+import com.itsight.service.ClienteService;
+import com.itsight.service.ClientePlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,18 +36,18 @@ public class PlanController {
 
     private PlanService planService;
 
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
-    private UsuarioPlanService usuarioplanService;
+    private ClientePlanService usuarioplanService;
 
 
     @Autowired
-    public PlanController(ServletContext context, PlanService planService, UsuarioService us, UsuarioPlanService ups) {
+    public PlanController(ServletContext context, PlanService planService, ClienteService us, ClientePlanService ups) {
         // TODO Auto-generated constructor stub
 
         this.context = context;
         this.planService = planService;
-        this.usuarioService = us;
+        this.clienteService = us;
         this.usuarioplanService = ups;
     }
 
@@ -199,15 +199,15 @@ public class PlanController {
 
     @PostMapping(value = "/comprarPlan")
     public @ResponseBody
-    UsuarioPlan strComprarplan(@ModelAttribute Plan splan) {
+    ClientePlan strComprarplan(@ModelAttribute Plan splan) {
 
         Plan plan = planService.getPlanById(splan.getId());
         String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario usu = usuarioService.findByUsername(nameuser);
+        Cliente usu = clienteService.findByUsername(nameuser);
 
-        UsuarioPlan usuarioplan = new UsuarioPlan();
+        ClientePlan usuarioplan = new ClientePlan();
         usuarioplan.setPlan(plan);
-        usuarioplan.setUsuario(usu);
+        usuarioplan.setCliente(usu);
         usuarioplan.setMes(plan.getCantidadMeses());
 
         usuarioplanService.add(usuarioplan);

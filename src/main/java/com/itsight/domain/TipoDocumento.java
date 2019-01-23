@@ -3,6 +3,8 @@ package com.itsight.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -13,12 +15,14 @@ public class TipoDocumento {
     @Column(name = "TipoDocumentoId")
     private int id;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String nombre;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoDocumento")
-    private List<Usuario> listUsuario;
+    private List<Cliente> lstCliente;
 
     public TipoDocumento() {
     }
@@ -47,12 +51,12 @@ public class TipoDocumento {
         this.nombre = nombre;
     }
 
-    public List<Usuario> getListUsuario() {
-        return listUsuario;
+    public List<Cliente> getLstCliente() {
+        return lstCliente;
     }
 
-    public void setListUsuario(List<Usuario> listUsuario) {
-        this.listUsuario = listUsuario;
+    public void setLstCliente(List<Cliente> lstCliente) {
+        this.lstCliente = lstCliente;
     }
 
 

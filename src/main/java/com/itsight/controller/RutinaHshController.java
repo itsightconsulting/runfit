@@ -1,7 +1,6 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.dto.ResponseDto;
 import com.itsight.service.*;
@@ -31,24 +30,24 @@ public class RutinaHshController {
 
     private CategoriaService categoriaService;
 
-    private VideoAudioFavoritoService videoAudioFavoritoService;
-
-    private UsuarioService usuarioService;
-
     private RuConsolidadoService ruConsolidadoService;
 
     @Value("${domain.name}")
     private String domainName;
 
     @Autowired
-    public RutinaHshController(RutinaService rutinaService, TipoAudioService tipoAudioService, CategoriaEjercicioService categoriaEjercicioService, RedFitnessService redFitnessService, CategoriaService categoriaService,VideoAudioFavoritoService videoAudioFavoritoService, UsuarioService usuarioService, RuConsolidadoService ruConsolidadoService) {
+    public RutinaHshController(
+            RutinaService rutinaService,
+            TipoAudioService tipoAudioService,
+            CategoriaEjercicioService categoriaEjercicioService,
+            RedFitnessService redFitnessService,
+            CategoriaService categoriaService,
+            RuConsolidadoService ruConsolidadoService) {
         this.rutinaService = rutinaService;
         this.tipoAudioService = tipoAudioService;
         this.categoriaEjercicioService = categoriaEjercicioService;
         this.redFitnessService = redFitnessService;
         this.categoriaService = categoriaService;
-        this.videoAudioFavoritoService = videoAudioFavoritoService;
-        this.usuarioService = usuarioService;
         this.ruConsolidadoService = ruConsolidadoService;
     }
 
@@ -72,7 +71,6 @@ public class RutinaHshController {
                     session.setAttribute("semanaIds", rutina.getSemanaIds());
                     model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());
                     model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
-                    model.addAttribute("lstCategoriaPlantRutina", categoriaService.findByFlagActivo(true));
                     return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
                 }
             }
@@ -106,7 +104,7 @@ public class RutinaHshController {
                 return new ResponseDto(Integer.parseInt(Enums.ResponseCode.EXITO_GENERICA.get()), ruConsolidadoService.findOne(rutinaEdicionId));
             }
         }
-        return new ResponseDto(Integer.parseInt(Enums.ResponseCode.EX_VALIDATION_FAILED.get()), "El usuario ha intentado acceder a un recurso o inexistente o que no tiene acceso");
+        return new ResponseDto(Integer.parseInt(Enums.ResponseCode.EX_VALIDATION_FAILED.get()), "El cliente ha intentado acceder a un recurso o inexistente o que no tiene acceso");
     }
 
     @PutMapping(value = "/actualizarEstado/{flag}")

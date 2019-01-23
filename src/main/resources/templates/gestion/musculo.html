@@ -261,7 +261,7 @@ you can add as many as you like
                     if (textStatus == "success") {
                         let res = getResponseCodeWithId(data);
                         if (res.code  == "-150") {
-                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de usuario ya existe en el sistema...</i>",});
+                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",});
                         } else if (res.code == "-2") {
                             $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
                         } else if(res.code == "-1"){

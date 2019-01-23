@@ -289,6 +289,11 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 //que posiblemente ya tenga algunos elementos en el caso se hayan agregado nuevos roles
                 lstRolesNueva.addAll(trainer.getRoles());
             }
+
+            //Actualizando el estado del entrenador en caso este haya sido cambiado
+            if(qTrainer.isFlagActivo() != trainer.isFlagActivo())
+                securityUserRepository.updateEstadoByUsername(trainer.getUsername(), trainer.isFlagActivo());
+
             //Finalmente volvemos a setear los roles con la nueva lista y guardamos
             trainer.setRoles(lstRolesNueva);
             repository.saveAndFlush(trainer);

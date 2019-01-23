@@ -1363,14 +1363,7 @@
                 <fieldset>
                     <section class="">
                         <i id="CatRutinasDiaIndex" data-dia-index=""></i>
-                        <div class="container-fluid padding-0 text-align-center" id="CatMisRutinas">
-                            <th:block th:each="cr: ${lstCategoriaPlantRutina}">
-                                    <div class="col col-md-3">
-                                        <h1 th:text="${cr.nombre}" class="padding-bottom-10 cat-mi-rutina"></h1>
-                                        <a href="javascript:void(0);"><img th:src="@{/workout/media/image/categoria/gt/0} + ${cr.rutaWeb}" height="150" width="100%" th:attr="data-index=${cr.id}" class="img-cat-rutina"/></a>
-                                    </div>
-                            </th:block>
-                        </div>
+                        <div class="container-fluid padding-0 text-align-center" id="CatMisRutinas"></div>
                     </section>
                 </fieldset>
             </form>

@@ -76,7 +76,7 @@ function instanciarDatosFitnessCliente(){
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + 'gestion/usuario-fitness/obtener/secundario/'+ getParamFromURL('rn'),
+        url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {

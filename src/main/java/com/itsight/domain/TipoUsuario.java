@@ -18,7 +18,7 @@ public class TipoUsuario {
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoUsuario")
-    private List<Usuario> listUsuario;
+    private List<Cliente> lstCliente;
 
     public TipoUsuario() {
     }
@@ -47,12 +47,12 @@ public class TipoUsuario {
         this.nombre = nombre;
     }
 
-    public List<Usuario> getListUsuario() {
-        return listUsuario;
+    public List<Cliente> getLstCliente() {
+        return lstCliente;
     }
 
-    public void setListUsuario(List<Usuario> listUsuario) {
-        this.listUsuario = listUsuario;
+    public void setLstCliente(List<Cliente> lstCliente) {
+        this.lstCliente = lstCliente;
     }
 
 

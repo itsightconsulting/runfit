@@ -13,9 +13,9 @@ import java.io.Serializable;
 
 @Entity
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "usuarioplan"),
-        @NamedEntityGraph(name = "usuarioplan.all", attributeNodes = {
-                @NamedAttributeNode(value = "usuario"),
+        @NamedEntityGraph(name = "usuarioPlan"),
+        @NamedEntityGraph(name = "usuarioPlan.all", attributeNodes = {
+                @NamedAttributeNode(value = "cliente"),
                 @NamedAttributeNode(value = "plan")}),
 })
 @Data
@@ -23,7 +23,7 @@ import java.io.Serializable;
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
 @EqualsAndHashCode(callSuper = false)
-public class UsuarioPlan extends AuditingEntity implements Serializable {
+public class ClientePlan extends AuditingEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +32,8 @@ public class UsuarioPlan extends AuditingEntity implements Serializable {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId")
-    private Usuario usuario;
+    @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)
+    private Cliente cliente;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,12 +43,12 @@ public class UsuarioPlan extends AuditingEntity implements Serializable {
     @Column
     private int Mes;
 
-    public UsuarioPlan(int id, Usuario usuario, Plan plan, int mes) {
+    public ClientePlan(int id, Cliente cliente, Plan plan, int mes) {
         this.id = id;
-        this.usuario = usuario;
+        this.cliente = cliente;
         this.plan = plan;
         Mes = mes;
     }
 
-    public UsuarioPlan() { }
+    public ClientePlan() { }
 }

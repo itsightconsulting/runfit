@@ -1,12 +1,12 @@
 package com.itsight.repository.specifications;
 
-import com.itsight.domain.Usuario;
+import com.itsight.domain.Cliente;
 import com.itsight.util.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
 
-public class UsuarioSpecification implements Specification<Usuario> {
+public class UsuarioSpecification implements Specification<Cliente> {
 
     private SearchCriteria criteria;
 
@@ -15,7 +15,7 @@ public class UsuarioSpecification implements Specification<Usuario> {
     }
 
     @Override
-    public Predicate toPredicate(Root<Usuario> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+    public Predicate toPredicate(Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
         if (criteria.getOperation().equalsIgnoreCase(">")) {
             return builder.greaterThanOrEqualTo(

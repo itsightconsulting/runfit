@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "videoaudiofavorito"),
         @NamedEntityGraph(name = "videoaudiofavorito.all", attributeNodes = {
-                @NamedAttributeNode(value = "usuario"),
+                @NamedAttributeNode(value = "cliente"),
                 @NamedAttributeNode(value = "video"),
                 @NamedAttributeNode(value = "audio")}),
         @NamedEntityGraph(name = "videoaudio_favorito", attributeNodes = {
@@ -47,8 +47,8 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)
+    private Cliente cliente;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -81,12 +81,12 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setUsuario(int id) {
-        this.usuario = new Usuario(id);
+    public void setCliente(int id) {
+        this.cliente = new Cliente(id);
     }
 
     public Video getVideo() {

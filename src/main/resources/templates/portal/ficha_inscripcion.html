@@ -184,12 +184,12 @@
                                                     <section class="container-fluid">
                                                         <div class="form-group">
                                                             <div class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                                <label class="control-label padding-top-5">Ingrese su nombre de usuario</label>
+                                                                <label class="control-label padding-top-5">Ingrese su nombre de cliente</label>
                                                             </div>
                                                             <div class="col col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                                                 <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                                     <input id="Username" name="Username" type="text"
-                                                                           placeholder="Nombre de usuario" class="form-control" maxlength="40"
+                                                                           placeholder="Nombre de cliente" class="form-control" maxlength="40"
                                                                            autocomplete="off"/>
                                                                     <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                                 </label>
@@ -1182,21 +1182,21 @@
     function registro() {
         if ($("#frm_registro").valid()) {
             let params = {};
-            params.usuario = {};
+            params.cliente = {};
             params.condicionAnatomica = {};
-            //FK->Usuario
-            params.usuario.nombres = $('#Nombres').val();
-            params.usuario.apellidoPaterno = $('#ApellidoPaterno').val();
-            params.usuario.apellidoMaterno = $('#ApellidoMaterno').val();
-            params.usuario.tipoDocumentoId = $('#TipoDocumentoId').val();
-            params.usuario.numeroDocumento = $('#NumeroDocumento').val();
-            params.usuario.correo = $('#Correo').val();
-            params.usuario.movil = $('#CodPais').val().trim() + ' ' + $('#Movil').val();
-            params.usuario.telefonoFijo = $('#TelefonoFijo').val();
-            params.usuario.direccion = $('#Direccion').val();
-            params.usuario.fechaNacimiento = $('#FechaNacimiento').val();
-            params.usuario.username = $('#Username').val().trim();
-            //UsuarioFitness
+            //FK->Cliente
+            params.cliente.nombres = $('#Nombres').val();
+            params.cliente.apellidoPaterno = $('#ApellidoPaterno').val();
+            params.cliente.apellidoMaterno = $('#ApellidoMaterno').val();
+            params.cliente.tipoDocumentoId = $('#TipoDocumentoId').val();
+            params.cliente.numeroDocumento = $('#NumeroDocumento').val();
+            params.cliente.correo = $('#Correo').val();
+            params.cliente.movil = $('#CodPais').val().trim() + ' ' + $('#Movil').val();
+            params.cliente.telefonoFijo = $('#TelefonoFijo').val();
+            params.cliente.direccion = $('#Direccion').val();
+            params.cliente.fechaNacimiento = $('#FechaNacimiento').val();
+            params.cliente.username = $('#Username').val().trim();
+            //ClienteFitness
             params.correoSecundario = $('#CorreoSecundario').val();
             params.estadoCivil = $('#EstadoCivil').val();
             params.sexo = $('#Sexo').val();
@@ -1219,7 +1219,7 @@
             params.viaConexion = obtenerMedioDescubridor(document.querySelectorAll('.via-descubrimiento input'));
             params.nivel = obtenerValorFromChecksGenerico(document.querySelectorAll('.nivel-atleta input'));
             params.competencias = obtenerCompetencias();
-            //UsuarioFitness->CondicionAnatomica
+            //ClienteFitness->CondicionAnatomica
             params.condicionAnatomica.flagPadeceDolor = $('#FlagPadeceDolor').is(':checked');
             params.condicionAnatomica.descripcionDolor = $('#DescripcionDolor').val();
             params.condicionAnatomica.flagLesionSeisUltimosMeses = $('#FlagLesionSeisUltimosMeses').is(':checked');
@@ -1247,14 +1247,14 @@
                     $.ajax({
                         type: 'POST',
                         contentType: "application/json",
-                        url: _ctx + 'gestion/usuario-fitness/agregar',
+                        url: _ctx + 'gestion/cliente-fitness/agregar',
                         dataType: "json",
                         data: JSON.stringify(params),
                         success: function (data, textStatus) {
                             if (textStatus == "success") {
                                 let res = getResponseCodeWithId(data);
                                 if (res.code == "-150") {
-                                    $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de usuario ya existe en el sistema...</i>",});
+                                    $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",});
                                 } else if (res.code == "-2") {
                                     $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
                                 } else if(res.code == "-1"){//0: Codigo response | 1: Id del nuevo registro
@@ -1283,7 +1283,7 @@
                 $.ajax({
                     type: 'GET',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/validacion-correo',
+                    url: _ctx + 'gestion/cliente/validacion-correo',
                     dataType: "json",
                     data: params,
                     success: function (data) {
@@ -1326,7 +1326,7 @@
                 $.ajax({
                     type: 'GET',
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/validacion-username',
+                    url: _ctx + 'gestion/cliente/validacion-username',
                     dataType: "json",
                     data: params,
                     success: function (data) {
@@ -1339,10 +1339,10 @@
                             username.parentElement.classList.remove('state-success');
                             username.parentElement.classList.add('state-error');
                             if(document.querySelector('#Username-error') != null){
-                                document.querySelector('#Username-error').innerHTML = '<b>El nombre del usuario ingresado ya se encuentra registrado</b>';
+                                document.querySelector('#Username-error').innerHTML = '<b>El nombre del cliente ingresado ya se encuentra registrado</b>';
                                 document.querySelector('#Username-error').style.display = '';
                             }else{
-                                $.smallBox({color: "alert", content: "<b><i>El nombre del usuario ingresado ya se encuentra registrado...</i></b>"});
+                                $.smallBox({color: "alert", content: "<b><i>El nombre del cliente ingresado ya se encuentra registrado...</i></b>"});
                             }
 
                             if (reject != undefined) reject('fail');//Se ejecuta cuando una prosema fue hecha

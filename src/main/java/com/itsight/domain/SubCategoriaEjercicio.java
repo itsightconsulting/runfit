@@ -8,6 +8,8 @@ import com.itsight.util.Identifiable;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,8 @@ public class SubCategoriaEjercicio implements Identifiable {
     @Column(name = "SubCategoriaEjercicioId")
     private int id;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String nombre;
 

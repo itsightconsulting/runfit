@@ -127,11 +127,11 @@
                                         class="menu-item-parent"> Tipo Documento</span></a>
                             </li>
                             <li>
-                                <a th:href="@{/gestion/usuario-fitness}" title="Ficha Inscripción"><i class="fa fa-facebook-square txt-color-blueLight"></i><span
+                                <a th:href="@{/gestion/cliente-fitness}" title="Ficha Inscripción"><i class="fa fa-facebook-square txt-color-blueLight"></i><span
                                         class="menu-item-parent"> Ficha Inscripción</span></a>
                             </li>
                             <li>
-                                <a th:href="@{/gestion/usuario-fitness/planes}" title="Lista de Planes"><i class="fa fa-credit-card txt-color-blueLight"></i><span
+                                <a th:href="@{/gestion/cliente-fitness/planes}" title="Lista de Planes"><i class="fa fa-credit-card txt-color-blueLight"></i><span
                                         class="menu-item-parent"> Planes</span></a>
                             </li>
                             <li>
@@ -167,12 +167,12 @@
                         <a th:href="@{/gestion/trainer/red/estadisticas}" title="Estadísticas"><i class="fa fa-bar-chart-o"></i><span class="menu-item-parent"> Estadísticas</span></a>
                     </li>
                     <li>
-                        <a th:href="@{/gestion/usuario/micuenta}" title="Mi Cuenta"><i class="fa fa-user"></i><span class="menu-item-parent"> Mi Cuenta</span></a>
+                        <a th:href="@{/gestion/trainer/micuenta}" title="Mi Cuenta"><i class="fa fa-user"></i><span class="menu-item-parent"> Mi Cuenta</span></a>
                     </li>
                     <li>
-                        <a th:href="@{/gestion/usuario/mimediafavorito}" title="Mi audios/videos favoritos"><i class="fa fa-music"></i><span class="menu-item-parent"> Mi favoritos</span></a>
+                        <a th:href="@{/gestion/trainer/mimediafavorito}" title="Mi audios/videos favoritos"><i class="fa fa-music"></i><span class="menu-item-parent"> Mi favoritos</span></a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('DG')">
                         <a th:href="@{/gestion/mini-rutina}" title="Mis Rutinas"><i class="icofont-gym-alt-3"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
                     </li>
                 </ul>

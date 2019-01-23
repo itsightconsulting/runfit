@@ -37,27 +37,32 @@ public class RutinaPlantillaController {
 
     private ListaPlantillaSimpleService listaPlantillaSimpleService;
 
-    private TipoAudioService tipoAudioService;
-
     private CategoriaEjercicioService categoriaEjercicioService;
 
+    private TipoAudioService tipoAudioService;
+
     @Autowired
-    public RutinaPlantillaController(RutinaPlantillaService rutinaPlantillaService, DiaPlantillaService diaPlantillaService, ListaPlantillaSimpleService listaPlantillaSimpleService, CategoriaEjercicioService categoriaEjercicioService) {
+    public RutinaPlantillaController(
+            RutinaPlantillaService rutinaPlantillaService,
+            DiaPlantillaService diaPlantillaService,
+            ListaPlantillaSimpleService listaPlantillaSimpleService,
+            CategoriaEjercicioService categoriaEjercicioService,
+            TipoAudioService tipoAudioService) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.diaPlantillaService = diaPlantillaService;
         this.listaPlantillaSimpleService = listaPlantillaSimpleService;
-        this.tipoAudioService = tipoAudioService;
         this.categoriaEjercicioService = categoriaEjercicioService;
+        this.tipoAudioService = tipoAudioService;
     }
 
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView principal(Model model) {
+    public ModelAndView principal() {
         return new ModelAndView(ViewConstant.MAIN_RUTINA_PLANTILLA);
     }
 
     @GetMapping(value = "/trainer")
-    public ModelAndView principalTrainer(Model model) {
+    public ModelAndView principalTrainer() {
         return new ModelAndView(ViewConstant.MAIN_TRAINER_RUTINA_PLANTILLA);
     }
 
@@ -88,9 +93,9 @@ public class RutinaPlantillaController {
 
     @GetMapping(value = "/trainer/red/obtenerListado")
     public @ResponseBody
-    List<RutinaPlantilla> listadoRutinaPlantillaRed(@RequestParam int redFitnessId, @RequestParam int usuarioId, HttpSession session) {
+    List<RutinaPlantilla> listadoRutinaPlantillaRed(@RequestParam int redFitnessId, @RequestParam int clienteId, HttpSession session) {
         //trainerId == usuarioId
-        session.setAttribute("clienteId", usuarioId);
+        session.setAttribute("clienteId", clienteId);
         session.setAttribute("redFitnessId", redFitnessId);
         int trainerId = Integer.parseInt(session.getAttribute("id").toString());
         //PT: Por trainer
@@ -108,7 +113,7 @@ public class RutinaPlantillaController {
         RutinaPlantilla objRp = new RutinaPlantilla();
         //Pasando del Dto al objeto
         BeanUtils.copyProperties(rutinaPlantilla, objRp);
-        objRp.setUsuario(userId);
+        objRp.setTrainer(userId);
         //Instanciando lista de semanas
         List<SemanaPlantilla> semanas = new ArrayList<>();
         for (SemanaPlantillaDto semana: rutinaPlantilla.getSemanas()) {

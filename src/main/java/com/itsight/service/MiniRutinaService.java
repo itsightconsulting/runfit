@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface MiniRutinaService extends BaseService<MiniRutina> {
 
-    MiniRutina findByUsuarioIdAndCategoriaId(int id, int categoriaId);
+    MiniRutina findByTrainerIdAndCategoriaId(int id, int categoriaId);
 
-    List<MiniRutina> findAllByUsuarioId(int usuarioId);
+    List<MiniRutina> findAllByTrainerId(int trainerId);
 
-    List<Integer> findAllCategoriaIdByUsuarioId(int usuarioId);
+    List<Integer> findAllCategoriaIdByTrainerId(int trainerId);
 
-    MiniRutina findByCategoriaIdAndUsuarioId(int catId, int usuarioId);
+    MiniRutina findByCategoriaIdAndTrainerId(int catId, int trainerId);
 }

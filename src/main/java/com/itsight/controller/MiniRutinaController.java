@@ -31,7 +31,7 @@ import static com.itsight.util.Enums.ResponseCode.REGISTRO;
 
 @Controller
 @RequestMapping("/gestion/mini-rutina")
-@PreAuthorize("hasRole('TRAINER') OR hasRole('ADMIN')")
+@PreAuthorize("hasRole('DG')")//Sección única para Dennys Gorina
 public class MiniRutinaController {
 
     private MiniRutinaService miniRutinaService;
@@ -51,7 +51,6 @@ public class MiniRutinaController {
     }
 
     @GetMapping(value = "")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal(Model model) {
         model.addAttribute("lstCategorias", categoriaService.findAll());
         return new ModelAndView(ViewConstant.MAIN_MIS_RUTINAS_TRAINER);
@@ -69,7 +68,7 @@ public class MiniRutinaController {
                     HttpSession session) {
         if(metrica.matches(Validador.velMetricaPattern)){
             //Obteniendo el diaId
-            int usuarioId = Integer.parseInt(session.getAttribute("id").toString());
+            int trainerId = Integer.parseInt(session.getAttribute("id").toString());
             int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
             int diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
             MiMiniRutina miMiniRutina = new MiMiniRutina();
@@ -82,7 +81,7 @@ public class MiniRutinaController {
             miMiniRutina.setMetrica(metrica);
             miMiniRutinaService.save(miMiniRutina);
 
-            MiniRutina miniRutina = miniRutinaService.findByUsuarioIdAndCategoriaId(usuarioId, Integer.parseInt(categoriaId));
+            MiniRutina miniRutina = miniRutinaService.findByTrainerIdAndCategoriaId(trainerId, Integer.parseInt(categoriaId));
             List<MiRutinaPk> miMiniRutinaPks;
             //Verificamos que aún no se haya insertado alguna mini plantilla a lstMiniRutina
             if(miniRutina != null && miniRutina.getMiRutinaIds() != null && miniRutina.getMiRutinaIds().size()> 0){
@@ -90,7 +89,7 @@ public class MiniRutinaController {
             }else{
                 miniRutina = new MiniRutina();
                 miniRutina.setCategoria(Integer.parseInt(categoriaId));
-                miniRutina.setUsuario(usuarioId);
+                miniRutina.setTrainer(trainerId);
                 miMiniRutinaPks = new ArrayList<>();
             }
             //Registrando primero el dia rutinario
@@ -109,17 +108,17 @@ public class MiniRutinaController {
 
     }
 
-    @GetMapping("/obtenerCategoriasId/ByUsuario")
+    @GetMapping("/obtenerCategoriasId/byTrainer")
     public @ResponseBody List<Integer> obtenerCategoriasMiniRutina(HttpSession session){
-        int usuarioId = Integer.parseInt(session.getAttribute("id").toString());
-        return miniRutinaService.findAllCategoriaIdByUsuarioId(usuarioId);
+        int trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        return miniRutinaService.findAllCategoriaIdByTrainerId(trainerId);
     }
 
     @GetMapping("/obtener-rutinas/by/categoria/{catId}")
     public @ResponseBody ResponseDto obtenerMisMiniRutinas(@PathVariable(value = "catId") String catId, HttpSession session){
         if(Utilitarios.isInteger(catId)){
-            int usuarioId = Integer.parseInt(session.getAttribute("id").toString());
-            Optional<MiniRutina> optionalLst = Optional.ofNullable(miniRutinaService.findByCategoriaIdAndUsuarioId(Integer.parseInt(catId), usuarioId));
+            int trainerId = Integer.parseInt(session.getAttribute("id").toString());
+            Optional<MiniRutina> optionalLst = Optional.ofNullable(miniRutinaService.findByCategoriaIdAndTrainerId(Integer.parseInt(catId), trainerId));
             if(optionalLst.isPresent()){
                 optionalLst.get().getMiRutinaIds().forEach(v->v.setId(0));
                 return new ResponseDto(Integer.parseInt(Enums.ResponseCode.SUCCESS_QUERY.get()),optionalLst.get().getMiRutinaIds());

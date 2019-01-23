@@ -42,10 +42,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //http.addFilterAfter(new AjaxAuthenticationFilter(), BasicAuthenticationFilter.class);
 
         http.authorizeRequests()
-                .antMatchers("/gestion/usuario-fitness").permitAll()
-                .antMatchers("/gestion/usuario-fitness/agregar").permitAll()
-                .antMatchers("/gestion/usuario/validacion-correo").permitAll()
-                .antMatchers("/gestion/usuario/validacion-username").permitAll()
+                .antMatchers("/gestion/cliente-fitness").permitAll()
+                .antMatchers("/gestion/cliente-fitness/agregar").permitAll()
+                .antMatchers("/gestion/cliente/validacion-correo").permitAll()
+                .antMatchers("/gestion/cliente/validacion-username").permitAll()
                 .antMatchers("/session-expirada").permitAll()
                 .antMatchers("/session-multiple").permitAll();
 

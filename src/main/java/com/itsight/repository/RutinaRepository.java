@@ -15,7 +15,7 @@ import java.util.List;
 public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
     @EntityGraph(value = "rutina")
-    List<Rutina> findByUsuarioIdOrderByIdDesc(int clienteId);
+    List<Rutina> findByClienteIdOrderByIdDesc(int clienteId);
 
     @EntityGraph(value = "rutina")
     @Query("SELECT R FROM Rutina R WHERE R.redFitness.id = ?1 ORDER BY 1 DESC")
@@ -37,8 +37,8 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
 
     @EntityGraph(value = "rutina")
-    @Query("SELECT R FROM Rutina R LEFT JOIN FETCH R.lstSemana D where R.usuario.id =?1")
-    List<Rutina> findByUsuarioId(int id);
+    @Query("SELECT R FROM Rutina R LEFT JOIN FETCH R.lstSemana D where R.cliente.id =?1")
+    List<Rutina> findByClienteId(int id);
 
     @Modifying
     @Query(value = "UPDATE Rutina SET control = jsonb_set(jsonb_set(control, CAST(:avance as text[]), CAST(:valorAvance as jsonb), false), CAST(:strdias as text[]), CAST(:valordias as jsonb), false) WHERE rutina_id = :id", nativeQuery = true)

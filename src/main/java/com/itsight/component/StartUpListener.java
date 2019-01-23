@@ -96,7 +96,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     private TipoDocumentoService tipoDocumentoService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
     @Autowired
     private RedFitnessService redFitnessService;
@@ -108,7 +108,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     private PorcentajesKilometrajeService porcentajesKilometrajeService;
 
     @Autowired
-    private UsuarioFitnessService usuarioFitnessService;
+    private ClienteFitnessService clienteFitnessService;
 
     @Value("${main.repository}")
     private String mainRoute;
@@ -652,11 +652,14 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             rol.setRole("ROLE_ADMIN");
             SecurityRole rol1 = new SecurityRole();
             rol1.setRole("ROLE_TRAINER");
+            SecurityRole rol11 = new SecurityRole();
+            rol11.setRole("ROLE_DG");
             lstRoles.add(rol);
             lstRoles.add(rol1);
+            lstRoles.add(rol11);
             //Añadiendo roles al secUser
             secUserTrainer.setRoles(lstRoles);
-            //Añadiendole los datos detalle del entrenador(TB: Usuario)
+            //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer();
             trainer.setNombres("Pedro");
             trainer.setApellidoPaterno("Carpio");
@@ -689,7 +692,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             trainerService.cargarRutinarioCe(secUserTrainer.getId());
 
             //Agregando cliente a entrenador creado
-            Usuario usuario1 = new Usuario();
+            Cliente cliente1 = new Cliente();
             SecurityUser secUserCliente = new SecurityUser();
             secUserCliente.setUsername("pernio16");
             secUserCliente.setPassword(new BCryptPasswordEncoder().encode("@dmin@2018"));
@@ -703,33 +706,33 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             lstRolesCli.add(rolCli);
             //Añadiendo roles al secUser
             secUserCliente.setRoles(lstRolesCli);
-            //Añadiendole los datos detalle del entrenador(TB: Usuario)
-            usuario1.setNombres("Pernio");
-            usuario1.setApellidoPaterno("Rodriguez");
-            usuario1.setApellidoMaterno("Alcantará");
-            usuario1.setMovil("51 987654321");
-            usuario1.setTelefonoFijo("5532133");
-            usuario1.setCorreo("pernio16.carranza@itsight.pe");
-            usuario1.setNumeroDocumento("44444444");
-            usuario1.setUsername("pernio16");
+            //Añadiendole los datos detalle del entrenador(TB: Cliente)
+            cliente1.setNombres("Pernio");
+            cliente1.setApellidoPaterno("Rodriguez");
+            cliente1.setApellidoMaterno("Alcantará");
+            cliente1.setMovil("51 987654321");
+            cliente1.setTelefonoFijo("5532133");
+            cliente1.setCorreo("pernio16.carranza@itsight.pe");
+            cliente1.setNumeroDocumento("44444444");
+            cliente1.setUsername("pernio16");
             List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
             com.itsight.domain.jsonb.Rol rolCliJson = new com.itsight.domain.jsonb.Rol();
             rolCliJson.setNombre("ROLE_RUNNER");
             rolCliJson.setId(3);
             lstRolCli.add(rolCliJson);
-            usuario1.setRoles(lstRolCli);
-            usuario1.setTipoDocumento(1);
-            usuario1.setFechaNacimiento(Parseador.fromStringToDate("1987-01-01"));
-            usuario1.setTipoUsuario(3);
-            usuario1.setFlagActivo(true);
-            //secUserCliente.addUsuario(usuario1);
-            usuario1.setSecurityUser(secUserCliente);
-            usuarioService.save(usuario1);
+            cliente1.setRoles(lstRolCli);
+            cliente1.setTipoDocumento(1);
+            cliente1.setFechaNacimiento(Parseador.fromStringToDate("1987-01-01"));
+            cliente1.setTipoUsuario(3);
+            cliente1.setFlagActivo(true);
+            //secUserCliente.addUsuario(cliente1);
+            cliente1.setSecurityUser(secUserCliente);
+            clienteService.save(cliente1);
             //userRepository.save(secUserCliente);
 
 
             //Guardando al cliente en la red del entrenador creado anteriormente
-            redFitnessService.save( new RedFitness(trainer.getId(), usuario1.getId()));
+            redFitnessService.save( new RedFitness(trainer.getId(), cliente1.getId()));
 
             //Agregando sus porcentajes base para la creación de macro-ciclos
             if(porcentajesKilometrajeService.findOne(1) == null){
@@ -764,30 +767,30 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             }
 
             //Agregando su información fitness básica
-            UsuarioFitness usuarioFitness1 = new UsuarioFitness();
-            usuarioFitness1.setNivel(3);
-            usuarioFitness1.setEstadoCivil(1);
-            usuarioFitness1.setImc(15);
-            usuarioFitness1.setPeso(BigDecimal.valueOf(66));
-            usuarioFitness1.setSexo(1);
-            usuarioFitness1.setDesgasteZapatilla("Inicio");
-            usuarioFitness1.setObjetivosDescripcion("Demo");
-            usuarioFitness1.setTerrenoPredominante("Asfalto");
-            usuarioFitness1.setDiaDescanso(1);
+            ClienteFitness clienteFitness1 = new ClienteFitness();
+            clienteFitness1.setNivel(3);
+            clienteFitness1.setEstadoCivil(1);
+            clienteFitness1.setImc(15);
+            clienteFitness1.setPeso(BigDecimal.valueOf(66));
+            clienteFitness1.setSexo(1);
+            clienteFitness1.setDesgasteZapatilla("Inicio");
+            clienteFitness1.setObjetivosDescripcion("Demo");
+            clienteFitness1.setTerrenoPredominante("Asfalto");
+            clienteFitness1.setDiaDescanso(1);
             CondicionAnatomica ca = new CondicionAnatomica();
             ca.setFrecuenciaCardiaca(65);
             ca.setFrecuenciaCardiacaMaxima(190);
-            usuarioFitness1.setCondicionAnatomica(ca);
-            usuarioFitness1.setTiemposDisponibles(new ArrayList<>());
-            usuarioFitness1.setObjetivos(new ArrayList<>());
-            usuarioFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
-            usuarioFitness1.setMejoras(new ArrayList<>());
-            usuarioFitness1.setFrecuenciaComunicacion(1);
-            usuarioFitness1.setViaConexion("Demo");
-            usuarioFitness1.setTalla(166);
+            clienteFitness1.setCondicionAnatomica(ca);
+            clienteFitness1.setTiemposDisponibles(new ArrayList<>());
+            clienteFitness1.setObjetivos(new ArrayList<>());
+            clienteFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
+            clienteFitness1.setMejoras(new ArrayList<>());
+            clienteFitness1.setFrecuenciaComunicacion(1);
+            clienteFitness1.setViaConexion("Demo");
+            clienteFitness1.setTalla(166);
             List<CompetenciaRunner> comps = new ArrayList<>();
             Integer[] distancias = {10,21,42};
-            String[] fechas = {"2018-11-10","2018-12-10","2019-01-27"};
+            String[] fechas = {"2019-02-10","2019-03-10","2019-04-27"};
             String[] tiempos = {"00:58", "02:10", "04:12"};
             for(int i=0; i<3;i++){
                 CompetenciaRunner cr = new CompetenciaRunner();
@@ -799,9 +802,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 comps.add(cr);
             }
             comps.get(2).setPrioridad(1);
-            usuarioFitness1.setCompetencias(comps);
-            usuarioFitness1.setUsuario(3);
-            usuarioFitnessService.save(usuarioFitness1);
+            clienteFitness1.setCompetencias(comps);
+            clienteFitness1.setCliente(3);
+            clienteFitnessService.save(clienteFitness1);
         } else {
             System.out.println("> Record already exist <");
         }

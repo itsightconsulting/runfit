@@ -42,7 +42,7 @@ public class RestDemoController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private UsuarioFitnessService usuarioFitnessService;
+    private ClienteFitnessService usuarioFitnessService;
 
     @Autowired
     private DiaService diaService;
@@ -95,13 +95,13 @@ public class RestDemoController {
         }
 
         builder.with("flagActivo","=", true);
-        Specification<Usuario> spec = builder.build();
-        usuarioRepository.findAll(spec).forEach(usuario-> System.out.println(usuario.getNombreCompleto()));
+        Specification<Cliente> spec = builder.build();
+        usuarioRepository.findAll(spec).forEach(cliente-> System.out.println(cliente.getNombreCompleto()));
         return tipoAudioService.findAllWithChildrens();
     }
 
     @GetMapping("/fitness")
-    public  @ResponseBody List<UsuarioFitness> listaAllUsuariosFitness(){
+    public  @ResponseBody List<ClienteFitness> listaAllUsuariosFitness(){
         return usuarioFitnessService.findAll();
     }
 

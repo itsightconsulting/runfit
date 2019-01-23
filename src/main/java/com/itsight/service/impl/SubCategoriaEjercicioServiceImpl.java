@@ -5,6 +5,7 @@ import com.itsight.domain.Video;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.SubCategoriaEjercicioRepository;
 import com.itsight.service.SubCategoriaEjercicioService;
+import com.itsight.util.Enums;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,13 +131,15 @@ public class SubCategoriaEjercicioServiceImpl extends BaseServiceImpl<SubCategor
     @Override
     public String registrar(SubCategoriaEjercicio entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.save(entity);
+        return Enums.ResponseCode.REGISTRO.get();
     }
 
     @Override
     public String actualizar(SubCategoriaEjercicio entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+        repository.saveAndFlush(entity);
+        return Enums.ResponseCode.ACTUALIZACION.get();
     }
 
     @Override

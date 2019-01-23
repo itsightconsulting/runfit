@@ -25,8 +25,8 @@ import java.util.List;
 
 
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "rutina.usuario", attributeNodes = {
-                @NamedAttributeNode(value = "usuario")}),
+        @NamedEntityGraph(name = "rutina.cliente", attributeNodes = {
+                @NamedAttributeNode(value = "cliente")}),
         @NamedEntityGraph(name = "rutina"),
 })
 @TypeDefs({
@@ -73,8 +73,8 @@ public class Rutina extends AuditingEntity {
     private Date fechaFin;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", referencedColumnName = "SecurityUserId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)
+    private Cliente cliente;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RedFitnessId", referencedColumnName = "RedFitnessId", updatable = false)
@@ -99,8 +99,8 @@ public class Rutina extends AuditingEntity {
         this.id = id;
     }
 
-    public void setUsuario(int userId) {
-        this.usuario = new Usuario(userId);
+    public void setCliente(int userId) {
+        this.cliente = new Cliente(userId);
     }
 
     public void setRedFitness(int redFitnessId){this.redFitness = new RedFitness(redFitnessId);}

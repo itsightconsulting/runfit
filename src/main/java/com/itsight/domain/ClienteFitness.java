@@ -10,7 +10,6 @@ import lombok.Data;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
@@ -18,31 +17,31 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @NamedEntityGraphs({
-    @NamedEntityGraph(name = "usuarioFitness.usuario",
+    @NamedEntityGraph(name = "clienteFitness.cliente",
         attributeNodes = {
-            @NamedAttributeNode(value = "usuario")
+            @NamedAttributeNode(value = "cliente")
     }),
-    @NamedEntityGraph(name = "usuarioFitness")
+    @NamedEntityGraph(name = "clienteFitness")
 })
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
 @Entity
 @Data
-public class UsuarioFitness implements Serializable {
+public class ClienteFitness implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "usuario_fitness_seq")
+    @GeneratedValue(generator = "cliente_fitness_seq")
     @GenericGenerator(
-        name = "usuario_fitness_seq",
+        name = "cliente_fitness_seq",
         strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
         parameters = {
                 @Parameter(name = "prefer_sequence_per_entity", value = "true"),
-                @Parameter(name = "usuario_fitness_seq", value = "usuario_fitness_seq"),
+                @Parameter(name = "cliente_fitness_seq", value = "cliente_fitness_seq"),
                 @Parameter(name = "initial_value", value = "1"),
                 @Parameter(name = "increment_size", value = "1")
         })
-    @Column(name="UsuarioFitnessId")
+    @Column(name="ClienteFitnessId")
     private int id;
     @Column
     private String correoSecundario;
@@ -100,15 +99,15 @@ public class UsuarioFitness implements Serializable {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UsuarioId", updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)
+    private Cliente cliente;
 
-    public void setUsuario(Usuario usuario){
-        this.usuario = usuario;
+    public void setCliente(Cliente cliente){
+        this.cliente = cliente;
     }
 
-    public void setUsuario(int usuarioId){
-        this.usuario = new Usuario(usuarioId);
+    public void setCliente(int usuarioId){
+        this.cliente = new Cliente(usuarioId);
     }
 
 }

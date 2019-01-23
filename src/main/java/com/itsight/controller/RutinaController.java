@@ -2,38 +2,32 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.SubElemento;
-import com.itsight.domain.pojo.MetricaVelPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
-import com.itsight.util.Validador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static com.itsight.util.Enums.ResponseCode;
 
@@ -42,7 +36,7 @@ import static com.itsight.util.Enums.ResponseCode;
 @RequestMapping("/gestion/rutina")
 public class RutinaController {
 
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
     private RutinaService rutinaService;
 
@@ -58,12 +52,12 @@ public class RutinaController {
     private String domainName;
 
     @Autowired
-    public RutinaController(RutinaService rutinaService, DiaService diaService, RedFitnessService redFitnessService, SemanaService semanaService,UsuarioService usuarioService,VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
+    public RutinaController(RutinaService rutinaService, DiaService diaService, RedFitnessService redFitnessService, SemanaService semanaService, ClienteService clienteService, VideoAudioFavoritoService videoAudioFavoritoService, RuConsolidadoService ruConsolidadoService) {
         this.rutinaService = rutinaService;
         this.diaService = diaService;
         this.redFitnessService = redFitnessService;
         this.semanaService = semanaService;
-        this.usuarioService = usuarioService;
+        this.clienteService = clienteService;
         this.videoAudioFavoritoService = videoAudioFavoritoService;
     }
 
@@ -84,32 +78,12 @@ public class RutinaController {
         return rutinaService.listarPorFiltro(comodin, "", "");
     }
 
-    //PT: Para trainer
-    @GetMapping(value = "/trainer/obtenerListado")
-    public @ResponseBody
-    List<Rutina> listadoConFiltroPT(HttpSession session) {
-        //trainerId == usuarioId
-        int trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        //PT: Por trainer
-        return rutinaService.listarPorFiltroPT(trainerId);
-    }
-
-    @GetMapping(value = "/trainer/red/obtenerListado")
-    public @ResponseBody
-    List<Rutina> listadoRutinaRed(@RequestParam int usuarioId, HttpSession session) {
-        //trainerId == usuarioId
-        session.setAttribute("clienteId", usuarioId);
-        int trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        //PT: Por trainer
-        return rutinaService.listarPorFiltroPT(trainerId);
-    }
-
     @GetMapping(value = "/primera-semana/edicion")
     public @ResponseBody Semana obtenerPrimeraSemanaRutina(HttpSession session) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaRutinaId"));
         if(sessionValor.isPresent())
             return semanaService.findOneWithDaysById((int) sessionValor.get());
-        else//En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
+        else//En caso no se encuentre el id de la semana, significa que el cliente ha intentado ingresar directamente
               // desde un simple peticion get y no desde su vista de red fitness
             return new Semana();
     }
@@ -125,7 +99,7 @@ public class RutinaController {
             else
                 return new Semana();
         }
-        //En caso no se encuentre el id de la semana, significa que el usuario ha intentado ingresar directamente
+        //En caso no se encuentre el id de la semana, significa que el cliente ha intentado ingresar directamente
         // desde un simple peticion get y no desde su vista de red fitness
         return null;
     }
@@ -160,8 +134,8 @@ public class RutinaController {
         RutinaPlantilla rp = rutinaPlantillaService.findOne(rutinaPlantillaId);
         Rutina rutina = new Rutina();
         BeanUtils.copyProperties(rp, rutina);
-        //Asignandole al usuario==clienteId la rutina
-        rutina.setUsuario(clienteId);
+        //Asignandole al cliente==clienteId la rutina
+        rutina.setCliente(clienteId);
         rutinaService.save(rutina);
         //Actualizandole el flag a la redfitness del cliente
         redFitnessService.updateFlagEnActividadById(redFitnessId, true);
@@ -432,7 +406,7 @@ public class RutinaController {
     @PostMapping(value = "/elemento/adddeletefavorito")
     public @ResponseBody String agregarEliminarFavorito(@RequestParam int videoid,@RequestParam int audioid,@RequestParam int addedit) {
         String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario objuse = usuarioService.findByUsername(nameuser);
+        Cliente objuse = clienteService.findByUsername(nameuser);
         VideoAudioFavorito videoaudio = new VideoAudioFavorito();
         VideoAudioFavorito videoaudioexiste = null;
         if (videoid != 0) {
@@ -452,7 +426,7 @@ public class RutinaController {
                 videoaudio.setAudio(audioid);
             }
             videoaudio.setFlagActivo(true);
-            videoaudio.setUsuario(objuse.getId());
+            videoaudio.setCliente(objuse.getId());
             videoAudioFavoritoService.save(videoaudio);
         }
 
@@ -465,17 +439,17 @@ public class RutinaController {
     @GetMapping(value = "/elemento/obtenermisfavoritos")
     public @ResponseBody List<VideoAudioFavorito> obtenerMisFavoritos(){
         String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario objuse = usuarioService.findByUsername(nameuser);
-        return videoAudioFavoritoService.findByUsuarioId(objuse.getId());
+        Cliente objuse = clienteService.findByUsername(nameuser);
+        return videoAudioFavoritoService.findByClienteId(objuse.getId());
     }
 
     @PostMapping(value = "/elemento/adddeletetexto")
     public @ResponseBody String adddeletetexto(@RequestParam String titulo,@RequestParam String descripcion,@RequestParam int addedit) {
         String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario objuse = usuarioService.findByUsername(nameuser);
+        Cliente objuse = clienteService.findByUsername(nameuser);
         VideoAudioFavorito videoaudiotexto = new VideoAudioFavorito();
         if (addedit == 0) {
-            videoaudiotexto.setUsuario(objuse.getId());
+            videoaudiotexto.setCliente(objuse.getId());
             videoaudiotexto.setTitulo(titulo);
             videoaudiotexto.setDescripcion(descripcion);
             videoaudiotexto.setTipo(Enums.TipoMedia.TEXTO.get());

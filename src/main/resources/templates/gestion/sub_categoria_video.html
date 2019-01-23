@@ -313,18 +313,16 @@ you can add as many as you like
                 data: params,
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
-                        if (data == "-9") {
+                        if (data == "-1") {
                             $.smallBox({
-                                content: "<i> La operación ha fallado, por favor comuniquese con el administrador...</i>",
-                                timeout: 4500,
-                                color: "alert",
+                                content: "<i class='fa fa-child'></i> <i>Registro exitoso...!</i>",
                             });
-                        } else if (data == "2") {
+                        }else if (data == "-2") {
                             $.smallBox({
                                 content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
                             });
-                        } else {
-                            $.smallBox({});
+                        }else{
+                            notificacionesRutinaSegunResponseCode(data);
                         }
                     }
                 },

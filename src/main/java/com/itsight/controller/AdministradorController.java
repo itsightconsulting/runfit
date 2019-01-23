@@ -81,14 +81,4 @@ public class AdministradorController {
         }
         return administradorService.actualizar(administrador, rols);
     }
-
-    @GetMapping(value = "/validacion-correo")
-    public @ResponseBody String validarCorreoUnico(@RequestParam String correo){
-        return administradorService.validarCorreo(correo);
-    }
-
-    @GetMapping(value = "/validacion-username")
-    public @ResponseBody String validarUsernameUnico(@RequestParam String username){
-        return administradorService.validarUsername(username);
-    }
 }

@@ -47,7 +47,7 @@ public class Plan {
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "plan")
-    private List<UsuarioPlan> lstUsurioPlan;
+    private List<ClientePlan> lstUsurioPlan;
 
     public Plan() {
     }
