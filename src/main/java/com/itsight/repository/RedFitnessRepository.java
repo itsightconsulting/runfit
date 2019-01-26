@@ -13,16 +13,16 @@ import java.util.List;
 @Repository
 public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer> {
 
-    @EntityGraph(value = "redFitness.integrante")
+    @EntityGraph(value = "redFitness.cliente")
     RedFitness findOneById(int id);
 
-    @EntityGraph(value = "redFitness.integrante")
-    @Query("SELECT R FROM RedFitness R JOIN FETCH R.integrante U JOIN FETCH R.trainer RU  WHERE R.trainer.codigoTrainer = ?1")
+    @EntityGraph(value = "redFitness.cliente")
+    @Query("SELECT R FROM RedFitness R JOIN FETCH R.cliente U JOIN FETCH R.trainer RU  WHERE R.trainer.codigoTrainer = ?1")
     List<RedFitness> findAllByTrainerCodigoTrainer(String codigoTrainer);
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.nota = ?2 WHERE R.id = ?1")
-    void actualizarNotaAIntegrante(int id, String nota);
+    void actualizarNotaACliente(int id, String nota);
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaFinalPlanificacion = ?3, R.contadorRutinas = R.contadorRutinas + ?4 WHERE R.id = ?1")
@@ -38,15 +38,15 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @Query("UPDATE RedFitness R SET R.fechaFinalPlanificacion = ?2 WHERE R.id = ?1")
     void updateUltimaFechaPlanificacionById(int id, Date fechaFinalPlanificacion );
 
-    @EntityGraph(value = "redFitness.integrante")
+    @EntityGraph(value = "redFitness.cliente")
     RedFitness findByTrainerCodigoTrainer(String codTrainer);
 
-    @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1 AND R.integrante.id = ?2")
+    @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1 AND R.cliente.id = ?2")
     String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
 
-    @Query("SELECT M.trainer.codigoTrainer FROM RedFitness M where M.integrante.id = ?1 and M.estadoPlan != 5")
+    @Query("SELECT M.trainer.codigoTrainer FROM RedFitness M where M.cliente.id = ?1 and M.estadoPlan != 5")
     List<String> findTrainerByUsuarioId(int id);
 
-    @Query("SELECT M.trainer.id FROM RedFitness M where M.integrante.id = ?1 and M.estadoPlan != 5")
+    @Query("SELECT M.trainer.id FROM RedFitness M where M.cliente.id = ?1 and M.estadoPlan != 5")
     List<Integer> findTrainerIdByUsuarioId(int id);
 }

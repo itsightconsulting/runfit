@@ -43,7 +43,7 @@ public class SecurityServiceImpl implements UserDetailsService {
 
     private User buildUser(SecurityUser securityUser, Set<GrantedAuthority> lstRole) {
         return
-                new User(securityUser.getUsername() + "|"+securityUser.getId(),
+                new User(securityUser.getUsername() + "|"+securityUser.getId(),//Artificio
                         securityUser.getPassword(),
                         securityUser.isEnabled(),
                         true,

@@ -211,7 +211,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
 
                     //Enviando correo al nuevo administrador
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, administrador.getTipoUsuario().getId(), domainName);
-                    emailService.enviarCorreoInformativo("Dennys Workout Platform", administrador.getCorreo(), sb.toString());
+                    emailService.enviarCorreoInformativo("Bienvenido a la familia", administrador.getCorreo(), sb.toString());
                     return ResponseCode.REGISTRO.get()+','+String.valueOf(administrador.getId())+','+flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();

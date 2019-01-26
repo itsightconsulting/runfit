@@ -78,7 +78,7 @@ public class Cliente extends AuditingEntity implements Serializable {
     private SecurityUser securityUser;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "integrante")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
     private List<RedFitness> lstRedIntegrante;
 
     @JsonBackReference
@@ -92,6 +92,14 @@ public class Cliente extends AuditingEntity implements Serializable {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
     private List<VideoAudioFavorito> lstMiFavorito;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
+    private List<MultimediaDetalle> lstMultimediaDetalle;
+
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
+    private ConfiguracionCliente confCliente;
 
     @Transient
     @JsonSerialize
@@ -114,6 +122,25 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
+    }
+    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno, String correo, String telefonoFijo, String movil, String username,
+                   String numeroDocumento, int tipoDocumentId, int tipoUsuarioId, boolean flagActivo) {
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.correo = correo;
+        this.telefonoFijo = telefonoFijo;
+        this.movil = movil;
+        this.username = username;
+        this.numeroDocumento = numeroDocumento;
+        this.tipoDocumento = new TipoDocumento(tipoDocumentId);
+        this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
+        this.setFlagActivo(flagActivo);
+    }
+
+    public void setConfCliente(ConfiguracionCliente confCliente) {
+        confCliente.setCliente(this);
+        this.confCliente = confCliente;
     }
 
 

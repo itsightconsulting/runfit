@@ -25,6 +25,10 @@ public class SecurityPrivilege {
     public SecurityPrivilege() {
     }
 
+    public SecurityPrivilege(String privilege) {
+        this.privilege = privilege;
+    }
+
     public int getId() {
         return id;
     }

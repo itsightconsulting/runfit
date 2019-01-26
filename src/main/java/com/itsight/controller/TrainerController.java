@@ -66,9 +66,9 @@ public class TrainerController {
         return trainerService.listarPorFiltro(comodin, estado, perfil);
     }
 
-    @GetMapping(value = "/mimediafavorito")
-    public ModelAndView miMediaFavorito() {
-        return new ModelAndView(ViewConstant.MI_MEDIA_FAVORITO);
+    @GetMapping(value = "/consejos")
+    public ModelAndView misConsejos() {
+        return new ModelAndView(ViewConstant.MAIN_CONSEJOS_TRAINER);
     }
 
     @GetMapping(value = "/micuenta")

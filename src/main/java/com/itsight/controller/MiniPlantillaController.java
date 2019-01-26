@@ -42,7 +42,7 @@ public class MiniPlantillaController {
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal() {
-        return new ModelAndView(ViewConstant.MAIN_OBJETIVO);
+        return new ModelAndView(ViewConstant.MAIN_MINI_PLANTILLA);
     }
 
     @GetMapping(value = "/obtener")
@@ -77,7 +77,6 @@ public class MiniPlantillaController {
         int trainerId = Integer.parseInt(session.getAttribute("id").toString());
         int totalMiniPlantillas = miniPlantillaService.findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(trainerId, esSubCatId);
         return String.valueOf(totalMiniPlantillas);
-
     }
 
     @PostMapping(value = "/agregar/dia-rutinario")

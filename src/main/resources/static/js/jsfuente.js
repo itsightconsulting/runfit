@@ -385,7 +385,18 @@ function getFechaFormatoString(d) {
 function setFechaActual(array) {
     let dateToString = d => `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
     array.forEach(v => {
-        v.value = dateToString(new Date());
+        if(v.id == 'MacroFechaInicio'){
+            const t = new Date();
+            const d = t.getDay();
+            if(d == 1)
+                v.value = dateToString(t);
+            else if(d == 0){
+                v.value = moment(t).add(1, 'days').format("YYYY-MM-DD");
+            }else {
+                v.value = moment(t).add((7-d)+1, 'days').format("YYYY-MM-DD");
+            }
+        }else
+            v.value = dateToString(new Date());
     });
 }
 function dateToArrayFormat(d){

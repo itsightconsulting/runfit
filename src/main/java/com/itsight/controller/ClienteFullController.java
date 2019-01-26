@@ -7,7 +7,6 @@ import com.itsight.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,7 +30,6 @@ public class ClienteFullController {
     private DiaRutinarioService diaRutinarioService;
     private EspecificacionSubCategoriaService especificacionSubCategoriaService;
 
-
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -51,7 +49,7 @@ public class ClienteFullController {
     }
 
     @GetMapping(value = "")
-    public ModelAndView principal(Model model) {
+    public ModelAndView principal() {
         return new ModelAndView(ViewConstant.CLIENTE_PRINCIPAL);
     }
 
@@ -84,7 +82,6 @@ public class ClienteFullController {
         int id = (int)session.getAttribute("id");
         List<String> listaCodigosEntranadores = redFitnessService.findTrainerByUsuarioId(id);
         List<MultimediaEntrenador> lista =  multimediaEntrenadorService.findByListEntrenador(listaCodigosEntranadores);
-        String fullPath = mainRoute +"/Multimedia/";
         for (MultimediaEntrenador obj : lista) {
             if (obj.getNombreArchivoUnico() != null) {
                 String nuevaruta = obj.getTrainer().getId() +"/" + obj.getNombreArchivoUnico()+obj.getExtension();
@@ -94,10 +91,8 @@ public class ClienteFullController {
             List<MultimediaDetalle> detalle = multimediaEntrenadorService.findByIdEntrenador(obj.getId());
             obj.setCantidadLikes(detalle.size());
 
-            obj.setMylike(false);
-
             for(MultimediaDetalle p : detalle) {
-                if(p.getTrainer().getId() == id) {
+                if(p.getCliente().getId() == id) {
                     obj.setMylike(true);
                     break;
                 }
@@ -110,22 +105,17 @@ public class ClienteFullController {
     public @ResponseBody String updateMyLike(@RequestParam int id,@RequestParam int estado,HttpSession session) {
         int iduser = (int)session.getAttribute("id");
         MultimediaDetalle detalle = new MultimediaDetalle();
-
-        if (estado == 0) {
-            detalle.setTrainer(iduser);
-            detalle.setMultimediaentrenador(id);
+        Integer mulDetalleId = multimediaDetalleRepository.findByMultimediaEntrenadorIdAndClienteId(id, iduser).orElse(0);
+        if (mulDetalleId == 0) {
+            detalle.setCliente(iduser);
+            detalle.setMultimediaEntrenador(id);
             detalle.setFlagActivo(true);
             multimediaDetalleRepository.save(detalle);
         } else {
-            detalle =  multimediaDetalleRepository.findbyTrainerByEntrenador(id,iduser);
-            if(detalle  != null){
-                multimediaDetalleRepository.delete(detalle.getId());
-            }
+            multimediaDetalleRepository.delete(mulDetalleId);
         }
         return ACTUALIZACION.get();
     }
-
-
 
 
     @GetMapping(value = "/get/subcategorias")

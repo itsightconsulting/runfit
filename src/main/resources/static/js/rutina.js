@@ -62,7 +62,7 @@ class Rutina {
 										<header role="heading" class="heading-off">
 								            <h2>${v.literal} ${v.dia}</h2>
 								            ${!semana.flagFull ?
-                                    `<div class="widget-toolbar borderless" onclick="focoARutina();">
+                        `<div class="widget-toolbar borderless" onclick="focoARutina();">
 								            			<a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Avanzar hasta la rutina del primer día"><i class="fa fa-arrow-right fa-15x"></i></a>
 								            		 </div>` : ''}
                                                      </header>
@@ -352,7 +352,7 @@ RutinaOpc = (function(){
 
             const calendarSem = []; let calendarBody = "";
             let diaFor = new Date(anioFechaReferencial, mesFechaReferencial, 1);
-            
+
             //Obteniendo los dias que tendran cada semana como arreglo(Ejemplo de arreglo mes 31 días: 7|7|7|7|3)
             for(let i=0; i<mesArray.length;i++){
                 if(i==0){
@@ -413,7 +413,7 @@ RutinaOpc = (function(){
                     }
                     if(d> min && d<=max)
                         primSem++;
-                //Solo cumple para el último mes/últimas semana
+                    //Solo cumple para el último mes/últimas semana
                 }else if(semanasIxs[semanasIxs.length-1] == $rutina.totalSemanas-1) {
                     for(let x=0; x < v; x++) {
                         if (d <= max) {
@@ -558,20 +558,20 @@ RutinaOpc = (function(){
                 let filtros =   `<div class="container-fluid padding-0 cal-acordeon-query">
                                     <div class="panel-group smart-accordion-default smart-form" id="accordionX1">
                                     ${finals.map((v,i,k)=>{
-                                    const claseIn = v[0]==anioBase?'in':'', claseCollap = v[0]==anioBase?'':'class="collapsed"';
-                                        return `<div class="panel panel-default">
+                    const claseIn = v[0]==anioBase?'in':'', claseCollap = v[0]==anioBase?'':'class="collapsed"';
+                    return `<div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title"><a class="txt-color-blue" data-toggle="collapse" data-parent="#accordionX1" href="#collapCal${i}" ${claseCollap}> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> ${v[0]} </a></h4>
+                                                        <h4 class="panel-title txt-color-blue"><a class="txt-color-blue" data-toggle="collapse" data-parent="#accordionX1" href="#collapCal${i}" ${claseCollap}> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> ${v[0]} </a></h4>
                                                     </div>
                                                     <div id="collapCal${i}" class="panel-collapse collapse ${claseIn}">
                                                         <div class="panel-body" data-anio="${Number(k[0][0])+i}" style="padding: 0px !important;">
                                                         ${v[1].map(z=>{
-                                                            return `<div class="col col-md-3 bg-color-white txt-color-blue bordered mes-calendar" data-mes="${z}">${meses[z].substr(0,3).toUpperCase()}</div>`
-                                                        }).join('')}
+                        return `<div class="col col-md-3 bg-color-white txt-color-blue bordered mes-calendar" data-mes="${z}">${meses[z].substr(0,3).toUpperCase()}</div>`
+                    }).join('')}
                                                         </div>
                                                     </div>
                                                 </div>`
-                                    }).join('')}
+                }).join('')}
                                     </div>
                                  </div>`;
                 contenedorPadreBase.parentElement.appendChild(htmlStringToElement(filtros));
@@ -1267,6 +1267,7 @@ DiaOpc = (function(){
                             isDg = res;
                             $('#modalPreGuardarMini').modal('show');
                             catRutinasDiaIndex.setAttribute('data-dia-index', ixs.diaIndex);
+                            btnGuardarMini.setAttribute('data-dia-index', ixs.diaIndex);
                             reconstruirCategoriasMisRutinasDg();
                         }else{
                             isDg = res;
@@ -1897,30 +1898,30 @@ ElementoOpc = (function(){
                     mainContainer.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
                 }
             }else{
-                //ELEMENTOS
+                //ELEMENTOS(Para Simple && Compuesta)
                 const mainContainerEle = mainContainer.parentElement;
-                const tipoContent = mainContainerEle.parentElement.parentElement.parentElement.getAttribute('data-type');
-                if(tipoContent == 1){//Simple
-                    if(mainContainerEle.nodeName == "A"){
-                        if(mainContainerEle.children.length == 3){
-                            $(mainContainerEle.children[2].children[0]).slideUp('slow', ()=> {
-                                mainContainerEle.children[2].remove();
-                            });
-                        }else{
-                            mainContainerEle.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
-                        }
-                    }
-                }else{//Compuesto(Lista)
-                    if(mainContainerEle.nodeName == "A"){
-                        if(mainContainerEle.children.length == 4){
-                            $(mainContainerEle.children[3].children[0]).slideUp('slow', ()=> {
-                                mainContainerEle.children[3].remove();
-                            });
-                        }else{
-                            mainContainerEle.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
-                        }
+                //const tipoContent = mainContainerEle.parentElement.parentElement.parentElement.getAttribute('data-type');
+                /*if(tipoContent == 1){*///Simple
+                if(mainContainerEle.nodeName == "A"){
+                    if(mainContainerEle.children.length == 5){
+                        $(mainContainerEle.children[4].children[0]).slideUp('slow', ()=> {
+                            mainContainerEle.children[4].remove();
+                        });
+                    }else{
+                        mainContainerEle.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
                     }
                 }
+                /*}else{//Compuesto(Lista)
+                    if(mainContainerEle.nodeName == "A"){
+                        if(mainContainerEle.children.length == 5){
+                            $(mainContainerEle.children[4].children[0]).slideUp('slow', ()=> {
+                                mainContainerEle.children[4].remove();
+                            });
+                        }else{
+                            mainContainerEle.append(htmlStringToElement(RutinaPS.videoMiniatura(mediaVideo)));
+                        }
+                    }
+                }*/
             }
         },
         descomprimirDetalle: (ele)=>{
@@ -2207,14 +2208,15 @@ RutinaSeccion = (function (){
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
                                 <a href="javascrip:void(0);">
-                                    <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
-                                    <span class="txt-color-black lista-title">
+                                    <i class="fa fa-lg fa-angle-down pull-right invisible"></i>
+                                    <i class="fa fa-lg fa-angle-up pull-right invisible"></i>  
+                                    <input type="number" maxlength="3" class="agregar-tiempo pull-right" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                                    <span class="lista-title">
                                         <span class="pull-left">
                                             <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                             <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                         </span>
-                                        <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
-                                        <input type="number" maxlength="3" class="agregar-tiempo pull-right" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>                                          
+                                        <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>                                          
                                     </span>
                                 </a>
                             </h4>
@@ -2230,17 +2232,17 @@ RutinaSeccion = (function (){
             let subEleHTML = `
                     <div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="${tipo}">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title">
+                                            <h4 class="panel-title txt-color-blue">
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}">
                                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
-                                                        <span class="txt-color-blue lista-title">
+                                                        <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                                                        <span class="lista-title">
                                                             <span class="pull-left">
                                                                 <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                                                 <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento2(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                                             </span>
                                                             <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
-                                                            <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                                         </span>
                                                     </a>
                                             </h4>
@@ -2270,14 +2272,15 @@ RutinaSeccion = (function (){
                               <div class="panel-heading">
                                   <h4 class="panel-title txt-color-blue">
                                       <a href="javascrip:void(0);">
-                                          <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
-                                          <span class="txt-color-black lista-title">
+                                          <i class="fa fa-lg fa-angle-down pull-right invisible"></i>
+                                          <i class="fa fa-lg fa-angle-up pull-right invisible"></i>
+                                          <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>  
+                                          <span class="lista-title">
                                               <span class="pull-left">
                                                 <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                                 <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                               </span>
-                                              <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
-                                              <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>                                                                              
+                                              <span class="rf-dia-elemento-nombre padding-10" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>                                                                                                                            
                                           </span>
                                       </a>
                                   </h4>
@@ -2288,17 +2291,17 @@ RutinaSeccion = (function (){
                 elementoHTML =
                     `<div class="panel panel-default rf-dia-elemento" data-index="${ix}" data-type="2">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title">
+                                                        <h4 class="panel-title txt-color-blue">
                                                              <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}">
                                                                  <i class="fa fa-lg fa-angle-down pull-right text-primary"></i>
                                                                  <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
-                                                                 <span class="txt-color-blue lista-title">
+                                                                 <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                                                                 <span class="lista-title">
                                                                      <span class="pull-left">
                                                                          <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                                                          <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento2(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                                                      </span>
                                                                      <span class="rf-dia-elemento-nombre padding-10" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover" data-index="${ix}" data-dia-index="${diaIndex}">${nombre}</span>
-                                                                     <input type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                                                  </span>
                                                              </a>
                                                         </h4>
@@ -2486,14 +2489,15 @@ RutinaElementoHTML = (function(){
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
                                 <a href="javascrip:void(0);" class="${ess.header}">
-                                    <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
-                                    <span class="txt-color-black lista-title">
+                                    <i class="fa fa-lg fa-angle-down pull-right invisible"></i>
+                                    <i class="fa fa-lg fa-angle-up pull-right invisible"></i>
+                                    <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" data-placement="top" rel="tooltip" data-original-title="Tiempo en minutos"/> 
+                                    <span class="lista-title">
                                         <span class="pull-left">
                                             ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
                                             ${ele.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                         </span>
-                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>
-                                        <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" data-placement="top" rel="tooltip" data-original-title="Tiempo en minutos"/>  
+                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>  
                                     </span>
                                 </a>
                                 ${RutinaElementoHTML.iconoNota(ele.nota)}
@@ -2507,17 +2511,17 @@ RutinaElementoHTML = (function(){
             let ix = ++indexGlobal;
             return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title txt-color-blue">
                                     <a data-toggle="collapse" class="${ess.header}" data-parent="#accordion" href="#collapse${ix}">
                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
-                                        <span class="txt-color-blue lista-title">
+                                        <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                                        <span class="lista-title">
                                             <span class="pull-left">
                                                 ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}    
                                                 ${ele.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                             </span>
                                             <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover" data-dia-pos="${posDia}" data-pos="${posEle}">${ele.nombre}</span>
-                                            <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                         </span>
                                     </a>
                                     ${RutinaElementoHTML.iconoNota(ele.nota)}
@@ -2561,16 +2565,17 @@ RutinaElementoHTML = (function(){
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
                                 <a href="javascrip:void(0);" class="${ess.header}">
-                                    <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
-                                    <span class="txt-color-black lista-title">
+                                    <i class="fa fa-lg fa-angle-down pull-right invisible"></i>
+                                    <i class="fa fa-lg fa-angle-up pull-right invisible"></i>
+                                    <input value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo show" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/> 
+                                    <span class="lista-title">
                                         <span class="pull-left">
                                             ${ele.mediaVideo != undefined && ele.mediaVideo != ''?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
                                             ${ele.mediaAudio != undefined && ele.mediaAudio != ''?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
                                             <i class="fa fa-plus txt-color-blueLight padding-top-3 insertar-debajo font-xs" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                             <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                         </span>
-                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
-                                        <input value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>  
+                                        <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>  
                                     </span>
                                 </a>
                                 ${RutinaElementoHTML.iconoNota(ele.nota)}
@@ -2586,11 +2591,12 @@ RutinaElementoHTML = (function(){
             let ix = ++indexGlobal;
             return `<div class="panel panel-default rf-dia-elemento ${ess.margen}" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
+                            <h4 class="panel-title txt-color-blue">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse${ix}" class="${ess.header}">
                                         <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
                                         <i class="fa fa-lg fa-angle-up pull-right text-primary"></i>
-                                        <span class="txt-color-blue lista-title">
+                                        <input value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo show" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                                        <span class="lista-title">
                                             <span class="pull-left">                                         
                                                 ${ele.mediaVideo != undefined && ele.mediaVideo != ''?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}
                                                 ${ele.mediaAudio != undefined && ele.mediaAudio != ''?RutinaElementoHTML.iconoAudio(ele.mediaAudio):''}
@@ -2598,7 +2604,6 @@ RutinaElementoHTML = (function(){
                                                 <i class="fa fa-caret-up txt-color-blue ele-ops padding-top-3" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento2(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover"></i>
                                             </span>
                                             <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover">${ele.nombre}</span>
-                                            <input value="${ele.minutos}" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                                         </span>
                                     </a>
                                     ${RutinaElementoHTML.iconoNota(ele.nota)}
@@ -2641,7 +2646,7 @@ RutinaElementoHTML = (function(){
         subElementoPaste: (sEle, diaIndex, eleIndex)=>{
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-                    return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
+            return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
                                 <span class="pull-left">
                                      ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
                                      ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
@@ -2805,9 +2810,9 @@ Indicadores = (function(){
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-7 padding-0">
                                 ${t == 1 ?
-                                    `<b> ${i == 0 ? metricas[i].indicadores.max.substr(3) : i == 6 ? metricas[i].indicadores.min.substr(3): metricas[i].indicadores.max.substr(3) +' - '+ metricas[i].indicadores.min.substr(3)}</b>`
-                                    :`<b> ${metricas[i].min} - ${metricas[i].max}</b>`
-                                }
+                    `<b> ${i == 0 ? metricas[i].indicadores.max.substr(3) : i == 6 ? metricas[i].indicadores.min.substr(3): metricas[i].indicadores.max.substr(3) +' - '+ metricas[i].indicadores.min.substr(3)}</b>`
+                    :`<b> ${metricas[i].min} - ${metricas[i].max}</b>`
+                    }
                             </div>                            
                         </div>`
             }
@@ -2863,11 +2868,11 @@ Indicadores = (function(){
                                 <span class="txt-color-orange font-md">${metricas[i].tt}</span><br/>
                             </div>
                         </div>`
-                        if((i+1)%4 == 0 && (i+1) == metricas.length){
-                            raw+='</div>';
-                        }else if((i+1)%4 == 0){
-                            raw+='</div><div class="col-md-12 col-sm-12 col-xs-12">';
-                        }
+                if((i+1)%4 == 0 && (i+1) == metricas.length){
+                    raw+='</div>';
+                }else if((i+1)%4 == 0){
+                    raw+='</div><div class="col-md-12 col-sm-12 col-xs-12">';
+                }
             }
             return raw;
         },

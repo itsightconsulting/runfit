@@ -114,8 +114,8 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public void actualizarNotaAIntegrante(int id, String nota) {
-        repository.actualizarNotaAIntegrante(id, nota);
+    public void actualizarNotaACliente(int id, String nota) {
+        repository.actualizarNotaACliente(id, nota);
     }
 
     @Override

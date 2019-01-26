@@ -93,10 +93,6 @@ public class Trainer extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<MultimediaEntrenador> lstMultimediaentrenador;
 
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
-    private List<MultimediaDetalle> lstMultimediadetalle;
-
     @Transient
     private String password;
 
@@ -121,6 +117,23 @@ public class Trainer extends AuditingEntity implements Serializable {
         // TODO Auto-generated constructor stub
         this.id = id;
         this.codigoTrainer = codigoTrainer;
+    }
+
+    public Trainer(String nombres, String apellidoPaterno, String apellidoMaterno, String correo, String telefonoFijo, String movil, String username,
+                String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, String codigoTrainer, boolean flagActivo) {
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.correo = correo;
+        this.telefonoFijo = telefonoFijo;
+        this.movil = movil;
+        this.username = username;
+        this.numeroDocumento = numeroDocumento;
+        this.flagRutinarioCe = flagRutinarioCe;
+        this.tipoDocumento = new TipoDocumento(tipoDocumentId);
+        this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
+        this.codigoTrainer = codigoTrainer;
+        this.setFlagActivo(flagActivo);
     }
 
     public void setTipoUsuario(int id) {

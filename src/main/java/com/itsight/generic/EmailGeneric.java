@@ -24,7 +24,7 @@ public abstract class EmailGeneric {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     UTF_8.name());
-            helper.setFrom(hostMail);
+            helper.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
             helper.setSubject(asunto);
             helper.setTo(new InternetAddress(receptor));
             if(copiado!= null)helper.setCc(copiado);
@@ -42,7 +42,7 @@ public abstract class EmailGeneric {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     UTF_8.name());
-            helper.setFrom(hostMail);
+            helper.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
             helper.setSubject(asunto);
             helper.setTo(new InternetAddress(receptor));
             if(copiados!=null && copiados.length>0) {
@@ -65,7 +65,7 @@ public abstract class EmailGeneric {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     UTF_8.name());
-            helper.setFrom(hostMail);
+            helper.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
             helper.setSubject(asunto);
             helper.setTo(new InternetAddress(receptor));
             if(copiados!=null && copiados.length>0) {
@@ -87,9 +87,9 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(hostMail);
+            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
             mimeMessage.setSubject(asunto);
-            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
+            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor, "RunFit Plataform"));
             mimeMessage.setContent(contenido
                     , "text/html; charset=utf-8");
         };
@@ -99,7 +99,7 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido, String copiado) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(hostMail);
+            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
             mimeMessage.setSubject(asunto);
             mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
             if(copiado!=null && copiado.length() > 0) {
@@ -114,7 +114,7 @@ public abstract class EmailGeneric {
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido, String[] copiados) {
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            mimeMessage.setFrom(hostMail);
+            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
             mimeMessage.setSubject(asunto);
             mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
             if(copiados!=null && copiados.length>0) {

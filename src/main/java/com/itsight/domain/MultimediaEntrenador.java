@@ -44,59 +44,58 @@ public class MultimediaEntrenador  extends AuditingEntity implements Serializabl
     @Column(name = "MultimediaEntrenadorId")
     private int id;
 
+    @Column
+    private int tipo;
+
+    @Column
+    private String titulo;
+
+    @Column
+    private String descripcion;
+
+    @Column
+    private String nombreArchivoUnico;
+
+    @Column
+    private String extension;
+
+    @Column
+    private String duracion;
+
+    @Column
+    private String peso;
+
+    @Transient
+    private String rutaWeb;
+
+    @Transient
+    private int cantidadLikes;
+
+    @Transient
+    private boolean mylike;
+
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TrainerId", updatable = false)
     private Trainer trainer;
 
-    @Column
-    private int Tipo;
-
-    @Column
-    private String Titulo;
-
-    @Column
-    private String Descripcion;
-
-    @Column
-    private String NombreArchivoUnico;
-
-    @Column
-    private String Extension;
-
-    @Column
-    private String Duracion;
-
-    @Column
-    private String Peso;
-
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "multimediaentrenador")
-    private List<MultimediaDetalle> lstMultimediadetalle;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "multimediaEntrenador")
+    private List<MultimediaDetalle> lstMultimediaDetalle;
 
-    @Transient
-    private String RutaWeb;
-
-    @Transient
-    private int CantidadLikes;
-
-    @Transient
-    private boolean Mylike;
-
-    public int getCantidadLikes() {
-        return CantidadLikes;
+    public List<MultimediaDetalle> getLstMultimediaDetalle() {
+        return lstMultimediaDetalle;
     }
 
-    public void setCantidadLikes(int cantidadLikes) {
-        CantidadLikes = cantidadLikes;
+    public void setLstMultimediaDetalle(List<MultimediaDetalle> lstMultimediadetalle) {
+        this.lstMultimediaDetalle = lstMultimediadetalle;
     }
 
-    public boolean isMylike() {
-        return Mylike;
+    public MultimediaEntrenador(int id){
+        this.id = id;
     }
+    public MultimediaEntrenador(){
 
-    public void setMylike(boolean mylike) {
-        Mylike = mylike;
     }
 
     public int getId() {
@@ -107,90 +106,91 @@ public class MultimediaEntrenador  extends AuditingEntity implements Serializabl
         this.id = id;
     }
 
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getNombreArchivoUnico() {
+        return nombreArchivoUnico;
+    }
+
+    public void setNombreArchivoUnico(String nombreArchivoUnico) {
+        this.nombreArchivoUnico = nombreArchivoUnico;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public String getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(String duracion) {
+        this.duracion = duracion;
+    }
+
+    public String getPeso() {
+        return peso;
+    }
+
+    public void setPeso(String peso) {
+        this.peso = peso;
+    }
+
+    public String getRutaWeb() {
+        return rutaWeb;
+    }
+
+    public void setRutaWeb(String rutaWeb) {
+        this.rutaWeb = rutaWeb;
+    }
+
+    public int getCantidadLikes() {
+        return cantidadLikes;
+    }
+
+    public void setCantidadLikes(int cantidadLikes) {
+        this.cantidadLikes = cantidadLikes;
+    }
+
+    public boolean isMylike() {
+        return mylike;
+    }
+
+    public void setMylike(boolean mylike) {
+        this.mylike = mylike;
+    }
+
     public Trainer getTrainer() {
         return trainer;
     }
 
-    public void setTrainer(int id) {
-        this.trainer = new Trainer(id);
-    }
-
-    public int getTipo() {
-        return Tipo;
-    }
-
-    public void setTipo(int tipo) {
-        Tipo = tipo;
-    }
-
-    public String getTitulo() {
-        return Titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        Titulo = titulo;
-    }
-
-    public String getDescripcion() {
-        return Descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        Descripcion = descripcion;
-    }
-
-    public String getNombreArchivoUnico() {
-        return NombreArchivoUnico;
-    }
-
-    public void setNombreArchivoUnico(String nombreArchivoUnico) {
-        NombreArchivoUnico = nombreArchivoUnico;
-    }
-
-    public String getExtension() {
-        return Extension;
-    }
-
-    public void setExtension(String extension) {
-        Extension = extension;
-    }
-
-    public String getRutaWeb() {
-        return RutaWeb;
-    }
-
-    public void setRutaWeb(String rutaWeb) {
-        RutaWeb = rutaWeb;
-    }
-
-    public String getDuracion() {
-        return Duracion;
-    }
-
-    public void setDuracion(String duracion) {
-        Duracion = duracion;
-    }
-
-    public String getPeso() {
-        return Peso;
-    }
-
-    public void setPeso(String peso) {
-        Peso = peso;
-    }
-
-    public List<MultimediaDetalle> getLstMultimediadetalle() {
-        return lstMultimediadetalle;
-    }
-
-    public void setLstMultimediadetalle(List<MultimediaDetalle> lstMultimediadetalle) {
-        this.lstMultimediadetalle = lstMultimediadetalle;
-    }
-
-    public MultimediaEntrenador(int id){
-        this.id = id;
-    }
-    public MultimediaEntrenador(){
-
+    public void setTrainer(int trainerId) {
+        this.trainer = new Trainer(trainerId);
     }
 }

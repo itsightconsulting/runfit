@@ -70,7 +70,7 @@ function GenerarDiv(item){
                             </a>
                         </div>
                         <div class="media-body media-middle">
-                            <div><a href="#">${item.cliente.nombreCompleto}</a> ${estado}</div>
+                            <div><a href="#">${item.trainer.nombreCompleto}</a> ${estado}</div>
                                 <small class="text-muted">publicado ${item.fechaCreacion}</small>
                             </div>
                         </div>

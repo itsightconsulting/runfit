@@ -15,8 +15,8 @@ import java.io.Serializable;
 @Entity
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "multimedia_detalle"),
-        @NamedEntityGraph(name = "multimedia_detalle.all", attributeNodes = {
-                @NamedAttributeNode(value = "trainer"),
+        @NamedEntityGraph(name = "multimedia_detalle.cliente", attributeNodes = {
+                @NamedAttributeNode(value = "cliente"),
         })
 })
 @Data
@@ -44,12 +44,12 @@ public class MultimediaDetalle extends AuditingEntity implements Serializable {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MultimediaEntrenadorId", updatable = false)
-    private MultimediaEntrenador multimediaentrenador;
+    private MultimediaEntrenador multimediaEntrenador;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TrainerId", updatable = false)
-    private Trainer trainer;
+    @JoinColumn(name = "ClienteId", updatable = false)
+    private Cliente cliente;
 
     public int getId() {
         return id;
@@ -59,20 +59,24 @@ public class MultimediaDetalle extends AuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public MultimediaEntrenador getMultimediaentrenador() {
-        return multimediaentrenador;
+    public MultimediaEntrenador getMultimediaEntrenador() {
+        return multimediaEntrenador;
     }
 
-    public void setMultimediaentrenador(int multimediaentrenador) {
-        this.multimediaentrenador = new MultimediaEntrenador(multimediaentrenador);
+    public void setMultimediaEntrenador(int multimediaEntrenadorId) {
+        this.multimediaEntrenador = new MultimediaEntrenador(multimediaEntrenadorId);
     }
 
-    public Trainer getTrainer() {
-        return trainer;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setTrainer(int trainer) {
-        this.trainer = new Trainer(trainer);
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setCliente(int clienteId) {
+        this.cliente = new Cliente(clienteId);
     }
 
     public MultimediaDetalle(int id) {

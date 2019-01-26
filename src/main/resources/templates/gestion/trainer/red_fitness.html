@@ -131,12 +131,12 @@
                                 <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle" data-align="center"
                                     data-width="80">Fecha Fin Planificación
                                 </th>
-                                <th data-field="integrante.nombreCompleto" data-class="nombre-integrante" data-formatter="linkFormatter" data-halign="left" data-valign="middle" data-align="left">Nombre
+                                <th data-field="cliente.nombreCompleto" data-class="nombre-cliente" data-formatter="linkFormatter" data-halign="left" data-valign="middle" data-align="left">Nombre
                                 </th>
-                                <th data-field="integrante.movil" data-halign="center" data-valign="middle" data-align="center"
+                                <th data-field="cliente.movil" data-halign="center" data-valign="middle" data-align="center"
                                     data-width="115">Móvil
                                 </th>
-                                <th data-field="integrante.fechaUltimoAcceso" data-halign="center" data-valign="middle" data-align="center"
+                                <th data-field="cliente.fechaUltimoAcceso" data-halign="center" data-valign="middle" data-align="center"
                                     data-width="140">Último Acceso
                                 </th>
                             </tr>
@@ -217,7 +217,7 @@
 
     function eventosGeneralesFocusOut(e){
 
-        if(e.target.classList.contains('nota-integrante')){
+        if(e.target.classList.contains('nota-cliente')){
             let id = e.target.getAttribute('data-id');
             let nota = e.target.value.trim();
             let params = {};
@@ -294,9 +294,9 @@
 
     function linkFormatter(value, row) {
         if(row.contadorRutinas == 0){
-            return String('<a class="" href="#" onclick="javascript:noCuentaConPrograma()" title="El atleta aún no cuenta con ninguna rutina asignada">' + row.integrante.nombreCompleto + '</a>', value);
+            return String('<a class="" href="#" onclick="javascript:noCuentaConPrograma()" title="El atleta aún no cuenta con ninguna rutina asignada">' + row.cliente.nombreCompleto + '</a>', value);
         }else{
-            return String('<a class="" href="#" onclick="javascript:verUltimoPrograma(' + row.id +','+ row.integrante.id+ ')" title="Ir al último programa">' + row.integrante.nombreCompleto + '</a>', value);
+            return String('<a class="" href="#" onclick="javascript:verUltimoPrograma(' + row.id +','+ row.cliente.id+ ')" title="Ir al último programa">' + row.cliente.nombreCompleto + '</a>', value);
         }
     }
 
@@ -311,8 +311,8 @@
 
         switch(row.estadoPlan) {
             case EstadoPlan.SIN_PLAN:
-                opciones += `<a data-toggle="modal" data-target="#myModalPlantillas"  onclick='javascript:asignarPlantilla(${row.id}, ${row.integrante.id},"${row.integrante.correo}",${index});' title='Asignar Rutina'><i class='fa fa-file-text fa-2x'></i></a> &nbsp &nbsp
-                             <a href='#' onclick='javascript:crearNuevaRutina(${row.id},${row.integrante.id},${index}, ${row.contadorRutinas});' title='Crear Rutina'><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`
+                opciones += `<a data-toggle="modal" data-target="#myModalPlantillas"  onclick='javascript:asignarPlantilla(${row.id}, ${row.cliente.id},"${row.cliente.correo}",${index});' title='Asignar Rutina'><i class='fa fa-file-text fa-2x'></i></a> &nbsp &nbsp
+                             <a href='#' onclick='javascript:crearNuevaRutina(${row.id},${row.cliente.id},${index}, ${row.contadorRutinas});' title='Crear Rutina'><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`
                 break;
             case EstadoPlan.EN_REVISION:
                 opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
@@ -335,9 +335,9 @@
         return opciones;
     }
 
-    function crearNuevaRutina(id, integranteId){
+    function crearNuevaRutina(id, clienteId){
         id = getHash32Id('rf-rutina', id);
-        integranteId = getHash16Id('rf-rutina', integranteId);
+        clienteId = getHash16Id('rf-rutina', clienteId);
         $.SmartMessageBox({
             title: "<i class='fa fa-bullhorn'></i> Workout Notification",
             content: "" +
@@ -345,7 +345,7 @@
             buttons: '[NO][SI]'
         }, function (ButtonPressed) {
             if (ButtonPressed === "SI") {
-               window.location.href = _ctx+'rutina/pre?key='+id + '&rn='+integranteId;//res.id para el caso = redFitnessId;
+               window.location.href = _ctx+'rutina/pre?key='+id + '&rn='+clienteId;//res.id para el caso = redFitnessId;
             }
         });
 
@@ -353,8 +353,8 @@
 
     }
 
-    function verUltimoPrograma(redFitnessId, integranteId){
-       window.location.href = _ctx+'rutina/edicion?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', integranteId);
+    function verUltimoPrograma(redFitnessId, clienteId){
+       window.location.href = _ctx+'rutina/edicion?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', clienteId);
     }
 
     function estadoPlan(value, row){
@@ -394,11 +394,11 @@
         return "-";
     }
 
-    function asignarPlantilla(redId, integranteId, correo , index){
+    function asignarPlantilla(redId, clienteId, correo , index){
         let plantillas = document.querySelector('#Plantillas');
         document.querySelector('#spRaw3').innerHTML = spinnerHTMLRawCsMessage('Cargando...');
         let params = {};
-        params.clienteId = integranteId;
+        params.clienteId = clienteId;
         params.redFitnessId = redId;
         $('#CorreoCliente').text(correo);
         $.ajax({
@@ -413,7 +413,7 @@
                     data.forEach((plantilla,i)=>{
                         htmlRaw += `    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <div class="row" style="border-radius: 5%;margin:5px;background: #cae6b9 !important;">
-                                                <a href="#" onclick="javascript:elegirPlantillaParaIntegrante(${plantilla.id}, ${index});" class="elegir-plantilla" data-plantilla-id="${plantilla.id}" >
+                                                <a href="#" onclick="javascript:elegirPlantillaParaCliente(${plantilla.id}, ${index});" class="elegir-plantilla" data-plantilla-id="${plantilla.id}" >
                                                     <h6 class="text-align-center bg-color-lighten txt-color-orangeDark">${i+1}</h6>
                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
                                                         <h6>Años: </h6>
@@ -445,7 +445,7 @@
         })
     }
 
-    function elegirPlantillaParaIntegrante(rutinaPlantillaId, ix){
+    function elegirPlantillaParaCliente(rutinaPlantillaId, ix){
         document.querySelector('#myModalPlantillas #Plantillas').innerHTML = spinnerHTMLRawCsMessage('Notificando a cliente... Espere por favor...');
         //ix: Nos servira para actualizar en el dom el flagEnActividad
         var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
@@ -484,11 +484,11 @@
         })
     }
 
-    function preAgregarNota(integranteId, ix, e){
+    function preAgregarNota(clienteId, ix, e){
         let nota = e.getAttribute('data-content');
         var d1 = document.createElement('div');
         d1.className = 'row';
-        d1.innerHTML = `<textarea class="nota-integrante" data-index="${ix}" data-id="${integranteId}" type="text" class="form-control" rows="3">${nota}</textarea>`;
+        d1.innerHTML = `<textarea class="nota-cliente" data-index="${ix}" data-id="${clienteId}" type="text" class="form-control" rows="3">${nota}</textarea>`;
         d1.style.margin = '4px 0 0';
         //Agregando el textarea para modificar la nota
         $table[0].querySelector('tbody').children[ix].children[0].appendChild(d1);

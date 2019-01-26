@@ -221,7 +221,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
                     //Enviando correo al nuevo cliente
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, cliente.getTipoUsuario().getId(), domainName);
-                    emailService.enviarCorreoInformativo("Dennys Workout Platform", cliente.getCorreo(), sb.toString());
+                    emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), sb.toString());
                     return ResponseCode.REGISTRO.get()+','+String.valueOf(cliente.getId())+','+flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();

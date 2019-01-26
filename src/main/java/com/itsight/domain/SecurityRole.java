@@ -28,6 +28,11 @@ public class SecurityRole {
     public SecurityRole() {
     }
 
+    public SecurityRole(String role) {
+        // TODO Auto-generated constructor stub
+        this.role = role;
+    }
+
     public SecurityRole(String role, SecurityUser secUser) {
         // TODO Auto-generated constructor stub
         this.role = role;
@@ -70,8 +75,9 @@ public class SecurityRole {
     }
 
     public void setPrivileges(Set<SecurityPrivilege> privileges) {
+        for(SecurityPrivilege privilege: privileges){
+            privilege.setSecurityRole(this);
+        }
         this.privileges = privileges;
     }
-
-
 }

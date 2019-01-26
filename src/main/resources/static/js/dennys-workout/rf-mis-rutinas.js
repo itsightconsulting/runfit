@@ -33,7 +33,8 @@ function elementoSimplePaste(ele, ix, numeracion){
                         <div class="panel-heading">
                             <h4 class="panel-title txt-color-blue">
                                 <a href="javascrip:void(0);" class="${ess.header}">
-                                    <i class="fa fa-lg fa-angle-down pull-right text-primary"></i> 
+                                    <i class="fa fa-lg fa-angle-down pull-right invisible"></i>
+                                    <i class="fa fa-lg fa-angle-up pull-right invisible"></i>  
                                     <span class="txt-color-black lista-title">
                                         <span data-index="${numeracion+1}" class="badge badge-custom-enum font-md">${numeracion+1}</span>
                                         <span class="">

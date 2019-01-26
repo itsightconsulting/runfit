@@ -3075,7 +3075,9 @@ async function verificarMaxRole(){
             success: function (d) {
                 res(d);
             },
-            error: function () {},
+            error: function (xhr) {
+                exception(xhr);
+            },
             complete: function () {}
         })
     })
@@ -3096,7 +3098,9 @@ function reconstruirCategoriasMisRutinasDg(){
                     </div>`
             ).join('');
         },
-        error: function () {},
+        error: function (xhr) {
+            exception(xhr);
+        },
         complete: function () {}
     })
 }

@@ -9,6 +9,7 @@ import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TipoDescuentoRepository;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletContext;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class StartUpListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -110,6 +112,12 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private ClienteFitnessService clienteFitnessService;
 
+    @Autowired
+    private ConfiguracionGeneralService configuracionGeneralService;
+
+    @Autowired
+    private ConfiguracionClienteService configuracionClienteService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -137,6 +145,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingMusculoToTable();
             addingCondicionMejoraToTable();
             addingTipoDocumentoToTable();
+            addingConfiguracionGeneralToTable();
             addingKilometrajeBase();
             addingAudiosDemo();
 
@@ -547,6 +556,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(tipoDocumentoService.findOne(2) == null) tipoDocumentoService.save(new TipoDocumento("CE"));
     }
 
+    public void addingConfiguracionGeneralToTable(){
+        if(configuracionGeneralService.findOne(1) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_AUDIO", "1",true, 3));
+        if(configuracionGeneralService.findOne(2) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_VIDEO", "1",true, 3));
+        if(configuracionGeneralService.findOne(3) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_RUTINA_ID", "0", true, 3));
+        if(configuracionGeneralService.findOne(4) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_TRAINER_ID", "0",true, 3));
+    }
+
     public void addingKilometrajeBase(){
         if(kilometrajeBaseService.findOne(1) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,1,30.67));
         if(kilometrajeBaseService.findOne(2) == null) kilometrajeBaseService.save(new KilometrajeBase(10,1,2,41.14));
@@ -592,7 +608,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(kilometrajeBaseService.findOne(34) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,2,135.00));
         if(kilometrajeBaseService.findOne(35) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,3,100.00));
         if(kilometrajeBaseService.findOne(36) == null) kilometrajeBaseService.save(new KilometrajeBase(42,3,4,40.00));
-
     }
 
     public void addingApplicationParameters() {
@@ -606,205 +621,179 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         context.setAttribute("version", currentVersion);
     }
 
-    public void addingInitUsers() {
-        SecurityUser securityUser = userRepository.findByUsername("admin");
-        if (securityUser == null) {
-            SecurityUser secUser = new SecurityUser();
-            secUser.setUsername("admin");
-            secUser.setPassword(new BCryptPasswordEncoder().encode("@dmin@2018"));
-            secUser.setEnabled(true);
+    public void agregandoSuperAdmin(){
+        SecurityUser secUser = new SecurityUser();
+        secUser.setUsername("admin@itsight.pe");
+        secUser.setPassword(new BCryptPasswordEncoder().encode("itsight19@13"));
+        secUser.setEnabled(true);
+        //Roles
+        SecurityRole role = new SecurityRole("ROLE_ADMIN");
+        //Privileges
+        SecurityPrivilege priv1 = new SecurityPrivilege("READ_PRIVILEGE");
+        SecurityPrivilege priv2 = new SecurityPrivilege("WRITE_PRIVILEGE");
+        //Set Privileges
+        Set<SecurityPrivilege> setPrivileges = new HashSet<>();
+        setPrivileges.add(priv1);
+        setPrivileges.add(priv2);
+        //Adding to Role father
+        role.setPrivileges(setPrivileges);
+        //Set Roles(Only 1)
+        Set<SecurityRole> roles = new HashSet<>();
+        roles.add(role);
+        //Adding to User
+        secUser.setRoles(roles);
+        userRepository.save(secUser);
+    }
 
-            //Roles
-            SecurityRole sr = new SecurityRole();
-            sr.setRole("ROLE_ADMIN");
+    public List<Trainer> agregandoEntrenadores(){
+        final Integer entrenadores = 6;
+        List<Trainer> lstTrainerRedFitness = new ArrayList<>();
+        for(int i=1; i <= entrenadores;i++){
+            SecurityUser secTrainer = new SecurityUser();
+            String correoUsuario = String.format("trainer%s@runfit.pe", i);
+            secTrainer.setUsername(correoUsuario);
+            secTrainer.setPassword(new BCryptPasswordEncoder().encode("runfit"));
+            secTrainer.setEnabled(true);
+            SecurityRole role1 = new SecurityRole("ROLE_ADMIN");
+            SecurityRole role2 = new SecurityRole("ROLE_TRAINER");
+            SecurityRole role3 = null;
+            if(i==1) role3 = new SecurityRole("ROLE_DG");
+            Set<SecurityRole>  roles = new HashSet<>();
+            roles.add(role1);
+            roles.add(role2);
+            if(i==1) roles.add(role3);
+            secTrainer.setRoles(roles);
 
-            //Privileges
-            SecurityPrivilege sp = new SecurityPrivilege();
-            sp.setPrivilege("READ_PRIVILEGE");
-            sp.setSecurityRole(sr);
-            SecurityPrivilege sp1 = new SecurityPrivilege();
-            sp1.setPrivilege("WRITE_PRIVILEGE");
-            sp1.setSecurityRole(sr);
-            //Set Privileges
-            Set<SecurityPrivilege> listSp = new HashSet<>();
-            listSp.add(sp);
-            listSp.add(sp1);
-            //Adding to Role father
-            sr.setPrivileges(listSp);
-            //Set Roles(Only 1)
-            Set<SecurityRole> listSr = new HashSet<>();
-            listSr.add(sr);
-            //Adding to User
-            secUser.setRoles(listSr);
-            userRepository.save(secUser);
-
-            //Agregando el primer entrenador
-            /* T R A I N E R */
-            SecurityUser secUserTrainer = new SecurityUser();
-            secUserTrainer.setUsername("trainer@runfit.pe");
-            secUserTrainer.setPassword(new BCryptPasswordEncoder().encode("runfit"));
-            secUserTrainer.setEnabled(true);
-
-            //Lista Roles
-            Set<SecurityRole>  lstRoles = new HashSet<>();
-            //Roles
-            SecurityRole rol = new SecurityRole();
-            rol.setRole("ROLE_ADMIN");
-            SecurityRole rol1 = new SecurityRole();
-            rol1.setRole("ROLE_TRAINER");
-            SecurityRole rol11 = new SecurityRole();
-            rol11.setRole("ROLE_DG");
-            lstRoles.add(rol);
-            lstRoles.add(rol1);
-            lstRoles.add(rol11);
-            //Añadiendo roles al secUser
-            secUserTrainer.setRoles(lstRoles);
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
-            Trainer trainer = new Trainer();
-            trainer.setNombres("Pedro");
-            trainer.setApellidoPaterno("Carpio");
-            trainer.setApellidoMaterno("Molina");
-            trainer.setMovil("51 976721983");
-            trainer.setTelefonoFijo("5432133");
-            trainer.setFlagRutinarioCe(true);
-            trainer.setCorreo("trainer@runfit.pe");
-            trainer.setNumeroDocumento("55555555");
-            trainer.setUsername("trainer@runfit.pe");
-            List<com.itsight.domain.jsonb.Rol> lstR = new ArrayList<>();
-            com.itsight.domain.jsonb.Rol rr = new com.itsight.domain.jsonb.Rol();
-            rr.setNombre("ROLE_ADMIN");
-            rr.setId(1);
-            com.itsight.domain.jsonb.Rol r = new com.itsight.domain.jsonb.Rol();
-            r.setNombre("ROLE_TRAINER");
-            r.setId(2);
-            lstR.add(r);
-            lstR.add(rr);
-            trainer.setRoles(lstR);
-            trainer.setTipoDocumento(1);
-            trainer.setTipoUsuario(2);
-            trainer.setFlagActivo(true);
-            trainer.setCodigoTrainer("TRAINER008");
-            trainer.setSecurityUser(secUserTrainer);
+            Trainer trainer = new Trainer(
+                "Alejandro "+ i, "Gonzales", "Prada", correoUsuario, "543213"+i,
+                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuarioEnum.ENTRENADOR.ordinal(), "T51C"+i,true);
+            List<com.itsight.domain.jsonb.Rol> rolesJsonB = new ArrayList<>();
+            rolesJsonB.add(new com.itsight.domain.jsonb.Rol(1, role1.getRole()));
+            rolesJsonB.add(new com.itsight.domain.jsonb.Rol(2, role2.getRole()));
+            trainer.setRoles(rolesJsonB);
+            trainer.setSecurityUser(secTrainer);
             trainerService.save(trainer);
+            trainerService.cargarRutinarioCe(secTrainer.getId());
+            agregandoPorcentajesBaseTrainer(trainer);
+            if(i<4)//Para al momento de crear los clientes estos pertenezcan a la red de estos trainers
+                lstTrainerRedFitness.add(new Trainer(trainer.getId()));
 
-            /* T R A I N E R */
-            //userRepository.save(secUserTrainer);
-            trainerService.cargarRutinarioCe(secUserTrainer.getId());
+        }
+        return lstTrainerRedFitness;
+    }
 
-            //Agregando cliente a entrenador creado
-            Cliente cliente1 = new Cliente();
-            SecurityUser secUserCliente = new SecurityUser();
-            secUserCliente.setUsername("pernio16");
-            secUserCliente.setPassword(new BCryptPasswordEncoder().encode("@dmin@2018"));
-            secUserCliente.setEnabled(true);
+    public void agregandoPorcentajesBaseTrainer(Trainer trainer){
+        //Agregando sus porcentajes base para la creación de macro-ciclos
+        PorcentajesKilometraje porcentajes;
+        Integer[] maratonDistancias = {10, 21, 42};
 
-            //Lista Roles
-            Set<SecurityRole> lstRolesCli = new HashSet<>();
-            //Roles
-            SecurityRole rolCli = new SecurityRole();
-            rolCli.setRole("ROLE_RUNNER");
-            lstRolesCli.add(rolCli);
-            //Añadiendo roles al secUser
-            secUserCliente.setRoles(lstRolesCli);
-            //Añadiendole los datos detalle del entrenador(TB: Cliente)
-            cliente1.setNombres("Pernio");
-            cliente1.setApellidoPaterno("Rodriguez");
-            cliente1.setApellidoMaterno("Alcantará");
-            cliente1.setMovil("51 987654321");
-            cliente1.setTelefonoFijo("5532133");
-            cliente1.setCorreo("pernio16.carranza@itsight.pe");
-            cliente1.setNumeroDocumento("44444444");
-            cliente1.setUsername("pernio16");
-            List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
-            com.itsight.domain.jsonb.Rol rolCliJson = new com.itsight.domain.jsonb.Rol();
-            rolCliJson.setNombre("ROLE_RUNNER");
-            rolCliJson.setId(3);
-            lstRolCli.add(rolCliJson);
-            cliente1.setRoles(lstRolCli);
-            cliente1.setTipoDocumento(1);
-            cliente1.setFechaNacimiento(Parseador.fromStringToDate("1987-01-01"));
-            cliente1.setTipoUsuario(3);
-            cliente1.setFlagActivo(true);
-            //secUserCliente.addUsuario(cliente1);
-            cliente1.setSecurityUser(secUserCliente);
-            clienteService.save(cliente1);
-            //userRepository.save(secUserCliente);
-
-
-            //Guardando al cliente en la red del entrenador creado anteriormente
-            redFitnessService.save( new RedFitness(trainer.getId(), cliente1.getId()));
-
-            //Agregando sus porcentajes base para la creación de macro-ciclos
-            if(porcentajesKilometrajeService.findOne(1) == null){
-                PorcentajesKilometraje porcentajes;
-                Integer[] maratonDistancias = {10, 21, 42};
-
-                for(int i=0; i<3; i++){
-                    porcentajes = new PorcentajesKilometraje();
-                    porcentajes.setDistancia(maratonDistancias[i]);
-                    porcentajes.setTrainer(new Trainer(2));
-                    List<PorcKiloTipo> lstPorcKiloTipo = new ArrayList<>();
-                    for(int k=1; k<4; k++){
-                        PorcKiloTipo porcKiloTipo = new PorcKiloTipo();
-                        porcKiloTipo.setTipo(k);
-                        List<PorcKiloTipoSema> lstPorcKiloTipoSema = new ArrayList<>();
-                        for(int y=2; y<29; y++) {
-                            PorcKiloTipoSema porcKiloTipoSema = new PorcKiloTipoSema();
-                            porcKiloTipoSema.setTs(y);
-                            List<Integer> porcents = new ArrayList<>(y);
-                            for(int s=0; s<y;s++){
-                                porcents.add(70-s);
-                            }
-                            porcKiloTipoSema.setPorcentajes(porcents);
-                            lstPorcKiloTipoSema.add(porcKiloTipoSema);
-                        }
-                        porcKiloTipo.setSemanas(lstPorcKiloTipoSema);
-                        lstPorcKiloTipo.add(porcKiloTipo);
+        for(int i=0; i<3; i++){
+            porcentajes = new PorcentajesKilometraje();
+            porcentajes.setDistancia(maratonDistancias[i]);
+            porcentajes.setTrainer(trainer);
+            List<PorcKiloTipo> lstPorcKiloTipo = new ArrayList<>();
+            for(int k=1; k<4; k++){
+                PorcKiloTipo porcKiloTipo = new PorcKiloTipo();
+                porcKiloTipo.setTipo(k);
+                List<PorcKiloTipoSema> lstPorcKiloTipoSema = new ArrayList<>();
+                for(int y=2; y<29; y++) {
+                    PorcKiloTipoSema porcKiloTipoSema = new PorcKiloTipoSema();
+                    porcKiloTipoSema.setTs(y);
+                    List<Integer> porcents = new ArrayList<>(y);
+                    for(int s=0; s<y;s++){
+                        porcents.add(70-s);
                     }
-                    porcentajes.setPorcKiloTipos(lstPorcKiloTipo);
-                    porcentajesKilometrajeService.save(porcentajes);
+                    porcKiloTipoSema.setPorcentajes(porcents);
+                    lstPorcKiloTipoSema.add(porcKiloTipoSema);
                 }
+                porcKiloTipo.setSemanas(lstPorcKiloTipoSema);
+                lstPorcKiloTipo.add(porcKiloTipo);
             }
+            porcentajes.setPorcKiloTipos(lstPorcKiloTipo);
+            porcentajesKilometrajeService.save(porcentajes);
+        }
+    }
+
+    public void agregandoClientes(List<Trainer> trainers){
+        //Agregando cliente a entrenador creado
+        final Integer cantidadCli = 9;
+        for(int i=1; i <= cantidadCli; i++){
+            SecurityUser secCliente = new SecurityUser();
+            String correoUsuario = String.format("runner%s@runfit.pe", i);
+            secCliente.setUsername(correoUsuario);
+            secCliente.setPassword(new BCryptPasswordEncoder().encode("runfit"));
+            secCliente.setEnabled(true);
+
+            Set<SecurityRole> lstRolesCli = new HashSet<>();
+            if(i==1) lstRolesCli.add(new SecurityRole("ROLE_DG_CLI"));
+            lstRolesCli.add(new SecurityRole("ROLE_RUNNER"));
+            secCliente.setRoles(lstRolesCli);
+            Cliente cli = new Cliente(
+                    "Jorge "+ i, "Almendariz", "Molina", correoUsuario, "555555"+i,
+                    "5198765432"+i , correoUsuario, "4444444"+i, 1, Enums.TipoUsuarioEnum.CLIENTE.ordinal(),true);
+            List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
+            lstRolCli.add(new com.itsight.domain.jsonb.Rol(3, "ROLE_RUNNER"));
+            cli.setRoles(lstRolCli);
+            cli.setFechaNacimiento(Parseador.fromStringToDate("1987-01-0"+i));
+            cli.setSecurityUser(secCliente);
+
+            //
+            ConfiguracionCliente cliConfg = new ConfiguracionCliente();
+            cliConfg.setLstParametro(configuracionGeneralService.findAll().stream().map(cg-> new com.itsight.domain.jsonb.Parametro(cg.getNombre(), cg.getValor())).collect(Collectors.toList()));
+            cliConfg.setCliente(cli);
+            //Actualizando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
+            configuracionClienteService.save(cliConfg);
 
             //Agregando su información fitness básica
-            ClienteFitness clienteFitness1 = new ClienteFitness();
-            clienteFitness1.setNivel(3);
-            clienteFitness1.setEstadoCivil(1);
-            clienteFitness1.setImc(15);
-            clienteFitness1.setPeso(BigDecimal.valueOf(66));
-            clienteFitness1.setSexo(1);
-            clienteFitness1.setDesgasteZapatilla("Inicio");
-            clienteFitness1.setObjetivosDescripcion("Demo");
-            clienteFitness1.setTerrenoPredominante("Asfalto");
-            clienteFitness1.setDiaDescanso(1);
+            ClienteFitness cliFit = new ClienteFitness();
+            cliFit.setNivel((int) Math.ceil((double)i/3.0));
+            cliFit.setEstadoCivil(1);
+            cliFit.setImc(15+i);
+            cliFit.setPeso(BigDecimal.valueOf(65+i));
+            cliFit.setSexo(1);
+            cliFit.setDesgasteZapatilla("Inicio");
+            cliFit.setObjetivosDescripcion("Resistencia");
+            cliFit.setTerrenoPredominante("Asfalto");
+            cliFit.setDiaDescanso(1);
             CondicionAnatomica ca = new CondicionAnatomica();
-            ca.setFrecuenciaCardiaca(65);
-            ca.setFrecuenciaCardiacaMaxima(190);
-            clienteFitness1.setCondicionAnatomica(ca);
-            clienteFitness1.setTiemposDisponibles(new ArrayList<>());
-            clienteFitness1.setObjetivos(new ArrayList<>());
-            clienteFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
-            clienteFitness1.setMejoras(new ArrayList<>());
-            clienteFitness1.setFrecuenciaComunicacion(1);
-            clienteFitness1.setViaConexion("Demo");
-            clienteFitness1.setTalla(166);
+            ca.setFrecuenciaCardiaca(65+i);
+            ca.setFrecuenciaCardiacaMaxima(190-i);
+            cliFit.setCondicionAnatomica(ca);
+            cliFit.setTiemposDisponibles(new ArrayList<>());
+            cliFit.setObjetivos(new ArrayList<>());
+            cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
+            cliFit.setMejoras(new ArrayList<>());
+            cliFit.setFrecuenciaComunicacion(1);
+            cliFit.setViaConexion("InitialSeeder");
+            cliFit.setTalla(166);
             List<CompetenciaRunner> comps = new ArrayList<>();
             Integer[] distancias = {10,21,42};
             String[] fechas = {"2019-02-10","2019-03-10","2019-04-27"};
             String[] tiempos = {"00:58", "02:10", "04:12"};
-            for(int i=0; i<3;i++){
+            for(int k=1; k<4;k++){
                 CompetenciaRunner cr = new CompetenciaRunner();
-                cr.setDistancia(distancias[i]);
-                cr.setFecha(fechas[i]);
-                cr.setNombre("Maratón "+i);
+                cr.setDistancia(distancias[k-1]);
+                cr.setFecha(fechas[k-1]);
+                cr.setNombre("Maratón "+k);
                 cr.setPrioridad(2);
-                cr.setTiempoObjetivo(tiempos[i]);
+                cr.setTiempoObjetivo(tiempos[k-1]);
                 comps.add(cr);
             }
             comps.get(2).setPrioridad(1);
-            clienteFitness1.setCompetencias(comps);
-            clienteFitness1.setCliente(3);
-            clienteFitnessService.save(clienteFitness1);
+            cliFit.setCompetencias(comps);
+            cliFit.setCliente(cli);
+            clienteFitnessService.save(cliFit);
+            if(i<4)
+                trainers.forEach(t -> redFitnessService.save( new RedFitness(t.getId(), cli.getId())));
+        }
+    }
+
+    public void addingInitUsers() {
+        SecurityUser securityUser = userRepository.findByUsername("admin@itsight.pe");
+        if (securityUser == null) {
+            agregandoSuperAdmin();
+            agregandoClientes(agregandoEntrenadores());
         } else {
             System.out.println("> Record already exist <");
         }

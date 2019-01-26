@@ -175,6 +175,9 @@
                     <li sec:authorize="hasRole('DG')">
                         <a th:href="@{/gestion/mini-rutina}" title="Mis Rutinas"><i class="icofont-gym-alt-3"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
                     </li>
+                    <li>
+                        <a th:href="@{/gestion/trainer/consejos}" title="Consejos"><i class="fa fa-music"></i><span class="menu-item-parent"> Consejos</span></a>
+                    </li>
                 </ul>
             </li>
             <li class="top-menu-invisible" sec:authorize="hasRole('RUNNER') OR hasRole('ADMIN')">
@@ -190,8 +193,8 @@
                     <li>
                         <a th:href="@{/cliente/misRutinas}" title="Mis Rutinas"><i class="icofont-gym-alt-3"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
                     </li>
-                    <li>
-                        <a th:href="@{/cliente/misRutinas}" title="Mis Rutinas"><i class="icofont-gym-alt-3 bg-color-green"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
+                    <li sec:authorize="hasRole('DG_CLI')">
+                        <a th:href="@{/ilc/mini-rutinas}" title="Mis Rutinas"><i class="icofont-gym-alt-3 bg-color-green"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
                     </li>
                 </ul>
             </li>

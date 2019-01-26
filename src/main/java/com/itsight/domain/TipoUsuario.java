@@ -20,6 +20,10 @@ public class TipoUsuario {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoUsuario")
     private List<Cliente> lstCliente;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoUsuario")
+    private List<ConfiguracionGeneral> lstConfGeneral;
+
     public TipoUsuario() {
     }
 
@@ -55,5 +59,11 @@ public class TipoUsuario {
         this.lstCliente = lstCliente;
     }
 
+    public List<ConfiguracionGeneral> getLstConfGeneral() {
+        return lstConfGeneral;
+    }
 
+    public void setLstConfGeneral(List<ConfiguracionGeneral> lstConfGeneral) {
+        this.lstConfGeneral = lstConfGeneral;
+    }
 }

@@ -12,7 +12,7 @@ public interface RedFitnessService extends BaseService<RedFitness> {
 
     void updateFlagEnActividadById(int id, boolean flagEnEntrenamiento);
 
-    void actualizarNotaAIntegrante(int parseInt, String nota);
+    void actualizarNotaACliente(int parseInt, String nota);
 
     void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(int id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas);
 

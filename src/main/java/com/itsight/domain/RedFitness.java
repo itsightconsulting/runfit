@@ -20,9 +20,9 @@ import java.util.Date;
 
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "redFitness"),
-        @NamedEntityGraph(name = "redFitness.integrante",
+        @NamedEntityGraph(name = "redFitness.cliente",
                 attributeNodes = {
-                        @NamedAttributeNode(value = "integrante")
+                        @NamedAttributeNode(value = "cliente")
                 }),
 })
 @Entity
@@ -58,8 +58,8 @@ public class RedFitness implements Serializable {
     private Date ultimoDiaTemporada;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IntegranteId", referencedColumnName = "SecurityUserId")
-    private Cliente integrante;
+    @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId")
+    private Cliente cliente;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
@@ -80,10 +80,9 @@ public class RedFitness implements Serializable {
         this.id = id;
     }
 
-    public RedFitness(int trainerId, int integranteId){
-        Cliente integrante = new Cliente(integranteId);
+    public RedFitness(int trainerId, int clienteId){
         this.trainer = new Trainer(trainerId);
-        this.integrante = integrante;
+        this.cliente = new Cliente(clienteId);
         this.fechaCreacion = new Date();
         this.estadoPlan = EstadoPlan.SIN_PLAN.get();
     }

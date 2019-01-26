@@ -145,7 +145,7 @@ public class MultimediaEntrenadorController {
                     file.transferTo(nuevoFile);
 
                     multimediaEntrenadorService.save(qmul);
-                }else{
+                } else {
                     MultimediaEntrenador objencontrado = multimediaEntrenadorService.findOne(id);
                     Utilitarios.createDirectory(fullPath);
                     fullPath += "/" + uuid + extension;

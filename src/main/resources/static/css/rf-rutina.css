@@ -724,3 +724,11 @@ button.note-color-fuente, button.note-bg-color {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     float: left !important;
 }
+
+.rf-listas > .rf-dia-elemento:first-of-type, .rf-listas > .rf-dia-elemento:first-of-type>.panel-heading{
+    border-radius: 10px 10px 0 0;
+}
+
+.rf-listas > .rf-dia-elemento:first-of-type a {
+    border-radius: 10px 10px 0 0;
+}
