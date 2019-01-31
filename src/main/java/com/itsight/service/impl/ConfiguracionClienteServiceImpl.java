@@ -104,4 +104,14 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
     public void actualizarFlagActivoById(int id, boolean flagActivo) {
 
     }
+
+    @Override
+    public String obtenerPostIdFavoritos(int id) {
+        return repository.getFavsPostTrainer(id);
+    }
+
+    @Override
+    public void actualizarPostIdFavoritos(int id, String postsFavsIds) {
+        repository.updateFavsPostTrainer(id, postsFavsIds);
+    }
 }

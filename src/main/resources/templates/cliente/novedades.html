@@ -2,7 +2,7 @@
 <html lang="en-us"
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#ctx.servletContext.getAttribute('version')}">
-<head>
+<head th:attr="data-id=${clienteId}">
     <!-- META -->
     <link th:replace="html-commons/meta :: fg-meta"/>
     <!-- END META -->
@@ -10,7 +10,7 @@
     <link th:replace="html-commons/css :: fg-css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/perfect-scrollbar.css"/>
 <style>
-    @media (min-width: 544px)
+    @media (min-width: 544px) {
         .card-columns .card {
             display: inline-block;
             width: 100%;
@@ -18,8 +18,9 @@
 
         .card {
             margin-bottom: 1.25rem;
-            box-shadow: 0 2px 3px rgba(0,0,0,.05);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .05);
         }
+
         .card {
             position: relative;
             display: block;
@@ -28,6 +29,7 @@
             border: 1px solid #fbe7e7;
             border-radius: 3px;
         }
+    }
     .card-block {
         padding: 1.25rem;
     }
@@ -75,6 +77,27 @@
         border: 1px solid #0000001c;
     }
 
+    .card-block a.btn-like + div .tooltip-inner{
+        background: #7abf58;
+        border: 2px solid rgb(255, 255, 255);
+        border-radius: 0 0 10px 10px;
+    }
+
+    #dvPosts .i-btn {
+        cursor: pointer; /* Add a mouse pointer on hover */
+    }
+
+    #dvPosts .i-btn.disabled{
+        cursor: not-allowed;
+        opacity: .65;
+        filter: alpha(opacity=65);
+        box-shadow: none
+    }
+
+    .is-fav{
+        color: gold !important;
+    }
+
 </style>
 </head>
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">
@@ -100,7 +123,7 @@
                     <div class="col-md-5 card">
                         <div class="h5">Publicaciones de mis Entrenadores</div>
                         <div class="h6 text-muted">Últimos publicados</div>
-                        <div class="list-cards">
+                        <div class="list-cards" id="dvPosts">
 
 
                         </div>

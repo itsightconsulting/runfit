@@ -42,7 +42,6 @@ public class ConfiguracionGeneral extends AuditingEntity {
     private String nombre;
 
     @NotNull
-    @Size(min=1)
     @Column(nullable = false)
     private String valor;
 

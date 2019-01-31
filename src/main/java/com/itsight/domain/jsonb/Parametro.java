@@ -13,7 +13,6 @@ public class Parametro implements Serializable {
     @Size(min = 4)
     private String nombre;
     @NotNull
-    @Size(min = 1)
     private String valor;
 
     public Parametro(){}

@@ -41,4 +41,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @Query(value = "SELECT U FROM Cliente U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE U.username = ?1")
     Cliente findByUsername(String username);
 
+    @Query(value = "SELECT CONCAT(C.nombres, ' ', C.apellidoPaterno, ' ', C.apellidoMaterno) FROM Cliente C WHERE C.id = ?1")
+    String findNombreCompletoById(int id);
 }

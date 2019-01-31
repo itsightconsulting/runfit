@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.repository.MultimediaDetalleRepository;
@@ -7,28 +8,33 @@ import com.itsight.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
 
 @Controller
 @RequestMapping("/cliente")
-
 public class ClienteFullController {
 
     private SemanaService semanaService;
     private RutinaService rutinaService;
-    private MultimediaEntrenadorService multimediaEntrenadorService;
     private RedFitnessService redFitnessService;
-    private MultimediaDetalleRepository multimediaDetalleRepository;
     private MiniPlantillaService miniPlantillaService;
     private DiaRutinarioService diaRutinarioService;
     private EspecificacionSubCategoriaService especificacionSubCategoriaService;
+    private PostService postService;
+    private ClienteService clienteService;
+    private ConfiguracionClienteService configuracionClienteService;
 
     @Value("${main.repository}")
     private String mainRoute;
@@ -37,15 +43,22 @@ public class ClienteFullController {
     public ClienteFullController(SemanaService semanaService, RutinaService rutinaService,
                                  MultimediaEntrenadorService multimediaEntrenadorService, RedFitnessService redFitnessService, MultimediaDetalleRepository multimediaDetalleRepository,
                                  MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService,
-                                 EspecificacionSubCategoriaService especificacionSubCategoriaService){
+                                 EspecificacionSubCategoriaService especificacionSubCategoriaService, PostService postService, ClienteService clienteService,
+                                 ConfiguracionClienteService configuracionClienteService){
         this.semanaService = semanaService;
         this.rutinaService = rutinaService;
-        this.multimediaEntrenadorService = multimediaEntrenadorService;
         this.redFitnessService = redFitnessService;
-        this.multimediaDetalleRepository = multimediaDetalleRepository;
         this.miniPlantillaService = miniPlantillaService;
         this.diaRutinarioService = diaRutinarioService;
         this.especificacionSubCategoriaService = especificacionSubCategoriaService;
+        this.postService = postService;
+        this.clienteService = clienteService;
+        this.configuracionClienteService = configuracionClienteService;
+    }
+
+    @GetMapping(value = "/t")
+    public @ResponseBody List<Post> getMyFavs(HttpSession session){
+        return postService.obtenerPostFavoritos((int) session.getAttribute("id"));
     }
 
     @GetMapping(value = "")
@@ -61,12 +74,13 @@ public class ClienteFullController {
 
     @GetMapping(value = "/get/rutinas")
     public @ResponseBody List<Rutina> obtenerRutinas(HttpSession session) {
-        int id = (int)session.getAttribute("id");
+        int id = (int) session.getAttribute("id");
         return rutinaService.getAllRutinasByUser(id);
     }
 
     @GetMapping(value = "/novedades")
-    public ModelAndView pageNovedades() {
+    public ModelAndView pageNovedades(Model model, HttpSession session) {
+        model.addAttribute("clienteId", session.getAttribute("id"));
         return new ModelAndView(ViewConstant.CLIENTE_NOVEDADES);
     }
 
@@ -77,46 +91,52 @@ public class ClienteFullController {
 
 
 
-    @GetMapping(value = "/get/publicacionesentrenador")
-    public @ResponseBody List<MultimediaEntrenador> obtenerMultimediaEntrenador(HttpSession session) {
+    @GetMapping(value = "/get/publicaciones")
+    public @ResponseBody List<Post> obtenerMultimediaEntrenador(HttpSession session) {
         int id = (int)session.getAttribute("id");
-        List<String> listaCodigosEntranadores = redFitnessService.findTrainerByUsuarioId(id);
-        List<MultimediaEntrenador> lista =  multimediaEntrenadorService.findByListEntrenador(listaCodigosEntranadores);
-        for (MultimediaEntrenador obj : lista) {
-            if (obj.getNombreArchivoUnico() != null) {
-                String nuevaruta = obj.getTrainer().getId() +"/" + obj.getNombreArchivoUnico()+obj.getExtension();
-                obj.setRutaWeb(nuevaruta);
-            }
+        List<String> listaCodigosEntranadores = redFitnessService.findTrainerIdByUsuarioId(id).stream().map(x->String.valueOf(x)).collect(Collectors.toList());
+        List<Integer> lstTrainerId = listaCodigosEntranadores.stream().map(x-> Integer.parseInt(x)).collect(Collectors.toList());
+        return postService.findAllByTrainerIdIn(lstTrainerId);
+    }
 
-            List<MultimediaDetalle> detalle = multimediaEntrenadorService.findByIdEntrenador(obj.getId());
-            obj.setCantidadLikes(detalle.size());
-
-            for(MultimediaDetalle p : detalle) {
-                if(p.getCliente().getId() == id) {
-                    obj.setMylike(true);
-                    break;
+    @PostMapping(value = "/post/updateFlag")
+    public @ResponseBody String updateFlag(@RequestParam int postId, @RequestParam int estado, @RequestParam int tipoFlag, HttpSession session) throws JsonProcessingException {
+        int clienteId = (int)session.getAttribute("id");
+        boolean hasLikedBefore = postService.verificarExisteLike(postId, clienteId);
+        if(hasLikedBefore){
+            if(tipoFlag == 1) postService.actualizarFlagLiked(postId, clienteId, !(estado == 0));
+            else {
+                postService.actualizarFlagFav(postId, clienteId, !(estado == 0));
+                String postIdsString = configuracionClienteService.obtenerPostIdFavoritos(clienteId);
+                String[] postIdsFavs =  postIdsString.length()> 0 ? postIdsString.split(",") : new String[0];
+                int idsLen = postIdsFavs.length;
+                if(estado == 0){
+                    if(idsLen>0){
+                        List<String> favs =  new ArrayList<>(Arrays.asList(postIdsFavs));
+                        int index = (IntStream.range(0, idsLen).filter(ix->favs.get(ix).equals(String.valueOf(postId))).findFirst().orElse(-1));
+                        if(index > -1){
+                            favs.remove(index);
+                            String postIdsFiltered = favs.stream().collect(Collectors.joining(","));
+                            configuracionClienteService.actualizarPostIdFavoritos(clienteId, postIdsFiltered);
+                        }
+                    }
+                }else{
+                    if(idsLen>0) {
+                        List<String> listPostId =  new ArrayList<>(Arrays.asList(postIdsFavs));
+                        listPostId.add(String.valueOf(postId));
+                        configuracionClienteService.actualizarPostIdFavoritos(clienteId, listPostId.stream().collect(Collectors.joining(",")));
+                    }else
+                        configuracionClienteService.actualizarPostIdFavoritos(clienteId, String.valueOf(postId));
                 }
             }
-        }
-        return lista;
-    }
-
-    @PostMapping(value = "/updateMyLike")
-    public @ResponseBody String updateMyLike(@RequestParam int id,@RequestParam int estado,HttpSession session) {
-        int iduser = (int)session.getAttribute("id");
-        MultimediaDetalle detalle = new MultimediaDetalle();
-        Integer mulDetalleId = multimediaDetalleRepository.findByMultimediaEntrenadorIdAndClienteId(id, iduser).orElse(0);
-        if (mulDetalleId == 0) {
-            detalle.setCliente(iduser);
-            detalle.setMultimediaEntrenador(id);
-            detalle.setFlagActivo(true);
-            multimediaDetalleRepository.save(detalle);
+            return ACTUALIZACION.get();
         } else {
-            multimediaDetalleRepository.delete(mulDetalleId);
+            String nombreCompleto = clienteService.findNombreCompletoById(clienteId);
+            postService.updatePostDetalle(postId, clienteId, nombreCompleto, tipoFlag == 1, tipoFlag == 2);
+            if(tipoFlag == 2) configuracionClienteService.actualizarPostIdFavoritos(clienteId, String.valueOf(postId));
         }
-        return ACTUALIZACION.get();
+        return REGISTRO.get();
     }
-
 
     @GetMapping(value = "/get/subcategorias")
     public @ResponseBody List<EspecificacionSubCategoria> entrenadorSubCategorias(HttpSession session) {

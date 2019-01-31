@@ -1,10 +1,11 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
-import com.itsight.domain.jsonb.CompetenciaRunner;
-import com.itsight.domain.jsonb.CondicionAnatomica;
-import com.itsight.domain.jsonb.PorcKiloTipo;
-import com.itsight.domain.jsonb.PorcKiloTipoSema;
+import com.itsight.domain.Musculo;
+import com.itsight.domain.Objetivo;
+import com.itsight.domain.Parametro;
+import com.itsight.domain.Rol;
+import com.itsight.domain.jsonb.*;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TipoDescuentoRepository;
@@ -168,7 +169,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         addingInitUsers();
         creatingFileDirectories();
     }
-
 
     public void insertACategoriaEjercicio() {
         subCategoriaEjercicioService.insertaArtificio();
@@ -557,10 +557,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingConfiguracionGeneralToTable(){
-        if(configuracionGeneralService.findOne(1) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_AUDIO", "1",true, 3));
-        if(configuracionGeneralService.findOne(2) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_VIDEO", "1",true, 3));
-        if(configuracionGeneralService.findOne(3) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_RUTINA_ID", "0", true, 3));
-        if(configuracionGeneralService.findOne(4) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_TRAINER_ID", "0",true, 3));
+        if(configuracionGeneralService.findOne(1) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_AUDIO", "",true, 3));
+        if(configuracionGeneralService.findOne(2) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_VIDEO", "",true, 3));
+        if(configuracionGeneralService.findOne(3) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_RUTINA_ID", "", true, 3));
+        if(configuracionGeneralService.findOne(4) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_TRAINER_ID", "",true, 3));
+        if(configuracionGeneralService.findOne(5) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAVS_POST_TRAINER", "",true, 3));
     }
 
     public void addingKilometrajeBase(){

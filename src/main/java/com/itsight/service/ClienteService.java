@@ -20,4 +20,5 @@ public interface ClienteService extends BaseService<Cliente> {
 
     Cliente findByUsername(String username);
 
+    String findNombreCompletoById(int id);
 }

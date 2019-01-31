@@ -12,18 +12,31 @@ import java.util.Date;
 @Data
 public class PostDetalle implements Serializable {
 
-    private int clienteId;
+    private int cliId;
 
-    private String nombreCompleto;
+    private String nomFull;
 
-    private boolean flagLiked;
+    private boolean flgLiked;
 
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-    private Date fechaCreacion;
+    private boolean flgFav;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-    private Date fechaModificacion;
+    private Date feCreac;
 
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+    private Date feModif;
+
+    public PostDetalle() {
+    }
+
+    public PostDetalle(int cliId, String nomFull, boolean flgLiked, boolean flgFav, Date feCreac, Date feModif) {
+        this.cliId = cliId;
+        this.nomFull = nomFull;
+        this.flgLiked = flgLiked;
+        this.flgFav = flgFav;
+        this.feCreac = feCreac;
+        this.feModif = feModif;
+    }
 }

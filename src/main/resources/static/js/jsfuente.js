@@ -158,6 +158,7 @@ function irListado(x) {
 }
 
 function exception(xhr, errorName) {
+    console.log(xhr);
     const sCode = xhr['status'];
 
     if(typeof xhr == 'number' && xhr < 0){
@@ -407,6 +408,11 @@ function obtenerSemanasEntreFechas(d1, d2) {
     return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
 }
 
+function parseFromStringToDateTime(dateString) {
+    var dt = dateString.split("/");
+    var time = dateString.split(" ")[1].split(":");
+    return new Date(Number(dt[2].substr(0,4)), Number(dt[1]) - 1, dt[0], time[0], time[1], time[2]);
+}
 
 function parseFromStringToDate(dateString) {
     var dt = dateString.split("-");

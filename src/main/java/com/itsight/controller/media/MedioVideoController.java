@@ -1,5 +1,6 @@
 package com.itsight.controller.media;
 
+import com.itsight.annotation.NoLogging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import java.nio.file.Files;
 
 @Controller
 @RequestMapping("/workout/multimedia")
+@NoLogging
 public class MedioVideoController {
     @Value("${main.repository}")
     private String mainRoute;

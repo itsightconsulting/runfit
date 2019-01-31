@@ -346,4 +346,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         return repository.findByUsername(username);
     }
 
+    @Override
+    public String findNombreCompletoById(int id) {
+        return repository.findNombreCompletoById(id);
+    }
 }

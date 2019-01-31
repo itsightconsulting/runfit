@@ -108,7 +108,6 @@ function ObtenerData(flag) {
         dataType: "json",
         success: function (data) {
             if(data != null){
-                console.log(data);
                 $.each(data,function (i,item) {
                     if(item.tipo == 1){
                         LISTA_FAVORITOS_AUDIO.push(item);
@@ -389,11 +388,14 @@ function RegistrarMultimedia(id) {
         var data = new FormData();
         data.append("multimedia", files);
         data.append("id", id);
-        data.append("titulo", $("#tTitulo").val());
-        data.append("descripcion", $("#tDescripcion").val());
-        data.append("tipo", tipo);
-        data.append("duracion", TIEMPO);
-        data.append("peso", PESO);
+        let params = {};
+        params.id = id;
+        params.titulo = $("#tTitulo").val();
+        params.tipo = tipo;
+        params.peso = PESO;
+        params.duracion = TIEMPO;
+        params.descripcion = $("#tDescripcion").val();
+        data.append("postString", JSON.stringify(params));
 
         $.ajax({
             type: 'POST',

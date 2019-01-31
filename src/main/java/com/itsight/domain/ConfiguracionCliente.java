@@ -33,7 +33,7 @@ public class ConfiguracionCliente {
     private int id;
 
     @Type(type = "jsonb")
-    @Column(nullable = false, columnDefinition = "jsonb")
+    @Column(name="parametros", nullable = false, columnDefinition = "jsonb")
     private List<Parametro> lstParametro;
 
     @Column()
