@@ -11,6 +11,7 @@ import com.itsight.util.Enums;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -138,12 +139,12 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
 
     @Override
     public void actualizarFlagLiked(int id, int clienteId, boolean flgLiked) {
-        repository.updateGenericBooleanColumnByIdAndClienteId(id, clienteId, flgLiked, "flgLiked");
+        repository.actualizarPostDetalleFlag(id, clienteId, flgLiked, "flgLiked", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     }
 
     @Override
     public void actualizarFlagFav(int id, int clienteId, boolean flgFav) {
-        repository.updateGenericBooleanColumnByIdAndClienteId(id, clienteId, flgFav, "flgFav");
+        repository.actualizarPostDetalleFlag(id, clienteId, flgFav, "flgFav", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     }
 
     @Override

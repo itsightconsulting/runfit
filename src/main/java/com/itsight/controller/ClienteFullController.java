@@ -3,8 +3,8 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
-import com.itsight.repository.MultimediaDetalleRepository;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
-import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/cliente")
@@ -40,8 +39,7 @@ public class ClienteFullController {
     private String mainRoute;
 
     @Autowired
-    public ClienteFullController(SemanaService semanaService, RutinaService rutinaService,
-                                 MultimediaEntrenadorService multimediaEntrenadorService, RedFitnessService redFitnessService, MultimediaDetalleRepository multimediaDetalleRepository,
+    public ClienteFullController(SemanaService semanaService, RutinaService rutinaService, RedFitnessService redFitnessService,
                                  MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService,
                                  EspecificacionSubCategoriaService especificacionSubCategoriaService, PostService postService, ClienteService clienteService,
                                  ConfiguracionClienteService configuracionClienteService){
@@ -173,5 +171,28 @@ public class ClienteFullController {
     @GetMapping(value = "/get/subcategoriasespecificacion")
     public @ResponseBody List<EspecificacionSubCategoria> subCategoriasEspecificacion(@RequestParam int id) {
         return especificacionSubCategoriaService.findBySubCategoriaEjercicioId(id);
+    }
+
+    @RequestMapping(value = "/uploadtext", method = RequestMethod.POST)
+    public @ResponseBody String guardarTexto(@RequestParam Integer id,@RequestParam String titulo,@RequestParam String descripcion,HttpSession session) {
+        int idUser = Integer.parseInt(session.getAttribute("id").toString());
+
+        if (id == 0) {
+            Post post = new Post();
+            post.setTrainer(idUser);
+            post.setTitulo(titulo);
+            post.setDescripcion(descripcion);
+            post.setTipo(Enums.TipoMedia.TEXTO.get());
+            post.setFlagActivo(true);
+            postService.save(post);
+        } else {
+            Post post = postService.findOne(id);
+            post.setTrainer(idUser);
+            post.setTitulo(titulo);
+            post.setDescripcion(descripcion);
+            post.setTipo(Enums.TipoMedia.TEXTO.get());
+            postService.update(post);
+        }
+        return EXITO_GENERICA.get();
     }
 }

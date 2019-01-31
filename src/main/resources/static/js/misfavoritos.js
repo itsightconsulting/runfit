@@ -104,7 +104,7 @@ function ObtenerData(flag) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: _ctx + "gestion/multimedia/obtenerListadoMultimedia",
+        url: _ctx + "gestion/trainer/obtenerListadoPost",
         dataType: "json",
         success: function (data) {
             if(data != null){
@@ -122,7 +122,7 @@ function ObtenerData(flag) {
         error: function (xhr) {
             exception(xhr);
         },
-        complete: function () {
+        complete: function (res) {
             if(flag == 0){
                 GenerarListaVideos();
             } else if(flag == 1){
@@ -131,7 +131,7 @@ function ObtenerData(flag) {
                 GenerarListaTextos();
             }
             $('[rel="tooltip"]').tooltip();
-            ListarTop();
+            ListarTop(res.responseJSON);
         }
     });
 }
@@ -154,12 +154,12 @@ function verVideo(id) {
     let input = $("#span"+id);
     input.html("");
     $(".divVideo").remove();
-
     const mediaVideo = input.attr("data-media");
+    var ruta = `${_ctx}workout/multimedia/video${mediaVideo}`;
     let html =`<div id="divvideos${id}"  class="divVideo" style="text-align: center;     width: 50%;padding-left: 8%;position: absolute;z-index: 9;">
                <button id="btnCerrarVideo" data-id="${id}" type="button" style="margin: -19px;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <video id="somevid" preload="none" controls="controls" autoplay="" controlslist="nodownload" width="100%" height="100%" style="margin: -6px;border: 5px solid #e8f2f3; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <source id="VideoReproduccion" src="${mediaVideo}" type="video/mp4">
+                            <source id="VideoReproduccion" src="${ruta}" type="video/mp4">
                         </video>
                 </div>`;
 
@@ -240,7 +240,7 @@ function GenerarListaTextos() {
                                 <td></td>
                                 <td>`+(i+1)+`</td>
                                 <td>`+item.titulo+`</td>
-                                <td>`+item.descripcion+`</td>
+                                <td>`+item.descripcion.substr(0,200)+`<a href="#">... ver más</a></td>
                                 <td>`+formatterTexto(item.id,item.cantidadLikes)+`</td>
                             </tr>`;
         $tabla.append(TR);
@@ -269,10 +269,12 @@ function verAudio(id) {
     $(".divAudio").remove();
 
     const mediaAudio = input.attr("data-media");
+    var ruta = `${_ctx}workout/multimedia/audio${mediaAudio}`;
+
     let html =`<div id="divaudio${id}" class="divAudio" style="text-align: center;     width: 50%;padding-left: 8%;position: absolute;z-index: 9;">
                <button id="btnCerrarAudio" data-id="${id}" type="button" style="margin: -19px -60px 0 0;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                        <audio id="someaud" preload="none" controls="" controlsList="nodownload" autoplay="" width="100%" height="100%">
-                       <source id="AudioReproduccion" src="${mediaAudio}" type="audio/mpeg"/></audio>
+                       <source id="AudioReproduccion" src="${ruta}" type="audio/mpeg"/></audio>
                 </div>`;
 
     input.append(html);
@@ -390,55 +392,56 @@ function RegistrarMultimedia(id) {
         data.append("id", id);
         let params = {};
         params.id = id;
-        params.titulo = $("#tTitulo").val();
         params.tipo = tipo;
         params.peso = PESO;
         params.duracion = TIEMPO;
-        params.descripcion = $("#tDescripcion").val();
-        data.append("postString", JSON.stringify(params));
-
-        $.ajax({
-            type: 'POST',
-            url: _ctx + 'gestion/multimedia/upload',
-            data: data,
-            contentType: false,
-            processData: false,
-            xhr: function () {
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', progress, false);
-                }
-                return myXhr;
-            },
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    if (data == "-99") {
-                        $.smallBox({content: "El archivo no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
+        bootbox.prompt(("Inserte un título al video o audio"), (entrada)=>{
+            params.titulo = entrada;
+            params.descripcion = entrada;
+            data.append("postString", JSON.stringify(params));
+            $.ajax({
+                type: 'POST',
+                url: _ctx + 'gestion/consejo/upload',
+                data: data,
+                contentType: false,
+                processData: false,
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', progress, false);
                     }
-                    else {
-                        $.smallBox({content: "<i class='fa fa-child'></i> <i>Se registró con éxito...!</i>",});
-                        $(".input-ghost").val(null);
-                        $("#inputFile").val("");
-                        $('#modalmultimedia').modal("hide");
-                        TIEMPO = "";
-                        PESO = "";
-                        $("#Tiempo").attr("src","");
-                        $("#Tiempo2").attr("src","");
+                    return myXhr;
+                },
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-99") {
+                            $.smallBox({content: "El archivo no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
+                        }
+                        else {
+                            $.smallBox({content: "<i class='fa fa-child'></i> <i>Se registró con éxito...!</i>",});
+                            $(".input-ghost").val(null);
+                            $("#inputFile").val("");
+                            $('#modalmultimedia').modal("hide");
+                            TIEMPO = "";
+                            PESO = "";
+                            $("#Tiempo").attr("src","");
+                            $("#Tiempo2").attr("src","");
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    if(tipo == "2") {
+                        ObtenerData(0);
+                    }else if(tipo == "1"){
+                        ObtenerData(1);
+                    }else{
+                        ObtenerData(2);
                     }
                 }
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-                if(tipo == "2") {
-                    ObtenerData(0);
-                }else if(tipo == "1"){
-                    ObtenerData(1);
-                }else{
-                    ObtenerData(2);
-                }
-            }
+            });
         });
     }else{
         if(tipo == "3") {
@@ -457,7 +460,7 @@ function RegistrarMultimedia(id) {
                 $.ajax({
                     type: "POST",
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/multimedia/uploadtext',
+                    url: _ctx + 'cliente/uploadtext',
                     dataType: "json",
                     data: params,
                     success: function (data, textStatus) {
@@ -480,16 +483,15 @@ function RegistrarMultimedia(id) {
     }
 }
 
-function ListarTop() {
+function ListarTop(data) {
     $tablatop.html("");
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: _ctx + "gestion/multimedia/obtenerListadoTop",
-        dataType: "json",
-        success: function (data) {
+
             if(data != null){
-                sortByKeyDesc(data,"cantidadLikes");
+                data = data.filter(v=>v.lstDetalle != undefined && v.lstDetalle.length > 0).map(v=>{
+                    v.cantidadLikes = v.lstDetalle.map(v=>v.flgLiked).filter(v=>v).length;
+                    return v;
+                });
+                data.sort((a, b)=> b.cantidadLikes - a.cantidadLikes);
 
                 for (let i = 0; i < 10 ; i++) {
                     let item = data[i];
@@ -520,8 +522,8 @@ function ListarTop() {
                                 <td></td>
                                 <td>`+(i+1)+`</td>
                                 <td>`+item.titulo+`</td>
-                                <td>`+item.descripcion+`</td>
-                                <td><i class="fa fa-heart"></i> `+item.cantidadLikes+`</td>
+                                <td>`+item.descripcion.substr(0,200)+`<a href="#">... ver más</a> </td>
+                                <td><i class="fa fa-heart"></i>`+item.cantidadLikes+`</td>
                                 
                             </tr>`;
                         }
@@ -529,16 +531,7 @@ function ListarTop() {
                         $tablatop.append(TR);
                     }
                 }
-
             }
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {
-            $('[rel="tooltip"]').tooltip();
-        }
-    });
 }
 
 function sortByKeyDesc(array, key) {

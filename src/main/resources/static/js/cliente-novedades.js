@@ -41,8 +41,8 @@ function getNombresCompletosQuienesTieneLikeEnPost(postId, clases){
     const post = allPosts.find(v=>v.id == postId);
     if(post != undefined){
         if(clases.contains('btn-primary'))
-            return post.lstPostDetalle.filter(v=>v.cliId!=clienteId).map(v=>{if(v.flgLiked) return v.nomFull}).sort().join('<br/>');
-        return post.lstPostDetalle.map(v=>{if(v.flgLiked) return v.nomFull}).sort().join('<br/>');
+            return post.lstDetalle.filter(v=>v.cliId!=clienteId).map(v=>{if(v.flgLiked) return v.nomFull}).sort().join('<br/>');
+        return post.lstDetalle.map(v=>{if(v.flgLiked) return v.nomFull}).sort().join('<br/>');
     }
     return "";
 }
@@ -89,20 +89,20 @@ function GenerarDiv(item){
     var ruta = `${_ctx}`+`workout/multimedia/`;
 
     if(item.tipo == "1"){
-        estado = "público";
-        divestado = '<audio id=" " preload="none" controls="" controlslist="nodownload" autostart="false" width="100%" height="100%"><source id="AudioReproduccion" ' +
+        estado = "publicó";
+        divestado = '<h4 class="padding-10">'+item.titulo+'</h4><audio id=" " preload="none" controls="" controlslist="nodownload" autostart="false" width="100%" height="100%"><source id="AudioReproduccion" ' +
                     'src="'+ ruta +"audio" + item.rutaWeb +'" type="audio/mpeg"/></audio>';
     }else if(item.tipo == "2"){
-        estado = "público";
-        divestado = '<video id="somevid" controls="controls" controlslist="nodownload" autostart="false" width="100%" height="100%"><source id="VideoReproduccion" ' +
+        estado = "publicó";
+        divestado = '<h4 class="padding-10">'+item.titulo+'</h4><video id="somevid" controls="controls" controlslist="nodownload" autostart="false" width="100%" height="100%"><source id="VideoReproduccion" ' +
                     'src="'+ ruta +'video'+ item.rutaWeb +'" type="video/mp4"/></video>';
     }else{
         estado = "<span>escribió </span><span> "+item.titulo+"</span>";
         divestado = "<h5>"+item.descripcion+"</h5>";
     }
-    const mylike = item.lstPostDetalle != undefined && item.lstPostDetalle.length > 0 ? item.lstPostDetalle.find(v=>v.flgLiked && v.cliId==clienteId)!= undefined : false;
-    const sz = item.lstPostDetalle != undefined ? item.lstPostDetalle.filter(v=>v.flgLiked).length : 0;
-    const szToCheckFav = item.lstPostDetalle != undefined ? item.lstPostDetalle.find(v=>v.cliId==clienteId && v.flgFav) != undefined ? true : false : false;
+    const mylike = item.lstDetalle != undefined && item.lstDetalle.length > 0 ? item.lstDetalle.find(v=>v.flgLiked && v.cliId==clienteId)!= undefined : false;
+    const sz = item.lstDetalle != undefined ? item.lstDetalle.filter(v=>v.flgLiked).length : 0;
+    const szToCheckFav = item.lstDetalle != undefined ? item.lstDetalle.find(v=>v.cliId==clienteId && v.flgFav) != undefined ? true : false : false;
     estilo = mylike ? "primary" : "muted";
 
     return  `<div class="card">

@@ -1,12 +1,12 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
-import com.itsight.domain.Musculo;
-import com.itsight.domain.Objetivo;
-import com.itsight.domain.Parametro;
-import com.itsight.domain.Rol;
-import com.itsight.domain.jsonb.*;
+import com.itsight.domain.jsonb.CompetenciaRunner;
+import com.itsight.domain.jsonb.CondicionAnatomica;
+import com.itsight.domain.jsonb.PorcKiloTipo;
+import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.repository.BagForestRepository;
+import com.itsight.repository.PostRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TipoDescuentoRepository;
 import com.itsight.service.*;
@@ -118,6 +118,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private ConfiguracionClienteService configuracionClienteService;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Value("${main.repository}")
     private String mainRoute;

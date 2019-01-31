@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,4 +52,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             ")" +
             ")", nativeQuery = true)
     List<Post> getPostFavoritos(Integer clienteId);
+
+    @Query(value = "select update_post_detalle_flag(?1, ?2, ?3, ?4, ?5)", nativeQuery = true)
+    Boolean actualizarPostDetalleFlag(int postId, int cliId, boolean flag, String flagName, String fecMod);
 }

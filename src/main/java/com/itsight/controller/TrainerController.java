@@ -1,11 +1,9 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.Post;
 import com.itsight.domain.Trainer;
-import com.itsight.service.RolService;
-import com.itsight.service.TipoDocumentoService;
-import com.itsight.service.TipoUsuarioService;
-import com.itsight.service.TrainerService;
+import com.itsight.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/gestion/trainer")
+@PreAuthorize("hasRole('TRAINER') OR hasRole('ADMIN')")
 public class TrainerController {
 
     private TrainerService trainerService;
@@ -27,15 +27,19 @@ public class TrainerController {
 
     private RolService rolService;
 
+    private PostService postService;
+
     @Autowired
     public TrainerController(TrainerService trainerService,
                              TipoUsuarioService perfilService,
                              RolService rolService,
-                             TipoDocumentoService tipoDocumentoService) {
+                             TipoDocumentoService tipoDocumentoService,
+                             PostService postService) {
         this.trainerService = trainerService;
         this.perfilService = perfilService;
         this.tipoDocumentoService = tipoDocumentoService;
         this.rolService = rolService;
+        this.postService = postService;
     }
 
     @GetMapping(value = "")
@@ -77,5 +81,14 @@ public class TrainerController {
         model.addAttribute("lstTipoUsuario", perfilService.listAll());
         model.addAttribute("lstRol", rolService.findAll());
         return new ModelAndView(ViewConstant.MI_USUARIO);
+    }
+
+
+
+    @GetMapping(value = "/obtenerListadoPost")
+    public @ResponseBody
+    List<Post> listarPostsEntrenador(HttpSession session) {
+        int trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        return postService.findAllByTrainerId(trainerId);
     }
 }

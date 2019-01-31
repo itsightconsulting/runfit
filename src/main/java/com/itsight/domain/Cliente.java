@@ -94,10 +94,6 @@ public class Cliente extends AuditingEntity implements Serializable {
     private List<VideoAudioFavorito> lstMiFavorito;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
-    private List<MultimediaDetalle> lstMultimediaDetalle;
-
-    @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private ConfiguracionCliente confCliente;
 

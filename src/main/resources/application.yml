@@ -45,5 +45,3 @@ spring:
           starttls:
             enable: true
 #jmail.properties.mail.smtp.EnableSSL.enable:true;
-    
-    

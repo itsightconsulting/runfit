@@ -1,17 +1,19 @@
 package com.itsight.domain;
 
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itsight.domain.base.AuditingEntity;
 import com.itsight.domain.jsonb.PostDetalle;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
-import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -46,13 +48,16 @@ public class Post extends AuditingEntity implements Serializable {
     @Column(name = "PostId")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private int tipo;
 
-    @Column
+    @Column(nullable = false)
+    @Size(min = 1, max = 255)
     private String titulo;
 
+    @Lob
     @Column
+    @Size(max = 7000)
     private String descripcion;
 
     @Column(updatable = false)
@@ -75,11 +80,11 @@ public class Post extends AuditingEntity implements Serializable {
 
     @Type(type = "jsonb")
     @Column(name = "Detalle", columnDefinition = "jsonb")
-    private List<PostDetalle> lstPostDetalle;
+    private List<PostDetalle> lstDetalle;
 
     public Post(){}
 
-    public Post(int tipo, String titulo, String descripcion, UUID uuid, String peso, String duracion, String rutaWeb, List<PostDetalle> lstPostDetalle) {
+    public Post(int tipo, String titulo, String descripcion, UUID uuid, String peso, String duracion, String rutaWeb, List<PostDetalle> lstDetalle) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -87,7 +92,7 @@ public class Post extends AuditingEntity implements Serializable {
         this.peso = peso;
         this.duracion = duracion;
         this.rutaWeb = rutaWeb;
-        this.lstPostDetalle = lstPostDetalle;
+        this.lstDetalle = lstDetalle;
     }
 
     public Trainer getTrainer() {
