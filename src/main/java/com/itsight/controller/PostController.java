@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,5 +108,22 @@ public class PostController {
         }
 
         return EXITO_GENERICA.get();
+    }
+
+
+    @GetMapping("/get/{id}")
+    public @ResponseBody ResponseEntity<Post> obtenerPostById(@PathVariable(value = "id") int id){
+        if(postService.findOne(id) == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postService.findOne(id), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/get")
+    public @ResponseBody ResponseEntity<Post> obtenerPostById2(@RequestParam(value = "id") Integer id){
+        if(postService.findOne(id) == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postService.findOne(id), HttpStatus.ACCEPTED);
     }
 }

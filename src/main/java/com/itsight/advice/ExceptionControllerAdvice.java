@@ -2,12 +2,8 @@ package com.itsight.advice;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itsight.constants.ViewConstant;
-import com.itsight.util.Enums;
-import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,15 +12,12 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
     private static final Logger logger = LogManager.getLogger(ExceptionControllerAdvice.class);
-
 
     @ExceptionHandler(NumberFormatException.class)
     public @ResponseBody
@@ -57,24 +50,15 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(InvalidFormatException.class)
     public @ResponseBody
     String handleErrorByInvalidFhandlerormatException(InvalidFormatException ex) {
-        System.out.println(ex.getMessage());
         return EX_JACKSON_INVALID_FORMAT.get();
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ModelAndView handleErrorByGenericException(Exception ex) {
-        System.out.println(ex.getMessage());
         return new ModelAndView(ViewConstant.ERROR404PARAMEXCEP);
     }
 
-    @ExceptionHandler(BindException.class)
-    public @ResponseBody String handlerBindException(HttpServletRequest req, Exception ex) {
-        logger.warn(req.getRequestURL());
-        logger.warn(ex.getMessage());
-        return Utilitarios.customErrorResponse(Enums.ResponseCode.EX_VALIDATION_FAILED.get(), ex.getMessage());//;
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    /*@ExceptionHandler(MethodArgumentNotValidException.class)
     public @ResponseBody String handlerMethodArgumentNotValidException(HttpServletRequest req, Exception ex) {
         logger.warn(req.getRequestURL());
         logger.warn(ex.getMessage());
@@ -86,6 +70,6 @@ public class ExceptionControllerAdvice {
         logger.warn(req.getRequestURL());
         logger.warn("Resolved exception caused by Handler execution: java.lang.ArrayIndexOutOfBoundsException: "+ex.getMessage());
         return EX_ARRAY_INDEX_OUT.get();
-    }
+    }*/
 }
 

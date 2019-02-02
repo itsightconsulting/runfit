@@ -380,6 +380,23 @@ function bs_input_file() {
     );
 }
 
+function demo(id){
+    $.ajax({
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/consejo/get?id="+id,
+        dataType: "json",
+        success: function (res) {
+            console.log(res)
+        },
+        error: function (xhr) {
+            console.log("ERROR", xhr);
+            //exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
 function RegistrarMultimedia(id) {
     var multimedia = $(".input-ghost").get(0);
     var files = multimedia.files.length == 0 ? null : multimedia.files[0];

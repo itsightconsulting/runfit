@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-import static com.itsight.util.Enums.ResponseCode.*;
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
 @RequestMapping("/gestion/audio")
@@ -73,7 +75,7 @@ public class AudioController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute Audio audio, String tipoAudioId) {
+    String nuevo(@ModelAttribute @Valid Audio audio, String tipoAudioId) {
         audio.setTipoAudio(Integer.parseInt(tipoAudioId));
         if (audio.getId() == 0)
             return audioService.registrar(audio, null);
