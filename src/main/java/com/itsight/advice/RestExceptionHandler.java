@@ -39,4 +39,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex, errors));
     }
+
+    /*@Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String error = "handleMissingServletRequestParameter";
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+        //return super.handleMissingServletRequestParameter(ex, headers, status, request);
+    }*/
 }

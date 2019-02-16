@@ -1099,7 +1099,7 @@ MCGraficoData = (function(){
             const dis3 = dis2 + objBase.periodizacion[2];
             //Dis kilometraje // Color
             const data = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
-                const c = i < dis1 ? "rgba(131, 197, 255, 0.2)" : i < dis2 ? "rgba(232, 107, 10, 0.2)" : i < dis3 ? "rgba(164, 247, 144, 0.2)" : "rgba(74, 78, 59, 0.2)";
+                const c = i < dis1 ? "#ed8989c7" : i < dis2 ? "#4fd46bc4" : i < dis3 ? "#87ceebbd" : "#519da4a6";
                 return {numSem: i+1, kms: Number(v.textContent), color: c};
             });
 
@@ -1179,15 +1179,28 @@ MCGrafico = (function(){
             avances.push(0);//Por conveniencia(estética)
             document.querySelector('#ContainerVarVolumen').classList.remove('hidden');
             document.querySelector('#InicialMacro').classList.remove('hidden');
+            let draw = Chart.controllers.line.prototype.draw;
             Chart.controllers.LineNoOffset = Chart.controllers.line.extend({
                 updateElement: function(point, index, reset) {
                     Chart.controllers.line.prototype.updateElement.call(this, point, index, reset);
                     const meta = this.getMeta();
                     const xScale = this.getScaleForId(meta.xAxisID);
                     point._model.x = xScale.getPixelForValue(undefined, index-0.5);
-                },
+                }, draw: function() {
+                    draw.apply(this, arguments);
+                    let ctx = this.chart.chart.ctx;
+                    let _stroke = ctx.stroke;
+                    ctx.stroke = function() {
+                        ctx.save();
+                        ctx.shadowColor = '#23314591';
+                        ctx.shadowBlur = 10;
+                        ctx.shadowOffsetX = 0;
+                        ctx.shadowOffsetY = 4;
+                        _stroke.apply(this, arguments)
+                        ctx.restore();
+                    }
+                }
             });
-
             if($chartTemporada.ctx != undefined){
                 $chartTemporada.destroy();
             }else{
@@ -1212,9 +1225,6 @@ MCGrafico = (function(){
                                     let meta = chart.getDatasetMeta(i);
                                     if (!meta.hidden) {
                                         meta.data.forEach(function (element, index) {
-                                            // Draw the text in black, with the specified font
-                                            ctx.fillStyle = 'rgb(0, 0, 0)';
-
                                             let fontSize = 11;
                                             let fontStyle = 'normal';
                                             ctx.font = Chart.helpers.fontString(fontSize, fontStyle);
@@ -1226,7 +1236,7 @@ MCGrafico = (function(){
                                             // Make sure alignment settings are correct
                                             ctx.textAlign = 'center';
                                             ctx.textBaseline = 'middle';
-                                            ctx.fillStyle = '#57889c';
+                                            ctx.fillStyle = '#f3eeee94';// Draw the specified text color, with the specified font for data in line
 
                                             let padding = 5;
                                             let position = element.tooltipPosition();
@@ -1249,7 +1259,7 @@ MCGrafico = (function(){
                                             let fontSize = 20;
                                             let fontStyle = 'normal';
                                             ctx.font = Chart.helpers.fontString(fontSize, fontStyle);
-                                            let dataString = "";
+                                            let dataString;
                                             // Just naively convert to string for now
                                             dataString = dataset.data[index].toString() + "%";
                                             // Make sure alignment settings are correct
@@ -1290,6 +1300,19 @@ MCGrafico = (function(){
             }
 
             let ctx = document.getElementById('GraficoTemporada').getContext('2d');
+            console.log(Math.round(data.length*0.75)*100);
+            /*var gradientFill = ctx.createLinearGradient((Math.round(data.length*0.75)*100), 0, 100, 0);
+            gradientFill.addColorStop(0, "#4e4a6d");//Last
+            gradientFill.addColorStop(0.13, "gray");
+            gradientFill.addColorStop(0.46, "#4e4a6d");
+            gradientFill.addColorStop(1, "gray");//First*/
+
+            var gradientFill = ctx.createLinearGradient(0, 0, 0, (Math.round(data.length*0.75)*100));
+            gradientFill.addColorStop(0, "gold");//Last
+            gradientFill.addColorStop(0.13, "gray");
+            gradientFill.addColorStop(0.46, "skyblue");
+            gradientFill.addColorStop(1, "gray");//First
+
             $chartTemporada = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -1307,12 +1330,13 @@ MCGrafico = (function(){
                         yAxisID: 'y-axis-2',
                         // Changes this dataset to become a line
                         type: 'line',
-                        borderColor: '#73F194',
-                        backgroundColor: '#73F194',
-                        pointBorderColor: '#73F194',
-                        pointBackgroundColor: '#73F194',
-                        pointHoverBackgroundColor: '#73F194',
-                        pointHoverBorderColor: '#73F194',
+                        borderColor: 'transparent',
+                        backgroundColor: gradientFill,
+                        pointBorderColor: 'transparent',
+                        pointBackgroundColor: 'transparent',
+                        pointHoverBackgroundColor: 'red',
+                        pointHoverBorderColor: 'transparent',
+                        fill: true
                     }, {
                         label: 'Progreso',
                         data: avances,
@@ -1338,7 +1362,7 @@ MCGrafico = (function(){
                         onlyShowForDatasetIndex: [0, 1],
                         callbacks: {
                             title: function(tooltipItem) {
-                                const fix = $fechasCompetencia.length - $idsComp.length
+                                const fix = $fechasCompetencia.length - $idsComp.length;
                                 let mIx;
                                 return $idsComp.filter((v,i) => {
                                     if(v == tooltipItem[0].index)
@@ -1358,15 +1382,15 @@ MCGrafico = (function(){
                             ticks: {
                                 suggestedMin: 0,
                                 beginAtZero: true,
-                            }
+                                fontColor: "#f3eeee94",
+                            },
                         }, {
                             id: 'y-axis-2',
                             type: 'linear',
                             position: 'right',
                             gridLines: {
-                                color: "#F1F9FD",
-                                /*display: false,*/
-
+                                color: "rgba(72,68,118,0.2)",
+                                display: false,
                             },
                             ticks: {
                                 display: false,
@@ -1398,13 +1422,14 @@ MCGrafico = (function(){
                                     if (!(index % 4)) return item;
                                 },
                                 autoSkip: false,
-                                fontColor: "rgba(74, 78, 59, 1)"
+                                fontColor: "#f3eeee94"
                             },
+                            barPercentage: 0.5
                         }],
                     },
                     elements:{
                         line: {
-                            fill: false
+                            beginAtZero: true
                         }
                     },
                     legend: {
@@ -1414,11 +1439,140 @@ MCGrafico = (function(){
                                     return false;
                                 }
                                 return true;
-                            }
-                        }
+                            },
+                            fontColor: '#f3eeee94'
+                        },
+                        display: false
                     },
                 }
             });
+            Chart.elements.Rectangle.prototype.draw = function() {
+
+                var ctx = this._chart.ctx;
+                var vm = this._view;
+                var left, right, top, bottom, signX, signY, borderSkipped, radius;
+                var borderWidth = vm.borderWidth;
+                // Set Radius Here
+                // If radius is large enough to cause drawing errors a max radius is imposed
+                var cornerRadius = 20;
+
+                if (!vm.horizontal) {
+                    // bar
+                    left = vm.x - vm.width / 2;
+                    right = vm.x + vm.width / 2;
+                    top = vm.y;
+                    bottom = vm.base;
+                    signX = 1;
+                    signY = bottom > top? 1: -1;
+                    borderSkipped = vm.borderSkipped || 'bottom';
+                } else {
+                    // horizontal bar
+                    left = vm.base;
+                    right = vm.x;
+                    top = vm.y - vm.height / 2;
+                    bottom = vm.y + vm.height / 2;
+                    signX = right > left? 1: -1;
+                    signY = 1;
+                    borderSkipped = vm.borderSkipped || 'left';
+                }
+
+                // Canvas doesn't allow us to stroke inside the width so we can
+                // adjust the sizes to fit if we're setting a stroke on the line
+                if (borderWidth) {
+                    // borderWidth shold be less than bar width and bar height.
+                    var barSize = Math.min(Math.abs(left - right), Math.abs(top - bottom));
+                    borderWidth = borderWidth > barSize? barSize: borderWidth;
+                    var halfStroke = borderWidth / 2;
+                    // Adjust borderWidth when bar top position is near vm.base(zero).
+                    var borderLeft = left + (borderSkipped !== 'left'? halfStroke * signX: 0);
+                    var borderRight = right + (borderSkipped !== 'right'? -halfStroke * signX: 0);
+                    var borderTop = top + (borderSkipped !== 'top'? halfStroke * signY: 0);
+                    var borderBottom = bottom + (borderSkipped !== 'bottom'? -halfStroke * signY: 0);
+                    // not become a vertical line?
+                    if (borderLeft !== borderRight) {
+                        top = borderTop;
+                        bottom = borderBottom;
+                    }
+                    // not become a horizontal line?
+                    if (borderTop !== borderBottom) {
+                        left = borderLeft;
+                        right = borderRight;
+                    }
+                }
+
+                ctx.beginPath();
+                ctx.fillStyle = vm.backgroundColor;
+                ctx.strokeStyle = vm.borderColor;
+                ctx.lineWidth = borderWidth;
+
+                // Corner points, from bottom-left to bottom-right clockwise
+                // | 1 2 |
+                // | 0 3 |
+                //bottom = bottom + 20;
+                var corners = [
+                    [left, bottom],
+                    [left, top],
+                    [right, top],
+                    [right, bottom]
+                ];
+
+                // Find first (starting) corner with fallback to 'bottom'
+                var borders = ['bottom', 'left', 'top', 'right'];
+                var startCorner = borders.indexOf(borderSkipped, 0);
+                if (startCorner === -1) {
+                    startCorner = 0;
+                }
+
+                function cornerAt(index) {
+                    return corners[(startCorner + index) % 4];
+                }
+
+                // Draw rectangle from 'startCorner'
+                var corner = cornerAt(0);
+                ctx.moveTo(corner[0], corner[1]);
+
+                for (var i = 1; i < 4; i++) {
+                    corner = cornerAt(i);
+                    nextCornerId = i+1;
+                    if(nextCornerId == 4){
+                        nextCornerId = 0
+                    }
+
+                    nextCorner = cornerAt(nextCornerId);
+
+                    width = corners[2][0] - corners[1][0];
+                    height = corners[0][1] - corners[1][1];
+                    x = corners[1][0];
+                    y = corners[1][1];
+
+                    var radius = cornerRadius;
+
+                    // Fix radius being too large
+                    if(radius > height/2){
+                        radius = height/2;
+                    }if(radius > width/2){
+                        radius = width/2;
+                    }
+                    //Temportal
+                    y = y+20;
+                    //!--Temportal
+                    ctx.moveTo(x + radius, y);
+                    ctx.lineTo(x + width - radius, y);
+                    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                    ctx.lineTo(x + width, y + height - radius);
+                    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                    ctx.lineTo(x + radius, y + height);
+                    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+                    ctx.lineTo(x, y + radius);
+                    ctx.quadraticCurveTo(x, y, x + radius, y);
+
+                }
+
+                ctx.fill();
+                if (borderWidth) {
+                    ctx.stroke();
+                }
+            };
         },
         miniPorcentual: (dF)=>{
             let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
