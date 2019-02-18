@@ -846,6 +846,31 @@
                                             </div>
                                             <div class="container-fluid">
                                                 <section class="margin-0">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-1">
+                                                            <h1 style="font-weight: bold; color: white !important" class="text-center">Color de Fondo</h1>
+                                                            <input type="radio" class="form-control jscolor" data-pos="0" onchange="javascript:cssUpdateGraphBackground(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="1" onchange="javascript:cssUpdateGraphBackground(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="2" onchange="javascript:cssUpdateGraphBackground(this)" value="000"/>
+                                                        </div>
+                                                        <div class="col-md-1">&nbsp;</div>
+                                                        <div class="col-md-1">
+                                                            <h1 style="font-weight: bold; color: white !important" class="text-center">Color Barras</h1>
+                                                            <input type="radio" class="form-control jscolor" data-pos="0" onchange="javascript:cssUpdateGraphBackgroundBarras(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="1" onchange="javascript:cssUpdateGraphBackgroundBarras(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="2" onchange="javascript:cssUpdateGraphBackgroundBarras(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="3" onchange="javascript:cssUpdateGraphBackgroundBarras(this)" value="000"/>
+                                                        </div>
+                                                        <div class="col-md-1">&nbsp;</div>
+                                                        <div class="col-md-1">
+                                                            <h1 style="font-weight: bold; color: white !important" class="text-center">Manta de Intensidad</h1>
+                                                            <input type="radio" class="form-control jscolor" data-pos="0" onchange="javascript:cssUpdateGraphBackgroundMantaIntensidad(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="1" onchange="javascript:cssUpdateGraphBackgroundMantaIntensidad(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="2" onchange="javascript:cssUpdateGraphBackgroundMantaIntensidad(this)" value="000"/>
+                                                            <input type="radio" class="form-control jscolor" data-pos="3" onchange="javascript:cssUpdateGraphBackgroundMantaIntensidad(this)" value="000"/>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="panel-group smart-accordion-default ">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
@@ -864,7 +889,7 @@
                                                                 <div class="panel-body" style="padding: 3px 0px !important">
                                                                     <div class="container-fluid">
                                                                         <div class="col-md-12">
-                                                                            <canvas id="GraficoTemporada" height="350" style="background-image: linear-gradient(to top, rgb(70, 95, 74), rgb(70, 131, 122), rgb(104, 157, 114));"></canvas>
+                                                                            <canvas id="GraficoTemporada" height="350" style="background-image: linear-gradient(rgb(35, 35, 35), rgb(61, 61, 61), rgb(76, 76, 76))"></canvas>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1659,6 +1684,7 @@ you can add as many as you like
 <!-- END SHORTCUT AREA -->
 <script th:replace="html-commons/js :: fg-js"/>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/jscolor.js}+'?'+${version}"></script>
 <script th:src="@{/js/rutina.js}+'?'+${version}"></script>
 <script th:src="@{/js/macro-ciclo.js}+'?'+${version}"></script>
 <script th:src="@{/js/tablas-calculo.js}+'?'+${version}"></script>

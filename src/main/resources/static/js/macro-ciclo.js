@@ -1099,7 +1099,7 @@ MCGraficoData = (function(){
             const dis3 = dis2 + objBase.periodizacion[2];
             //Dis kilometraje // Color
             const data = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map((v,i)=>{
-                const c = i < dis1 ? "#ed8989c7" : i < dis2 ? "#4fd46bc4" : i < dis3 ? "#87ceebbd" : "#519da4a6";
+                const c = i < dis1 ? bgBarMainGraph[0] : i < dis2 ? bgBarMainGraph[1] : i < dis3 ? bgBarMainGraph[2] : bgBarMainGraph[3];
                 return {numSem: i+1, kms: Number(v.textContent), color: c};
             });
 
@@ -1299,6 +1299,10 @@ MCGrafico = (function(){
                 });
             }
 
+            Chart.Legend.prototype.afterFit = function() {
+                this.height = this.height + 35;
+            };
+
             let ctx = document.getElementById('GraficoTemporada').getContext('2d');
             console.log(Math.round(data.length*0.75)*100);
             /*var gradientFill = ctx.createLinearGradient((Math.round(data.length*0.75)*100), 0, 100, 0);
@@ -1308,10 +1312,10 @@ MCGrafico = (function(){
             gradientFill.addColorStop(1, "gray");//First*/
 
             var gradientFill = ctx.createLinearGradient(0, 0, 0, (Math.round(data.length*0.75)*100));
-            gradientFill.addColorStop(0, "gold");//Last
-            gradientFill.addColorStop(0.13, "gray");
-            gradientFill.addColorStop(0.46, "skyblue");
-            gradientFill.addColorStop(1, "gray");//First
+            gradientFill.addColorStop(0, bgMantaIntensidad[0]);//Last
+            gradientFill.addColorStop(0.13, bgMantaIntensidad[1]);
+            gradientFill.addColorStop(0.46, bgMantaIntensidad[2]);
+            gradientFill.addColorStop(0.76, bgMantaIntensidad[3]);//First
 
             $chartTemporada = new Chart(ctx, {
                 type: 'bar',
@@ -1321,6 +1325,7 @@ MCGrafico = (function(){
                         label: 'Kilometraje',
                         data: data.map(({kms})=>kms),
                         borderColor: "grey",
+                        hoverBackgroundColor: 'rgba(57, 255, 163, 0.7)',
                         yAxisID: 'y-axis-1',
                         backgroundColor: data.map(({color})=>color)
                         ,
@@ -1418,9 +1423,9 @@ MCGrafico = (function(){
                         }],
                         xAxes: [{
                             ticks: {
-                                userCallback: function(item, index) {
+                                /*userCallback: function(item, index) {
                                     if (!(index % 4)) return item;
-                                },
+                                },*/
                                 autoSkip: false,
                                 fontColor: "#f3eeee94"
                             },
@@ -1440,12 +1445,13 @@ MCGrafico = (function(){
                                 }
                                 return true;
                             },
-                            fontColor: '#f3eeee94'
+                            fontColor: 'transparent'
                         },
                         display: false
                     },
                 }
             });
+
             Chart.elements.Rectangle.prototype.draw = function() {
 
                 var ctx = this._chart.ctx;

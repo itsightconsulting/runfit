@@ -3,7 +3,7 @@ spring:
     active: development
   jpa:
     hibernate:
-        ddl-auto: none
+        ddl-auto: update
         naming:
           strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
@@ -22,10 +22,10 @@ spring:
     cache: false
     encoding: UTF-8
     suffix: .html
-    prefix: file:src/main/resources/templates/
+    #prefix: file:src/main/resources/templates/
 # Static resources reloading during development
   resources:
-    static-locations: file:src/main/resources/static/
+    #static-locations: file:src/main/resources/static/
   http:
     multipart:
       max-request-size: 256MB

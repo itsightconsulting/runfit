@@ -40,11 +40,48 @@ const nivelAtletaRdBtn = document.querySelector('#NivelAtleta');
 const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
 const fInitMacro = document.querySelector('#MacroFechaInicio');
 const fFinMacro = document.querySelector('#MacroFechaFin');
+const bgBarMainGraph = ["#ed8989c7","#4fd46bc4","#87ceebbd","#519da4a6"];
+const bgMantaIntensidad = ["gold", "gray", "skyblue", "gray"];
 
 $(function () {
     init();
 })
 
+
+
+function cssUpdateGraphBackground(e){
+    const hex = e.value;
+    const pos = e.getAttribute('data-pos');
+    const rgb = hexToRgb("#"+hex).join(', ');
+    const lastRGB = $('#GraficoTemporada').css('background-image').split('rgb(').slice(1).map(v=>v.substring(0,v.indexOf(")")));
+    lastRGB[pos] = rgb;
+    const nuevoRGB = `linear-gradient(to bottom, rgb(${lastRGB[0]}), rgb(${lastRGB[1]}), rgb(${lastRGB[2]})`;
+    $('#GraficoTemporada').css('background-image', nuevoRGB);
+}
+
+function cssUpdateGraphBackgroundBarras(e){
+    const hex = e.value;
+    const pos = e.getAttribute('data-pos');
+    const rgb = hexToRgb("#"+hex).join(', ') + ', 0.75';
+    const rgba = `rgba(${rgb})`;
+    bgBarMainGraph[pos] = rgba;
+    document.querySelector('#btnComprobar').click();
+}
+
+function cssUpdateGraphBackgroundMantaIntensidad(e){
+    const hex = e.value;
+    const pos = e.getAttribute('data-pos');
+    const rgb = hexToRgb("#"+hex).join(', ');
+    const rgba = `rgb(${rgb})`;
+    bgMantaIntensidad[pos] = rgba;
+    document.querySelector('#btnComprobar').click();
+}
+
+const hexToRgb = hex =>
+    hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i
+        ,(m, r, g, b) => '#' + r + r + g + g + b + b)
+        .substring(1).match(/.{2}/g)
+        .map(x => parseInt(x, 16))
 
 function init(){
     MacroValidacion.formulario();
