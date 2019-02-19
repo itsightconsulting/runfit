@@ -1316,7 +1316,17 @@ MCGrafico = (function(){
             gradientFill.addColorStop(0.13, bgMantaIntensidad[1]);
             gradientFill.addColorStop(0.46, bgMantaIntensidad[2]);
             gradientFill.addColorStop(0.76, bgMantaIntensidad[3]);//First
+            //Temp
+            const len = data.length;
+            console.log(data);
+            data[len-1].perc = "100";
+            data[len-1].kms = 40;
+            data[len-2].perc = "90";
+            data[len-2].kms = 40;
+            data[len-3].perc = "80";
+            data[len-3].kms = 40;
 
+            //End temp
             $chartTemporada = new Chart(ctx, {
                 type: 'bar',
                 data: {
