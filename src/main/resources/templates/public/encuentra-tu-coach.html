@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="text-right view-only-desktop">
+          <p class="login_link">Iniciar sesión</p>
+        </div>
+        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img src="img/logo.png"></a></div>
+        <ul class="nav navbar-nav navbar-right view-only-desktop">
+          <li class="active"><a href="quienessomos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+          <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
+          <li><a href="ficha-inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
+          <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
+        </ul>
+      </div>
+      <div class="menu_mobile view-only-mobile">
+        <div class="bg-opacity"></div>
+        <ul class="header-options">
+          <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
+          <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
+        </ul>
+        <div class="avatar"><img src="img/logo.png">
+          <p class="name">GUSTAVO ARIAS</p>
+          <p class="email">gjarias09@gmail.com</p>
+        </div>
+        <ul class="options">
+          <li class="active"><a href="quienessomos.html"> <span>QUIENES SOMOS</span></a></li>
+          <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
+          <li><a href="ficha-inscripcion.html"><span>ASESORES</span></a></li>
+          <li><a href="#"> <span>EMPRENDE CON NOSOTROS</span></a></li>
+        </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
+      </div>
+      <div id="menu" style="display: none">
+        <div class="menu-desktop view-only-desktop">
+          <div class="container position-relative">
+            <div class="arrow-up"></div>
+            <ul class="asesores-menu">
+              <li><a href="#">Explorar características</a>
+                <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+              </li>
+              <li><a href="#">Emprende con nosotros</a>
+                <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
+      <div class="login-bg"></div>
+      <div class="avatar"><img src="img/logo.png"></div>
+      <div class="login-sesion" style="display: none">
+        <div class="form-group usuario"><span class="fa fa-user-o"></span>
+          <label>Usuario</label>
+          <input type="text">
+        </div>
+        <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+          <label>Contraseña</label>
+          <input type="text">
+        </div>
+        <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
+        <div class="actions">
+          <button class="btn-login" type="button">INGRESAR</button>
+          <button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
+        </div>
+      </div>
+      <div class="login-register">
+        <div class="form-group usuario"><span class="fa fa-user-o"></span>
+          <label>Nombre completo</label>
+          <input type="text">
+        </div>
+        <div class="form-group mail"><span class="fa fa-envelope-o"></span>
+          <label>Correo electrónico</label>
+          <input type="text">
+        </div>
+        <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+          <label>Contraseña</label>
+          <input type="text">
+        </div>
+        <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+          <label>Confirmar Contraseña</label>
+          <input type="text">
+        </div>
+        <div class="actions">
+          <button class="btn-login" type="button">REGISTRAR</button>
+          <p>¿Ya es miembro RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
+        </div>
+      </div>
+    </div>
+    <div id="wrapper">
+      <div class="section banner home">
+        <div class="bg-image"><img class="banner-home" src="img/trainers-shadow.jpg"></div>
+      </div>
+      <section class="encuentra-tu-coach">
+        <div class="container">
+          <h1>Elige al especialista<span>Que se adecue a tus necesidades</span></h1>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>BÚSQUEDA POR NOMBRE</label>
+                <input class="form-control" type="text">
+              </div>
+            </div>
+            <div class="col-md-4">  
+              <div class="form-group">
+                <label>UTILIZA PALABRAS CLAVES</label>
+                <select class="form-control"></select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>UBICACIÓN</label>
+                <select class="form-control"></select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>SERVICIOS</label>
+                <select class="form-control"></select>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>¿DONDE QUIERES ENTRENAR?</label>
+                <ul class="checks">
+                  <li>
+                    <div class="chk-content">Aire libre / Domicilio
+                      <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="chk-content">Centro
+                      <input type="checkbox"><span class="checkmark"></span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="chk-content">Online
+                      <input type="checkbox"><span class="checkmark"></span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">   
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>SEXO</label>
+                <select class="form-control"></select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>IDIOMAS QUE DOMINA EL ASESOR</label>
+                <select class="form-control"></select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>NIVEL DE RENDIMIENTO</label>
+                <select class="form-control"></select>
+              </div>
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-default btn-white view-only-desktop" type="button">LIMPIAR TODO</button>
+            </div>
+            <div class="col-md-6 text-right">
+              <button class="btn btn-default btn-black" type="button">BUSCAR</button>
+            </div>
+          </div>
+          <div class="group-trainer row">
+            <div class="col-md-3 pad-0">
+              <div class="avatar-form">
+                <div class="avatar-form-content"><img src="img/carousel-1.jpg"></div>
+                <fieldset class="rating">
+                  <input id="star5" type="radio" name="rating" value="5">
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <input id="star4half" type="radio" name="rating" value="4 and a half">
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <input id="star4" type="radio" name="rating" value="4">
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <input id="star3half" type="radio" name="rating" value="3 and a half">
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <input id="star3" type="radio" name="rating" value="3">
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <input id="star2half" type="radio" name="rating" value="2 and a half">
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <input id="star2" type="radio" name="rating" value="2">
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <input id="star1half" type="radio" name="rating" value="1 and a half">
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <input id="star1" type="radio" name="rating" value="1">
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <input id="starhalf" type="radio" name="rating" value="half">
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                </fieldset>
+                <p class="valoration">43 <span>(21 valoraciones)</span></p>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <h4>NOMBRE ENTRENADOR<span class="title">Entrenador de natación</span><span class="location">La Molina - Lima</span></h4>
+              <p>A mediados del 2010, la demanda de atletas que solicitaban una asesoría altamente personalizada aumentó considerablemente. Esto llevó a que el licenciado cubano en cultura física y deportes, Dennys Maymir,  se diera cuenta que un cuadro de Excel y unas cuantas imágenes de ejercicios no eran suficientes para satisfacer al 100% las necesidades de sus atletas. Necesitaba una herramienta más potente, un sistema con el que a cualquier profesional de la salud y el deporte trabajar con su propia metodología, para asesorar de manera efectiva y segura.</p>
+              <button class="btn btn-default btn-black" type="button">VER PERFIL</button>
+            </div>
+          </div>
+          <div class="group-trainer row">
+            <div class="col-md-3 pad-0">
+              <div class="avatar-form">
+                <div class="avatar-form-content"><img src="img/carousel-1.jpg"></div>
+                <fieldset class="rating">
+                  <input id="star5" type="radio" name="rating" value="5">
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <input id="star4half" type="radio" name="rating" value="4 and a half">
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <input id="star4" type="radio" name="rating" value="4">
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <input id="star3half" type="radio" name="rating" value="3 and a half">
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <input id="star3" type="radio" name="rating" value="3">
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <input id="star2half" type="radio" name="rating" value="2 and a half">
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <input id="star2" type="radio" name="rating" value="2">
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <input id="star1half" type="radio" name="rating" value="1 and a half">
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <input id="star1" type="radio" name="rating" value="1">
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <input id="starhalf" type="radio" name="rating" value="half">
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                </fieldset>
+                <p class="valoration">43 <span>(21 valoraciones)</span></p>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <h4>NOMBRE ENTRENADOR<span class="title">Entrenador de natación</span><span class="location">La Molina - Lima</span></h4>
+              <p>A mediados del 2010, la demanda de atletas que solicitaban una asesoría altamente personalizada aumentó considerablemente. Esto llevó a que el licenciado cubano en cultura física y deportes, Dennys Maymir,  se diera cuenta que un cuadro de Excel y unas cuantas imágenes de ejercicios no eran suficientes para satisfacer al 100% las necesidades de sus atletas. Necesitaba una herramienta más potente, un sistema con el que a cualquier profesional de la salud y el deporte trabajar con su propia metodología, para asesorar de manera efectiva y segura.</p>
+              <button class="btn btn-default btn-black" type="button">VER PERFIL</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="col-md-3">
+          <p class="title_footer">Equipo</p>
+          <ul>
+            <li><a href="#">
+                <p>Quiénes somos</p></a></li>
+            <li><a href="#">
+                <p>Atletas</p></a></li>
+            <li><a href="#">
+                <p>Entrenadores</p></a></li>
+            <li><a href="#">
+                <p>Emprende con nosotros</p></a></li>
+            <li><a href="#">
+                <p>Preguntas más frecuentes</p></a></li>
+            <li><a href="#">
+                <p>Términos y condiciones</p></a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <p class="title_footer">Pago seguro</p><img src="img/pago.png">
+        </div>
+        <div class="col-md-3">
+          <p class="title_footer">Síguenos en</p>
+          <ul class="social">
+            <li><a href="#"><span class="fa fa-instagram"></span></a></li>
+            <li><a href="#"><span class="fa fa-facebook"></span></a></li>
+            <li><a href="#"><span class="fa fa-youtube"></span></a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 text-right">
+          <p class="title_footer">Contáctenos</p>
+          <ul>
+            <li>
+              <p>+51 977595834</p>
+            </li>
+            <li>
+              <p>info@runfit.pe</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script src="js/vendor/vendor_all.js" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
+    <script src="js/init.js"></script>
+    <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
+  </body>
+</html>

@@ -83,7 +83,6 @@ public class RutinaHshController {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0){
-            System.out.println(session.getAttribute("codTrainer").toString());
             String codTrainer = session.getAttribute("codTrainer").toString();
             String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
             if(codTrainer.equals(qCodTrainer)){
