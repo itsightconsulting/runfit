@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="es-ES">
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/style.min.css">
+    <meta charset="utf-8" />
+    <meta name="_ctx" th:content="@{/}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/font-awesome.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -14,11 +16,11 @@
         <div class="text-right view-only-desktop">
           <p class="login_link">Iniciar sesión</p>
         </div>
-        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img src="img/logo.png"></a></div>
+        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
         <ul class="nav navbar-nav navbar-right view-only-desktop">
-          <li class="active"><a href="quienessomos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+          <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha-inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
+          <li><a href="ficha_inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
           <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul>
       </div>
@@ -28,14 +30,14 @@
           <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
           <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
         </ul>
-        <div class="avatar"><img src="img/logo.png">
+        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
           <p class="name">GUSTAVO ARIAS</p>
           <p class="email">gjarias09@gmail.com</p>
         </div>
         <ul class="options">
-          <li class="active"><a href="quienessomos.html"> <span>QUIENES SOMOS</span></a></li>
+          <li class="active"><a href="quienes_somos.html"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha-inscripcion.html"><span>ASESORES</span></a></li>
+          <li><a href="ficha_inscripcion.html"><span>ASESORES</span></a></li>
           <li><a href="#"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
       </div>
@@ -57,15 +59,15 @@
     </nav>
     <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
       <div class="login-bg"></div>
-      <div class="avatar"><img src="img/logo.png"></div>
+      <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/></div>
       <div class="login-sesion" style="display: none">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Usuario</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
         <div class="actions">
@@ -76,19 +78,19 @@
       <div class="login-register">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Nombre completo</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group mail"><span class="fa fa-envelope-o"></span>
           <label>Correo electrónico</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Confirmar Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="actions">
           <button class="btn-login" type="button">REGISTRAR</button>
@@ -98,12 +100,12 @@
     </div>
     <div id="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" src="img/home.jpg">
+        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/home.jpg}+'?'+${version}"/>
           <div class="container">
             <div class="title-page">
               <h1>CONTIGO<span>EN CADA PASO</span></h1>
             </div>
-          </div><img class="detail" src="img/home-details.png" style="min-height: auto">
+          </div><img class="detail" th:src="@{/img/public/home-details.png}+'?'+${version}" style="min-height: auto"/>
         </div>
       </div>
       <section class="entrena_correctamente">
@@ -113,25 +115,25 @@
           <p class="description_section">La confianza proviene de la metodología perfecta combinada con las mejores herramientas</p>
           <ol>
             <li class="col-md-3">
-              <div class="item"><img src="img/entrena-1.png">
+              <div class="item"><img th:src="@{/img/public/entrena-1.png}+'?'+${version}"/>
                 <h2>Conectate con tu Coach</h2>
                 <p>La confianza proviene de la metodología perfecta combinada con las mejores herramientas</p>
               </div>
             </li>
             <li class="col-md-3">
-              <div class="item"><img src="img/entrena-2.png">
+              <div class="item"><img th:src="@{/img/public/entrena-2.png}+'?'+${version}"/>
                 <h2>Recibe tu programa de entrenamiento</h2>
                 <p>Trabajarás con un programa de entrenamiento personalizado y estructurado metodológicamente con los volúmenes e intensidades precisas. </p>
               </div>
             </li>
             <li class="col-md-3">
-              <div class="item"><img src="img/entrena-3.png">
+              <div class="item"><img th:src="@{/img/public/entrena-3.png}+'?'+${version}"/>
                 <h2>Entrena donde quieras</h2>
                 <p>Podrás llevar el programa de entrenamiento contigo y contarás con más de 500 videos demostrativos para que lo puedas ejecutar correctamente. </p>
               </div>
             </li>
             <li class="col-md-3">
-              <div class="item"><img src="img/entrena-4.png">
+              <div class="item"><img th:src="@{/img/public/entrena-4.png}+'?'+${version}"/>
                 <h2>Recibe seguimiento y feedback de tu coach  </h2>
                 <p>Estarás en contacto directo con tu coach para que te guie en cada paso.</p>
               </div>
@@ -143,28 +145,28 @@
         </div>
       </section>
       <section class="colaboradores view-only-desktop">
-        <div class="top-section"><img class="shadow" src="img/colaboradores-shadow.png">
+        <div class="top-section"><img class="shadow" th:src="@{/img/public/colaboradores-shadow.png}+'?'+${version}"/>
           <div class="container">
             <h1 class="title_section text-center">ATLETAS COLABORADORES</h1>
             <p class="description_section text-center">La confianza proviene de la metodología perfecta combinada con las mejores herramientas</p>
             <ul class="deportistas text-center">
               <li class="col-md-3">
-                <div class="item" data-info="andy"><img class="avatar" src="img/andy.png">
+                <div class="item" data-info="andy"><img class="avatar" th:src="@{/img/public/andy.png}+'?'+${version}"/>
                   <p>ANDY MARTINEZ</p>
                 </div>
               </li>
               <li class="col-md-3">
-                <div class="item" data-info="andy"><img class="avatar" src="img/andy.png">
+                <div class="item" data-info="andy"><img class="avatar" th:src="@{/img/public/andy.png}+'?'+${version}"/>
                   <p>SALVADOR RUIZ</p>
                 </div>
               </li>
               <li class="col-md-3">
-                <div class="item" data-info="dennis"><img class="avatar" src="img/dennis.png">
+                <div class="item" data-info="dennis"><img class="avatar" th:src="@{/img/public/dennis.png}+'?'+${version}"/>
                   <p>DENNIS CORINA</p>
                 </div>
               </li>
               <li class="col-md-3">
-                <div class="item" data-info="andy"><img class="avatar" src="img/andy.png">
+                <div class="item" data-info="andy"><img class="avatar" th:src="@{/img/public/andy.png}+'?'+${version}"/>
                   <p>JOSE LUIS MANDROS</p>
                 </div>
               </li>
@@ -219,7 +221,7 @@
       <section class="tienda_coach">
         <div class="col-md-6 coach">
           <div class="bg-color"></div>
-          <div class="text-center"><img src="img/coach.png">
+          <div class="text-center"><img th:src="@{/img/public/coach.png}+'?'+${version}"/>
             <h3>Encuentra a tu coach</h3>
             <p>Deja que un experto te ayude en cada paso del camino. Elige al especialista que se adecue a tus necesidades. </p>
             <div class="col-md-12"></div>
@@ -228,7 +230,7 @@
         </div>
         <div class="col-md-6 tienda">
           <div class="bg-color"></div>
-          <div class="text-center"><img src="img/tienda.png">
+          <div class="text-center"><img th:src="@{/img/public/tienda.png}+'?'+${version}"/>
             <h3>Nuestra tienda</h3>
             <p>Complementa tu preparación con nuestras guías y programas de entrenamientos, elaborados por los mejores profesionales del mercado.</p>
             <div class="col-md-12">
@@ -258,7 +260,7 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <p class="title_footer">Pago seguro</p><img src="img/pago.png">
+          <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
         </div>
         <div class="col-md-3">
           <p class="title_footer">Síguenos en</p>
@@ -281,8 +283,8 @@
         </div>
       </div>
     </footer>
-    <script src="js/vendor/vendor_all.js" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
-    <script src="js/init.js"></script>
+    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
   </body>
 </html>

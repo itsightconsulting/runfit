@@ -2,9 +2,18 @@ package com.itsight.constants;
 
 public class ViewConstant {
 
+    //MAIN Publics
+    public static final String MAIN_INICIO = "public/index";
+    public static final String MAIN_CONTIGO = "public/contigo";
+    public static final String MAIN_QUIENES_SOMOS = "public/quienes_somos";
+    public static final String MAIN_BUSQUEDA_TRAINER = "public/encuentra_trainer";
+    public static final String MAIN_FICHA_INSCRIPCION = "public/ficha_inscripcion";
+    public static final String MAIN_REGISTRO_TRAINER= "public/registro_trainer";
+    public static final String MAIN_PERFIL_TRAINER= "public/perfil_trainer";
+
     //MAIN Views
     public static final String MAIN_USUARIO = "gestion/usuario";
-    public static final String MAIN_FICHA_INSCRIPCION = "portal/ficha_inscripcion";
+    public static final String MAIN_FICHA_INSCRIPCION2 = "portal/ficha_inscripcion";
     public static final String MAIN_RUTINA_PLANTILLA = "gestion/rutina_plantilla";
     public static final String MAIN_TRAINER_RUTINA_PLANTILLA = "gestion/trainer/rutina_plantilla";
     public static final String MAIN_TRAINER_RED = "gestion/trainer/red_fitness";

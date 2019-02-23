@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="es-ES">
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/style.min.css">
+    <meta charset="utf-8" />
+    <meta name="_ctx" th:content="@{/}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/font-awesome.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -14,11 +16,11 @@
         <div class="text-right view-only-desktop">
           <p class="login_link">Iniciar sesión</p>
         </div>
-        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img src="img/logo.png"></a></div>
+        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
         <ul class="nav navbar-nav navbar-right view-only-desktop">
-          <li class="active"><a href="quienessomos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+          <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha-inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
+          <li><a href="ficha_inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
           <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul>
       </div>
@@ -28,14 +30,14 @@
           <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
           <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
         </ul>
-        <div class="avatar"><img src="img/logo.png">
+        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
           <p class="name">GUSTAVO ARIAS</p>
           <p class="email">gjarias09@gmail.com</p>
         </div>
         <ul class="options">
-          <li class="active"><a href="quienessomos.html"> <span>QUIENES SOMOS</span></a></li>
+          <li class="active"><a href="quienes_somos.html"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha-inscripcion.html"><span>ASESORES</span></a></li>
+          <li><a href="ficha_inscripcion.html"><span>ASESORES</span></a></li>
           <li><a href="#"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
       </div>
@@ -57,15 +59,15 @@
     </nav>
     <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
       <div class="login-bg"></div>
-      <div class="avatar"><img src="img/logo.png"></div>
+      <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/></div>
       <div class="login-sesion" style="display: none">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Usuario</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
         <div class="actions">
@@ -76,19 +78,19 @@
       <div class="login-register">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Nombre completo</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group mail"><span class="fa fa-envelope-o"></span>
           <label>Correo electrónico</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Confirmar Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="actions">
           <button class="btn-login" type="button">REGISTRAR</button>
@@ -98,7 +100,7 @@
     </div>
     <div id="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" src="img/quienes-somos.jpg">
+        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/quienes-somos.jpg}+'?'+${version}"/>
           <div class="container">
             <div class="title-page">
               <h1>CONTIGO<span>EN CADA PASO</span></h1>
@@ -109,27 +111,27 @@
       <section class="time-line container">
         <ol>
           <li>
-            <div class="item"><img class="icon-img" src="img/contigo-1.png">
+            <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-1.png}+'?'+${version}"/>
               <h2>Conectate <span>con tu Coach</span></h2>
-              <p>Nuestro buscador de coach es una herramienta que te permite contactarte con un especialista calificado para que puedas dar el primer paso hacia tu objetivo. </p><img class="view-only-desktop" src="img/contigo-entrena.png">
+              <p>Nuestro buscador de coach es una herramienta que te permite contactarte con un especialista calificado para que puedas dar el primer paso hacia tu objetivo. </p><img class="view-only-desktop" th:src="@{/img/public/contigo-entrena.png}+'?'+${version}"/>
             </div>
           </li>
           <li>
-            <div class="item"><img class="icon-img" src="img/contigo-2.png">
+            <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-2.png}+'?'+${version}"/>
               <h2>Recibe tu programa <span>de entrenamiento</span></h2>
-              <p>Al contactarte con tu Coach y trazar los objetivos de tu preparación, te elaborará el plan de entrenamiento a largo plazo que recibirás sistemáticamente en tu perfil. Para la elaboración de tus rutinas, tu asesor contará con un sofisticado sistema de planificación y con más de 500 vídeos ejecutados por atletas profesionales. </p><img class="view-only-desktop" src="img/contigo-pc.png">
+              <p>Al contactarte con tu Coach y trazar los objetivos de tu preparación, te elaborará el plan de entrenamiento a largo plazo que recibirás sistemáticamente en tu perfil. Para la elaboración de tus rutinas, tu asesor contará con un sofisticado sistema de planificación y con más de 500 vídeos ejecutados por atletas profesionales. </p><img class="view-only-desktop" th:src="@{/img/public/contigo-pc.png}+'?'+${version}"/>
             </div>
           </li>
           <li>
-            <div class="item"><img class="icon-img" src="img/contigo-3.png">
+            <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-3.png}+'?'+${version}"/>
               <h2>Entrena <span>donde quieras</span></h2>
-              <p>Tendrás fácil acceso a tus entrenamientos, podrás visualizar la planificación de toda tu temporada y el volumen e intensidades de las cargas planificadas a través de nuestra aplicación para Android y/o desde tu escritorio.   </p><img class="view-only-desktop" src="img/contigo-cel.png" style="right: 0">
+              <p>Tendrás fácil acceso a tus entrenamientos, podrás visualizar la planificación de toda tu temporada y el volumen e intensidades de las cargas planificadas a través de nuestra aplicación para Android y/o desde tu escritorio.   </p><img class="view-only-desktop" th:src="@{/img/public/contigo-cel.png}+'?'+${version}" style="right: 0"/>
             </div>
           </li>
           <li>
-            <div class="item"><img class="icon-img" src="img/contigo-4.png">
+            <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-4.png}+'?'+${version}"/>
               <h2>Recibe seguimiento  <span>y feedback</span><span>de tu coach</span></h2>
-              <p>Tendrás contacto directo con tu coach, quien te guiará en el camino hacia tu objetivo y absolverá tus dudas.    </p><img class="view-only-desktop" src="img/contigo-tablet.png">
+              <p>Tendrás contacto directo con tu coach, quien te guiará en el camino hacia tu objetivo y absolverá tus dudas.    </p><img class="view-only-desktop" th:src="@{/img/public/contigo-tablet.png}+'?'+${version}"/>
             </div>
           </li>
         </ol>
@@ -137,7 +139,7 @@
       <section class="tienda_coach">
         <div class="col-md-6 coach">
           <div class="bg-color"></div>
-          <div class="text-center"><img src="img/coach.png">
+          <div class="text-center"><img th:src="@{/img/public/coach.png}+'?'+${version}"/>
             <h3>Encuentra a tu coach</h3>
             <p>Deja que un experto te ayude en cada paso del camino. Elige al especialista que se adecue a tus necesidades. </p>
             <div class="col-md-12"></div>
@@ -146,7 +148,7 @@
         </div>
         <div class="col-md-6 tienda">
           <div class="bg-color"></div>
-          <div class="text-center"><img src="img/tienda.png">
+          <div class="text-center"><img th:src="@{/img/public/tienda.png}+'?'+${version}"/>
             <h3>Nuestra tienda</h3>
             <p>Complementa tu preparación con nuestras guías y programas de entrenamientos, elaborados por los mejores profesionales del mercado.</p>
             <div class="col-md-12">
@@ -176,7 +178,7 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <p class="title_footer">Pago seguro</p><img src="img/pago.png">
+          <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
         </div>
         <div class="col-md-3">
           <p class="title_footer">Síguenos en</p>
@@ -199,8 +201,8 @@
         </div>
       </div>
     </footer>
-    <script src="js/vendor/vendor_all.js" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
-    <script src="js/init.js"></script>
+    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
   </body>
 </html>

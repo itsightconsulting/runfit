@@ -1,24 +1,26 @@
-<!DOCTYPE html>
-<html lang="es-ES">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/style.min.css">
-  </head>
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="_ctx" th:content="@{/}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/public/font-awesome.min.css}+'?'+${version}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
+</head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="text-right view-only-desktop">
           <p class="login_link">Iniciar sesión</p>
         </div>
-        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img src="img/logo.png"></a></div>
+        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
         <ul class="nav navbar-nav navbar-right view-only-desktop">
-          <li class="active"><a href="quienessomos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+          <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha-inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
+          <li><a href="ficha_inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
           <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul>
       </div>
@@ -28,14 +30,14 @@
           <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
           <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
         </ul>
-        <div class="avatar"><img src="img/logo.png">
+        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
           <p class="name">GUSTAVO ARIAS</p>
           <p class="email">gjarias09@gmail.com</p>
         </div>
         <ul class="options">
-          <li class="active"><a href="quienessomos.html"> <span>QUIENES SOMOS</span></a></li>
+          <li class="active"><a href="quienes_somos.html"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha-inscripcion.html"><span>ASESORES</span></a></li>
+          <li><a href="ficha_inscripcion.html"><span>ASESORES</span></a></li>
           <li><a href="#"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
       </div>
@@ -57,15 +59,15 @@
     </nav>
     <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
       <div class="login-bg"></div>
-      <div class="avatar"><img src="img/logo.png"></div>
+      <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/></div>
       <div class="login-sesion" style="display: none">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Usuario</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
         <div class="actions">
@@ -76,19 +78,19 @@
       <div class="login-register">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Nombre completo</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group mail"><span class="fa fa-envelope-o"></span>
           <label>Correo electrónico</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Confirmar Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="actions">
           <button class="btn-login" type="button">REGISTRAR</button>
@@ -98,160 +100,204 @@
     </div>
     <div id="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" src="img/trainers-shadow.jpg"></div>
+        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
       </div>
       <section class="trainers-form">
         <div class="row">
           <div class="container">
             <div class="col-md-5">
               <div class="avatar-form">
-                <input type="file">
-                <div class="avatar-form-content">
-                  <div class="avatar-form-button">Subir foto...</div>
-                </div>
+                <div class="avatar-form-content"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
               </div>
               <fieldset class="rating">
-                <input id="star5" type="radio" name="rating" value="5">
+                <input id="star5" type="radio" name="rating" value="5"/>
                 <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                <input id="star4half" type="radio" name="rating" value="4 and a half">
+                <input id="star4half" type="radio" name="rating" value="4 and a half"/>
                 <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                <input id="star4" type="radio" name="rating" value="4">
+                <input id="star4" type="radio" name="rating" value="4"/>
                 <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                <input id="star3half" type="radio" name="rating" value="3 and a half">
+                <input id="star3half" type="radio" name="rating" value="3 and a half"/>
                 <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                <input id="star3" type="radio" name="rating" value="3">
+                <input id="star3" type="radio" name="rating" value="3"/>
                 <label class="full" for="star3" title="Meh - 3 stars"></label>
-                <input id="star2half" type="radio" name="rating" value="2 and a half">
+                <input id="star2half" type="radio" name="rating" value="2 and a half"/>
                 <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                <input id="star2" type="radio" name="rating" value="2">
+                <input id="star2" type="radio" name="rating" value="2"/>
                 <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                <input id="star1half" type="radio" name="rating" value="1 and a half">
+                <input id="star1half" type="radio" name="rating" value="1 and a half"/>
                 <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                <input id="star1" type="radio" name="rating" value="1">
+                <input id="star1" type="radio" name="rating" value="1"/>
                 <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                <input id="starhalf" type="radio" name="rating" value="half">
+                <input id="starhalf" type="radio" name="rating" value="half"/>
                 <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
               </fieldset>
+              <p class="valoration">43 <span>(21 valoraciones)</span></p>
             </div>
             <div class="col-md-7">
               <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
                 <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
                 <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
-                <li><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane fade in active" id="about">
                   <form>
                     <div class="form-group">
-                      <label>NOMBRE Y APELLIDOS<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <label>NOMBRE Y APELLIDOS</label>
+                      <p>Pedro Mori Arias</p>
                     </div>
                     <div class="form-group">
-                      <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <label>ESPECIALIDAD</label>
+                      <p>Entrenador de natación</p>
                     </div>
                     <div class="form-group">
-                      <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
+                      <label>ELIGE DEPORTE O ACTIVIDADES QUE REALIZAS</label>
+                      <p>Boxeo</p>
                     </div>
                     <div class="form-group">
-                      <label>ACERCA DE MI<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
+                      <label>ACERCA DE MI</label>
+                      <p>Soy licenciado en cultura física y ex campeón nacional de natación. Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal.  Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. Conmigo el trabajo será duro pero valdrá la pena. </p>
                     </div>
                     <div class="form-group">
-                      <div class="pad-right-middle">
-                        <label>IDIOMAS<span class="obligatorio">*</span></label>
-                        <select class="form-control"></select>
-                      </div>
+                      <label>IDIOMAS QUE DOMINO</label>
+                      <p>Inglés y español</p>
                     </div>
                     <div class="form-group">
-                      <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                      <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                      <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                      <label>HORARIO LABORAL<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                      <div class="pad-right-middle">
-                        <label>DONDE TRABAJAS<span class="obligatorio">*</span></label>
-                        <select class="form-control"></select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>AL AIRE LIBRE / DOMICILIO</label>
-                      <p>Dar click en la imagen para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
-                      <div class="map" id="map"></div>
-                    </div>
-                    <div class="form-group">
-                      <label>CENTRO DE TRABAJO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                      <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                      <label>FORMA DE TRABAJO</label>
-                      <ul class="checks">
+                      <label>ESTUDIOS Y CERTIFICACIONES</label>
+                      <ul class="list-description">
                         <li>
-                          <div class="chk-content">Personalizado
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
-                          </div>
+                          <p>Licenciado en cultura física y deporte</p>
                         </li>
                         <li>
-                          <div class="chk-content">En grupo
-                            <input type="checkbox"><span class="checkmark"></span>
-                          </div>
+                          <p>Diplomado en nutrición para atletas</p>
                         </li>
                         <li>
-                          <div class="chk-content">Online
-                            <input type="checkbox"><span class="checkmark"></span>
-                          </div>
+                          <p>Diplomado en rehabilitación enfocada en deportista calificados</p>
+                        </li>
+                        <li>
+                          <p>Curso en rescate en el agua</p>
+                        </li>
+                        <li>
+                          <p>Curso en metodología del entrenamiento</p>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <label>GALERIA DE FOTOS</label><br>
-                      <button class="btn btn-default btn-white" type="button">EXAMINAR EQUIPO...<span class="obligatorio">*</span></button>
+                      <label>MÉTODO DE TRABAJO</label>
+                      <p>Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.</p>
+                      <p>Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.</p>
                     </div>
-                    <button class="btn btn-default btn-black" type="button">GUARDAR</button>
+                    <div class="form-group">
+                      <label>EXPERIENCIA LABORAL</label>
+                      <ul class="list-description">
+                        <li>
+                          <p>Entrenador en AquaLab (2013 – hasta la fecha)</p>
+                        </li>
+                        <li>
+                          <p>Entrenador freelance (2005 – hasta la fecha)</p>
+                        </li>
+                        <li>
+                          <p>Selección nacional de natación (2000 – 2005)</p>
+                        </li>
+                      </ul>
+                      <div class="form-group">
+                        <label>RESULTADOS OBTENIDOS COMO PROFESIONAL</label>
+                        <ul class="list-description">
+                          <li>
+                            <p>Juan Pérez, campeón en natación 100 m libres (2017)</p>
+                          </li>
+                          <li>
+                            <p>Rocío Flores, campeona sudamericana 4x100 m (2017)</p>
+                          </li>
+                          <li>
+                            <p>Michael Barros, campeón en natación 4x200 (2016)</p>
+                          </li>
+                          <li>
+                            <p>Entrenador del año (2015)</p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="form-group">
+                        <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS</label>
+                        <ul class="list-description">
+                          <li>
+                            <p>Principiantes</p>
+                          </li>
+                          <li>
+                            <p>Profesionales</p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="form-group">
+                        <label>CENTRO DE TRABAJO</label>
+                        <p>AQUALAB - Av. Nicolás de Ribera 145, San Isidro</p>
+                      </div>
+                      <div class="form-group">
+                        <label>ESPECIALIDADES QUE DOMINO</label>
+                        <ul class="list-description">
+                          <li>
+                            <p>Entrenamiento en grupo</p>
+                          </li>
+                          <li>
+                            <p>Entrenamiento uno a uno</p>
+                          </li>
+                          <li>
+                            <p>Natación para profesionales</p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="form-group">
+                        <label>FORMA DE TRABAJO</label>
+                        <ul class="list-description">
+                          <li>
+                            <p>Entrenamiento en grupo</p>
+                          </li>
+                          <li>
+                            <p>Entrenamiento uno a uno</p>
+                          </li>
+                          <li>
+                            <p>Natación para profesionales</p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="form-group">
+                        <label>GALERÍA DE FOTOS</label>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="owl-carousel owl-theme">
+                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
+                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
+                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
+                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
+                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </form>
                 </div>
                 <div class="tab-pane fade" id="contact">
                   <form>
                     <div class="form-group">
                       <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>TELEFONO</label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>CELULAR<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>DIRECCION<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <button class="btn btn-default btn-black" type="button">GUARDAR</button>
                   </form>
@@ -269,7 +315,7 @@
                     </div>
                     <div class="form-group">
                       <label>QUE INCLUYE</label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <button class="btn btn-default btn-black" type="button">AGREGAR SERVICIOS</button>
                     <p class="sub-title">TARIFARIO<span class="obligatorio">*</span></p>
@@ -288,7 +334,7 @@
                               <button class="counter-round" type="submit" onclick="add('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
                             </li>
                             <li class="result">
-                              <input class="counter-input" id="txtCantidadPersonas" type="text" value="0">
+                              <input class="counter-input" id="txtCantidadPersonas" type="text" value="0"/>
                             </li>
                             <li class="count">
                               <button class="counter-round" type="submit" onclick="minus('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
@@ -308,7 +354,7 @@
                               <button class="counter-round" type="submit" onclick="add('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
                             </li>
                             <li class="result">
-                              <input class="counter-input" id="txtCantidadMeses" type="text" value="0">
+                              <input class="counter-input" id="txtCantidadMeses" type="text" value="0"/>
                             </li>
                             <li class="count">
                               <button class="counter-round" type="submit" onclick="minus('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
@@ -323,7 +369,7 @@
                           <label>PRECIO TOTAL</label>
                         </div>
                         <div class="col-xs-5 text-right">
-                          <input class="price" type="text" value="150.00">
+                          <input class="price" type="text" value="150.00"/>
                         </div>
                       </div>
                     </div>
@@ -337,85 +383,48 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">En efectivo
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Transferencia
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Con Tarjeta
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Información de pago">
+                      <input class="form-control" type="text" placeholder="Información de pago"/>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Documento de identidad">
+                      <input class="form-control" type="text" placeholder="Documento de identidad"/>
                     </div>
                     <div class="form-group">
                       <select class="form-control"></select>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Número de cuenta">
+                      <input class="form-control" type="text" placeholder="Número de cuenta"/>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Número de código interbancario">
+                      <input class="form-control" type="text" placeholder="Número de código interbancario"/>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Banco">
+                      <input class="form-control" type="text" placeholder="Banco"/>
                     </div>
                     <button class="btn btn-default btn-black" type="button">AGREGAR NUEVA CUENTA</button>
                     <button class="btn btn-default btn-white" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
                     <button class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
                     <div class="terms">
                       <div class="chk-content"><a href="#">Acepto términos y condiciones<span class="obligatorio">*</span></a>
-                        <input type="checkbox"><span class="checkmark"></span>
+                        <input type="checkbox"/><span class="checkmark"></span>
                       </div>
                     </div>
                     <button class="btn btn-default btn-black" type="button">GUARDAR</button>
-                  </form>
-                </div>
-                <div class="tab-pane fade" id="staff">
-                  <form>
-                    <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
-                    <ul class="staff">
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                    </ul>
                   </form>
                 </div>
               </div>
@@ -444,7 +453,7 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <p class="title_footer">Pago seguro</p><img src="img/pago.png">
+          <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
         </div>
         <div class="col-md-3">
           <p class="title_footer">Síguenos en</p>
@@ -467,8 +476,8 @@
         </div>
       </div>
     </footer>
-    <script src="js/vendor/vendor_all.js" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
-    <script src="js/init.js"></script>
+    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
   </body>
 </html>
