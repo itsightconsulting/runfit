@@ -1,26 +1,26 @@
 @font-face {
   font-family: Gotham-Black;
-  src: url(../fonts/Gotham-Black.ttf); }
+  src: url(../../fonts/Gotham-Black.ttf); }
 
 @font-face {
   font-family: Gotham-HTF-Bold;
-  src: url(../fonts/Gotham-HTF-Bold.ttf); }
+  src: url(../../fonts/Gotham-HTF-Bold.ttf); }
 
 @font-face {
   font-family: Gotham-HTF-Black-Italic;
-  src: url(../fonts/Gotham-HTF-Black-Italic.ttf); }
+  src: url(../../fonts/Gotham-HTF-Black-Italic.ttf); }
 
 @font-face {
   font-family: Gotham-HTF-Black;
-  src: url(../fonts/Gotham-HTF-Black.ttf); }
+  src: url(../../fonts/Gotham-HTF-Black.ttf); }
 
 @font-face {
   font-family: Gotham-HTF-Book;
-  src: url(../fonts/Gotham-HTF-Book.ttf); }
+  src: url(../../fonts/Gotham-HTF-Book.ttf); }
 
 @font-face {
   font-family: Gotham-HTF-Medium;
-  src: url(../fonts/Gotham-HTF-Medium.ttf); }
+  src: url(../../fonts/Gotham-HTF-Medium.ttf); }
 
 .navbar {
   transition: all .5s;
@@ -161,7 +161,7 @@ footer {
       z-index: 1;
       top: 0%; }
     .tienda_coach .col-md-6.coach {
-      background: url(../img/coach-bg.jpg) top center no-repeat;
+      background: url(../../img/public/coach-bg.jpg) top center no-repeat;
       background-size: cover; }
       .tienda_coach .col-md-6.coach .bg-color {
         background-color: #000;
@@ -170,7 +170,7 @@ footer {
         margin-top: 50px;
         margin-bottom: 15px; }
     .tienda_coach .col-md-6.tienda {
-      background: url(../img/tienda-bg.jpg) top center no-repeat;
+      background: url(../../img/public/tienda-bg.jpg) top center no-repeat;
       background-size: cover; }
       .tienda_coach .col-md-6.tienda .bg-color {
         background-color: #26613f;
@@ -206,7 +206,7 @@ footer {
   position: relative;
   box-sizing: border-box;
   padding: 70px 0 45px;
-  background: url(../img/entrena-bg.jpg) top center no-repeat;
+  background: url(../../public/img/public/entrena-bg.jpg) top center no-repeat;
   background-size: cover; }
   .entrena_correctamente .title_section {
     color: #303030;
@@ -641,7 +641,7 @@ h1 {
   padding-top: 40px; }
   .colaboradores .top-section {
     position: relative;
-    background: url(../img/colaboradores.png) no-repeat top center;
+    background: url(../../img/public/colaboradores.png) no-repeat top center;
     background-size: cover; }
   .colaboradores .section_show {
     background-color: #000; }
@@ -737,7 +737,7 @@ h1 {
   transition: all .75s;
   top: 0;
   z-index: 99999;
-  background: url(../img/home.jpg) top center no-repeat #fff;
+  background: url(../../img/public/home.jpg) top center no-repeat #fff;
   box-sizing: border-box; }
   .login .back {
     font-size: 20px;
@@ -1548,7 +1548,7 @@ img.tibial {
   margin-top: -10px;
   margin-bottom: 20px; }
   .rango.bg-slide {
-    background: url(../img/slider.png) center no-repeat;
+    background: url(../../img/public/slider.png) center no-repeat;
     background-size: contain;
     height: 30px; }
   .rango .desc-range {
@@ -1649,7 +1649,7 @@ input[type=range]:focus::-ms-fill-upper {
   transition: all .75s;
   top: 0;
   z-index: 3;
-  background: url(../img/home.jpg) top center no-repeat #fff;
+  background: url(../../img/public/home.jpg) top center no-repeat #fff;
   box-sizing: border-box; }
   .menu_mobile.active {
     left: 0; }

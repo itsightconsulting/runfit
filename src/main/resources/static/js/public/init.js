@@ -1,3 +1,4 @@
+var _ctx = $('meta[name="_ctx"]').attr('content');
 function time_line() {
     var total = $(".steps ol").length;
     var estilos;
@@ -122,11 +123,11 @@ function tabColaboradores() {
         img.each(function(x, item) {
             var name = $(this).attr('data-info')
             if (name != data) {
-                $(this).find('img').attr('src', 'img/' + data + '-bn.png')
+                $(this).find('img').attr('src', _ctx+'img/public/' + data + '-bn.png')
             }
         })
         $('.' + data + '-tab').fadeIn();
-        $(this).find('img').attr('src', 'img/' + data + '.png')
+        $(this).find('img').attr('src', _ctx+'img/public/' + data + '.png')
     })
 }
 
