@@ -104,7 +104,7 @@
                     height : this.$.data('height') || 200,
                     displayInput : this.$.data('displayinput') == null || this.$.data('displayinput'),
                     displayPrevious : this.$.data('displayprevious'),
-                    fgColor : this.$.data('fgcolor') || '#87CEEB',
+                    fgColor : this.$.data('fgcolor') || '#c9ff4b',
                     fgColorMid : this.$.data('fgcolormid') || this.$.data('fgcolor') || '#87CEEB',
                     fgColorEnd : this.$.data('fgcolorend') || this.$.data('fgcolor') || '#87CEEB',
                     inputColor: this.$.data('inputcolor'),
@@ -752,13 +752,6 @@
                 a = this.arc(this.cv)       // Arc
                 , pa                        // Previous arc
                 , r = 1;
-
-
-
-
-
-
-
             c.lineWidth = this.lineWidth;
             c.lineCap = this.lineCap;
             var gradient=c.createLinearGradient(this.w2,0,this.w2,this.h-this.lineWidth);

@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="es-ES">
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/style.min.css">
+    <meta charset="utf-8" />
+    <meta name="_ctx" th:content="@{/}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/font-awesome.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -14,7 +16,7 @@
         <div class="text-right view-only-desktop">
           <p class="login_link">Iniciar sesión</p>
         </div>
-        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img src="img/logo.png"></a></div>
+        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
         <ul class="nav navbar-nav navbar-right view-only-desktop">
           <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
           <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
@@ -28,7 +30,7 @@
           <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
           <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
         </ul>
-        <div class="avatar"><img src="img/logo.png">
+        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
           <p class="name">GUSTAVO ARIAS</p>
           <p class="email">gjarias09@gmail.com</p>
         </div>
@@ -57,15 +59,15 @@
     </nav>
     <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
       <div class="login-bg"></div>
-      <div class="avatar"><img src="img/logo.png"></div>
+      <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/></div>
       <div class="login-sesion" style="display: none">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Usuario</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
         <div class="actions">
@@ -76,19 +78,19 @@
       <div class="login-register">
         <div class="form-group usuario"><span class="fa fa-user-o"></span>
           <label>Nombre completo</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group mail"><span class="fa fa-envelope-o"></span>
           <label>Correo electrónico</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="form-group password"><span class="fa fa-unlock-alt"></span>
           <label>Confirmar Contraseña</label>
-          <input type="text">
+          <input type="text"/>
         </div>
         <div class="actions">
           <button class="btn-login" type="button">REGISTRAR</button>
@@ -98,7 +100,7 @@
     </div>
     <div id="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" src="img/trainers-shadow.jpg"></div>
+        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
       </div>
       <section class="steps">
         <div class="container">
@@ -107,24 +109,24 @@
               <h1>Ficha de<span> Inscripción</span></h1>
             </div>
             <div class="col-md-7 text-right pad-0">
-              <div class="step step-01 active">
+              <a href="#"><div class="step step-01 active" onclick="next_step_cs(1)">
                 <div class="curve"></div>
                 <p>PASO<span>01</span></p>
-              </div>
-              <div class="step step-02">
+              </div></a>
+              <a href="#"><div class="step step-02" onclick="next_step_cs(2)">
                 <div class="curve"></div>
                 <p>PASO<span>02</span></p>
-              </div>
-              <div class="step step-03">
+              </div></a>
+              <a href="#"><div class="step step-03" onclick="next_step_cs(3)">
                 <div class="curve"></div>
                 <p>PASO<span>03</span></p>
-              </div>
+              </div></a>
             </div>
           </div>
           <div class="row ficha-01 fade-ficha active">
             <div class="col-md-12">
               <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
-            </div><img class="bg-image" src="img/step-1.png">
+            </div><img class="bg-image" th:src="@{/img/public/step-1.png}+'?'+${version}"/>
             <div class="col-md-12">
               <h4>Información personal</h4>
             </div>
@@ -134,26 +136,26 @@
                   <li>
                     <div class="form-group">
                       <label>¿Cuál es tu nombre completo?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>¡Dinos!, ¿cuándo es tu fecha de nacimiento para felicitarte?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>¿Nos brindas tu documento de identidad?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group more-inputs">
                       <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
+                      <input class="form-control" type="text"/>
                     </div>
                   </li>
                 </ol>
@@ -178,17 +180,17 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Mujer
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Hombre
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Otro
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -197,15 +199,15 @@
                   <li>
                     <div class="form-group more-inputs">
                       <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text" placeholder="Peso (Kg)">
-                      <input class="form-control" type="text" placeholder="Talla (Cm)">
-                      <input class="form-control" type="text" placeholder="IMC (Índice de masa corporal)">
+                      <input class="form-control" type="text" placeholder="Peso (Kg)"/>
+                      <input class="form-control" type="text" placeholder="Talla (Cm)"/>
+                      <input class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
                     </div>
                   </li>
                 </ol>
               </div>
             </div>
-            <div class="row"><br>
+            <div class="row"><br/>
               <div class="col-md-12 text-right">
                 <h4>Condición Anatómica</h4>
               </div>
@@ -220,12 +222,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -243,17 +245,17 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Siempre (incluso en reposo)
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Al correr
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Después de correr
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -265,17 +267,17 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Al inicio
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">A la mitad
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Al final
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -299,12 +301,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -320,7 +322,7 @@
           <div class="row ficha-02 fade-ficha">
             <div class="col-md-12">
               <p class="desc">Ya falta poco para terminar</p>
-            </div><img class="bg-image" src="img/step-2.png">
+            </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
             <div class="col-md-12">
               <h4>Entrenamiento</h4>
             </div>
@@ -333,12 +335,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="one"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="one"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="one"><span class="checkmark"></span>
+                            <input type="radio" name="one"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -348,49 +350,49 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="two"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="two"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="two"><span class="checkmark"></span>
+                            <input type="radio" name="two"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
                       <label>¿Con qué frecuencia fumas?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Antecedentes familiares de infarto o hipertensión?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="three"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="three"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="three"><span class="checkmark"></span>
+                            <input type="radio" name="three"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Tienes resistencia a la insulina?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="four"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="four"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="four"><span class="checkmark"></span>
+                            <input type="radio" name="four"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -400,30 +402,30 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="five"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="five"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="five"><span class="checkmark"></span>
+                            <input type="radio" name="five"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Consideras que tienes sobrepeso?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="six"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="six"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="six"><span class="checkmark"></span>
+                            <input type="radio" name="six"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -450,94 +452,94 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="seven"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="seven"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="seven"><span class="checkmark"></span>
+                            <input type="radio" name="seven"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Tienes alergia a algún medicamento?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="eight"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="eight"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="eight"><span class="checkmark"></span>
+                            <input type="radio" name="eight"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="nine"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="nine"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="nine"><span class="checkmark"></span>
+                            <input type="radio" name="nine"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Tienes alguna hernia discal o padeces otra condición especial en la columna?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="nine"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="nine"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="nine"><span class="checkmark"></span>
+                            <input type="radio" name="nine"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>Padeces de:<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Artritis
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Condromalacia
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Osteocondritis
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Ninguna
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -546,11 +548,11 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                        <input class="form-control" type="text">
-                        <input class="form-control" type="text">
-                        <input class="form-control" type="text">
-                        <input class="form-control" type="text">
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text"/>
+                        <input class="form-control" type="text"/>
+                        <input class="form-control" type="text"/>
+                        <input class="form-control" type="text"/>
+                        <input class="form-control" type="text"/>
                       </div>
                       <p class="title-form-group">Historial deportivo</p>
                       <div class="form-group">
@@ -564,20 +566,20 @@
                     </li>
                     <li>
                       <div class="form-group">
-                        <label>Queremos conocer tus frecuencias cardiacas:<br>Frecuencia cardiaca basal:<span class="obligatorio">*</span></label>
-                        <input class="form-control" type="text">
+                        <label>Queremos conocer tus frecuencias cardiacas:<br/>Frecuencia cardiaca basal:<span class="obligatorio">*</span></label>
+                        <input class="form-control" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>Frecuencia cardiaca máxima:<span class="obligatorio">*</span></label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text"/>
                       </div>
                     </li>
                     <li class="range-height">
                       <div class="form-group">
-                        <label>¿En que forma estás?<br>¡Dinos la verdad eh!<span class="obligatorio">*</span></label>
+                        <label>¿En que forma estás?<br/>¡Dinos la verdad eh!<span class="obligatorio">*</span></label>
                       </div>
                       <div class="rango bg-slide">
-                        <input type="range" value="0"><img class="desc-range" src="img/slider_text.png">
+                        <input type="range" value="0"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
                       </div>
                     </li>
                     <li>
@@ -587,22 +589,22 @@
                           <ul class="checks">
                             <li>
                               <div class="chk-content">Fuerza
-                                <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                                <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Velocidad
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Resistencia
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Flexibilidad
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                           </ul>
@@ -611,48 +613,48 @@
                           <ul class="checks">
                             <li>
                               <div class="chk-content">Métodos respiratorios
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Proceso de recuperación
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Técnica de carrera
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Disciplina
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                           </ul>
                         </div>
                         <div class="row">
-                          <div class="col-md-12"><br>
+                          <div class="col-md-12"><br/>
                             <ul class="checks">
                               <li>
                                 <div class="chk-content">Hábitos alimenticios
-                                  <input type="checkbox"><span class="checkmark"></span>
+                                  <input type="checkbox"/><span class="checkmark"></span>
                                 </div>
                               </li>
                               <li>
                                 <div class="chk-content">Cantidad y calidad de sueño
-                                  <input type="checkbox"><span class="checkmark"></span>
+                                  <input type="checkbox"/><span class="checkmark"></span>
                                 </div>
                               </li>
                               <li>
                                 <div class="chk-content">Administración del esfuerzo
-                                  <input type="checkbox"><span class="checkmark"></span>
+                                  <input type="checkbox"/><span class="checkmark"></span>
                                 </div>
                               </li>
                             </ul>
                           </div>
                         </div>
-                        <div class="form-group"><br>
+                        <div class="form-group"><br/>
                           <button class="btn btn-bg-black" type="button" onclick="next_step()">Siguiente</button>
                         </div>
                       </div>
@@ -669,7 +671,7 @@
             <div class="col-md-12">
               <h4>Entrenamiento</h4>
             </div>
-            <div class="row" style="position: relative"><img class="bg-image" src="img/step-3.png">
+            <div class="row" style="position: relative"><img class="bg-image" th:src="@{/img/public/step-3.png}+'?'+${version}"/>
               <div class="col-md-6">
                 <ol>
                   <li>
@@ -680,32 +682,32 @@
                           <ul class="checks">
                             <li>
                               <div class="chk-content">Pantorillas
-                                <input data-body="pantorrilla" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="pantorrilla" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Sóleos
-                                <input data-body="soleo" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="soleo" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Tibial anterior
-                                <input data-body="tibial" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="tibial" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Cuadríceps
-                                <input data-body="cuadriceps" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="cuadriceps" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Gluteos
-                                <input data-body="gluteo" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="gluteo" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Otros
-                                <input type="checkbox"><span class="checkmark"></span>
+                                <input type="checkbox"/><span class="checkmark"></span>
                               </div>
                             </li>
                           </ul>
@@ -714,27 +716,27 @@
                           <ul class="checks">
                             <li>
                               <div class="chk-content">Isquiotibales
-                                <input data-body="isquiotibiales" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="isquiotibiales" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Espalda baja
-                                <input data-body="espalda" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="espalda" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Hombros
-                                <input data-body="hombros" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="hombros" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Trapecios
-                                <input data-body="trapecio" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="trapecio" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                             <li>
                               <div class="chk-content">Biceps branquial
-                                <input data-body="biceps" type="checkbox" name="cuerpo_chk"><span class="checkmark"></span>
+                                <input data-body="biceps" type="checkbox" name="cuerpo_chk"/><span class="checkmark"></span>
                               </div>
                             </li>
                           </ul>
@@ -745,11 +747,11 @@
                       <textarea class="form-control"></textarea>
                     </div>
                     <div class="cuerpos row">
-                      <div class="col-md-6 pad-0"><img class="humano" src="img/cuerpo1.png"><img class="humano_movil" src="img/cuerpo1_movil.png">
-                        <div class="partes_cuerpo"><img class="hombros" src="img/ch_hombros.png"><img class="biceps" src="img/ch_biceps.png"><img class="cuadriceps" src="img/ch_cuadriceps.png"><img class="tibial" src="img/ch_tibial.png"></div>
+                      <div class="col-md-6 pad-0"><img class="humano" th:src="@{/img/public/cuerpo1.png}+'?'+${version}"/><img class="humano_movil" th:src="@{/img/public/cuerpo1_movil.png}+'?'+${version}"/>
+                        <div class="partes_cuerpo"><img class="hombros" th:src="@{/img/public/ch_hombros.png}+'?'+${version}"/><img class="biceps" th:src="@{/img/public/ch_biceps.png}+'?'+${version}"/><img class="cuadriceps" th:src="@{/img/public/ch_cuadriceps.png}+'?'+${version}"/><img class="tibial" th:src="@{/img/public/ch_tibial.png}+'?'+${version}"/></div>
                       </div>
-                      <div class="col-md-6 pad-0"><img class="humano" src="img/cuerpo2.png"><img class="humano_movil" src="img/cuerpo2_movil.png">
-                        <div class="partes_cuerpo"><img class="trapecio" src="img/ch_trapecios.png"><img class="espalda" src="img/ch_espalda.png"><img class="isquiotibiales" src="img/ch_isquio.png"><img class="soleo" src="img/ch_soleos.png"><img class="gluteo" src="img/ch_gluteos.png"><img class="pantorrilla" src="img/ch_pantrorrillas.png"></div>
+                      <div class="col-md-6 pad-0"><img class="humano" th:src="@{/img/public/cuerpo2.png}+'?'+${version}"/><img class="humano_movil" th:src="@{/img/public/cuerpo2_movil.png}+'?'+${version}"/>
+                        <div class="partes_cuerpo"><img class="trapecio" th:src="@{/img/public/ch_trapecios.png}+'?'+${version}"/><img class="espalda" th:src="@{/img/public/ch_espalda.png}+'?'+${version}"/><img class="isquiotibiales" th:src="@{/img/public/ch_isquio.png}+'?'+${version}"/><img class="soleo" th:src="@{/img/public/ch_soleos.png}+'?'+${version}"/><img class="gluteo" th:src="@{/img/public/ch_gluteos.png}+'?'+${version}"/><img class="pantorrilla" th:src="@{/img/public/ch_pantrorrillas.png}+'?'+${version}"/></div>
                       </div>
                     </div>
                   </li>
@@ -760,13 +762,13 @@
                   <li>
                     <div class="form-group">
                       <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>Y tu kilometraje promedio semanal ¿cuál es?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text">
+                      <input class="form-control" type="text"/>
                     </div>
                   </li>
                   <li>
@@ -781,12 +783,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="twelve"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="twelve"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="twelve"><span class="checkmark"></span>
+                            <input type="radio" name="twelve"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -798,12 +800,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="thirteen"><span class="checkmark"></span>
+                            <input type="radio" checked="checked" name="thirteen"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="thirteen"><span class="checkmark"></span>
+                            <input type="radio" name="thirteen"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -815,32 +817,32 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Punta
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Dedo interno
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Dedo externo
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Borde interno del talón
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Borde externo del talón
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Otro
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -855,27 +857,27 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Asfalto
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Cemento
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Trail / Trocha
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Cinta de correr
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Otro
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li></li>
@@ -942,75 +944,75 @@
                               <td class="clock"><span class="fa fa-clock-o"></span></td>
                               <td class="green">Mañana</td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                             </tr>
                             <tr>
                               <td class="clock"><span class="fa fa-clock-o"></span></td>
                               <td class="green">Tarde</td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                             </tr>
                             <tr>
                               <td class="clock"><span class="fa fa-clock-o"></span></td>
                               <td class="green">Noche</td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                               <td>
-                                <input type="text">
+                                <input type="text"/>
                               </td>
                             </tr>
                           </tbody>
@@ -1030,19 +1032,19 @@
                       <p class="form-group-subtitle">Puedes elegir cualquier opción</p>
                       <ul class="distance">
                         <li>
-                          <input type="text">
+                          <input type="text"/>
                           <p>2km</p>
                         </li>
                         <li>
-                          <input type="text">
+                          <input type="text"/>
                           <p>4km</p>
                         </li>
                         <li>
-                          <input type="text">
+                          <input type="text"/>
                           <p>21km</p>
                         </li>
                         <li>
-                          <input type="text">
+                          <input type="text"/>
                           <p>42km</p>
                         </li>
                       </ul>
@@ -1069,44 +1071,44 @@
                               <tbody>
                                 <tr>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <input type="text">
-                                  </td>
-                                  <td>
-                                    <input type="text">
-                                  </td>
-                                  <td>
-                                    <input type="text">
-                                  </td>
-                                  <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <input type="text"/>
+                                  </td>
+                                  <td>
+                                    <input type="text"/>
+                                  </td>
+                                  <td>
+                                    <input type="text"/>
+                                  </td>
+                                  <td>
+                                    <input type="text"/>
                                   </td>
                                 </tr>
                               </tbody>
@@ -1130,44 +1132,44 @@
                               <tbody>
                                 <tr>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <input type="text">
-                                  </td>
-                                  <td>
-                                    <input type="text">
-                                  </td>
-                                  <td>
-                                    <input type="text">
-                                  </td>
-                                  <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
                                   </td>
                                   <td>
-                                    <input type="text">
+                                    <input type="text"/>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <input type="text"/>
+                                  </td>
+                                  <td>
+                                    <input type="text"/>
+                                  </td>
+                                  <td>
+                                    <input type="text"/>
+                                  </td>
+                                  <td>
+                                    <input type="text"/>
                                   </td>
                                 </tr>
                               </tbody>
@@ -1182,65 +1184,65 @@
                       <label>De los siguientes elementos, indícanos cuáles tienes a tu disposición: <span class="obligatorio">*</span></label>
                       <ul class="list_items">
                         <li>
-                          <div class="item"><img src="img/dis_1.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_1.jpg}+'?'+${version}"/>
                             <div class="chk-content">Pulsómetro
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_2.png">
+                          <div class="item"><img th:src="@{/img/public/dis_2.png}+'?'+${version}"/>
                             <div class="chk-content">Gimnasio
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_3.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_3.jpg}+'?'+${version}"/>
                             <div class="chk-content">Ligas
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_4.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_4.jpg}+'?'+${version}"/>
                             <div class="chk-content">Banda elástica
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_5.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_5.jpg}+'?'+${version}"/>
                             <div class="chk-content">Bicicleta de spinning
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_6.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_6.jpg}+'?'+${version}"/>
                             <div class="chk-content">Escalera coordinativa
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_7.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_7.jpg}+'?'+${version}"/>
                             <div class="chk-content">Pelotas de equilibrio
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_8.jpg">
+                          <div class="item"><img th:src="@{/img/public/dis_8.jpg}+'?'+${version}"/>
                             <div class="chk-content">Mancuernas
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
                         <li>
-                          <div class="item"><img src="img/dis_9.png">
+                          <div class="item"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                             <div class="chk-content">Ninguna de las anteriores
-                              <input type="checkbox"><span class="checkmark"></span>
+                              <input type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </div>
                         </li>
@@ -1253,40 +1255,40 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Por recomendación
-                            <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Vía correo
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Google
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Facebook
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Twitter
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Instagram
-                            <input type="checkbox"><span class="checkmark"></span>
+                            <input type="checkbox"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Otro
-                            <input type="checkbox"><span class="checkmark">         </span>
+                            <input type="checkbox"/><span class="checkmark">         </span>
                           </div>
                         </li>
-                      </ul><br>
+                      </ul><br/>
                       <button class="btn btn-bg-black" type="submit">FINALIZAR</button>
                     </div>
                   </li>
@@ -1327,7 +1329,7 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <p class="title_footer">Pago seguro</p><img src="img/pago.png">
+          <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
         </div>
         <div class="col-md-3">
           <p class="title_footer">Síguenos en</p>
@@ -1350,8 +1352,8 @@
         </div>
       </div>
     </footer>
-    <script src="js/vendor/vendor_all.js" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
-    <script src="js/init.js"></script>
+    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
   </body>
 </html>

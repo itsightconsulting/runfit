@@ -151,6 +151,17 @@ function next_step() {
     }
 }
 
+next_step_cs = function (i){
+    const all = document.querySelectorAll('.fade-ficha');
+    const sels = document.querySelectorAll('.step');
+    all.forEach((v,ii)=>{
+        v.classList.remove('active');
+        sels[ii].classList.remove('active')
+    });
+    all[i-1].classList.add('active');
+    sels[i-1].classList.add('active');
+}
+
 function openMenuMobile() {
     $(".navbar-brand span").click(function () {
         var menu = $(".menu_mobile")
