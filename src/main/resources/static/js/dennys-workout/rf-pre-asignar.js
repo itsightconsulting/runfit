@@ -1,6 +1,6 @@
 //Variables requeridas
 let indexGlobal = 0;
-let $body = $("html,body");
+let $body = $("html, body");
 let $rutina;
 let $diaPlantilla;
 let $diaPlantillas;
@@ -62,7 +62,7 @@ function cssUpdateGraphBackground(e){
 function cssUpdateGraphBackgroundBarras(e){
     const hex = e.value;
     const pos = e.getAttribute('data-pos');
-    const rgb = hexToRgb("#"+hex).join(', ') + ', 0.75';
+    const rgb = hexToRgb("#"+hex).join(', ') + ', 1';
     const rgba = `rgba(${rgb})`;
     bgBarMainGraph[pos] = rgba;
     document.querySelector('#btnComprobar').click();
@@ -72,7 +72,7 @@ function cssUpdateGraphBackgroundMantaIntensidad(e){
     const hex = e.value;
     const pos = e.getAttribute('data-pos');
     const rgb = hexToRgb("#"+hex).join(', ');
-    const rgba = `rgb(${rgb})`;
+    const rgba = `rgba(${rgb}, 0.27)`;
     bgMantaIntensidad[pos] = rgba;
     document.querySelector('#btnComprobar').click();
 }

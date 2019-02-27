@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+<head>
+    <!-- META -->
+    <link th:replace="html-commons/meta :: fg-meta"/>
+    <!-- END META -->
+    <!-- CSS FILES -->
+    <link th:replace="html-commons/css :: fg-css"/>
+    <!-- END CSS FILES -->
+</head>
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 300px
+    }
+</style>
+<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+<!-- END NAVIGATION -->
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <fieldset>
+            <section>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <h1 class="page-title txt-color-blueDark">
+                                    <i class="fa fa-file-sound-o fa-fw"></i>
+                                    Gestión
+                                    <span>>
+											<b>Estadísticas</b>
+										</span>
+                                </h1>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                       style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="view_list">
+                    <div class="col-sm-12">
+                        <div id="chartdiv"></div>
+                    </div>
+                    <div class="col-sm-12">
+                    </div>
+                </div>
+            </section>
+        </fieldset>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+</div>
+<!-- MODALS -->
+<!-- END MODALS -->
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+<!-- END PAGE FOOTER -->
+
+<script th:replace="html-commons/js :: fg-js"/>
+
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/maps.js"></script>
+<!--<script src="https://www.amcharts.com/lib/version/4.1.9/core.js"></script>
+<script src="https://www.amcharts.com/lib/version/4.1.9/charts.js"></script>
+<script src="https://www.amcharts.com/lib/version/4.1.9/themes/material.js"></script>
+<script src="https://www.amcharts.com/lib/version/4.1.9/lang/de_DE.js"></script>-->
+<script src="https://www.amcharts.com/lib/4/geodata/region/usa/caLow.js"></script>
+<script src="https://www.amcharts.com/lib/4/geodata/peruHigh.js"></script>
+
+<script th:src="@{/js/amcharts-map/peruHigh.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $yelmo = {};
+
+    $(function () {
+
+        pageSetUp();
+
+        graficoMapaPeru();
+
+    });
+
+    function graficoMapaPeru(){
+
+        // Create map instance
+        var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+        // Set map definition
+        chart.geodata = am4geodata_peruHigh;
+        chart.geodata.features.map((v,i) => v.properties.fill = "rgba(229, 170, 152, 0."+(i == 0 ? 2 : i)*1+")");
+        console.log(chart.geodata.features);
+
+        // Set projection
+        chart.projection = new am4maps.projections.Miller();
+
+        // Create map polygon series
+        var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+
+        // Exclude Antartica
+        /*polygonSeries.exclude = ["PE-LOR"];*/
+
+        // Make map load polygon (like country names) data from GeoJSON
+        polygonSeries.useGeodata = true;
+
+        polygonSeries.data = [{
+            "id": "PE-LIM",
+            "selected": true,
+            "customData": 1900,
+            "fill": am4core.color("#F05C5C"),
+            "cantidad": 1000
+        },
+            {
+                "id": "PE-ARE",
+                "selected": true,
+                "customData": 1900,
+                "fill": am4core.color("#F05C5C"),
+                "cantidad": 2000
+            }];
+        // Configure series
+        var polygonTemplate = polygonSeries.mapPolygons.template;
+        polygonTemplate.tooltipText = "{name}: {cantidad}";
+        polygonTemplate.propertyFields.fill = "fill";
+    }
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

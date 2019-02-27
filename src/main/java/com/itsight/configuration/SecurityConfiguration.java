@@ -2,7 +2,6 @@ package com.itsight.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,14 +12,6 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // TODO Auto-generated method stub
         http.authorizeRequests().antMatchers("/rest/**").permitAll();
         //http.addFilterAfter(new AjaxAuthenticationFilter(), BasicAuthenticationFilter.class);
-
+        http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 .antMatchers("/gestion/cliente-fitness").permitAll()
                 .antMatchers("/gestion/cliente-fitness/agregar").permitAll()

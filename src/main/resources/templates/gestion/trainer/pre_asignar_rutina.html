@@ -839,7 +839,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 text-align-center">
                                                         <h5 class="text-align-center txt-color-rfb"><b>Distribución</b></h5>
-                                                        <canvas id="MiniGraficoDistribucion"></canvas>
+                                                        <canvas id="MiniGraficoDistribucion" th:style="'padding: 15px 0px !important;background:url(' + @{/img/fondo_graphs.png} + ');'"></canvas>
                                                     </div>
 
                                                 </div>
@@ -888,7 +888,7 @@
                                                                 <div class="panel-body" style="padding: 3px 0px !important">
                                                                     <div class="container-fluid">
                                                                         <div class="col-md-12">
-                                                                            <canvas id="GraficoTemporada" height="350" style="background-image: linear-gradient(rgb(35, 35, 35), rgb(61, 61, 61), rgb(76, 76, 76))"></canvas>
+                                                                            <canvas id="GraficoTemporada" height="350" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'"></canvas>
                                                                         </div>
                                                                     </div>
                                                                 </div>

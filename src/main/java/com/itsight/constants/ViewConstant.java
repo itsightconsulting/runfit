@@ -13,6 +13,9 @@ public class ViewConstant {
     public static final String MAIN_PLANES = "portal/planes";
     public static final String MAIN_MINI_PLANTILLA = "gestion/mini_plantilla";
 
+    //Graphs
+    public static final String MAIN_DISTRIBUCION_RED_FITNESS = "estadistica/red_fitness";
+
     public static final String MAIN_PRODUCTO = "gestion/producto";
     public static final String MAIN_CATEGORIA = "gestion/categoria";
     public static final String MAIN_RUTINA_NUEVO = "gestion/rutina/nueva_rutina";

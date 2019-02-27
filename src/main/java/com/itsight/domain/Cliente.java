@@ -72,6 +72,11 @@ public class Cliente extends AuditingEntity implements Serializable {
     private TipoDocumento tipoDocumento;
 
     @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PaisId")
+    private Pais pais;
+
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "SecurityUserId")

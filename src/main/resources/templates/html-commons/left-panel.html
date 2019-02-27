@@ -164,7 +164,7 @@
                         <a th:href="@{/gestion/trainer/red/clientes/pagos}" title="Pagos"><i class="fa fa-money"></i><span class="menu-item-parent"> Pagos</span></a>
                     </li>
                     <li>
-                        <a th:href="@{/gestion/trainer/red/estadisticas}" title="Estadísticas"><i class="fa fa-bar-chart-o"></i><span class="menu-item-parent"> Estadísticas</span></a>
+                        <a th:href="@{/gestion/trainer/estadistica/red}" title="Estadísticas"><i class="fa fa-bar-chart-o"></i><span class="menu-item-parent"> Estadísticas</span></a>
                     </li>
                     <li>
                         <a th:href="@{/gestion/trainer/micuenta}" title="Mi Cuenta"><i class="fa fa-user"></i><span class="menu-item-parent"> Mi Cuenta</span></a>
@@ -193,7 +193,7 @@
                     <li>
                         <a th:href="@{/cliente/misRutinas}" title="Mis Rutinas"><i class="icofont-gym-alt-3"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
                     </li>
-                    <li sec:authorize="hasRole('DG_CLI')">
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/ilc/mini-rutinas}" title="Mis Rutinas"><i class="icofont-gym-alt-3 bg-color-green"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
                     </li>
                 </ul>

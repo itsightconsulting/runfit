@@ -1205,7 +1205,7 @@ MCGrafico = (function(){
                 $chartTemporada.destroy();
             }else{
                 Chart.pluginService.register({
-                    afterUpdate: function(chart) {
+                    /*afterUpdate: function(chart) {
                         $idsComp = [];
                         if(chart.canvas.id === "GraficoTemporada")
                             data.forEach((v,i)=>{
@@ -1216,7 +1216,7 @@ MCGrafico = (function(){
                                     $idsComp.push(i);
                                 }
                             })
-                    },
+                    },*/
                     afterDatasetsDraw: function(chart) {
                         if(chart.canvas.id === "GraficoTemporada"){
                             let ctx = chart.ctx;
@@ -1256,7 +1256,7 @@ MCGrafico = (function(){
                                             // Draw the text in black, with the specified font
                                             ctx.fillStyle = 'rgb(0, 0, 0)';
 
-                                            let fontSize = 20;
+                                            let fontSize = 14;
                                             let fontStyle = 'normal';
                                             ctx.font = Chart.helpers.fontString(fontSize, fontStyle);
                                             let dataString;
@@ -1265,7 +1265,7 @@ MCGrafico = (function(){
                                             // Make sure alignment settings are correct
                                             ctx.textAlign = 'center';
                                             ctx.textBaseline = 'middle';
-                                            ctx.fillStyle = '#4A4E3B ';
+                                            ctx.fillStyle = 'white';
 
                                             let padding = 0;
                                             let position = element.tooltipPosition();
@@ -1345,12 +1345,13 @@ MCGrafico = (function(){
                         yAxisID: 'y-axis-2',
                         // Changes this dataset to become a line
                         type: 'line',
-                        borderColor: 'transparent',
+                        borderColor: '#a8fa00',
                         backgroundColor: gradientFill,
-                        pointBorderColor: 'transparent',
-                        pointBackgroundColor: 'transparent',
-                        pointHoverBackgroundColor: 'red',
-                        pointHoverBorderColor: 'transparent',
+                        pointBorderColor: '#a8fa00',
+                        pointBackgroundColor: '#a8fa00',
+                        pointHoverBackgroundColor: 'a8fa00',
+                        pointHoverBorderColor: '#a8fa00',
+                        borderWidth: 1,
                         fill: true
                     }, {
                         label: 'Progreso',
@@ -1375,7 +1376,7 @@ MCGrafico = (function(){
                         yAlign: 'bottom',
                         xAlign: 'center',
                         onlyShowForDatasetIndex: [0, 1],
-                        callbacks: {
+                        /*callbacks: {
                             title: function(tooltipItem) {
                                 const fix = $fechasCompetencia.length - $idsComp.length;
                                 let mIx;
@@ -1384,7 +1385,7 @@ MCGrafico = (function(){
                                         return String(mIx = i);//Se convierte en String para evitar problemas cuando el indice sea 0, ya que js considera en el caso de filter el 0 como undef/null
                                 }).length == 0 ? this._data.labels[tooltipItem[0].index] : $fechasCompetencia[mIx+fix].nombre;
                             },
-                        }
+                        }*/
                     },
                     scales: {
                         yAxes: [{
@@ -1414,9 +1415,9 @@ MCGrafico = (function(){
                                 // OR //
                                 beginAtZero: true,   // minimum value will be 0.
                                 fontColor: "rgba(74, 78, 59, 1)",
-                                callback: function(label) {
+                                /*callback: function(label) {
                                     return label + "%";
-                                }
+                                }*/
                             },
                         }, {
                             id: 'y-axis-3',
@@ -1447,7 +1448,7 @@ MCGrafico = (function(){
                             beginAtZero: true
                         }
                     },
-                    legend: {
+                    legend: {/*
                         labels: {
                             filter: function(legendItem) {
                                 if (legendItem.datasetIndex === 0) {
@@ -1456,8 +1457,8 @@ MCGrafico = (function(){
                                 return true;
                             },
                             fontColor: 'transparent'
-                        },
-                        display: false
+                        },*/
+                        display: true
                     },
                 }
             });
@@ -1591,26 +1592,59 @@ MCGrafico = (function(){
             };
         },
         miniPorcentual: (dF)=>{
+            console.log(dF);
             let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
 
             if($chartMiniPorc.ctx != undefined){
                 $chartMiniPorc.destroy();
             }
+
+            /*$chartTemporada = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map((v, i)=>i+1),
+                    datasets: [{
+                        label: 'Kilometraje',
+                        data: data.map(({kms})=>kms),
+                        borderColor: "grey",
+                        hoverBackgroundColor: 'rgba(57, 255, 163, 0.7)',
+                        yAxisID: 'y-axis-1',
+                        backgroundColor: data.map(({color})=>color)
+                        ,
+                    }, {
+                        label: 'Intensidad',
+                        data: data.map(({perc})=>perc),
+                        yAxisID: 'y-axis-2',
+                        // Changes this dataset to become a line
+                        type: 'line',
+                        borderColor: '#a8fa00',
+                        backgroundColor: gradientFill,
+                        pointBorderColor: '#a8fa00',
+                        pointBackgroundColor: '#a8fa00',
+                        pointHoverBackgroundColor: 'a8fa00',
+                        pointHoverBorderColor: '#a8fa00',
+                        borderWidth: 1,
+                        fill: true*/
             $chartMiniPorc = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: dF[0],
                     datasets: [{
                         data: dF[1],
-                        backgroundColor: dF[2],
-                        hoverBackgroundColor: dF[2]
-                    }]
+                        backgroundColor: ['rgba(168, 250, 01, 0.8)', 'rgba(168, 250, 01, 0.6)', 'rgba(168, 250, 01, 0.4)', 'rgba(168, 250, 01, 0.2)'],
+                        hoverBackgroundColor: dF[2],
+                        borderColor: 'transparent',
+                    }],
                 },
                 options: {
                     responsive: false,
                     legend: {
                         display: false
-                    }
+                    },
+                    /*segmentShowStroke: false*/
+                    //Boolean - Whether we should show a stroke on each segment
+                    // set to false to hide the space/line between segments
+
                 }
             });
         }
