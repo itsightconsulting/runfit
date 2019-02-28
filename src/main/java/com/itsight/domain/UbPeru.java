@@ -1,12 +1,7 @@
 package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.itsight.domain.jsonb.PaiDet;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,24 +13,23 @@ import java.util.List;
 /*@TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })*/
-public class Pais {
+public class UbPeru {
 
     @Id
-    @Column(name = "PaisId")
+    @Column(name = "UbPeruId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(nullable = false)
-    private String nombre;
+    private String ub;
 
-    @Size(min = 2, max = 2)
     @Column(nullable = false, updatable = false)
-    private String sc;//short code
+    private String dep;
 
-    @Size(min = 3, max = 3)
     @Column(nullable = false, updatable = false)
-    private String lc;//large code
+    private String pro;//short code
+
+    @Column(nullable = false, updatable = false)
+    private String dis;//large code
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pais")
@@ -45,18 +39,18 @@ public class Pais {
     @Column(columnDefinition = "jsonb", nullable = false)
     private PaiDet paisDetalle;*/
 
-    public Pais() {
+    public UbPeru() {
     }
 
-    public Pais(int id) {
+    public UbPeru(int id) {
         this.id = id;
     }
 
-    public Pais(int id, String nombre, String sc, String lc) {
-        this.id = id;
-        this.nombre = nombre;
-        this.sc = sc;
-        this.lc = lc;
+    public UbPeru(String ub, String dep, String pro, String dis) {
+        this.ub = ub;
+        this.dep = dep;
+        this.pro = pro;
+        this.dis = dis;
     }
 }
 

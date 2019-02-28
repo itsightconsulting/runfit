@@ -73,8 +73,11 @@ public class Cliente extends AuditingEntity implements Serializable {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PaisId")
+    @JoinColumn(name = "PaisId", nullable = false, updatable = false)
     private Pais pais;
+
+    @Column
+    private String ubigeo;
 
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
@@ -142,6 +145,14 @@ public class Cliente extends AuditingEntity implements Serializable {
     public void setConfCliente(ConfiguracionCliente confCliente) {
         confCliente.setCliente(this);
         this.confCliente = confCliente;
+    }
+
+    public void setPais(Pais pais){
+        this.pais = pais;
+    }
+
+    public void setPais(int paisId){
+        this.pais = new Pais(paisId);
     }
 
 
