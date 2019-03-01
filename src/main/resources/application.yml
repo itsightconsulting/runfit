@@ -3,7 +3,7 @@ spring:
     active: development
   jpa:
     hibernate:
-        ddl-auto: create
+        ddl-auto: none
         naming:
           strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:

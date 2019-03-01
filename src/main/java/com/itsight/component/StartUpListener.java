@@ -1,6 +1,8 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
+import com.itsight.domain.dto.UbPeruDTO;
+import com.itsight.domain.dto.UbPeruLimDto;
 import com.itsight.domain.jsonb.CompetenciaRunner;
 import com.itsight.domain.jsonb.CondicionAnatomica;
 import com.itsight.domain.jsonb.PorcKiloTipo;
@@ -17,13 +19,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class StartUpListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -158,7 +166,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingConfiguracionGeneralToTable();
             addingKilometrajeBase();
             addingPaises();
-            //addingUbPeru();
+            try {
+                addingUbPeru();
+            } catch (IOException ex){
+                ex.printStackTrace();
+            }
             addingAudiosDemo();
 
             if(bagForestRepository.findOne(1) == null) {
@@ -872,6 +884,18 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(paisService.findOne(262) == null) paisService.save(new Pais(262, "Yibuti", "DJ", "DJI"));
         if(paisService.findOne(894) == null) paisService.save(new Pais(894, "Zambia", "ZM", "ZMB"));
         if(paisService.findOne(716) == null) paisService.save(new Pais(716, "Zimbabue", "ZW", "ZWE"));
+    }
+
+    public void addingUbPeru() throws IOException {
+        InputStream is = new ClassPathResource("static/seeds/ub_peru.txt").getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+        String content = reader.lines().collect(Collectors.joining("\n"));
+        String[] lines = content.split("\n");
+        reader.close();
+        for(int i=1; i<lines.length;i++){
+            String[] line = lines[i].split(",");
+            if (ubPeruService.findById(line[0].trim()) == null) ubPeruService.save(new UbPeru(line[0].trim(), line[1].trim(), line[2].trim(), line[3].trim(), line[4].trim()));
+        }
     }
 
 

@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -163,15 +164,53 @@
               <div class="col-md-6">
                 <ol>
                   <li>
-                    <div class="form-group">
+                    <div class="form-group" id="stUbicacion">
                       <label>¿Dónde vives?<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
+                      <select class="form-control margin-o-bottom-10" disabled="disabled" id="PaisId">
+                        <option selected="selected" value="604">Perú</option>
+                      </select>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="col-md-5 col-sm-5">
+                            <label>Departamento:</label>
+                          </div>
+                          <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                            <select class="form-control margin-o-bottom-10" id="Dep" name="Dep">
+                              <option selected="selected" value="51">Lima</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="col-md-5 col-sm-5">
+                            <label>Provincia:</label>
+                          </div>
+                          <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                            <select class="form-control margin-o-bottom-10" id="Pro" name="Pro">
+                              <option selected="selected" value="01">Lima</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="col-md-5 col-sm-5">
+                            <label>Distrito:</label>
+                          </div>
+                          <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                            <select class="form-control margin-o-bottom-10" id="Dis" name="Dis">
+                              <option selected="selected" value="01">Lima</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>¿Cuál es tu estado civil?<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
+                      <select class="form-control" id="EstadoCivil" name="EstadoCivil">
+                        <option value="1">Soltera(o)</option>
+                        <option value="2">Comprometida(o)</option>
+                        <option value="3">Casada(o)</option>
+                      </select>
                     </div>
                   </li>
                   <li>
@@ -1354,6 +1393,82 @@
     </footer>
     <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
     <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
+    <script th:inline="javascript">
+      const stUbicacion = document.getElementById('stUbicacion');
+      (function(){
+        init();
+      })();
+
+      function init(){
+        mainSeeders();
+        mainEventListeners();
+      }
+
+      function mainSeeders(){
+        getUbigeoPeruLim();
+      }
+
+      function getUbigeoPeruLim(){
+        fetch(_ctx+'p/ubigeo/get/peru-lim')
+          .then(res=> {
+            if(res.ok){
+              return res.json();
+            }
+          }
+        ).then(res=>{
+          document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+          document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+          document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+          $('#Dep').val(15);
+        }).catch((err)=>{
+          exception(err);
+        });
+      }
+
+      function mainEventListeners(){
+        stUbicacion.addEventListener('change', evtLsChangeUbicacion);
+      }
+
+      function evtLsChangeUbicacion(e){
+        e.preventDefault();
+        const clases = e.target.classList;
+        const input = e.target;
+        const value = input.value;
+
+        if(input.id === "Dep"){
+          depYprovChange(value, '', 1);
+        }else if(input.id === "Pro"){
+          const depId = document.getElementById('Dep').value;
+          depYprovChange(depId, value , 2);
+        }
+      }
+
+      function depYprovChange(depId, provId, pos){
+        const scpY = '&amp;';
+        const url = pos == 1 ? `p/ubigeo/get/peru-prov-by-dep?depId=${depId}` : `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${depId+scpY.substr(0,1)}provId=${provId}`;
+        fetch(_ctx+url)
+                .then(res=> {
+                          if(res.ok){
+                            return res.json();
+                          }
+                        }
+                ).then(res=>{
+          const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
+          const pfSel = pos == 1 ? '<option>Seleccione</option>' : '';
+          document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+          if(pos == 1){
+            const dis = document.getElementById('Dis');
+              document.getElementById('Dis').innerHTML = '<option>Seleccione provincia</option>';
+          }
+        }).catch((err)=>{
+          exception(err);
+        });
+      }
+
+      function disChange(){
+      }
+    </script>
   </body>
 </html>

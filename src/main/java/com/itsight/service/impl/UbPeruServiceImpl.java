@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.UbPeru;
+import com.itsight.domain.dto.UbPeruLimDto;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.UbPeruRepository;
 import com.itsight.service.UbPeruService;
@@ -30,7 +31,12 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
 
     @Override
     public UbPeru findOne(int id) {
-        return repository.findOne(new Integer(id));
+        return null;
+    }
+
+    @Override
+    public UbPeru findById(String id) {
+        return repository.findOne(id);
     }
 
     @Override
@@ -39,9 +45,7 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
-    }
+    public void delete(int id) { }
 
     @Override
     public List<Integer> findIdsByFlagActivo(boolean flagActivo) {
@@ -102,5 +106,23 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     @Override
     public void actualizarFlagActivoById(int id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public UbPeruLimDto findPeLimUbigeo() {
+        UbPeruLimDto ubPeruLim = new UbPeruLimDto(repository.findDeps(), repository.findProvs(), repository.findDist());
+        return ubPeruLim;
+    }
+
+    @Override
+    public UbPeruLimDto findPeProvByDep(String depId) {
+        UbPeruLimDto ubPeruLim = new UbPeruLimDto(null, repository.findProvsByDepId(depId), null);
+        return ubPeruLim;
+    }
+
+    @Override
+    public UbPeruLimDto findPeDistByDepAndProv(String depId, String provId) {
+        UbPeruLimDto ubPeruLim = new UbPeruLimDto(null, null, repository.findDistByDepIdAndProvId(depId, provId));
+        return ubPeruLim;
     }
 }

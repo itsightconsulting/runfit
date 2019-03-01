@@ -17,10 +17,7 @@ public class UbPeru {
 
     @Id
     @Column(name = "UbPeruId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String ub;
+    private String id;
 
     @Column(nullable = false, updatable = false)
     private String dep;
@@ -30,6 +27,9 @@ public class UbPeru {
 
     @Column(nullable = false, updatable = false)
     private String dis;//large code
+
+    @Column(nullable = false, updatable = false)
+    private String ub;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pais")
@@ -42,15 +42,16 @@ public class UbPeru {
     public UbPeru() {
     }
 
-    public UbPeru(int id) {
+    public UbPeru(String id) {
         this.id = id;
     }
 
-    public UbPeru(String ub, String dep, String pro, String dis) {
-        this.ub = ub;
+    public UbPeru(String id, String dep, String pro, String dis, String ub) {
+        this.id = id;
         this.dep = dep;
         this.pro = pro;
         this.dis = dis;
+        this.ub = ub;
     }
 }
 

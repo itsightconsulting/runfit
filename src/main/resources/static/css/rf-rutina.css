@@ -710,6 +710,18 @@ button.note-color-fuente, button.note-bg-color {
     border-bottom: 1px solid lightgray;
 }
 
+.margin-o-bottom-10{
+    margin: 0px 0px 10px !important;
+}
+
+.margin-o-bottom-40{
+    margin: 0px 0px 40px !important;
+}
+
+.margin-o-bottom-5{
+    margin: 0px 0px 5px !important;
+}
+
 .mej-perc{
     margin-right: 12%;
     background: #c8f14f !important;
