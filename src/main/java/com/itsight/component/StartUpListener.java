@@ -1020,7 +1020,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             lstRolesCli.add(new SecurityRole("ROLE_RUNNER"));
             secCliente.setRoles(lstRolesCli);
             Cliente cli = new Cliente(
-                    "Jorge "+ i, "Almendariz", "Molina", correoUsuario, "555555"+i,
+                    "Jorge "+ i, "Almendariz", "Molina", correoUsuario,
                     "5198765432"+i , correoUsuario, "4444444"+i, 1, Enums.TipoUsuarioEnum.CLIENTE.ordinal(),true);
             List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
             lstRolCli.add(new com.itsight.domain.jsonb.Rol(3, "ROLE_RUNNER"));

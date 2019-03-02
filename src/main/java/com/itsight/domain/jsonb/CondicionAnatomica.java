@@ -10,10 +10,11 @@ public class CondicionAnatomica implements Serializable {
 
     private boolean flagPadeceDolor;
     private String descripcionDolor;
-    private String momentoDelDolor;
+    private String momDolor;
+    private String momDolorIni;
     private boolean flagLesionSeisUltimosMeses;
-    private String descripcionLesion;
-    private String recomendacionesMedicas;
+    private String desLesion;
+    private String recomMedicas;
     private boolean flagEmbarazo;
 
     //
@@ -21,6 +22,7 @@ public class CondicionAnatomica implements Serializable {
     private int frecuenciaCardiaca;
     private int frecuenciaCardiacaMaxima;
     private int intensidad;
+    private int formaInicial;
     private List<Musculo> musculosSensibles;
 
 

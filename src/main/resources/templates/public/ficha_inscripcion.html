@@ -1,6 +1,6 @@
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+      th:with="version = ${#ctx.servletContext.getAttribute('version')}, today = ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
   <head>
     <meta charset="utf-8" />
     <meta name="_ctx" th:content="@{/}"/>
@@ -11,6 +11,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
   </head>
+  <style>
+      .li-bef-imp:before{
+        display: none !important;
+      }
+  </style>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -110,11 +115,11 @@
               <h1>Ficha de<span> Inscripción</span></h1>
             </div>
             <div class="col-md-7 text-right pad-0">
-              <a href="#"><div class="step step-01 active" onclick="next_step_cs(1)">
+              <a href="#"><div class="step step-01" onclick="next_step_cs(1)">
                 <div class="curve"></div>
                 <p>PASO<span>01</span></p>
               </div></a>
-              <a href="#"><div class="step step-02" onclick="next_step_cs(2)">
+              <a href="#"><div class="step step-02 active" onclick="next_step_cs(2)">
                 <div class="curve"></div>
                 <p>PASO<span>02</span></p>
               </div></a>
@@ -124,7 +129,7 @@
               </div></a>
             </div>
           </div>
-          <div class="row ficha-01 fade-ficha active">
+          <div class="row ficha-01 fade-ficha">
             <div class="col-md-12">
               <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
             </div><img class="bg-image" th:src="@{/img/public/step-1.png}+'?'+${version}"/>
@@ -136,27 +141,48 @@
                 <ol>
                   <li>
                     <div class="form-group">
-                      <label>¿Cuál es tu nombre completo?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
+                      <label>¿Cuáles son tus nombres?<span class="obligatorio">*</span></label>
+                      <input id="Nombres" name="Nombres" maxlength="60" class="form-control" type="text"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
-                      <label>¡Dinos!, ¿cuándo es tu fecha de nacimiento para felicitarte?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
+                      <label>¿Cuáles son tus apellidos?<span class="obligatorio">*</span></label>
+                      <input id="Apellidos" name="Apellidos" maxlength="66" class="form-control" type="text"/>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="form-group">
+                      <label>¡Dinos!, ¿Cuándo es tu fecha de nacimiento para felicitarte?<span class="obligatorio">*</span></label>
+                      <input id="FechaNacimiento" name="FechaNacimiento" class="form-control" type="date" th:value="${today}"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>¿Nos brindas tu documento de identidad?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="col-md-4 pad-0">
+                            <select name="TipoDocumentoId" id="TipoDocumentoId" class="form-control">
+                              <option>Seleccione</option>
+                              <option value="1">CE</option>
+                              <option value="2">DNI</option>
+                              <option value="3">Otro</option>
+                            </select>
+                          </div>
+                          <div class="col-md-1"></div>
+                          <div class="col-md-7 pad-0">
+                            <input id="NumeroDocumento" name="NumeroDocumento" class="form-control" type="text" placeholder="Número documento"/>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </li>
                   <li>
                     <div class="form-group more-inputs">
                       <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                      <input class="form-control" type="text"/>
+                      <input id="Correo" name="Correo" placeholder="Correo electrónico" class="form-control" type="text"/>
+                      <input id="Movil" name="Movil" placeholder="Móvil" class="form-control" type="text"/>
                     </div>
                   </li>
                 </ol>
@@ -166,7 +192,7 @@
                   <li>
                     <div class="form-group" id="stUbicacion">
                       <label>¿Dónde vives?<span class="obligatorio">*</span></label>
-                      <select class="form-control margin-o-bottom-10" disabled="disabled" id="PaisId">
+                      <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" disabled="disabled">
                         <option selected="selected" value="604">Perú</option>
                       </select>
                       <div class="row">
@@ -218,18 +244,18 @@
                       <label>¿Cúal es tu sexo?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Mujer
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="inpEmbarazo(this)">Mujer
+                            <input type="radio" name="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">Hombre
-                            <input type="checkbox"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="inpEmbarazo(this)">Hombre
+                            <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">Otro
-                            <input type="checkbox"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="inpEmbarazo(this)">Otro
+                            <input type="radio" name="Sexo" value="3"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -238,9 +264,9 @@
                   <li>
                     <div class="form-group more-inputs">
                       <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text" placeholder="Peso (Kg)"/>
-                      <input class="form-control" type="text" placeholder="Talla (Cm)"/>
-                      <input class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
+                      <input id="Peso" name="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/>
+                      <input id="Talla" name="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/>
+                      <input id="Imc" name="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
                     </div>
                   </li>
                 </ol>
@@ -261,12 +287,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
+                            <input type="radio" name="FlagPadeceDolor" checked="checked" id="FlagPadeceDolor"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="checkbox"/><span class="checkmark"></span>
+                            <input type="radio" name="FlagPadeceDolor"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -275,7 +301,7 @@
                   <li>
                     <div class="form-group">
                       <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
+                      <textarea id="DescripcionDolor" name="DescripcionDolor" class="form-control"></textarea>
                     </div>
                   </li>
                   <li>
@@ -284,17 +310,17 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Siempre (incluso en reposo)
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
+                            <input type="checkbox" name="MomDolor" value="1" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Al correr
-                            <input type="checkbox"/><span class="checkmark"></span>
+                            <input type="checkbox" name="MomDolor" value="2"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Después de correr
-                            <input type="checkbox"/><span class="checkmark"></span>
+                            <input type="checkbox" name="MomDolor" value="3"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -306,17 +332,17 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Al inicio
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
+                            <input type="checkbox" name="MomDolorIni" value="1" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">A la mitad
-                            <input type="checkbox"/><span class="checkmark"></span>
+                            <input type="checkbox" name="MomDolorIni" value="2"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">Al final
-                            <input type="checkbox"/><span class="checkmark"></span>
+                            <input type="checkbox" name="MomDolorIni" value="3"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -325,27 +351,27 @@
                   <li>
                     <div class="form-group">
                       <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
+                      <textarea id="DesLesion" name="DesLesion" class="form-control"></textarea>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>¿Tiene alguna recomendación o limitación médica?<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
+                      <textarea id="RecomMedicas" name="RecomMedicas" class="form-control"></textarea>
                     </div>
                   </li>
-                  <li>
+                  <li id="liFlagEmbarazo">
                     <div class="form-group">
                       <label>¿Estás embarazada?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
+                            <input type="checkbox" name="FlagEmbarazo" id="FlagEmbarazo"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="checkbox"/><span class="checkmark"></span>
+                            <input type="checkbox" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -358,7 +384,7 @@
               </div>
             </div>
           </div>
-          <div class="row ficha-02 fade-ficha">
+          <div class="row ficha-02 fade-ficha active">
             <div class="col-md-12">
               <p class="desc">Ya falta poco para terminar</p>
             </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
@@ -374,12 +400,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="one"/><span class="checkmark"></span>
+                            <input type="radio" name="one"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="one"/><span class="checkmark"></span>
+                            <input type="radio" name="one" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -388,50 +414,57 @@
                       <label>¿Fumas?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="two"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" name="two" value="1" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="two"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" name="two" value="0" data-ele-hd="#divDesFumador" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hide" id="divDesFumador">
                       <label>¿Con qué frecuencia fumas?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
+                      <input class="form-control"  type="text" placeholder="Poca, regular, constante..."/>
                     </div>
                     <div class="form-group">
                       <label>¿Antecedentes familiares de infarto o hipertensión?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="three"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" name="three" value="1" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="three"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" name="three" value="0" data-ele-hd="#FamInfOrHiper" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text"/>
+                      <select name="FamInfOrHiper" id="FamInfOrHiper" class="form-control hide">
+                        <option value="1">Papá</option>
+                        <option value="2">Mamá</option>
+                        <option value="3">Abuelo</option>
+                        <option value="4">Abuela</option>
+                        <option value="5">Hermano</option>
+                        <option value="6">Hermana</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>¿Tienes resistencia a la insulina?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="four"/><span class="checkmark"></span>
+                            <input type="radio" name="four"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="four"/><span class="checkmark"></span>
+                            <input type="radio" name="four" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -440,45 +473,62 @@
                       <label>¿Tienes familiares directos que padecen de diabetes?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="five"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" name="five" value="1" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="five"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" name="five" value="0" data-ele-hd="#FamDiabetico" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text"/>
+                      <select name="FamDiabetico" id="FamDiabetico" class="form-control hide">
+                        <option value="1">Papá</option>
+                        <option value="2">Mamá</option>
+                        <option value="3">Abuelo</option>
+                        <option value="4">Abuela</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>¿Consideras que tienes sobrepeso?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="six"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" data-ele-hd="#CatSobrepeso" value="1" name="six"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="six"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" data-ele-hd="#CatSobrepeso" value="0" name="six" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <select class="form-control"></select>
+                      <select class="form-control hide" id="CatSobrepeso">
+                        <option value="1">Menos de 5 KG</option>
+                        <option value="2">Menos de 10 KG</option>
+                        <option value="3">Más de 10 KG</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Tu alimentación es:<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
+                      <select class="form-control">
+                        <option value="1">Sana</option>
+                        <option value="2">Poco sana</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
+                      <select class="form-control">
+                        <option value="1">Nulo</option>
+                        <option value="2">Bajo</option>
+                        <option value="3">Intermedio</option>
+                        <option value="4">Alto</option>
+                      </select>
                     </div>
                   </li>
                 </ol>
@@ -490,73 +540,73 @@
                       <label>¿Padeces de alguna enfermedad?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="seven"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" value="1" data-ele-hd="#DesEnfermedad" name="seven"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="seven"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" value="0" data-ele-hd="#DesEnfermedad" name="seven" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text"/>
+                      <input class="form-control hide" id="DesEnfermedad" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Tienes alergia a algún medicamento?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="eight"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" value="1" data-ele-hd="#DesAleMed" name="eight"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="eight"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" value="0" data-ele-hd="#DesAleMed" name="eight" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text"/>
+                      <input class="form-control hide" id="DesAleMed" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="nine"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                              <input type="radio" value="1" data-ele-hd="#DesOperacion" name="nine"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="nine"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" value="0" data-ele-hd="#DesOperacion" name="nine" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text"/>
+                      <input class="form-control hide" id="DesOperacion" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>¿Tienes alguna hernia discal o padeces otra condición especial en la columna?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="nine"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                            <input type="radio" id="X" value="1" data-ele-hd="#DesHerDisOrCondCol" name="ten"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content">No
-                            <input type="radio" name="nine"/><span class="checkmark"></span>
+                          <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                            <input type="radio" value="0" data-ele-hd="#DesHerDisOrCondCol" name="ten" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" type="text"/>
+                      <input class="form-control hide" id="DesHerDisOrCondCol" type="text"/>
                     </div>
                     <div class="form-group">
                       <label>Padeces de:<span class="obligatorio">*</span></label>
@@ -587,11 +637,8 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                        <input class="form-control" type="text"/>
-                        <input class="form-control" type="text"/>
-                        <input class="form-control" type="text"/>
-                        <input class="form-control" type="text"/>
-                        <input class="form-control" type="text"/>
+                        <input class="form-control inp-cont-emer" type="text"/>
+                        <a href="#" onclick="javascript:agregarInputDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="padding-right: 5px;"></i></a>
                       </div>
                       <p class="title-form-group">Historial deportivo</p>
                       <div class="form-group">
@@ -833,7 +880,7 @@
                       </ul>
                     </div>
                   </li>
-                  <li> 
+                  <li>
                     <div class="form-group">
                       <label>¿Siempre haces ejercicios de estiramiento al finalizar tus entrenamiento?</label>
                       <ul class="checks">
@@ -850,7 +897,7 @@
                       </ul>
                     </div>
                   </li>
-                  <li> 
+                  <li>
                     <div class="form-group block-checks">
                       <label>¿Nos podrías decir cuál o cuáles son los puntos de desgaste de tus zapatillas?</label>
                       <ul class="checks">
@@ -890,7 +937,7 @@
                       <textarea class="form-control"></textarea>
                     </div>
                   </li>
-                  <li> 
+                  <li>
                     <div class="form-group block-checks">
                       <label>¿Por cúal o cúales tipos de terreno sueles correr con mayor frecuencia?<span class="obligatorio">*</span></label>
                       <ul class="checks">
@@ -929,7 +976,7 @@
                 </ol>
               </div>
             </div>
-            <div class="row">   
+            <div class="row">
               <div class="col-md-12">
                 <ol>
                   <li>
@@ -1288,7 +1335,7 @@
                       </ul>
                     </div>
                   </li>
-                  <li> 
+                  <li>
                     <div class="form-group">
                       <label>Finalmente, ¿cómo te enteraste de nosotros?</label>
                       <ul class="checks">
@@ -1468,6 +1515,31 @@
       }
 
       function disChange(){
+      }
+
+      function inpEmbarazo(e){
+          const inpGenero = e.firstElementChild.value;
+          const liFgEmb = document.getElementById('liFlagEmbarazo');
+          if(inpGenero != 1){
+              liFgEmb.querySelector('.form-group').style.display = 'block';
+              liFgEmb.classList.remove('li-bef-imp');
+          }else{
+              liFgEmb.querySelector('.form-group').style.display = 'none';
+              liFgEmb.classList.add('li-bef-imp');
+          }
+      }
+
+      function hideShowGenericInp(ele){
+        const val = ele.value;
+        const eleRefId = ele.getAttribute('data-ele-hd');
+        if(val == 0)
+          document.querySelector(eleRefId).classList.add('hide');
+        else
+          document.querySelector(eleRefId).classList.remove('hide');
+      }
+
+      function agregarInputDinamico(e){
+        e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input class="form-control inp-cont-emer" type="text"/>'));
       }
     </script>
   </body>

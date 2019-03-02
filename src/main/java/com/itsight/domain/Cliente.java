@@ -46,8 +46,6 @@ public class Cliente extends AuditingEntity implements Serializable {
     private String numeroDocumento;
     @Column(nullable = false)
     private String correo;
-    @Column(length = 16)
-    private String telefonoFijo;
     @Column(nullable = false, length = 16)
     private String movil;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
@@ -127,13 +125,12 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
     }
-    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno, String correo, String telefonoFijo, String movil, String username,
+    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno, String correo, String movil, String username,
                    String numeroDocumento, int tipoDocumentId, int tipoUsuarioId, boolean flagActivo) {
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.correo = correo;
-        this.telefonoFijo = telefonoFijo;
         this.movil = movil;
         this.username = username;
         this.numeroDocumento = numeroDocumento;
