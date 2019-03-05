@@ -11,6 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/p")
 public class PublicoController {
 
+    @GetMapping("/fi/2")
+    public ModelAndView fiDos(){
+        return new ModelAndView("portal/ficha_inscripcion");
+    }
+
     @GetMapping("/inicio")
     public ModelAndView index(){
         return new ModelAndView(ViewConstant.MAIN_INICIO);

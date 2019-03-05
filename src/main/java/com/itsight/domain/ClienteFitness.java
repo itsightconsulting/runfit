@@ -96,7 +96,7 @@ public class ClienteFitness implements Serializable {
     private int frecuenciaComunicacion;
     @Column(nullable = false)
     private String viaConexion;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String contEmergencia;
 
     @JsonManagedReference
