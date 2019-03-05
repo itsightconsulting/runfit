@@ -25,5 +25,4 @@ public class CondicionAnatomica implements Serializable {
     private int formaInicial;
     private List<Musculo> musculosSensibles;
 
-
 }

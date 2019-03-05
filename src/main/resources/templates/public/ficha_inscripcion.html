@@ -119,11 +119,11 @@
                 <div class="curve"></div>
                 <p>PASO<span>01</span></p>
               </div></a>
-              <a href="#"><div class="step step-02 active" onclick="next_step_cs(2)">
+              <a href="#"><div class="step step-02" onclick="next_step_cs(2)">
                 <div class="curve"></div>
                 <p>PASO<span>02</span></p>
               </div></a>
-              <a href="#"><div class="step step-03" onclick="next_step_cs(3)">
+              <a href="#"><div class="step step-03 active" onclick="next_step_cs(3)">
                 <div class="curve"></div>
                 <p>PASO<span>03</span></p>
               </div></a>
@@ -384,7 +384,7 @@
               </div>
             </div>
           </div>
-          <div class="row ficha-02 fade-ficha active">
+          <div class="row ficha-02 fade-ficha">
             <div class="col-md-12">
               <p class="desc">Ya falta poco para terminar</p>
             </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
@@ -750,7 +750,7 @@
               </div>
             </div>
           </div>
-          <div class="row ficha-03 fade-ficha">
+          <div class="row ficha-03 fade-ficha active">
             <div class="col-md-12">
               <p class="desc">Ya falta poco para terminar</p>
             </div>
@@ -848,19 +848,27 @@
                   <li>
                     <div class="form-group">
                       <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
+                      <input class="form-control" type="time" value="00:00"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>Y tu kilometraje promedio semanal ¿cuál es?<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
+                      <input class="form-control" type="number"/>
                     </div>
                   </li>
                   <li>
                     <div class="form-group">
                       <label>¿Cuántos días corres a la semana?<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
+                      <select class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
                     </div>
                   </li>
                   <li>
@@ -869,12 +877,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="twelve"/><span class="checkmark"></span>
+                            <input id="FlagCalentamiento" name="FlagCalentamiento" type="radio" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="twelve"/><span class="checkmark"></span>
+                            <input name="FlagCalentamiento" type="radio"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -886,12 +894,12 @@
                       <ul class="checks">
                         <li>
                           <div class="chk-content">Si
-                            <input type="radio" checked="checked" name="thirteen"/><span class="checkmark"></span>
+                            <input id="FlagEstiramiento" name="FlagEstiramiento" type="radio" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
                           <div class="chk-content">No
-                            <input type="radio" name="thirteen"/><span class="checkmark"></span>
+                            <input name="FlagEstiramiento" type="radio"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -979,133 +987,6 @@
             <div class="row">
               <div class="col-md-12">
                 <ol>
-                  <li>
-                    <div class="form-group">
-                      <label>Escoge un día a la semana para descansar</label>
-                      <ul class="days-of-week">
-                        <li>
-                          <p>Lunes</p>
-                        </li>
-                        <li>
-                          <p>Martes</p>
-                        </li>
-                        <li>
-                          <p>Miercoles</p>
-                        </li>
-                        <li>
-                          <p>Jueves</p>
-                        </li>
-                        <li>
-                          <p>Viernes</p>
-                        </li>
-                        <li>
-                          <p>Sabado</p>
-                        </li>
-                        <li>
-                          <p>Domingo</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="form-group">
-                      <label>¿Con cuánto tiempo dispones para entrenar diariamente? (tiempo neto en minutos)<span class="obligatorio">*</span></label>
-                      <div class="table-content">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th></th>
-                              <th>Lunes</th>
-                              <th>Martes</th>
-                              <th>Miércoles</th>
-                              <th>Jueves</th>
-                              <th>Viernes</th>
-                              <th>Sábado</th>
-                              <th>Domingo</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="clock"><span class="fa fa-clock-o"></span></td>
-                              <td class="green">Mañana</td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="clock"><span class="fa fa-clock-o"></span></td>
-                              <td class="green">Tarde</td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="clock"><span class="fa fa-clock-o"></span></td>
-                              <td class="green">Noche</td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                              <td>
-                                <input type="text"/>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </li>
                   <li class="col-md-6">
                     <div class="form-group">
                       <label>Cuáles son tus objetivos personales<span class="obligatorio">*</span></label>
@@ -1118,19 +999,19 @@
                       <p class="form-group-subtitle">Puedes elegir cualquier opción</p>
                       <ul class="distance">
                         <li>
-                          <input type="text"/>
+                          <input type="time" value="00:00"/>
                           <p>2km</p>
                         </li>
                         <li>
-                          <input type="text"/>
+                          <input type="time" value="00:00"/>
                           <p>4km</p>
                         </li>
                         <li>
-                          <input type="text"/>
+                          <input type="time" value="00:00"/>
                           <p>21km</p>
                         </li>
                         <li>
-                          <input type="text"/>
+                          <input type="time" value="00:00"/>
                           <p>42km</p>
                         </li>
                       </ul>
@@ -1141,121 +1022,44 @@
                       <label>¿Cuáles son las competencias en las que quisieras participar? (por orden de prioridad):<small>SUGERENCIA : COMPETENCIAS CON MAYOR PRIORIDAD // COMPETENCIAS CON MENOR PRIORIDAD</small></label>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-12">
                         <div class="form-group">
-                          <h5 class="text-center">Competencias más importantes</h5>
                           <div class="table-content">
-                            <table>
+                            <table class="table">
                               <thead>
                                 <tr>
                                   <th>Fecha</th>
                                   <th>Distancia</th>
-                                  <th>Nombre</th>
-                                  <th><span class="fa fa-clock-o"></span>Objetivo</th>
+                                  <th colspan="2">Maratón</th>
+                                  <th><span class="fa fa-clock-o fa-fw"></span>Objetivo</th>
+                                  <th colspan="2">Prioridad</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr>
                                   <td>
-                                    <input type="text"/>
+                                    <input class="form-control" type="date" th:value="${today}" style="max-width: 100% !important;"/>
                                   </td>
                                   <td>
-                                    <input type="text"/>
+                                    <select class="form-control" style="max-width: 100% !important;">
+                                      <option value="5">5K</option>
+                                      <option value="10">10K</option>
+                                      <option value="15">15K</option>
+                                      <option value="21">21K</option>
+                                      <option value="42">42K</option>
+                                    </select>
+                                  </td>
+                                  <td colspan="2">
+                                    <input class="form-control" type="text" style="max-width: 100% !important;"/>
                                   </td>
                                   <td>
-                                    <input type="text"/>
+                                    <input class="form-control" type="time" value="00:00" style="max-width: 100% !important;"/>
                                   </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <h5 class="text-center">Competencias menos importantes</h5>
-                          <div class="table-content">
-                            <table cellspacing="0" cellpadding="0">
-                              <thead>
-                                <tr>
-                                  <th>Fecha</th>
-                                  <th>Distancia</th>
-                                  <th>Nombre</th>
-                                  <th><span class="fa fa-clock-o"></span>Objetivo</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
-                                  </td>
-                                  <td>
-                                    <input type="text"/>
+                                  <td colspan="2">
+                                    <select class="form-control" style="max-width: 100% !important;">
+                                      <option value="Prioritario">Prioritario</option>
+                                      <option value="No Prioritario">Secundario</option>
+                                    </select>
                                   </td>
                                 </tr>
                               </tbody>

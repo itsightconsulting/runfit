@@ -69,9 +69,9 @@ public class ClienteFitness implements Serializable {
     @Column(nullable = false)
     private int diasSemanaCorriendo;
     @Column(nullable = false)
-    private boolean flagHaceCalentamiento;
+    private boolean flagCalentamiento;
     @Column(nullable = false)
-    private boolean flagHaceEstiramientos;
+    private boolean flagEstiramientos;
     @Column(nullable = false)
     private String desgasteZapatilla;
     @Column(nullable = false)
@@ -96,6 +96,8 @@ public class ClienteFitness implements Serializable {
     private int frecuenciaComunicacion;
     @Column(nullable = false)
     private String viaConexion;
+    @Column(nullable = false)
+    private String contEmergencia;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
