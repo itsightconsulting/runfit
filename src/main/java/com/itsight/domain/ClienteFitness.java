@@ -75,9 +75,9 @@ public class ClienteFitness implements Serializable {
     @Column(nullable = false)
     private String desgasteZapatilla;
     @Column(nullable = false)
-    private String objetivosDescripcion;
+    private String desObjetivos;
     @Column(nullable = false)
-    private String terrenoPredominante;
+    private String desTerPredom;
     @Column(nullable = false)
     private int diaDescanso;
     @Type(type = "jsonb")
@@ -92,12 +92,17 @@ public class ClienteFitness implements Serializable {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<CompetenciaRunner> competencias;
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb", nullable = false)
+    private List<FitElemento> fitElementos;
     @Column(nullable = false)
     private int frecuenciaComunicacion;
     @Column(nullable = false)
-    private String viaConexion;
+    private int viaConexion;
     @Column(nullable = true)
     private String contEmergencia;
+    @Column(nullable = false)
+    private String tiempoDistancia;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

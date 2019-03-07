@@ -14,7 +14,7 @@ public class CondicionAnatomica implements Serializable {
     private String momDolorIni;
     private boolean flagLesionSeisUltimosMeses;
     private String desLesion;
-    private String recomMedicas;
+    private String recomMedica;
     private boolean flagEmbarazo;
 
     //

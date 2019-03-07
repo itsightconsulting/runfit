@@ -21,6 +21,8 @@ public class Salud implements Serializable
     private int famDiabetico;
     private int famInfOrHiper;
     private int catSobrepeso;
+    private int catAlimentacion;
+    private int nivelEstres;
     private String desEnfermedad;
     private String desFumador;
     private String desAleMed;

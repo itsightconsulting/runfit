@@ -1,12 +1,13 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
+import com.itsight.domain.Musculo;
+import com.itsight.domain.Objetivo;
+import com.itsight.domain.Parametro;
+import com.itsight.domain.Rol;
 import com.itsight.domain.dto.UbPeruDTO;
 import com.itsight.domain.dto.UbPeruLimDto;
-import com.itsight.domain.jsonb.CompetenciaRunner;
-import com.itsight.domain.jsonb.CondicionAnatomica;
-import com.itsight.domain.jsonb.PorcKiloTipo;
-import com.itsight.domain.jsonb.PorcKiloTipoSema;
+import com.itsight.domain.jsonb.*;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.PostRepository;
 import com.itsight.repository.SecurityUserRepository;
@@ -1045,8 +1046,8 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setPeso(BigDecimal.valueOf(65+i));
             cliFit.setSexo(1);
             cliFit.setDesgasteZapatilla("Inicio");
-            cliFit.setObjetivosDescripcion("Resistencia");
-            cliFit.setTerrenoPredominante("Asfalto");
+            cliFit.setDesObjetivos("Resistencia");
+            cliFit.setDesTerPredom("Asfalto");
             cliFit.setDiaDescanso(1);
             CondicionAnatomica ca = new CondicionAnatomica();
             ca.setFrecuenciaCardiaca(65+i);
@@ -1057,8 +1058,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
             cliFit.setMejoras(new ArrayList<>());
             cliFit.setFrecuenciaComunicacion(1);
-            cliFit.setViaConexion("InitialSeeder");
+            cliFit.setViaConexion(1);
             cliFit.setTalla(166);
+            cliFit.setTiempoDistancia("{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}");
             List<CompetenciaRunner> comps = new ArrayList<>();
             Integer[] distancias = {10,21,42};
             String[] fechas = {"2019-02-10","2019-03-10","2019-04-27"};
@@ -1074,6 +1076,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             }
             comps.get(2).setPrioridad(1);
             cliFit.setCompetencias(comps);
+            List<FitElemento> fitElementos = new ArrayList<>();
+            fitElementos.add(new FitElemento(1, "Pulsómetro"));
+            fitElementos.add(new FitElemento(2, "Ligas"));
+
+            cliFit.setFitElementos(fitElementos);
             cliFit.setCliente(cli);
             clienteFitnessService.save(cliFit);
             if(i<4)
