@@ -22,6 +22,8 @@ let $semCalculoMacro = {};
 let $edcPorcIntensidad = false;
 let $chartTemporada = {};
 let $chartMiniPorc = {};
+let $chartC1 = {};
+let $chartC2 = {};
 let $preHtmlButton;
 let $idsComp = [];
 let $antPorcKilo = "";

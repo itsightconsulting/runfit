@@ -1318,7 +1318,6 @@ MCGrafico = (function(){
             gradientFill.addColorStop(0.76, bgMantaIntensidad[3]);//First
             //Temp
             const len = data.length;
-            console.log(data);
             data[len-1].perc = "100";
             data[len-1].kms = 40;
             data[len-2].perc = "90";
@@ -1592,7 +1591,9 @@ MCGrafico = (function(){
             };
         },
         miniPorcentual: (dF)=>{
-            console.log(dF);
+
+            MCGrafico.cesDemoCircularGraphs();
+
             let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
 
             if($chartMiniPorc.ctx != undefined){
@@ -1644,6 +1645,62 @@ MCGrafico = (function(){
                     /*segmentShowStroke: false*/
                     //Boolean - Whether we should show a stroke on each segment
                     // set to false to hide the space/line between segments
+
+                }
+            });
+        },
+        cesDemoCircularGraphs: ()=>{
+            let ctx = document.getElementById('c1').getContext('2d');
+            let ctx1 = document.getElementById('c2').getContext('2d');
+
+            $chartC1 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['13-17','18-24','25-34','35-44','54-45','55-64','65+'],
+                    datasets: [{
+                        data: [5,7,7,12,16,28,25],
+                        backgroundColor: ['rgba(168, 250, 01, 0.9)', 'rgba(168, 250, 01, 0.8)', 'rgba(168, 250, 01, 0.7)', 'rgba(168, 250, 01, 0.6)', 'rgba(168, 250, 01, 0.5)', 'rgba(168, 250, 01, 0.4)', 'rgba(168, 250, 01, 0.3)'],
+                        borderColor: 'transparent',
+                    }],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: '👩 Mujeres 43%',
+                        fontColor: 'white',
+                        fontSize: 16
+                    },
+                    responsive: false,
+                    legend: {
+                        display: false,
+                        position: 'right',
+                    }
+
+                }
+            });
+
+            $chartC2 = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: ['13-17','18-24','25-34','35-44','54-45','55-64','65+'],
+                    datasets: [{
+                        data: [5,7,7,12,16,28,25],
+                        backgroundColor: ['rgba(168, 250, 01, 0.9)', 'rgba(168, 250, 01, 0.8)', 'rgba(168, 250, 01, 0.7)', 'rgba(168, 250, 01, 0.6)', 'rgba(168, 250, 01, 0.5)', 'rgba(168, 250, 01, 0.4)', 'rgba(168, 250, 01, 0.3)'],
+                        borderColor: 'transparent',
+                    }],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: '👨 Hombres 57%',
+                        fontColor: 'white',
+                        fontSize: 16
+                    },
+                    responsive: false,
+                    legend: {
+                        display: false,
+                        position: 'right',
+                    }
 
                 }
             });
