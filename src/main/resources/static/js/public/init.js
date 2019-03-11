@@ -130,36 +130,61 @@ function tabColaboradores() {
         $(this).find('img').attr('src', _ctx+'img/public/' + data + '.png')
     })
 }
+function next_step(sheetNumber) {
+    const success = validationByNumSheet(sheetNumber);
+    if(success){
+        if ($(".ficha-01").hasClass("active")) {
+            $(".ficha-01").removeClass("active")
+            $('.step-01').removeClass("active")
+            $(".ficha-02").addClass("active")
+            $('.step-02').addClass("active")
+            $("body" ).scrollTop( 0 );
+            time_line();
+        } else if ($(".ficha-02").hasClass("active"))  {
+            $(".ficha-02").removeClass("active")
+            $('.step-02').removeClass("active")
+            $(".ficha-03").addClass("active")
+            $('.step-03').addClass("active")
+            $("body" ).scrollTop( 0 );
+            time_line();
+        } else {
 
-function next_step() {
-    if ($(".ficha-01").hasClass("active")) {
-        $(".ficha-01").removeClass("active")
-        $('.step-01').removeClass("active")
-        $(".ficha-02").addClass("active")
-        $('.step-02').addClass("active")
-        $("body" ).scrollTop( 0 );
-        time_line();
-    } else if ($(".ficha-02").hasClass("active"))  {
-        $(".ficha-02").removeClass("active")
-        $('.step-02').removeClass("active")
-        $(".ficha-03").addClass("active")
-        $('.step-03').addClass("active")
-        $("body" ).scrollTop( 0 );
-        time_line();
-    } else {
+        }
+    }else
+        alert("Aún no has rellenado todos los campos de esta hoja. Completalos y vuelve a intentar avanzar");
 
-    }
+
+}
+
+function validationByNumSheet(numSheet){
+    const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
+    const inputs = sheetContainer.querySelectorAll(`input.form-control`);
+    const selects = sheetContainer.querySelectorAll(`select.form-control`);
+    const alls = Array.from(inputs).concat(Array.from(selects));
+    let continuosValidator = true;
+    alls.forEach(v=>{
+        !$("#frmRegistro").validate().element(v) ? continuosValidator = false : "";
+    });
+    return continuosValidator;
+    //$("#frmRegistro").validate().element($('input[name="Sexo"]'));
 }
 
 next_step_cs = function (i){
-    const all = document.querySelectorAll('.fade-ficha');
-    const sels = document.querySelectorAll('.step');
-    all.forEach((v,ii)=>{
-        v.classList.remove('active');
-        sels[ii].classList.remove('active')
-    });
-    all[i-1].classList.add('active');
-    sels[i-1].classList.add('active');
+    const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
+    const success = activeNumSheet == 3 || activeNumSheet > i ? true : validationByNumSheet(activeNumSheet);
+    if(success){
+        const all = document.querySelectorAll('.fade-ficha');
+        const sels = document.querySelectorAll('.step');
+        all.forEach((v,ii)=>{
+            v.classList.remove('active');
+            sels[ii].classList.remove('active')
+        });
+        all[i-1].classList.add('active');
+        sels[i-1].classList.add('active');
+    }
+    else
+        alert("Aún no has rellenado todos los campos de esta hoja. Completalos y vuelve a intentar avanzar");
+
 }
 
 function openMenuMobile() {

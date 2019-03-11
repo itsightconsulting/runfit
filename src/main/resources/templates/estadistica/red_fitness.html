@@ -146,6 +146,13 @@
                         <canvas id="GraficoTemporada" width="1000px" height="350" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'"></canvas>
                     </div>
                 </div>
+                <hr/>
+                <div class="row">
+                    <h1 class="text-center" style="padding-bottom: 25px">% CANALES DE VENTAS MÁS USADOS</h1>
+                    <div class="col-md-12">
+                        <canvas id="GraficoCanalesUsados" width="1000px" height="350" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'"></canvas>
+                    </div>
+                </div>
             </section>
         </fieldset>
     </div>
@@ -184,6 +191,7 @@
 
         graficoMapaPeru();
         graficoBarraVentaServiciosTemporada();
+        graficoCanalesUsados();
 
     });
 
@@ -234,18 +242,20 @@
 
         var data = {
             labels: ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SET", "OCT", "NOV", "DIC"],
-            datasets: [{
-                label: "Hombres",
-                backgroundColor: "#a6fb00",
-                data: [123, 167, 123, 167, 123, 167, 123, 167, 123, 167, 123, 167]
-            }, {
-                label: "Mujeres",
-                backgroundColor: "#cf3239",
-                data: [144, 80, 144, 80, 144, 80, 144, 80, 144, 80, 144, 80]
-            }]
+            datasets: [
+                {
+                    label: "Hombres",
+                    backgroundColor: "#a6fb00",
+                    data: [123, 167, 123, 167, 123, 167, 123, 167, 123, 167, 123, 167]
+                }, {
+                    label: "Mujeres",
+                    backgroundColor: "#cf3239",
+                    data: [144, 80, 144, 80, 144, 80, 144, 80, 144, 80, 144, 80]
+                }
+            ]
         };
 
-        var myBarChart = new Chart(ctx, {
+        const myBarChart = new Chart(ctx, {
             type: 'bar',
             data: data,
             options: {
@@ -259,6 +269,10 @@
                     xAxes: [{
                         barThickness : 20
                     }]
+                },
+                hover:{
+                    mode: 'nearest',
+                    intersect: true
                 }
             }
         });
@@ -370,19 +384,28 @@
                 }if(radius > width/2){
                     radius = width/2;
                 }
-                //Temportal
-                y = y+20;
-                //!--Temportal
-                ctx.moveTo(x + radius, y);
-                ctx.lineTo(x + width - radius, y);
-                ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-                ctx.lineTo(x + width, y + height - radius);
-                ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-                ctx.lineTo(x + radius, y + height);
-                ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-                ctx.lineTo(x, y + radius);
-                ctx.quadraticCurveTo(x, y, x + radius, y);
 
+                if(!vm.horizontal){
+                    ctx.moveTo(x + radius, y);
+                    ctx.lineTo(x + width - radius, y);
+                    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                    ctx.lineTo(x + width, y + height);
+                    ctx.quadraticCurveTo(x + width, y + height, x + width, y + height);
+                    ctx.lineTo(x, y + height);
+                    ctx.quadraticCurveTo(x, y + height, x, y + height);
+                    ctx.lineTo(x, y + radius);
+                    ctx.quadraticCurveTo(x, y, x + radius, y);
+                }else{
+                    ctx.moveTo(x + radius, y);
+                    ctx.lineTo(x + width - radius, y);
+                    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                    ctx.lineTo(x + width, y + height - radius);
+                    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                    ctx.lineTo(x, y + height);
+                    ctx.quadraticCurveTo(x, y + height, x, y + height);
+                    ctx.lineTo(x, y);
+                    ctx.quadraticCurveTo(x, y, x, y);
+                }
             }
 
             ctx.fill();
@@ -391,6 +414,58 @@
             }
         };
 
+    }
+
+    function graficoCanalesUsados(){
+        //GraficoCanalesUsados
+        var ctx = document.getElementById("GraficoCanalesUsados").getContext("2d");
+        var data = {
+            labels: [
+                "Por recomendación",
+                "Vía correo",
+                "Google",
+                "Facebook",
+                "Twitter",
+                "Instagram",
+                "Otro"
+            ],
+            datasets: [
+                {
+                    label: "Hombres",
+                    data: [100, 75, 50, 25, 15, 10, 5],
+                    backgroundColor: "#a6fb00"
+                },
+                {
+                    label: "Mujeres",
+                    data: [5, 10, 15, 25, 50, 75, 100],
+                    backgroundColor: "#cf3239"
+                }]
+        };
+
+        const myBarChartHoriz = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: data,
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            min: 0
+                        }
+                    }],
+                    yAxes: [{
+                        barThickness : 20
+                    }]
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                tooltips: {
+                    mode: 'nearest'
+                }
+
+            }
+        });
     }
     /*]]>*/
 </script>

@@ -148,22 +148,22 @@
               <h1>Ficha de<span> Inscripción</span></h1>
             </div>
             <div class="col-md-7 text-right pad-0">
-              <a href="#"><div class="step step-01 active" onclick="next_step_cs(1)">
+              <a href="#"><div class="step step-01 active" data-num-sheet="1" onclick="next_step_cs(1)">
                 <div class="curve"></div>
                 <p>PASO<span>01</span></p>
               </div></a>
-              <a href="#"><div class="step step-02" onclick="next_step_cs(2)">
+              <a href="#"><div class="step step-02" data-num-sheet="2" onclick="next_step_cs(2)">
                 <div class="curve"></div>
                 <p>PASO<span>02</span></p>
               </div></a>
-              <a href="#"><div class="step step-03" onclick="next_step_cs(3)">
+              <a href="#"><div class="step step-03" data-num-sheet="3" onclick="next_step_cs(3)">
                 <div class="curve"></div>
                 <p>PASO<span>03</span></p>
               </div></a>
             </div>
           </div>
           <form id="frmRegistro" style="margin:0px !important">
-            <div class="row ficha-01 fade-ficha active">
+            <div class="row ficha-01 fade-ficha active inpts-1">
               <div class="col-md-12">
                 <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
               </div><img class="bg-image" th:src="@{/img/public/step-1.png}+'?'+${version}"/>
@@ -198,7 +198,7 @@
                           <div class="col-md-12">
                             <div class="col-md-4 pad-0">
                               <select name="TipoDocumentoId" id="TipoDocumentoId" class="form-control">
-                                <option>Seleccione</option>
+                                <option value="">Seleccione</option>
                                 <option value="1">CE</option>
                                 <option value="2">DNI</option>
                                 <option value="3">Otro</option>
@@ -411,14 +411,14 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <button class="btn btn-bg-black" type="button" onclick="next_step()">Siguiente</button>
+                        <button class="btn btn-bg-black" type="button" onclick="next_step(1)">Siguiente</button>
                       </div>
                     </li>
                   </ol>
                 </div>
               </div>
             </div>
-            <div class="row ficha-02 fade-ficha">
+            <div class="row ficha-02 fade-ficha inpts-2">
               <div class="col-md-12">
                 <p class="desc">Ya falta poco para terminar</p>
               </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
@@ -765,7 +765,7 @@
                             </ul>
                           </div>
                           <div class="form-group"><br/>
-                            <button class="btn btn-bg-black" type="button" onclick="next_step()">Siguiente</button>
+                            <button class="btn btn-bg-black" type="button" onclick="next_step(2)">Siguiente</button>
                           </div>
                         </div>
                       </li>
@@ -787,7 +787,7 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuáles son los músculos que más se te fatigan al correr?<span class="obligatorio">*</span></label>
-                        <div class="row hide">
+                        <div class="row">
                           <div class="col-md-6 col-xs-12">
                             <ul class="checks">
                               <li>
@@ -1894,7 +1894,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
       }
 
       function sendForm(){
-
+        alert('success broski!');
       }
 
       function depYprovChange(depId, provId, pos){
@@ -1908,11 +1908,11 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                         }
                 ).then(res=>{
           const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
-          const pfSel = pos == 1 ? '<option>Seleccione</option>' : '';
+          const pfSel = pos == 1 ? '<option value="">Seleccione</option>' : '';
           document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
           if(pos == 1){
             const dis = document.getElementById('Dis');
-              document.getElementById('Dis').innerHTML = '<option>Seleccione provincia</option>';
+              document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
           }
         }).catch((err)=>{
           exception(err);
@@ -2010,6 +2010,15 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
             FechaNacimiento: {
               required: true,
             },
+            Dep:{
+              required: true,
+            },
+            Pro:{
+              required: true,
+            },
+            Dis:{
+              required: true,
+            },
             Sexo: {
               required: true,
               number: true,
@@ -2034,8 +2043,11 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
               required: true
             },
             KilometrajePromedioSemana: {
-              required: true,
+              required: true
             },
+            FrecuenciaCardiaca:{
+              required: true
+            }
           },
           messages: {
             Nombres: {
@@ -2076,7 +2088,6 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
           }
         });
       }
-
 
     </script>
   </body>
