@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}"/>
   </head>
   <style>
       .li-bef-imp:before{
@@ -176,19 +177,19 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuáles son tus nombres?<span class="obligatorio">*</span></label>
-                        <input id="Nombres" name="Nombres" maxlength="60" class="form-control" type="text"/>
+                        <input id="Nombres" name="Nombres" data-aka="Nombres" maxlength="60" class="form-control" type="text"/>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
                         <label>¿Cuáles son tus apellidos?<span class="obligatorio">*</span></label>
-                        <input id="Apellidos" name="Apellidos" maxlength="66" class="form-control" type="text"/>
+                        <input id="Apellidos" name="Apellidos" data-aka="Apellidos" maxlength="66" class="form-control" type="text"/>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
                         <label>¡Dinos!, ¿Cuándo es tu fecha de nacimiento para felicitarte?<span class="obligatorio">*</span></label>
-                        <input id="FechaNacimiento" name="FechaNacimiento" class="form-control" type="date" th:value="${today}"/>
+                        <input id="FechaNacimiento" name="FechaNacimiento" data-aka="Fecha de nacimieno" class="form-control" type="date" th:value="${today}"/>
                       </div>
                     </li>
                     <li>
@@ -197,7 +198,7 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="col-md-4 pad-0">
-                              <select name="TipoDocumentoId" id="TipoDocumentoId" class="form-control">
+                              <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control">
                                 <option value="">Seleccione</option>
                                 <option value="1">CE</option>
                                 <option value="2">DNI</option>
@@ -206,7 +207,7 @@
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-7 pad-0">
-                              <input id="NumeroDocumento" name="NumeroDocumento" class="form-control" type="text" placeholder="Número documento"/>
+                              <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
                             </div>
                           </div>
                         </div>
@@ -215,8 +216,8 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                        <input id="Correo" name="Correo" placeholder="Correo electrónico" class="form-control" type="text"/>
-                        <input id="Movil" name="Movil" placeholder="Móvil" class="form-control" type="text"/>
+                        <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                        <input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/>
                       </div>
                     </li>
                   </ol>
@@ -235,7 +236,7 @@
                               <label>Departamento:</label>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                              <select class="form-control margin-o-bottom-10" id="Dep" name="Dep">
+                              <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento">
                                 <option selected="selected" value="51">Lima</option>
                               </select>
                             </div>
@@ -245,7 +246,7 @@
                               <label>Provincia:</label>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                              <select class="form-control margin-o-bottom-10" id="Pro" name="Pro">
+                              <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                                 <option selected="selected" value="01">Lima</option>
                               </select>
                             </div>
@@ -255,7 +256,7 @@
                               <label>Distrito:</label>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                              <select class="form-control margin-o-bottom-10" id="Dis" name="Dis">
+                              <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                                 <option selected="selected" value="01">Lima</option>
                               </select>
                             </div>
@@ -266,7 +267,7 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuál es tu estado civil?<span class="obligatorio">*</span></label>
-                        <select class="form-control" id="EstadoCivil" name="EstadoCivil">
+                        <select class="form-control" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
                           <option value="1">Soltera(o)</option>
                           <option value="2">Comprometida(o)</option>
                           <option value="3">Casada(o)</option>
@@ -279,7 +280,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="inpEmbarazo(this)">Mujer
-                              <input type="radio" name="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -298,9 +299,9 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                        <input id="Peso" name="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/>
-                        <input id="Talla" name="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/>
-                        <input id="Imc" name="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
+                        <input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/>
+                        <input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/>
+                        <input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
                       </div>
                     </li>
                   </ol>
@@ -321,12 +322,12 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input type="radio" name="FlagPadeceDolor" checked="checked" id="FlagPadeceDolor"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagPadeceDolor" data-aka="Padece algún dolor" id="FlagPadeceDolor"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">No
-                              <input type="radio" name="FlagPadeceDolor"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagPadeceDolor" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -335,7 +336,7 @@
                     <li>
                       <div class="form-group">
                         <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:<span class="obligatorio">*</span></label>
-                        <textarea id="DescripcionDolor" name="DescripcionDolor" class="form-control"></textarea>
+                        <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                       </div>
                     </li>
                     <li>
@@ -344,7 +345,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Siempre (incluso en reposo)
-                              <input type="checkbox" name="MomDolor" value="1" checked="checked"/><span class="checkmark"></span>
+                              <input type="checkbox" name="MomDolor" data-aka="Momento donde el dolor se hace presente" value="1" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -366,7 +367,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Al inicio
-                              <input type="checkbox" name="MomDolorIni" value="1" checked="checked"/><span class="checkmark"></span>
+                              <input type="checkbox" name="MomDolorIni" data-aka="Momento del dolor" value="1" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -385,13 +386,13 @@
                     <li>
                       <div class="form-group">
                         <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?<span class="obligatorio">*</span></label>
-                        <textarea id="DesLesion" name="DesLesion" class="form-control"></textarea>
+                        <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control"></textarea>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
                         <label>¿Tiene alguna recomendación o limitación médica?<span class="obligatorio">*</span></label>
-                        <textarea id="RecomMedica" name="RecomMedica" class="form-control"></textarea>
+                        <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control"></textarea>
                       </div>
                     </li>
                     <li id="liFlagEmbarazo">
@@ -400,7 +401,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input type="checkbox" name="FlagEmbarazo" id="FlagEmbarazo"/><span class="checkmark"></span>
+                              <input type="checkbox" name="FlagEmbarazo" data-aka="Se encuentra embarazada" id="FlagEmbarazo"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -449,7 +450,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagFumador" type="radio" name="FlagFumador" value="1" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
+                              <input id="FlagFumador" type="radio" name="FlagFumador" data-aka="Especificar si fuma" value="1" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -461,25 +462,25 @@
                       </div>
                       <div class="form-group hide" id="divDesFumador">
                         <label>¿Con qué frecuencia fumas?<span class="obligatorio">*</span></label>
-                        <input id="DesFumador" name="DesFumador" class="form-control"  type="text" placeholder="Poca, regular, constante..."/>
+                        <input id="DesFumador" name="DesFumador" class="form-control" data-aka="Frecuencia de fumar" type="text" placeholder="Poca, regular, constante..."/>
                       </div>
                       <div class="form-group">
                         <label>¿Antecedentes familiares de infarto o hipertensión?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input type="radio" id="FlagAntFamInfOrHiper" name="FlagAntFamInfOrHiper" value="1" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
+                              <input type="radio" id="FlagAntFamInfOrHiper" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hiperensión" value="1" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input type="radio" name="FlagAntFamInfOrHiper" value="0" data-ele-hd="#FamInfOrHiper" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hipertensión" value="0" data-ele-hd="#FamInfOrHiper" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
                       </div>
                       <div class="form-group">
-                        <select name="FamInfOrHiper" id="FamInfOrHiper" class="form-control hide">
+                        <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hide">
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
                           <option value="3">Abuelo</option>
@@ -493,7 +494,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input id="FlagResInsulina" name="FlagResInsulina" type="radio"/><span class="checkmark"></span>
+                              <input id="FlagResInsulina" name="FlagResInsulina" data-aka="Especificar si eres resistente a la insulina" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -508,7 +509,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagAntFamDiabetes" name="FlagAntFamDiabetes" type="radio" value="1" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
+                              <input id="FlagAntFamDiabetes" name="FlagAntFamDiabetes" data-aka="Especificar si tiene familiar con antecedentes de diabetes" type="radio" value="1" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -519,7 +520,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <select name="FamDiabetico" id="FamDiabetico" class="form-control hide">
+                        <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hide">
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
                           <option value="3">Abuelo</option>
@@ -531,7 +532,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagSobrepeso" name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="1"/><span class="checkmark"></span>
+                              <input id="FlagSobrepeso" name="FlagSobrepeso" data-aka="Especificar si sufre de sobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="1"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -542,7 +543,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <select class="form-control hide" id="CatSobrepeso" name="CatSobrepeso">
+                        <select class="form-control hide" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
                           <option value="1">Menos de 5 KG</option>
                           <option value="2">Menos de 10 KG</option>
                           <option value="3">Más de 10 KG</option>
@@ -550,14 +551,14 @@
                       </div>
                       <div class="form-group">
                         <label>Tu alimentación es:<span class="obligatorio">*</span></label>
-                        <select id="CatAlimentacion" name="CatAlimentacion" class="form-control">
+                        <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control">
                           <option value="1">Sana</option>
                           <option value="2">Poco sana</option>
                         </select>
                       </div>
                       <div class="form-group">
                         <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
-                        <select id="NivelEstres" name="NivelEstres" class="form-control">
+                        <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control">
                           <option value="1">Nulo</option>
                           <option value="2">Bajo</option>
                           <option value="3">Intermedio</option>
@@ -575,7 +576,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagEnfermedad" name="FlagEnfermedad" type="radio" value="1" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
+                              <input id="FlagEnfermedad" name="FlagEnfermedad" data-aka="Especificar si padece de alguna enfermedad" type="radio" value="1" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -586,14 +587,14 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input class="form-control hide" id="DesEnfermedad" name="DesEnfermedad" type="text"/>
+                        <input class="form-control hide" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Tienes alergia a algún medicamento?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagAleMed" name="FlagAleMed" type="radio" value="1" data-ele-hd="#DesAleMed"/><span class="checkmark"></span>
+                              <input id="FlagAleMed" name="FlagAleMed" data-aka="Especificar si es alergico a algún medicamento" type="radio" value="1" data-ele-hd="#DesAleMed"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -604,14 +605,14 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input id="DesAleMed" name="DesAleMed" class="form-control hide" type="text"/>
+                        <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control hide" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagOperacion" name="FlagOperacion" type="radio" value="1" data-ele-hd="#DesOperacion"/><span class="checkmark"></span>
+                              <input id="FlagOperacion" name="FlagOperacion" data-aka="Especificar si se ha sometido a operaciones quirúrgicas recientemente" type="radio" value="1" data-ele-hd="#DesOperacion"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -622,14 +623,14 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input name="DesOperacion" id="DesOperacion" class="form-control hide" placeholder="Especificar la o las operaciones" type="text"/>
+                        <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control hide" placeholder="Especificar la o las operaciones" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Tienes alguna hernia discal o padeces otra condición especial en la columna?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                              <input id="FlagHerDisOrCondCol" name="FlagHerDisOrCondCol" type="radio" value="1" data-ele-hd="#DesHerDisOrCondCol"/><span class="checkmark"></span>
+                              <input id="FlagHerDisOrCondCol" name="FlagHerDisOrCondCol" data-aka="Especificar si tiene una hernia discal o problema en la columna" type="radio" value="1" data-ele-hd="#DesHerDisOrCondCol"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -640,14 +641,14 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input class="form-control hide" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" placeholder="Escribir una breve descripción" type="text"/>
+                        <input class="form-control hide" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>Padeces de:<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Artritis
-                              <input name="DesPadVarios" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -677,21 +678,21 @@
                         <p class="title-form-group">Historial deportivo</p>
                         <div class="form-group">
                           <label>Infancia / Juventud<span class="obligatorio">*</span></label>
-                          <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" class="form-control"></textarea>
+                          <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                           <label>Actual (desde cuándo, periocidad, tiempo y actividades que realizas)<span class="obligatorio">*</span></label>
-                          <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" class="form-control"></textarea>
+                          <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control"></textarea>
                         </div>
                       </li>
                       <li>
                         <div class="form-group">
                           <label>Queremos conocer tus frecuencias cardiacas:<br/>Frecuencia cardiaca basal:<span class="obligatorio">*</span></label>
-                          <input id="FrecuenciaCardiaca" name="FrecuenciaCardiaca" class="form-control" type="number"/>
+                          <input id="FrecuenciaCardiaca" name="FrecuenciaCardiaca" data-aka="Frecuencia cardíaca basal" class="form-control" type="number"/>
                         </div>
                         <div class="form-group">
                           <label>Frecuencia cardiaca máxima:<span class="obligatorio">*</span></label>
-                          <input id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" class="form-control" type="number"/>
+                          <input id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" data-aka="Frecuencia cardíaca máxima" class="form-control" type="number"/>
                         </div>
                       </li>
                       <li class="range-height">
@@ -709,7 +710,7 @@
                             <ul class="checks">
                               <li>
                                 <div class="chk-content">Fuerza
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
+                                  <input name="Mejoras" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
                                 </div>
                               </li>
                               <li>
@@ -774,7 +775,7 @@
                 </div>
               </div>
             </div>
-            <div class="row ficha-03 fade-ficha">
+            <div class="row ficha-03 fade-ficha inpts-3">
               <div class="col-md-12">
                 <p class="desc">Ya falta poco para terminar</p>
               </div>
@@ -1390,19 +1391,19 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                     <li>
                       <div class="form-group">
                         <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
-                        <input id="TiempoUnKilometro" name="TiempoUnKilometro" class="form-control" type="time" value="00:00" step="1"/>
+                        <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="time" value="00:00" step="1"/>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
                         <label>Y tu kilometraje promedio semanal ¿cuál es?<span class="obligatorio">*</span></label>
-                        <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" class="form-control" type="number"/>
+                        <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" data-aka="Kilometraje promedio semanal" class="form-control" type="number"/>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
                         <label>¿Cuántos días corres a la semana?<span class="obligatorio">*</span></label>
-                        <select id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" class="form-control">
+                        <select id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" data-aka="Seleccionar días a la semana que corres" class="form-control">
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -1410,6 +1411,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                           <option value="5">5</option>
                           <option value="6">6</option>
                           <option value="7">7</option>
+                          <option value="8">8</option>
                         </select>
                       </div>
                     </li>
@@ -1419,7 +1421,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input id="FlagCalentamiento" name="FlagCalentamiento" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input id="FlagCalentamiento" name="FlagCalentamiento" data-aka="Especificar si realiza calentamientos" type="radio" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1436,7 +1438,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input id="FlagEstiramiento" name="FlagEstiramiento" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input id="FlagEstiramiento" name="FlagEstiramiento" data-aka="Especificar si realiza estiramientos" type="radio" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1453,7 +1455,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Punta
-                              <input name="DesgasteZapatilla" value="Punta" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" value="Punta" type="checkbox" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1493,7 +1495,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Asfalto
-                              <input name="DesTerPredom" value="Asfalto" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="Asfalto" type="checkbox" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1532,7 +1534,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                     <li class="col-md-6">
                       <div class="form-group">
                         <label>Cuáles son tus objetivos personales<span class="obligatorio">*</span></label>
-                        <textarea id="DesObjetivos" name="DesObjetivos" class="form-group full"></textarea>
+                        <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-group full"></textarea>
                       </div>
                     </li>
                     <li class="col-md-6 pad-0">
@@ -1646,63 +1648,63 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_1.jpg}+'?'+${version}"/>
                               <div class="chk-content">Pulsómetro
-                                <input type="checkbox" value="1"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" data-aka="Elegir elementos fitness con los que cuenta" value="1"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_2.png}+'?'+${version}"/>
                               <div class="chk-content">Gimnasio
-                                <input type="checkbox" value="2"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="2"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_3.jpg}+'?'+${version}"/>
                               <div class="chk-content">Ligas
-                                <input type="checkbox" value="3"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="3"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_4.jpg}+'?'+${version}"/>
                               <div class="chk-content">Banda elástica
-                                <input type="checkbox" value="4"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="4"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_5.jpg}+'?'+${version}"/>
                               <div class="chk-content">Bicicleta de spinning
-                                <input type="checkbox" value="5"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="5"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_6.jpg}+'?'+${version}"/>
                               <div class="chk-content">Escalera coordinativa
-                                <input type="checkbox" value="6"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="6"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_7.jpg}+'?'+${version}"/>
                               <div class="chk-content">Pelotas de equilibrio
-                                <input type="checkbox" value="7"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="7"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_8.jpg}+'?'+${version}"/>
                               <div class="chk-content">Mancuernas
-                                <input type="checkbox" value="8"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="8"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                               <div class="chk-content">Ninguna de las anteriores
-                                <input type="checkbox" value="9"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="9"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
@@ -1715,7 +1717,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Por recomendación
-                              <input name="ViaConexion" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1819,6 +1821,7 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
     <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
     <script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
     <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script th:inline="javascript">
       const stUbicacion = document.getElementById('stUbicacion');
@@ -1879,8 +1882,17 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
 
       function sendMainForm(e){
         e.preventDefault();//To avoid form sended automatically
-        if($(mainFrm).valid()){
+        /*if($(mainFrm).valid()){
           sendForm();
+        }else{
+          const checkList = validationByNumSheet(3);
+          smallBoxAlertValidation(checkList.inputs);
+        }*/
+        const checkList = validationByNumSheet(3);
+        if(checkList.inputs.length == 0){
+          sendForm();
+        }else{
+          smallBoxAlertValidation(checkList.inputs);
         }
       }
 
@@ -1977,8 +1989,10 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
               let msgError = "";
               setTimeout(() => {
               const eleMsgError = document.querySelector(`#${element.name}-error`);
-                msgError = eleMsgError.textContent;
-                eleMsgError.remove();
+                if(eleMsgError != undefined){
+                  msgError = eleMsgError.textContent;
+                  eleMsgError.remove();
+                }
               }, 100);
               const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
               setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
@@ -1989,10 +2003,9 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
           },
           unhighlight: function (element) {
             if(element.type === 'radio' || element.type==='checkbox'){
-              console.log(element);
               const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
               parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-            } else{
+            } else {
               $(element).removeClass("state-error").addClass('state-success');
               $(element).addClass('valid');
             }
@@ -2007,7 +2020,13 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
               required: true,
               maxlength: function(e){return Number(e.getAttribute('maxlength'))}
             },
+            TipoDocumentoId:{
+              required: true
+            },
             FechaNacimiento: {
+              required: true,
+            },
+            MomDolor:{
               required: true,
             },
             Dep:{
@@ -2022,7 +2041,10 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
             Sexo: {
               required: true,
               number: true,
-              min: 4
+              min: 1
+            },
+            ItemsFitness:{
+              required: true
             },
             MomDolorIni:{
               required: true
@@ -2033,10 +2055,17 @@ l-3 79 -39 0 c-38 0 -39 1 -39 35 0 34 1 35 40 35 l40 0 0 40 c0 39 1 40 34
             FlagFumador: {
               required: true
             },
-            Mejoras: {
+            DesFumador: {
+              required: function(){
+                if($('#FlagFumador').is(':checked'))
+                  return true;
+                return false;
+              }
+            },
+            FlagAntFamInfOrHiper:{
               required: true
             },
-            MusculoSensible: {
+            Mejoras: {
               required: true
             },
             ViaConexion: {

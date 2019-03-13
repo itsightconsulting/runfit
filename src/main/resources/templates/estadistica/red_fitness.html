@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="row" id="view_list" style="background: url(/img/fondo_graphs.png);padding: 20px">
-                    <h1 class="text-center" style="padding-bottom: 25px">% DISTRIBUCIÓN DEL MERCADO POR LOCALIZACIÓN</h1>
+                    <h1 class="text-center" style="padding-bottom: 25px; color:white;font-weight: bold;">% DISTRIBUCIÓN DEL MERCADO POR LOCALIZACIÓN</h1>
                     <div class="col col-sm-12" style="padding-bottom: 20px">
                         <div class="col-sm-6 text-center">
                             <a href="#" style="margin-right: 55px">Regional</a>
@@ -132,25 +132,23 @@
                     </div>
                 </div>
                 <hr/>
-                <div class="row">
-                    <h1 class="text-center" style="padding-bottom: 25px">VENTAS DE SERVICIOS POR TEMPORADA</h1>
+                <div class="row" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'">
+                    <h1 class="text-center" style="padding-bottom: 25px; color:white;">VENTAS DE SERVICIOS POR TEMPORADA</h1>
                     <div class="col col-sm-12" style="padding-bottom: 20px">
                         <div class="col-sm-6 text-left">
-                            <a href="#" style="margin-right: 35px">2016</a>
-                            <a href="#" style="margin-right: 35px">2017</a>
                             <a href="#" style="margin-right: 35px">2018</a>
                             <a href="#" style="border-bottom: 4px solid #73f194">2019</a>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <canvas id="GraficoTemporada" width="1000px" height="350" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'"></canvas>
+                        <canvas id="GraficoTemporada" width="1000px" height="350"></canvas>
                     </div>
                 </div>
                 <hr/>
-                <div class="row">
-                    <h1 class="text-center" style="padding-bottom: 25px">% CANALES DE VENTAS MÁS USADOS</h1>
+                <div class="row" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'">
+                    <h1 class="text-center" style="padding-bottom: 25px; color:white;">% CANALES DE VENTAS MÁS USADOS</h1>
                     <div class="col-md-12">
-                        <canvas id="GraficoCanalesUsados" width="1000px" height="350" th:style="'background:url(' + @{/img/fondo_graphs.png} + ');'"></canvas>
+                        <canvas id="GraficoCanalesUsados" width="1000px" height="350"></canvas>
                     </div>
                 </div>
             </section>
@@ -183,7 +181,7 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    $yelmo = {};
+    Chart.defaults.global.legend.labels.usePointStyle = true;
 
     $(function () {
 
@@ -264,15 +262,29 @@
                     yAxes: [{
                         ticks: {
                             min: 0,
+                        },
+                        gridLines: {
+                            display:false
                         }
                     }],
                     xAxes: [{
-                        barThickness : 20
+                        barThickness : 20,
+                        gridLines: {
+                            display:false
+                        }
                     }]
                 },
                 hover:{
                     mode: 'nearest',
                     intersect: true
+                },
+                legend: {
+                    display: true,
+                    position: 'left',
+                    labels: {
+                        fontColor: 'white',
+                        usePointStyle: true,
+                    }
                 }
             }
         });
@@ -446,14 +458,21 @@
             type: 'horizontalBar',
             data: data,
             options: {
+                barValueSpacing: 20,
                 scales: {
                     xAxes: [{
                         ticks: {
                             min: 0
-                        }
+                        },
+                        gridLines: {
+                            display:false
+                        },
                     }],
                     yAxes: [{
-                        barThickness : 20
+                        barThickness : 15,
+                        gridLines: {
+                            display:false
+                        },
                     }]
                 },
                 hover: {
@@ -462,6 +481,13 @@
                 },
                 tooltips: {
                     mode: 'nearest'
+                },
+                legend:{
+                    position: 'bottom',
+                    labels:{
+                        fontColor: 'white',
+                        padding: 15
+                    }
                 }
 
             }

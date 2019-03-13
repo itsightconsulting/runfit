@@ -130,9 +130,10 @@ function tabColaboradores() {
         $(this).find('img').attr('src', _ctx+'img/public/' + data + '.png')
     })
 }
+
 function next_step(sheetNumber) {
-    const success = validationByNumSheet(sheetNumber);
-    if(success){
+    const checkList = validationByNumSheet(sheetNumber);
+    if(checkList.isValid){
         if ($(".ficha-01").hasClass("active")) {
             $(".ficha-01").removeClass("active")
             $('.step-01').removeClass("active")
@@ -140,39 +141,65 @@ function next_step(sheetNumber) {
             $('.step-02').addClass("active")
             $("body" ).scrollTop( 0 );
             time_line();
-        } else if ($(".ficha-02").hasClass("active"))  {
+        } else if ($(".ficha-02").hasClass("active")) {
             $(".ficha-02").removeClass("active")
             $('.step-02').removeClass("active")
             $(".ficha-03").addClass("active")
             $('.step-03').addClass("active")
             $("body" ).scrollTop( 0 );
             time_line();
-        } else {
-
         }
-    }else
-        alert("Aún no has rellenado todos los campos de esta hoja. Completalos y vuelve a intentar avanzar");
-
-
+    }else{
+        smallBoxAlertValidation(checkList.inputs);
+    }
 }
 
+function smallBoxAlertValidation(inputsNotPassed){
+    const strCamps = inputsNotPassed.map(v=>`<i class="fa fa-dot-circle-o fa-fw"></i>
+                                            ${v.getAttribute('data-aka')}<br>`).join('');
+    $.smallBox(
+        {
+            color: '#cc4d4d',
+            content: `Aún tiene pendiente completar los siguientes campos:<br>
+                      <span style="padding-bottom: 3px"></span>
+                      ${strCamps}`,
+            timeout: 8000,
+            icon: "fa fa-exclamation-circle"
+        }
+    )
+}
+d  = [];
 function validationByNumSheet(numSheet){
     const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
-    const inputs = sheetContainer.querySelectorAll(`input.form-control`);
-    const selects = sheetContainer.querySelectorAll(`select.form-control`);
-    const alls = Array.from(inputs).concat(Array.from(selects));
+    const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));
+    const selects = Array.from(sheetContainer.querySelectorAll(`select.form-control`));
+    const rdsButtons = Array.from(sheetContainer.querySelectorAll(`input[type="radio"]`));
+    const fRdsButtons = Array.from(
+                                new Set(rdsButtons.map(v=>v.name))
+                                ).map(v=>document.querySelector(`input[name="${v}"]`));
+
+    const chkbuttons = Array.from(sheetContainer.querySelectorAll(`input[type="checkbox"]`));
+    const fChkbuttons = Array.from(
+                                new Set(chkbuttons.map(v=>v.name))
+                                ).map(v=>document.querySelector(`input[name="${v}"]`));
+    const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons);
     let continuosValidator = true;
+    const inptsNoPassed = [];
     alls.forEach(v=>{
-        !$("#frmRegistro").validate().element(v) ? continuosValidator = false : "";
+        const isValid = $("#frmRegistro").validate().element(v);
+        if(!isValid){
+            continuosValidator = false;
+            inptsNoPassed.push(v);
+        }
     });
-    return continuosValidator;
-    //$("#frmRegistro").validate().element($('input[name="Sexo"]'));
+    return {isValid: continuosValidator, inputs: inptsNoPassed};
 }
 
-next_step_cs = function (i){
+function next_step_cs(i){
     const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
-    const success = activeNumSheet == 3 || activeNumSheet > i ? true : validationByNumSheet(activeNumSheet);
-    if(success){
+
+    const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet);
+    if(checkList.isValid){
         const all = document.querySelectorAll('.fade-ficha');
         const sels = document.querySelectorAll('.step');
         all.forEach((v,ii)=>{
@@ -182,9 +209,9 @@ next_step_cs = function (i){
         all[i-1].classList.add('active');
         sels[i-1].classList.add('active');
     }
-    else
-        alert("Aún no has rellenado todos los campos de esta hoja. Completalos y vuelve a intentar avanzar");
-
+    else {
+        smallBoxAlertValidation(checkList.inputs);
+    }
 }
 
 function openMenuMobile() {

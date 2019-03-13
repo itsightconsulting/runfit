@@ -1658,16 +1658,18 @@ MCGrafico = (function(){
                     labels: ['13-17','18-24','25-34','35-44','54-45','55-64','65+'],
                     datasets: [{
                         data: [5,7,7,12,16,28,25],
-                        backgroundColor: ['rgba(168, 250, 01, 0.9)', 'rgba(168, 250, 01, 0.8)', 'rgba(168, 250, 01, 0.7)', 'rgba(168, 250, 01, 0.6)', 'rgba(168, 250, 01, 0.5)', 'rgba(168, 250, 01, 0.4)', 'rgba(168, 250, 01, 0.3)'],
-                        borderColor: 'transparent',
+                        backgroundColor: ['#2d142c', '#8fb9a8', '#765d69', '#fcbb6d', '#2d6072', '#efca58'],
+                        borderColor: 'white',
+                        borderWidth: 0.4,
                     }],
                 },
                 options: {
+                    segmentShowStroke: false,
                     title: {
                         display: true,
                         text: '👩 Mujeres 43%',
                         fontColor: 'white',
-                        fontSize: 16
+                        fontSize: 15
                     },
                     responsive: false,
                     legend: {
@@ -1684,8 +1686,9 @@ MCGrafico = (function(){
                     labels: ['13-17','18-24','25-34','35-44','54-45','55-64','65+'],
                     datasets: [{
                         data: [5,7,7,12,16,28,25],
-                        backgroundColor: ['rgba(168, 250, 01, 0.9)', 'rgba(168, 250, 01, 0.8)', 'rgba(168, 250, 01, 0.7)', 'rgba(168, 250, 01, 0.6)', 'rgba(168, 250, 01, 0.5)', 'rgba(168, 250, 01, 0.4)', 'rgba(168, 250, 01, 0.3)'],
-                        borderColor: 'transparent',
+                        backgroundColor: ['#2d142c', '#8fb9a8', '#765d69', '#fcbb6d', '#2d6072', '#efca58'],
+                        borderColor: 'white',
+                        borderWidth: 0.4,
                     }],
                 },
                 options: {
@@ -1693,7 +1696,7 @@ MCGrafico = (function(){
                         display: true,
                         text: '👨 Hombres 57%',
                         fontColor: 'white',
-                        fontSize: 16
+                        fontSize: 15
                     },
                     responsive: false,
                     legend: {
