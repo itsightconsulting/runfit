@@ -17,7 +17,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @EntityGraph(value = "administrador.all")
     List<Administrador> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT A FROM Administrador A INNER JOIN FETCH A.tipoUsuario P JOIN FETCH A.tipoDocumento D  WHERE LOWER(CONCAT(A.apellidoPaterno,' ',A.apellidoMaterno,' ',A.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @Query("SELECT A FROM Administrador A INNER JOIN FETCH A.tipoUsuario P JOIN FETCH A.tipoDocumento D  WHERE LOWER(CONCAT(A.apellidos,' ',A.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<Administrador> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "administrador.all")

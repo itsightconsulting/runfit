@@ -39,9 +39,7 @@ public class Cliente extends AuditingEntity implements Serializable {
     @Column(nullable = false)
     private String nombres;
     @Column(nullable = false)
-    private String apellidoPaterno;
-    @Column(nullable = false)
-    private String apellidoMaterno;
+    private String apellidos;
     @Column(nullable = false)
     private String numeroDocumento;
     @Column(nullable = false)
@@ -119,17 +117,15 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno) {
+    public Cliente(String nombres, String apellidos) {
         // TODO Auto-generated constructor stub
         this.nombres = nombres;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
+        this.apellidos = apellidos;
     }
-    public Cliente(String nombres, String apellidoPaterno, String apellidoMaterno, String correo, String movil, String username,
+    public Cliente(String nombres, String apellidos, String correo, String movil, String username,
                    String numeroDocumento, int tipoDocumentId, int tipoUsuarioId, boolean flagActivo) {
         this.nombres = nombres;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
+        this.apellidos = apellidos;
         this.correo = correo;
         this.movil = movil;
         this.username = username;
@@ -161,6 +157,6 @@ public class Cliente extends AuditingEntity implements Serializable {
     }
 
     public String getNombreCompleto() {
-        return this.apellidoPaterno + " " + this.apellidoMaterno + ", " + this.nombres;
+        return this.apellidos + ", " + this.nombres;
     }
 }

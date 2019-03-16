@@ -21,7 +21,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @EntityGraph(value = "cliente.all")
     List<Cliente> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT U FROM Cliente U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE LOWER(CONCAT(U.apellidoPaterno,' ',U.apellidoMaterno,' ',U.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @Query("SELECT U FROM Cliente U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE LOWER(CONCAT(U.apellidos,' ',U.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<Cliente> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "cliente.all")
@@ -41,6 +41,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @Query(value = "SELECT U FROM Cliente U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE U.username = ?1")
     Cliente findByUsername(String username);
 
-    @Query(value = "SELECT CONCAT(C.nombres, ' ', C.apellidoPaterno, ' ', C.apellidoMaterno) FROM Cliente C WHERE C.id = ?1")
+    @Query(value = "SELECT CONCAT(C.nombres, ' ', C.apellidos) FROM Cliente C WHERE C.id = ?1")
     String findNombreCompletoById(int id);
 }

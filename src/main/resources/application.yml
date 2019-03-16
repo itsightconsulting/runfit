@@ -1,9 +1,9 @@
 spring:
   profiles:
-    active: herokudev
+    active: development
   jpa:
     hibernate:
-        ddl-auto: none
+        ddl-auto: create
         naming:
           strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:

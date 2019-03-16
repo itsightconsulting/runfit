@@ -155,6 +155,7 @@ function next_step(sheetNumber) {
 }
 
 function smallBoxAlertValidation(inputsNotPassed){
+    const tout = (2000*(inputsNotPassed.length)) + 4000;
     const strCamps = inputsNotPassed.map(v=>`<i class="fa fa-dot-circle-o fa-fw"></i>
                                             ${v.getAttribute('data-aka')}<br>`).join('');
     $.smallBox(
@@ -162,8 +163,8 @@ function smallBoxAlertValidation(inputsNotPassed){
             color: '#cc4d4d',
             content: `Aún tiene pendiente completar los siguientes campos:<br>
                       <span style="padding-bottom: 3px"></span>
-                      ${strCamps}`,
-            timeout: 8000,
+                      <p style="height: 80px; overflow-y: auto;">${strCamps}</p>`,
+            timeout: tout,
             icon: "fa fa-exclamation-circle"
         }
     )
@@ -172,6 +173,8 @@ d  = [];
 function validationByNumSheet(numSheet){
     const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
     const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));
+    const rgsInputs = Array.from(sheetContainer.querySelectorAll(`input[type="range"]`));
+    const txtAreas = Array.from(sheetContainer.querySelectorAll(`textarea.form-control`));
     const selects = Array.from(sheetContainer.querySelectorAll(`select.form-control`));
     const rdsButtons = Array.from(sheetContainer.querySelectorAll(`input[type="radio"]`));
     const fRdsButtons = Array.from(
@@ -182,7 +185,7 @@ function validationByNumSheet(numSheet){
     const fChkbuttons = Array.from(
                                 new Set(chkbuttons.map(v=>v.name))
                                 ).map(v=>document.querySelector(`input[name="${v}"]`));
-    const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons);
+    const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons).concat(txtAreas).concat(rgsInputs);
     let continuosValidator = true;
     const inptsNoPassed = [];
     alls.forEach(v=>{

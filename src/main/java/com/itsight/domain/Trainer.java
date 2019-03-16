@@ -39,9 +39,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Column(nullable = false)
     private String nombres;
     @Column(nullable = false)
-    private String apellidoPaterno;
-    @Column(nullable = false)
-    private String apellidoMaterno;
+    private String apellidos;
     @Column(nullable = false)
     private String numeroDocumento;
     @Column(nullable = false)
@@ -105,12 +103,11 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public Trainer(String codigoTrainer, String nombres, String apellidoPaterno, String apellidoMaterno) {
+    public Trainer(String codigoTrainer, String nombres, String apellidos) {
         // TODO Auto-generated constructor stub
         this.codigoTrainer = codigoTrainer;
         this.nombres = nombres;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
+        this.apellidos = apellidos;
     }
 
     public Trainer(int id, String codigoTrainer) {
@@ -119,11 +116,10 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.codigoTrainer = codigoTrainer;
     }
 
-    public Trainer(String nombres, String apellidoPaterno, String apellidoMaterno, String correo, String telefonoFijo, String movil, String username,
+    public Trainer(String nombres, String apellidos, String correo, String telefonoFijo, String movil, String username,
                 String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, String codigoTrainer, boolean flagActivo) {
         this.nombres = nombres;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
+        this.apellidos = apellidos;
         this.correo = correo;
         this.telefonoFijo = telefonoFijo;
         this.movil = movil;
@@ -144,6 +140,6 @@ public class Trainer extends AuditingEntity implements Serializable {
     }
 
     public String getNombreCompleto() {
-        return this.apellidoPaterno + " " + this.apellidoMaterno + ", " + this.nombres;
+        return this.apellidos + ", " + this.nombres;
     }
 }

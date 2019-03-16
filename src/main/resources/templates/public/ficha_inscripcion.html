@@ -24,11 +24,11 @@
         display: none !important;
       }
 
-      input.state-success, select.state-success{
+      input.state-success, select.state-success, textarea.state-success{
         border: 1px solid #a8fa00 !important;
       }
 
-      input.state-error, select.state-error{
+      input.state-error, select.state-error, textarea.state-error{
         border: 1px solid #b7010d !important;
       }
 
@@ -446,7 +446,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input id="FlagHiperTensionArt" name="FlagHiperTensionArt" type="radio"/><span class="checkmark"></span>
+                              <input id="FlagHiperTensionArt" name="FlagHiperTensionArt" data-aka="Padece de hipertensión arterial" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -492,6 +492,7 @@
                       </div>
                       <div class="form-group">
                         <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hide">
+                          <option value="">Seleccione</option>
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
                           <option value="3">Abuelo</option>
@@ -532,6 +533,7 @@
                       </div>
                       <div class="form-group">
                         <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hide">
+                          <option value="">Seleccione</option>
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
                           <option value="3">Abuelo</option>
@@ -564,7 +566,9 @@
                         <label>Tu alimentación es:<span class="obligatorio">*</span></label>
                         <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control">
                           <option value="1">Sana</option>
-                          <option value="2">Poco sana</option>
+                          <option value="2">Promedio</option>
+                          <option value="3">Mala</option>
+                          <option value="3">Pésima</option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -683,7 +687,7 @@
                       <li>
                         <div class="form-group more-inputs">
                           <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                          <input name="" class="form-control inp-cont-emer" placeholder="Ejem: (51) 987654321 / Julio" type="text"/>
+                          <input id="ContactoEmergencia" name="ContactoEmergencia" data-aka="Completar contacto de emergencia" class="form-control inp-cont-emer" placeholder="Ejem: (51) 987654321 / Julio" type="text"/>
                           <a href="#" onclick="javascript:agregarInputDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="padding-right: 5px;"></i></a>
                         </div>
                         <p class="title-form-group">Historial deportivo</p>
@@ -711,7 +715,7 @@
                           <label>¿En que forma estás?<br/>¡Dinos la verdad eh!<span class="obligatorio">*</span></label>
                         </div>
                         <div class="rango bg-slide">
-                          <input id="FormaInicial" name="FormaInicial" type="range" value="0"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
+                          <input id="FormaInicial" name="FormaInicial" type="range" value="0" data-aka="Seleccione que tan en forma se encuentra"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
                         </div>
                       </li>
                       <li>
@@ -786,7 +790,7 @@
                 </div>
               </div>
             </div>
-            <div class="row ficha-03 fade-ficha active inpts-3">
+            <div class="row ficha-03 fade-ficha inpts-3 active">
               <div class="col-md-12">
                 <p class="desc">Ya falta poco para terminar</p>
               </div>
@@ -1075,7 +1079,7 @@
                           <option value="5">5</option>
                           <option value="6">6</option>
                           <option value="7">7</option>
-                          <option value="8">8</option>
+                          <option value="8">0</option>
                         </select>
                       </div>
                     </li>
@@ -1198,7 +1202,7 @@
                     <li class="col-md-6">
                       <div class="form-group">
                         <label>Cuáles son tus objetivos personales<span class="obligatorio">*</span></label>
-                        <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-group full"></textarea>
+                        <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-control form-group full"></textarea>
                       </div>
                     </li>
                     <li class="col-md-6 pad-0">
@@ -1258,7 +1262,7 @@
                                       </select>
                                     </td>
                                     <td colspan="2">
-                                      <input class="form-control" type="text" style="max-width: 100% !important;"/>
+                                      <input class="form-control" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
                                       <input class="form-control" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
@@ -1368,7 +1372,7 @@
                           <li>
                             <div class="item"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                               <div class="chk-content">Ninguna de las anteriores
-                                <input name="ItemsFitness" type="checkbox" value="9"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="9" checked="checked"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
@@ -1741,35 +1745,71 @@
               required: true,
               maxlength: function(e){return Number(e.getAttribute('maxlength'))}
             },
-            TipoDocumentoId:{
-              required: true
-            },
             FechaNacimiento: {
               required: true,
             },
-            MomDolor:{
+            TipoDocumentoId:{
+              required: true
+            },
+            NumeroDocumento: {
+              required: true,
+            },
+            Correo: {
+              required: true,
+            },
+            Movil: {
+              required: true,
+            },
+            PaisId:{
               required: true,
             },
             Dep:{
-              required: true,
+              required: true
             },
             Pro:{
-              required: true,
+              required: true
             },
             Dis:{
-              required: true,
+              required: true
+            },
+            EstadoCivil:{
+              required: true
             },
             Sexo: {
               required: true,
               number: true,
               min: 1
             },
-            ItemsFitness:{
+            Peso:{
               required: true
             },
-            MomDolorIni:{
+            Talla:{
               required: true
-              },
+            },
+            Imc:{
+              required: true
+            },
+            FlagPadeceDolor:{
+              required: true
+            },
+            DescripcionDolor: {
+
+            },
+            MomDolor: {
+
+            },
+            MomDolorIni: {
+
+            },
+            DesLesion: {
+
+            },
+            RecomMedica:{
+
+            },
+            FlagEmbarazo: {
+              required: true
+            },
             FlagHiperTensionArt: {
               required: true
             },
@@ -1777,25 +1817,116 @@
               required: true
             },
             DesFumador: {
-              required: function(){
-                if($('#FlagFumador').is(':checked'))
-                  return true;
-                return false;
-              }
+              required: ()=>{return cxRq('#FlagFumador')}
             },
             FlagAntFamInfOrHiper:{
               required: true
             },
+            FamInfOrHiper: {
+              required: ()=>{return cxRq('#FlagAntFamInfOrHiper')}
+            },
+            FlagResInsulina: {
+              required: true
+            },
+            FlagAntFamDiabetes:{
+              required: true
+            },
+            FamDiabetico: {
+              required: ()=>{return cxRq('#FlagAntFamDiabetes')}
+            },
+            FlagSobrepeso:{
+              required: true
+            },
+            CatSobrepeso: {
+              required: ()=>{return cxRq('#FlagSobrepeso')}
+            },
+            CatAlimentacion: {
+              required: true
+            },
+            NivelEstres:{
+              required: true
+            },
+            FlagEnfermedad:{
+              required: true
+            },
+            DesEnfermedad: {
+              required: ()=>{return cxRq('#FlagEnfermedad')}
+            },
+            FlagAleMed:{
+              required: true
+            },
+            DesAleMed: {
+              required: ()=>{return cxRq('#FlagAleMed')}
+            },
+            FlagOperacion:{
+              required: true
+            },
+            DesOperacion: {
+              required: ()=>{return cxRq('#FlagOperacion')}
+            },
+            FlagHerDisOrCondCol:{
+              required: true
+            },
+            DesHerDisOrCondCol: {
+              required: ()=>{return cxRq('#FlagHerDisOrCondCol')}
+            },
+            DesPadVarios: {
+              required: true
+            },
+            ContactoEmergencia: {
+              required: true
+            },
+            HistorialDeportivoAnt: {
+              required: true
+            },
+            HistorialDeportivoAct: {
+              required: true
+            },
+            FrecuenciaCardiaca: {
+              required: true
+            },
+            FrecuenciaCardiacaMaxima: {
+              required: true
+            },
+            FormaInicial: {
+              required: true,
+              number: true,
+              min: 0
+            },
             Mejoras: {
               required: true
             },
-            ViaConexion: {
+            TiempoUnKilometro: {
               required: true
             },
             KilometrajePromedioSemana: {
               required: true
             },
-            FrecuenciaCardiaca:{
+            DiasSemanaCorriendo: {
+              required: true
+            },
+            FlagCalentamiento: {
+              required: true
+            },
+            FlagEstiramiento: {
+              required: true
+            },
+            DesgasteZapatilla: {
+              required: true
+            },
+            DesTerPredom: {
+              required: true
+            },
+            DesObjetivos: {
+              required: true
+            },
+            DesComp: {
+              required: true
+            },
+            ItemsFitness: {
+              required: true
+            },
+            ViaConexion: {
               required: true
             }
           },
@@ -1837,6 +1968,10 @@
             }
           }
         });
+      }
+
+      function cxRq(id){
+        return $(id).is(':checked');
       }
 
     </script>

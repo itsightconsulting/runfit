@@ -957,7 +957,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer(
-                "Alejandro "+ i, "Gonzales", "Prada", correoUsuario, "543213"+i,
+                "Alejandro "+ i, "Gonzales Prada", correoUsuario, "543213"+i,
                  "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuarioEnum.ENTRENADOR.ordinal(), "T51C"+i,true);
             List<com.itsight.domain.jsonb.Rol> rolesJsonB = new ArrayList<>();
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(1, role1.getRole()));
@@ -1021,7 +1021,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             lstRolesCli.add(new SecurityRole("ROLE_RUNNER"));
             secCliente.setRoles(lstRolesCli);
             Cliente cli = new Cliente(
-                    "Jorge "+ i, "Almendariz", "Molina", correoUsuario,
+                    "Jorge "+ i, "Almendariz Molina", correoUsuario,
                     "5198765432"+i , correoUsuario, "4444444"+i, 1, Enums.TipoUsuarioEnum.CLIENTE.ordinal(),true);
             List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
             lstRolCli.add(new com.itsight.domain.jsonb.Rol(3, "ROLE_RUNNER"));

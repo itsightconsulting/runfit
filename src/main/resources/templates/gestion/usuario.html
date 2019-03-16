@@ -149,17 +149,8 @@
                                                 <section class="col col-6">
                                                     <label class="label">Apellido Paterno: </label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
-                                                        <input id="ApellidoPaterno" name="ApellidoPaterno" type="text"
-                                                               placeholder="Apellido paterno" class="" maxlength="24"
-                                                               autocomplete="off"/>
-                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                    </label>
-                                                </section>
-                                                <section class="col col-6">
-                                                    <label class="label">Apellido Materno: </label>
-                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
-                                                        <input id="ApellidoMaterno" name="ApellidoMaterno" type="text"
-                                                               placeholder="Apellido materno" class="" maxlength="24"
+                                                        <input id="Apellidos" name="Apellidos" type="text"
+                                                               placeholder="Apellidos" class="" maxlength="24"
                                                                autocomplete="off"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     </label>
@@ -536,8 +527,7 @@
                     $("#Movil").val(data.movil.split(" ")[1]);
                     $("#CodPais").val(data.movil.split(" ")[0]);
                     $("#Username").val(data.username);
-                    $("#ApellidoPaterno").val(data.apellidoPaterno);
-                    $("#ApellidoMaterno").val(data.apellidoMaterno);
+                    $("#Apellidos").val(data.apellidos);
                     $("#NumeroDocumento").val(data.numeroDocumento);
                     $("#TelefonoFijo").val(data.telefonoFijo);
                     $("#Nombres").val(data.nombres);
@@ -809,13 +799,9 @@
                     required: true,
                     maxlength: $("#Nombres").prop("maxlength"),
                 },
-                ApellidoPaterno: {
+                Apellidos: {
                     required: true,
-                    maxlength: $("#ApellidoPaterno").prop("maxlength"),
-                },
-                ApellidoMaterno: {
-                    required: true,
-                    maxlength: $("#ApellidoMaterno").prop("maxlength"),
+                    maxlength: $("#Apellidos").prop("maxlength"),
                 },
                 Correo: {
                     required: true,
@@ -869,11 +855,7 @@
                     required: "El campo es obligatorio",
                     maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
                 },
-                ApellidoPaterno: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
-                ApellidoMaterno: {
+                Apellidos: {
                     required: "El campo es obligatorio",
                     maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
                 },

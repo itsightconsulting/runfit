@@ -34,13 +34,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     private SecurityRoleRepository securityRoleRepository;
 
-    private EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository;
-
     private RolService rolService;
 
     private EmailService emailService;
-
-    private PorcentajesKilometrajeService porcentajesKilometrajeService;
 
     @Autowired
     private ClienteService clienteService;
@@ -52,18 +48,14 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             ClienteRepository repository,
             SecurityUserRepository securityUserRepository,
             SecurityRoleRepository securityRoleRepository,
-            EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository,
             RolService rolService,
-            EmailService emailService,
-            PorcentajesKilometrajeService porcentajesKilometrajeService) {
+            EmailService emailService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
         this.securityUserRepository = securityUserRepository;
-        this.especificacionSubCategoriaRepository = especificacionSubCategoriaRepository;
         this.rolService = rolService;
         this.emailService = emailService;
-        this.porcentajesKilometrajeService = porcentajesKilometrajeService;
     }
 
     @Override
