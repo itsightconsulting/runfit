@@ -52,9 +52,9 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public void delete(int rutinaId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(rutinaId));
+        repository.delete(id);
     }
 
     @Override
@@ -63,12 +63,12 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public Rutina findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public Rutina findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public Rutina findOneWithFT(int id) {
+    public Rutina findOneWithFT(Long id) {
         return null;
     }
 
@@ -108,7 +108,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public List<Rutina> findByIdsIn(List<Integer> ids) {
+    public List<Rutina> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -128,13 +128,13 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public Rutina findLastByRedFitnessId(int id) {
-        List<Rutina> lstRutina = repository.findFirstByRedFitnessIdOrderByIdDesc(id, new PageRequest(0,1));
+    public Rutina findLastByRedFitnessId(Long redFitId) {
+        List<Rutina> lstRutina = repository.findFirstByRedFitnessIdOrderByIdDesc(redFitId, new PageRequest(0,1));
         if(lstRutina.isEmpty()){
             return new Rutina();
         }else{
@@ -143,32 +143,32 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public Rutina findOneWithOneWeekById(int id) {
+    public Rutina findOneWithOneWeekById(Long id) {
         return repository.findOneWithOneWeekById(id);
     }
 
     @Override
-    public void updateSemanaIds(int id, int[] semanaIds) {
+    public void updateSemanaIds(Long id, Long[] semanaIds) {
         repository.updateSemanaIds(id, semanaIds);
     }
 
     @Override
-    public void updateTotalSemanas(int id, int totalSemanas) {
+    public void updateTotalSemanas(Long id, int totalSemanas) {
         repository.updateTotalSemanas(id, totalSemanas);
     }
 
     @Override
-    public int obtenerRedFitnessIdById(int rutinaId) {
-        return repository.findRedFitnessIdById(rutinaId);
+    public Long obtenerRedFitnessIdById(Long id) {
+        return repository.findRedFitnessIdById(id);
     }
 
     @Override
-    public List<Rutina> getAllRutinasByUser(int id) {
+    public List<Rutina> getAllRutinasByUser(Long id) {
         return repository.findByClienteIdOrderByIdDesc(id);
     }
 
     @Override
-    public void updateAvance(int id, int indexsemana, String strdias, String avance) {
+    public void updateAvance(Long id, int indexsemana, String strdias, String avance) {
         String texto = "{\"avanceSemanas\","+(indexsemana-1)+"}";
         String textodia = "{\"actualizarAvance\"}";
         int valor = Integer.parseInt(avance);
@@ -186,7 +186,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public String registrarByCascada(RutinaDTO rutinaDto, int redFitId, int runneId) {
+    public String registrarByCascada(RutinaDTO rutinaDto, Long redFitId, Long runneId) {
         Rutina nueRutina = new Rutina();
         //Pasando del Dto al objeto
         RutinaControl rc = new RutinaControl();
@@ -203,7 +203,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         nueRutina.setTipoRutina(Enums.TipoRutina.RUNNING.get());
         ruConsolidadoService.save(new RuConsolidado(rutinaDto.getGeneral(), rutinaDto.getStats(), rutinaDto.getMejoras(), rutinaDto.getMatrizMejoraVelocidades(), rutinaDto.getMatrizMejoraCadencia(), rutinaDto.getMatrizMejoraTcs(), rutinaDto.getMatrizMejoraLonPaso(), rutinaDto.getDtGrafico(), nueRutina));
         //AFTER REGISTRO LOS IDS YA SE PUEDEN RECUPERAR
-        int[] arrSemIds = new int[nueRutina.getLstSemana().size()];
+        Long[] arrSemIds = new Long[nueRutina.getLstSemana().size()];
         for(int i=0; i<arrSemIds.length;i++){
             arrSemIds[i] = nueRutina.getLstSemana().get(i).getId();
         }
@@ -240,8 +240,8 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     public String actualizarFlagActivo(boolean flagActivo) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("edicionRutinaId"));
         if(sessionValor.isPresent()) {
-            int rutinaId = (int) sessionValor.get();
-            repository.updateFlagActivo(rutinaId, flagActivo);
+            Long id = (Long) sessionValor.get();
+            repository.updateFlagActivo(id, flagActivo);
             return Enums.ResponseCode.ACTUALIZACION.get();
         }
         return SESSION_VALUE_NOT_FOUND.get();

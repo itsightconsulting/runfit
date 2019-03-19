@@ -35,7 +35,7 @@ import java.util.List;
 public class Trainer extends AuditingEntity implements Serializable {
 
     @Id
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private String nombres;
     @Column(nullable = false)
@@ -98,7 +98,7 @@ public class Trainer extends AuditingEntity implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public Trainer(int id) {
+    public Trainer(Long id) {
         // TODO Auto-generated constructor stub
         this.id = id;
     }
@@ -110,7 +110,7 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public Trainer(int id, String codigoTrainer) {
+    public Trainer(Long id, String codigoTrainer) {
         // TODO Auto-generated constructor stub
         this.id = id;
         this.codigoTrainer = codigoTrainer;

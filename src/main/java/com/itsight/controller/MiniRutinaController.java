@@ -68,9 +68,9 @@ public class MiniRutinaController {
                     HttpSession session) {
         if(metrica.matches(Validador.velMetricaPattern)){
             //Obteniendo el diaId
-            int trainerId = Integer.parseInt(session.getAttribute("id").toString());
-            int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
-            int diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
+            Long trainerId = Long.parseLong(session.getAttribute("id").toString());
+            Long semanaId = ((Long[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
+            Long diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
             MiMiniRutina miMiniRutina = new MiMiniRutina();
             Dia qDia = diaService.findOne(diaPlantillaId);
             miMiniRutina.setElementos(qDia.getElementos());
@@ -110,7 +110,7 @@ public class MiniRutinaController {
 
     @GetMapping("/obtenerCategoriasId/byTrainer")
     public @ResponseBody List<Integer> obtenerCategoriasMiniRutina(HttpSession session){
-        int trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        Long trainerId = Long.parseLong(session.getAttribute("id").toString());
         return miniRutinaService.findAllCategoriaIdByTrainerId(trainerId);
     }
 
@@ -118,10 +118,10 @@ public class MiniRutinaController {
     public @ResponseBody
     ResponseDTO obtenerMisMiniRutinas(@PathVariable(value = "catId") String catId, HttpSession session){
         if(Utilitarios.isInteger(catId)){
-            int trainerId = Integer.parseInt(session.getAttribute("id").toString());
+            Long trainerId = Long.parseLong(session.getAttribute("id").toString());
             Optional<MiniRutina> optionalLst = Optional.ofNullable(miniRutinaService.findByCategoriaIdAndTrainerId(Integer.parseInt(catId), trainerId));
             if(optionalLst.isPresent()){
-                optionalLst.get().getMiRutinaIds().forEach(v->v.setId(0));
+                optionalLst.get().getMiRutinaIds().forEach(v->v.setId(Long.valueOf(0)));
                 return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.SUCCESS_QUERY.get()),optionalLst.get().getMiRutinaIds());
             }
         }

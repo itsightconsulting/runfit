@@ -29,18 +29,18 @@ public class RolServiceImpl extends BaseServiceImpl<RolRepository> implements Ro
     }
 
     @Override
-    public Rol findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public Rol findOne(Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public Rol findOneWithFT(int id) {
+    public Rol findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class RolServiceImpl extends BaseServiceImpl<RolRepository> implements Ro
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }

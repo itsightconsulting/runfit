@@ -88,7 +88,7 @@ public class TrainerController {
     @GetMapping(value = "/obtenerListadoPost")
     public @ResponseBody
     List<Post> listarPostsEntrenador(HttpSession session) {
-        int trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        Long trainerId = Long.parseLong(session.getAttribute("id").toString());
         return postService.findAllByTrainerId(trainerId);
     }
 }

@@ -5,6 +5,6 @@ import com.itsight.generic.BaseService;
 
 public interface RuConsolidadoService extends BaseService<RuConsolidado, Long> {
 
-    void updateMatrizMejoraVelocidades(int rutinaId, String mVz);
+    void updateMatrizMejoraVelocidades(Long rutinaId, String mVz);
 
 }

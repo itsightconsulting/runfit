@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RutinaPlantillaService extends BaseService<RutinaPlantilla, Long> {
 
-    List<RutinaPlantilla> listarPorFiltroPT(int trainerId);
+    List<RutinaPlantilla> listarPorFiltroPT(Long trainerId);
 }

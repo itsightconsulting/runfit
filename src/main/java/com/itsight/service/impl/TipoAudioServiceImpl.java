@@ -26,13 +26,13 @@ public class TipoAudioServiceImpl extends BaseServiceImpl<TipoAudioRepository> i
     }
 
     @Override
-    public void delete(int tipoAudioId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(tipoAudioId));
+        repository.delete(id);
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
     }
 
@@ -57,12 +57,12 @@ public class TipoAudioServiceImpl extends BaseServiceImpl<TipoAudioRepository> i
     }
 
     @Override
-    public TipoAudio findOne(int id) {
+    public TipoAudio findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public TipoAudio findOneWithFT(int id) {
+    public TipoAudio findOneWithFT(Integer id) {
         return null;
     }
 

@@ -45,7 +45,7 @@ public class MiniRutina implements Serializable {
         this.trainer = trainer;
     }
 
-    public void setTrainer(int trainerId){
+    public void setTrainer(Long trainerId){
         this.trainer = new Trainer(trainerId);
     }
 

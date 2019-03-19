@@ -37,7 +37,7 @@ public class SubCategoriaEjercicio implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SubCategoriaEjercicioId")
-    private int id;
+    private Integer id;
 
     @NotNull
     @Size(min = 1, max = 255)
@@ -59,7 +59,7 @@ public class SubCategoriaEjercicio implements Identifiable {
     //Estrategia para traer los campos de la ft ya que estos no se pueden serializar directamente por la estrategia @JsonBackReference/@JsonManagedReference
     @JsonSerialize
     @Transient
-    private int categoriaId;
+    private Integer categoriaId;
 
     @JsonSerialize
     @Transient
@@ -67,7 +67,7 @@ public class SubCategoriaEjercicio implements Identifiable {
 
     public SubCategoriaEjercicio() { }
 
-    public SubCategoriaEjercicio(int id) {
+    public SubCategoriaEjercicio(Integer id) {
         this.id = id;
     }
 
@@ -75,18 +75,18 @@ public class SubCategoriaEjercicio implements Identifiable {
         this.nombre = nombre;
     }
 
-    public SubCategoriaEjercicio(String nombre, int categoriaId) {
+    public SubCategoriaEjercicio(String nombre, Integer categoriaId) {
         this.nombre = nombre;
         this.categoriaEjercicio = new CategoriaEjercicio(categoriaId);
     }
 
-    public SubCategoriaEjercicio(String nombre, int categoriaId, boolean flagActivo) {
+    public SubCategoriaEjercicio(String nombre, Integer categoriaId, boolean flagActivo) {
         this.nombre = nombre;
         this.categoriaEjercicio = new CategoriaEjercicio(categoriaId);
         this.flagActivo = flagActivo;
     }
 
-    public SubCategoriaEjercicio(int id, String nombre, boolean flagActivo, int categoriaId ,String nombreCategoria) {
+    public SubCategoriaEjercicio(Integer id, String nombre, boolean flagActivo, Integer categoriaId ,String nombreCategoria) {
         this.id = id;
         this.nombre = nombre;
         this.flagActivo = flagActivo;

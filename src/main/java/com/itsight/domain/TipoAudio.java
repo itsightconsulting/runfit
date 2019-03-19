@@ -17,7 +17,7 @@ public class TipoAudio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TipoAudioId")
-    private int id;
+    private Integer id;
 
     @NotNull
     @Size(min = 1, max = 255)

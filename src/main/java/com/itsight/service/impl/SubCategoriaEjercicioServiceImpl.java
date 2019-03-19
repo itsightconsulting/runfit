@@ -35,9 +35,9 @@ public class SubCategoriaEjercicioServiceImpl extends BaseServiceImpl<SubCategor
     }
 
     @Override
-    public SubCategoriaEjercicio findOne(int subTipoVideoId) {
+    public SubCategoriaEjercicio findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(subTipoVideoId);
+        return repository.findById(id);
     }
 
     @Override
@@ -53,13 +53,13 @@ public class SubCategoriaEjercicioServiceImpl extends BaseServiceImpl<SubCategor
     }
 
     @Override
-    public void delete(int subTipoVideoId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(subTipoVideoId));
+        repository.delete(id);
     }
 
     @Override
-    public SubCategoriaEjercicio findOneWithFT(int id) {
+    public SubCategoriaEjercicio findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -143,7 +143,7 @@ public class SubCategoriaEjercicioServiceImpl extends BaseServiceImpl<SubCategor
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

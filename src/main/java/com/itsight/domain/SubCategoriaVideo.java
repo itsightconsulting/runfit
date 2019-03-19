@@ -37,7 +37,7 @@ public class SubCategoriaVideo implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SubCategoriaVideoId")
-    private int id;
+    private Integer id;
 
     @NotNull
     @Size(min = 1, max = 255)

@@ -12,7 +12,7 @@ import java.util.List;
 public interface SubCategoriaEjercicioRepository extends JpaRepository<SubCategoriaEjercicio, Integer> {
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S WHERE S.id = ?1 ORDER BY 1")
-    SubCategoriaEjercicio findById(int id);
+    SubCategoriaEjercicio findById(Integer id);
 
     @Override
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S ORDER BY 1")
@@ -35,7 +35,7 @@ public interface SubCategoriaEjercicioRepository extends JpaRepository<SubCatego
 
     @Modifying
     @Query(value = "UPDATE SubCategoriaEjercicio S SET S.flagActivo =?2 WHERE S.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Modifying
     @Query(value = "INSERT INTO bag_forest (id) VALUES(1)",nativeQuery = true)
@@ -43,11 +43,11 @@ public interface SubCategoriaEjercicioRepository extends JpaRepository<SubCatego
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S " +
             "WHERE S.categoriaEjercicio.id = ?1 ORDER BY 1")
-    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioId(int categoriaEjercicioId);
+    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioId(Integer categoriaEjercicioId);
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S " +
             "WHERE S.categoriaEjercicio.id = ?1 AND S.flagActivo = ?2 ORDER BY 1")
-    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioIdAndFlagActivoOrderById(int categoriaEjercicioId, Boolean flagActivo);
+    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioIdAndFlagActivoOrderById(Integer categoriaEjercicioId, Boolean flagActivo);
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S " +
             "WHERE LOWER(S.nombre) LIKE LOWER(CONCAT('%',?1,'%')) AND S.flagActivo = ?2 ORDER BY 1")
@@ -55,9 +55,9 @@ public interface SubCategoriaEjercicioRepository extends JpaRepository<SubCatego
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S " +
             "WHERE S.categoriaEjercicio.id = ?1 AND LOWER(S.nombre) LIKE LOWER(CONCAT('%',?2,'%')) ORDER BY 1")
-    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioIdAndNombreContainingIgnoreCaseOrderById(int categoriaEjercicioId, String comodin);
+    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioIdAndNombreContainingIgnoreCaseOrderById(Integer categoriaEjercicioId, String comodin);
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S " +
             "WHERE S.categoriaEjercicio.id = ?1 AND LOWER(S.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND S.flagActivo = ?3 ORDER BY 1")
-    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(int categoriaEjercicioId, String comodin, Boolean flagActivo);
+    List<SubCategoriaEjercicio> findAllByCategoriaEjercicioIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(Integer categoriaEjercicioId, String comodin, Boolean flagActivo);
 }

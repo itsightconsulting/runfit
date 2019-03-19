@@ -12,8 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
-
 @Controller
 @RequestMapping("/gestion/cliente-fitness")
 public class ClienteFitnessController {
@@ -48,15 +46,15 @@ public class ClienteFitnessController {
 
     @GetMapping(value = "/obtener")
     public @ResponseBody
-    ClienteFitness obtenerPorId(@RequestParam(value = "id") int clienteId) {
+    ClienteFitness obtenerPorId(@RequestParam(value = "id") Long clienteId) {
         return clienteFitnessService.findOne(clienteId);
     }
 
     //Edicion de rutinas
     @GetMapping(value = "/obtener/secundario/{runnerId}")
     public @ResponseBody
-    ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "runnerId") String runnerId, HttpSession session) {
-        int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+    ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "runnerId") String runnerId) {
+        Long runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         return clienteFitnessService.findByClienteId(runneId);
     }
 

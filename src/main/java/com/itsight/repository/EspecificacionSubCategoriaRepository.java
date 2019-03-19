@@ -37,8 +37,8 @@ public interface EspecificacionSubCategoriaRepository extends JpaRepository<Espe
     List<EspecificacionSubCategoria> findBySubCategoriaId(Integer subCategoriaEjercicioId);
 
     @Modifying
-    @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT especificacion_sub_categoria_id, :id FROM especificacion_sub_categoria order by 1", nativeQuery = true)
-    void registrarEspecificacionNuevoEntrenador(@Param("id") Integer id);
+    @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT especificacion_sub_categoria_id, :trainerId FROM especificacion_sub_categoria order by 1", nativeQuery = true)
+    void registrarEspecificacionNuevoEntrenador(@Param("trainerId") Long trainerId);
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 ORDER BY 1")

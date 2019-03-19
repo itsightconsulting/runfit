@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DiaService extends BaseService<Dia, Long> {
 
-    List<Integer> encontrarIdPorSemanaId(Long semanaId);
+    List<Long> encontrarIdPorSemanaId(Long semanaId);
 
     String actualizarFlagDescanso(int numSem, int diaIndice, boolean flagDescanso);
 

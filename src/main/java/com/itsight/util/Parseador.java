@@ -84,17 +84,17 @@ public class Parseador {
 	    return b;
 	}
 
-	public static String getEncodeHash32Id(String schema,  int id){
+	public static String getEncodeHash32Id(String schema,  Long id){
 		Hashids rfIdHash = new Hashids(schema, 32);
 		return rfIdHash.encode(id);
 	}
 
-	public static int getDecodeHash32Id(String schema,  String hash){
+	public static Long getDecodeHash32Id(String schema,  String hash){
 		Hashids rfIdHash = new Hashids(schema, 32);
-		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
+		return Long.parseLong(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
 	}
-	public static int getDecodeHash16Id(String schema,  String hash){
+	public static Long getDecodeHash16Id(String schema,  String hash){
 		Hashids rfIdHash = new Hashids(schema, 16);
-		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
+		return Long.parseLong(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
 	}
 }

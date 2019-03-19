@@ -4,7 +4,7 @@ import com.itsight.domain.UbPeru;
 import com.itsight.domain.dto.UbPeruLimDTO;
 import com.itsight.generic.BaseService;
 
-public interface UbPeruService extends BaseService<UbPeru, Integer> {
+public interface UbPeruService extends BaseService<UbPeru, String> {
 
     UbPeru findById(String id);
 

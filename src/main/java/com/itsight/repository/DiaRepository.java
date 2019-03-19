@@ -19,10 +19,10 @@ public interface DiaRepository extends JpaRepository<Dia, Long> {
 
     @Override
     @EntityGraph("dia")
-    Dia findOne(Integer id);
+    Dia findOne(Long id);
 
     @Query("SELECT D.id FROM Dia D WHERE D.semana.id = ?1 ORDER BY 1")
-    List<Integer> findIdBySemanaId(int semanaId);
+    List<Long> findIdBySemanaId(Long semanaId);
 
     @Modifying
     @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), to_jsonb(CAST(:nombre as text)), false) WHERE dia_id = :id", nativeQuery = true)

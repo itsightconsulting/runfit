@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SubCategoriaVideoService extends BaseService<SubCategoriaVideo, Integer> {
 
-    List<SubCategoriaVideo> listarPorCategoria(int categoriaVideoId);
+    List<SubCategoriaVideo> listarPorCategoria(Integer categoriaVideoId);
 
 }

@@ -12,9 +12,9 @@ public interface TipoUsuarioService {
 
     TipoUsuario update(TipoUsuario tipoUsuario);
 
-    void delete(int tipoUsuarioId);
+    void delete(Integer id);
 
-    TipoUsuario findOneById(int id);
+    TipoUsuario findOneById(Integer id);
 
 
 }

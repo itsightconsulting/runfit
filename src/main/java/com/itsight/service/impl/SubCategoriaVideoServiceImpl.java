@@ -32,9 +32,9 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     }
 
     @Override
-    public SubCategoriaVideo findOne(int subTipoVideoId) {
+    public SubCategoriaVideo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(subTipoVideoId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -50,13 +50,13 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
         repository.delete(new Integer(id));
     }
 
     @Override
-    public SubCategoriaVideo findOneWithFT(int id) {
+    public SubCategoriaVideo findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -138,13 +138,13 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }
 
     @Override
-    public List<SubCategoriaVideo> listarPorCategoria(int categoriaVideoId) {
+    public List<SubCategoriaVideo> listarPorCategoria(Integer categoriaVideoId) {
         return repository.findByCategoriaId(categoriaVideoId);
     }
 }

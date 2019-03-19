@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RutinaPlantillaRepository extends JpaRepository<RutinaPlantilla, Integer> {
+public interface RutinaPlantillaRepository extends JpaRepository<RutinaPlantilla, Long> {
 
     @EntityGraph(value = "rutinaPlantilla")
-    List<RutinaPlantilla> findByTrainerIdOrderByIdDesc(int trainerId);
+    List<RutinaPlantilla> findByTrainerIdOrderByIdDesc(Long trainerId);
 }

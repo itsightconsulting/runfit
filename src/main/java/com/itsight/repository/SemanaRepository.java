@@ -11,20 +11,20 @@ import javax.persistence.Entity;
 import java.util.List;
 
 @Repository
-public interface SemanaRepository extends JpaRepository<Semana, Integer> {
+public interface SemanaRepository extends JpaRepository<Semana, Long> {
 
     @EntityGraph("semana")
-    Semana findOne(int id);
+    Semana findOne(Long id);
 
     @Query("SELECT DISTINCT S FROM Semana S LEFT JOIN FETCH S.lstDia D LEFT JOIN FETCH S.rutina R WHERE S.id=?1")
-    Semana findOneWithDays(int id);
+    Semana findOneWithDays(Long id);
 
     @Query("SELECT DISTINCT S FROM Semana S LEFT JOIN FETCH S.lstDia D WHERE S.rutina.id=?1 and D.flagEnvioCliente = true")
-    List<Semana> findByRutinaIdOrderByIdDesc(int idrutina);
+    List<Semana> findByRutinaIdOrderByIdDesc(Long rutinaId);
 
     @Modifying
     @Query("UPDATE Semana SET objetivos = ?2 WHERE id = ?1")
-    void updateObjetivoById(int id, String objetivos);
+    void updateObjetivoById(Long id, String objetivos);
 
     @Modifying
     @Query(value = "update semana as t set metricas_velocidad = c.mets from (SELECT CAST(unnest(string_to_array(?1, ',')) as int), unnest(string_to_array(?2, ' ')) ORDER BY 1) as c(id, mets) where c.id = t.semana_id", nativeQuery = true)

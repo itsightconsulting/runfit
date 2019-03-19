@@ -8,25 +8,25 @@ import java.util.List;
 
 public interface RutinaService extends BaseService<Rutina, Long> {
 
-    Rutina findLastByRedFitnessId(int id);
+    Rutina findLastByRedFitnessId(Long redFitId);
 
-    Rutina findOneWithOneWeekById(int id);
+    Rutina findOneWithOneWeekById(Long id);
 
-    void updateSemanaIds(int id, int[] semanaIds);
+    void updateSemanaIds(Long id, Long[] semanaIds);
 
-    void updateTotalSemanas(int id, int totalSemanas);
+    void updateTotalSemanas(Long id, int totalSemanas);
 
-    int obtenerRedFitnessIdById(int rutinaId);
+    Long obtenerRedFitnessIdById(Long id);
 
-    List<Rutina> getAllRutinasByUser(int id);
+    List<Rutina> getAllRutinasByUser(Long id);
 
-    void updateAvance(int id, int indexsemana, String strdias, String avance);
+    void updateAvance(Long id, int indexsemana, String strdias, String avance);
 
     void updateResetDiasFlagEnvio(int anio, int mes);
 
     void updateDiasFlagEnvio(int indexsemana, int indexdia);
 
-    String registrarByCascada(RutinaDTO rutinaDto, int redFitId, int runneId);
+    String registrarByCascada(RutinaDTO rutinaDto, Long redFitId, Long runneId);
 
     String actualizarFlagActivo(boolean flagActivo);
 

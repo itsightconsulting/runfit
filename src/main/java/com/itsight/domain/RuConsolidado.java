@@ -29,7 +29,7 @@ import java.util.List;
 public class RuConsolidado implements Serializable {
 
     @Id
-    private int id;
+    private Long id;
     @Column(columnDefinition = "jsonb")
     @Type(type = "jsonb")
     private RuGeneral general;

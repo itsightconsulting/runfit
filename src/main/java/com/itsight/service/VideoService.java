@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface VideoService extends BaseService<Video, Long> {
 
-    String obtenerNombrePorId(int id, String uuid);
+    String obtenerNombrePorId(Long id, String uuid);
 
     List<Video> obtenerTodosConJerarquia();
 }

@@ -45,7 +45,7 @@ public class Semana {
             }
     )
     @Column(name = "SemanaId")
-    private int id;
+    private Long id;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
@@ -102,7 +102,7 @@ public class Semana {
         this.rutina = rutina;
     }
 
-    public void setRutina(int rutinaId) {
+    public void setRutina(Long rutinaId) {
         this.rutina = new Rutina(rutinaId);
     }
 

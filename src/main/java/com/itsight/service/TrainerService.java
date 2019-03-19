@@ -7,11 +7,10 @@ import java.util.Date;
 
 public interface TrainerService extends BaseService<Trainer, Long> {
 
-    String findCodigoTrainerById(int id);
+    String findCodigoTrainerById(Long id);
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 
-    String cargarRutinarioCe(int trainerId);
+    String cargarRutinarioCe(Long trainerId);
 
-    String validarCorreo(String correo);
 }

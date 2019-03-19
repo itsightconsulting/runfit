@@ -1,11 +1,11 @@
 package com.itsight.component;
 
-import com.itsight.domain.*;
 import com.itsight.domain.CondicionMejora;
 import com.itsight.domain.Musculo;
 import com.itsight.domain.Objetivo;
 import com.itsight.domain.Parametro;
 import com.itsight.domain.Rol;
+import com.itsight.domain.*;
 import com.itsight.domain.jsonb.*;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.PostRepository;
@@ -24,7 +24,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -354,7 +357,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         mapEjercicios.put(9, "Crab walk");
         mapEjercicios.put(10, "Bear crawl o paso del oso");
 
-        int index = 1;
+        Long index = Long.valueOf(1);
         for(SubCategoriaVideo sce: subCategoriaVideoService.findAll()){
             int i = sce.getId();
             Random rd = new Random();
@@ -537,7 +540,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingAudiosDemo(){
-        if(audioService.findOne(1) == null) {
+        if(audioService.findOne(Long.valueOf(1)) == null) {
             List<TipoAudio> tiposAudio = tipoAudioService.findAll();
             int i = 0;
             for (TipoAudio ta : tiposAudio) {

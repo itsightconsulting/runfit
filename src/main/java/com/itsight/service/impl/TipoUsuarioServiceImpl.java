@@ -39,15 +39,15 @@ public class TipoUsuarioServiceImpl implements TipoUsuarioService {
     }
 
     @Override
-    public void delete(int tipoUsuarioId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        tipoUsuarioRepository.delete(new Integer(tipoUsuarioId));
+        tipoUsuarioRepository.delete(id);
     }
 
     @Override
-    public TipoUsuario findOneById(int id) {
+    public TipoUsuario findOneById(Integer id) {
         // TODO Auto-generated method stub
-        return tipoUsuarioRepository.findOne(new Integer(id));
+        return tipoUsuarioRepository.findOne(id);
     }
 
 }

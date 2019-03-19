@@ -1,8 +1,8 @@
 package com.itsight.component;
 
 import com.itsight.service.AdministradorService;
-import com.itsight.service.TrainerService;
 import com.itsight.service.ClienteService;
+import com.itsight.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +42,7 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             String username = usernameAndId[0], id = usernameAndId[1];
             session.setAttribute("id", Integer.parseInt(id));
             if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TRAINER"))){
-                Optional<String> optionalCodTrainer = Optional.ofNullable(trainerService.findCodigoTrainerById(Integer.parseInt(id)));
+                Optional<String> optionalCodTrainer = Optional.ofNullable(trainerService.findCodigoTrainerById(Long.parseLong(id)));
                 if(optionalCodTrainer.isPresent() && optionalCodTrainer.get().length()>0) {
                     session.setAttribute("codTrainer", optionalCodTrainer.get());
                 }

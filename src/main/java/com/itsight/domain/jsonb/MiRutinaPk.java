@@ -7,18 +7,18 @@ import java.io.Serializable;
 @Data
 public class MiRutinaPk implements Serializable {
 
-    private int id;
+    private Long id;
     private String nombre;
     private String hash;
     private int nvl;
 
     public MiRutinaPk(){}
 
-    public MiRutinaPk(int id){
+    public MiRutinaPk(Long id){
         this.id = id;
     }
 
-    public MiRutinaPk(int id, String nombre, String hash, int nvl) {
+    public MiRutinaPk(Long id, String nombre, String hash, int nvl) {
         this.id = id;
         this.nombre = nombre;
         this.hash = hash;

@@ -1,7 +1,6 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Trainer;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,14 +11,14 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
+public interface TrainerRepository extends JpaRepository<Trainer, Long> {
 
     @Query(value = "SELECT T.codigoTrainer FROM Trainer T WHERE T.id = ?1")
-    String findCodigoTrainerById(int id);
+    String findCodigoTrainerById(Long id);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.fechaUltimoAcceso =?1 WHERE T.id = ?2")
-    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, int id);
+    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Long id);
 
     @EntityGraph(value = "trainer.all")
     List<Trainer> findAllByOrderByIdDesc();
@@ -31,18 +30,15 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     List<Trainer> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "trainer.all")
-    Trainer findById(int id);
+    Trainer findById(Long id);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.flagActivo =?2 WHERE T.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Long id, boolean flagActivo);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.flagRutinarioCe =?2 WHERE T.id = ?1")
-    void updateFlagRutinarioCeById(int id, boolean flagRutinarioCe);
-
-    @Query(value = "SELECT T.correo FROM Trainer T WHERE T.correo = ?1")
-    List<Trainer> findAllByCorreo(String correo);
+    void updateFlagRutinarioCeById(Long id, boolean flagRutinarioCe);
 
     /*@Query(value = "SELECT NEW Trainer(codigoTrainer, nombres, apellidos, apellidoMaterno) FROM Trainer T WHERE T.tipoUsuario.id = 2")
     List<Trainer> findAllTrainers();

@@ -12,7 +12,7 @@ public class TipoImagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TipoImagenId")
-    private int id;
+    private Integer id;
     @Column(nullable = false)
     private String nombre;
 
@@ -26,7 +26,7 @@ public class TipoImagen {
         // TODO Auto-generated constructor stub
     }
 
-    public TipoImagen(int id) {
+    public TipoImagen(Integer id) {
         this.id = id;
     }
 

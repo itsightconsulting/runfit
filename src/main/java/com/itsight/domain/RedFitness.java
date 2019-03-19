@@ -80,7 +80,7 @@ public class RedFitness implements Serializable {
         this.id = id;
     }
 
-    public RedFitness(int trainerId, Long clienteId){
+    public RedFitness(Long trainerId, Long clienteId){
         this.trainer = new Trainer(trainerId);
         this.cliente = new Cliente(clienteId);
         this.fechaCreacion = new Date();

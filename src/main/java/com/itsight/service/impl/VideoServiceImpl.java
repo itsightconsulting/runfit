@@ -7,7 +7,6 @@ import com.itsight.service.VideoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,19 +32,19 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
-    public Video findOne(int id) {
+    public Video findOne(Long id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(id));
+        return repository.findOne(id);
     }
 
     @Override
-    public Video findOneWithFT(int id) {
+    public Video findOneWithFT(Long id) {
         // TODO Auto-generated method stub
-        return repository.findById(new Integer(id));
+        return repository.findById(id);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
         repository.delete(id);
     }
@@ -93,7 +92,7 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
-    public List<Video> findByIdsIn(List<Integer> ids) {
+    public List<Video> findByIdsIn(List<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -138,13 +137,13 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
-    public String obtenerNombrePorId(int id, String uuid) {
+    public String obtenerNombrePorId(Long id, String uuid) {
         // TODO Auto-generated method stub
         return repository.findNombreByIdAndUuid(id, UUID.fromString(uuid));
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

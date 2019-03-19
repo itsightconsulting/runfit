@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.*;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Data
@@ -53,7 +53,7 @@ public class Video extends AuditingEntity implements Identifiable {
             }
     )
     @Column(name = "VideoId")
-    private int id;
+    private Long id;
 
     @Column()
     private String nombre;
@@ -97,7 +97,7 @@ public class Video extends AuditingEntity implements Identifiable {
 
     public Video(){ }
 
-    public Video(int id) {
+    public Video(Long id) {
         this.id = id;
     }
 
@@ -122,7 +122,7 @@ public class Video extends AuditingEntity implements Identifiable {
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(int id, String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
+    public Video(Long id, String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
         this.id = id;
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
@@ -135,16 +135,8 @@ public class Video extends AuditingEntity implements Identifiable {
         this.nombreSubCat = nombreSubCat;
     }
 
-    public void setSubCatVideo(SubCategoriaVideo subCatVideo){
-        this.subCatVideo = subCatVideo;
-    }
-
     public void setSubCatVideo(int subCatId){
         this.subCatVideo = new SubCategoriaVideo(subCatId);
     }
 
-/*
-    /*@ManyToMany(mappedBy = "lstVideo")
-    private Set<Producto> lstProducto;
-*/
 }

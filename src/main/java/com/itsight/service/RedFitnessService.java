@@ -14,7 +14,7 @@ public interface RedFitnessService extends BaseService<RedFitness, Long> {
 
     void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(Long id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas);
 
-    String findCodTrainerByIdAndRunnerId(Integer id, Integer runneId);
+    String findCodTrainerByIdAndRunnerId(Long id, Long runneId);
 
     List<Integer> findTrainerIdByUsuarioId(Long id);
 }

@@ -207,6 +207,15 @@ public class Utilitarios {
         return nuevoArray;
     }
 
+    public static Long[] agregarElementoArray(Long[] inArray, Long nuevoElemento){
+        Long[] nuevoArray = new Long[inArray.length+1];
+        for (int i=0; i<nuevoArray.length-1;i++){
+            nuevoArray[i] = inArray[i];
+        }
+        nuevoArray[inArray.length] = nuevoElemento;
+        return nuevoArray;
+    }
+
     public static boolean objExists(Object object){
         Optional<Object> cxtObject = Optional.ofNullable(object);
         if(cxtObject.isPresent())

@@ -28,13 +28,13 @@ public class CalculoController {
 
     @GetMapping("/porcentajes-kilo/obtener/{distancia}")
     public @ResponseBody PorcentajesKilometraje obtenerPorcetanjesKilometrajeByDistancia(@PathVariable String distancia, HttpSession session){
-        int trainerId = (int) session.getAttribute("id");
+        Long trainerId = (Long) session.getAttribute("id");
         return porcentajesKilometrajeService.findByTrainerIdAndDistancia(trainerId, Integer.parseInt(distancia));
     }
 
     @PutMapping("/porcentajes-kilo/actualizar")
     public @ResponseBody String actualizarPorcetanjesKilometrajeByDistancia(@RequestBody List<PorcentajeKilometrajeDTO> porcentajes, HttpSession session){
-        int trainerId = (int) session.getAttribute("id");
+        Long trainerId = (Long) session.getAttribute("id");
         int distancia = porcentajes.get(0).getDistancia();
         porcentajesKilometrajeService.actualizarPorcentajesComplexByTrainerIdAndDistancia(trainerId, distancia, porcentajes);
         return ACTUALIZACION.get();

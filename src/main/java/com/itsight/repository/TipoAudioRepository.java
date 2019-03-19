@@ -25,7 +25,7 @@ public interface TipoAudioRepository extends JpaRepository<TipoAudio, Integer> {
 
     @Modifying
     @Query(value = "UPDATE TipoAudio A SET A.flagActivo =?2 WHERE A.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @EntityGraph(value = "tipoAudio")
     @Query("SELECT NEW TipoAudio(id, nombre, descripcion, flagActivo) FROM TipoAudio T ORDER BY 1 ASC")
@@ -33,7 +33,7 @@ public interface TipoAudioRepository extends JpaRepository<TipoAudio, Integer> {
 
     @EntityGraph(value = "tipoAudio")
     @Query("SELECT NEW TipoAudio(id, nombre, descripcion, flagActivo) FROM TipoAudio T WHERE T.flagActivo = ?1 ORDER BY 1 ASC")
-    List<TipoAudio> findAllByFlagActivoOrderByIdDesc(Boolean valueOf);
+    List<TipoAudio> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
     @EntityGraph(value = "tipoAudio")
     @Query("SELECT NEW TipoAudio(id, nombre, descripcion, flagActivo) FROM TipoAudio T WHERE LOWER(T.nombre) LIKE LOWER(CONCAT('%', ?1,'%')) ORDER BY 1 ASC")

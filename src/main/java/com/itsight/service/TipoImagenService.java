@@ -12,8 +12,8 @@ public interface TipoImagenService {
 
     TipoImagen update(TipoImagen tipoImagen);
 
-    TipoImagen findOneById(int tipoImagenId);
+    TipoImagen findOneById(Integer id);
 
-    void delete(int tipoImagenId);
+    void delete(Integer id);
 
 }

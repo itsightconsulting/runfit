@@ -9,23 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 @Transactional
-public interface SecurityUserRepository extends JpaRepository<SecurityUser, Integer> {
+public interface SecurityUserRepository extends JpaRepository<SecurityUser, Long> {
 
     @Query(value = "SELECT DISTINCT S FROM SecurityUser S JOIN FETCH S.roles R LEFT JOIN FETCH R.privileges P WHERE S.username = ?1")
     SecurityUser findByUsername(String username);
 
     @Query(value = "SELECT SU.id FROM SecurityUser SU WHERE SU.username = ?1")
     Integer findIdByUsername(String username);
-
-    List<SecurityUser> findByRolesRoleLike(String nombre);
-
-    @Modifying
-    @Query("UPDATE SecurityUser SET enabled = ?1  WHERE username = ?2")
-    void saveUserStatusByUsername(boolean status, String username);
 
     @Modifying
     @Query(value = "UPDATE SecurityUser SU SET SU.enabled =?2 WHERE SU.username = ?1")

@@ -30,7 +30,7 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     }
 
     @Override
-    public UbPeru findOne(int id) {
+    public UbPeru findOne(String id) {
         return null;
     }
 
@@ -40,12 +40,12 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     }
 
     @Override
-    public UbPeru findOneWithFT(int id) {
+    public UbPeru findOneWithFT(String id) {
         return null;
     }
 
     @Override
-    public void delete(int id) { }
+    public void delete(String id) { }
 
     @Override
     public List<Integer> findIdsByFlagActivo(boolean flagActivo) {
@@ -83,7 +83,7 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     }
 
     @Override
-    public List<UbPeru> findByIdsIn(List<Integer> ids) {
+    public List<UbPeru> findByIdsIn(List<String> ids) {
         return null;
     }
 
@@ -104,7 +104,7 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(String id, boolean flagActivo) {
 
     }
 

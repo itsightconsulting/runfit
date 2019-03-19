@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface SemanaService extends BaseService<Semana, Long> {
 
-    Semana findOneWithDaysById(int id);
+    Semana findOneWithDaysById(Long id);
 
-    List<Semana> findByRutinaIdOrderByIdDesc(int idrutina);
+    List<Semana> findByRutinaIdOrderByIdDesc(Long rutinaId);
 
     String actualizarObjetivos(int numSem, String objetivos);
 
-    String agregarSemana(Semana semana, List<Dia> dias, int rutinaId, int totalSemanas, Date fechaFin);
+    String agregarSemana(Semana semana, List<Dia> dias, Long rutinaId, int totalSemanas, Date fechaFin);
 
     String actualizarFullMetricasVelocidad(String mVz) throws IOException;
 }

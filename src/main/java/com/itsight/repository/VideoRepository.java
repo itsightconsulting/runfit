@@ -10,18 +10,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface VideoRepository extends JpaRepository<Video, Integer> {
+public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Query("SELECT V.nombre FROM Video V WHERE V.id = ?1 AND V.uuid = ?2")
-    String findNombreByIdAndUuid(int id, UUID uuid);
+    String findNombreByIdAndUuid(Long id, UUID uuid);
 
     @Query("SELECT V.rutaWeb FROM Video V WHERE V.id = ?1")
-    String findRutaWebById(int id);
+    String findRutaWebById(Long id);
 
     List<Video> findAllByOrderByIdDesc();
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E WHERE E.id = ?1 ORDER BY 1")
-    Video findById(int id);
+    Video findById(Long id);
 
    @Query("SELECT V FROM Video V INNER JOIN FETCH V.subCatVideo SC  INNER JOIN FETCH SC.categoriaVideo CV  INNER JOIN FETCH CV.grupoVideo GV INNER JOIN FETCH GV.forest ORDER BY GV.id,CV.id")
     List<Video> findAllTree();
@@ -39,15 +39,15 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
 
     @Modifying
     @Query(value = "UPDATE Video E SET E.flagActivo =?2 WHERE E.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Long id, boolean flagActivo);
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
             "WHERE E.subCatVideo.id = ?1 ORDER BY 1")
-    List<Video> findAllBySubCategoriaVideoId(int categoriaEjercicioId);
+    List<Video> findAllBySubCategoriaVideoId(Integer categoriaEjercicioId);
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
             "WHERE E.subCatVideo.id = ?1 AND E.flagActivo = ?2 ORDER BY 1")
-    List<Video> findAllBySubCategoriaVideoIdAndFlagActivoOrderById(int categoriaEjercicioId, Boolean flagActivo);
+    List<Video> findAllBySubCategoriaVideoIdAndFlagActivoOrderById(Integer categoriaEjercicioId, Boolean flagActivo);
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
             "WHERE LOWER(E.nombre) LIKE LOWER(CONCAT('%',?1,'%')) AND E.flagActivo = ?2 ORDER BY 1")
@@ -55,10 +55,10 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
             "WHERE E.subCatVideo.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) ORDER BY 1")
-    List<Video> findAllBySubCategoriaVideoIdAndNombreContainingIgnoreCaseOrderById(int categoriaEjercicioId, String comodin);
+    List<Video> findAllBySubCategoriaVideoIdAndNombreContainingIgnoreCaseOrderById(Integer categoriaEjercicioId, String comodin);
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
             "WHERE E.subCatVideo.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND E.flagActivo = ?3 ORDER BY 1")
-    List<Video> findAllBySubCategoriaVideoIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(int categoriaEjercicioId, String comodin, Boolean flagActivo);
+    List<Video> findAllBySubCategoriaVideoIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(Integer categoriaEjercicioId, String comodin, Boolean flagActivo);
 
 }

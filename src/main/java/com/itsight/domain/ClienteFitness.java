@@ -117,8 +117,8 @@ public class ClienteFitness implements Serializable {
         this.cliente = cliente;
     }
 
-    public void setCliente(int usuarioId){
-        this.cliente = new Cliente(usuarioId);
+    public void setCliente(Long cliId){
+        this.cliente = new Cliente(cliId);
     }
 
 }

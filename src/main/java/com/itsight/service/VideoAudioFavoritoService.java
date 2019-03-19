@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface VideoAudioFavoritoService extends BaseService<VideoAudioFavorito, Long> {
 
-    VideoAudioFavorito getVideoAudioFavoritoAudio(int clienteId, int idaudio);
-    VideoAudioFavorito getVideoAudioFavoritoVideo(int clienteId, int idvideo);
-    List<VideoAudioFavorito> findAllByClienteByTipo(int clienteId, int tipo);
-    List<VideoAudioFavorito> findByClienteId(int clienteId);
+    VideoAudioFavorito getVideoAudioFavoritoAudio(Long clienteId, Long audioId);
+    VideoAudioFavorito getVideoAudioFavoritoVideo(Long clienteId, Long videoId);
+    List<VideoAudioFavorito> findAllByClienteByTipo(Long clienteId, int tipo);
+    List<VideoAudioFavorito> findByClienteId(Long clienteId);
 
 }

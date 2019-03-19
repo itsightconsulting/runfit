@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
@@ -47,7 +46,7 @@ public class EspecificacionSubCategoriaController {
     @GetMapping(value = {"/v2"})
     public @ResponseBody
     String obtenerArbolMiniPlantilla(HttpSession session) throws JsonProcessingException {
-        List<MiniPlantilla> minis = miniPlantillaService.findAllByTrainerId(Integer.parseInt(session.getAttribute("id").toString()));
+        List<MiniPlantilla> minis = miniPlantillaService.findAllByTrainerId(Long.parseLong(session.getAttribute("id").toString()));
         if(minis.isEmpty()){
             return Enums.ResponseCode.EMPTY_RESPONSE.get();
         }

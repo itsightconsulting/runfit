@@ -26,9 +26,9 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public void delete(int rutinaId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(rutinaId));
+        repository.delete(id);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public RutinaPlantilla findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public RutinaPlantilla findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public RutinaPlantilla findOneWithFT(int id) {
+    public RutinaPlantilla findOneWithFT(Long id) {
         return null;
     }
 
@@ -82,7 +82,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public List<RutinaPlantilla> findByIdsIn(List<Integer> ids) {
+    public List<RutinaPlantilla> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -92,7 +92,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public List<RutinaPlantilla> listarPorFiltroPT(int trainerId) {
+    public List<RutinaPlantilla> listarPorFiltroPT(Long trainerId) {
         return repository.findByTrainerIdOrderByIdDesc(trainerId);
     }
 
@@ -107,7 +107,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 }

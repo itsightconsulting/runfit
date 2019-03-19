@@ -30,22 +30,22 @@ public interface SubCategoriaVideoRepository extends JpaRepository<SubCategoriaV
 
     @Modifying
     @Query(value = "UPDATE SubCategoriaVideo E SET E.flagActivo =?2 WHERE E.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre) FROM SubCategoriaVideo E WHERE E.categoriaVideo.id = ?1 ORDER BY 1")
-    List<SubCategoriaVideo> findByCategoriaId(int categoriaId);
+    List<SubCategoriaVideo> findByCategoriaId(Integer categoriaId);
 
     @Modifying
     @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT especificacion_sub_categoria_id, :id FROM especificacion_sub_categoria order by 1", nativeQuery = true)
-    void registrarEspecificacionNuevoEntrenador(@Param("id") int id);
+    void registrarEspecificacionNuevoEntrenador(@Param("id") Integer id);
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +
             "WHERE E.categoriaVideo.id = ?1 ORDER BY 1")
-    List<SubCategoriaVideo> findAllByCategoriaVideoId(int categoriaVideoId);
+    List<SubCategoriaVideo> findAllByCategoriaVideoId(Integer categoriaVideoId);
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +
             "WHERE E.categoriaVideo.id = ?1 AND E.flagActivo = ?2 ORDER BY 1")
-    List<SubCategoriaVideo> findAllByCategoriaVideoIdAndFlagActivoOrderById(int categoriaVideoId, Boolean flagActivo);
+    List<SubCategoriaVideo> findAllByCategoriaVideoIdAndFlagActivoOrderById(Integer categoriaVideoId, Boolean flagActivo);
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +
             "WHERE LOWER(E.nombre) LIKE LOWER(CONCAT('%',?1,'%')) AND E.flagActivo = ?2 ORDER BY 1")
@@ -53,9 +53,9 @@ public interface SubCategoriaVideoRepository extends JpaRepository<SubCategoriaV
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +
             "WHERE E.categoriaVideo.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) ORDER BY 1")
-    List<SubCategoriaVideo> findAllByCategoriaVideoIdAndNombreContainingIgnoreCaseOrderById(int categoriaVideoId, String comodin);
+    List<SubCategoriaVideo> findAllByCategoriaVideoIdAndNombreContainingIgnoreCaseOrderById(Integer categoriaVideoId, String comodin);
 
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +
             "WHERE E.categoriaVideo.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND E.flagActivo = ?3 ORDER BY 1")
-    List<SubCategoriaVideo> findAllByCategoriaVideoIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(int categoriaVideoId, String comodin, Boolean flagActivo);
+    List<SubCategoriaVideo> findAllByCategoriaVideoIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(Integer categoriaVideoId, String comodin, Boolean flagActivo);
 }

@@ -13,7 +13,7 @@ public class TipoDocumento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TipoDocumentoId")
-    private int id;
+    private Integer id;
 
     @NotNull
     @Size(min = 1, max = 255)
@@ -24,10 +24,9 @@ public class TipoDocumento {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoDocumento")
     private List<Cliente> lstCliente;
 
-    public TipoDocumento() {
-    }
+    public TipoDocumento() {}
 
-    public TipoDocumento(int id) {
+    public TipoDocumento(Integer id) {
         this.id = id;
     }
 
@@ -39,7 +38,7 @@ public class TipoDocumento {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

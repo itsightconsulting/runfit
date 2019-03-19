@@ -29,18 +29,18 @@ public class TipoDocumentoServiceImpl extends BaseServiceImpl<TipoDocumentoRepos
     }
 
     @Override
-    public TipoDocumento findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public TipoDocumento findOne(Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public TipoDocumento findOneWithFT(int id) {
+    public TipoDocumento findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class TipoDocumentoServiceImpl extends BaseServiceImpl<TipoDocumentoRepos
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }
