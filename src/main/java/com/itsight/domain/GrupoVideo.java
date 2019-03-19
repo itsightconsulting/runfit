@@ -39,7 +39,7 @@ public class GrupoVideo implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GrupoVideoId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;
@@ -67,7 +67,7 @@ public class GrupoVideo implements Identifiable {
     public GrupoVideo() {
     }
 
-    public GrupoVideo(int id) {
+    public GrupoVideo(Integer id) {
         this.id = id;
     }
 
@@ -89,7 +89,7 @@ public class GrupoVideo implements Identifiable {
         this.uuid = uuid;
     }
 
-    public GrupoVideo(int id, String nombre) {
+    public GrupoVideo(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

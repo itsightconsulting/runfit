@@ -1,16 +1,14 @@
 package com.itsight.service;
 
 import com.itsight.domain.PorcentajesKilometraje;
-import com.itsight.domain.dto.PorcentajeKilometrajeDto;
+import com.itsight.domain.dto.PorcentajeKilometrajeDTO;
 import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface PorcentajesKilometrajeService extends BaseService<PorcentajesKilometraje> {
+public interface PorcentajesKilometrajeService extends BaseService<PorcentajesKilometraje, Integer> {
 
-    List<PorcentajesKilometraje> findAllByUsuarioId(int trainerId);
+    PorcentajesKilometraje findByTrainerIdAndDistancia(Long trainerId, int distancia);
 
-    PorcentajesKilometraje findByTrainerIdAndDistancia(int trainerId, int parseInt);
-
-    void actualizarPorcentajesComplexByTrainerIdAndDistancia(int trainerId, int distancia, List<PorcentajeKilometrajeDto> porcentajes);
+    void actualizarPorcentajesComplexByTrainerIdAndDistancia(Long trainerId, int distancia, List<PorcentajeKilometrajeDTO> porcentajes);
 }

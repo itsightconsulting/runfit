@@ -3,16 +3,15 @@ package com.itsight.service.impl;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.generic.BaseServiceImpl;
-import com.itsight.repository.EspecificacionSubCategoriaRepository;
+import com.itsight.repository.ClienteRepository;
 import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
-import com.itsight.repository.ClienteRepository;
-import com.itsight.service.EmailService;
-import com.itsight.service.PorcentajesKilometrajeService;
-import com.itsight.service.RolService;
 import com.itsight.service.ClienteService;
+import com.itsight.service.EmailService;
+import com.itsight.service.RolService;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -71,13 +70,13 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public Cliente findOne(int id) {
+    public Cliente findOne(Long id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(id));
+        return repository.findOne(id);
     }
 
     @Override
-    public Cliente findOneWithFT(int id) {
+    public Cliente findOneWithFT(Long id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
@@ -95,9 +94,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public void delete(int usuarioId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(usuarioId));
+        repository.delete(id);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public String findPasswordById(int id) {
+    public String findPasswordById(Long id) {
         // TODO Auto-generated method stub
         return securityUserRepository.findPasswordById(id);
     }
@@ -143,7 +142,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public List<Cliente> findByIdsIn(List<Integer> ids) {
+    public List<Cliente> findByIdsIn(List<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -184,7 +183,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     public String registrar(Cliente cliente, String rols) {
         // TODO Auto-generated method stub
         if (securityUserRepository.findByUsername(cliente.getUsername()) == null) {
-            try{
+            try {
                 if(cliente.getTipoUsuario().getId() == 3){//3: Cliente
                     String originalPassword = cliente.getPassword();
                     String[] arrRoles = rols.split(",");
@@ -217,11 +216,17 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
                     return ResponseCode.REGISTRO.get()+','+String.valueOf(cliente.getId())+','+flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();
-            }catch (Exception e){
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
         return ResponseCode.VF_USUARIO_REPETIDO.get();
+    }
+
+    @Override
+    public String registroFull(ClienteDTO cliente) {
+        System.out.println(cliente.toString());
+        return "1";
     }
 
     @Override
@@ -283,7 +288,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             if(debenEliminarse.size()>0) {
                 for (Integer n : debenEliminarse) {
                     com.itsight.domain.Rol rol = rolService.findOne(n);
-                    int id = securityRoleRepository.findBySecurityUserIdAndRole(qCliente.getId(), rol.getRol()).getId();
+                    Long id = securityRoleRepository.findBySecurityUserIdAndRole(qCliente.getId(), rol.getRol()).getId();
                     securityRoleRepository.deleteById(id);
                 }
                 //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
@@ -312,7 +317,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }
@@ -320,7 +325,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public void actualizarFechaUltimoAcceso(Date date, String id) {
         // TODO Auto-generated method stub
-        repository.updateFechaUltimoAcceso(date, Integer.parseInt(id));
+        repository.updateFechaUltimoAcceso(date, Long.parseLong(id));
     }
 
     @Override
@@ -339,7 +344,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public String findNombreCompletoById(int id) {
+    public String findNombreCompletoById(Long id) {
         return repository.findNombreCompletoById(id);
     }
 }

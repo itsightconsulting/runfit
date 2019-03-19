@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SubElementoDto implements Serializable {
+public class SubElementoDTO implements Serializable {
 
     private String nombre;
     private String mediaAudio;
@@ -32,5 +32,5 @@ public class SubElementoDto implements Serializable {
     @JsonInclude(Include.NON_DEFAULT)
     private int subElementoIndice;
 
-    public SubElementoDto(){}
+    public SubElementoDTO(){}
 }

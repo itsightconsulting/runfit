@@ -1,7 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.PorcentajesKilometraje;
-import com.itsight.domain.dto.PorcentajeKilometrajeDto;
+import com.itsight.domain.dto.PorcentajeKilometrajeDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.PorcentajesKilometrajeRepository;
 import com.itsight.service.PorcentajesKilometrajeService;
@@ -29,18 +29,18 @@ public class PorcentajesKilometrajeServiceImpl extends BaseServiceImpl<Porcentaj
     }
 
     @Override
-    public PorcentajesKilometraje findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public PorcentajesKilometraje findOne(Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public PorcentajesKilometraje findOneWithFT(int id) {
+    public PorcentajesKilometraje findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -99,22 +99,17 @@ public class PorcentajesKilometrajeServiceImpl extends BaseServiceImpl<Porcentaj
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
     @Override
-    public List<PorcentajesKilometraje> findAllByUsuarioId(int trainerId) {
-        return repository.findAllByTrainerId(trainerId);
-    }
-
-    @Override
-    public PorcentajesKilometraje findByTrainerIdAndDistancia(int trainerId, int distancia) {
+    public PorcentajesKilometraje findByTrainerIdAndDistancia(Long trainerId, int distancia) {
         return repository.findByTrainerIdAndDistancia(trainerId, distancia);
     }
 
     @Override
-    public void actualizarPorcentajesComplexByTrainerIdAndDistancia(int trainerId, int distancia, List<PorcentajeKilometrajeDto> porcentajes) {
+    public void actualizarPorcentajesComplexByTrainerIdAndDistancia(Long trainerId, int distancia, List<PorcentajeKilometrajeDTO> porcentajes) {
         String textNombre1 = "{0,\"semanas\","+porcentajes.get(0).getIndice()+",\"porcentajes\"}";
         String textNombre2 = "{1,\"semanas\","+porcentajes.get(1).getIndice()+",\"porcentajes\"}";
         String textNombre3 = "{2,\"semanas\","+porcentajes.get(2).getIndice()+",\"porcentajes\"}";

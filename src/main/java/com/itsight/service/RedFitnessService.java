@@ -6,25 +6,15 @@ import com.itsight.generic.BaseService;
 import java.util.Date;
 import java.util.List;
 
-public interface RedFitnessService extends BaseService<RedFitness> {
+public interface RedFitnessService extends BaseService<RedFitness, Long> {
 
     List<RedFitness> listarSegunRedTrainer(String codigoTrainer);
 
-    void updateFlagEnActividadById(int id, boolean flagEnEntrenamiento);
+    void actualizarNotaACliente(Long id, String nota);
 
-    void actualizarNotaACliente(int parseInt, String nota);
+    void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(Long id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas);
 
-    void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(int id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas);
+    String findCodTrainerByIdAndRunnerId(Integer id, Integer runneId);
 
-    String findCodTrainerById(int redFitnessId);
-
-    void actualizarUltimaFechaPlanificacionById(int id, Date ultimaFecha);
-
-    RedFitness findByTrainerCodigoTrainer(String codTrainer);
-
-    String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
-
-    List<String> findTrainerByUsuarioId(int id);
-
-    List<Integer> findTrainerIdByUsuarioId(int id);
+    List<Integer> findTrainerIdByUsuarioId(Long id);
 }

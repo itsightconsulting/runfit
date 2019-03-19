@@ -39,15 +39,15 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     }
 
     @Override
-    public void delete(int tipoVideoId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(tipoVideoId));
+        repository.delete(id);
     }
 
     @Override
-    public GrupoVideo findOne(int tipoVideoId) {
+    public GrupoVideo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(tipoVideoId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     }
 
     @Override
-    public GrupoVideo findOneWithFT(int id) {
+    public GrupoVideo findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(new Integer(id));
+        return repository.findById(id);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

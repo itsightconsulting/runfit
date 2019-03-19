@@ -5,8 +5,8 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface EspecificacionSubCategoriaService extends BaseService<EspecificacionSubCategoria> {
+public interface EspecificacionSubCategoriaService extends BaseService<EspecificacionSubCategoria, Integer> {
 
-    List<EspecificacionSubCategoria> listarPorSubCategoria(int subCategoriaEjercicioId);
-    List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(int id);
+    List<EspecificacionSubCategoria> listarPorSubCategoria(Integer subCategoriaEjercicioId);
+    List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(Integer id);
 }

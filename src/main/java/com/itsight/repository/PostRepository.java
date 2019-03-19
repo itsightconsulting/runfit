@@ -13,22 +13,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
 
     @Modifying
     @Query(value = "UPDATE Post SET detalle = COALESCE(detalle, '[]') || CAST(?2 as jsonb) WHERE post_id = ?1", nativeQuery = true)
-    void updatePostDetalle(int id, String nDetalle);
+    void updatePostDetalle(Long id, String nDetalle);
 
     @Query("FROM Post P WHERE P.trainer.id = ?1")
-    List<Post> findAllByTrainerId(int trainerId);
+    List<Post> findAllByTrainerId(Long trainerId);
 
     @EntityGraph(value = "post.trainer")
     @Query("FROM Post P WHERE P.trainer.id IN (?1)")
     List<Post> findAllByTrainerIdIn(List<Integer> lstTrainerId);
 
     @Query(value = "SELECT TRUE FROM (SELECT CAST(jsonb_array_elements(detalle)->>'cliId' AS INT) cid FROM post WHERE post_id = ?1) tt WHERE tt.cid=?2", nativeQuery = true)
-    Optional<Boolean> checkLikeExists(int id, int clienteId);
+    Optional<Boolean> checkLikeExists(Long id, Long clienteId);
 
     @Modifying
     @Query(value = "UPDATE post SET detalle = jsonb_set(detalle, (SELECT " +
@@ -40,7 +40,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
                    "post_id = ?1 AND " +
                    "CAST(elem->>'cliId' AS INT) = ?2), CAST(CAST(?3 as text) as jsonb)) " +
                    "WHERE post_id = ?1", nativeQuery = true)
-    void updateGenericBooleanColumnByIdAndClienteId(int id, int clienteId, boolean flag, String camp);
+    void updateGenericBooleanColumnByIdAndClienteId(Long id, Long clienteId, boolean flag, String camp);
 
     @Query(value = "SELECT * FROM post " +
             "where post_id = ANY " +
@@ -51,8 +51,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             ")AS int[])" +
             ")" +
             ")", nativeQuery = true)
-    List<Post> getPostFavoritos(Integer clienteId);
+    List<Post> getPostFavoritos(Long clienteId);
 
     @Query(value = "select update_post_detalle_flag(?1, ?2, ?3, ?4, ?5)", nativeQuery = true)
-    Boolean actualizarPostDetalleFlag(int postId, int cliId, boolean flag, String flagName, String fecMod);
+    Boolean actualizarPostDetalleFlag(Long id, Long cliId, boolean flag, String flagName, String fecMod);
 }

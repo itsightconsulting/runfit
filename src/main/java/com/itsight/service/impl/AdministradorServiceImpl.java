@@ -69,13 +69,13 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     }
 
     @Override
-    public Administrador findOne(int id) {
+    public Administrador findOne(Long id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(id));
+        return repository.findOne(id);
     }
 
     @Override
-    public Administrador findOneWithFT(int id) {
+    public Administrador findOneWithFT(Long id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
@@ -93,9 +93,9 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     }
 
     @Override
-    public void delete(int administradorId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(administradorId));
+        repository.delete(id);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     }
 
     @Override
-    public String findPasswordById(int id) {
+    public String findPasswordById(Long id) {
         // TODO Auto-generated method stub
         return securityUserRepository.findPasswordById(id);
     }
@@ -141,7 +141,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     }
 
     @Override
-    public List<Administrador> findByIdsIn(List<Integer> ids) {
+    public List<Administrador> findByIdsIn(List<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -281,7 +281,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
             if(debenEliminarse.size()>0) {
                 for (Integer n : debenEliminarse) {
                     com.itsight.domain.Rol rol = rolService.findOne(n);
-                    int id = securityRoleRepository.findBySecurityUserIdAndRole(qAdministrador.getId(), rol.getRol()).getId();
+                    Long id = securityRoleRepository.findBySecurityUserIdAndRole(qAdministrador.getId(), rol.getRol()).getId();
                     securityRoleRepository.deleteById(id);
                 }
                 //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
@@ -310,7 +310,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }
@@ -318,7 +318,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public void actualizarFechaUltimoAcceso(Date date, String id) {
         // TODO Auto-generated method stub
-        repository.updateFechaUltimoAcceso(date, Integer.parseInt(id));
+        repository.updateFechaUltimoAcceso(date, Long.parseLong(id));
     }
 
     @Override

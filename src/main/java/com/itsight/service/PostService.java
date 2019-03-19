@@ -7,21 +7,19 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface PostService extends BaseService<Post> {
+public interface PostService extends BaseService<Post, Long> {
 
-    void actualizacionDetalle(int id, List<PostDetalle> postDetalleList) throws JsonProcessingException;
-
-    List<Post> findAllByTrainerId(int trainerId);
+    List<Post> findAllByTrainerId(Long trainerId);
 
     List<Post> findAllByTrainerIdIn(List<Integer> lstTrainerId);
 
-    List<Post> obtenerPostFavoritos(int clienteId);
+    List<Post> obtenerPostFavoritos(Long clienteId);
 
-    void updatePostDetalle(int id, int clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException;
+    void updatePostDetalle(Long id, Long clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException;
 
-    void actualizarFlagLiked(int id, int clienteId, boolean flgLiked);
+    void actualizarFlagLiked(Long id, Long clienteId, boolean flgLiked);
 
-    void actualizarFlagFav(int id, int clienteId, boolean flgFav);
+    void actualizarFlagFav(Long id, Long clienteId, boolean flgFav);
 
-    boolean verificarExisteLike(int id, int clienteId);
+    boolean verificarExisteLike(Long id, Long clienteId);
 }

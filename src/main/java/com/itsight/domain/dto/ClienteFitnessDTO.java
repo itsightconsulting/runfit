@@ -12,36 +12,38 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClienteFitnessDto implements Serializable {
+public class ClienteFitnessDTO implements Serializable {
 
     private String correoSecundario;
-    private int estadoCivil;
-    private int sexo;
+    private Integer estadoCivil;
+    private Integer sexo;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     private BigDecimal peso;
-    private int talla;
-    private int imc;
-    private int nivel;
+    private Integer talla;
+    private Integer imc;
+    private Integer nivel;
+
     private List<CondicionMejora> mejoras;
     private String tiempoUnKilometro;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     private BigDecimal kilometrajePromedioSemana;
-    private int diasSemanaCorriendo;
-    private boolean flagHaceCalentamiento;
-    private boolean flagHaceEstiramientos;
+    private Integer diasSemanaCorriendo;
+    private Boolean flagHaceCalentamiento;
+    private Boolean flagHaceEstiramientos;
     private String desgasteZapatilla;
     private String objetivosDescripcion;
     private String terrenoPredominante;
-    private int diaDescanso;
+    //private int diaDescanso;
 
-    //
-    private List<TiempoDisponible> tiemposDisponibles;
+    //JSONB
+    //private List<TiempoDisponible> tiemposDisponibles;
     private List<Objetivo> objetivos;
     private CondicionAnatomica condicionAnatomica;
+    private Salud salud;
     private List<CompetenciaRunner> competencias;
-    private int frecuenciaComunicacion;
+    private Integer frecuenciaComunicacion;
     private String viaConexion;
-    private UsuarioDto usuario;
+    private UsuarioDTO usuario;
     private String entrenadorId;
     private String trainerId;
 

@@ -2,12 +2,10 @@ package com.itsight.service.impl;
 
 import com.itsight.domain.Producto;
 import com.itsight.generic.BaseServiceImpl;
-import com.itsight.repository.ProductoPresentacionRepository;
 import com.itsight.repository.ProductoRepository;
 import com.itsight.service.ProductoService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +18,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> implements ProductoService {
 
-    @Autowired
-    private ProductoPresentacionRepository productoPresentacionRepository;
 
     public ProductoServiceImpl(ProductoRepository repository) {
         super(repository);
@@ -41,27 +37,27 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
     }
 
     @Override
-    public Producto findOne(int id) {
+    public Producto findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(id));
+        return repository.findOne(id);
     }
 
     @Override
-    public Producto findOneWithFT(int id) {
+    public Producto findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return repository.findOneWithFT(id);
     }
 
     @Override
-    public Producto findProductoById(int id) {
+    public Producto findProductoById(Integer id) {
         // TODO Auto-generated method stub
         return repository.findProductoById(id);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(id));
+        repository.delete(id);
     }
 
     @Override
@@ -161,7 +157,7 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

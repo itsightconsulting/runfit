@@ -35,7 +35,7 @@ public class EspecificacionSubCategoria implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EspecificacionSubCategoriaId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;
@@ -66,15 +66,15 @@ public class EspecificacionSubCategoria implements Identifiable {
     public EspecificacionSubCategoria() {
     }
 
-    public EspecificacionSubCategoria(int id) {
+    public EspecificacionSubCategoria(Integer id) {
         this.id = id;
     }
 
-    public EspecificacionSubCategoria(int id, String nombre) {
+    public EspecificacionSubCategoria(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-    public EspecificacionSubCategoria(int id, String nombre, int nivel) {
+    public EspecificacionSubCategoria(Integer id, String nombre, int nivel) {
         this.id = id;
         this.nombre = nombre;
         this.nivel = nivel;
@@ -102,7 +102,7 @@ public class EspecificacionSubCategoria implements Identifiable {
         this.flagActivo = flagActivo;
     }
 
-    public EspecificacionSubCategoria(int id, String nombre, int nivel, boolean flagActivo, int subCategoriaId , String nombreSubCategoria) {
+    public EspecificacionSubCategoria(Integer id, String nombre, int nivel, boolean flagActivo, int subCategoriaId , String nombreSubCategoria) {
         this.id = id;
         this.nombre = nombre;
         this.nivel = nivel;

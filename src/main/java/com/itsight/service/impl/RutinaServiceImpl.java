@@ -4,8 +4,8 @@ import com.itsight.domain.Dia;
 import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Semana;
-import com.itsight.domain.dto.RutinaDto;
-import com.itsight.domain.dto.SemanaPlantillaDto;
+import com.itsight.domain.dto.RutinaDTO;
+import com.itsight.domain.dto.SemanaPlantillaDTO;
 import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RutinaRepository;
@@ -186,7 +186,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
-    public String registrarByCascada(RutinaDto rutinaDto, int redFitId, int runneId) {
+    public String registrarByCascada(RutinaDTO rutinaDto, int redFitId, int runneId) {
         Rutina nueRutina = new Rutina();
         //Pasando del Dto al objeto
         RutinaControl rc = new RutinaControl();
@@ -214,7 +214,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
 
 
-    private Semana obtenerSemanasRutina(SemanaPlantillaDto semana, Rutina objR){
+    private Semana obtenerSemanasRutina(SemanaPlantillaDTO semana, Rutina objR){
         Semana nueSem = new Semana();
         BeanUtils.copyProperties(semana, nueSem);
         //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)

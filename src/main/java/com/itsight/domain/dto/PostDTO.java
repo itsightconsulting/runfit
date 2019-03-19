@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class PostDto implements Serializable {
+public class PostDTO implements Serializable {
 
     private int id;
 
@@ -22,5 +22,5 @@ public class PostDto implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String duracion;
 
-    public PostDto(){}
+    public PostDTO(){}
 }

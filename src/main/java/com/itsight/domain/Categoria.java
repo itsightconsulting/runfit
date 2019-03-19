@@ -26,7 +26,7 @@ public class Categoria {
             }
     )
     @Column(name = "CategoriaId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;
@@ -53,17 +53,17 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(int id) {
+    public Categoria(Integer id) {
         this.id = id;
     }
 
-    public Categoria(int id, String nombre, String descripcion) {
+    public Categoria(Integer id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public Categoria(int id, String nombre, String descripcion, boolean flagActivo, String rutaWeb, String rutaReal, UUID uuid) {
+    public Categoria(Integer id, String nombre, String descripcion, boolean flagActivo, String rutaWeb, String rutaReal, UUID uuid) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

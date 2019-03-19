@@ -40,15 +40,15 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     }
 
     @Override
-    public void delete(int categoriaId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(categoriaId));
+        repository.delete(id);
     }
 
     @Override
-    public Categoria findOne(int categoriaId) {
+    public Categoria findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(categoriaId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     }
 
     @Override
-    public Categoria findOneWithFT(int id) {
+    public Categoria findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -133,7 +133,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

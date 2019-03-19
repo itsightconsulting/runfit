@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.Date;
 
-public interface TrainerService extends BaseService<Trainer> {
+public interface TrainerService extends BaseService<Trainer, Long> {
 
     String findCodigoTrainerById(int id);
 

@@ -2,7 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Rutina;
-import com.itsight.domain.dto.ResponseDto;
+import com.itsight.domain.dto.ResponseDTO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -93,7 +93,8 @@ public class RutinaHshController {
     }
 
     @GetMapping(value = "/obtenerConsolidado")
-    public @ResponseBody ResponseDto obtenerConsolidadoRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, HttpSession session){
+    public @ResponseBody
+    ResponseDTO obtenerConsolidadoRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, HttpSession session){
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0) {
@@ -101,10 +102,10 @@ public class RutinaHshController {
             String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
             if (codTrainer.equals(qCodTrainer)) {
                 int rutinaEdicionId = (int) session.getAttribute("edicionRutinaId");
-                return new ResponseDto(Integer.parseInt(Enums.ResponseCode.EXITO_GENERICA.get()), ruConsolidadoService.findOne(rutinaEdicionId));
+                return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.EXITO_GENERICA.get()), ruConsolidadoService.findOne(rutinaEdicionId));
             }
         }
-        return new ResponseDto(Integer.parseInt(Enums.ResponseCode.EX_VALIDATION_FAILED.get()), "El cliente ha intentado acceder a un recurso o inexistente o que no tiene acceso");
+        return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.EX_VALIDATION_FAILED.get()), "El cliente ha intentado acceder a un recurso o inexistente o que no tiene acceso");
     }
 
     @PutMapping(value = "/actualizarEstado/{flag}")

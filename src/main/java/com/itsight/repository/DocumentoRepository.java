@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface DocumentoRepository extends JpaRepository<Documento, Integer> {
+public interface DocumentoRepository extends JpaRepository<Documento, Long> {
 
     @Override
     @EntityGraph(value = "documento", attributePaths = {})
@@ -27,15 +27,15 @@ public interface DocumentoRepository extends JpaRepository<Documento, Integer> {
     List<Documento> findAllByNombreContainingIgnoreCase(String nombre);
 
     @EntityGraph(value = "documento", attributePaths = {})
-    Documento findById(int id);
+    Documento findById(Long id);
 
     @Query("SELECT D.nombre FROM Documento D WHERE D.id = ?1 AND D.uuid = ?2")
-    String findNombreByIdAndUuid(int id, UUID uuid);
+    String findNombreByIdAndUuid(Long id, UUID uuid);
 
     @EntityGraph(value = "documento", attributePaths = {})
     List<Documento> findAllByNombreContainingIgnoreCaseAndFlagActivo(String nombre, Boolean flagActivo);
 
     @Modifying
     @Query(value = "UPDATE Documento D SET D.flagActivo =?2 WHERE D.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Long id, boolean flagActivo);
 }

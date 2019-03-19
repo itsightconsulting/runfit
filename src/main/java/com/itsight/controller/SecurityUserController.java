@@ -1,7 +1,7 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.dto.PasswordDto;
+import com.itsight.domain.dto.PasswordDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
@@ -9,7 +9,6 @@ import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,7 +98,7 @@ public class SecurityUserController {
 
     @PostMapping(value = "/cambio-contrasena")
     public @ResponseBody
-    String cambioContrasena(@ModelAttribute PasswordDto password) {
+    String cambioContrasena(@ModelAttribute PasswordDTO password) {
         boolean val = false;
         if(password.getTipoUsuario() == 1){
             if (administradorService.findOne(Integer.parseInt(password.getUserId())).getUsername().trim().equals(password.getUsername().trim())) {

@@ -3,6 +3,9 @@
       th:with="version = ${#ctx.servletContext.getAttribute('version')}, today = ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
   <head>
     <meta charset="utf-8" />
+    <meta name="_csrf" th:attr="content=${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:attr="content=${_csrf.headerName}"/>
     <meta name="_ctx" th:content="@{/}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/font-awesome.min.css}+'?'+${version}"/>
@@ -168,7 +171,7 @@
                 <div class="curve"></div>
                 <p>PASO<span>02</span></p>
               </div></a>
-              <a href="#"><div class="step step-03 active" data-num-sheet="3" onclick="next_step_cs(3)">
+              <a href="#"><div class="step step-03" data-num-sheet="3" onclick="next_step_cs(3)">
                 <div class="curve"></div>
                 <p>PASO<span>03</span></p>
               </div></a>
@@ -211,8 +214,8 @@
                             <div class="col-md-4 pad-0">
                               <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control">
                                 <option value="">Seleccione</option>
-                                <option value="1">CE</option>
-                                <option value="2">DNI</option>
+                                <option value="1">DNI</option>
+                                <option value="2">CE</option>
                                 <option value="3">Otro</option>
                               </select>
                             </div>
@@ -238,7 +241,7 @@
                     <li>
                       <div class="form-group" id="stUbicacion">
                         <label>¿Dónde vives?<span class="obligatorio">*</span></label>
-                        <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" disabled="disabled">
+                        <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" readonly="readonly">
                           <option selected="selected" value="604">Perú</option>
                         </select>
                         <div class="row">
@@ -290,17 +293,17 @@
                         <label>¿Cúal es tu sexo?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
-                            <div class="chk-content" onclick="inpEmbarazo(this)">Mujer
+                            <div class="chk-content">Mujer
                               <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
-                            <div class="chk-content" onclick="inpEmbarazo(this)">Hombre
+                            <div class="chk-content">Hombre
                               <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
-                            <div class="chk-content" onclick="inpEmbarazo(this)">Otro
+                            <div class="chk-content">Otro
                               <input type="radio" name="Sexo" value="3"/><span class="checkmark"></span>
                             </div>
                           </li>
@@ -719,63 +722,24 @@
                         </div>
                       </li>
                       <li>
+
+                        <div class="form-group">
+                          <label>¿Cuál es el nivel de atleta con el que te identificarías?<span class="obligatorio">*</span></label>
+                          <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control">
+                            <option value="1">Básico</option>
+                            <option value="2">Intermedio</option>
+                            <option value="3">Avanzado</option>
+                          </select>
+                        </div>
+                      </li>
+                      <li>
                         <div class="form-group">
                           <label>De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
                           <div class="col-md-12 pad-0">
                             <ul class="checks">
-                              <li>
-                                <div class="chk-content">Fuerza
+                              <li th:each="cm: ${lstCondMejoras}">
+                                <div class="chk-content" th:inline="text">[[${cm.nombre}]]
                                   <input name="Mejoras" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Velocidad
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Resistencia
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Flexibilidad
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Métodos respiratorios
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Proceso de recuperación
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Técnica de carrera
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Disciplina
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Hábitos alimenticios
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Cantidad y calidad de sueño
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="chk-content">Administración del esfuerzo
-                                  <input name="Mejoras" type="checkbox"/><span class="checkmark"></span>
                                 </div>
                               </li>
                             </ul>
@@ -790,7 +754,7 @@
                 </div>
               </div>
             </div>
-            <div class="row ficha-03 fade-ficha inpts-3 active">
+            <div class="row ficha-03 fade-ficha inpts-3">
               <div class="col-md-12">
                 <p class="desc">Ya falta poco para terminar</p>
               </div>
@@ -1154,7 +1118,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <textarea class="form-control" placeholder="Especificar otra parte"></textarea>
+                        <textarea id="DesgasteZapatillaOtro" class="form-control" placeholder="Especificar otra parte"></textarea>
                       </div>
                     </li>
                     <li>
@@ -1190,7 +1154,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <textarea class="form-control" placeholder="Especificar otro"></textarea>
+                        <textarea id="DesTerPredomOtro" class="form-control" placeholder="Especificar otro"></textarea>
                       </div>
                     </li>
                   </ol>
@@ -1519,6 +1483,9 @@
 
       function mainSeeders(){
         getUbigeoPeruLim();
+        if(flag_form_populate){
+          populateForm();
+        }
       }
 
       function getUbigeoPeruLim(){
@@ -1644,8 +1611,82 @@
                          </li>`;
       }
 
+      function fadeLoadingDiv(div){
+        div.classList.toggle("divMessageBox");
+        div.classList.toggle("animated");
+        div.classList.toggle("fadeIn");
+        div.classList.toggle("fast");
+      }
+
       function sendForm(){
-        alert('success broski!');
+        const body = generateBody();
+        const fadeBox = document.getElementById('divSmallBoxes');
+        fadeLoadingDiv(fadeBox);
+
+        $.ajax({
+          type: 'POST',
+          contentType: 'application/json',
+          url: _ctx + 'gestion/cliente/fitness/agregar',
+          dataType: 'json',
+          data: JSON.stringify(body),
+          success: function (res) {
+            console.log(res);
+          }, error: (xhr) => {
+            exception(xhr);
+          }, complete: () => {
+            fadeLoadingDiv(fadeBox);
+          }
+        })
+      }
+
+      function generateBody(){
+        const obj = getFormData($('#frmRegistro'));
+        //Ubigeo
+        obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+        obj.cliFit = {};
+
+        obj.cliFit.correoSecundario = document.getElementById('Correo').value;
+        obj.cliFit.estadoCivil = document.getElementById('EstadoCivil').value;
+        obj.cliFit.sexo = document.querySelector('input[name="Sexo"]:checked').value
+        obj.cliFit.peso = document.getElementById('Peso').value;
+        obj.cliFit.talla = document.getElementById('Talla').value;
+        obj.cliFit.imc = document.getElementById('Imc').value;
+        obj.cliFit.nivel = document.getElementById('NivelAtleta').value;
+
+        //private CondicionMejora mejoras;
+        obj.cliFit.tiempoUnKilometro = document.getElementById('TiempoUnKilometro').value;
+        obj.cliFit.kilometrajePromedioSemana = document.getElementById('KilometrajePromedioSemana').value;
+        obj.cliFit.diasSemanaCorriendo = document.getElementById('DiasSemanaCorriendo').value;
+        obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
+        obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
+        obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
+        obj.cliFit.objetivosDescripcion = document.getElementById('DesObjetivos').value;
+        obj.cliFit.terrenoPredominante = getValuesConcatInpCheckbox('DesTerPredom');
+        //private ListObjetivo objetivos;
+        //private CondicionAnatomica condicionAnatomica;
+        //private Salud salud;
+        //private ListCompetenciaRunner competencias;
+        //obj.cliFit.frecuenciaComunicacion = document.getElementById('FrecuenciaComunicacion').value;
+        //obj.cliFit.viaConexion = document.getElementById('ViaConexion').value;
+        //private UsuarioDTO usuario;
+        return obj;
+      }
+
+      function getValuesConcatInpCheckbox(name){
+        const inpts = document.querySelectorAll(`input[name="${name}"]:checked`);
+        if(inpts.length > 0){
+          return Array.from(inpts).map((v)=>
+            {
+              if(v.value === "Otro"){
+                const txtOtro = document.getElementById(`${name}Otro`);
+                if(txtOtro.value.trim().length>0) {
+                  return txtOtro.value;
+                }
+              }else{
+                return v.value;
+              }
+            }).filter(x=>x).join();
+        }
       }
 
       function depYprovChange(depId, provId, pos){
@@ -1668,18 +1709,6 @@
         }).catch((err)=>{
           exception(err);
         });
-      }
-
-      function inpEmbarazo(e){
-          const inpGenero = e.firstElementChild.value;
-          const liFgEmb = document.getElementById('liFlagEmbarazo');
-          if(inpGenero != 1){
-              liFgEmb.querySelector('.form-group').style.display = 'block';
-              liFgEmb.classList.remove('li-bef-imp');
-          }else{
-              liFgEmb.querySelector('.form-group').style.display = 'none';
-              liFgEmb.classList.add('li-bef-imp');
-          }
       }
 
       function hideShowGenericInp(ele){
@@ -1986,6 +2015,40 @@
 
       function cxRq(id){
         return $(id).is(':checked');
+      }
+
+      function populateForm(){
+        //Page 1
+        document.querySelector('#Nombres').value = "Pedro";
+        document.querySelector('#Apellidos').value = "Sotelo";
+        document.querySelector('#FechaNacimiento').value = "1993-02-28";
+        document.querySelector('#TipoDocumentoId').value = 1;
+        document.querySelector('#NumeroDocumento').value = 42424242;
+        document.querySelector('#Correo').value = "pedro.sotelo@gmail.com";
+        document.querySelector('#Movil').value = "987651234";
+        document.querySelector('#Peso').value = 77;
+        document.querySelector('#Talla').value = 177;
+        document.querySelector('#Imc').value = 77;
+
+        //Page 2
+        document.querySelector('#ContactoEmergencia').value = "987654321/Augusto";
+        document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
+        document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
+        document.querySelector('#FrecuenciaCardiaca').value = 177;
+        document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
+        document.querySelector('input[name="Mejoras"]').checked = true;
+
+        //Page 3
+        document.querySelector('#KilometrajePromedioSemana').value = 30;
+        document.querySelector('#DesObjetivos').value = "Ser el mejor";
+        document.querySelector('#DesComp').value = "Maratón de Boston";
+
+        var tid = setInterval( function () {
+          if ( document.readyState !== 'complete' ) return;
+          else document.getElementById('btnGuardar').click();
+          clearInterval( tid );
+          // do your work
+        }, 100 );
       }
 
     </script>

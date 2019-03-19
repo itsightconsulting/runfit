@@ -2,7 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.domain.KilometrajeBase;
 import com.itsight.domain.PorcentajesKilometraje;
-import com.itsight.domain.dto.PorcentajeKilometrajeDto;
+import com.itsight.domain.dto.PorcentajeKilometrajeDTO;
 import com.itsight.service.KilometrajeBaseService;
 import com.itsight.service.PorcentajesKilometrajeService;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class CalculoController {
     }
 
     @PutMapping("/porcentajes-kilo/actualizar")
-    public @ResponseBody String actualizarPorcetanjesKilometrajeByDistancia(@RequestBody List<PorcentajeKilometrajeDto> porcentajes, HttpSession session){
+    public @ResponseBody String actualizarPorcetanjesKilometrajeByDistancia(@RequestBody List<PorcentajeKilometrajeDTO> porcentajes, HttpSession session){
         int trainerId = (int) session.getAttribute("id");
         int distancia = porcentajes.get(0).getDistancia();
         porcentajesKilometrajeService.actualizarPorcentajesComplexByTrainerIdAndDistancia(trainerId, distancia, porcentajes);

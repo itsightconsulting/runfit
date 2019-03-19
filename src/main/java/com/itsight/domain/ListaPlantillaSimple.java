@@ -24,7 +24,7 @@ public class ListaPlantillaSimple implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ListaPlantillaSimpleId")
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String nombre;

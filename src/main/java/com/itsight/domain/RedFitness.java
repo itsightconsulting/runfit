@@ -45,7 +45,7 @@ public class RedFitness implements Serializable {
             }
     )
     @Column(name = "RedFitnessId")
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private int contadorRutinas;
     @Column(nullable = false)
@@ -76,11 +76,11 @@ public class RedFitness implements Serializable {
     public RedFitness(){
     }
 
-    public RedFitness(int id){
+    public RedFitness(Long id){
         this.id = id;
     }
 
-    public RedFitness(int trainerId, int clienteId){
+    public RedFitness(int trainerId, Long clienteId){
         this.trainer = new Trainer(trainerId);
         this.cliente = new Cliente(clienteId);
         this.fechaCreacion = new Date();

@@ -6,7 +6,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface CategoriaVideoService extends BaseService<CategoriaVideo> {
+public interface CategoriaVideoService extends BaseService<CategoriaVideo, Integer> {
 
     void insertArtificio();
 

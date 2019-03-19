@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface VideoService extends BaseService<Video> {
+public interface VideoService extends BaseService<Video, Long> {
 
     String obtenerNombrePorId(int id, String uuid);
 

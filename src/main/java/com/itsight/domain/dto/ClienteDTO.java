@@ -1,12 +1,14 @@
 package com.itsight.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class CliDTO implements Serializable  {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ClienteDTO implements Serializable  {
 
     private String nombres;
     private String apellidos;
@@ -15,6 +17,10 @@ public class CliDTO implements Serializable  {
     private String movil;
     private Date fechaNacimiento;
     private String username;
-    /*private String */
+    /*FK's*/
+    private Integer tipoDocumentoId;
+    private Integer paisId;
+    private String ubigeo;
+    private ClienteFitnessDTO cliFit;
 
 }

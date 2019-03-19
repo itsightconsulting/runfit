@@ -1,6 +1,5 @@
 package com.itsight.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Documento;
 import com.itsight.service.DocumentoService;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,8 +61,8 @@ public class DocumentoController {
 
     @GetMapping(value = "/obtener")
     public @ResponseBody
-    Documento obtenerPorId(@RequestParam(value = "id") int documentoId) {
-        return documentoService.findOne(documentoId);
+    Documento obtenerPorId(@RequestParam(value = "id") Long id) {
+        return documentoService.findOne(id);
     }
 
     @PostMapping(value = "/agregar")
@@ -80,7 +78,7 @@ public class DocumentoController {
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody
-    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
+    String desactivar(@RequestParam(value = "id") Long id, @RequestParam boolean flagActivo) {
         try {
             documentoService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();
@@ -93,14 +91,14 @@ public class DocumentoController {
     public @ResponseBody
     String guardarArchivo(
             @RequestPart(value = "documento") MultipartFile documento,
-            @RequestParam(value = "documentoId") Integer documentoId, HttpServletRequest request) {
+            @RequestParam(value = "id") Long id, HttpServletRequest request) {
         if (documento != null) {
-            guardarFile(documento, documentoId);
+            guardarFile(documento, id);
         }
         return EXITO_GENERICA.get();
     }
 
-    private void guardarFile(MultipartFile file, int id) {
+    private void guardarFile(MultipartFile file, Long id) {
         if (!file.isEmpty()) {
             try {
 

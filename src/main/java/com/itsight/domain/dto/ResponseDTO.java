@@ -1,6 +1,6 @@
 package com.itsight.domain.dto;
 
-public class ResponseDto {
+public class ResponseDTO {
 
     /// <summary>
     /// Codigo de la petición
@@ -12,9 +12,9 @@ public class ResponseDto {
     /// </summary>
     private Object data;
 
-    public ResponseDto(){}
+    public ResponseDTO(){}
 
-    public ResponseDto(int responseCode, Object data) {
+    public ResponseDTO(int responseCode, Object data) {
         this.responseCode = responseCode;
         this.data = data;
     }

@@ -1,12 +1,12 @@
 package com.itsight.service;
 
 import com.itsight.domain.Rutina;
-import com.itsight.domain.dto.RutinaDto;
+import com.itsight.domain.dto.RutinaDTO;
 import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface RutinaService extends BaseService<Rutina> {
+public interface RutinaService extends BaseService<Rutina, Long> {
 
     Rutina findLastByRedFitnessId(int id);
 
@@ -26,7 +26,7 @@ public interface RutinaService extends BaseService<Rutina> {
 
     void updateDiasFlagEnvio(int indexsemana, int indexdia);
 
-    String registrarByCascada(RutinaDto rutinaDto, int redFitId, int runneId);
+    String registrarByCascada(RutinaDTO rutinaDto, int redFitId, int runneId);
 
     String actualizarFlagActivo(boolean flagActivo);
 

@@ -17,6 +17,6 @@ public interface ObjetivoRepository extends JpaRepository<Objetivo, Integer> {
 
     @Modifying
     @Query(value = "UPDATE Objetivo O SET O.flagActivo =?2 WHERE O.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
 }

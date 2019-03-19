@@ -3,6 +3,7 @@ package com.itsight.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.jsonb.*;
+import com.itsight.domain.jsonb.CondicionMejora;
 import com.itsight.domain.jsonb.Objetivo;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -42,22 +43,22 @@ public class ClienteFitness implements Serializable {
                 @Parameter(name = "increment_size", value = "1")
         })
     @Column(name="ClienteFitnessId")
-    private int id;
+    private Long id;
     @Column
     private String correoSecundario;
     @Column
-    private int estadoCivil;
+    private Integer estadoCivil;
     @Column(nullable = false)
-    private int sexo;
+    private Integer sexo;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     @Column(precision = 5, scale = 2, nullable = false)
     private BigDecimal peso;
     @Column(nullable = false)
-    private int talla;
+    private Integer talla;
     @Column(nullable = false)
-    private int imc;
+    private Integer imc;
     @Column(nullable = false)
-    private int nivel;
+    private Integer nivel;//Nivel del atleta
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<CondicionMejora> mejoras;
@@ -67,21 +68,21 @@ public class ClienteFitness implements Serializable {
     @Column(precision = 4, scale = 2, nullable = false)
     private BigDecimal kilometrajePromedioSemana;
     @Column(nullable = false)
-    private int diasSemanaCorriendo;
+    private Integer diasSemanaCorriendo;
     @Column(nullable = false)
-    private boolean flagCalentamiento;
+    private Boolean flagCalentamiento;
     @Column(nullable = false)
-    private boolean flagEstiramientos;
+    private Boolean flagEstiramientos;
     @Column(nullable = false)
     private String desgasteZapatilla;
     @Column(nullable = false)
     private String desObjetivos;
     @Column(nullable = false)
     private String desTerPredom;
-    @Column(nullable = false)
-    private int diaDescanso;
+    //@Column(nullable = false)
+    //private int diaDescanso;
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb", nullable = false)
+    @Column(columnDefinition = "jsonb")
     private List<TiempoDisponible> tiemposDisponibles;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
@@ -91,14 +92,17 @@ public class ClienteFitness implements Serializable {
     private CondicionAnatomica condicionAnatomica;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
+    private Salud salud;
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb", nullable = false)
     private List<CompetenciaRunner> competencias;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<FitElemento> fitElementos;
     @Column(nullable = false)
-    private int frecuenciaComunicacion;
+    private Integer frecuenciaComunicacion;
     @Column(nullable = false)
-    private int viaConexion;
+    private Integer viaConexion;
     @Column(nullable = true)
     private String contEmergencia;
     @Column(nullable = false)

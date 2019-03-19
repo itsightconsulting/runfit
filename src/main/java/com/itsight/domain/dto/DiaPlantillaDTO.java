@@ -1,6 +1,5 @@
 package com.itsight.domain.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleSerializer;
@@ -9,31 +8,24 @@ import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-
 
 @TypeDefs({
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RutinaPlantillaDto implements Serializable {
-
+public class DiaPlantillaDTO {
     private int id;
-    private int anios;
-    private int meses;
-    private int totalSemanas;
-    private int dias;
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    private Date fechaInicio;
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    private Date fechaFin;
+    private int dia;
+    private String literal;
+    private boolean flagDescanso;
 
-    private List<SemanaPlantillaDto> semanas;
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    private Date fecha;
 
-    public RutinaPlantillaDto(){}
+    //private List<Lista> listas;
+
+    public DiaPlantillaDTO(){}
 
 }

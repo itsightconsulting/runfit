@@ -26,9 +26,9 @@ public class DiaPlantillaServiceImpl extends BaseServiceImpl<DiaPlantillaReposit
     }
 
     @Override
-    public void delete(int rutinaId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(rutinaId));
+        repository.delete(id);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class DiaPlantillaServiceImpl extends BaseServiceImpl<DiaPlantillaReposit
     }
 
     @Override
-    public DiaPlantilla findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public DiaPlantilla findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public DiaPlantilla findOneWithFT(int id) {
+    public DiaPlantilla findOneWithFT(Long id) {
         return null;
     }
 
@@ -82,7 +82,7 @@ public class DiaPlantillaServiceImpl extends BaseServiceImpl<DiaPlantillaReposit
     }
 
     @Override
-    public List<DiaPlantilla> findByIdsIn(List<Integer> ids) {
+    public List<DiaPlantilla> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -102,56 +102,56 @@ public class DiaPlantillaServiceImpl extends BaseServiceImpl<DiaPlantillaReposit
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public List<Integer> encontrarIdPorSemanaId(int semanaId) {
+    public List<Integer> encontrarIdPorSemanaId(Long semanaId) {
         return repository.findIdBySemanaId(semanaId);
     }
 
     @Override
-    public void actualizarNombreListaByListaIndexAndId(String nombre, int listaIndice, int diaPlantillaId) {
+    public void actualizarNombreListaByListaIndexAndId(String nombre, int listaIndice, Long id) {
         String texto = "{"+listaIndice+",\"nombre\"}";
-        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(diaPlantillaId, nombre, texto);
+        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, nombre, texto);
     }
 
     @Override
-    public void insertarNuevaListaById(int diaPlantillaId, String lista) {
-        repository.saveListaDia(diaPlantillaId, lista);
+    public void insertarNuevaListaById(Long id, String lista) {
+        repository.saveListaDia(id, lista);
     }
 
     @Override
-    public void insertarNuevoElementoById(int diaPlantillaId, int listaIndice, int elementoIndice, String elemento) {
+    public void insertarNuevoElementoById(Long id, int listaIndice, int elementoIndice, String elemento) {
         String texto = "{"+listaIndice+",\"elementos\""+","+elementoIndice+"}";
-        repository.saveElemento(diaPlantillaId, texto, elemento);
+        repository.saveElemento(id, texto, elemento);
     }
 
     @Override
-    public void insertarNuevosElementosById(int diaPlantillaId, int listaIndice, String elemento) {
+    public void insertarNuevosElementosById(Long id, int listaIndice, String elemento) {
         String texto = "{"+listaIndice+",\"elementos\"}";
-        repository.saveElementos(diaPlantillaId, listaIndice, texto, elemento);
+        repository.saveElementos(id, listaIndice, texto, elemento);
     }
 
     @Override
-    public void actualizarFlagDescanso(int id, boolean flagDescanso) {
+    public void actualizarFlagDescanso(Long id, boolean flagDescanso) {
         repository.updateFlagDescanso(id, flagDescanso);
     }
 
     @Override
-    public void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int diaPlantillaId, int listaIndice, int elementoIndice, String nombre) {
+    public void actualizarNombreElementoByListaIndexAndElementoIndexAndId(Long id, int listaIndice, int elementoIndice, String nombre) {
         String texto = "{"+listaIndice+",\"elementos\""+","+elementoIndice+",\"nombre\"}";
-        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(diaPlantillaId, nombre, texto);
+        repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, nombre, texto);
     }
 
     @Override
-    public void eliminarListaById(int id, int listaIndice) {
+    public void eliminarListaById(Long id, int listaIndice) {
         repository.deleteListaById(id, listaIndice);
     }
 
     @Override
-    public void eliminarElementoById(int id, int listaIndice, int elementoIndice) {
+    public void eliminarElementoById(Long id, int listaIndice, int elementoIndice) {
         String texto = "{"+listaIndice+",elementos,"+elementoIndice+"}";
         System.out.println("> Query :"+texto);
         repository.eliminarElementoById(id, texto);

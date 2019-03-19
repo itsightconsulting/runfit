@@ -19,7 +19,7 @@ public class ImagenPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ImagenPlanId")
-    private int id;
+    private Integer id;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

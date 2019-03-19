@@ -33,9 +33,9 @@ public class PaqueteServiceImpl extends BaseServiceImpl<PaqueteRepository> imple
     }
 
     @Override
-    public Paquete getPaqueteById(int paqueteId) {
+    public Paquete getPaqueteById(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(paqueteId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -45,9 +45,9 @@ public class PaqueteServiceImpl extends BaseServiceImpl<PaqueteRepository> imple
     }
 
     @Override
-    public void delete(int paqueteId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(paqueteId));
+        repository.delete(id);
     }
 
     @Override
@@ -62,12 +62,12 @@ public class PaqueteServiceImpl extends BaseServiceImpl<PaqueteRepository> imple
     }
 
     @Override
-    public Paquete findOne(int id) {
+    public Paquete findOne(Integer id) {
         return null;
     }
 
     @Override
-    public Paquete findOneWithFT(int id) {
+    public Paquete findOneWithFT(Integer id) {
         return null;
     }
 
@@ -132,7 +132,7 @@ public class PaqueteServiceImpl extends BaseServiceImpl<PaqueteRepository> imple
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
     }
 }

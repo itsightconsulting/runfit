@@ -31,21 +31,21 @@ public class ProductoPresentacionServiceImpl extends BaseServiceImpl<ProductoPre
     }
 
     @Override
-    public ProductoPresentacion findOne(int id) {
+    public ProductoPresentacion findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(id));
+        return repository.findOne(id);
     }
 
     @Override
-    public ProductoPresentacion findOneWithFT(int id) {
+    public ProductoPresentacion findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(id));
+        repository.delete(id);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ProductoPresentacionServiceImpl extends BaseServiceImpl<ProductoPre
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

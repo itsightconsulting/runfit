@@ -28,17 +28,17 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     }
 
     @Override
-    public MiniPlantilla findOne(int id) {
+    public MiniPlantilla findOne(Long id) {
         return null;
     }
 
     @Override
-    public MiniPlantilla findOneWithFT(int id) {
+    public MiniPlantilla findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {}
+    public void delete(Long id) {}
 
     @Override
     public List<Integer> findIdsByFlagActivo(boolean flagActivo) {
@@ -76,7 +76,7 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     }
 
     @Override
-    public List<MiniPlantilla> findByIdsIn(List<Integer> ids) {
+    public List<MiniPlantilla> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -96,27 +96,22 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public MiniPlantilla findByTrainerIdAndEspecificacionSubCategoriaId(int id, int espSubCatId) {
+    public MiniPlantilla findByTrainerIdAndEspecificacionSubCategoriaId(Long id, Integer espSubCatId) {
         return repository.findByTrainerIdAndEspecificacionSubCategoriaId(id, espSubCatId);
     }
 
     @Override
-    public List<MiniPlantilla> findAllByTrainerId(int trainerId) {
+    public List<MiniPlantilla> findAllByTrainerId(Long trainerId) {
         return repository.findAllByTrainerId(trainerId);
     }
 
     @Override
-    public void relacionarNuevasEspecificaciones(Integer espSubCatId) {
-        repository.saveEspecificacionesMiniPlantilla(espSubCatId);
-    }
-
-    @Override
-    public int findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(int id, int esSubCatId) {
+    public int findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(Long id, Integer esSubCatId) {
         return repository.findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(id, esSubCatId);
     }
 
@@ -126,8 +121,8 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
     }
 
     @Override
-    public List<MiniPlantilla> findAllByListTrainerIdBySubCategoriaId(List<Integer> list,int idsubcategoria) {
-        return repository.findAllByListTrainerIdBySubCategoriaId(list,idsubcategoria);
+    public List<MiniPlantilla> findAllByListTrainerIdBySubCategoriaId(List<Long> list, Integer idsubcategoria) {
+        return repository.findAllByListTrainerIdBySubCategoriaId(list, idsubcategoria);
     }
 
 

@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface VideoAudioFavoritoService extends BaseService<VideoAudioFavorito> {
+public interface VideoAudioFavoritoService extends BaseService<VideoAudioFavorito, Long> {
 
     VideoAudioFavorito getVideoAudioFavoritoAudio(int clienteId, int idaudio);
     VideoAudioFavorito getVideoAudioFavoritoVideo(int clienteId, int idvideo);

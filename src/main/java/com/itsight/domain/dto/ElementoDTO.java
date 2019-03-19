@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ElementoDto implements Serializable {
+public class ElementoDTO implements Serializable {
 
     private String nombre;
     private String nota;
@@ -34,5 +34,5 @@ public class ElementoDto implements Serializable {
     @JsonInclude(Include.NON_DEFAULT)
     private int elementoIndice;
 
-    public ElementoDto(){}
+    public ElementoDTO(){}
 }

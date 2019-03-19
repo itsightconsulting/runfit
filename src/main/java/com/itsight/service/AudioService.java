@@ -6,7 +6,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface AudioService extends BaseService<Audio> {
+public interface AudioService extends BaseService<Audio, Long> {
 
     List<Audio> listarPorFiltroSecundario(String comodin, String tipo);
 

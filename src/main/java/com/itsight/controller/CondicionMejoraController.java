@@ -1,8 +1,9 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.CapacidadMejora;
-import com.itsight.service.CapacidadMejoraService;
+import com.itsight.domain.CondicionMejora;
+import com.itsight.domain.dto.CondicionMejoraDTO;
+import com.itsight.service.CondicionMejoraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,60 +12,60 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-import static com.itsight.util.Enums.ResponseCode.*;
-import static com.itsight.util.Utilitarios.customResponse;
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 
 @Controller
-@RequestMapping("/gestion/capacidad-mejora")
-public class CapacidadMejoraController {
+@RequestMapping("/gestion/condicion-mejora")
+public class CondicionMejoraController {
 
-    private CapacidadMejoraService capacidadMejoraService;
+    private CondicionMejoraService condicionMejoraService;
 
     @Autowired
-    public CapacidadMejoraController(CapacidadMejoraService capacidadMejoraService) {
+    public CondicionMejoraController(CondicionMejoraService condicionMejoraService) {
         // TODO Auto-generated constructor stub
-        this.capacidadMejoraService = capacidadMejoraService;
+        this.condicionMejoraService = condicionMejoraService;
     }
 
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView principalCapacidadMejora() {
+    public ModelAndView principalCondicionMejora() {
         return new ModelAndView(ViewConstant.MAIN_CAPACIDAD_MEJORA);
     }
 
     @GetMapping(value = "/listarTodos")
     public @ResponseBody
-    List<CapacidadMejora> listarConFiltrosWithoutFilters(){
-        return capacidadMejoraService.findAll();
+    List<CondicionMejoraDTO> listarWithoutFilters(){
+        return condicionMejoraService.getAll();
     }
 
     @GetMapping(value = "/obtenerListado/{comodin}")
     public @ResponseBody
-    List<CapacidadMejora> listarConFiltro(
+    List<CondicionMejora> listarConFiltro(
             @PathVariable("comodin") String comodin){
-        return capacidadMejoraService.listarPorFiltro (comodin, "", "");
+        return condicionMejoraService.listarPorFiltro (comodin, "", "");
     }
 
     @GetMapping(value = "/obtener")
     public @ResponseBody
-    CapacidadMejora obtenerEspecifico(@RequestParam(value = "id") int capacidadMejoraId) {
-        return capacidadMejoraService.findOne(capacidadMejoraId);
+    CondicionMejora obtenerEspecifico(@RequestParam(value = "id") int capacidadMejoraId) {
+        return condicionMejoraService.findOne(capacidadMejoraId);
     }
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute CapacidadMejora capacidadMejora) {
+    String nuevo(@ModelAttribute CondicionMejora capacidadMejora) {
         if (capacidadMejora.getId() == 0) {
-            return capacidadMejoraService.registrar(capacidadMejora, null);
+            return condicionMejoraService.registrar(capacidadMejora, null);
         }
-        return capacidadMejoraService.actualizar(capacidadMejora, null);
+        return condicionMejoraService.actualizar(capacidadMejora, null);
     }
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody
     String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
-            capacidadMejoraService.actualizarFlagActivoById(id, flagActivo);
+            condicionMejoraService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();
         } catch (Exception e) {
             return EX_GENERIC.get();

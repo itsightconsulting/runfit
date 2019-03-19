@@ -22,7 +22,7 @@ public class Pais {
 
     @Id
     @Column(name = "PaisId")
-    private int id;
+    private Integer id;
 
     @NotNull
     @Size(min = 1, max = 255)

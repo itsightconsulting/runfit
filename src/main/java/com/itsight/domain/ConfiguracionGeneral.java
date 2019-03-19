@@ -34,7 +34,7 @@ public class ConfiguracionGeneral extends AuditingEntity {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             }
     )
-    private int id;
+    private Integer id;
 
     @NotNull
     @Size(min=4)

@@ -35,7 +35,7 @@ import java.util.List;
 public class Cliente extends AuditingEntity implements Serializable {
 
     @Id
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private String nombres;
     @Column(nullable = false)
@@ -112,7 +112,7 @@ public class Cliente extends AuditingEntity implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public Cliente(int id) {
+    public Cliente(Long id) {
         // TODO Auto-generated constructor stub
         this.id = id;
     }
@@ -123,7 +123,7 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.apellidos = apellidos;
     }
     public Cliente(String nombres, String apellidos, String correo, String movil, String username,
-                   String numeroDocumento, int tipoDocumentId, int tipoUsuarioId, boolean flagActivo) {
+                   String numeroDocumento, Integer tipoDocumentId, Integer tipoUsuarioId, boolean flagActivo) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -144,16 +144,16 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.pais = pais;
     }
 
-    public void setPais(int paisId){
+    public void setPais(Integer paisId){
         this.pais = new Pais(paisId);
     }
 
 
-    public void setTipoUsuario(int id) {
-        this.tipoUsuario = new TipoUsuario(id);
+    public void setTipoUsuario(Integer tipoUsuarioId) {
+        this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
     }
-    public void setTipoDocumento(int id) {
-        this.tipoDocumento = new TipoDocumento(id);
+    public void setTipoDocumento(Integer tipoDocumentoId) {
+        this.tipoDocumento = new TipoDocumento(tipoDocumentoId);
     }
 
     public String getNombreCompleto() {

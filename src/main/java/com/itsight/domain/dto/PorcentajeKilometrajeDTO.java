@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class PorcentajeKilometrajeDto implements Serializable {
+public class PorcentajeKilometrajeDTO implements Serializable {
 
     private int indice;
     private int distancia;

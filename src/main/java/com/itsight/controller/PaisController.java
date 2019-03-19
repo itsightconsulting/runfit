@@ -1,6 +1,6 @@
 package com.itsight.controller;
 
-import com.itsight.domain.dto.UbPeruLimDto;
+import com.itsight.domain.dto.UbPeruLimDTO;
 import com.itsight.service.UbPeruService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,17 +21,20 @@ public class PaisController {
     }
 
     @GetMapping("/get/peru-lim")
-    public @ResponseBody UbPeruLimDto getUbigeoPeruLim(){
+    public @ResponseBody
+    UbPeruLimDTO getUbigeoPeruLim(){
         return ubPeruService.findPeLimUbigeo();
     }
 
     @GetMapping("/get/peru-prov-by-dep")
-    public @ResponseBody UbPeruLimDto getUbigeoPeruProvByDep(@RequestParam("depId") String depId){
+    public @ResponseBody
+    UbPeruLimDTO getUbigeoPeruProvByDep(@RequestParam("depId") String depId){
         return ubPeruService.findPeProvByDep(depId);
     }
 
     @GetMapping("/get/peru-dis-by-dep-and-prov")
-    public @ResponseBody UbPeruLimDto getUbigeoPeruDistByDepAndProv(@RequestParam("depId") String depId, @RequestParam("provId") String provId){
+    public @ResponseBody
+    UbPeruLimDTO getUbigeoPeruDistByDepAndProv(@RequestParam("depId") String depId, @RequestParam("provId") String provId){
         return ubPeruService.findPeDistByDepAndProv(depId, provId);
     }
 }

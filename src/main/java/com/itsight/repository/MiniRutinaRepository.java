@@ -9,17 +9,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MiniRutinaRepository extends JpaRepository<MiniRutina, Integer> {
+public interface MiniRutinaRepository extends JpaRepository<MiniRutina, Long> {
 
     @Query("SELECT M FROM MiniRutina M INNER JOIN FETCH M.categoria C WHERE M.trainer.id = ?1 ORDER BY M.id")
-    List<MiniRutina> findAllByTrainerId(int trainerId);
+    List<MiniRutina> findAllByTrainerId(Long trainerId);
 
     @Query("SELECT M FROM MiniRutina M WHERE M.trainer.id = ?1 AND M.categoria.id = ?2")
-    MiniRutina findByTrainerIdAndEspecificacionSubCategoriaId(int trainerId, int especificacionSubCatId);
+    MiniRutina findByTrainerIdAndEspecificacionSubCategoriaId(Long trainerId, Integer especificacionSubCatId);
 
     @Query("SELECT M.categoria.id FROM MiniRutina M WHERE M.trainer.id = ?1")
-    List<Integer> findAllCategoriaIdByTrainerId(int trainerId);
+    List<Integer> findAllCategoriaIdByTrainerId(Long trainerId);
 
     @Query("SELECT M FROM MiniRutina M WHERE M.categoria.id = ?1 AND M.trainer.id = ?2")
-    MiniRutina findByCategoriaIdAndTrainerId(int catId, int trainerId);
+    MiniRutina findByCategoriaIdAndTrainerId(Integer catId, Long trainerId);
 }

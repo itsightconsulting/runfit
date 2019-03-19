@@ -29,17 +29,17 @@ public class ListaPlantillaSimpleServiceImpl extends BaseServiceImpl<ListaPlanti
     }
 
     @Override
-    public ListaPlantillaSimple findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public ListaPlantillaSimple findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public ListaPlantillaSimple findOneWithFT(int id) {
+    public ListaPlantillaSimple findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
 
     }
 
@@ -79,7 +79,7 @@ public class ListaPlantillaSimpleServiceImpl extends BaseServiceImpl<ListaPlanti
     }
 
     @Override
-    public List<ListaPlantillaSimple> findByIdsIn(List<Integer> ids) {
+    public List<ListaPlantillaSimple> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -99,7 +99,7 @@ public class ListaPlantillaSimpleServiceImpl extends BaseServiceImpl<ListaPlanti
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 }

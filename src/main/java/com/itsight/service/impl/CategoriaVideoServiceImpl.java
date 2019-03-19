@@ -4,7 +4,6 @@ import com.itsight.domain.CategoriaVideo;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.CategoriaVideoRepository;
 import com.itsight.service.CategoriaVideoService;
-import com.itsight.util.Enums;
 import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.Utilitarios;
 import org.springframework.stereotype.Service;
@@ -34,31 +33,31 @@ public class CategoriaVideoServiceImpl extends BaseServiceImpl<CategoriaVideoRep
     }
 
     @Override
-    public CategoriaVideo findOne(int subTipoVideoId) {
+    public CategoriaVideo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(subTipoVideoId);
+        return repository.findById(id);
     }
 
     @Override
-    public CategoriaVideo save(CategoriaVideo subTipoVideo) {
+    public CategoriaVideo save(CategoriaVideo catVideo) {
         // TODO Auto-generated method stub
-        return repository.save(subTipoVideo);
+        return repository.save(catVideo);
     }
 
     @Override
-    public CategoriaVideo update(CategoriaVideo subTipoVideo) {
+    public CategoriaVideo update(CategoriaVideo catVideo) {
         // TODO Auto-generated method stub
-        return repository.saveAndFlush(subTipoVideo);
+        return repository.saveAndFlush(catVideo);
     }
 
     @Override
-    public void delete(int subTipoVideoId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(subTipoVideoId));
+        repository.delete(id);
     }
 
     @Override
-    public CategoriaVideo findOneWithFT(int id) {
+    public CategoriaVideo findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -141,7 +140,7 @@ public class CategoriaVideoServiceImpl extends BaseServiceImpl<CategoriaVideoRep
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

@@ -11,10 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer> {
+public interface RedFitnessRepository extends JpaRepository<RedFitness, Long> {
 
     @EntityGraph(value = "redFitness.cliente")
-    RedFitness findOneById(int id);
+    RedFitness findOneById(Long id);
 
     @EntityGraph(value = "redFitness.cliente")
     @Query("SELECT R FROM RedFitness R JOIN FETCH R.cliente U JOIN FETCH R.trainer RU  WHERE R.trainer.codigoTrainer = ?1")
@@ -22,31 +22,31 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.nota = ?2 WHERE R.id = ?1")
-    void actualizarNotaACliente(int id, String nota);
+    void actualizarNotaACliente(Long id, String nota);
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaFinalPlanificacion = ?3, R.contadorRutinas = R.contadorRutinas + ?4 WHERE R.id = ?1")
-    void updatePlanStatusAndUltimoDiaPlanificacion(int id, int planStatus, Date diaFinalPlanificacion, int contadorRutinas);
+    void updatePlanStatusAndUltimoDiaPlanificacion(Long id, int planStatus, Date diaFinalPlanificacion, int contadorRutinas);
 
     @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1")
-    String findCodTrainerById(int id);
+    String findCodTrainerById(Long id);
 
     @Query("SELECT R.contadorRutinas FROM RedFitness R where R.id = ?1")
-    int getById(int id);
+    int getById(Long id);
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.fechaFinalPlanificacion = ?2 WHERE R.id = ?1")
-    void updateUltimaFechaPlanificacionById(int id, Date fechaFinalPlanificacion );
+    void updateUltimaFechaPlanificacionById(Long id, Date fechaFinalPlanificacion );
 
     @EntityGraph(value = "redFitness.cliente")
     RedFitness findByTrainerCodigoTrainer(String codTrainer);
 
     @Query("SELECT R.trainer.codigoTrainer FROM RedFitness R WHERE R.id = ?1 AND R.cliente.id = ?2")
-    String findCodTrainerByIdAndRunnerId(int redFitId, int runneId);
+    String findCodTrainerByIdAndRunnerId(Long id, Long runneId);
 
     @Query("SELECT M.trainer.codigoTrainer FROM RedFitness M where M.cliente.id = ?1 and M.estadoPlan != 5")
-    List<String> findTrainerByUsuarioId(int id);
+    List<String> findTrainerByUsuarioId(Long id);
 
     @Query("SELECT M.trainer.id FROM RedFitness M where M.cliente.id = ?1 and M.estadoPlan != 5")
-    List<Integer> findTrainerIdByUsuarioId(int id);
+    List<Integer> findTrainerIdByUsuarioId(Long id);
 }

@@ -1,9 +1,10 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.CapacidadMejora;
+import com.itsight.domain.CondicionMejora;
+import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.generic.BaseServiceImpl;
-import com.itsight.repository.CapacidadMejoraRepository;
-import com.itsight.service.CapacidadMejoraService;
+import com.itsight.repository.CondicionMejoraRepository;
+import com.itsight.service.CondicionMejoraService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,35 +16,35 @@ import static com.itsight.util.Utilitarios.customResponse;
 
 @Service
 @Transactional
-public class CapacidadMejoraServiceImpl extends BaseServiceImpl<CapacidadMejoraRepository> implements CapacidadMejoraService {
+public class CondicionMejoraServiceImpl extends BaseServiceImpl<CondicionMejoraRepository> implements CondicionMejoraService {
 
-    public CapacidadMejoraServiceImpl(CapacidadMejoraRepository repository) {
+    public CondicionMejoraServiceImpl(CondicionMejoraRepository repository) {
         super(repository);
     }
 
     @Override
-    public CapacidadMejora save(CapacidadMejora entity) {
+    public CondicionMejora save(CondicionMejora entity) {
         return repository.save(entity);
     }
 
     @Override
-    public CapacidadMejora update(CapacidadMejora entity) {
+    public CondicionMejora update(CondicionMejora entity) {
         return repository.saveAndFlush(entity);
     }
 
     @Override
-    public CapacidadMejora findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public CondicionMejora findOne(Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public CapacidadMejora findOneWithFT(int id) {
+    public CondicionMejora findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -52,44 +53,44 @@ public class CapacidadMejoraServiceImpl extends BaseServiceImpl<CapacidadMejoraR
     }
 
     @Override
-    public List<CapacidadMejora> findAll() {
+    public List<CondicionMejora> findAll() {
         return repository.findAllByOrderById();
     }
 
     @Override
-    public List<CapacidadMejora> findByNombre(String nombre) {
+    public List<CondicionMejora> findByNombre(String nombre) {
         return repository.findByNombreContainingIgnoreCase(nombre);
     }
 
     @Override
-    public List<CapacidadMejora> findByNombreContainingIgnoreCase(String nombre) {
+    public List<CondicionMejora> findByNombreContainingIgnoreCase(String nombre) {
         return repository.findByNombreContainingIgnoreCase(nombre);
     }
 
     @Override
-    public List<CapacidadMejora> findByDescripcionContainingIgnoreCase(String descripcion) {
+    public List<CondicionMejora> findByDescripcionContainingIgnoreCase(String descripcion) {
         return null;
     }
 
     @Override
-    public List<CapacidadMejora> findByFlagActivo(boolean flagActivo) {
+    public List<CondicionMejora> findByFlagActivo(boolean flagActivo) {
         return null;
     }
 
     @Override
-    public List<CapacidadMejora> findByFlagEliminado(boolean flagEliminado) {
+    public List<CondicionMejora> findByFlagEliminado(boolean flagEliminado) {
         return null;
     }
 
     @Override
-    public List<CapacidadMejora> findByIdsIn(List<Integer> ids) {
+    public List<CondicionMejora> findByIdsIn(List<Integer> ids) {
         return repository.findByIdIn(ids);
     }
 
     @Override
-    public List<CapacidadMejora> listarPorFiltro(String comodin, String estado, String fk) {
+    public List<CondicionMejora> listarPorFiltro(String comodin, String estado, String fk) {
         comodin = comodin.equals("0") ? null : comodin;
-        List<CapacidadMejora> lstAudio;
+        List<CondicionMejora> lstAudio;
         if (comodin == null)
             lstAudio = repository.findAllByOrderByIdDesc();
         else
@@ -98,18 +99,23 @@ public class CapacidadMejoraServiceImpl extends BaseServiceImpl<CapacidadMejoraR
     }
 
     @Override
-    public String registrar(CapacidadMejora entity, String wildcard) {
+    public String registrar(CondicionMejora entity, String wildcard) {
         repository.save(entity);
         return customResponse(REGISTRO.get(), String.valueOf(entity.getId()));
     }
 
     @Override
-    public String actualizar(CapacidadMejora entity, String wildcard) {
+    public String actualizar(CondicionMejora entity, String wildcard) {
         return customResponse(ACTUALIZACION.get(), String.valueOf(entity.getId()));
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public List<CondicionMejoraDTO> getAll() {
+        return repository.findAllByOrderByIdAsc();
     }
 }

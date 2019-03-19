@@ -46,7 +46,7 @@ public class Post extends AuditingEntity implements Serializable {
         }
     )
     @Column(name = "PostId")
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, updatable = false)
     private int tipo;

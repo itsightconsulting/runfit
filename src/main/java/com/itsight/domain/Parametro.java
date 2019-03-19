@@ -13,7 +13,7 @@ public class Parametro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ParametroId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String clave;

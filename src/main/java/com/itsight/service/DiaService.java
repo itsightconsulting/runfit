@@ -9,9 +9,9 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface DiaService extends BaseService<Dia> {
+public interface DiaService extends BaseService<Dia, Long> {
 
-    List<Integer> encontrarIdPorSemanaId(int semanaId);
+    List<Integer> encontrarIdPorSemanaId(Long semanaId);
 
     String actualizarFlagDescanso(int numSem, int diaIndice, boolean flagDescanso);
 
@@ -39,25 +39,25 @@ public interface DiaService extends BaseService<Dia> {
 
     String insertarNuevoSubElementoPosEspecifica(SubElementoEspecifico subElementoEspecifico) throws JsonProcessingException;
 
-    String eliminarMediaElemento(ElementoMediaDto elemento);
+    String eliminarMediaElemento(ElementoMediaDTO elemento);
 
-    String actualizarMediaElemento(ElementoMediaDto elemento);
+    String actualizarMediaElemento(ElementoMediaDTO elemento);
 
-    String actualizarDiaFromPlantilla(DiaDto dia) throws JsonProcessingException;
+    String actualizarDiaFromPlantilla(DiaDTO dia) throws JsonProcessingException;
 
     String actualizarNotaSubElementoByElementoIndexAndSubElementoIndexAndId(ElementoUpd subElemento);
 
-    String actualizarElementoByListaIndexAndId(ElementoDto elemento) throws JsonProcessingException;
+    String actualizarElementoByListaIndexAndId(ElementoDTO elemento) throws JsonProcessingException;
 
-    String agregarMediaElemento(ElementoDto elemento);
+    String agregarMediaElemento(ElementoDTO elemento);
 
-    String actualizarMediaSubElemento(SubElementoMediaDto subEle);
+    String actualizarMediaSubElemento(SubElementoMediaDTO subEle);
 
-    String eliminarMediaSubElemento(SubElementoMediaDto subEle);
+    String eliminarMediaSubElemento(SubElementoMediaDTO subEle);
 
-    String actualizarSubElementos(ElementoDto elemento) throws JsonProcessingException ;
+    String actualizarSubElementos(ElementoDTO elemento) throws JsonProcessingException ;
 
-    String actualizarDiaRaizDesdePlantilla(DiaDto dia) throws JsonProcessingException;
+    String actualizarDiaRaizDesdePlantilla(DiaDTO dia) throws JsonProcessingException;
 
     String actualizarElementosEstilosFull(EleEstiloUpd elemento) throws JsonProcessingException;
 

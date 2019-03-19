@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface TipoAudioService extends BaseService<TipoAudio> {
+public interface TipoAudioService extends BaseService<TipoAudio, Integer> {
 
     List<TipoAudio> findAllWithChildrens();
 }

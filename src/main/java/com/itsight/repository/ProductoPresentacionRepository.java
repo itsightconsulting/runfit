@@ -24,5 +24,5 @@ public interface ProductoPresentacionRepository extends JpaRepository<ProductoPr
 
     @Modifying
     @Query(value = "UPDATE Producto P SET P.flagActivo =?2 WHERE P.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 }

@@ -13,10 +13,10 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     @Query("SELECT P FROM Producto P INNER JOIN FETCH P.categoria C WHERE P.id = ?1")
-    Producto findOneWithFT(int id);
+    Producto findOneWithFT(Integer id);
 
     @EntityGraph(value = "producto.all", attributePaths = {})
-    Producto findProductoById(int id);
+    Producto findProductoById(Integer id);
 
     @Override
     @EntityGraph(value = "producto.categoria", attributePaths = {})
@@ -36,5 +36,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     @Modifying
     @Query(value = "UPDATE Producto P SET P.flagActivo =?2 WHERE P.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 }

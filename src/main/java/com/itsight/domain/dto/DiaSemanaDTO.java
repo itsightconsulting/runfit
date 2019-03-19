@@ -1,6 +1,6 @@
 package com.itsight.domain.dto;
 
-public class DiaSemanaDto {
+public class DiaSemanaDTO {
 
     private int dia;
     private int semana;
@@ -21,7 +21,7 @@ public class DiaSemanaDto {
         this.semana = semana;
     }
 
-    public DiaSemanaDto() {
+    public DiaSemanaDTO() {
     }
 
 }

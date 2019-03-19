@@ -2,17 +2,17 @@ package com.itsight.generic;
 
 import java.util.List;
 
-public interface BaseService<T> {
+public interface BaseService<T, V> {
 
     T save(T entity);
 
     T update(T entity);
 
-    T findOne(int id);
+    T findOne(V id);
 
-    T findOneWithFT(int id);
+    T findOneWithFT(V id);
 
-    void delete(int id);
+    void delete(V id);
 
     List<Integer> findIdsByFlagActivo(boolean flagActivo);
 
@@ -28,7 +28,7 @@ public interface BaseService<T> {
 
     List<T> findByFlagEliminado(boolean flagEliminado);
 
-    List<T> findByIdsIn(List<Integer> ids);
+    List<T> findByIdsIn(List<V> ids);
 
     List<T> listarPorFiltro(String comodin, String estado, String fk);
 
@@ -36,6 +36,6 @@ public interface BaseService<T> {
 
     String actualizar(T entity, String wildcard);
 
-    void actualizarFlagActivoById(int id, boolean flagActivo);
+    void actualizarFlagActivoById(V id, boolean flagActivo);
 
 }

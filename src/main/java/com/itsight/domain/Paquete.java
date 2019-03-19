@@ -20,7 +20,7 @@ public class Paquete {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PaqueteId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;

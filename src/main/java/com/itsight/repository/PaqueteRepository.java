@@ -23,9 +23,9 @@ public interface PaqueteRepository extends JpaRepository<Paquete, Integer> {
     List<Paquete> findAllByNombreContainingOrDescripcionContaining(String nombre, String descripcion);
 
     @Query(value = "SELECT new Paquete(nombreContrato, rutaContrato) FROM Paquete WHERE id = ?1")
-    Paquete findRouteNamesById(int paqueteId);
+    Paquete findRouteNamesById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Paquete P SET P.flagActivo =?2 WHERE P.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 }

@@ -1,6 +1,6 @@
 package com.itsight.domain.dto;
 
-public class PasswordDto {
+public class PasswordDTO {
 
     private String nuevaPassword;
     private String nuevaPasswordRe;

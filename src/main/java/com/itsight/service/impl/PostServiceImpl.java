@@ -34,18 +34,18 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public Post findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public Post findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public Post findOneWithFT(int id) {
+    public Post findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Long id) {
+        repository.delete(id);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public List<Post> findByIdsIn(List<Integer> ids) {
+    public List<Post> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -106,18 +106,12 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public void actualizacionDetalle(int id, List<PostDetalle> postDetalleList) throws JsonProcessingException {
-        String detalle = new ObjectMapper().writeValueAsString(postDetalleList);
-        repository.updatePostDetalle(id, detalle);
-    }
-
-    @Override
-    public List<Post> findAllByTrainerId(int trainerId) {
+    public List<Post> findAllByTrainerId(Long trainerId) {
         return repository.findAllByTrainerId(trainerId);
     }
 
@@ -127,28 +121,28 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public void updatePostDetalle(int id, int clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException {
+    public void updatePostDetalle(Long id, Long clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException {
         PostDetalle postDetalle = new PostDetalle(clienteId, cliNomFull, flagLiked, flagFav, new Date(), null);
         repository.updatePostDetalle(id, new ObjectMapper().writeValueAsString(postDetalle));
     }
 
     @Override
-    public boolean verificarExisteLike(int id, int clienteId) {
+    public boolean verificarExisteLike(Long id, Long clienteId) {
         return repository.checkLikeExists(id, clienteId).orElse(false);
     }
 
     @Override
-    public void actualizarFlagLiked(int id, int clienteId, boolean flgLiked) {
+    public void actualizarFlagLiked(Long id, Long clienteId, boolean flgLiked) {
         repository.actualizarPostDetalleFlag(id, clienteId, flgLiked, "flgLiked", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     }
 
     @Override
-    public void actualizarFlagFav(int id, int clienteId, boolean flgFav) {
+    public void actualizarFlagFav(Long id, Long clienteId, boolean flgFav) {
         repository.actualizarPostDetalleFlag(id, clienteId, flgFav, "flgFav", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     }
 
     @Override
-    public List<Post> obtenerPostFavoritos(int clienteId) {
+    public List<Post> obtenerPostFavoritos(Long clienteId) {
         return repository.getPostFavoritos(clienteId);
     }
 }

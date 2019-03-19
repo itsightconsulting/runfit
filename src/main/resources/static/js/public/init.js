@@ -1,4 +1,9 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
+var skip_validation = false;
+var flag_form_populate = true;
+var initPageActive = 3;
+document.querySelector('.step-0'+initPageActive).classList.toggle('active');
+document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
 function time_line() {
     var total = $(".steps ol").length;
     var estilos;
@@ -202,7 +207,7 @@ function next_step_cs(i){
     const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
 
     const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet);
-    if(checkList.isValid){
+    if(skip_validation || checkList.isValid){
         const all = document.querySelectorAll('.fade-ficha');
         const sels = document.querySelectorAll('.step');
         all.forEach((v,ii)=>{

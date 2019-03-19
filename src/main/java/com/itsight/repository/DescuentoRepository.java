@@ -13,7 +13,7 @@ import java.util.List;
 public interface DescuentoRepository extends JpaRepository<Descuento, Integer> {
 
     @EntityGraph(value = "descuento.tipo", attributePaths = {})
-    Descuento findById(int integer);
+    Descuento findById(Integer ud);
 
     @Override
     @EntityGraph(value = "descuento.tipo", attributePaths = {})
@@ -24,6 +24,6 @@ public interface DescuentoRepository extends JpaRepository<Descuento, Integer> {
 
     @Modifying
     @Query(value = "UPDATE Descuento D SET D.flagActivo =?2 WHERE D.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
 }

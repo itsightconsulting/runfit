@@ -13,6 +13,6 @@ import java.io.File;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public interface RolService extends BaseService<Rol> {
+public interface RolService extends BaseService<Rol, Integer> {
 
 }

@@ -40,15 +40,15 @@ public class AudioServiceImpl extends BaseServiceImpl<AudioRepository> implement
     }
 
     @Override
-    public void delete(int audioId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(audioId));
+        repository.delete(id);
     }
 
     @Override
-    public Audio findOne(int audioId) {
+    public Audio findOne(Long id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(audioId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class AudioServiceImpl extends BaseServiceImpl<AudioRepository> implement
     }
 
     @Override
-    public Audio findOneWithFT(int id) {
+    public Audio findOneWithFT(Long id) {
         // TODO Auto-generated method stub
-        return repository.findById(new Integer(id));
+        return repository.findById(id);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class AudioServiceImpl extends BaseServiceImpl<AudioRepository> implement
     }
 
     @Override
-    public List<Audio> findByIdsIn(List<Integer> ids) {
+    public List<Audio> findByIdsIn(List<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -142,7 +142,7 @@ public class AudioServiceImpl extends BaseServiceImpl<AudioRepository> implement
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

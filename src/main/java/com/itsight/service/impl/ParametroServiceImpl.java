@@ -39,15 +39,15 @@ public class ParametroServiceImpl implements ParametroService {
     }
 
     @Override
-    public void delete(int parametroId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        parametroRepository.delete(new Integer(parametroId));
+        parametroRepository.delete(id);
     }
 
     @Override
-    public Parametro getParametroById(int parametroId) {
+    public Parametro getParametroById(Integer id) {
         // TODO Auto-generated method stub
-        return parametroRepository.findOne(new Integer(parametroId));
+        return parametroRepository.findOne(id);
     }
 
     @Override

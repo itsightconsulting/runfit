@@ -3,10 +3,10 @@ package com.itsight.service;
 import com.itsight.domain.ConfiguracionCliente;
 import com.itsight.generic.BaseService;
 
-public interface ConfiguracionClienteService extends BaseService<ConfiguracionCliente> {
+public interface ConfiguracionClienteService extends BaseService<ConfiguracionCliente, Integer> {
 
-    String obtenerPostIdFavoritos(int id);
+    String obtenerPostIdFavoritos(Integer id);
 
-    void actualizarPostIdFavoritos(int id, String postsFavsIds);
+    void actualizarPostIdFavoritos(Integer id, String postsFavsIds);
 
 }

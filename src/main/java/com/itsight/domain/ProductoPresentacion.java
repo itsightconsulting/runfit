@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class ProductoPresentacion {
 
     @Id
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String nombre;

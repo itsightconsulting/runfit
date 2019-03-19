@@ -13,7 +13,7 @@ import java.util.List;
 public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, Integer> {
 
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S WHERE S.id = ?1 ORDER BY 1")
-    CategoriaVideo findById(int id);
+    CategoriaVideo findById(Integer id);
 
     @Override
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S ORDER BY 1")
@@ -36,7 +36,7 @@ public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, 
 
     @Modifying
     @Query(value = "UPDATE CategoriaVideo S SET S.flagActivo =?2 WHERE S.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S " +
             "WHERE S.grupoVideo.id = ?1 ORDER BY 1")

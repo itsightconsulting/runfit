@@ -8,21 +8,22 @@ import java.util.List;
 @Data
 public class CondicionAnatomica implements Serializable {
 
-    private boolean flagPadeceDolor;
+
+    private Boolean flagPadeceDolor;
     private String descripcionDolor;
     private String momDolor;
     private String momDolorIni;
-    private boolean flagLesionSeisUltimosMeses;
+    private Boolean flagLesionSeisUltimosMeses;
     private String desLesion;
     private String recomMedica;
-    private boolean flagEmbarazo;
+    private Boolean flagEmbarazo;
 
     //
 
-    private int frecuenciaCardiaca;
-    private int frecuenciaCardiacaMaxima;
-    private int intensidad;
-    private int formaInicial;
+    private Integer frecuenciaCardiaca;
+    private Integer frecuenciaCardiacaMaxima;
+    private Integer intensidad;
+    private Integer formaInicial;
     private List<Musculo> musculosSensibles;
 
 }

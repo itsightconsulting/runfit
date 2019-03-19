@@ -19,7 +19,7 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DiaDto implements Serializable {
+public class DiaDTO implements Serializable {
 
     private int minutos;
 

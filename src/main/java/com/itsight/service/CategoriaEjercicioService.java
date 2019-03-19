@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface CategoriaEjercicioService extends BaseService<CategoriaEjercicio> {
+public interface CategoriaEjercicioService extends BaseService<CategoriaEjercicio, Integer> {
 
     List<CategoriaEjercicio> encontrarCategoriaConSusDepedencias();
 }

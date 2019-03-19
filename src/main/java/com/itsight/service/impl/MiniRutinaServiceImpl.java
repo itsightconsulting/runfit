@@ -28,18 +28,18 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public MiniRutina findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public MiniRutina findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public MiniRutina findOneWithFT(int id) {
+    public MiniRutina findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Long id) {
+        repository.delete(id);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public List<MiniRutina> findByIdsIn(List<Integer> ids) {
+    public List<MiniRutina> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -98,27 +98,27 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public MiniRutina findByTrainerIdAndCategoriaId(int id, int espSubCatId) {
+    public MiniRutina findByTrainerIdAndCategoriaId(Long id, Integer espSubCatId) {
         return repository.findByTrainerIdAndEspecificacionSubCategoriaId(id, espSubCatId);
     }
 
     @Override
-    public List<MiniRutina> findAllByTrainerId(int usuarioId) {
-        return repository.findAllByTrainerId(usuarioId);
+    public List<MiniRutina> findAllByTrainerId(Long trainerId) {
+        return repository.findAllByTrainerId(trainerId);
     }
 
     @Override
-    public List<Integer> findAllCategoriaIdByTrainerId(int usuarioId) {
-        return repository.findAllCategoriaIdByTrainerId(usuarioId);
+    public List<Integer> findAllCategoriaIdByTrainerId(Long trainerId) {
+        return repository.findAllCategoriaIdByTrainerId(trainerId);
     }
 
     @Override
-    public MiniRutina findByCategoriaIdAndTrainerId(int catId, int usuarioId) {
-        return repository.findByCategoriaIdAndTrainerId(catId, usuarioId);
+    public MiniRutina findByCategoriaIdAndTrainerId(Integer catId, Long trainerId) {
+        return repository.findByCategoriaIdAndTrainerId(catId, trainerId);
     }
 }

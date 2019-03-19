@@ -3,8 +3,8 @@ package com.itsight.service;
 import com.itsight.domain.Documento;
 import com.itsight.generic.BaseService;
 
-public interface DocumentoService extends BaseService<Documento> {
+public interface DocumentoService extends BaseService<Documento, Long> {
 
-    String obtenerNombrePorId(int id, String uuid);
+    String obtenerNombrePorId(Long id, String uuid);
 
 }

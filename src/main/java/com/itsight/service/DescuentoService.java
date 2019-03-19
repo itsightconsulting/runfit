@@ -5,8 +5,8 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface DescuentoService extends BaseService<Descuento> {
+public interface DescuentoService extends BaseService<Descuento, Integer> {
 
-    List<Descuento> listarPorProductoId(int productoId);
+    List<Descuento> listarPorProductoId(Integer productoId);
 
 }

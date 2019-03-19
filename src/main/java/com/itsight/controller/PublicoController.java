@@ -1,8 +1,12 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
+import com.itsight.service.CondicionMejoraService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/p")
 public class PublicoController {
+
+    private CondicionMejoraService condicionMejoraService;
+
+    @Autowired
+    public PublicoController(CondicionMejoraService condicionMejoraService) {
+        this.condicionMejoraService = condicionMejoraService;
+    }
 
     @GetMapping("/fi/2")
     public ModelAndView fiDos(){
@@ -37,7 +48,8 @@ public class PublicoController {
     }
 
     @GetMapping("/ficha-inscripcion")
-    public ModelAndView fichaInscripcion(){
+    public ModelAndView fichaInscripcion(Model model){
+        model.addAttribute("lstCondMejoras", condicionMejoraService.getAll());
         return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
     }
 

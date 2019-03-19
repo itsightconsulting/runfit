@@ -44,15 +44,15 @@ public class PlanServiceImpl extends BaseServiceImpl<PlanRepository> implements 
     }
 
     @Override
-    public void delete(int planId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(planId));
+        repository.delete(id);
     }
 
     @Override
-    public Plan getPlanById(int planId) {
+    public Plan getPlanById(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(planId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -73,12 +73,12 @@ public class PlanServiceImpl extends BaseServiceImpl<PlanRepository> implements 
     }
 
     @Override
-    public Plan findOne(int id) {
+    public Plan findOne(Integer id) {
         return null;
     }
 
     @Override
-    public Plan findOneWithFT(int id) {
+    public Plan findOneWithFT(Integer id) {
         return null;
     }
 
@@ -138,7 +138,7 @@ public class PlanServiceImpl extends BaseServiceImpl<PlanRepository> implements 
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
     }
 }

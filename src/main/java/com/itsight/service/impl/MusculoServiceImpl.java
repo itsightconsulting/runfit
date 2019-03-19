@@ -30,17 +30,17 @@ public class MusculoServiceImpl extends BaseServiceImpl<MusculoRepository> imple
     }
 
     @Override
-    public Musculo findOne(int id) {
+    public Musculo findOne(Integer id) {
         return repository.findOne(new Integer(id));
     }
 
     @Override
-    public Musculo findOneWithFT(int id) {
+    public Musculo findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         repository.delete(new Integer(id));
     }
 
@@ -106,7 +106,7 @@ public class MusculoServiceImpl extends BaseServiceImpl<MusculoRepository> imple
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }

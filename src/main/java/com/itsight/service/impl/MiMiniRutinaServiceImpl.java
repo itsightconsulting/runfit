@@ -28,18 +28,18 @@ public class MiMiniRutinaServiceImpl extends BaseServiceImpl<MiMiniRutinaReposit
     }
 
     @Override
-    public MiMiniRutina findOne(int id) {
+    public MiMiniRutina findOne(Long id) {
         return repository.findOne(id);
     }
 
     @Override
-    public MiMiniRutina findOneWithFT(int id) {
+    public MiMiniRutina findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Long id) {
+        repository.delete(id);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MiMiniRutinaServiceImpl extends BaseServiceImpl<MiMiniRutinaReposit
     }
 
     @Override
-    public List<MiMiniRutina> findByIdsIn(List<Integer> ids) {
+    public List<MiMiniRutina> findByIdsIn(List<Long> ids) {
         return repository.findAllByIdIn(ids);
     }
 
@@ -98,7 +98,7 @@ public class MiMiniRutinaServiceImpl extends BaseServiceImpl<MiMiniRutinaReposit
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 }

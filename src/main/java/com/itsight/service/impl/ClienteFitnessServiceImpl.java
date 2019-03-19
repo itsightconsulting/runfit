@@ -3,12 +3,12 @@ package com.itsight.service.impl;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.RedFitness;
-import com.itsight.domain.dto.ClienteFitnessDto;
+import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ClienteFitnessRepository;
-import com.itsight.service.RedFitnessService;
 import com.itsight.service.ClienteFitnessService;
 import com.itsight.service.ClienteService;
+import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,18 +47,18 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public ClienteFitness findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public ClienteFitness findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public ClienteFitness findOneWithFT(int id) {
+    public ClienteFitness findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Long id) {
+        repository.delete(id);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public List<ClienteFitness> findByIdsIn(List<Integer> ids) {
+    public List<ClienteFitness> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -117,19 +117,18 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public String registrar(ClienteFitnessDto usuarioFitness) {
+    public String registrar(ClienteFitnessDTO usuarioFitness) {
         ClienteFitness clienteFitness1 = new ClienteFitness();
         BeanUtils.copyProperties(usuarioFitness, clienteFitness1);
         clienteFitness1.setCompetencias(usuarioFitness.getCompetencias());
         clienteFitness1.setCondicionAnatomica(usuarioFitness.getCondicionAnatomica());
         clienteFitness1.setMejoras(usuarioFitness.getMejoras());
         clienteFitness1.setObjetivos(usuarioFitness.getObjetivos());
-        clienteFitness1.setTiemposDisponibles(usuarioFitness.getTiemposDisponibles());
         //clienteFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(2.0));
         Cliente cliente = new Cliente();
         BeanUtils.copyProperties(usuarioFitness.getUsuario(), cliente);
@@ -148,7 +147,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public ClienteFitness findByClienteId(int clienteId) {
+    public ClienteFitness findByClienteId(Long clienteId) {
         Optional<ClienteFitness> qUsuario = Optional.ofNullable(repository.findByClienteId(clienteId));
         if(qUsuario.isPresent()){
             return qUsuario.get();

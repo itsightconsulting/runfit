@@ -5,7 +5,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Dia;
 import com.itsight.domain.MiMiniRutina;
 import com.itsight.domain.MiniRutina;
-import com.itsight.domain.dto.ResponseDto;
+import com.itsight.domain.dto.ResponseDTO;
 import com.itsight.domain.jsonb.MiRutinaPk;
 import com.itsight.service.CategoriaService;
 import com.itsight.service.DiaService;
@@ -115,25 +115,26 @@ public class MiniRutinaController {
     }
 
     @GetMapping("/obtener-rutinas/by/categoria/{catId}")
-    public @ResponseBody ResponseDto obtenerMisMiniRutinas(@PathVariable(value = "catId") String catId, HttpSession session){
+    public @ResponseBody
+    ResponseDTO obtenerMisMiniRutinas(@PathVariable(value = "catId") String catId, HttpSession session){
         if(Utilitarios.isInteger(catId)){
             int trainerId = Integer.parseInt(session.getAttribute("id").toString());
             Optional<MiniRutina> optionalLst = Optional.ofNullable(miniRutinaService.findByCategoriaIdAndTrainerId(Integer.parseInt(catId), trainerId));
             if(optionalLst.isPresent()){
                 optionalLst.get().getMiRutinaIds().forEach(v->v.setId(0));
-                return new ResponseDto(Integer.parseInt(Enums.ResponseCode.SUCCESS_QUERY.get()),optionalLst.get().getMiRutinaIds());
+                return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.SUCCESS_QUERY.get()),optionalLst.get().getMiRutinaIds());
             }
         }
-        return new ResponseDto(Integer.parseInt(Enums.ResponseCode.NOT_FOUND_MATCHES.get()), null);
+        return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.NOT_FOUND_MATCHES.get()), null);
     }
 
     @GetMapping("/obtener/by/hash/{hashId}")
     public @ResponseBody
-    ResponseDto obtenerMiniRutinaByHashId(@PathVariable(value = "hashId") String hashId){
+    ResponseDTO obtenerMiniRutinaByHashId(@PathVariable(value = "hashId") String hashId){
         Optional<MiMiniRutina> mini = Optional.ofNullable(miMiniRutinaService.findOne(Parseador.getDecodeHash32Id("wk-mis-rutinas", hashId)));
         if(mini.isPresent())
-            return new ResponseDto(Integer.parseInt(Enums.ResponseCode.SUCCESS_QUERY.get()), mini.get());
+            return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.SUCCESS_QUERY.get()), mini.get());
         else
-            return new ResponseDto(Integer.parseInt(Enums.ResponseCode.NOT_FOUND_MATCHES.get()), null);
+            return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.NOT_FOUND_MATCHES.get()), null);
     }
 }

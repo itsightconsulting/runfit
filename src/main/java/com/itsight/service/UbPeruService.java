@@ -1,16 +1,16 @@
 package com.itsight.service;
 
 import com.itsight.domain.UbPeru;
-import com.itsight.domain.dto.UbPeruLimDto;
+import com.itsight.domain.dto.UbPeruLimDTO;
 import com.itsight.generic.BaseService;
 
-public interface UbPeruService extends BaseService<UbPeru> {
+public interface UbPeruService extends BaseService<UbPeru, Integer> {
 
     UbPeru findById(String id);
 
-    UbPeruLimDto findPeLimUbigeo();
+    UbPeruLimDTO findPeLimUbigeo();
 
-    UbPeruLimDto findPeProvByDep(String depId);
+    UbPeruLimDTO findPeProvByDep(String depId);
 
-    UbPeruLimDto findPeDistByDepAndProv(String depId, String provId);
+    UbPeruLimDTO findPeDistByDepAndProv(String depId, String provId);
 }

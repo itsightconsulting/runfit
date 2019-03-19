@@ -39,7 +39,7 @@ public class CategoriaEjercicio implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CategoriaEjercicioId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;
@@ -68,7 +68,7 @@ public class CategoriaEjercicio implements Identifiable {
     public CategoriaEjercicio() {
     }
 
-    public CategoriaEjercicio(int id) {
+    public CategoriaEjercicio(Integer id) {
         this.id = id;
     }
 
@@ -90,7 +90,7 @@ public class CategoriaEjercicio implements Identifiable {
         this.uuid = uuid;
     }
 
-    public CategoriaEjercicio(int id, String nombre) {
+    public CategoriaEjercicio(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

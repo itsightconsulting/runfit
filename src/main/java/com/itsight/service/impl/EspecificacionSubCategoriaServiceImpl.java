@@ -5,15 +5,14 @@ import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
 import com.itsight.repository.MiniPlantillaRepository;
 import com.itsight.service.EspecificacionSubCategoriaService;
-import com.itsight.service.MiniPlantillaService;
-import com.itsight.util.Enums;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.itsight.util.Enums.ResponseCode.*;
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
 
 @Service
 @Transactional
@@ -40,31 +39,31 @@ public class EspecificacionSubCategoriaServiceImpl extends BaseServiceImpl<Espec
     }
 
     @Override
-    public EspecificacionSubCategoria findOne(int subTipoVideoId) {
+    public EspecificacionSubCategoria findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(subTipoVideoId));
+        return repository.findOne(id);
     }
 
     @Override
-    public EspecificacionSubCategoria save(EspecificacionSubCategoria subTipoVideo) {
+    public EspecificacionSubCategoria save(EspecificacionSubCategoria espSubCat) {
         // TODO Auto-generated method stub
-        return repository.save(subTipoVideo);
+        return repository.save(espSubCat);
     }
 
     @Override
-    public EspecificacionSubCategoria update(EspecificacionSubCategoria subTipoVideo) {
+    public EspecificacionSubCategoria update(EspecificacionSubCategoria espSubCat) {
         // TODO Auto-generated method stub
-        return repository.saveAndFlush(subTipoVideo);
+        return repository.saveAndFlush(espSubCat);
     }
 
     @Override
-    public void delete(int subTipoVideoId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(subTipoVideoId));
+        repository.delete(id);
     }
 
     @Override
-    public EspecificacionSubCategoria findOneWithFT(int id) {
+    public EspecificacionSubCategoria findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -156,18 +155,18 @@ public class EspecificacionSubCategoriaServiceImpl extends BaseServiceImpl<Espec
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }
 
     @Override
-    public List<EspecificacionSubCategoria> listarPorSubCategoria(int subCategoriaEjercicioId) {
+    public List<EspecificacionSubCategoria> listarPorSubCategoria(Integer subCategoriaEjercicioId) {
         return repository.findBySubCategoriaId(subCategoriaEjercicioId);
     }
 
     @Override
-    public List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(int id) {
+    public List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(Integer id) {
         return repository.findBySubCategoriaEjercicioId(id);
     }
 

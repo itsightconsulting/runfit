@@ -33,10 +33,10 @@ public interface GrupoVideoRepository extends JpaRepository<GrupoVideo, Integer>
     List<GrupoVideo> findAllByNombreContainingIgnoreCaseAndFlagActivo(String nombre, Boolean flagActivo);
 
     @EntityGraph(value = "grupoVideo")
-    GrupoVideo findById(int id);
+    GrupoVideo findById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE GrupoVideo C SET C.flagActivo =?2 WHERE C.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
 }

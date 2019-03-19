@@ -24,7 +24,7 @@ public class Objetivo {
             }
     )
     @Column(name = "ObjetivoId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;

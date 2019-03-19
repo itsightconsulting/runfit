@@ -105,11 +105,11 @@ public class RutinaController {
     }
 
     @PostMapping(value = "/agregar/semana")
-    public @ResponseBody String agregarSemanaARutina(@RequestBody SemanaPlantillaDto nuevaSemana, HttpSession session) {
+    public @ResponseBody String agregarSemanaARutina(@RequestBody SemanaPlantillaDTO nuevaSemana, HttpSession session) {
         Semana semana = new Semana();
         BeanUtils.copyProperties(nuevaSemana, semana);
         List<Dia> dias = new ArrayList<>();
-        for(DiaPlantillaDto diaDto: nuevaSemana.getDias()){
+        for(DiaPlantillaDTO diaDto: nuevaSemana.getDias()){
             Dia dia = new Dia();
             BeanUtils.copyProperties(diaDto, dia);
             dias.add(dia);
@@ -208,7 +208,7 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/actualizar/2")
     public @ResponseBody String actualizarElementoNomAndTipoDia(
-            @RequestBody @Valid ElementoDto elemento, BindingResult bindingResult) throws JsonProcessingException {
+            @RequestBody @Valid ElementoDTO elemento, BindingResult bindingResult) throws JsonProcessingException {
             if(!bindingResult.hasErrors())
                 return diaService.actualizarElementoByListaIndexAndId(elemento);
             return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -256,7 +256,7 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/media/eliminar")
     public @ResponseBody String eliminarMediaElemento(
-            @ModelAttribute @Valid ElementoMediaDto elemento, BindingResult bindingResult){
+            @ModelAttribute @Valid ElementoMediaDTO elemento, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.eliminarMediaElemento(elemento);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -264,7 +264,7 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/media/actualizar")
     public @ResponseBody String actualizarMediaElemento(
-            @ModelAttribute @Valid ElementoMediaDto elemento, BindingResult bindingResult){
+            @ModelAttribute @Valid ElementoMediaDTO elemento, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.actualizarMediaElemento(elemento);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -272,7 +272,7 @@ public class RutinaController {
 
     @PutMapping(value = "/elemento/media/agregar")
     public @ResponseBody String agregarMediaElemento(
-            @RequestBody @Valid ElementoDto elemento, BindingResult bindingResult){
+            @RequestBody @Valid ElementoDTO elemento, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.agregarMediaElemento(elemento);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -280,7 +280,7 @@ public class RutinaController {
 
     @PutMapping(value = "/sub-elemento/media/actualizar")
     public @ResponseBody String actualizarSubElementoMedia(
-            @ModelAttribute @Valid SubElementoMediaDto subEle, BindingResult bindingResult){
+            @ModelAttribute @Valid SubElementoMediaDTO subEle, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.actualizarMediaSubElemento(subEle);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -288,7 +288,7 @@ public class RutinaController {
 
     @PutMapping(value = "/sub-elemento/media/eliminar")
     public @ResponseBody String eliminarMediaSubElemento(
-            @RequestBody @Valid SubElementoMediaDto subEle, BindingResult bindingResult){
+            @RequestBody @Valid SubElementoMediaDTO subEle, BindingResult bindingResult){
         if(!bindingResult.hasErrors())
             return diaService.eliminarMediaSubElemento(subEle);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -304,7 +304,7 @@ public class RutinaController {
 
     @PutMapping(value = "/sub-elemento/multiple/agregar")
     public @ResponseBody String agregarMultipleSubElementos(
-            @RequestBody @Valid ElementoDto elemento, BindingResult bindingResult) throws JsonProcessingException {
+            @RequestBody @Valid ElementoDTO elemento, BindingResult bindingResult) throws JsonProcessingException {
         if(!bindingResult.hasErrors())
             return diaService.actualizarSubElementos(elemento);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -341,7 +341,7 @@ public class RutinaController {
 
     @PutMapping(value = "/dia/from-plantilla/actualizar")
     public @ResponseBody String actualizarDiaDesdePlantillaDia(
-            @RequestBody @Valid DiaDto diaDto, BindingResult bindingResult) throws JsonProcessingException {
+            @RequestBody @Valid DiaDTO diaDto, BindingResult bindingResult) throws JsonProcessingException {
         if(!bindingResult.hasErrors())
             return diaService.actualizarDiaFromPlantilla(diaDto);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -349,7 +349,7 @@ public class RutinaController {
 
     @PutMapping(value = "/dia/from-plantilla/actualizar/full")
     public @ResponseBody String actualizarDiaDesdePlantillaDia2(
-            @RequestBody DiaDto diaDto, BindingResult bindingResult) throws JsonProcessingException {
+            @RequestBody DiaDTO diaDto, BindingResult bindingResult) throws JsonProcessingException {
         if(!bindingResult.hasErrors())
             return diaService.actualizarDiaRaizDesdePlantilla(diaDto);
         return ResponseCode.EX_VALIDATION_FAILED.get();
@@ -367,7 +367,7 @@ public class RutinaController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/nueva")
     public @ResponseBody
-    String nueva(@RequestBody @Valid RutinaDto rutinaDto,
+    String nueva(@RequestBody @Valid RutinaDTO rutinaDto,
                  @RequestParam(name = "key") String redFitnessId,
                  @RequestParam(name = "rn") String runnerId,
                 HttpSession session, BindingResult bindingResult) {
@@ -478,10 +478,10 @@ public class RutinaController {
     public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, @RequestParam int anio, @RequestParam int mes , HttpSession session)
     {
         int[] sIds = (int[]) session.getAttribute("semanaIds");
-        List<DiaSemanaDto> listdias;
+        List<DiaSemanaDTO> listdias;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            listdias = mapper.readValue(listjson, new TypeReference<List<DiaSemanaDto>>(){});
+            listdias = mapper.readValue(listjson, new TypeReference<List<DiaSemanaDTO>>(){});
             List<Integer> intList = new ArrayList<>();
             for (int i : sIds)
             {

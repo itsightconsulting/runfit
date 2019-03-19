@@ -6,7 +6,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface KilometrajeBaseService extends BaseService<KilometrajeBase> {
+public interface KilometrajeBaseService extends BaseService<KilometrajeBase, Integer> {
 
     List<KilometrajeBase> findAllByNivelAndDistancia(int nivel, int distancia);
 }

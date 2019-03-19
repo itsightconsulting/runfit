@@ -1,16 +1,17 @@
 package com.itsight.service;
 
 import com.itsight.domain.Cliente;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.generic.BaseService;
 
 import java.util.Date;
 import java.util.List;
 
-public interface ClienteService extends BaseService<Cliente> {
+public interface ClienteService extends BaseService<Cliente, Long> {
 
     List<Cliente> findByNombreCompleto(String nombreCompleto);
 
-    String findPasswordById(int id);
+    String findPasswordById(Long id);
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 
@@ -20,5 +21,7 @@ public interface ClienteService extends BaseService<Cliente> {
 
     Cliente findByUsername(String username);
 
-    String findNombreCompletoById(int id);
+    String findNombreCompletoById(Long id);
+
+    String registroFull(ClienteDTO cliente);
 }

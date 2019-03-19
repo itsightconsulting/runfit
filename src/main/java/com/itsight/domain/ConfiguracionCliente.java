@@ -30,7 +30,7 @@ import java.util.List;
 public class ConfiguracionCliente {
 
     @Id
-    private int id;
+    private Integer id;
 
     @Type(type = "jsonb")
     @Column(name="parametros", nullable = false, columnDefinition = "jsonb")

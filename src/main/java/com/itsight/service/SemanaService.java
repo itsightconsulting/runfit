@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public interface SemanaService extends BaseService<Semana> {
+public interface SemanaService extends BaseService<Semana, Long> {
 
     Semana findOneWithDaysById(int id);
 

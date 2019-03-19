@@ -2,7 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ClienteFitness;
-import com.itsight.domain.dto.ClienteFitnessDto;
+import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.service.*;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class ClienteFitnessController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@RequestBody ClienteFitnessDto clienteFitDto, BindingResult bindingResult) {
+    String nuevo(@RequestBody ClienteFitnessDTO clienteFitDto, BindingResult bindingResult) {
         if(!bindingResult.hasErrors()){
             return clienteFitnessService.registrar(clienteFitDto);
         }else{

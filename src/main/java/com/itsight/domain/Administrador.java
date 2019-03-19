@@ -34,7 +34,7 @@ import java.util.List;
 public class Administrador extends AuditingEntity implements Serializable {
 
     @Id
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private String nombres;
     @Column(nullable = false)
@@ -85,7 +85,7 @@ public class Administrador extends AuditingEntity implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public Administrador(int id) {
+    public Administrador(Long id) {
         // TODO Auto-generated constructor stub
         this.id = id;
     }
@@ -97,10 +97,10 @@ public class Administrador extends AuditingEntity implements Serializable {
     }
 
 
-    public void setTipoUsuario(int id) {
+    public void setTipoUsuario(Integer id) {
         this.tipoUsuario = new TipoUsuario(id);
     }
-    public void setTipoDocumento(int id) {
+    public void setTipoDocumento(Integer id) {
         this.tipoDocumento = new TipoDocumento(id);
     }
 

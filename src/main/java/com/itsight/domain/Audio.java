@@ -1,19 +1,16 @@
 package com.itsight.domain;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itsight.domain.base.AuditingEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -41,7 +38,7 @@ public class Audio extends AuditingEntity {
             }
     )
     @Column(name = "AudioId")
-    private int id;
+    private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(nullable = false)
@@ -94,7 +91,7 @@ public class Audio extends AuditingEntity {
     public Audio() {
     }
 
-    public Audio(int id) {
+    public Audio(Long id) {
         this.id = id;
     }
 
@@ -110,7 +107,7 @@ public class Audio extends AuditingEntity {
         this.tipoAudio = new TipoAudio(tpAudioId);
     }
 
-    public Audio(int id, String nombre, String descripcion, String duracion, boolean flagActivo, String rutaWeb, String nombreTA) {
+    public Audio(Long id, String nombre, String descripcion, String duracion, boolean flagActivo, String rutaWeb, String nombreTA) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

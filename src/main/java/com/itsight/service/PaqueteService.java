@@ -5,11 +5,11 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface PaqueteService extends BaseService<Paquete> {
+public interface PaqueteService extends BaseService<Paquete, Integer> {
 
     List<Paquete> listAll();
 
-    Paquete getPaqueteById(int paqueteId);
+    Paquete getPaqueteById(Integer paqueteId);
 
     List<Paquete> findAllByFlagActivo(Boolean flagActivo);
 

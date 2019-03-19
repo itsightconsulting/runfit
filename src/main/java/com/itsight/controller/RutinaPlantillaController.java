@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
-import com.itsight.domain.dto.DiaPlantillaDto;
-import com.itsight.domain.dto.RutinaPlantillaDto;
-import com.itsight.domain.dto.SemanaPlantillaDto;
+import com.itsight.domain.dto.DiaPlantillaDTO;
+import com.itsight.domain.dto.RutinaPlantillaDTO;
+import com.itsight.domain.dto.SemanaPlantillaDTO;
 import com.itsight.domain.jsonb.ElementoPlantilla;
 import com.itsight.domain.jsonb.ListaPlantilla;
 import com.itsight.service.*;
@@ -105,9 +105,9 @@ public class RutinaPlantillaController {
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@RequestBody RutinaPlantillaDto rutinaPlantilla, HttpSession session) {
-        //RutinaPlantillaDto es un arreglo multidimensional que se diferencia del original en la propiedad lista de semanas
-        //RutinaPlantillaDto -> semanas | RutinaPlantilla > lstSemana
+    String nuevo(@RequestBody RutinaPlantillaDTO rutinaPlantilla, HttpSession session) {
+        //RutinaPlantillaDTO es un arreglo multidimensional que se diferencia del original en la propiedad lista de semanas
+        //RutinaPlantillaDTO -> semanas | RutinaPlantilla > lstSemana
         //Esto con el fin de cortar la copia de propiedades mediante BeanUtils en el primer nivel
         int userId = Integer.parseInt(session.getAttribute("id").toString());
         RutinaPlantilla objRp = new RutinaPlantilla();
@@ -116,7 +116,7 @@ public class RutinaPlantillaController {
         objRp.setTrainer(userId);
         //Instanciando lista de semanas
         List<SemanaPlantilla> semanas = new ArrayList<>();
-        for (SemanaPlantillaDto semana: rutinaPlantilla.getSemanas()) {
+        for (SemanaPlantillaDTO semana: rutinaPlantilla.getSemanas()) {
             SemanaPlantilla semanaPlantilla = new SemanaPlantilla();
             BeanUtils.copyProperties(semana, semanaPlantilla);
             semanas.add(semanaPlantilla);
@@ -125,7 +125,7 @@ public class RutinaPlantillaController {
             semanaPlantilla.setRutinaPlantilla(objRp);
             //Insertando dias de la semana a su respectiva lista de dias
             List<DiaPlantilla> dias = new ArrayList<>();
-            for(DiaPlantillaDto dia: semana.getDias()){
+            for(DiaPlantillaDTO dia: semana.getDias()){
                 DiaPlantilla objDia = new DiaPlantilla();
                 BeanUtils.copyProperties(dia, objDia);
                 dias.add(objDia);

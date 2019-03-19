@@ -6,19 +6,19 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class CapacidadMejora {
+public class CondicionMejora {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CapacidadMejoraId")
-    private int id;
+    @Column(name = "CondicionMejoraId")
+    private Integer id;
 
     @Column
     private String nombre;
 
-    public CapacidadMejora(){}
+    public CondicionMejora(){}
 
-    public CapacidadMejora(String nombre) {
+    public CondicionMejora(String nombre) {
         this.nombre = nombre;
     }
 }

@@ -12,7 +12,7 @@ public interface ClientePlanService {
 
     ClientePlan update(ClientePlan clientePlan);
 
-    void delete(int clientePlanId);
+    void delete(Integer id);
 
-    ClientePlan findOneById(int id);
+    ClientePlan findOneById(Integer id);
 }

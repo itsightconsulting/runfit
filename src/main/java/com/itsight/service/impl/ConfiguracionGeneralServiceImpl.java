@@ -29,18 +29,18 @@ public class ConfiguracionGeneralServiceImpl extends BaseServiceImpl<Configuraci
     }
 
     @Override
-    public ConfiguracionGeneral findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public ConfiguracionGeneral findOne(Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public ConfiguracionGeneral findOneWithFT(int id) {
+    public ConfiguracionGeneral findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ConfiguracionGeneralServiceImpl extends BaseServiceImpl<Configuraci
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }

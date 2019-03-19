@@ -5,16 +5,16 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface ImagenPlanService extends BaseService<ImagenPlan> {
+public interface ImagenPlanService extends BaseService<ImagenPlan, Integer> {
 
     List<ImagenPlan> listAll();
 
-    List<ImagenPlan> findByPlanId(int planId);
+    List<ImagenPlan> findByPlanId(Integer planId);
 
     ImagenPlan add(ImagenPlan imagenPlan);
 
     ImagenPlan update(ImagenPlan imagenPlan);
 
-    void delete(int imagenPlanId);
+    void delete(Integer imagenPlanId);
 
 }

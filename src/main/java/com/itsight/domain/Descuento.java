@@ -29,7 +29,7 @@ public class Descuento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DescuentoId")
-    private int id;
+    private Integer id;
 
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     @Column(nullable = false, precision = 8, scale = 2)

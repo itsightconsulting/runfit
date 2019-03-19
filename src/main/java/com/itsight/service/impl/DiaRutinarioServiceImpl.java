@@ -28,18 +28,18 @@ public class DiaRutinarioServiceImpl extends BaseServiceImpl<DiaRutinarioReposit
     }
 
     @Override
-    public DiaRutinario findOne(int id) {
+    public DiaRutinario findOne(Long id) {
         return repository.findOne(id);
     }
 
     @Override
-    public DiaRutinario findOneWithFT(int id) {
+    public DiaRutinario findOneWithFT(Long id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Long id) {
+        repository.delete(id);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class DiaRutinarioServiceImpl extends BaseServiceImpl<DiaRutinarioReposit
     }
 
     @Override
-    public List<DiaRutinario> findByIdsIn(List<Integer> ids) {
+    public List<DiaRutinario> findByIdsIn(List<Long> ids) {
         return repository.findAllByIdInOrderById(ids);
     }
 
@@ -98,7 +98,7 @@ public class DiaRutinarioServiceImpl extends BaseServiceImpl<DiaRutinarioReposit
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,15 +40,15 @@ public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> imp
     }
 
     @Override
-    public void delete(int objetivoId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(objetivoId));
+        repository.delete(id);
     }
 
     @Override
-    public Objetivo findOne(int objetivoId) {
+    public Objetivo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(objetivoId));
+        return repository.findOne(id);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> imp
     }
 
     @Override
-    public Objetivo findOneWithFT(int id) {
+    public Objetivo findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -140,7 +139,7 @@ public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> imp
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

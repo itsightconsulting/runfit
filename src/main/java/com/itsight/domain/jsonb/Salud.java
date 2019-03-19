@@ -8,21 +8,21 @@ import java.io.Serializable;
 public class Salud implements Serializable
  {
 
-    private boolean flagEnfermedad;
-    private boolean flagFumador;
-    private boolean flagHiperTensionArt;
-    private boolean flagAntFamInfOrHiper;
-    private boolean flagResInsulina;
-    private boolean flagAntFamDiabetes;
-    private boolean flagSobrepeso;
-    private boolean flagAleMed;
-    private boolean flagOperacion;
-    private boolean flagHerDisOrCondCol;
-    private int famDiabetico;
-    private int famInfOrHiper;
-    private int catSobrepeso;
-    private int catAlimentacion;
-    private int nivelEstres;
+    private Boolean flagEnfermedad;
+    private Boolean flagFumador;
+    private Boolean flagHiperTensionArt;
+    private Boolean flagAntFamInfOrHiper;
+    private Boolean flagResInsulina;
+    private Boolean flagAntFamDiabetes;
+    private Boolean flagSobrepeso;
+    private Boolean flagAleMed;
+    private Boolean flagOperacion;
+    private Boolean flagHerDisOrCondCol;
+    private Integer famDiabetico;
+    private Integer famInfOrHiper;
+    private Integer catSobrepeso;
+    private Integer catAlimentacion;
+    private Integer nivelEstres;
     private String desEnfermedad;
     private String desFumador;
     private String desAleMed;

@@ -11,7 +11,7 @@ public class Musculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MusculoId")
-    private int id;
+    private Integer id;
 
     @Column
     private String nombre;

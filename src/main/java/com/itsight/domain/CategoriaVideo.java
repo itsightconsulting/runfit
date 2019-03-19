@@ -35,7 +35,7 @@ public class CategoriaVideo implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CategoriaVideoId")
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String nombre;
@@ -64,7 +64,7 @@ public class CategoriaVideo implements Identifiable {
 
     public CategoriaVideo() { }
 
-    public CategoriaVideo(int id) {
+    public CategoriaVideo(Integer id) {
         this.id = id;
     }
 
@@ -72,18 +72,18 @@ public class CategoriaVideo implements Identifiable {
         this.nombre = nombre;
     }
 
-    public CategoriaVideo(String nombre, int grupoVideoId) {
+    public CategoriaVideo(String nombre, Integer grupoVideoId) {
         this.nombre = nombre;
         this.grupoVideo = new GrupoVideo(grupoVideoId);
     }
 
-    public CategoriaVideo(String nombre, int grupoVideoId, boolean flagActivo) {
+    public CategoriaVideo(String nombre, Integer grupoVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.grupoVideo = new GrupoVideo(grupoVideoId);
         this.flagActivo = flagActivo;
     }
 
-    public CategoriaVideo(int id, String nombre, boolean flagActivo, int grupoVideoId , String nombreGrupo) {
+    public CategoriaVideo(Integer id, String nombre, boolean flagActivo, Integer grupoVideoId , String nombreGrupo) {
         this.id = id;
         this.nombre = nombre;
         this.flagActivo = flagActivo;

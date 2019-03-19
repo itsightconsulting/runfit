@@ -35,19 +35,19 @@ public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> i
     }
 
     @Override
-    public Descuento findOne(int id) {
+    public Descuento findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(new Integer(id));
+        return repository.findOne(id);
     }
 
     @Override
-    public Descuento findOneWithFT(int id) {
+    public Descuento findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(new Integer(id));
+        return repository.findById(id);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
         repository.delete(id);
     }
@@ -107,7 +107,7 @@ public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> i
     }
 
     @Override
-    public List<Descuento> listarPorProductoId(int productoId) {
+    public List<Descuento> listarPorProductoId(Integer productoId) {
         // TODO Auto-generated method stub
         return repository.findByProductoPresentacionId(productoId);
     }
@@ -136,7 +136,7 @@ public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> i
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

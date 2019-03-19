@@ -12,9 +12,9 @@ public interface ParametroService {
 
     Parametro update(Parametro parametro);
 
-    void delete(int parametroId);
+    void delete(Integer id);
 
-    Parametro getParametroById(int parametroId);
+    Parametro getParametroById(Integer id);
 
     Parametro findByClave(String clave);
 

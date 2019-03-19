@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface SubCategoriaVideoService extends BaseService<SubCategoriaVideo> {
+public interface SubCategoriaVideoService extends BaseService<SubCategoriaVideo, Integer> {
 
     List<SubCategoriaVideo> listarPorCategoria(int categoriaVideoId);
 

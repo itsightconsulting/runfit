@@ -2,7 +2,7 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Post;
-import com.itsight.domain.dto.PostDto;
+import com.itsight.domain.dto.PostDTO;
 import com.itsight.service.PostService;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +47,7 @@ public class PostController {
                           HttpSession session) throws IOException {
 
         int trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        PostDto postDto = new ObjectMapper().readValue(postString, PostDto.class);
+        PostDTO postDto = new ObjectMapper().readValue(postString, PostDTO.class);
         Post post = new Post();
         BeanUtils.copyProperties(postDto, post);
 

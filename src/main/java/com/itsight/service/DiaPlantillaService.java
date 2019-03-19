@@ -5,23 +5,23 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface DiaPlantillaService extends BaseService<DiaPlantilla> {
+public interface DiaPlantillaService extends BaseService<DiaPlantilla, Long> {
 
-    List<Integer> encontrarIdPorSemanaId(int semanaId);
+    List<Integer> encontrarIdPorSemanaId(Long semanaId);
 
-    void actualizarNombreListaByListaIndexAndId(String nombre, int listaIndice, int id);
+    void actualizarNombreListaByListaIndexAndId(String nombre, int listaIndice, Long id);
 
-    void insertarNuevaListaById(int id, String lista);
+    void insertarNuevaListaById(Long id, String lista);
 
-    void insertarNuevoElementoById(int id, int listaIndice, int elementoIndice, String elemento);
+    void insertarNuevoElementoById(Long id, int listaIndice, int elementoIndice, String elemento);
 
-    void insertarNuevosElementosById(int id, int listaIndice, String elemento);
+    void insertarNuevosElementosById(Long id, int listaIndice, String elemento);
 
-    void actualizarFlagDescanso(int id, boolean flagDescanso);
+    void actualizarFlagDescanso(Long id, boolean flagDescanso);
 
-    void actualizarNombreElementoByListaIndexAndElementoIndexAndId(int id, int listaIndice, int elementoIndice, String nombre);
+    void actualizarNombreElementoByListaIndexAndElementoIndexAndId(Long id, int listaIndice, int elementoIndice, String nombre);
 
-    void eliminarListaById(int id, int listaIndice);
+    void eliminarListaById(Long id, int listaIndice);
 
-    void eliminarElementoById(int id, int listaIndice, int elementoIndice);
+    void eliminarElementoById(Long id, int listaIndice, int elementoIndice);
 }

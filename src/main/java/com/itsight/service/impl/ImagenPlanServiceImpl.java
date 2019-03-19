@@ -26,7 +26,7 @@ public class ImagenPlanServiceImpl extends BaseServiceImpl<ImagenPlanRepository>
     }
 
     @Override
-    public List<ImagenPlan> findByPlanId(int planId) {
+    public List<ImagenPlan> findByPlanId(Integer planId) {
         // TODO Auto-generated method stub
         return repository.findByPlanId(planId);
     }
@@ -44,9 +44,9 @@ public class ImagenPlanServiceImpl extends BaseServiceImpl<ImagenPlanRepository>
     }
 
     @Override
-    public void delete(int imagenPlanId) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(imagenPlanId));
+        repository.delete(id);
     }
 
     @Override
@@ -55,12 +55,12 @@ public class ImagenPlanServiceImpl extends BaseServiceImpl<ImagenPlanRepository>
     }
 
     @Override
-    public ImagenPlan findOne(int id) {
+    public ImagenPlan findOne(Integer id) {
         return null;
     }
 
     @Override
-    public ImagenPlan findOneWithFT(int id) {
+    public ImagenPlan findOneWithFT(Integer id) {
         return null;
     }
 
@@ -122,7 +122,7 @@ public class ImagenPlanServiceImpl extends BaseServiceImpl<ImagenPlanRepository>
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }

@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface PlanService extends BaseService<Plan> {
+public interface PlanService extends BaseService<Plan, Integer> {
 
     List<Plan> listAll();
 
@@ -13,9 +13,9 @@ public interface PlanService extends BaseService<Plan> {
 
     Plan update(Plan plan);
 
-    void delete(int planId);
+    void delete(Integer id);
 
-    Plan getPlanById(int planId);
+    Plan getPlanById(Integer id);
 
     List<Plan> findAllByFlagActivo(Boolean flagActivo);
 

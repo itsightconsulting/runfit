@@ -25,7 +25,7 @@ public class MiniRutina implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MiniRutinaId")
-    private int id;
+    private Long id;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

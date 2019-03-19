@@ -21,6 +21,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
 
     @Modifying
     @Query(value = "UPDATE Categoria C SET C.flagActivo =?2 WHERE C.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
 }

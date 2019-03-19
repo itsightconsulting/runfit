@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClienteFitnessRepository extends JpaRepository<ClienteFitness, Integer> {
+public interface ClienteFitnessRepository extends JpaRepository<ClienteFitness, Long> {
 
     @Override
     @EntityGraph(value = "clienteFitness.cliente")
@@ -16,5 +16,5 @@ public interface ClienteFitnessRepository extends JpaRepository<ClienteFitness, 
 
     //@Query("SELECT UF FROM ClienteFitness UF WHERE UF.cliente.id = ?1")
     @EntityGraph(value = "clienteFitness.cliente")
-    ClienteFitness findByClienteId(int clienteId);
+    ClienteFitness findByClienteId(Long clienteId);
 }

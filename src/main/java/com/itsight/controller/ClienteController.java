@@ -1,10 +1,13 @@
 package com.itsight.controller;
 
 import com.itsight.domain.Cliente;
+import com.itsight.domain.dto.ClienteDTO;
+import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,5 +47,14 @@ public class ClienteController {
             return clienteService.registrar(cliente, rols);
         }
         return clienteService.actualizar(cliente, rols);
+    }
+
+    @PostMapping(value = "/fitness/agregar")
+    public @ResponseBody String nuevo(@RequestBody ClienteDTO cliente, BindingResult bindingResult) {
+        if(!bindingResult.hasErrors()){
+            return clienteService.registroFull(cliente);
+        }else{
+            return "-1";
+        }
     }
 }

@@ -15,6 +15,6 @@ public interface ImagenPlanRepository extends JpaRepository<ImagenPlan, Integer>
     List<ImagenPlan> findAll();
 
     @EntityGraph(value = "imagenplan.tipoimagen", attributePaths = {})
-    List<ImagenPlan> findByPlanId(int planId);
+    List<ImagenPlan> findByPlanId(Integer planId);
 
 }

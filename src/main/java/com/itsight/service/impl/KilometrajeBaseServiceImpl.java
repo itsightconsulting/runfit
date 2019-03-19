@@ -30,17 +30,17 @@ public class KilometrajeBaseServiceImpl extends BaseServiceImpl<KilometrajeBaseR
     }
 
     @Override
-    public KilometrajeBase findOne(int id) {
+    public KilometrajeBase findOne(Integer id) {
         return repository.findOne(new Integer(id));
     }
 
     @Override
-    public KilometrajeBase findOneWithFT(int id) {
+    public KilometrajeBase findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         repository.delete(new Integer(id));
     }
 
@@ -100,7 +100,7 @@ public class KilometrajeBaseServiceImpl extends BaseServiceImpl<KilometrajeBaseR
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 

@@ -1,7 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.UbPeru;
-import com.itsight.domain.dto.UbPeruLimDto;
+import com.itsight.domain.dto.UbPeruLimDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.UbPeruRepository;
 import com.itsight.service.UbPeruService;
@@ -109,20 +109,20 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
     }
 
     @Override
-    public UbPeruLimDto findPeLimUbigeo() {
-        UbPeruLimDto ubPeruLim = new UbPeruLimDto(repository.findDeps(), repository.findProvs(), repository.findDist());
+    public UbPeruLimDTO findPeLimUbigeo() {
+        UbPeruLimDTO ubPeruLim = new UbPeruLimDTO(repository.findDeps(), repository.findProvs(), repository.findDist());
         return ubPeruLim;
     }
 
     @Override
-    public UbPeruLimDto findPeProvByDep(String depId) {
-        UbPeruLimDto ubPeruLim = new UbPeruLimDto(null, repository.findProvsByDepId(depId), null);
+    public UbPeruLimDTO findPeProvByDep(String depId) {
+        UbPeruLimDTO ubPeruLim = new UbPeruLimDTO(null, repository.findProvsByDepId(depId), null);
         return ubPeruLim;
     }
 
     @Override
-    public UbPeruLimDto findPeDistByDepAndProv(String depId, String provId) {
-        UbPeruLimDto ubPeruLim = new UbPeruLimDto(null, null, repository.findDistByDepIdAndProvId(depId, provId));
+    public UbPeruLimDTO findPeDistByDepAndProv(String depId, String provId) {
+        UbPeruLimDTO ubPeruLim = new UbPeruLimDTO(null, null, repository.findDistByDepIdAndProvId(depId, provId));
         return ubPeruLim;
     }
 }

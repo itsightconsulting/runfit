@@ -33,7 +33,7 @@ public class KilometrajeBase implements Serializable {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
             })
     @Column(name="KilometrajeBaseId")
-    private int id;
+    private Integer id;
     @Column(updatable = false)
     private int distancia;
     @Column(updatable = false)

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AudioRepository extends JpaRepository<Audio, Integer> {
+public interface AudioRepository extends JpaRepository<Audio, Long> {
 
     @Override
     @Query(value = "SELECT NEW Audio(id, nombre, descripcion, duracion, flagActivo, rutaWeb, A.tipoAudio.nombre) FROM Audio A")
@@ -26,11 +26,11 @@ public interface AudioRepository extends JpaRepository<Audio, Integer> {
     List<Audio> findAllByNombreContainingIgnoreCase(String nombre);
 
     @EntityGraph(value = "audio.tipoaudio")
-    Audio findById(int id);
+    Audio findById(Long id);
 
     @Modifying
     @Query(value = "UPDATE Audio A SET A.flagActivo =?2 WHERE A.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Long id, boolean flagActivo);
 
     @EntityGraph(value = "audio")
     List<Audio> findAllByFlagActivoTrueOrderByIdDesc();

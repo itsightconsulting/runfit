@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UsuarioDto implements Serializable {
+public class UsuarioDTO implements Serializable {
 
     private String nombres;
     private String apellidoPaterno;

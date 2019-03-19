@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SemanaPlantillaDto {
+public class SemanaPlantillaDTO {
 
     private int id;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
@@ -23,8 +23,8 @@ public class SemanaPlantillaDto {
     private String metricas;
     private String metricasVelocidad;
 
-    private List<DiaPlantillaDto> dias;
+    private List<DiaPlantillaDTO> dias;
 
-    public SemanaPlantillaDto(){}
+    public SemanaPlantillaDTO(){}
 
 }

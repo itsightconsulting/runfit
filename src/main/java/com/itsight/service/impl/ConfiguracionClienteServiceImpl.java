@@ -29,18 +29,18 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
     }
 
     @Override
-    public ConfiguracionCliente findOne(int id) {
-        return repository.findById(new Integer(id));
+    public ConfiguracionCliente findOne(Integer id) {
+        return repository.findById(id);
     }
 
     @Override
-    public ConfiguracionCliente findOneWithFT(int id) {
+    public ConfiguracionCliente findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -101,17 +101,17 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
     @Override
-    public String obtenerPostIdFavoritos(int id) {
+    public String obtenerPostIdFavoritos(Integer id) {
         return repository.getFavsPostTrainer(id);
     }
 
     @Override
-    public void actualizarPostIdFavoritos(int id, String postsFavsIds) {
+    public void actualizarPostIdFavoritos(Integer id, String postsFavsIds) {
         repository.updateFavsPostTrainer(id, postsFavsIds);
     }
 }

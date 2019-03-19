@@ -31,22 +31,22 @@ public interface EspecificacionSubCategoriaRepository extends JpaRepository<Espe
 
     @Modifying
     @Query(value = "UPDATE EspecificacionSubCategoria E SET E.flagActivo =?2 WHERE E.id = ?1")
-    void updateFlagActivoById(int id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel) FROM EspecificacionSubCategoria E WHERE E.subCategoriaEjercicio.id = ?1 ORDER BY 3,2")
-    List<EspecificacionSubCategoria> findBySubCategoriaId(int subCategoriaEjercicioId);
+    List<EspecificacionSubCategoria> findBySubCategoriaId(Integer subCategoriaEjercicioId);
 
     @Modifying
     @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT especificacion_sub_categoria_id, :id FROM especificacion_sub_categoria order by 1", nativeQuery = true)
-    void registrarEspecificacionNuevoEntrenador(@Param("id") int id);
+    void registrarEspecificacionNuevoEntrenador(@Param("id") Integer id);
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 ORDER BY 1")
-    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioId(int categoriaEjercicioId);
+    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioId(Integer categoriaEjercicioId);
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 AND E.flagActivo = ?2 ORDER BY 1")
-    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndFlagActivoOrderById(int categoriaEjercicioId, Boolean flagActivo);
+    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndFlagActivoOrderById(Integer categoriaEjercicioId, Boolean flagActivo);
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE LOWER(E.nombre) LIKE LOWER(CONCAT('%',?1,'%')) AND E.flagActivo = ?2 ORDER BY 1")
@@ -54,11 +54,11 @@ public interface EspecificacionSubCategoriaRepository extends JpaRepository<Espe
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) ORDER BY 1")
-    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndNombreContainingIgnoreCaseOrderById(int categoriaEjercicioId, String comodin);
+    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndNombreContainingIgnoreCaseOrderById(Integer categoriaEjercicioId, String comodin);
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND E.flagActivo = ?3 ORDER BY 1")
-    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(int categoriaEjercicioId, String comodin, Boolean flagActivo);
+    List<EspecificacionSubCategoria> findAllBySubCategoriaEjercicioIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(Integer categoriaEjercicioId, String comodin, Boolean flagActivo);
 
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
@@ -68,7 +68,7 @@ public interface EspecificacionSubCategoriaRepository extends JpaRepository<Espe
 
     @Query("SELECT new EspecificacionSubCategoria(E.id, E.nombre, E.nivel, E.flagActivo, E.subCategoriaEjercicio.id, E.subCategoriaEjercicio.nombre) FROM EspecificacionSubCategoria E " +
             "WHERE E.subCategoriaEjercicio.id = ?1 ORDER BY 1")
-    List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(int id);
+    List<EspecificacionSubCategoria> findBySubCategoriaEjercicioId(Integer id);
 
 
 

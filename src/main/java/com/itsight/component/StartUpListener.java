@@ -1,12 +1,11 @@
 package com.itsight.component;
 
 import com.itsight.domain.*;
+import com.itsight.domain.CondicionMejora;
 import com.itsight.domain.Musculo;
 import com.itsight.domain.Objetivo;
 import com.itsight.domain.Parametro;
 import com.itsight.domain.Rol;
-import com.itsight.domain.dto.UbPeruDTO;
-import com.itsight.domain.dto.UbPeruLimDto;
 import com.itsight.domain.jsonb.*;
 import com.itsight.repository.BagForestRepository;
 import com.itsight.repository.PostRepository;
@@ -27,12 +26,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class StartUpListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -102,7 +97,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     private MusculoService musculoService;
 
     @Autowired
-    private CapacidadMejoraService capacidadMejoraService;
+    private CondicionMejoraService condicionMejoraService;
 
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
@@ -506,38 +501,38 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     public void addingCondicionMejoraToTable(){
 
-        if (capacidadMejoraService.findOne(1) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Fuerza"));
+        if (condicionMejoraService.findOne(1) == null) {
+            condicionMejoraService.save(new CondicionMejora("Fuerza"));
         }
-        if (capacidadMejoraService.findOne(2) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Velocidad"));
+        if (condicionMejoraService.findOne(2) == null) {
+            condicionMejoraService.save(new CondicionMejora("Velocidad"));
         }
-        if (capacidadMejoraService.findOne(3) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Resistencia"));
+        if (condicionMejoraService.findOne(3) == null) {
+            condicionMejoraService.save(new CondicionMejora("Resistencia"));
         }
-        if (capacidadMejoraService.findOne(4) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Flexibilidad"));
+        if (condicionMejoraService.findOne(4) == null) {
+            condicionMejoraService.save(new CondicionMejora("Flexibilidad"));
         }
-        if (capacidadMejoraService.findOne(5) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Métodos respiratorios"));
+        if (condicionMejoraService.findOne(5) == null) {
+            condicionMejoraService.save(new CondicionMejora("Métodos respiratorios"));
         }
-        if (capacidadMejoraService.findOne(6) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Disciplina"));
+        if (condicionMejoraService.findOne(6) == null) {
+            condicionMejoraService.save(new CondicionMejora("Disciplina"));
         }
-        if (capacidadMejoraService.findOne(7) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Hábitos alimenticios"));
+        if (condicionMejoraService.findOne(7) == null) {
+            condicionMejoraService.save(new CondicionMejora("Hábitos alimenticios"));
         }
-        if (capacidadMejoraService.findOne(8) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Cantidad y calidad de sueño"));
+        if (condicionMejoraService.findOne(8) == null) {
+            condicionMejoraService.save(new CondicionMejora("Cantidad y calidad de sueño"));
         }
-        if (capacidadMejoraService.findOne(9) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Administración del esfuerzo"));
+        if (condicionMejoraService.findOne(9) == null) {
+            condicionMejoraService.save(new CondicionMejora("Administración del esfuerzo"));
         }
-        if (capacidadMejoraService.findOne(10) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Proceso de recuperación"));
+        if (condicionMejoraService.findOne(10) == null) {
+            condicionMejoraService.save(new CondicionMejora("Proceso de recuperación"));
         }
-        if (capacidadMejoraService.findOne(11) == null) {
-            capacidadMejoraService.save(new CapacidadMejora("Proceso de recuperación"));
+        if (condicionMejoraService.findOne(11) == null) {
+            condicionMejoraService.save(new CondicionMejora("Proceso de recuperación"));
         }
     }
 
@@ -1048,12 +1043,12 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setDesgasteZapatilla("Inicio");
             cliFit.setDesObjetivos("Resistencia");
             cliFit.setDesTerPredom("Asfalto");
-            cliFit.setDiaDescanso(1);
             CondicionAnatomica ca = new CondicionAnatomica();
             ca.setFrecuenciaCardiaca(65+i);
             ca.setFrecuenciaCardiacaMaxima(190-i);
             cliFit.setCondicionAnatomica(ca);
             cliFit.setTiemposDisponibles(new ArrayList<>());
+            cliFit.setSalud(new Salud());
             cliFit.setObjetivos(new ArrayList<>());
             cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
             cliFit.setMejoras(new ArrayList<>());

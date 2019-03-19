@@ -34,15 +34,15 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public Dia update(Dia rutina) {
+    public Dia update(Dia dia) {
         // TODO Auto-generated method stub
-        return repository.saveAndFlush(rutina);
+        return repository.saveAndFlush(dia);
     }
 
     @Override
-    public void delete(int rutinaId) {
+    public void delete(Long id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(rutinaId));
+        repository.delete(id);
     }
 
     @Override
@@ -51,12 +51,12 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public Dia findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public Dia findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public Dia findOneWithFT(int id) {
+    public Dia findOneWithFT(Long id) {
         return null;
     }
 
@@ -96,7 +96,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public List<Dia> findByIdsIn(List<Integer> ids) {
+    public List<Dia> findByIdsIn(List<Long> ids) {
         return null;
     }
 
@@ -116,12 +116,12 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
 
     }
 
     @Override
-    public List<Integer> encontrarIdPorSemanaId(int semanaId) {
+    public List<Integer> encontrarIdPorSemanaId(Integer semanaId) {
         return repository.findIdBySemanaId(semanaId);
     }
 
@@ -130,7 +130,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
             int semanaId = ((int[]) sessionValor.get())[numSem];
-            int id = repository.findIdBySemanaId(semanaId).get(diaIndice);
+            Long id = repository.findIdBySemanaId(semanaId).get(diaIndice);
             repository.updateFlagDescanso(id, flagDescanso);
             return ACTUALIZACION.get();
         }
@@ -142,7 +142,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
             int semanaId = ((int[]) sessionValor.get())[elementoDel.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elementoDel.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elementoDel.getDiaIndice());
             repository.deleteElementoById(id, elementoDel.getElementoIndice(), elementoDel.getMinutos(), elementoDel.getDistancia(), elementoDel.getCalorias());
             return ELIMINACION.get();
         }
@@ -154,7 +154,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             //Seteamos las variables primitivas int con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
             elemento.setNumeroSemana(0);
             elemento.setDiaIndice(0);
@@ -170,7 +170,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String texto = "{"+elemento.getElementoIndice()+",\"nombre\"}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, elemento.getNombre(), texto);
             return ACTUALIZACION.get();
@@ -183,7 +183,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
             String texto = "{"+subElemento.getElementoIndice()+",\"subElementos\""+","+subElemento.getSubElementoIndice()+"}";
             repository.saveSubElemento(id, texto, new ObjectMapper().writeValueAsString(new SubElemento(subElemento.getNombre(), subElemento.getMediaAudio(),subElemento.getMediaVideo(), subElemento.getTipo())));
             return REGISTRO.get();
@@ -196,7 +196,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
             String texto = "{"+subElemento.getElementoIndice()+",\"subElementos\""+","+subElemento.getSubElementoIndice()+",\"nombre\"}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, subElemento.getNombre(), texto);
             return ACTUALIZACION.get();
@@ -209,7 +209,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             int posElementoReferencial = elemento.getRefElementoIndice();
             boolean insertarDespues = elemento.getInsertarDespues();
             //Seteamos las variables primitivas/no-pri con su valor por defecto para que no sean tomadas en consideracion en la serializacion jackson
@@ -229,7 +229,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String texto = "{"+elemento.getElementoIndice()+",\"minutos\""+"}";
             repository.updateTiemposDia(id, String.valueOf(elemento.getMinutos()), texto, minutosDia);
             return REGISTRO.get();
@@ -242,7 +242,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String texto = "{" + elemento.getElementoIndice() + ",\"nota\"" + "}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, elemento.getNota(), texto);
             return ACTUALIZACION.get();
@@ -255,7 +255,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             int elementoIndice = elemento.getElementoIndice();
             String txtNombre = "{"+elementoIndice+",\"nombre\""+"}";
             String txtDistancia = "{"+elementoIndice+",\"distancia\""+"}";
@@ -270,7 +270,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             int elementoIndice = elemento.getElementoIndice();
             String txtNombre = "{"+elementoIndice+",\"nombre\""+"}";
             String txtDistancia = "{"+elementoIndice+",\"distancia\""+"}";
@@ -286,7 +286,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
             int elementoIndice = subElemento.getElementoIndice();
             String txtDistancia = "{"+elementoIndice+",\"distancia\""+"}";
             String txtNewSubEle = "{"+elementoIndice+",\"subElementos\""+","+subElemento.getSubElementoIndice()+"}";
@@ -302,7 +302,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
             int elementoIndice = subElemento.getElementoIndice();
             int posSubElementoReferencial = subElemento.getRefSubElementoIndice();
             boolean insertarDespues = subElemento.getInsertarDespues();
@@ -324,7 +324,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elementoDel.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elementoDel.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elementoDel.getDiaIndice());
             String texto = "{"+elementoDel.getElementoIndice()+",subElementos,"+elementoDel.getSubElementoIndice()+"}";
             repository.deleteSubElementoById(id, texto, elementoDel.getDistancia(), elementoDel.getCalorias());
             return ELIMINACION.get();
@@ -333,11 +333,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String eliminarMediaElemento(ElementoMediaDto elemento) {
+    public String eliminarMediaElemento(ElementoMediaDTO elemento) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String[] tipoAndMedia = validarMedia(elemento.getTipoMedia(), elemento.getMediaAudio(), elemento.getMediaVideo());
             String texto = "{"+elemento.getElementoIndice()+","+tipoAndMedia[0]+"}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, tipoAndMedia[1], texto);
@@ -347,11 +347,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarMediaElemento(ElementoMediaDto elemento) {
+    public String actualizarMediaElemento(ElementoMediaDTO elemento) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String[] tipoAndMedia = validarMedia(elemento.getTipoMedia(), elemento.getMediaAudio(), elemento.getMediaVideo());
             String textoMedia = "{"+elemento.getElementoIndice()+","+tipoAndMedia[0]+"}";
             String textoNombre = "{"+elemento.getElementoIndice()+",\"nombre\"}";
@@ -362,11 +362,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarDiaFromPlantilla(DiaDto dia) throws JsonProcessingException {
+    public String actualizarDiaFromPlantilla(DiaDTO dia) throws JsonProcessingException {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[dia.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(dia.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(dia.getDiaIndice());
             repository.updateDiaFromTemplate(id, dia.getCalorias(), dia.getDistancia(), dia.getMinutos(), new ObjectMapper().writeValueAsString(dia.getElementos()));
             return Enums.ResponseCode.ACTUALIZACION.get();
         }
@@ -379,7 +379,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subElemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subElemento.getDiaIndice());
             String texto = "{"+subElemento.getElementoIndice()+",\"subElementos\""+","+subElemento.getSubElementoIndice()+",\"nota\"}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndId(id, subElemento.getNota(), texto);
             return ACTUALIZACION.get();
@@ -388,11 +388,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarElementoByListaIndexAndId(ElementoDto elemento) throws JsonProcessingException {
+    public String actualizarElementoByListaIndexAndId(ElementoDTO elemento) throws JsonProcessingException {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             int tempEleIndice = elemento.getElementoIndice();//Trick
             elemento.setElementoIndice(0);
             elemento.setDiaIndice(0);
@@ -405,11 +405,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String agregarMediaElemento(ElementoDto elemento) {
+    public String agregarMediaElemento(ElementoDTO elemento) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String[] tipoAndMedia = validarMedia(elemento.getTipoMedia(), elemento.getMediaAudio(), elemento.getMediaVideo());
             int elementoIndice = elemento.getElementoIndice();
             String textoNombre = "{"+ elementoIndice +",\"nombre\"}";
@@ -422,11 +422,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarMediaSubElemento(SubElementoMediaDto subEle) {
+    public String actualizarMediaSubElemento(SubElementoMediaDTO subEle) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subEle.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subEle.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subEle.getDiaIndice());
             String[] tipoAndMedia = validarMedia(subEle.getTipoMedia(), subEle.getMediaAudio(), subEle.getMediaVideo());
             String textoNombre = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\"nombre\"}";
             String textoMedia = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\""+tipoAndMedia[0]+"\"}";
@@ -438,11 +438,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String eliminarMediaSubElemento(SubElementoMediaDto subEle) {
+    public String eliminarMediaSubElemento(SubElementoMediaDTO subEle) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[subEle.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(subEle.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(subEle.getDiaIndice());
             String[] tipoAndMedia = validarMedia(subEle.getTipoMedia(), subEle.getMediaAudio(), subEle.getMediaVideo());
             String textoMedia = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\""+tipoAndMedia[0]+"\"}";
             String textoTipo = "{"+subEle.getElementoIndice()+",\"subElementos\""+","+subEle.getSubElementoIndice()+",\"tipo\"}";
@@ -453,11 +453,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarSubElementos(ElementoDto elemento) throws JsonProcessingException  {
+    public String actualizarSubElementos(ElementoDTO elemento) throws JsonProcessingException  {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String texto = "{"+elemento.getElementoIndice()+",\"subElementos\"}";
             repository.updateSubElementos(id, texto, new ObjectMapper().writeValueAsString(elemento.getSubElementos()));
             return ACTUALIZACION.get();
@@ -467,11 +467,11 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
-    public String actualizarDiaRaizDesdePlantilla(DiaDto dia) throws JsonProcessingException {
+    public String actualizarDiaRaizDesdePlantilla(DiaDTO dia) throws JsonProcessingException {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[dia.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(dia.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(dia.getDiaIndice());
             repository.updateDiaRootFromTemplate(id, dia.getCalorias(), dia.getDistancia(), dia.getMinutos(), new ObjectMapper().writeValueAsString(dia.getElementos()));
             return ACTUALIZACION.get();
         }
@@ -483,7 +483,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
             int semanaId = ((int[]) sessionValor.get())[elemento.getNumeroSemana()];
-            int id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
+            Long id = repository.findIdBySemanaId(semanaId).get(elemento.getDiaIndice());
             String texto = "{"+elemento.getElementoIndice()+",\"estilos\""+"}";
             repository.updateEspecificaColumnaJsonBGenericoByQueryTextAndIdInt(id, new ObjectMapper().writeValueAsString(elemento.getEstilos()), texto);
             return Enums.ResponseCode.ACTUALIZACION.get();

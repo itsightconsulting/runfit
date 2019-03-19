@@ -14,9 +14,9 @@ public interface ConfiguracionClienteRepository extends JpaRepository<Configurac
     ConfiguracionCliente findById(Integer id);
 
     @Query(value = "SELECT parametros->4->>'valor' FROM configuracion_cliente WHERE cliente_id = ?1", nativeQuery = true)
-    String getFavsPostTrainer(int id);
+    String getFavsPostTrainer(Integer id);
 
     @Modifying
     @Query(value = "UPDATE configuracion_cliente SET parametros = jsonb_set(parametros, CAST('{4,\"valor\"}' AS text[]), to_jsonb(CAST(?2 as text))) WHERE cliente_id = ?1", nativeQuery = true)
-    void updateFavsPostTrainer(int id, String postsFavsIds);
+    void updateFavsPostTrainer(Integer id, String postsFavsIds);
 }

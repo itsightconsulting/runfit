@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MiMiniRutinaRepository extends JpaRepository<MiMiniRutina, Integer> {
+public interface MiMiniRutinaRepository extends JpaRepository<MiMiniRutina, Long> {
 
-    List<MiMiniRutina> findAllByIdIn(List<Integer> ids);
+    List<MiMiniRutina> findAllByIdIn(List<Long> ids);
 }

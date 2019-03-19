@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class UbPeruLimDto implements Serializable {
+public class UbPeruLimDTO implements Serializable {
 
 
     private List<UbPeruDTO> lstDep;
@@ -15,9 +15,9 @@ public class UbPeruLimDto implements Serializable {
 
     private List<UbPeruDTO> lstDis;
 
-    public UbPeruLimDto(){}
+    public UbPeruLimDTO(){}
 
-    public UbPeruLimDto(List<UbPeruDTO> lstDep, List<UbPeruDTO> lstPro, List<UbPeruDTO> lstDis) {
+    public UbPeruLimDTO(List<UbPeruDTO> lstDep, List<UbPeruDTO> lstPro, List<UbPeruDTO> lstDis) {
         this.lstDep = lstDep;
         this.lstPro = lstPro;
         this.lstDis = lstDis;

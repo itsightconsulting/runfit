@@ -29,18 +29,18 @@ public class PaisServiceImpl extends BaseServiceImpl<PaisRepository> implements 
     }
 
     @Override
-    public Pais findOne(int id) {
-        return repository.findOne(new Integer(id));
+    public Pais findOne(Integer id) {
+        return repository.findOne(id);
     }
 
     @Override
-    public Pais findOneWithFT(int id) {
+    public Pais findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(new Integer(id));
+    public void delete(Integer id) {
+        repository.delete(id);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class PaisServiceImpl extends BaseServiceImpl<PaisRepository> implements 
     }
 
     @Override
-    public void actualizarFlagActivoById(int id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }
