@@ -28,7 +28,7 @@ public class ClassId<T> {
     private final Class<T> clazz;
     private final Integer id;
 
-    public ClassId(Class<T> clazz, int id) {
+    public ClassId(Class<T> clazz, Integer id) {
         this.clazz = clazz;
         this.id = id;
     }
