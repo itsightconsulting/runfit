@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiaPlantillaDTO {
-    private int id;
+    private Integer id;
     private int dia;
     private String literal;
     private boolean flagDescanso;

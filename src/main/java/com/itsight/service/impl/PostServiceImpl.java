@@ -34,17 +34,17 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public Post findOne(Long id) {
+    public Post findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public Post findOneWithFT(Long id) {
+    public Post findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -84,7 +84,7 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public List<Post> findByIdsIn(List<Long> ids) {
+    public List<Post> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -106,12 +106,12 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
     @Override
-    public List<Post> findAllByTrainerId(Long trainerId) {
+    public List<Post> findAllByTrainerId(Integer trainerId) {
         return repository.findAllByTrainerId(trainerId);
     }
 
@@ -121,28 +121,28 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
-    public void updatePostDetalle(Long id, Long clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException {
+    public void updatePostDetalle(Integer id, Integer clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException {
         PostDetalle postDetalle = new PostDetalle(clienteId, cliNomFull, flagLiked, flagFav, new Date(), null);
         repository.updatePostDetalle(id, new ObjectMapper().writeValueAsString(postDetalle));
     }
 
     @Override
-    public boolean verificarExisteLike(Long id, Long clienteId) {
+    public boolean verificarExisteLike(Integer id, Integer clienteId) {
         return repository.checkLikeExists(id, clienteId).orElse(false);
     }
 
     @Override
-    public void actualizarFlagLiked(Long id, Long clienteId, boolean flgLiked) {
+    public void actualizarFlagLiked(Integer id, Integer clienteId, boolean flgLiked) {
         repository.actualizarPostDetalleFlag(id, clienteId, flgLiked, "flgLiked", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     }
 
     @Override
-    public void actualizarFlagFav(Long id, Long clienteId, boolean flgFav) {
+    public void actualizarFlagFav(Integer id, Integer clienteId, boolean flgFav) {
         repository.actualizarPostDetalleFlag(id, clienteId, flgFav, "flgFav", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     }
 
     @Override
-    public List<Post> obtenerPostFavoritos(Long clienteId) {
+    public List<Post> obtenerPostFavoritos(Integer clienteId) {
         return repository.getPostFavoritos(clienteId);
     }
 }

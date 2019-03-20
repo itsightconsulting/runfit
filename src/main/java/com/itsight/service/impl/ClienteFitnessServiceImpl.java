@@ -47,17 +47,17 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public ClienteFitness findOne(Long id) {
+    public ClienteFitness findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public ClienteFitness findOneWithFT(Long id) {
+    public ClienteFitness findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -97,7 +97,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public List<ClienteFitness> findByIdsIn(List<Long> ids) {
+    public List<ClienteFitness> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -117,7 +117,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
@@ -147,7 +147,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public ClienteFitness findByClienteId(Long clienteId) {
+    public ClienteFitness findByClienteId(Integer clienteId) {
         Optional<ClienteFitness> qUsuario = Optional.ofNullable(repository.findByClienteId(clienteId));
         if(qUsuario.isPresent()){
             return qUsuario.get();

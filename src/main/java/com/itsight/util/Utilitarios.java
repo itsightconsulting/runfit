@@ -207,8 +207,8 @@ public class Utilitarios {
         return nuevoArray;
     }
 
-    public static Long[] agregarElementoArray(Long[] inArray, Long nuevoElemento){
-        Long[] nuevoArray = new Long[inArray.length+1];
+    public static Integer[] agregarElementoArray(Integer[] inArray, Integer nuevoElemento){
+        Integer[] nuevoArray = new Integer[inArray.length+1];
         for (int i=0; i<nuevoArray.length-1;i++){
             nuevoArray[i] = inArray[i];
         }

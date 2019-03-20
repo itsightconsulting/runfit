@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface AdministradorRepository extends JpaRepository<Administrador, Long>{
+public interface AdministradorRepository extends JpaRepository<Administrador, Integer>{
 
     @EntityGraph(value = "administrador.all")
     List<Administrador> findAllByOrderByIdDesc();
@@ -21,15 +21,15 @@ public interface AdministradorRepository extends JpaRepository<Administrador, Lo
     List<Administrador> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "administrador.all")
-    Administrador findById(Long id);
+    Administrador findById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Administrador A SET A.flagActivo =?2 WHERE A.id = ?1")
-    void updateFlagActivoById(Long id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Modifying
     @Query(value = "UPDATE Administrador A SET A.fechaUltimoAcceso =?1 WHERE A.id = ?2")
-    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Long id);
+    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Integer id);
 
     @Query(value = "SELECT A.correo FROM Administrador A WHERE A.correo = ?1")
     List<Administrador> findAllByCorreo(String correo);

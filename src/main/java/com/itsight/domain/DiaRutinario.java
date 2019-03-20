@@ -28,7 +28,7 @@ public class DiaRutinario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DiaRutinarioId")
-    private Long id;
+    private Integer id;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)

@@ -151,11 +151,11 @@ public class VideoController {
         }
     }
 
-    protected BagForest reconstructForest(List<Video> leaves, int forestId) {
+    protected BagForest reconstructForest(List<Video> leaves, Integer forestId) {
         EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(new EntityVisitor[]{
                 GrupoVideo.ENTITY_VISITOR, CategoriaVideo.ENTITY_VISITOR, SubCategoriaVideo.ENTITY_VISITOR, Video.ENTITY_VISITOR, BagForest.ENTITY_VISITOR
         }).build(leaves);
-        ClassId<BagForest> forestClassId = new ClassId<BagForest>(BagForest.class, forestId);
+        ClassId<BagForest> forestClassId = new ClassId<>(BagForest.class, forestId);
         return entityGraphBuilder.getEntityContext().getObject(forestClassId);
     }
 

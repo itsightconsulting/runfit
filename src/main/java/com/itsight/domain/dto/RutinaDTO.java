@@ -21,8 +21,8 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RutinaDTO implements Serializable {
-    private int redFitnessId;
-    private int clienteId;
+    private Integer redFitnessId;
+    private Integer clienteId;
     private int anios;
     private int meses;
     private int totalSemanas;

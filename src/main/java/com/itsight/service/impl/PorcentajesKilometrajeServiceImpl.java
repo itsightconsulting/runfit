@@ -104,12 +104,12 @@ public class PorcentajesKilometrajeServiceImpl extends BaseServiceImpl<Porcentaj
     }
 
     @Override
-    public PorcentajesKilometraje findByTrainerIdAndDistancia(Long trainerId, int distancia) {
+    public PorcentajesKilometraje findByTrainerIdAndDistancia(Integer trainerId, int distancia) {
         return repository.findByTrainerIdAndDistancia(trainerId, distancia);
     }
 
     @Override
-    public void actualizarPorcentajesComplexByTrainerIdAndDistancia(Long trainerId, int distancia, List<PorcentajeKilometrajeDTO> porcentajes) {
+    public void actualizarPorcentajesComplexByTrainerIdAndDistancia(Integer trainerId, int distancia, List<PorcentajeKilometrajeDTO> porcentajes) {
         String textNombre1 = "{0,\"semanas\","+porcentajes.get(0).getIndice()+",\"porcentajes\"}";
         String textNombre2 = "{1,\"semanas\","+porcentajes.get(1).getIndice()+",\"porcentajes\"}";
         String textNombre3 = "{2,\"semanas\","+porcentajes.get(2).getIndice()+",\"porcentajes\"}";

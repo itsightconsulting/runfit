@@ -58,7 +58,7 @@ public class SecurityUser{
             }
     )
     @Column(name = "SecurityUserId")
-    private Long id;
+    private Integer id;
     @Column(name = "Username", unique = true, updatable = false)
     private String username;
     @Column(name = "Password", nullable = false)
@@ -81,7 +81,7 @@ public class SecurityUser{
     public SecurityUser() {
     }
 
-    public SecurityUser(Long id) {
+    public SecurityUser(Integer id) {
         this.id = id;
     }
 
@@ -152,11 +152,11 @@ public class SecurityUser{
         this.roles = roles;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

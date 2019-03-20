@@ -37,19 +37,19 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
     }
 
     @Override
-    public Documento findOne(Long id) {
+    public Documento findOne(Integer id) {
         // TODO Auto-generated method stub
         return repository.findOne(id);
     }
 
     @Override
-    public Documento findOneWithFT(Long id) {
+    public Documento findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
         repository.delete(id);
     }
@@ -97,7 +97,7 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
     }
 
     @Override
-    public List<Documento> findByIdsIn(List<Long> ids) {
+    public List<Documento> findByIdsIn(List<Integer> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -139,13 +139,13 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
     }
 
     @Override
-    public String obtenerNombrePorId(Long id, String uuid) {
+    public String obtenerNombrePorId(Integer id, String uuid) {
         // TODO Auto-generated method stub
         return repository.findNombreByIdAndUuid(id, UUID.fromString(uuid));
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

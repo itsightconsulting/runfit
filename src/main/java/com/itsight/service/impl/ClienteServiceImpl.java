@@ -70,13 +70,13 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public Cliente findOne(Long id) {
+    public Cliente findOne(Integer id) {
         // TODO Auto-generated method stub
         return repository.findOne(id);
     }
 
     @Override
-    public Cliente findOneWithFT(Long id) {
+    public Cliente findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
@@ -94,7 +94,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
         repository.delete(id);
     }
@@ -106,7 +106,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public String findPasswordById(Long id) {
+    public String findPasswordById(Integer id) {
         // TODO Auto-generated method stub
         return securityUserRepository.findPasswordById(id);
     }
@@ -142,7 +142,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public List<Cliente> findByIdsIn(List<Long> ids) {
+    public List<Cliente> findByIdsIn(List<Integer> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -288,7 +288,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             if(debenEliminarse.size()>0) {
                 for (Integer n : debenEliminarse) {
                     com.itsight.domain.Rol rol = rolService.findOne(n);
-                    Long id = securityRoleRepository.findBySecurityUserIdAndRole(qCliente.getId(), rol.getRol()).getId();
+                    Integer id = securityRoleRepository.findBySecurityUserIdAndRole(qCliente.getId(), rol.getRol()).getId();
                     securityRoleRepository.deleteById(id);
                 }
                 //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
@@ -317,7 +317,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }
@@ -325,7 +325,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public void actualizarFechaUltimoAcceso(Date date, String id) {
         // TODO Auto-generated method stub
-        repository.updateFechaUltimoAcceso(date, Long.parseLong(id));
+        repository.updateFechaUltimoAcceso(date, Integer.parseInt(id));
     }
 
     @Override
@@ -344,7 +344,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public String findNombreCompletoById(Long id) {
+    public String findNombreCompletoById(Integer id) {
         return repository.findNombreCompletoById(id);
     }
 }

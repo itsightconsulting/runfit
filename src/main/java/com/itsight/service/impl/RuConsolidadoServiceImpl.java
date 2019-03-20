@@ -32,17 +32,17 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
     }
 
     @Override
-    public RuConsolidado findOne(Long id) {
+    public RuConsolidado findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public RuConsolidado findOneWithFT(Long id) {
+    public RuConsolidado findOneWithFT(Integer id) {
         return repository.getById(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -82,7 +82,7 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
     }
 
     @Override
-    public List<RuConsolidado> findByIdsIn(List<Long> ids) {
+    public List<RuConsolidado> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -104,12 +104,12 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
     @Override
-    public void updateMatrizMejoraVelocidades(Long rutinaId, String mVz) {
+    public void updateMatrizMejoraVelocidades(Integer rutinaId, String mVz) {
         repository.updateMatrizMejoraVelocidades(rutinaId, mVz);
     }
 }

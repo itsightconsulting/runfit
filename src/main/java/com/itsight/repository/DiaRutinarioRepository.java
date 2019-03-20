@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DiaRutinarioRepository extends JpaRepository<DiaRutinario, Long> {
+public interface DiaRutinarioRepository extends JpaRepository<DiaRutinario, Integer> {
 
-    List<DiaRutinario> findAllByIdInOrderById(List<Long> ids);
+    List<DiaRutinario> findAllByIdInOrderById(List<Integer> ids);
 }

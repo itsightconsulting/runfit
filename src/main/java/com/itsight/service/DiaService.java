@@ -9,9 +9,9 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface DiaService extends BaseService<Dia, Long> {
+public interface DiaService extends BaseService<Dia, Integer> {
 
-    List<Long> encontrarIdPorSemanaId(Long semanaId);
+    List<Integer> encontrarIdPorSemanaId(Integer semanaId);
 
     String actualizarFlagDescanso(int numSem, int diaIndice, boolean flagDescanso);
 

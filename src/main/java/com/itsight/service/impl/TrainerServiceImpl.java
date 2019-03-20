@@ -72,17 +72,17 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public Trainer findOne(Long id) {
+    public Trainer findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public Trainer findOneWithFT(Long id) {
+    public Trainer findOneWithFT(Integer id) {
         return repository.findById(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -122,7 +122,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public List<Trainer> findByIdsIn(List<Long> ids) {
+    public List<Trainer> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -273,7 +273,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             if(debenEliminarse.size()>0) {
                 for (Integer n : debenEliminarse) {
                     com.itsight.domain.Rol rol = rolService.findOne(n);
-                    Long id = securityRoleRepository.findBySecurityUserIdAndRole(qTrainer.getId(), rol.getRol()).getId();
+                    Integer id = securityRoleRepository.findBySecurityUserIdAndRole(qTrainer.getId(), rol.getRol()).getId();
                     securityRoleRepository.deleteById(id);
                 }
                 //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
@@ -306,18 +306,18 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
     }
 
     @Override
-    public String findCodigoTrainerById(Long id) {
+    public String findCodigoTrainerById(Integer id) {
         return repository.findCodigoTrainerById(id);
     }
 
     @Override
     public void actualizarFechaUltimoAcceso(Date fechaUltimoAcceso, String id) {
-        repository.updateFechaUltimoAcceso(fechaUltimoAcceso, Long.parseLong(id));
+        repository.updateFechaUltimoAcceso(fechaUltimoAcceso, Integer.parseInt(id));
 
     }
 
@@ -353,7 +353,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public String cargarRutinarioCe(Long trainerId) {
+    public String cargarRutinarioCe(Integer trainerId) {
         repository.updateFlagRutinarioCeById(trainerId,true);
         especificacionSubCategoriaRepository.registrarEspecificacionNuevoEntrenador(trainerId);
         return ResponseCode.REGISTRO.get();

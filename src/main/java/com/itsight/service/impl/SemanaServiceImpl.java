@@ -55,17 +55,17 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     }
 
     @Override
-    public Semana findOne(Long id) {
+    public Semana findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public Semana findOneWithFT(Long id) {
+    public Semana findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
 
     }
 
@@ -105,7 +105,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     }
 
     @Override
-    public List<Semana> findByIdsIn(List<Long> ids) {
+    public List<Semana> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -125,15 +125,15 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) { }
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) { }
 
     @Override
-    public Semana findOneWithDaysById(Long id) {
+    public Semana findOneWithDaysById(Integer id) {
         return repository.findOneWithDays(id);
     }
 
     @Override
-    public List<Semana> findByRutinaIdOrderByIdDesc(Long idrutina) {
+    public List<Semana> findByRutinaIdOrderByIdDesc(Integer idrutina) {
         return repository.findByRutinaIdOrderByIdDesc(idrutina);
     }
 
@@ -141,7 +141,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     public String actualizarObjetivos(int numSem, String objetivos) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
-            Long id = ((Long[]) sessionValor.get())[numSem];
+            Integer id = ((Integer[]) sessionValor.get())[numSem];
             repository.updateObjetivoById(id, objetivos);
             return ACTUALIZACION.get();
         }
@@ -149,20 +149,20 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
     }
 
     @Override
-    public String agregarSemana(Semana semana, List<Dia> dias, Long rutinaId, int totalSemanas, Date fechaFin) {
+    public String agregarSemana(Semana semana, List<Dia> dias, Integer rutinaId, int totalSemanas, Date fechaFin) {
         semana.setRutina(rutinaId);
         semana.setLstDia(dias);
         repository.saveAndFlush(semana);
         Rutina qRutina = rutinaRepository.findOne(rutinaId);
         qRutina.setTotalSemanas(totalSemanas);
         qRutina.setFechaFin(fechaFin);
-        Long[] qSemanaIds = Utilitarios.agregarElementoArray(qRutina.getSemanaIds(), semana.getId());
+        int[] qSemanaIds = Utilitarios.agregarElementoArray(qRutina.getSemanaIds(), semana.getId());
         qRutina.setSemanaIds(qSemanaIds);
         qRutina.setDias(qRutina.getDias()+7);
         rutinaRepository.saveAndFlush(qRutina);
         session.setAttribute("semanaIds", qSemanaIds);
         //Actualizar última fecha de planificación
-        Long redFitnessId = rutinaRepository.findRedFitnessIdById(rutinaId);
+        Integer redFitnessId = rutinaRepository.findRedFitnessIdById(rutinaId);
         redFitnessRepository.updateUltimaFechaPlanificacionById(redFitnessId, fechaFin);
         return Enums.ResponseCode.REGISTRO.get();
     }
@@ -188,7 +188,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
                     }
 
                     if(indi == 4){
-                        Long rutinaId = Long.parseLong(session.getAttribute("edicionRutinaId").toString());
+                        Integer rutinaId = Integer.parseInt(session.getAttribute("edicionRutinaId").toString());
                         ruConsolidadoService.updateMatrizMejoraVelocidades(rutinaId, mVz);
 
                         List<MetricaVelPOJO> lstMetricaVel = Arrays.asList(pojos);

@@ -23,5 +23,5 @@ package com.itsight.util;
  */
 public interface Identifiable {
 
-    public int getId();
+    Integer getId();
 }

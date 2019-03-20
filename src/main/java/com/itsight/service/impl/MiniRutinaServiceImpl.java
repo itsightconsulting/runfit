@@ -28,17 +28,17 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public MiniRutina findOne(Long id) {
+    public MiniRutina findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public MiniRutina findOneWithFT(Long id) {
+    public MiniRutina findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -78,7 +78,7 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public List<MiniRutina> findByIdsIn(List<Long> ids) {
+    public List<MiniRutina> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -98,27 +98,27 @@ public class MiniRutinaServiceImpl extends BaseServiceImpl<MiniRutinaRepository>
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
     @Override
-    public MiniRutina findByTrainerIdAndCategoriaId(Long id, Integer espSubCatId) {
+    public MiniRutina findByTrainerIdAndCategoriaId(Integer id, Integer espSubCatId) {
         return repository.findByTrainerIdAndEspecificacionSubCategoriaId(id, espSubCatId);
     }
 
     @Override
-    public List<MiniRutina> findAllByTrainerId(Long trainerId) {
+    public List<MiniRutina> findAllByTrainerId(Integer trainerId) {
         return repository.findAllByTrainerId(trainerId);
     }
 
     @Override
-    public List<Integer> findAllCategoriaIdByTrainerId(Long trainerId) {
+    public List<Integer> findAllCategoriaIdByTrainerId(Integer trainerId) {
         return repository.findAllCategoriaIdByTrainerId(trainerId);
     }
 
     @Override
-    public MiniRutina findByCategoriaIdAndTrainerId(Integer catId, Long trainerId) {
+    public MiniRutina findByCategoriaIdAndTrainerId(Integer catId, Integer trainerId) {
         return repository.findByCategoriaIdAndTrainerId(catId, trainerId);
     }
 }

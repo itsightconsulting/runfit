@@ -6,11 +6,11 @@ import com.itsight.generic.BaseService;
 import java.util.Date;
 import java.util.List;
 
-public interface AdministradorService extends BaseService<Administrador, Long> {
+public interface AdministradorService extends BaseService<Administrador, Integer> {
 
     List<Administrador> findByNombreCompleto(String nombreCompleto);
 
-    String findPasswordById(Long id);
+    String findPasswordById(Integer id);
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 

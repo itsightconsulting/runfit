@@ -31,7 +31,7 @@ public class Documento extends AuditingEntity {
             }
     )
     @Column(name = "DocumentoId")
-    private Long id;
+    private Integer id;
 
     @Column(nullable = true)
     private String nombre;

@@ -52,7 +52,7 @@ public class Rutina extends AuditingEntity {
             }
     )
     @Column(name = "RutinaId")
-    private Long id;
+    private Integer id;
     @Column(nullable = false)
     private int anios;
     @Column(nullable = false)
@@ -85,7 +85,7 @@ public class Rutina extends AuditingEntity {
     @JsonIgnore
     @Type(type = "int-array")
     @Column(name="SemanaIds", columnDefinition = "integer[]")
-    private Long[] semanaIds;
+    private int[] semanaIds;
     @Type(type = "jsonb")
     @Column(name = "control", columnDefinition = "jsonb")
     private RutinaControl control;
@@ -95,14 +95,14 @@ public class Rutina extends AuditingEntity {
 
     public Rutina(){}
 
-    public Rutina(Long id){
+    public Rutina(Integer id){
         this.id = id;
     }
 
-    public void setCliente(Long cliId) {
+    public void setCliente(Integer cliId) {
         this.cliente = new Cliente(cliId);
     }
 
-    public void setRedFitness(Long redFitnessId){this.redFitness = new RedFitness(redFitnessId);}
+    public void setRedFitness(Integer redFitnessId){this.redFitness = new RedFitness(redFitnessId);}
 
 }

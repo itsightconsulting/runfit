@@ -38,7 +38,7 @@ public class Audio extends AuditingEntity {
             }
     )
     @Column(name = "AudioId")
-    private Long id;
+    private Integer id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(nullable = false)
@@ -91,7 +91,7 @@ public class Audio extends AuditingEntity {
     public Audio() {
     }
 
-    public Audio(Long id) {
+    public Audio(Integer id) {
         this.id = id;
     }
 
@@ -107,7 +107,7 @@ public class Audio extends AuditingEntity {
         this.tipoAudio = new TipoAudio(tpAudioId);
     }
 
-    public Audio(Long id, String nombre, String descripcion, String duracion, boolean flagActivo, String rutaWeb, String nombreTA) {
+    public Audio(Integer id, String nombre, String descripcion, String duracion, boolean flagActivo, String rutaWeb, String nombreTA) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

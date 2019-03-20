@@ -19,18 +19,18 @@ public class VideoAudioFavoritoServiceImpl extends BaseServiceImpl<VideoAudioFav
     }
 
     @Override
-    public VideoAudioFavorito findOne(Long id) {
+    public VideoAudioFavorito findOne(Integer id) {
         // TODO Auto-generated method stub
         return repository.findOne(id);
     }
 
     @Override
-    public VideoAudioFavorito findOneWithFT(Long id) {
+    public VideoAudioFavorito findOneWithFT(Integer id) {
         return null;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -70,7 +70,7 @@ public class VideoAudioFavoritoServiceImpl extends BaseServiceImpl<VideoAudioFav
     }
 
     @Override
-    public List<VideoAudioFavorito> findByIdsIn(List<Long> ids) {
+    public List<VideoAudioFavorito> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -90,7 +90,7 @@ public class VideoAudioFavoritoServiceImpl extends BaseServiceImpl<VideoAudioFav
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
@@ -106,23 +106,23 @@ public class VideoAudioFavoritoServiceImpl extends BaseServiceImpl<VideoAudioFav
     }
 
     @Override
-    public VideoAudioFavorito getVideoAudioFavoritoAudio(Long clienteId, Long idaudio)
+    public VideoAudioFavorito getVideoAudioFavoritoAudio(Integer clienteId, Integer idaudio)
     {
         return repository.findByClienteAudio(clienteId,idaudio);
     }
     @Override
-    public VideoAudioFavorito getVideoAudioFavoritoVideo(Long clienteId, Long idvideo)
+    public VideoAudioFavorito getVideoAudioFavoritoVideo(Integer clienteId, Integer idvideo)
     {
         return repository.findByClienteVideo(clienteId,idvideo);
     }
 
     @Override
-    public List<VideoAudioFavorito> findAllByClienteByTipo(Long clienteId, int tipo) {
+    public List<VideoAudioFavorito> findAllByClienteByTipo(Integer clienteId, int tipo) {
         return repository.findAllByClienteByTipo(clienteId, tipo);
     }
 
     @Override
-    public List<VideoAudioFavorito> findByClienteId(Long clienteId) {
+    public List<VideoAudioFavorito> findByClienteId(Integer clienteId) {
         return repository.findByClienteId(clienteId);
     }
 

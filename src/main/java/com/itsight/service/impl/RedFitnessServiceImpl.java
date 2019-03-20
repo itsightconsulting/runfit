@@ -29,17 +29,17 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public RedFitness findOne(Long id) {
+    public RedFitness findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public RedFitness findOneWithFT(Long id) {
+    public RedFitness findOneWithFT(Integer id) {
         return repository.findOneById(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         repository.delete(id);
     }
 
@@ -79,7 +79,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public List<RedFitness> findByIdsIn(List<Long> ids) {
+    public List<RedFitness> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -99,7 +99,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 
@@ -109,22 +109,22 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public void actualizarNotaACliente(Long id, String nota) {
+    public void actualizarNotaACliente(Integer id, String nota) {
         repository.actualizarNotaACliente(id, nota);
     }
 
     @Override
-    public void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(Long id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas) {
+    public void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(Integer id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas) {
         repository.updatePlanStatusAndUltimoDiaPlanificacion(id, planStatus, ultimoDiaPlanificacion, contadorRutinas);
     }
 
     @Override
-    public String findCodTrainerByIdAndRunnerId(Long id, Long runneId) {
+    public String findCodTrainerByIdAndRunnerId(Integer id, Integer runneId) {
         return repository.findCodTrainerByIdAndRunnerId(id, runneId);
     }
 
     @Override
-    public List<Integer> findTrainerIdByUsuarioId(Long id) {
+    public List<Integer> findTrainerIdByUsuarioId(Integer id) {
         return  repository.findTrainerIdByUsuarioId(id);
     }
 

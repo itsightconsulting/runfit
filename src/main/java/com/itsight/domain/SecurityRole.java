@@ -14,7 +14,7 @@ public class SecurityRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SecurityRoleId")
-    private Long id;
+    private Integer id;
     @Column(name = "Role", nullable = false)
     private String role;
     @JsonBackReference
@@ -39,18 +39,18 @@ public class SecurityRole {
         this.securityUser = secUser;
     }
 
-    public SecurityRole(String role, Long securityUserId) {
+    public SecurityRole(String role, Integer securityUserId) {
         // TODO Auto-generated constructor stub
         this.role = role;
         this.securityUser = new SecurityUser(securityUserId);
     }
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

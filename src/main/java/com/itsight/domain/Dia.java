@@ -40,7 +40,7 @@ public class Dia {
             }
     )
     @Column(name = "DiaId")
-    private int id;
+    private Integer id;
     @Column
     private int dia;
     @Column

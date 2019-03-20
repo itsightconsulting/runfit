@@ -46,7 +46,7 @@ public class ClienteFitnessController {
 
     @GetMapping(value = "/obtener")
     public @ResponseBody
-    ClienteFitness obtenerPorId(@RequestParam(value = "id") Long clienteId) {
+    ClienteFitness obtenerPorId(@RequestParam(value = "id") Integer clienteId) {
         return clienteFitnessService.findOne(clienteId);
     }
 
@@ -54,7 +54,7 @@ public class ClienteFitnessController {
     @GetMapping(value = "/obtener/secundario/{runnerId}")
     public @ResponseBody
     ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "runnerId") String runnerId) {
-        Long runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+        Integer runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         return clienteFitnessService.findByClienteId(runneId);
     }
 

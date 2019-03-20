@@ -48,7 +48,7 @@ public class RutinaPlantilla extends AuditingEntity {
             }
     )
     @Column(name = "RutinaPlantillaId")
-    private Long id;
+    private Integer id;
     @Column(nullable = false)
     private int anios;
     @Column(nullable = false)
@@ -77,7 +77,7 @@ public class RutinaPlantilla extends AuditingEntity {
 
     public RutinaPlantilla(){}
 
-    public void setTrainer(Long trainerId) {
+    public void setTrainer(Integer trainerId) {
         this.trainer = new Trainer(trainerId);
     }
 

@@ -25,7 +25,7 @@ public class MiniRutina implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MiniRutinaId")
-    private Long id;
+    private Integer id;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,7 +45,7 @@ public class MiniRutina implements Serializable {
         this.trainer = trainer;
     }
 
-    public void setTrainer(Long trainerId){
+    public void setTrainer(Integer trainerId){
         this.trainer = new Trainer(trainerId);
     }
 

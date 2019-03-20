@@ -438,9 +438,9 @@ public class RutinaController {
 
     @GetMapping(value = "/elemento/obtenermisfavoritos")
     public @ResponseBody List<VideoAudioFavorito> obtenerMisFavoritos(){
-        String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Cliente objuse = clienteService.findByUsername(nameuser);
-        return videoAudioFavoritoService.findByClienteId(objuse.getId());
+        /*String nameuser = SecurityContextHolder.getContext().getAuthentication().getName();
+        Cliente objuse = clienteService.findByUsername(nameuser);*/
+        return new ArrayList<>();
     }
 
     @PostMapping(value = "/elemento/adddeletetexto")

@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface SecurityRoleRepository extends JpaRepository<SecurityRole, Long> {
+public interface SecurityRoleRepository extends JpaRepository<SecurityRole, Integer> {
 
     SecurityRole findBySecurityUserUsername(String username);
 
-    SecurityRole findBySecurityUserIdAndRole(Long securityUserId, String role);
+    SecurityRole findBySecurityUserIdAndRole(Integer securityUserId, String role);
 
     @Modifying
     @Query("DELETE FROM SecurityRole S WHERE S.id = ?1")
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
 }

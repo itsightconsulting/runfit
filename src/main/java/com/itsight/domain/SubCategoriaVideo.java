@@ -54,7 +54,7 @@ public class SubCategoriaVideo implements Identifiable {
 
     @JsonSerialize
     @Transient
-    private int categoriaId;
+    private Integer categoriaId;
 
     @JsonSerialize
     @Transient
@@ -66,11 +66,11 @@ public class SubCategoriaVideo implements Identifiable {
 
     public SubCategoriaVideo() {}
 
-    public SubCategoriaVideo(int id) {
+    public SubCategoriaVideo(Integer id) {
         this.id = id;
     }
 
-    public SubCategoriaVideo(int id, String nombre) {
+    public SubCategoriaVideo(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
@@ -79,25 +79,25 @@ public class SubCategoriaVideo implements Identifiable {
         this.nombre = nombre;
     }
 
-    public SubCategoriaVideo(String nombre, int categoriaVideoId) {
+    public SubCategoriaVideo(String nombre, Integer categoriaVideoId) {
         this.nombre = nombre;
         this.categoriaVideo = new CategoriaVideo(categoriaVideoId);
     }
 
-    public SubCategoriaVideo(String nombre, int categoriaVideoId, boolean flagActivo) {
+    public SubCategoriaVideo(String nombre, Integer categoriaVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.categoriaVideo = new CategoriaVideo(categoriaVideoId);
         this.flagActivo = flagActivo;
     }
 
-    public SubCategoriaVideo(int id, String nombre, boolean flagActivo, int categoriaId) {
+    public SubCategoriaVideo(Integer id, String nombre, boolean flagActivo, Integer categoriaId) {
         this.id = id;
         this.nombre = nombre;
         this.flagActivo = flagActivo;
         this.categoriaId = categoriaId;
     }
 
-    public SubCategoriaVideo(int id, String nombre, boolean flagActivo, int categoriaId, String nombreCategoria) {
+    public SubCategoriaVideo(Integer id, String nombre, boolean flagActivo, Integer categoriaId, String nombreCategoria) {
         this.id = id;
         this.nombre = nombre;
         this.flagActivo = flagActivo;

@@ -75,12 +75,12 @@ public class GrupoVideo implements Identifiable {
         this.nombre = nombre;
     }
 
-    public GrupoVideo(String nombre, int forestId) {
+    public GrupoVideo(String nombre, Integer forestId) {
         this.nombre = nombre;
         this.forest = new BagForest(forestId);
     }
 
-    public GrupoVideo(String nombre, int forestId, boolean flagActivo, String rutaWeb, String rutaReal, UUID uuid) {
+    public GrupoVideo(String nombre, Integer forestId, boolean flagActivo, String rutaWeb, String rutaReal, UUID uuid) {
         this.nombre = nombre;
         this.forest = new BagForest(forestId);
         this.flagActivo = flagActivo;
@@ -103,7 +103,7 @@ public class GrupoVideo implements Identifiable {
         this.forest = forest;
     }
 
-    public void setForest(int bagForestId){
+    public void setForest(Integer bagForestId){
         this.forest = new BagForest(bagForestId);
     }
 

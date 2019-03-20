@@ -40,14 +40,14 @@ public class MiniPlantilla implements Identifiable {
 
         @Override
         public void setChildren(EspecificacionSubCategoria parent) {
-            parent.setLstMiniPlantilla(new ArrayList<MiniPlantilla>());
+            parent.setLstMiniPlantilla(new ArrayList<>());
         }
     };
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MiniPlantillaId")
-    private int id;
+    private Integer id;
 
 
     @JsonBackReference

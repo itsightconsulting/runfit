@@ -26,7 +26,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
         repository.delete(id);
     }
@@ -37,12 +37,12 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public RutinaPlantilla findOne(Long id) {
+    public RutinaPlantilla findOne(Integer id) {
         return repository.findOne(id);
     }
 
     @Override
-    public RutinaPlantilla findOneWithFT(Long id) {
+    public RutinaPlantilla findOneWithFT(Integer id) {
         return null;
     }
 
@@ -82,7 +82,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public List<RutinaPlantilla> findByIdsIn(List<Long> ids) {
+    public List<RutinaPlantilla> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
@@ -92,7 +92,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public List<RutinaPlantilla> listarPorFiltroPT(Long trainerId) {
+    public List<RutinaPlantilla> listarPorFiltroPT(Integer trainerId) {
         return repository.findByTrainerIdOrderByIdDesc(trainerId);
     }
 
@@ -107,7 +107,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
 }

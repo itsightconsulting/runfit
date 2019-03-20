@@ -12,32 +12,32 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RutinaRepository extends JpaRepository<Rutina, Long> {
+public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
     @EntityGraph(value = "rutina")
-    List<Rutina> findByClienteIdOrderByIdDesc(Long clienteId);
+    List<Rutina> findByClienteIdOrderByIdDesc(Integer clienteId);
 
     @EntityGraph(value = "rutina")
     @Query("SELECT R FROM Rutina R WHERE R.redFitness.id = ?1 ORDER BY 1 DESC")
-    List<Rutina> findFirstByRedFitnessIdOrderByIdDesc(Long redFitnessId, Pageable pageable);
+    List<Rutina> findFirstByRedFitnessIdOrderByIdDesc(Integer redFitnessId, Pageable pageable);
 
     @Query("SELECT R FROM Rutina R JOIN FETCH R.lstSemana S WHERE R.id = ?1")
-    Rutina findOneWithOneWeekById(Long id);
+    Rutina findOneWithOneWeekById(Integer id);
 
     @Modifying
     @Query("UPDATE Rutina R SET R.semanaIds = ?2 WHERE R.id = ?1")
-    void updateSemanaIds(Long id, Long[] semanaIds);
+    void updateSemanaIds(Integer id, int[] semanaIds);
 
     @Modifying
     @Query("UPDATE Rutina R SET R.totalSemanas = ?2 WHERE R.id = ?1")
-    void updateTotalSemanas(Long id, int totalSemanas);
+    void updateTotalSemanas(Integer id, int totalSemanas);
 
     @Query("SELECT R.redFitness.id FROM Rutina R WHERE R.id = ?1")
-    Long findRedFitnessIdById(Long id);
+    Integer findRedFitnessIdById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Rutina SET control = jsonb_set(jsonb_set(control, CAST(:avance as text[]), CAST(:valorAvance as jsonb), false), CAST(:strdias as text[]), CAST(:valordias as jsonb), false) WHERE rutina_id = :id", nativeQuery = true)
-    void updateAvanceSemanaIndex(@Param("id") Long id, @Param("valorAvance") String valorAvance, @Param("avance") String avance, @Param("strdias") String strdias, @Param("valordias") String valordias );
+    void updateAvanceSemanaIndex(@Param("id") Integer id, @Param("valorAvance") String valorAvance, @Param("avance") String avance, @Param("strdias") String strdias, @Param("valordias") String valordias );
 
     @Modifying
     @Query(value = "UPDATE Dia SET flagEnvioCliente = :flag WHERE year(fecha) = :anio and month(fecha) = :mes")
@@ -51,6 +51,6 @@ public interface RutinaRepository extends JpaRepository<Rutina, Long> {
 
     @Modifying
     @Query("UPDATE Rutina R SET R.flagActivo = ?2 WHERE R.id = ?1")
-    void updateFlagActivo(Long id, boolean flagActivo);
+    void updateFlagActivo(Integer id, boolean flagActivo);
 
 }

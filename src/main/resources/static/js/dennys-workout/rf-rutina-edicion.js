@@ -715,7 +715,7 @@ function instanciarGrupoVideos(effImg){
                     });
                 }else{
                     let rawHTMLCabecera = '';
-
+                    console.log(JSON.parse(data));
                     rawHTMLCabecera +='<div class="container-fluid padding-0">'
                     JSON.parse(data).forEach(grupoVideo => {
                         rawHTMLCabecera +=

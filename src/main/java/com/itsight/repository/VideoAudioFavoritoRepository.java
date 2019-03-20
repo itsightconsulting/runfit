@@ -9,20 +9,20 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface VideoAudioFavoritoRepository extends JpaRepository<VideoAudioFavorito, Long> {
+public interface VideoAudioFavoritoRepository extends JpaRepository<VideoAudioFavorito, Integer> {
 
     @Query("SELECT U FROM VideoAudioFavorito U WHERE U.cliente.id = ?1 AND U.audio.id = ?2")
-    VideoAudioFavorito findByClienteAudio(Long clienteId, Long audioId);
+    VideoAudioFavorito findByClienteAudio(Integer clienteId, Integer audioId);
 
 
     @Query("SELECT U FROM VideoAudioFavorito U WHERE U.cliente.id = ?1 AND U.video.id = ?2")
-    VideoAudioFavorito findByClienteVideo(Long clienteId, Long videoId);
+    VideoAudioFavorito findByClienteVideo(Integer clienteId, Integer videoId);
 
     @Query("SELECT U FROM VideoAudioFavorito U LEFT JOIN FETCH U.video D LEFT JOIN FETCH U.audio A WHERE U.cliente.id = ?1 AND U.Tipo = ?2")
-    List<VideoAudioFavorito> findAllByClienteByTipo(Long clienteId, int tipo);
+    List<VideoAudioFavorito> findAllByClienteByTipo(Integer clienteId, int tipo);
     
     @EntityGraph(value = "videoaudio_favorito")
-    List<VideoAudioFavorito> findByClienteId(Long clienteId);
+    List<VideoAudioFavorito> findByClienteId(Integer clienteId);
 
 
 }

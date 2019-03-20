@@ -6,27 +6,27 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface RutinaService extends BaseService<Rutina, Long> {
+public interface RutinaService extends BaseService<Rutina, Integer> {
 
-    Rutina findLastByRedFitnessId(Long redFitId);
+    Rutina findLastByRedFitnessId(Integer redFitId);
 
-    Rutina findOneWithOneWeekById(Long id);
+    Rutina findOneWithOneWeekById(Integer id);
 
-    void updateSemanaIds(Long id, Long[] semanaIds);
+    void updateSemanaIds(Integer id, int[] semanaIds);
 
-    void updateTotalSemanas(Long id, int totalSemanas);
+    void updateTotalSemanas(Integer id, int totalSemanas);
 
-    Long obtenerRedFitnessIdById(Long id);
+    Integer obtenerRedFitnessIdById(Integer id);
 
-    List<Rutina> getAllRutinasByUser(Long id);
+    List<Rutina> getAllRutinasByUser(Integer id);
 
-    void updateAvance(Long id, int indexsemana, String strdias, String avance);
+    void updateAvance(Integer id, int indexsemana, String strdias, String avance);
 
     void updateResetDiasFlagEnvio(int anio, int mes);
 
     void updateDiasFlagEnvio(int indexsemana, int indexdia);
 
-    String registrarByCascada(RutinaDTO rutinaDto, Long redFitId, Long runneId);
+    String registrarByCascada(RutinaDTO rutinaDto, Integer redFitId, Integer runneId);
 
     String actualizarFlagActivo(boolean flagActivo);
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PorcentajesKilometrajeService extends BaseService<PorcentajesKilometraje, Integer> {
 
-    PorcentajesKilometraje findByTrainerIdAndDistancia(Long trainerId, int distancia);
+    PorcentajesKilometraje findByTrainerIdAndDistancia(Integer trainerId, int distancia);
 
-    void actualizarPorcentajesComplexByTrainerIdAndDistancia(Long trainerId, int distancia, List<PorcentajeKilometrajeDTO> porcentajes);
+    void actualizarPorcentajesComplexByTrainerIdAndDistancia(Integer trainerId, int distancia, List<PorcentajeKilometrajeDTO> porcentajes);
 }

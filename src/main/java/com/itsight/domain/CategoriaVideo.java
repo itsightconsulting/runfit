@@ -56,7 +56,7 @@ public class CategoriaVideo implements Identifiable {
     //Estrategia para traer los campos de la ft ya que estos no se pueden serializar directamente por la estrategia @JsonBackReference/@JsonManagedReference
     @JsonSerialize
     @Transient
-    private int grupoVideoId;
+    private Integer grupoVideoId;
 
     @JsonSerialize
     @Transient

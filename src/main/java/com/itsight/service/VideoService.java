@@ -5,9 +5,9 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface VideoService extends BaseService<Video, Long> {
+public interface VideoService extends BaseService<Video, Integer> {
 
-    String obtenerNombrePorId(Long id, String uuid);
+    String obtenerNombrePorId(Integer id, String uuid);
 
     List<Video> obtenerTodosConJerarquia();
 }

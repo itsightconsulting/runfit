@@ -5,7 +5,7 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface RutinaPlantillaService extends BaseService<RutinaPlantilla, Long> {
+public interface RutinaPlantillaService extends BaseService<RutinaPlantilla, Integer> {
 
-    List<RutinaPlantilla> listarPorFiltroPT(Long trainerId);
+    List<RutinaPlantilla> listarPorFiltroPT(Integer trainerId);
 }

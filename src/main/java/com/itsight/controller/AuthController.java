@@ -61,13 +61,13 @@ public class AuthController {
     }
 
     @GetMapping(value = "/session-multiple")
-    public String expiredBySessionMultiple(Model model) {
+    public String expiredBySessionMultiple() {
         return "lock";
     }
 
     @GetMapping(value = "/jsonb/rutina/{id}")
     public @ResponseBody
-    RutinaPlantilla jsonBResponseRutina(@PathVariable Long id){
+    RutinaPlantilla jsonBResponseRutina(@PathVariable Integer id){
         return rutinaService.findOne(id);
     }
 }

@@ -24,7 +24,7 @@ public class MiMiniRutina implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MiMiniRutinaId")
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

@@ -5,13 +5,13 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface MiniRutinaService extends BaseService<MiniRutina, Long> {
+public interface MiniRutinaService extends BaseService<MiniRutina, Integer> {
 
-    MiniRutina findByTrainerIdAndCategoriaId(Long id, Integer categoriaId);
+    MiniRutina findByTrainerIdAndCategoriaId(Integer id, Integer categoriaId);
 
-    List<MiniRutina> findAllByTrainerId(Long trainerId);
+    List<MiniRutina> findAllByTrainerId(Integer trainerId);
 
-    List<Integer> findAllCategoriaIdByTrainerId(Long trainerId);
+    List<Integer> findAllCategoriaIdByTrainerId(Integer trainerId);
 
-    MiniRutina findByCategoriaIdAndTrainerId(Integer catId, Long trainerId);
+    MiniRutina findByCategoriaIdAndTrainerId(Integer catId, Integer trainerId);
 }

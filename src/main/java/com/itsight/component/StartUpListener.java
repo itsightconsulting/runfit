@@ -239,7 +239,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(subCategoriaEjercicioService.findOne(23) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Avanzados",6, true));
         if(subCategoriaEjercicioService.findOne(24) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Pre-competitivo",6, true));
         if(subCategoriaEjercicioService.findOne(25) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("En el sitio",6, true));
-        if(subCategoriaEjercicioService.findOne(26) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Longitud de paso",7, true));
+        if(subCategoriaEjercicioService.findOne(26) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Integeritud de paso",7, true));
         if(subCategoriaEjercicioService.findOne(27) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Cadencia",7, true));
         if(subCategoriaEjercicioService.findOne(28) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Centro de gravedad",7, true));
         if(subCategoriaEjercicioService.findOne(29) == null) subCategoriaEjercicioService.save(new SubCategoriaEjercicio("Pisada",7, true));
@@ -357,7 +357,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         mapEjercicios.put(9, "Crab walk");
         mapEjercicios.put(10, "Bear crawl o paso del oso");
 
-        Long index = Long.valueOf(1);
+        Integer index = 1;
         for(SubCategoriaVideo sce: subCategoriaVideoService.findAll()){
             int i = sce.getId();
             Random rd = new Random();
@@ -540,7 +540,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingAudiosDemo(){
-        if(audioService.findOne(Long.valueOf(1)) == null) {
+        if(audioService.findOne(1) == null) {
             List<TipoAudio> tiposAudio = tipoAudioService.findAll();
             int i = 0;
             for (TipoAudio ta : tiposAudio) {
@@ -1056,6 +1056,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
             cliFit.setMejoras(new ArrayList<>());
             cliFit.setFrecuenciaComunicacion(1);
+            cliFit.setDiasSemanaCorriendo(1);
             cliFit.setViaConexion(1);
             cliFit.setTalla(166);
             cliFit.setTiempoDistancia("{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}");

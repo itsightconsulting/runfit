@@ -32,19 +32,19 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
-    public Video findOne(Long id) {
+    public Video findOne(Integer id) {
         // TODO Auto-generated method stub
         return repository.findOne(id);
     }
 
     @Override
-    public Video findOneWithFT(Long id) {
+    public Video findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
         return repository.findById(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // TODO Auto-generated method stub
         repository.delete(id);
     }
@@ -92,7 +92,7 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
-    public List<Video> findByIdsIn(List<Long> ids) {
+    public List<Video> findByIdsIn(List<Integer> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -137,13 +137,13 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
-    public String obtenerNombrePorId(Long id, String uuid) {
+    public String obtenerNombrePorId(Integer id, String uuid) {
         // TODO Auto-generated method stub
         return repository.findNombreByIdAndUuid(id, UUID.fromString(uuid));
     }
 
     @Override
-    public void actualizarFlagActivoById(Long id, boolean flagActivo) {
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         // TODO Auto-generated method stub
         repository.updateFlagActivoById(id, flagActivo);
     }

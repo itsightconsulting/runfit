@@ -43,7 +43,7 @@ public class ClienteFitness implements Serializable {
                 @Parameter(name = "increment_size", value = "1")
         })
     @Column(name="ClienteFitnessId")
-    private Long id;
+    private Integer id;
     @Column
     private String correoSecundario;
     @Column
@@ -70,9 +70,9 @@ public class ClienteFitness implements Serializable {
     @Column(nullable = false)
     private Integer diasSemanaCorriendo;
     @Column(nullable = false)
-    private Boolean flagCalentamiento;
+    private boolean flagCalentamiento;
     @Column(nullable = false)
-    private Boolean flagEstiramientos;
+    private boolean flagEstiramientos;
     @Column(nullable = false)
     private String desgasteZapatilla;
     @Column(nullable = false)
@@ -117,7 +117,7 @@ public class ClienteFitness implements Serializable {
         this.cliente = cliente;
     }
 
-    public void setCliente(Long cliId){
+    public void setCliente(Integer cliId){
         this.cliente = new Cliente(cliId);
     }
 

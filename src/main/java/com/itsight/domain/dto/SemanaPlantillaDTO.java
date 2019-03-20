@@ -12,7 +12,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SemanaPlantillaDTO {
 
-    private int id;
+    private Integer id;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaInicio;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)

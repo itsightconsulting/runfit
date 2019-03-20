@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class PostDetalle implements Serializable {
 
-    private Long cliId;
+    private Integer cliId;
 
     private String nomFull;
 
@@ -31,7 +31,7 @@ public class PostDetalle implements Serializable {
     public PostDetalle() {
     }
 
-    public PostDetalle(Long cliId, String nomFull, boolean flgLiked, boolean flgFav, Date feCreac, Date feModif) {
+    public PostDetalle(Integer cliId, String nomFull, boolean flgLiked, boolean flgFav, Date feCreac, Date feModif) {
         this.cliId = cliId;
         this.nomFull = nomFull;
         this.flgLiked = flgLiked;

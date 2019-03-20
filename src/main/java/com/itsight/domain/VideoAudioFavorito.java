@@ -43,7 +43,7 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
             }
     )
     @Column(name = "VideoAudioFavoritoId")
-    private Long id;
+    private Integer id;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,11 +70,11 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
 
     public VideoAudioFavorito(){}
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -82,7 +82,7 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
         return cliente;
     }
 
-    public void setCliente(Long id) {
+    public void setCliente(Integer id) {
         this.cliente = new Cliente(id);
     }
 
@@ -90,7 +90,7 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
         return video;
     }
 
-    public void setVideo(Long id) {
+    public void setVideo(Integer id) {
         this.video = new Video(id);
     }
 
@@ -98,7 +98,7 @@ public class VideoAudioFavorito extends AuditingEntity implements Serializable {
         return audio;
     }
 
-    public void setAudio(Long id) {
+    public void setAudio(Integer id) {
         this.audio = new Audio(id);
     }
 

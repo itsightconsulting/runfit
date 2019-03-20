@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface SecurityUserRepository extends JpaRepository<SecurityUser, Long> {
+public interface SecurityUserRepository extends JpaRepository<SecurityUser, Integer> {
 
     @Query(value = "SELECT DISTINCT S FROM SecurityUser S JOIN FETCH S.roles R LEFT JOIN FETCH R.privileges P WHERE S.username = ?1")
     SecurityUser findByUsername(String username);
@@ -24,11 +24,11 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Long
     void updateEstadoByUsername(String username, boolean flag);
 
     @Query(value = "SELECT SU.password FROM SecurityUser SU WHERE SU.id = ?1")
-    String findPasswordById(Long id);
+    String findPasswordById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE SecurityUser SU SET SU.password = ?1 WHERE SU.id = ?2")
-    void actualizarPassword(String password, Long id);
+    void actualizarPassword(String password, Integer id);
 
     @Query("SELECT S.id FROM SecurityUser S WHERE S.username = ?1")
     Integer findUsernameByUsername(String username);

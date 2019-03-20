@@ -5,12 +5,12 @@ import com.itsight.generic.BaseService;
 
 import java.util.Date;
 
-public interface TrainerService extends BaseService<Trainer, Long> {
+public interface TrainerService extends BaseService<Trainer, Integer> {
 
-    String findCodigoTrainerById(Long id);
+    String findCodigoTrainerById(Integer id);
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 
-    String cargarRutinarioCe(Long trainerId);
+    String cargarRutinarioCe(Integer trainerId);
 
 }

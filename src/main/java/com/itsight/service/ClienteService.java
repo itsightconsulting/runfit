@@ -7,11 +7,11 @@ import com.itsight.generic.BaseService;
 import java.util.Date;
 import java.util.List;
 
-public interface ClienteService extends BaseService<Cliente, Long> {
+public interface ClienteService extends BaseService<Cliente, Integer> {
 
     List<Cliente> findByNombreCompleto(String nombreCompleto);
 
-    String findPasswordById(Long id);
+    String findPasswordById(Integer id);
 
     void actualizarFechaUltimoAcceso(Date date, String id);
 
@@ -21,7 +21,7 @@ public interface ClienteService extends BaseService<Cliente, Long> {
 
     Cliente findByUsername(String username);
 
-    String findNombreCompletoById(Long id);
+    String findNombreCompletoById(Integer id);
 
     String registroFull(ClienteDTO cliente);
 }

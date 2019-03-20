@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface VideoRepository extends JpaRepository<Video, Long> {
+public interface VideoRepository extends JpaRepository<Video, Integer> {
 
     @Query("SELECT V.nombre FROM Video V WHERE V.id = ?1 AND V.uuid = ?2")
-    String findNombreByIdAndUuid(Long id, UUID uuid);
+    String findNombreByIdAndUuid(Integer id, UUID uuid);
 
     @Query("SELECT V.rutaWeb FROM Video V WHERE V.id = ?1")
-    String findRutaWebById(Long id);
+    String findRutaWebById(Integer id);
 
     List<Video> findAllByOrderByIdDesc();
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E WHERE E.id = ?1 ORDER BY 1")
-    Video findById(Long id);
+    Video findById(Integer id);
 
-   @Query("SELECT V FROM Video V INNER JOIN FETCH V.subCatVideo SC  INNER JOIN FETCH SC.categoriaVideo CV  INNER JOIN FETCH CV.grupoVideo GV INNER JOIN FETCH GV.forest ORDER BY GV.id,CV.id")
+   @Query("SELECT V FROM Video V INNER JOIN FETCH V.subCatVideo SC  INNER JOIN FETCH SC.categoriaVideo CV  INNER JOIN FETCH CV.grupoVideo GV INNER JOIN FETCH GV.forest ORDER BY GV.id,CV.id, SC.id, V.id")
     List<Video> findAllTree();
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E ORDER BY 1")
@@ -39,7 +39,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Modifying
     @Query(value = "UPDATE Video E SET E.flagActivo =?2 WHERE E.id = ?1")
-    void updateFlagActivoById(Long id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
             "WHERE E.subCatVideo.id = ?1 ORDER BY 1")

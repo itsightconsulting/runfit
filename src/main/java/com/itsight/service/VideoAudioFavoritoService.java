@@ -5,11 +5,11 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface VideoAudioFavoritoService extends BaseService<VideoAudioFavorito, Long> {
+public interface VideoAudioFavoritoService extends BaseService<VideoAudioFavorito, Integer> {
 
-    VideoAudioFavorito getVideoAudioFavoritoAudio(Long clienteId, Long audioId);
-    VideoAudioFavorito getVideoAudioFavoritoVideo(Long clienteId, Long videoId);
-    List<VideoAudioFavorito> findAllByClienteByTipo(Long clienteId, int tipo);
-    List<VideoAudioFavorito> findByClienteId(Long clienteId);
+    VideoAudioFavorito getVideoAudioFavoritoAudio(Integer clienteId, Integer audioId);
+    VideoAudioFavorito getVideoAudioFavoritoVideo(Integer clienteId, Integer videoId);
+    List<VideoAudioFavorito> findAllByClienteByTipo(Integer clienteId, int tipo);
+    List<VideoAudioFavorito> findByClienteId(Integer clienteId);
 
 }

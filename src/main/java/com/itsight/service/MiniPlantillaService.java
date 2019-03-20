@@ -5,15 +5,15 @@ import com.itsight.generic.BaseService;
 
 import java.util.List;
 
-public interface MiniPlantillaService extends BaseService<MiniPlantilla, Long> {
+public interface MiniPlantillaService extends BaseService<MiniPlantilla, Integer> {
 
-    MiniPlantilla findByTrainerIdAndEspecificacionSubCategoriaId(Long id, Integer espSubCatId);
+    MiniPlantilla findByTrainerIdAndEspecificacionSubCategoriaId(Integer id, Integer espSubCatId);
 
-    List<MiniPlantilla> findAllByTrainerId(Long trainerId);
+    List<MiniPlantilla> findAllByTrainerId(Integer trainerId);
 
-    int findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(Long trainerId, Integer esSubCatId);
+    int findPlantillaIdsByTrainerIdAndEspecificacionSubCategoriaId(Integer trainerId, Integer esSubCatId);
 
     List<MiniPlantilla> findAllByListTrainerId(List<Integer> list);
 
-    List<MiniPlantilla> findAllByListTrainerIdBySubCategoriaId(List<Long> list, Integer idsubcategoria);
+    List<MiniPlantilla> findAllByListTrainerIdBySubCategoriaId(List<Integer> list, Integer idsubcategoria);
 }

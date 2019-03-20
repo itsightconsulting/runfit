@@ -26,7 +26,7 @@ import java.util.Objects;
 public class ClassId<T> {
 
     private final Class<T> clazz;
-    private final int id;
+    private final Integer id;
 
     public ClassId(Class<T> clazz, int id) {
         this.clazz = clazz;
@@ -37,7 +37,7 @@ public class ClassId<T> {
         return clazz;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -61,7 +61,7 @@ public class DocumentoController {
 
     @GetMapping(value = "/obtener")
     public @ResponseBody
-    Documento obtenerPorId(@RequestParam(value = "id") Long id) {
+    Documento obtenerPorId(@RequestParam(value = "id") Integer id) {
         return documentoService.findOne(id);
     }
 
@@ -78,7 +78,7 @@ public class DocumentoController {
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody
-    String desactivar(@RequestParam(value = "id") Long id, @RequestParam boolean flagActivo) {
+    String desactivar(@RequestParam(value = "id") Integer id, @RequestParam boolean flagActivo) {
         try {
             documentoService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();
@@ -91,14 +91,14 @@ public class DocumentoController {
     public @ResponseBody
     String guardarArchivo(
             @RequestPart(value = "documento") MultipartFile documento,
-            @RequestParam(value = "id") Long id, HttpServletRequest request) {
+            @RequestParam(value = "id") Integer id, HttpServletRequest request) {
         if (documento != null) {
             guardarFile(documento, id);
         }
         return EXITO_GENERICA.get();
     }
 
-    private void guardarFile(MultipartFile file, Long id) {
+    private void guardarFile(MultipartFile file, Integer id) {
         if (!file.isEmpty()) {
             try {
 

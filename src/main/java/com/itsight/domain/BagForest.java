@@ -36,8 +36,8 @@ public class BagForest implements Identifiable {
     };
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "forest", orphanRemoval = true)
@@ -49,10 +49,10 @@ public class BagForest implements Identifiable {
 
     public BagForest(){}
 
-    public BagForest(int id){
+    public BagForest(Integer id){
         this.id = id;
     }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

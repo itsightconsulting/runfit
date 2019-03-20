@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long>, JpaSpecificationExecutor<Cliente> {
+public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaSpecificationExecutor<Cliente> {
 
     @Override
     @EntityGraph(value = "cliente.all")
@@ -25,15 +25,15 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>, JpaSpec
     List<Cliente> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "cliente.all")
-    Cliente findById(Long id);
+    Cliente findById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Cliente U SET U.flagActivo =?2 WHERE U.id = ?1")
-    void updateFlagActivoById(Long id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Modifying
     @Query(value = "UPDATE Cliente U SET U.fechaUltimoAcceso =?1 WHERE U.id = ?2")
-    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Long id);
+    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Integer id);
 
     @Query(value = "SELECT U.correo FROM Cliente U WHERE U.correo = ?1")
     List<Cliente> findAllByCorreo(String correo);
@@ -42,5 +42,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>, JpaSpec
     Cliente findByUsername(String username);
 
     @Query(value = "SELECT CONCAT(C.nombres, ' ', C.apellidos) FROM Cliente C WHERE C.id = ?1")
-    String findNombreCompletoById(Long id);
+    String findNombreCompletoById(Integer id);
 }

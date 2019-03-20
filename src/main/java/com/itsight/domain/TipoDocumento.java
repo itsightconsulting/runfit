@@ -34,7 +34,7 @@ public class TipoDocumento {
         this.nombre = nombre;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

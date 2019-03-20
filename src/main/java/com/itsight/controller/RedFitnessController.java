@@ -40,7 +40,7 @@ public class RedFitnessController {
     @PutMapping(value = "/anadir-nota")
     public @ResponseBody
     String actualizarNotaAIntegrante(@RequestParam String id, @RequestParam String nota) {
-        redFitnessService.actualizarNotaACliente(Long.parseLong(id), nota);
+        redFitnessService.actualizarNotaACliente(Integer.parseInt(id), nota);
         return Enums.ResponseCode.ACTUALIZACION.get();
     }
 

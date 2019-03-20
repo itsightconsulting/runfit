@@ -11,14 +11,14 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface TrainerRepository extends JpaRepository<Trainer, Long> {
+public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
     @Query(value = "SELECT T.codigoTrainer FROM Trainer T WHERE T.id = ?1")
-    String findCodigoTrainerById(Long id);
+    String findCodigoTrainerById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.fechaUltimoAcceso =?1 WHERE T.id = ?2")
-    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Long id);
+    void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Integer id);
 
     @EntityGraph(value = "trainer.all")
     List<Trainer> findAllByOrderByIdDesc();
@@ -30,15 +30,15 @@ public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     List<Trainer> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "trainer.all")
-    Trainer findById(Long id);
+    Trainer findById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.flagActivo =?2 WHERE T.id = ?1")
-    void updateFlagActivoById(Long id, boolean flagActivo);
+    void updateFlagActivoById(Integer id, boolean flagActivo);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.flagRutinarioCe =?2 WHERE T.id = ?1")
-    void updateFlagRutinarioCeById(Long id, boolean flagRutinarioCe);
+    void updateFlagRutinarioCeById(Integer id, boolean flagRutinarioCe);
 
     /*@Query(value = "SELECT NEW Trainer(codigoTrainer, nombres, apellidos, apellidoMaterno) FROM Trainer T WHERE T.tipoUsuario.id = 2")
     List<Trainer> findAllTrainers();

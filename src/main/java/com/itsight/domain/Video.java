@@ -53,7 +53,7 @@ public class Video extends AuditingEntity implements Identifiable {
             }
     )
     @Column(name = "VideoId")
-    private Long id;
+    private Integer id;
 
     @Column()
     private String nombre;
@@ -81,7 +81,7 @@ public class Video extends AuditingEntity implements Identifiable {
     @Transient
     @JsonSerialize
     @JsonInclude(Include.NON_DEFAULT)
-    private int subCatVideoId;
+    private Integer subCatVideoId;
 
     @Transient
     @JsonSerialize
@@ -97,7 +97,7 @@ public class Video extends AuditingEntity implements Identifiable {
 
     public Video(){ }
 
-    public Video(Long id) {
+    public Video(Integer id) {
         this.id = id;
     }
 
@@ -112,7 +112,7 @@ public class Video extends AuditingEntity implements Identifiable {
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(String nombre, String rutaWeb, String rutaReal, String peso, UUID uuid, int subCatVideoId, boolean flagActivo) {
+    public Video(String nombre, String rutaWeb, String rutaReal, String peso, UUID uuid, Integer subCatVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
         this.rutaReal = rutaReal;
@@ -122,7 +122,7 @@ public class Video extends AuditingEntity implements Identifiable {
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(Long id, String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
+    public Video(Integer id, String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
         this.id = id;
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
@@ -135,7 +135,7 @@ public class Video extends AuditingEntity implements Identifiable {
         this.nombreSubCat = nombreSubCat;
     }
 
-    public void setSubCatVideo(int subCatId){
+    public void setSubCatVideo(Integer subCatId){
         this.subCatVideo = new SubCategoriaVideo(subCatId);
     }
 
