@@ -198,8 +198,8 @@ public class Utilitarios {
         return array;
     }
 
-    public static int[] agregarElementoArray(int[] inArray, int nuevoElemento){
-        int[] nuevoArray = new int[inArray.length+1];
+    public static Integer[] agregarElementoArray(Integer[] inArray, int nuevoElemento){
+        Integer[] nuevoArray = new Integer[inArray.length+1];
         for (int i=0; i<nuevoArray.length-1;i++){
             nuevoArray[i] = inArray[i];
         }

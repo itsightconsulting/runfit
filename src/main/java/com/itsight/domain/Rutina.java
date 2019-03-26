@@ -85,7 +85,7 @@ public class Rutina extends AuditingEntity {
     @JsonIgnore
     @Type(type = "int-array")
     @Column(name="SemanaIds", columnDefinition = "integer[]")
-    private int[] semanaIds;
+    private Integer[] semanaIds;
     @Type(type = "jsonb")
     @Column(name = "control", columnDefinition = "jsonb")
     private RutinaControl control;

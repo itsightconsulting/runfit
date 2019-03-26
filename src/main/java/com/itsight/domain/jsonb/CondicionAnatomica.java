@@ -22,7 +22,6 @@ public class CondicionAnatomica implements Serializable {
 
     private Integer frecuenciaCardiaca;
     private Integer frecuenciaCardiacaMaxima;
-    private Integer intensidad;
     private Integer formaInicial;
     private List<Musculo> musculosSensibles;
 

@@ -87,7 +87,7 @@ public class Cliente extends AuditingEntity implements Serializable {
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
-    private List<ClienteFitness> lstClienteFitnesses;
+    private List<ClienteFitness> lstClienteFitness;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")

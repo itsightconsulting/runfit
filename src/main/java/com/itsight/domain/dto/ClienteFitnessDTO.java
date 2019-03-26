@@ -37,7 +37,6 @@ public class ClienteFitnessDTO implements Serializable {
 
     //JSONB
     //private List<TiempoDisponible> tiemposDisponibles;
-    private List<Objetivo> objetivos;
     private CondicionAnatomica condicionAnatomica;
     private Salud salud;
     private List<CompetenciaRunner> competencias;

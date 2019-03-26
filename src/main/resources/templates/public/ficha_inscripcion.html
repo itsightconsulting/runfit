@@ -666,22 +666,22 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Artritis
-                              <input name="DesPadVarios" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="Artritis" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Condromalacia
-                              <input name="DesPadVarios" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="Condromalacia" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Osteocondritis
-                              <input name="DesPadVarios" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="Osteocondritis" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">N.A.
-                              <input name="DesPadVarios" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="N.A." type="checkbox" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -739,7 +739,7 @@
                             <ul class="checks">
                               <li th:each="cm: ${lstCondMejoras}">
                                 <div class="chk-content" th:inline="text">[[${cm.nombre}]]
-                                  <input name="Mejoras" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
+                                  <input name="CondicionMejora" th:value="${cm.id}" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
                                 </div>
                               </li>
                             </ul>
@@ -1662,6 +1662,44 @@
         obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
         obj.cliFit.objetivosDescripcion = document.getElementById('DesObjetivos').value;
         obj.cliFit.terrenoPredominante = getValuesConcatInpCheckbox('DesTerPredom');
+        obj.cliFit.mejoras = getValuesCondicionMejora();
+        obj.cliFit.frecuenciaComunicacion = 1;
+        const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
+        condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
+        condAnatomica.descripcionDolor = obj.descripcionDolor;
+        condAnatomica.momDolor = obj.momDolor;
+        condAnatomica.momDolorIni = obj.momDolorIni;
+        condAnatomica.desLesion = obj.desLesion;
+        condAnatomica.recomMedica = obj.recomMedica;
+        condAnatomica.flagEmbarazo = document.querySelector('#FlagEmbarazo').checked;
+        condAnatomica.frecuenciaCardiaca = obj.frecuenciaCardiaca;
+        condAnatomica.frecuenciaCardiacaMaxima = obj.frecuenciaCardiacaMaxima;
+        condAnatomica.formaInicial = obj.formaInicial;
+        condAnatomica.musculosSensibles = selectedMuscles.map(v=>{return {id: v.id.slice(4), nombre: v.name}});
+        const salud = obj.cliFit.salud = new Object();
+        salud.flagEnfermedad = document.querySelector('#FlagEnfermedad').checked;
+        salud.flagFumador = document.querySelector('#FlagFumador').checked;
+        salud.flagHiperTensionArt = document.querySelector('#FlagHiperTensionArt').checked;
+        salud.flagAntFamInfOrHiper = document.querySelector('#FlagAntFamInfOrHiper').checked;
+        salud.flagResInsulina = document.querySelector('#FlagResInsulina').checked;
+        salud.flagAntFamDiabetes = document.querySelector('#FlagAntFamDiabetes').checked;
+        salud.flagSobrepeso = document.querySelector('#FlagSobrepeso').checked;
+        salud.flagAleMed = document.querySelector('#FlagAleMed').checked;
+        salud.flagOperacion = document.querySelector('#FlagOperacion').checked;
+        salud.famInfOrHiper = obj.famInfOrHiper;
+        salud.catSobrepeso = obj.catSobrepeso;
+        salud.catAlimentacion = obj.catAlimentacion;
+        salud.nivelEstres = obj.nivelEstres;
+        salud.desEnfermedad = obj.desEnfermedad;
+        salud.desFumador = obj.desFumador;
+        salud.desAleMed = obj.desAleMed;
+        salud.desOperacion = obj.desOperacion;
+        salud.desHerDisOrCondCol = obj.desHerDisOrCondCol;
+        salud.desPadVarios = getValuesConcatInpCheckbox('DesPadVarios');
+        salud.contactosEmergencia = getValuesEmergencyContact();
+        salud.historialDeportivoAnt = obj.historialDeportivoAnt;
+        salud.historialDeportivoAct = obj.historialDeportivoAct;
+
         //private ListObjetivo objetivos;
         //private CondicionAnatomica condicionAnatomica;
         //private Salud salud;
@@ -1687,6 +1725,16 @@
               }
             }).filter(x=>x).join();
         }
+      }
+
+      function getValuesCondicionMejora(){
+        return Array.from(document.querySelectorAll('input[name="CondicionMejora"]:checked')).map(
+                v=>{return {id: v.value, nombre: v.parentElement.textContent.trim()}}
+        );
+      }
+
+      function getValuesEmergencyContact(){
+        return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
       }
 
       function depYprovChange(depId, provId, pos){
@@ -1936,7 +1984,7 @@
               number: true,
               min: 0
             },
-            Mejoras: {
+            CondicionMejora: {
               required: true
             },
             TiempoUnKilometro: {
@@ -2036,11 +2084,15 @@
         document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
         document.querySelector('#FrecuenciaCardiaca').value = 177;
         document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
-        document.querySelector('input[name="Mejoras"]').checked = true;
+        document.querySelector('input[name="CondicionMejora"]').checked = true;
 
         //Page 3
+        selectedMuscles = JSON.parse('[{"id":"path62","name":"Recto del abdomen"},{"id":"path60","name":"Recto del abdomen"},{"id":"path48","name":"Recto del abdomen"},{"id":"path46","name":"Recto del abdomen"},{"id":"path206","name":"Recto del abdomen"},{"id":"path208","name":"Recto del abdomen"},{"id":"path210","name":"Recto del abdomen"},{"id":"path212","name":"Recto del abdomen"},{"id":"path228","name":"Pectoral mayor"},{"id":"path306","name":"Trapecio inferior"},{"id":"path388","name":"Trapecio inferior"},{"id":"path408","name":"Dorsal ancho"}]');
+        document.querySelector('#TiempoUnKilometro').value = "00:05:55";
         document.querySelector('#KilometrajePromedioSemana').value = 30;
+        document.querySelector('#DiasSemanaCorriendo').value = 4;
         document.querySelector('#DesObjetivos').value = "Ser el mejor";
+        document.querySelectorAll('.distance input')[1].value = "00:23:20";
         document.querySelector('#DesComp').value = "Maratón de Boston";
 
         var tid = setInterval( function () {
@@ -2048,7 +2100,7 @@
           else document.getElementById('btnGuardar').click();
           clearInterval( tid );
           // do your work
-        }, 100 );
+        }, 100);
       }
 
     </script>

@@ -128,7 +128,6 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
         clienteFitness1.setCompetencias(usuarioFitness.getCompetencias());
         clienteFitness1.setCondicionAnatomica(usuarioFitness.getCondicionAnatomica());
         clienteFitness1.setMejoras(usuarioFitness.getMejoras());
-        clienteFitness1.setObjetivos(usuarioFitness.getObjetivos());
         //clienteFitness1.setKilometrajePromedioSemana(BigDecimal.valueOf(2.0));
         Cliente cliente = new Cliente();
         BeanUtils.copyProperties(usuarioFitness.getUsuario(), cliente);

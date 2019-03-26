@@ -156,7 +156,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
         Rutina qRutina = rutinaRepository.findOne(rutinaId);
         qRutina.setTotalSemanas(totalSemanas);
         qRutina.setFechaFin(fechaFin);
-        int[] qSemanaIds = Utilitarios.agregarElementoArray(qRutina.getSemanaIds(), semana.getId());
+        Integer[] qSemanaIds = Utilitarios.agregarElementoArray(qRutina.getSemanaIds(), semana.getId());
         qRutina.setSemanaIds(qSemanaIds);
         qRutina.setDias(qRutina.getDias()+7);
         rutinaRepository.saveAndFlush(qRutina);

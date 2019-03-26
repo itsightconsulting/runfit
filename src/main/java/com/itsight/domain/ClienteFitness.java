@@ -2,17 +2,16 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.domain.jsonb.*;
 import com.itsight.domain.jsonb.CondicionMejora;
-import com.itsight.domain.jsonb.Objetivo;
+import com.itsight.domain.jsonb.*;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
-import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -84,9 +83,6 @@ public class ClienteFitness implements Serializable {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private List<TiempoDisponible> tiemposDisponibles;
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb", nullable = false)
-    private List<Objetivo> objetivos;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private CondicionAnatomica condicionAnatomica;

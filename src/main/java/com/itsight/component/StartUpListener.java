@@ -1052,7 +1052,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setCondicionAnatomica(ca);
             cliFit.setTiemposDisponibles(new ArrayList<>());
             cliFit.setSalud(new Salud());
-            cliFit.setObjetivos(new ArrayList<>());
             cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
             cliFit.setMejoras(new ArrayList<>());
             cliFit.setFrecuenciaComunicacion(1);
