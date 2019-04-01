@@ -8,10 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/p")
@@ -22,11 +19,6 @@ public class PublicoController {
     @Autowired
     public PublicoController(CondicionMejoraService condicionMejoraService) {
         this.condicionMejoraService = condicionMejoraService;
-    }
-
-    @GetMapping("/getURL")
-    public @ResponseBody String getURL(HttpServletRequest request){
-        return request.getRequestURL().toString();
     }
 
     @GetMapping("/fi/2")

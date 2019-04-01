@@ -1214,10 +1214,10 @@
                                 <tbody>
                                   <tr>
                                     <td>
-                                      <input class="form-control" type="date" th:value="${today}" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-fecha" type="date" th:value="${today}" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
-                                      <select class="form-control" style="max-width: 100% !important;">
+                                      <select class="form-control inp-distancia" style="max-width: 100% !important;">
                                         <option value="5">5K</option>
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
@@ -1226,25 +1226,25 @@
                                       </select>
                                     </td>
                                     <td colspan="2">
-                                      <input class="form-control" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-nombre" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
-                                      <input class="form-control" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-tiempo" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
                                     </td>
                                     <td colspan="2"><i onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: gray;cursor: not-allowed;"></i>
-                                      <select class="form-control" style="max-width: 95% !important;">
-                                        <option value="Prioritario">Prioritario</option>
-                                        <option value="No Prioritario">Secundario</option>
+                                      <select class="form-control inp-prioridad" style="max-width: 95% !important;">
+                                        <option value="1">Prioritario</option>
+                                        <option value="2">Secundario</option>
                                       </select>
                                     </td>
                                   </tr>
                                   <!-- This is our clonable table line -->
                                   <tr class="hide" data-acc="0">
                                     <td>
-                                      <input class="form-control" type="date" th:value="${today}" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-fecha" type="date" th:value="${today}" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
-                                      <select class="form-control" style="max-width: 100% !important;">
+                                      <select class="form-control inp-distancia" style="max-width: 100% !important;">
                                         <option value="5">5K</option>
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
@@ -1253,15 +1253,15 @@
                                       </select>
                                     </td>
                                     <td colspan="2">
-                                      <input class="form-control" type="text" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-nombre" type="text" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
-                                      <input class="form-control" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-tiempo" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
                                     </td>
                                     <td colspan="2"><i title="Eliminar competencia" onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: #c93030;cursor: pointer;"></i>
-                                      <select class="form-control" style="max-width: 95% !important;">
-                                        <option value="Prioritario">Prioritario</option>
-                                        <option value="No Prioritario">Secundario</option>
+                                      <select class="form-control inp-prioridad" style="max-width: 95% !important;">
+                                        <option value="1">Prioritario</option>
+                                        <option value="2">Secundario</option>
                                       </select>
                                     </td>
                                   </tr>
@@ -1664,6 +1664,7 @@
         obj.cliFit.terrenoPredominante = getValuesConcatInpCheckbox('DesTerPredom');
         obj.cliFit.mejoras = getValuesCondicionMejora();
         obj.cliFit.frecuenciaComunicacion = 1;
+        obj.cliFit.viaConexion =  document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim();
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
         condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
         condAnatomica.descripcionDolor = obj.descripcionDolor;
@@ -1686,6 +1687,8 @@
         salud.flagSobrepeso = document.querySelector('#FlagSobrepeso').checked;
         salud.flagAleMed = document.querySelector('#FlagAleMed').checked;
         salud.flagOperacion = document.querySelector('#FlagOperacion').checked;
+        salud.flagHerDisOrCondCol = document.querySelector('#FlagHerDisOrCondCol').checked;
+        salud.famDiabetico = obj.famDiabetico;
         salud.famInfOrHiper = obj.famInfOrHiper;
         salud.catSobrepeso = obj.catSobrepeso;
         salud.catAlimentacion = obj.catAlimentacion;
@@ -1699,6 +1702,8 @@
         salud.contactosEmergencia = getValuesEmergencyContact();
         salud.historialDeportivoAnt = obj.historialDeportivoAnt;
         salud.historialDeportivoAct = obj.historialDeportivoAct;
+        //Competencias
+        obj.cliFit.competencias = getCompetenciasParticipar();
 
         //private ListObjetivo objetivos;
         //private CondicionAnatomica condicionAnatomica;
@@ -1708,6 +1713,19 @@
         //obj.cliFit.viaConexion = document.getElementById('ViaConexion').value;
         //private UsuarioDTO usuario;
         return obj;
+      }
+
+      function getCompetenciasParticipar(){
+        const rows = Array.from(document.querySelector('#tblCompetencia tbody').querySelectorAll('tr:not(.hide)'));
+          return rows.map(v=>{
+              const obj = new Object();
+              obj.fecha = v.querySelector('.inp-fecha').value;
+              obj.distancia = v.querySelector('.inp-distancia').value;
+              obj.nombre = v.querySelector('.inp-nombre').value;
+              obj.tiempoObjetivo = v.querySelector('.inp-tiempo').value;
+              obj.prioridad = v.querySelector('.inp-prioridad').value;
+              return obj;
+          });
       }
 
       function getValuesConcatInpCheckbox(name){

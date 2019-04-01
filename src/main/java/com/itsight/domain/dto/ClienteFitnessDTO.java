@@ -43,7 +43,6 @@ public class ClienteFitnessDTO implements Serializable {
     private Integer frecuenciaComunicacion;
     private String viaConexion;
     private UsuarioDTO usuario;
-    private String entrenadorId;
     private String trainerId;
 
 }

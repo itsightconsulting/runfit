@@ -1,7 +1,5 @@
 package com.itsight.domain.jsonb;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.json.JsonMoneySimpleSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
