@@ -80,7 +80,7 @@ public class Enums {
         }
     }
 
-    public enum TipoUsuarioEnum{
+    public enum TipoUsuario{
         FIXORDER, ADMINISTRADOR, ENTRENADOR, CLIENTE
     }
 

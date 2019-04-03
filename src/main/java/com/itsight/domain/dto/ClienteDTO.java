@@ -3,6 +3,7 @@ package com.itsight.domain.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,6 +22,8 @@ public class ClienteDTO implements Serializable  {
     private Integer tipoDocumentoId;
     private Integer paisId;
     private String ubigeo;
+    private String password;
+    @Valid
     private ClienteFitnessDTO cliFit;
 
 }

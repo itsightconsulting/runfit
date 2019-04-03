@@ -166,7 +166,7 @@ function exception(xhr, errorName) {
     }else{
         if (xhr["responseJSON"] != null || JSON.parse(xhr["responseText"])["status"] == "401" ) {
 
-            if(sCode != 401 && sCode != 403){
+            if(sCode != 401 && sCode != 403 && sCode != 400){
                 $.smallBox({
                     content: "<i> Comuníquese con el administrador <br/> Code error: " + xhr['status'] + " <br/> Detail: " + xhr['responseJSON']['error'] + "</i>",
                     color: "#8a6d3b",
@@ -188,6 +188,14 @@ function exception(xhr, errorName) {
                 else if(xhr['status'] == 403){
                     $.smallBox({
                         content: "<i> No se encuentra autorizado para <br/> ejecutar esta acción...</i>",
+                        color: "#8a6d3b",
+                        iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                        timeout: 5000,
+                    });
+                }
+                else if(xhr['status'] == 400){
+                    $.smallBox({
+                        content: "<i> Usted ha realizado una petición incorrecta...</i>",
                         color: "#8a6d3b",
                         iconSmall: "fa fa-info fa-3x fadeInRight animated",
                         timeout: 5000,

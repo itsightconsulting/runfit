@@ -2,14 +2,13 @@ package com.itsight.controller;
 
 import com.itsight.domain.Cliente;
 import com.itsight.domain.dto.ClienteDTO;
-import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -50,11 +49,15 @@ public class ClienteController {
     }
 
     @PostMapping(value = "/fitness/agregar")
-    public @ResponseBody String nuevo(@RequestBody ClienteDTO cliente, BindingResult bindingResult) {
-        if(!bindingResult.hasErrors()){
+    public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
+        /*if(!bindingResult.hasErrors()){*/
             return clienteService.registroFull(cliente);
-        }else{
-            return "-1";
-        }
+        /*}else{
+            List<ApiSubError> errors = new ArrayList<>();
+            for(FieldError x :  bindingResult.getFieldErrors()){
+                errors.add(new ApiSubError(x.getField(), x.getObjectName(), x.getRejectedValue(), x.getDefaultMessage()));
+            }
+            return new ObjectMapper().writeValueAsString(errors);
+        }*/
     }
 }

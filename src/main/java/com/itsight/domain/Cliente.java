@@ -15,6 +15,7 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,27 +37,37 @@ public class Cliente extends AuditingEntity implements Serializable {
 
     @Id
     private Integer id;
+
     @Column(nullable = false)
     private String nombres;
+
     @Column(nullable = false)
     private String apellidos;
+
     @Column(nullable = false)
     private String numeroDocumento;
-    @Column(nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String correo;
+
     @Column(nullable = false, length = 16)
     private String movil;
+
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
+
     @Column(nullable = false, updatable = false)
     private String username;
+
     @Type(type = "jsonb")
     @Column(nullable = false, columnDefinition = "jsonb")
     private List<Rol> roles;
+
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimoAcceso;
+
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TipoUsuarioId", updatable = false)
@@ -138,6 +149,23 @@ public class Cliente extends AuditingEntity implements Serializable {
     public void setConfCliente(ConfiguracionCliente confCliente) {
         confCliente.setCliente(this);
         this.confCliente = confCliente;
+    }
+
+    public void setRoles(Integer tipoUsuario){
+        List<Rol> rols = new ArrayList<>();
+        switch(tipoUsuario){
+            case 1:
+                rols.add(new Rol(1, "ROLE_ADMIN"));
+            case 2:
+                rols.add(new Rol(2, "ROLE_TRAINER"));
+            default:
+                rols.add(new Rol(3, "ROLE_RUNNER"));
+        }
+        this.roles = rols;
+    }
+
+    public void setRoles(List<com.itsight.domain.jsonb.Rol> roles){
+        this.roles = roles;
     }
 
     public void setPais(Pais pais){

@@ -42,7 +42,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     private String apellidos;
     @Column(nullable = false)
     private String numeroDocumento;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String correo;
     @Column(length = 16)
     private String telefonoFijo;

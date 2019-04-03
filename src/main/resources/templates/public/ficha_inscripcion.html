@@ -1632,7 +1632,8 @@
           success: function (res) {
             console.log(res);
           }, error: (xhr) => {
-            exception(xhr);
+            console.log(xhr);
+            //exception(xhr);
           }, complete: () => {
             fadeLoadingDiv(fadeBox);
           }
@@ -1642,6 +1643,8 @@
       function generateBody(){
         const obj = getFormData($('#frmRegistro'));
         //Ubigeo
+        obj.username = String(new Date().getTime());
+        obj.password = "runfit";
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
         obj.cliFit = {};
 
@@ -1713,6 +1716,13 @@
         //obj.cliFit.viaConexion = document.getElementById('ViaConexion').value;
         //private UsuarioDTO usuario;
         return obj;
+      }
+
+      function generateRandomMail(){
+        const t0 = String(new Date().getTime())
+        const t1 = t0.slice(-3);
+        const t2 = t0.slice(-6).slice(0, 3);
+        return `pedro${t1}infante${t2}@gmail.com`;
       }
 
       function getCompetenciasParticipar(){
@@ -2090,7 +2100,7 @@
         document.querySelector('#FechaNacimiento').value = "1993-02-28";
         document.querySelector('#TipoDocumentoId').value = 1;
         document.querySelector('#NumeroDocumento').value = 42424242;
-        document.querySelector('#Correo').value = "pedro.sotelo@gmail.com";
+        document.querySelector('#Correo').value = generateRandomMail();
         document.querySelector('#Movil').value = "987651234";
         document.querySelector('#Peso').value = 77;
         document.querySelector('#Talla').value = 177;

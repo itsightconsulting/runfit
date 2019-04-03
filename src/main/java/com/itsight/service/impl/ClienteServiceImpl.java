@@ -1,22 +1,23 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.Cliente;
-import com.itsight.domain.SecurityRole;
-import com.itsight.domain.SecurityUser;
+import com.itsight.domain.*;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ClienteRepository;
 import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
-import com.itsight.service.ClienteService;
-import com.itsight.service.EmailService;
-import com.itsight.service.RolService;
+import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ import static com.itsight.util.Enums.ResponseCode;
 @Transactional
 public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> implements ClienteService {
 
+    private static final Logger LOGGER = LogManager.getLogger(ClienteServiceImpl.class);
+
     private SecurityUserRepository securityUserRepository;
 
     private SecurityRoleRepository securityRoleRepository;
@@ -36,6 +39,10 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     private RolService rolService;
 
     private EmailService emailService;
+
+    private ConfiguracionClienteService configuracionClienteService;
+
+    private ConfiguracionGeneralService configuracionGeneralService;
 
     @Autowired
     private ClienteService clienteService;
@@ -48,13 +55,17 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             SecurityUserRepository securityUserRepository,
             SecurityRoleRepository securityRoleRepository,
             RolService rolService,
-            EmailService emailService) {
+            EmailService emailService,
+            ConfiguracionClienteService configuracionClienteService,
+            ConfiguracionGeneralService configuracionGeneralService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
         this.securityUserRepository = securityUserRepository;
         this.rolService = rolService;
         this.emailService = emailService;
+        this.configuracionClienteService = configuracionClienteService;
+        this.configuracionGeneralService = configuracionGeneralService;
     }
 
     @Override
@@ -225,8 +236,40 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     @Override
     public String registroFull(ClienteDTO cliente) {
-        System.out.println(cliente.toString());
-        return "1";
+        LOGGER.info(cliente.getUsername()+": "+cliente.getPassword());
+        Cliente objCli = new Cliente();
+        objCli.setFlagActivo(true);
+        //Agregando roles
+
+        objCli.setRoles(Enums.TipoUsuario.CLIENTE.ordinal());
+        objCli.setTipoUsuario(Enums.TipoUsuario.CLIENTE.ordinal());
+        objCli.setTipoDocumento(cliente.getTipoDocumentoId());
+        objCli.setPais(cliente.getPaisId());
+
+        SecurityUser secCliente = new SecurityUser(cliente.getUsername(), cliente.getPassword());
+        secCliente.setRoles(Enums.TipoUsuario.CLIENTE.ordinal());
+
+        objCli.setSecurityUser(secCliente);
+
+        BeanUtils.copyProperties(cliente, objCli);
+
+        ClienteFitness objCliFit = new ClienteFitness();
+        BeanUtils.copyProperties(cliente.getCliFit(), objCliFit);
+
+        List<ClienteFitness> clienteFitnesses = new ArrayList<>();
+        clienteFitnesses.add(objCliFit);
+        objCli.setLstClienteFitness(clienteFitnesses);
+
+        ConfiguracionCliente cliConfg = new ConfiguracionCliente();
+        cliConfg.setLstParametro(configuracionGeneralService.findAll().stream()
+                .map(cg-> new com.itsight.domain.jsonb.Parametro(
+                            cg.getNombre(),
+                            cg.getValor()))
+                            .collect(Collectors.toList()));
+        cliConfg.setCliente(objCli);
+        //Registrando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
+        configuracionClienteService.save(cliConfg);
+        return ResponseCode.REGISTRO.get();
     }
 
     @Override

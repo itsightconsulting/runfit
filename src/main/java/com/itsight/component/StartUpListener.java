@@ -956,7 +956,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer(
                 "Alejandro "+ i, "Gonzales Prada", correoUsuario, "543213"+i,
-                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuarioEnum.ENTRENADOR.ordinal(), "T51C"+i,true);
+                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuario.ENTRENADOR.ordinal(), "T51C"+i,true);
             List<com.itsight.domain.jsonb.Rol> rolesJsonB = new ArrayList<>();
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(1, role1.getRole()));
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(2, role2.getRole()));
@@ -1020,7 +1020,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             secCliente.setRoles(lstRolesCli);
             Cliente cli = new Cliente(
                     "Jorge "+ i, "Almendariz Molina", correoUsuario,
-                    "5198765432"+i , correoUsuario, "4444444"+i, 1, Enums.TipoUsuarioEnum.CLIENTE.ordinal(),true);
+                    "5198765432"+i , correoUsuario, "4444444"+i, 1, Enums.TipoUsuario.CLIENTE.ordinal(),true);
             List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
             lstRolCli.add(new com.itsight.domain.jsonb.Rol(3, "ROLE_RUNNER"));
             cli.setPais(604);//Perú!
@@ -1031,9 +1031,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
             //
             ConfiguracionCliente cliConfg = new ConfiguracionCliente();
-            cliConfg.setLstParametro(configuracionGeneralService.findAll().stream().map(cg-> new com.itsight.domain.jsonb.Parametro(cg.getNombre(), cg.getValor())).collect(Collectors.toList()));
+            cliConfg.setLstParametro(configuracionGeneralService.findAll().stream()
+                    .map(cg-> new com.itsight.domain.jsonb.Parametro(
+                                cg.getNombre(),
+                                cg.getValor()))
+                                .collect(Collectors.toList()));
             cliConfg.setCliente(cli);
-            //Actualizando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
+            //Registrando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
             configuracionClienteService.save(cliConfg);
 
             //Agregando su información fitness básica

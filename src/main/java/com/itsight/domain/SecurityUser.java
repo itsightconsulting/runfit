@@ -2,10 +2,15 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NamedEntityGraphs({@NamedEntityGraph(name = "securityUser"),
@@ -85,6 +90,12 @@ public class SecurityUser{
         this.id = id;
     }
 
+    public SecurityUser(String username, String password) {
+        this.username = username;
+        this.password = new BCryptPasswordEncoder().encode(password);
+        this.enabled = true;
+    }
+
     public SecurityUser(String username, String password, boolean enabled) {
         this.username = username;
         this.password = password;
@@ -150,6 +161,19 @@ public class SecurityUser{
             x.setSecurityUser(this);
         }
         this.roles = roles;
+    }
+
+    public void setRoles(Integer tipoUsuario){
+        Set<SecurityRole> rols = new HashSet<>();
+        switch(tipoUsuario){
+            case 1:
+                rols.add(new SecurityRole("ROLE_ADMIN"));
+            case 2:
+                rols.add(new SecurityRole("ROLE_TRAINER"));
+            default:
+                rols.add(new SecurityRole("ROLE_RUNNER"));
+        }
+        setRoles(rols);
     }
 
     public Integer getId() {

@@ -2,7 +2,10 @@ package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.domain.jsonb.*;
+import com.itsight.domain.jsonb.CompetenciaRunner;
+import com.itsight.domain.jsonb.CondicionAnatomica;
+import com.itsight.domain.jsonb.CondicionMejora;
+import com.itsight.domain.jsonb.Salud;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import lombok.Data;
 
