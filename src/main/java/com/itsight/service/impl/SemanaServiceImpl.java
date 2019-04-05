@@ -56,7 +56,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
 
     @Override
     public Semana findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
         semana.setRutina(rutinaId);
         semana.setLstDia(dias);
         repository.saveAndFlush(semana);
-        Rutina qRutina = rutinaRepository.findOne(rutinaId);
+        Rutina qRutina = rutinaRepository.findById(rutinaId).orElse(null);
         qRutina.setTotalSemanas(totalSemanas);
         qRutina.setFechaFin(fechaFin);
         Integer[] qSemanaIds = Utilitarios.agregarElementoArray(qRutina.getSemanaIds(), semana.getId());

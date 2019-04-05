@@ -94,6 +94,10 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Transient
     private String password;
 
+    @Transient
+    @JsonSerialize
+    private String nombreCompleto;
+
     public Trainer() {
         // TODO Auto-generated constructor stub
     }

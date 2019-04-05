@@ -42,13 +42,13 @@ public class CategoriaEjercicioServiceImpl extends BaseServiceImpl<CategoriaEjer
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public CategoriaEjercicio findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CategoriaEjercicioServiceImpl extends BaseServiceImpl<CategoriaEjer
     @Override
     public CategoriaEjercicio findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(new Integer(id));
+        return repository.getById(id);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class CategoriaEjercicioServiceImpl extends BaseServiceImpl<CategoriaEjer
     public String actualizar(CategoriaEjercicio entity, String wildcard) {
         // TODO Auto-generated method stub
         entity.setForest(1);//Padre-artificio|Valor final
-        CategoriaEjercicio qCatEjercicio = repository.findOne(entity.getId());
+        CategoriaEjercicio qCatEjercicio = repository.findById(entity.getId()).orElse(null);
         entity.setRutaWeb(qCatEjercicio.getRutaWeb());
         entity.setRutaReal(qCatEjercicio.getRutaReal());
         repository.saveAndFlush(entity);

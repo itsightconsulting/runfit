@@ -1,6 +1,6 @@
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#ctx.servletContext.getAttribute('version')}, today = ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+      th:with="version = ${#servletContext.getAttribute('version')}, today = ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
   <head>
     <meta charset="utf-8" />
     <meta name="_csrf" th:attr="content=${_csrf.token}"/>

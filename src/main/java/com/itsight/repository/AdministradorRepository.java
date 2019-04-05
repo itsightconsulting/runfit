@@ -21,7 +21,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     List<Administrador> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "administrador.all")
-    Administrador findById(Integer id);
+    Administrador getById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Administrador A SET A.flagActivo =?2 WHERE A.id = ?1")

@@ -9,7 +9,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
+public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Value("${caching}")
     private boolean caching;
@@ -48,15 +48,24 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        List<MediaType> supportedMediaTypes = new ArrayList<>();
+        converters.add(jacksonMessageConverter());
+        WebMvcConfigurer.super.configureMessageConverters(converters);
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
+        MappingJackson2HttpMessageConverter messageConverter =
+                new MappingJackson2HttpMessageConverter();
+
+        List<MediaType> supportedMediaTypes=new ArrayList<>();
         supportedMediaTypes.add(MediaType.APPLICATION_JSON);
         supportedMediaTypes.add(MediaType.TEXT_PLAIN);
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(new HibernateAwareObjectMapper());
-        converter.setPrettyPrint(true);
-        converter.setSupportedMediaTypes(supportedMediaTypes);
-        converters.add(converter);
-        super.configureMessageConverters(converters);
+
+        messageConverter.setSupportedMediaTypes(supportedMediaTypes);
+        messageConverter.setObjectMapper(new HibernateAwareObjectMapper());
+        messageConverter.setPrettyPrint(true);
+
+        return messageConverter;
     }
 
     @Bean

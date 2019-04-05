@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-us"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+      th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-    <!-- META -->
-    <link th:replace="html-commons/meta :: fg-meta"/>
-    <!-- END META -->
-    <!-- CSS FILES -->
-    <link th:replace="html-commons/css :: fg-css"/>
+    <title>Runfit</title>
+    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/perfect-scrollbar.css"/>
-
-    <!-- END CSS FILES -->
     <style type="text/css">
 
         .mej-perc{

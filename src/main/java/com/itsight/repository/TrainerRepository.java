@@ -26,11 +26,12 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     @EntityGraph(value = "trainer.all")
     List<Trainer> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT T FROM Trainer T INNER JOIN FETCH T.tipoUsuario P JOIN FETCH T.tipoDocumento D  WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @EntityGraph(value = "trainer.all")
+    @Query("SELECT T FROM Trainer T INNER JOIN FETCH T.tipoUsuario P JOIN FETCH T.tipoDocumento D JOIN FETCH T.securityUser SU WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<Trainer> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "trainer.all")
-    Trainer findById(Integer id);
+    Trainer getById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.flagActivo =?2 WHERE T.id = ?1")

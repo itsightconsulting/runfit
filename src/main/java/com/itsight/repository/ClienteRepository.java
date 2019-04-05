@@ -25,7 +25,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     List<Cliente> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "cliente.all")
-    Cliente findById(Integer id);
+    Cliente getById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Cliente U SET U.flagActivo =?2 WHERE U.id = ?1")

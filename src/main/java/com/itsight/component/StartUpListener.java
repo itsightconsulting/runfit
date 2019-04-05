@@ -171,13 +171,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             }
             addingAudiosDemo();
 
-            if(bagForestRepository.findOne(1) == null) {
+            if(bagForestRepository.getOne(1) == null) {
                 insertACategoriaEjercicio();
                 insertASubCategoriaEjercicio();
                 insertAEspecificacionSubCategoriaEjercicio();
             }
 
-            if(bagForestRepository.findOne(2) == null) {
+            if(bagForestRepository.getOne(2) == null) {
                 insertAGrupoVideo();
                 insertACategoriaVideo();
                 insertASubCategoriaVideo();
@@ -426,10 +426,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingToTipoDescuentoTable() {
-        if (tipoDescuentoRepository.findOne(1) == null) {
+        if (tipoDescuentoRepository.findById(1).get() == null) {
             tipoDescuentoRepository.save(new TipoDescuento("Porcentaje"));
         }
-        if (tipoDescuentoRepository.findOne(2) == null) {
+        if (tipoDescuentoRepository.findById(2).get() == null) {
             tipoDescuentoRepository.save(new TipoDescuento("Monto Específico"));
         }
     }

@@ -31,7 +31,7 @@ public class KilometrajeBaseServiceImpl extends BaseServiceImpl<KilometrajeBaseR
 
     @Override
     public KilometrajeBase findOne(Integer id) {
-        return repository.findOne(new Integer(id));
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class KilometrajeBaseServiceImpl extends BaseServiceImpl<KilometrajeBaseR
 
     @Override
     public void delete(Integer id) {
-        repository.delete(new Integer(id));
+        repository.deleteById(new Integer(id));
     }
 
     @Override

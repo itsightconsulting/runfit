@@ -27,7 +27,7 @@ public interface DocumentoRepository extends JpaRepository<Documento, Integer> {
     List<Documento> findAllByNombreContainingIgnoreCase(String nombre);
 
     @EntityGraph(value = "documento", attributePaths = {})
-    Documento findById(Integer id);
+    Documento getById(Integer id);
 
     @Query("SELECT D.nombre FROM Documento D WHERE D.id = ?1 AND D.uuid = ?2")
     String findNombreByIdAndUuid(Integer id, UUID uuid);

@@ -10,9 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConfiguracionClienteRepository extends JpaRepository<ConfiguracionCliente, Integer> {
 
-    @EntityGraph(value = "confCliente")
-    ConfiguracionCliente findById(Integer id);
-
     @Query(value = "SELECT parametros->4->>'valor' FROM configuracion_cliente WHERE cliente_id = ?1", nativeQuery = true)
     String getFavsPostTrainer(Integer id);
 

@@ -30,7 +30,7 @@ public class ListaPlantillaSimpleServiceImpl extends BaseServiceImpl<ListaPlanti
 
     @Override
     public ListaPlantillaSimple findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

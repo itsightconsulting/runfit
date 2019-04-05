@@ -41,13 +41,13 @@ public class TipoUsuarioServiceImpl implements TipoUsuarioService {
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        tipoUsuarioRepository.delete(id);
+        tipoUsuarioRepository.deleteById(id);
     }
 
     @Override
     public TipoUsuario findOneById(Integer id) {
         // TODO Auto-generated method stub
-        return tipoUsuarioRepository.findOne(id);
+        return tipoUsuarioRepository.findById(id).orElse(null);
     }
 
 }

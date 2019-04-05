@@ -30,7 +30,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
 
     @Override
     public RedFitness findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

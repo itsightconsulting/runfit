@@ -42,13 +42,13 @@ public class ObjetivoServiceImpl extends BaseServiceImpl<ObjetivoRepository> imp
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public Objetivo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

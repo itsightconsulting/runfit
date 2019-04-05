@@ -3,12 +3,9 @@
 	  xmlns:th="http://www.thymeleaf.org"
 >
 <head>
-    <!-- META -->
-    <link th:replace="html-commons/meta :: fg-meta"/>
-    <!-- END META -->
-    <!-- CSS FILES -->
-    <link th:replace="html-commons/css :: fg-css"/>
-    <!-- END CSS FILES -->
+    <title>Runfit</title>
+    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
 </head>
 
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">

@@ -30,7 +30,7 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
 
     @Override
     public ConfiguracionCliente findOne(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class SubCategoriaEjercicioServiceImpl extends BaseServiceImpl<SubCategor
     @Override
     public SubCategoriaEjercicio findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SubCategoriaEjercicioServiceImpl extends BaseServiceImpl<SubCategor
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

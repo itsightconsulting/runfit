@@ -73,17 +73,17 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     @Override
     public Trainer findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Trainer findOneWithFT(Integer id) {
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -217,7 +217,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     public String actualizar(Trainer trainer, String rols) {
         // TODO Auto-generated method stub
         try {
-            Trainer qTrainer = repository.findOne(trainer.getId());
+            Trainer qTrainer = repository.getById(trainer.getId());
             trainer.setFechaUltimoAcceso(qTrainer.getFechaUltimoAcceso());
             trainer.setCreador(qTrainer.getCreador());
             trainer.setRowVersion(qTrainer.getRowVersion());

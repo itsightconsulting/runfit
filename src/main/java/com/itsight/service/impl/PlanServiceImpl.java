@@ -46,13 +46,13 @@ public class PlanServiceImpl extends BaseServiceImpl<PlanRepository> implements 
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public Plan getPlanById(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

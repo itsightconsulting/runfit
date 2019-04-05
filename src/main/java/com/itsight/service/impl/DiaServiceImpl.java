@@ -42,7 +42,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
 
     @Override
     public Dia findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

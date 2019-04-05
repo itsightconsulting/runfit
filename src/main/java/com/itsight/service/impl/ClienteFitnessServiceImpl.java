@@ -48,7 +48,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
 
     @Override
     public ClienteFitness findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

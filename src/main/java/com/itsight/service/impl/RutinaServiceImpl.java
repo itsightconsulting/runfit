@@ -54,7 +54,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
     @Override
     public Rutina findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

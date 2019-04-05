@@ -35,7 +35,7 @@ public class PaqueteServiceImpl extends BaseServiceImpl<PaqueteRepository> imple
     @Override
     public Paquete getPaqueteById(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PaqueteServiceImpl extends BaseServiceImpl<PaqueteRepository> imple
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

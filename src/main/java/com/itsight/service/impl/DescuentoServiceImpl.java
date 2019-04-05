@@ -37,19 +37,19 @@ public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> i
     @Override
     public Descuento findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Descuento findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class DescuentoServiceImpl extends BaseServiceImpl<DescuentoRepository> i
     public String actualizar(Descuento entity, String wildcard) {
         // TODO Auto-generated method stub
         String[] fkIds = wildcard.split(",");
-        Descuento qDescuento = repository.findOne(entity.getId());
+        Descuento qDescuento = repository.getById(entity.getId());
         qDescuento.setTipoDescuento(Integer.parseInt(fkIds[0]));
         qDescuento.setProductoPresentacion(Integer.parseInt(fkIds[1]));
         qDescuento.setPrecioInicial(entity.getPrecioInicial());

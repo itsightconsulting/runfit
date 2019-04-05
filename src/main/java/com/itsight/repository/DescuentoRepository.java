@@ -13,7 +13,7 @@ import java.util.List;
 public interface DescuentoRepository extends JpaRepository<Descuento, Integer> {
 
     @EntityGraph(value = "descuento.tipo", attributePaths = {})
-    Descuento findById(Integer ud);
+    Descuento getById(Integer ud);
 
     @Override
     @EntityGraph(value = "descuento.tipo", attributePaths = {})

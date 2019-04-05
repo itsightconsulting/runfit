@@ -41,13 +41,13 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public GrupoVideo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     @Override
     public GrupoVideo findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     public String actualizar(GrupoVideo entity, String wildcard) {
         // TODO Auto-generated method stub
         entity.setForest(2);//Padre-artificio|Valor final
-        GrupoVideo qGrupoVideo = repository.findOne(entity.getId());
+        GrupoVideo qGrupoVideo = repository.getById(entity.getId());
         entity.setRutaWeb(qGrupoVideo.getRutaWeb());
         entity.setRutaReal(qGrupoVideo.getRutaReal());
         repository.saveAndFlush(entity);

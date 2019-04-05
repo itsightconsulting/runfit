@@ -26,7 +26,7 @@ public interface AudioRepository extends JpaRepository<Audio, Integer> {
     List<Audio> findAllByNombreContainingIgnoreCase(String nombre);
 
     @EntityGraph(value = "audio.tipoaudio")
-    Audio findById(Integer id);
+    Audio getById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Audio A SET A.flagActivo =?2 WHERE A.id = ?1")

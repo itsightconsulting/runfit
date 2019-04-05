@@ -33,7 +33,7 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
 
     @Override
     public RuConsolidado findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

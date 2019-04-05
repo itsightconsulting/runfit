@@ -34,7 +34,7 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     @Override
     public SubCategoriaVideo findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(new Integer(id));
+        repository.deleteById(new Integer(id));
     }
 
     @Override

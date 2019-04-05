@@ -30,7 +30,7 @@ public class TipoDocumentoServiceImpl extends BaseServiceImpl<TipoDocumentoRepos
 
     @Override
     public TipoDocumento findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TipoDocumentoServiceImpl extends BaseServiceImpl<TipoDocumentoRepos
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

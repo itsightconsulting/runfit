@@ -41,13 +41,13 @@ public class ClientePlanServiceImpl implements ClientePlanService {
     @Override
     public void delete(Integer clientePlanId) {
         // TODO Auto-generated method stub
-        clientePlanRepository.delete(clientePlanId);
+        clientePlanRepository.deleteById(clientePlanId);
     }
 
     @Override
     public ClientePlan findOneById(Integer id) {
         // TODO Auto-generated method stub
-        return clientePlanRepository.findOne(id);
+        return clientePlanRepository.findById(id).orElse(null);
     }
 
 

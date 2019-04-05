@@ -31,7 +31,7 @@ public class ConfiguracionGeneralServiceImpl extends BaseServiceImpl<Configuraci
 
     @Override
     public ConfiguracionGeneral findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ConfiguracionGeneralServiceImpl extends BaseServiceImpl<Configuraci
 
     @Override
     public void delete(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

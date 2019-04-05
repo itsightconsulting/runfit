@@ -12,7 +12,7 @@ import java.util.List;
 public interface SubCategoriaEjercicioRepository extends JpaRepository<SubCategoriaEjercicio, Integer> {
 
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S WHERE S.id = ?1 ORDER BY 1")
-    SubCategoriaEjercicio findById(Integer id);
+    SubCategoriaEjercicio getById(Integer id);
 
     @Override
     @Query("SELECT new SubCategoriaEjercicio(S.id, S.nombre, S.flagActivo, S.categoriaEjercicio.id, S.categoriaEjercicio.nombre) FROM SubCategoriaEjercicio S ORDER BY 1")

@@ -42,13 +42,13 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public Categoria findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     @Override
     public String actualizar(Categoria entity, String wildcard) {
         // TODO Auto-generated method stub
-        Categoria qCategoria = repository.findOne(entity.getId());
+        Categoria qCategoria = repository.findById(entity.getId()).orElse(null);
         entity.setRutaReal(qCategoria.getRutaReal());
         entity.setRutaWeb(qCategoria.getRutaWeb());
         entity.setUuid(qCategoria.getUuid());

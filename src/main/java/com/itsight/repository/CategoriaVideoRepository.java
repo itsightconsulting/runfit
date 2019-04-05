@@ -13,7 +13,7 @@ import java.util.List;
 public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, Integer> {
 
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S WHERE S.id = ?1 ORDER BY 1")
-    CategoriaVideo findById(Integer id);
+    CategoriaVideo getById(Integer id);
 
     @Override
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S ORDER BY 1")

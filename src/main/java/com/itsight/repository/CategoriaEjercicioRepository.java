@@ -32,7 +32,7 @@ public interface CategoriaEjercicioRepository extends JpaRepository<CategoriaEje
     List<CategoriaEjercicio> findAllByNombreContainingIgnoreCaseAndFlagActivo(String nombre, Boolean flagActivo);
 
     @EntityGraph(value = "categoriaEjercicio")
-    CategoriaEjercicio findById(Integer id);
+    CategoriaEjercicio getById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE CategoriaEjercicio C SET C.flagActivo =?2 WHERE C.id = ?1")

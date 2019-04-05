@@ -83,13 +83,13 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public Cliente findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Cliente findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -276,7 +276,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     public String actualizar(Cliente cliente, String rols) {
         // TODO Auto-generated method stub
         try {
-            Cliente qCliente = repository.findOne(cliente.getId());
+            Cliente qCliente = repository.getById(cliente.getId());
             cliente.setFechaUltimoAcceso(qCliente.getFechaUltimoAcceso());
             cliente.setCreador(qCliente.getCreador());
             cliente.setRowVersion(qCliente.getRowVersion());

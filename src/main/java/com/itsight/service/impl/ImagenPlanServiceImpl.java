@@ -46,7 +46,7 @@ public class ImagenPlanServiceImpl extends BaseServiceImpl<ImagenPlanRepository>
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

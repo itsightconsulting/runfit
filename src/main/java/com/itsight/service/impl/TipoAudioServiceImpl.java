@@ -28,7 +28,7 @@ public class TipoAudioServiceImpl extends BaseServiceImpl<TipoAudioRepository> i
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TipoAudioServiceImpl extends BaseServiceImpl<TipoAudioRepository> i
 
     @Override
     public TipoAudio findOne(Integer id) {
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     @Override

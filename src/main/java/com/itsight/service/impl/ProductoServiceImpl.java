@@ -39,7 +39,7 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
     @Override
     public Producto findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class ProductoServiceImpl extends BaseServiceImpl<ProductoRepository> imp
     @Override
     public String actualizar(Producto producto, String categoriaId) {
         // TODO Auto-generated method stub
-        Producto qProducto = repository.findOne(producto.getId());
+        Producto qProducto = repository.findById(producto.getId()).orElse(null);
         qProducto.setCategoria(Integer.parseInt(categoriaId));
         return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(repository.saveAndFlush(qProducto).getId()));
     }

@@ -34,19 +34,19 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     @Override
     public Video findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Video findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

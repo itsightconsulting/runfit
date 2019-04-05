@@ -39,19 +39,19 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
     @Override
     public Documento findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Documento findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
 
     @Override
     public String actualizar(Documento entity, String wildcard) {
-        Documento qDocumento = repository.findOne(entity.getId());
+        Documento qDocumento = repository.getById(entity.getId());
         qDocumento.setNombre(entity.getNombre());
         qDocumento.setRutaWeb(entity.getRutaWeb());
         qDocumento.setRutaReal(entity.getRutaReal());

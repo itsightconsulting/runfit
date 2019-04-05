@@ -29,7 +29,7 @@ public class TipoImagenServiceImpl implements TipoImagenService {
     @Override
     public TipoImagen findOneById(Integer id) {
         // TODO Auto-generated method stub
-        return tipoImagenRepository.findOne(id);
+        return tipoImagenRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class TipoImagenServiceImpl implements TipoImagenService {
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        tipoImagenRepository.delete(id);
+        tipoImagenRepository.deleteById(id);
     }
 }

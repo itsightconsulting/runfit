@@ -36,7 +36,7 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
 
     @Override
     public UbPeru findById(String id) {
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

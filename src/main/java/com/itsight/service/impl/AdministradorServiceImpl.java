@@ -71,13 +71,13 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public Administrador findOne(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Administrador findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.findById(id);
+        return repository.getById(id);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public void delete(Integer id) {
         // TODO Auto-generated method stub
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -226,7 +226,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     public String actualizar(Administrador administrador, String rols) {
         // TODO Auto-generated method stub
         try {
-            Administrador qAdministrador = repository.findOne(administrador.getId());
+            Administrador qAdministrador = repository.findById(administrador.getId()).orElse(null);
             administrador.setFechaUltimoAcceso(qAdministrador.getFechaUltimoAcceso());
             administrador.setCreador(qAdministrador.getCreador());
             administrador.setRowVersion(qAdministrador.getRowVersion());

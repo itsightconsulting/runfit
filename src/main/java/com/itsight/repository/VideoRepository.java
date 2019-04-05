@@ -21,7 +21,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     List<Video> findAllByOrderByIdDesc();
 
     @Query("SELECT new Video(E.id, E.nombre, E.rutaWeb, E.rutaReal, E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E WHERE E.id = ?1 ORDER BY 1")
-    Video findById(Integer id);
+    Video getById(Integer id);
 
    @Query("SELECT V FROM Video V INNER JOIN FETCH V.subCatVideo SC  INNER JOIN FETCH SC.categoriaVideo CV  INNER JOIN FETCH CV.grupoVideo GV INNER JOIN FETCH GV.forest ORDER BY GV.id,CV.id, SC.id, V.id")
     List<Video> findAllTree();

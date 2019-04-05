@@ -1,6 +1,6 @@
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#ctx.servletContext.getAttribute('version')}">
+      th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
   <meta charset="utf-8" />
   <meta name="_ctx" th:content="@{/}"/>
@@ -109,7 +109,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>BÚSQUEDA POR NOMBRE</label>
-                <input class="form-control" type="text"/>
+                <input class="form-control" type="text">
               </div>
             </div>
             <div class="col-md-4">  

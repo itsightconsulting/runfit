@@ -17,9 +17,8 @@ public interface DiaPlantillaRepository extends JpaRepository<DiaPlantilla, Inte
     @EntityGraph("diaPlantilla")
     List<DiaPlantilla> findAll();
 
-    @Override
     @EntityGraph("diaPlantilla")
-    DiaPlantilla findOne(Integer id);
+    DiaPlantilla getById(Integer id);
 
     @Query("SELECT D.id FROM DiaPlantilla D WHERE D.semanaPlantilla.id = ?1 ORDER BY 1")
     List<Integer> findIdBySemanaId(Integer semanaId);
