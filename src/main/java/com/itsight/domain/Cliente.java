@@ -70,7 +70,7 @@ public class Cliente extends AuditingEntity implements Serializable {
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TipoUsuarioId", updatable = false)
+    @JoinColumn(name = "TipoUsuarioId", nullable = false, updatable = false)
     private TipoUsuario tipoUsuario;
     
     @JsonManagedReference

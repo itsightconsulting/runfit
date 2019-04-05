@@ -83,6 +83,10 @@ public class SecurityUser{
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private Trainer trainer;
 
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
+    private Administrador administrador;
+
     public SecurityUser() {
     }
 
@@ -150,6 +154,14 @@ public class SecurityUser{
 
     public void setTrainer(Trainer trainer) {
         this.trainer = trainer;
+    }
+
+    public Administrador getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 
     public Set<SecurityRole> getRoles() {

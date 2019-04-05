@@ -1,12 +1,7 @@
 package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.itsight.domain.jsonb.PaiDet;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

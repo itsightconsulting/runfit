@@ -261,7 +261,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         objCli.setLstClienteFitness(clienteFitnesses);
 
         ConfiguracionCliente cliConfg = new ConfiguracionCliente();
-        cliConfg.setLstParametro(configuracionGeneralService.findAll().stream()
+        cliConfg.setLstParametro(configuracionGeneralService.getAll().stream()
                 .map(cg-> new com.itsight.domain.jsonb.Parametro(
                             cg.getNombre(),
                             cg.getValor()))

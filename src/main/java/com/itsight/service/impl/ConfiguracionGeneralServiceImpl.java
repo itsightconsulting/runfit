@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.ConfiguracionGeneral;
+import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ConfiguracionGeneralRepository;
 import com.itsight.service.ConfiguracionGeneralService;
@@ -51,6 +52,11 @@ public class ConfiguracionGeneralServiceImpl extends BaseServiceImpl<Configuraci
     @Override
     public List<ConfiguracionGeneral> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<ConfiguracionClienteDTO> getAll() {
+        return repository.getAll();
     }
 
     @Override

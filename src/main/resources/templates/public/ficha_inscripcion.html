@@ -1643,8 +1643,10 @@
       function generateBody(){
         const obj = getFormData($('#frmRegistro'));
         //Ubigeo
+
         obj.username = String(new Date().getTime());
         obj.password = "runfit";
+        obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
         obj.cliFit = {};
 

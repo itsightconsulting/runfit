@@ -2,7 +2,6 @@ package com.itsight.component;
 
 import com.itsight.domain.CondicionMejora;
 import com.itsight.domain.Musculo;
-import com.itsight.domain.Objetivo;
 import com.itsight.domain.Parametro;
 import com.itsight.domain.Rol;
 import com.itsight.domain.*;
