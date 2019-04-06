@@ -3,6 +3,7 @@ package com.itsight.controller;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Post;
 import com.itsight.domain.Trainer;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +46,8 @@ public class TrainerController {
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal(Model model) {
+        System.out.println("Demo log");
+        System.out.println("Demo logger2");
         model.addAttribute("lstTipoDocumento", tipoDocumentoService.findAll());
         model.addAttribute("lstTipoUsuario", perfilService.listAll());
         model.addAttribute("lstRol", rolService.findAll());
@@ -63,11 +66,11 @@ public class TrainerController {
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<Trainer> listarConFiltro(
+    List<UsuarioPOJO> listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
             @PathVariable("perfil") String perfil) {
-        return trainerService.listarPorFiltro(comodin, estado, perfil);
+        return trainerService.listarPorFiltroDto(comodin, estado, perfil);
     }
 
     @GetMapping(value = "/consejos")

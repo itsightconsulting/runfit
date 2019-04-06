@@ -426,10 +426,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingToTipoDescuentoTable() {
-        if (tipoDescuentoRepository.findById(1).get() == null) {
+        if (tipoDescuentoRepository.findById(1).orElse(null) == null) {
             tipoDescuentoRepository.save(new TipoDescuento("Porcentaje"));
         }
-        if (tipoDescuentoRepository.findById(2).get() == null) {
+        if (tipoDescuentoRepository.findById(2).orElse(null) == null) {
             tipoDescuentoRepository.save(new TipoDescuento("Monto Específico"));
         }
     }

@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Trainer;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,9 +27,8 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     @EntityGraph(value = "trainer.all")
     List<Trainer> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @EntityGraph(value = "trainer.all")
-    @Query("SELECT T FROM Trainer T INNER JOIN FETCH T.tipoUsuario P JOIN FETCH T.tipoDocumento D JOIN FETCH T.securityUser SU WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
-    List<Trainer> findByNombreCompleto(String nombreCompleto);
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, P.id, P.nombre) FROM Trainer T INNER JOIN T.tipoUsuario P INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "trainer.all")
     Trainer getById(Integer id);

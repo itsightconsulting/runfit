@@ -1,8 +1,11 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Administrador;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.*;
+import com.itsight.domain.pojo.UsuarioPOJO;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -17,8 +20,8 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @EntityGraph(value = "administrador.all")
     List<Administrador> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT A FROM Administrador A INNER JOIN FETCH A.tipoUsuario P JOIN FETCH A.tipoDocumento D  WHERE LOWER(CONCAT(A.apellidos,' ',A.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
-    List<Administrador> findByNombreCompleto(String nombreCompleto);
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, P.id, P.nombre) FROM Trainer T INNER JOIN T.tipoUsuario P INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "administrador.all")
     Administrador getById(Integer id);

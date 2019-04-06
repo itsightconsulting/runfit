@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Cliente;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @EntityGraph(value = "cliente.all")
     List<Cliente> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT U FROM Cliente U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE LOWER(CONCAT(U.apellidos,' ',U.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
-    List<Cliente> findByNombreCompleto(String nombreCompleto);
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, P.id, P.nombre) FROM Trainer T INNER JOIN T.tipoUsuario P INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "cliente.all")
     Cliente getById(Integer id);

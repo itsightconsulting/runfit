@@ -3,19 +3,13 @@ package com.itsight.domain.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleSerializer;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.SqlResultSetMapping;
-import javax.persistence.SqlResultSetMappings;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@AllArgsConstructor
 public class UsuarioPOJO implements Serializable {
 
     private int id;
@@ -37,4 +31,18 @@ public class UsuarioPOJO implements Serializable {
     private int tipoUsuarioId;
 
     private String tipoUsuario;
+
+    public UsuarioPOJO(){}
+
+    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, int tipoUsuarioId, String tipoUsuario) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.nombreCompleto = nombreCompleto;
+        this.flagActivo = flagActivo;
+        this.correo = correo;
+        this.username = username;
+        this.fechaUltimoAcceso = fechaUltimoAcceso;
+        this.tipoUsuarioId = tipoUsuarioId;
+        this.tipoUsuario = tipoUsuario;
+    }
 }

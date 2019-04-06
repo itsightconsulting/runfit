@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Administrador;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.AdministradorService;
 import com.itsight.service.RolService;
 import com.itsight.service.TipoDocumentoService;
@@ -58,11 +59,11 @@ public class AdministradorController {
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<Administrador> listarConFiltro(
+    List<UsuarioPOJO> listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
             @PathVariable("perfil") String perfil) {
-        return administradorService.listarPorFiltro(comodin, estado, perfil);
+        return administradorService.listarPorFiltroDto(comodin, estado, perfil);
     }
 
     @GetMapping(value = "/obtenerAdministradorSession")

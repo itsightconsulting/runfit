@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.domain.Cliente;
 import com.itsight.domain.dto.ClienteDTO;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +25,11 @@ public class ClienteController {
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<Cliente> listarConFiltro(
+    List<UsuarioPOJO> listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
             @PathVariable("perfil") String perfil) {
-        return clienteService.listarPorFiltro(comodin, estado, perfil);
+        return clienteService.listarPorFiltroDto(comodin, estado, perfil);
     }
 
     @GetMapping(value = "/obtenerUsuarioSession")

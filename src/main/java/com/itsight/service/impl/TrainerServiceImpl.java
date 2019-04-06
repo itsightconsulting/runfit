@@ -7,6 +7,7 @@ import com.itsight.domain.Trainer;
 import com.itsight.domain.jsonb.PorcKiloTipo;
 import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
 import com.itsight.repository.SecurityRoleRepository;
@@ -139,8 +140,10 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 lstTrainer = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
             } else {
                 comodin = comodin.equals("0") ? "" : comodin;//Necesario para que la url de la request no viaje // y viaje /0/(otro parametro)
-
-                lstTrainer = repository.findByNombreCompleto(comodin);
+                List<UsuarioPOJO> lstPojos = repository.findByNombreCompleto(comodin);
+                System.out.println("SIZE: "+lstPojos.size());
+                System.out.println(lstPojos.get(0).toString());
+                lstTrainer = new ArrayList<>();
 
                 if (!estado.equals("-1")) {
                     lstTrainer = lstTrainer.stream()
@@ -156,6 +159,12 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             }
         }
         return lstTrainer;
+    }
+
+    @Override
+    public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk) {
+
+        return repository.findByNombreCompleto(comodin.equalsIgnoreCase("0") ? "" : comodin);
     }
 
     @Override

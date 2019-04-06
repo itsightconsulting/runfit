@@ -4,6 +4,7 @@ import com.itsight.domain.Administrador;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.AdministradorRepository;
 import com.itsight.repository.SecurityRoleRepository;
@@ -101,7 +102,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public List<Administrador> findByNombreCompleto(String nombreCompleto) {
         // TODO Auto-generated method stub
-        return repository.findByNombreCompleto(nombreCompleto);
+        return null;
     }
 
     @Override
@@ -150,32 +151,12 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     public List<Administrador> listarPorFiltro(String comodin, String estado, String fk) {//fk:perfil
         // TODO Auto-generated method stub
 
-        List<Administrador> lstAdministrador;
+        return null;
+    }
 
-        if (comodin.equals("0") && estado.equals("-1") && fk.equals("0")) {
-            lstAdministrador = repository.findAllByOrderByIdDesc();
-        } else {
-            if (comodin.equals("0") && fk.equals("0")) {
-                lstAdministrador = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
-            } else {
-                comodin = comodin.equals("0") ? "" : comodin;//Necesario para que la url de la request no viaje // y viaje /0/(otro parametro)
-
-                lstAdministrador = repository.findByNombreCompleto(comodin);
-
-                if (!estado.equals("-1")) {
-                    lstAdministrador = lstAdministrador.stream()
-                            .filter(x -> Boolean.valueOf(estado).equals(x.isFlagActivo()))
-                            .collect(Collectors.toList());
-                }
-
-                if (!fk.equals("0")) {
-                    lstAdministrador = lstAdministrador.stream()
-                            .filter(x -> fk.equals(String.valueOf(x.getTipoUsuario().getId())))
-                            .collect(Collectors.toList());
-                }
-            }
-        }
-        return lstAdministrador;
+    @Override
+    public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk) {
+        return repository.findByNombreCompleto(comodin);
     }
 
     @Override

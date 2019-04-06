@@ -1,6 +1,7 @@
 package com.itsight.service;
 
 import com.itsight.domain.Administrador;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseService;
 
 import java.util.Date;
@@ -19,5 +20,7 @@ public interface AdministradorService extends BaseService<Administrador, Integer
     String validarUsername(String username);
 
     Administrador findByUsername(String username);
+
+    List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk);
 
 }

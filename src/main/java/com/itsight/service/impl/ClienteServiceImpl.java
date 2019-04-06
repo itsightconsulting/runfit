@@ -3,6 +3,7 @@ package com.itsight.service.impl;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ClienteRepository;
 import com.itsight.repository.SecurityRoleRepository;
@@ -113,7 +114,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public List<Cliente> findByNombreCompleto(String nombreCompleto) {
         // TODO Auto-generated method stub
-        return repository.findByNombreCompleto(nombreCompleto);
+        return null;
     }
 
     @Override
@@ -161,33 +162,12 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public List<Cliente> listarPorFiltro(String comodin, String estado, String fk) {//fk:perfil
         // TODO Auto-generated method stub
+        return null;
+    }
 
-        List<Cliente> lstCliente;
-
-        if (comodin.equals("0") && estado.equals("-1") && fk.equals("0")) {
-            lstCliente = repository.findAllByOrderByIdDesc();
-        } else {
-            if (comodin.equals("0") && fk.equals("0")) {
-                lstCliente = repository.findAllByFlagActivoOrderByIdDesc(Boolean.valueOf(estado));
-            } else {
-                comodin = comodin.equals("0") ? "" : comodin;//Necesario para que la url de la request no viaje // y viaje /0/(otro parametro)
-
-                lstCliente = repository.findByNombreCompleto(comodin);
-
-                if (!estado.equals("-1")) {
-                    lstCliente = lstCliente.stream()
-                            .filter(x -> Boolean.valueOf(estado).equals(x.isFlagActivo()))
-                            .collect(Collectors.toList());
-                }
-
-                if (!fk.equals("0")) {
-                    lstCliente = lstCliente.stream()
-                            .filter(x -> fk.equals(String.valueOf(x.getTipoUsuario().getId())))
-                            .collect(Collectors.toList());
-                }
-            }
-        }
-        return lstCliente;
+    @Override
+    public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk) {
+        return repository.findByNombreCompleto(comodin);
     }
 
     @Override
