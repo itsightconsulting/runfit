@@ -715,9 +715,8 @@ function instanciarGrupoVideos(effImg){
                     });
                 }else{
                     let rawHTMLCabecera = '';
-                    console.log(JSON.parse(data));
                     rawHTMLCabecera +='<div class="container-fluid padding-0">'
-                    JSON.parse(data).forEach(grupoVideo => {
+                    data.forEach(grupoVideo => {
                         rawHTMLCabecera +=
                             `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="container-fluid padding-0">
@@ -911,7 +910,7 @@ function instanciarMiniPlantillas(effImg){
                 }else{
                     let rawHTML = '';
                     rawHTML = '<div class="container-fluid padding-0">';
-                    JSON.parse(data).forEach(cat => {
+                    data.forEach(cat => {
                         rawHTML +=
                                         `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                              <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl">${cat.nombre}</h1>

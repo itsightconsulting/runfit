@@ -83,7 +83,7 @@ public class MiniPlantillaController {
     public @ResponseBody
     String nuevo(@RequestParam String numeroSemana, @RequestParam String diaIndice, @RequestParam String especificacionSubCategoriaId, HttpSession session) {
         //Obteniendo el diaId
-        int semanaId = ((int[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
+        Integer semanaId = ((Integer[]) session.getAttribute("semanaIds"))[Integer.parseInt(numeroSemana)];
         int diaPlantillaId = diaService.encontrarIdPorSemanaId(semanaId).get(Integer.parseInt(diaIndice));
         DiaRutinario diaRutinario = new DiaRutinario();
         Dia qDia = diaService.findOne(diaPlantillaId);

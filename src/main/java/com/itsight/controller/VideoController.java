@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
+import com.itsight.domain.dto.*;
 import com.itsight.service.GrupoVideoService;
 import com.itsight.service.VideoService;
 import com.itsight.util.ClassId;
@@ -12,6 +13,7 @@ import com.itsight.util.EntityVisitor;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -169,5 +172,13 @@ public class VideoController {
         BagForest forest = reconstructForest(videos, 2);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(forest.getTreesGb());
+    }
+
+    protected BagForestDTO reconstructForestDto(List<VideoDTO> leaves, Integer forestId) {
+        EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(new EntityVisitor[]{
+                GrupoVideoDTO.ENTITY_VISITOR, CategoriaVideoDTO.ENTITY_VISITOR, SubCategoriaVideoDTO.ENTITY_VISITOR, VideoDTO.ENTITY_VISITOR, BagForestDTO.ENTITY_VISITOR
+        }).build(leaves);
+        ClassId<BagForestDTO> forestClassId = new ClassId<>(BagForestDTO.class, forestId);
+        return entityGraphBuilder.getEntityContext().getObject(forestClassId);
     }
 }

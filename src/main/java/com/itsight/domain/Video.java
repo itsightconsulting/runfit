@@ -93,9 +93,7 @@ public class Video extends AuditingEntity implements Identifiable {
     private List<VideoAudioFavorito> lstFavoritos;
 
 
-
-
-    public Video(){ }
+    public Video(){}
 
     public Video(Integer id) {
         this.id = id;

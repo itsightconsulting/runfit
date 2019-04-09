@@ -92,7 +92,7 @@ public class RutinaController {
     public @ResponseBody Semana obtenerEspecificaSemana(@PathVariable String semanaIndice, HttpSession session) throws InterruptedException{
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){
-            int[] sIds = (int[]) sessionValor.get();
+            Integer[] sIds = (Integer[]) sessionValor.get();
             int sIx = Integer.parseInt(semanaIndice);
             if(sIx <sIds.length)
                 return semanaService.findOneWithDaysById(sIds[sIx]);
@@ -477,7 +477,7 @@ public class RutinaController {
     @PostMapping(value = "/elemento/updateDiasSeleccionados")
     public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, @RequestParam int anio, @RequestParam int mes , HttpSession session)
     {
-        int[] sIds = (int[]) session.getAttribute("semanaIds");
+        Integer[] sIds = (Integer[]) session.getAttribute("semanaIds");
         List<DiaSemanaDTO> listdias;
         ObjectMapper mapper = new ObjectMapper();
         try {

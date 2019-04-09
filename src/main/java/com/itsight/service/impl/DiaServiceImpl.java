@@ -495,8 +495,8 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     public String actualizarSemanaCompletaDesdeOtra(int semIxDesde, int semIxPara) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()) {
-            int semIdDesde = ((int[]) sessionValor.get())[semIxDesde];
-            int semIdPara = ((int[]) sessionValor.get())[semIxPara];
+            Integer semIdDesde = ((Integer[]) sessionValor.get())[semIxDesde];
+            Integer semIdPara = ((Integer[]) sessionValor.get())[semIxPara];
             repository.updateSemanaFromAnother(semIdDesde, semIdPara);
             return Enums.ResponseCode.ACTUALIZACION.get();
         }

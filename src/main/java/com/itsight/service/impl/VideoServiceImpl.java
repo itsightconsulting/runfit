@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.Video;
+import com.itsight.domain.dto.VideoDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoRepository;
 import com.itsight.service.VideoService;
@@ -151,5 +152,10 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     @Override
     public List<Video> obtenerTodosConJerarquia() {
         return repository.findAllTree();
+    }
+
+    @Override
+    public List<VideoDTO> obtenerTodosConJerarquiaDto() {
+        return null;
     }
 }

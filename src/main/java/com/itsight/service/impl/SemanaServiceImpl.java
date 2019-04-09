@@ -210,7 +210,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
                             trick = " ";
                             builderVels.append("]");//Importante el espacio para el posterior split
                         }
-                        int[] ids = Arrays.copyOfRange((int[])session.getAttribute("semanaIds"), 0, iteBase);
+                        Integer[] ids = Arrays.copyOfRange((Integer[])session.getAttribute("semanaIds"), 0, iteBase);
                         repository.actualizarMetsVelocidadByIds(Arrays.toString(ids).substring(1, Arrays.toString(ids).length()-1), builderVels.toString());
                         return ACTUALIZACION.get();
                     }

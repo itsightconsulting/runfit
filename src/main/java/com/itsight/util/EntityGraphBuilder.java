@@ -64,7 +64,7 @@ public class EntityGraphBuilder {
         if (parent != null) {
             visit(parent);
         }
-    }catch (Exception ex){}
+    }catch (Exception ex){ex.printStackTrace();}
 
     }
 }

@@ -171,13 +171,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             }
             addingAudiosDemo();
 
-            if(bagForestRepository.getOne(1) == null) {
+            if(bagForestRepository.findById(1).orElse(null) == null) {
                 insertACategoriaEjercicio();
                 insertASubCategoriaEjercicio();
                 insertAEspecificacionSubCategoriaEjercicio();
             }
 
-            if(bagForestRepository.getOne(2) == null) {
+            if(bagForestRepository.findById(2).orElse(null) == null) {
                 insertAGrupoVideo();
                 insertACategoriaVideo();
                 insertASubCategoriaVideo();
