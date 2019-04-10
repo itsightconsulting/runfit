@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.RedFitness;
+import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RedFitnessRepository;
 import com.itsight.service.RedFitnessService;
@@ -104,8 +105,8 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public List<RedFitness> listarSegunRedTrainer(String codigoTrainer) {
-        return repository.findAllByTrainerCodigoTrainer(codigoTrainer);
+    public List<RedFitCliDTO> listarSegunRedTrainer(Integer trainerId) {
+        return repository.findAllByTrainerId(trainerId);
     }
 
     @Override
@@ -119,8 +120,8 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public String findCodTrainerByIdAndRunnerId(Integer id, Integer runneId) {
-        return repository.findCodTrainerByIdAndRunnerId(id, runneId);
+    public Integer findTrainerIdByIdAndRunnerId(Integer id, Integer runneId) {
+        return repository.findTrainerIdByIdAndRunnerId(id, runneId);
     }
 
     @Override

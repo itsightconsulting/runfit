@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.RedFitness;
+import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
 import org.springframework.stereotype.Controller;
@@ -29,10 +30,10 @@ public class RedFitnessController {
 
     @GetMapping(value = "/obtenerListado")
     public @ResponseBody
-    List<RedFitness> listarConFiltro(HttpSession session) {
-        if (session.getAttribute("codTrainer") != null) {
-            String codigoTrainer = session.getAttribute("codTrainer").toString();
-            return redFitnessService.listarSegunRedTrainer(codigoTrainer);
+    List<RedFitCliDTO> listarConFiltro(HttpSession session) {
+        if (session.getAttribute("id") != null) {
+            Integer trainerId = (Integer) session.getAttribute("id");
+            return redFitnessService.listarSegunRedTrainer(trainerId);
         }
         return new ArrayList<>();
     }

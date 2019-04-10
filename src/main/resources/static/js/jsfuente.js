@@ -449,7 +449,7 @@ function getResponseCodeWithId(res){
 }
 
 function getResponseCodeWithErrors(res){
-    let t = res.split('|');
+    let t = String(res).split('|');
     return t.length == 1 ? false : {code: t[0].trim(), errors: t[1].trim()};
 }
 function sumarDiasAespecificoDia(fecha, dias){

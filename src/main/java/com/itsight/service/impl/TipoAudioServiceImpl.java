@@ -58,7 +58,7 @@ public class TipoAudioServiceImpl extends BaseServiceImpl<TipoAudioRepository> i
 
     @Override
     public TipoAudio findOne(Integer id) {
-        return repository.getOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

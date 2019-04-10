@@ -70,6 +70,8 @@ const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
 const fInitMacro = document.querySelector('#MacroFechaInicio');
 const fFinMacro = document.querySelector('#MacroFechaFin');
 const btnActualizarMvz = document.querySelector('#btnActualizarMvz');
+//TEMP
+const bgMantaIntensidad = ["gold", "gray", "skyblue", "gray"];
 
 $(function () {
     init();
@@ -672,7 +674,7 @@ function instanciarDatosFitnessCliente(){
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
+        url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('key'),
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {

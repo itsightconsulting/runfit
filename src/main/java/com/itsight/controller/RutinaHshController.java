@@ -28,8 +28,6 @@ public class RutinaHshController {
 
     private RedFitnessService redFitnessService;
 
-    private CategoriaService categoriaService;
-
     private RuConsolidadoService ruConsolidadoService;
 
     @Value("${domain.name}")
@@ -41,13 +39,11 @@ public class RutinaHshController {
             TipoAudioService tipoAudioService,
             CategoriaEjercicioService categoriaEjercicioService,
             RedFitnessService redFitnessService,
-            CategoriaService categoriaService,
             RuConsolidadoService ruConsolidadoService) {
         this.rutinaService = rutinaService;
         this.tipoAudioService = tipoAudioService;
         this.categoriaEjercicioService = categoriaEjercicioService;
         this.redFitnessService = redFitnessService;
-        this.categoriaService = categoriaService;
         this.ruConsolidadoService = ruConsolidadoService;
     }
 
@@ -58,9 +54,9 @@ public class RutinaHshController {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0) {
-            String codTrainer = session.getAttribute("codTrainer").toString();
-            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-            if (codTrainer.equals(qCodTrainer)) {
+            Integer trainerId = (Integer) session.getAttribute("id");
+            Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+            if (trainerId.equals(qTrainerId)) {
                 //Se obtiene la última rutina del cliente
                 Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
                 if (rutina.getId() != 0) {
@@ -83,9 +79,9 @@ public class RutinaHshController {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0){
-            String codTrainer = session.getAttribute("codTrainer").toString();
-            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-            if(codTrainer.equals(qCodTrainer)){
+            Integer trainerId = (Integer) session.getAttribute("id");
+            Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+            if (trainerId.equals(qTrainerId)) {
                 return new ModelAndView(ViewConstant.MAIN_TRAINER_NR_PRE_ASIGNAR);
             }
         }
@@ -98,9 +94,9 @@ public class RutinaHshController {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0) {
-            String codTrainer = session.getAttribute("codTrainer").toString();
-            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-            if (codTrainer.equals(qCodTrainer)) {
+            Integer trainerId = (Integer) session.getAttribute("id");
+            Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+            if (trainerId.equals(qTrainerId)) {
                 int rutinaEdicionId = (int) session.getAttribute("edicionRutinaId");
                 return new ResponseDTO(Integer.parseInt(Enums.ResponseCode.EXITO_GENERICA.get()), ruConsolidadoService.findOne(rutinaEdicionId));
             }
@@ -118,9 +114,9 @@ public class RutinaHshController {
             int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
             int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
             if(redFitId > 0 && runneId > 0) {
-                String codTrainer = session.getAttribute("codTrainer").toString();
-                String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-                if(codTrainer.equals(qCodTrainer)) {
+                Integer trainerId = (Integer) session.getAttribute("id");
+                Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+                if (trainerId.equals(qTrainerId)) {
                     return rutinaService.actualizarFlagActivo(flagActivo.equals("1") ? true : false);
                 }
             }

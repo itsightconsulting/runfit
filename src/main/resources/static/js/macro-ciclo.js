@@ -5,10 +5,11 @@ Ficha = (function(){
         instanciar: (ficha)=>{
             const comps = ficha.competencias;
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
-            $('#Nombres').val(ficha.cliente.nombres);
-            $('#ApellidoPaterno').val(ficha.cliente.apellidoPaterno);
-            $('#FechaNacimiento').val(ficha.cliente.fechaNacimiento);
-            $('#Edad').val(calcularEdadByFechaNacimiento(ficha.cliente.fechaNacimiento));
+
+            $('#Nombres').val(atob(getParamFromURL("nm")));
+            $('#ApellidoPaterno').val(atob(getParamFromURL("nm")));
+            $('#FechaNacimiento').val(atob(getParamFromURL("fn")));
+            $('#Edad').val(calcularEdadByFechaNacimiento($('#FechaNacimiento').val()));
             $('#FrecuenciaCardiacaMinima').val(ficha.condicionAnatomica.frecuenciaCardiaca);
             $('#FrecuenciaCardiacaMaxima').val(ficha.condicionAnatomica.frecuenciaCardiacaMaxima);
             $('#MacroFechaFin').val(getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia)));
@@ -117,10 +118,10 @@ FichaSet = (function(){
         instanciarDatosFicha: (ficha)=>{
             const comps = ficha.competencias;
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
-            document.querySelector('#Nombres').value = ficha.cliente.nombres;
-            document.querySelector('#ApellidoPaterno').value = ficha.cliente.apellidoPaterno;
-            document.querySelector('#FechaNacimiento').value = ficha.cliente.fechaNacimiento;
-            document.querySelector('#Edad').value = calcularEdadByFechaNacimiento(ficha.cliente.fechaNacimiento);
+            document.querySelector('#Nombres').value = atob(getParamFromURL("nm"));
+            document.querySelector('#ApellidoPaterno').value = atob(getParamFromURL("nm"));
+            document.querySelector('#FechaNacimiento').value = atob(getParamFromURL("fn"));
+            document.querySelector('#Edad').value = calcularEdadByFechaNacimiento(document.querySelector('#FechaNacimiento').value);
             document.querySelector('#MacroFechaFin').value = getFechaFormatoString(FichaGet.obtenerMaximaFechaCompeticiones($fechasCompetencia));
             document.querySelector('#Sexo').value = ficha.sexo == 1 ? "Masculino" : "Femenino";
             FichaSet.setMaximoDistanciaCompetencia(comps);
@@ -535,7 +536,7 @@ MacroCiclo = (function(){
                             const objFirtsWeek = {};
                             objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
                             objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
-                            objFirtsWeek.flagFull = diasParaFull == 1 ? true : false;
+                            objFirtsWeek.flagFull = refDia == 1 ? true : false;
                             const literales = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
                             const dias = [];
                             for(let i=0; i<diasParaFull+1; i++){
@@ -1649,63 +1650,66 @@ MCGrafico = (function(){
             });
         },
         cesDemoCircularGraphs: ()=>{
-            let ctx = document.getElementById('c1').getContext('2d');
-            let ctx1 = document.getElementById('c2').getContext('2d');
+            const canvas = document.getElementById('c1');
+            if(canvas != null) {//Validacion provisional para que solo sea invocado desde el formulario de creación de rutinas más no en el editor de rutinas
+                let ctx = document.getElementById('c1').getContext('2d');
+                let ctx1 = document.getElementById('c2').getContext('2d');
 
-            $chartC1 = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['13-17','18-24','25-34','35-44','54-45','55-64','65+'],
-                    datasets: [{
-                        data: [5,7,7,12,16,28,25],
-                        backgroundColor: ['#2d142c', '#8fb9a8', '#765d69', '#fcbb6d', '#2d6072', '#efca58'],
-                        borderColor: 'white',
-                        borderWidth: 0.4,
-                    }],
-                },
-                options: {
-                    segmentShowStroke: false,
-                    title: {
-                        display: true,
-                        text: '👩 Mujeres 43%',
-                        fontColor: 'white',
-                        fontSize: 15
+                $chartC1 = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['13-17', '18-24', '25-34', '35-44', '54-45', '55-64', '65+'],
+                        datasets: [{
+                            data: [5, 7, 7, 12, 16, 28, 25],
+                            backgroundColor: ['#2d142c', '#8fb9a8', '#765d69', '#fcbb6d', '#2d6072', '#efca58'],
+                            borderColor: 'white',
+                            borderWidth: 0.4,
+                        }],
                     },
-                    responsive: false,
-                    legend: {
-                        display: false,
-                        position: 'right',
+                    options: {
+                        segmentShowStroke: false,
+                        title: {
+                            display: true,
+                            text: '👩 Mujeres 43%',
+                            fontColor: 'white',
+                            fontSize: 15
+                        },
+                        responsive: false,
+                        legend: {
+                            display: false,
+                            position: 'right',
+                        }
+
                     }
+                });
 
-                }
-            });
-
-            $chartC2 = new Chart(ctx1, {
-                type: 'pie',
-                data: {
-                    labels: ['13-17','18-24','25-34','35-44','54-45','55-64','65+'],
-                    datasets: [{
-                        data: [5,7,7,12,16,28,25],
-                        backgroundColor: ['#2d142c', '#8fb9a8', '#765d69', '#fcbb6d', '#2d6072', '#efca58'],
-                        borderColor: 'white',
-                        borderWidth: 0.4,
-                    }],
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: '👨 Hombres 57%',
-                        fontColor: 'white',
-                        fontSize: 15
+                $chartC2 = new Chart(ctx1, {
+                    type: 'pie',
+                    data: {
+                        labels: ['13-17', '18-24', '25-34', '35-44', '54-45', '55-64', '65+'],
+                        datasets: [{
+                            data: [5, 7, 7, 12, 16, 28, 25],
+                            backgroundColor: ['#2d142c', '#8fb9a8', '#765d69', '#fcbb6d', '#2d6072', '#efca58'],
+                            borderColor: 'white',
+                            borderWidth: 0.4,
+                        }],
                     },
-                    responsive: false,
-                    legend: {
-                        display: false,
-                        position: 'right',
-                    }
+                    options: {
+                        title: {
+                            display: true,
+                            text: '👨 Hombres 57%',
+                            fontColor: 'white',
+                            fontSize: 15
+                        },
+                        responsive: false,
+                        legend: {
+                            display: false,
+                            position: 'right',
+                        }
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 })();

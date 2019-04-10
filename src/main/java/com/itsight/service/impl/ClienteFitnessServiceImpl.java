@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,8 +48,8 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public ClienteFitness findOne(Integer id) {
-        return repository.findById(id).orElse(null);
+    public ClienteFitness findOne(Integer id) throws EntityNotFoundException{
+        return repository.findById(id).orElseThrow(()->new EntityNotFoundException());
     }
 
     @Override

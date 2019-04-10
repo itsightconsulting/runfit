@@ -42,10 +42,6 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             String username = usernameAndId[0], id = usernameAndId[1];
             session.setAttribute("id", Integer.parseInt(id));
             if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TRAINER"))){
-                Optional<String> optionalCodTrainer = Optional.ofNullable(trainerService.findCodigoTrainerById(Integer.parseInt(id)));
-                if(optionalCodTrainer.isPresent() && optionalCodTrainer.get().length()>0) {
-                    session.setAttribute("codTrainer", optionalCodTrainer.get());
-                }
                 trainerService.actualizarFechaUltimoAcceso(new Date(), id);
             }else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);

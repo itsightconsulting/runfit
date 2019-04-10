@@ -109,6 +109,8 @@ public class ClienteFitness implements Serializable {
     @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)
     private Cliente cliente;
 
+    public ClienteFitness(){}
+
     public void setCliente(Cliente cliente){
         this.cliente = cliente;
     }

@@ -1,14 +1,12 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.Audio;
-import com.itsight.domain.TipoAudio;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.AudioRepository;
 import com.itsight.service.AudioService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -2,6 +2,7 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.itsight.domain.dto.SecurityUserDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import org.hibernate.annotations.GenericGenerator;
@@ -39,6 +40,28 @@ import java.util.Set;
                 )
         }
     ),
+    @SqlResultSetMapping(
+            name="getByUsername",
+            classes = {
+                    @ConstructorResult(
+                            targetClass = SecurityUserDTO.class,
+                            columns = {
+                                    @ColumnResult(name = "id", type = Integer.class),
+                                    @ColumnResult(name = "username", type = String.class),
+                                    @ColumnResult(name = "password", type = String.class),
+                                    @ColumnResult(name = "enabled", type = Boolean.class),
+                                    @ColumnResult(name = "roles", type = String.class),
+                                    @ColumnResult(name = "privileges", type = String.class)
+                            }
+                    )
+            }
+    ),
+})
+
+@NamedNativeQueries({
+    @NamedNativeQuery(query = "SELECT su.security_user_id id, su.username, su.password, su.enabled, string_agg(sr.role, '|') roles, string_agg(COALESCE(sp.privilege, ''), '|') AS privileges FROM security_user su INNER JOIN security_role sr ON su.security_user_id=sr.security_user_id LEFT JOIN security_privilege sp ON sr.security_role_id=sp.security_role_id WHERE username = :username GROUP BY 1",
+                      name = "SecurityUser.findByUsernameNative",
+                      resultSetMapping = "getByUsername")
 })
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery(name = "fn_validacion_correo",

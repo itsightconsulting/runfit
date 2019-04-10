@@ -12,6 +12,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -47,5 +48,7 @@ public class ClienteFitnessDTO implements Serializable {
     private String viaConexion;
     private UsuarioDTO usuario;
     private String trainerId;
+    private Object condicionAnatomicaObj;
 
+    public ClienteFitnessDTO(){}
 }

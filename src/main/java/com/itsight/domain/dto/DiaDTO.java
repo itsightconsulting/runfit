@@ -29,6 +29,7 @@ public class DiaDTO implements Serializable {
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int numeroSemana;
+
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private int diaIndice;
 

@@ -81,9 +81,10 @@ public class RutinaController {
     @GetMapping(value = "/primera-semana/edicion")
     public @ResponseBody Semana obtenerPrimeraSemanaRutina(HttpSession session) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaRutinaId"));
-        if(sessionValor.isPresent())
-            return semanaService.findOneWithDaysById((int) sessionValor.get());
-        else//En caso no se encuentre el id de la semana, significa que el cliente ha intentado ingresar directamente
+        if(sessionValor.isPresent()) {
+            int semanaRutinaId = Integer.parseInt(sessionValor.get().toString());
+            return semanaService.findOneWithDaysById(semanaRutinaId);
+        }else//En caso no se encuentre el id de la semana, significa que el cliente ha intentado ingresar directamente
               // desde un simple peticion get y no desde su vista de red fitness
             return new Semana();
     }
@@ -374,9 +375,9 @@ public class RutinaController {
         if(!bindingResult.hasErrors()){
             int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
             int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
-            String codTrainer = session.getAttribute("codTrainer").toString();
-            String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-            if(codTrainer.equals(qCodTrainer)){
+            Integer trainerId = (Integer) session.getAttribute("id");
+            Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+            if (trainerId.equals(qTrainerId)) {
                 return rutinaService.registrarByCascada(rutinaDto, redFitId, runneId);
             }
         }
@@ -390,9 +391,9 @@ public class RutinaController {
                 @RequestParam(name = "mVz") String mVz, HttpSession session) throws IOException{
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
-        String codTrainer = session.getAttribute("codTrainer").toString();
-        String qCodTrainer = redFitnessService.findCodTrainerByIdAndRunnerId(redFitId, runneId);
-        if(codTrainer.equals(qCodTrainer)) {
+        Integer trainerId = (Integer) session.getAttribute("id");
+        Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+        if (trainerId.equals(qTrainerId)) {
             return semanaService.actualizarFullMetricasVelocidad(mVz);
         }
         return ResponseCode.EX_VALIDATION_FAILED.get();

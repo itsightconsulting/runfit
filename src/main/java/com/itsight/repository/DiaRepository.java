@@ -76,8 +76,6 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     @Query(value = "UPDATE dia SET elementos = (SELECT elementos #- CAST(?2 as text[]) FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
     void eliminarElementoById(Integer id, String texto);
 
-    List<Dia> findAllBySemanaId(int semanaId);
-
     @Modifying
     @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:elemento as jsonb), true) WHERE dia_id = :id", nativeQuery = true)
     void saveSubElemento(@Param("id") Integer id, @Param("texto") String texto, @Param("elemento") String elemento);

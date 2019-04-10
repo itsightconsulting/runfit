@@ -9,4 +9,5 @@ public interface ClienteFitnessService extends BaseService<ClienteFitness, Integ
     String registrar(ClienteFitnessDTO clienteFitnessDto);
 
     ClienteFitness findByClienteId(Integer clienteId);
+
 }
