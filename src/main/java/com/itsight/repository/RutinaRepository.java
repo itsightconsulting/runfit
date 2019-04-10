@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -40,7 +41,7 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
     void updateAvanceSemanaIndex(@Param("id") Integer id, @Param("valorAvance") String valorAvance, @Param("avance") String avance, @Param("strdias") String strdias, @Param("valordias") String valordias );
 
     @Modifying
-    @Query(value = "UPDATE Dia SET flagEnvioCliente = :flag WHERE year(fecha) = :anio and month(fecha) = :mes")
+    @Query(value = "UPDATE Dia SET flagEnvioCliente = :flag WHERE YEAR(fecha) = :anio and MONTH(fecha) = :mes")
     void updateResetDiasFlagEnvio(@Param("anio") int anio, @Param("mes") int mes , @Param("flag") boolean flag);
 
     // @Query("select e from Event e where year(e.eventDate) = ?1 and month(e.eventDate) = ?2")
@@ -53,4 +54,7 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
     @Query("UPDATE Rutina R SET R.flagActivo = ?2 WHERE R.id = ?1")
     void updateFlagActivo(Integer id, boolean flagActivo);
 
+    @Modifying
+    @Query("UPDATE Rutina R SET R.fechaCliAcceso = ?2 WHERE R.id = ?1")
+    void updateFechaCliAccesoById(Integer id, Date fechaMax);
 }

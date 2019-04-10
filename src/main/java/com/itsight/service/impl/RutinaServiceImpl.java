@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -134,7 +135,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
     @Override
     public Rutina findLastByRedFitnessId(Integer redFitId) {
-        List<Rutina> lstRutina = repository.findFirstByRedFitnessIdOrderByIdDesc(redFitId, new PageRequest(0,1));
+        List<Rutina> lstRutina = repository.findFirstByRedFitnessIdOrderByIdDesc(redFitId, PageRequest.of(0,1));
         if(lstRutina.isEmpty()){
             return new Rutina();
         }else{
@@ -245,5 +246,10 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
             return Enums.ResponseCode.ACTUALIZACION.get();
         }
         return SESSION_VALUE_NOT_FOUND.get();
+    }
+
+    @Override
+    public void updateFechaCliAccesoById(Integer id, Date fechaMax) {
+        repository.updateFechaCliAccesoById(id, fechaMax);
     }
 }

@@ -59,13 +59,13 @@ public class RutinaHshController {
             if (trainerId.equals(qTrainerId)) {
                 //Se obtiene la última rutina del cliente
                 Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
-                if (rutina.getId() != 0) {
+                if (rutina.getId() != null) {
                     //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
                     session.setAttribute("edicionRutinaId", rutina.getId());
                     session.setAttribute("edicionUsuarioId", runneId);
                     session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
                     session.setAttribute("semanaIds", rutina.getSemanaIds());
-                    model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());
+                    /*model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());*/
                     model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
                     return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
                 }

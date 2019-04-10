@@ -4,6 +4,7 @@ import com.itsight.domain.Rutina;
 import com.itsight.domain.dto.RutinaDTO;
 import com.itsight.generic.BaseService;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RutinaService extends BaseService<Rutina, Integer> {
@@ -30,5 +31,6 @@ public interface RutinaService extends BaseService<Rutina, Integer> {
 
     String actualizarFlagActivo(boolean flagActivo);
 
+    void updateFechaCliAccesoById(Integer id, Date fechaMax);
 }
 

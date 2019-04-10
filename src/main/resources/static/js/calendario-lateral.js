@@ -72,15 +72,15 @@ function principalesEventosCalendario(e) {
         const anio = input.parentElement.getAttribute('data-anio');
         abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(anio, mes),true);
         generarDiasEnviados2();
+        checkCalendarAccesso();
     } else if(clases.contains('cal-retroceder-sem')) {
-        $(".fechas-calendar-tmp").addClass("day-selected");
 
+        $(".fechas-calendar-tmp").addClass("day-selected");
             const qFechaInicio = getFechaInicioSemanaEspecifica($refIxsSemCalendar[0] - 1);
             abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
             generarDiasEnviados2();
-
+            checkCalendarAccesso();
     } else if(clases.contains('cal-adelantar-sem')){
-
             const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length - 1];
             let qFecha;
             if ($rutina.semanas[semIxRef + 1] != undefined) {
@@ -91,6 +91,7 @@ function principalesEventosCalendario(e) {
             }
             abrirCalendariotmp(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
             generarDiasEnviados2();
+            checkCalendarAccesso();
 
     } else if(clases.contains('fechas-calendar-tmp')) {
         var valoranio = parseInt($("#anioMesActual").attr("data-anio"));
@@ -619,6 +620,7 @@ function guardarDiasSeleccionados(arrselected) {
     params.listjson = JSON.stringify(arrselected);
     params.anio = parseInt($("#anioMesActual").attr("data-anio"));
     params.mes = parseInt($("#anioMesActual").attr("data-mes"));
+    params.fechaMax = new Date(Math.max.apply(Math, $diasSeleccionados.map(v=>v.getTime())));
 
     $.ajax({
         type: "POST",
@@ -633,8 +635,58 @@ function guardarDiasSeleccionados(arrselected) {
             console.log(xhr);
         },
         complete: function () {
-            obtenerSemanasEnviadas();
+            //obtenerSemanasEnviadas();
         }
     })
 
+}
+
+function checkCalendarAccesso(){
+    try{
+        const tempCalendar = document.querySelector('#CalendarioTmp');
+        if(checkFullCalendarAcceso(tempCalendar)){
+            tempCalendar.querySelectorAll('.fechas-calendar-tmp').forEach((e)=>{
+                e.classList.add('day-selected');
+            });
+        }else{
+            const anioMes = tempCalendar.querySelector(' #anioMesActual');
+            const anio = anioMes.getAttribute('data-anio');
+            const mes = anioMes.getAttribute('data-mes');
+            const fcMax = $rutina.fechaCliAcceso;
+
+            if(fcMax.getFullYear() === Number(anio) && fcMax.getMonth()+1 === Number(mes)){
+                const diaFcMax = fcMax.getDate();
+                const fechasDisponibles = tempCalendar.querySelectorAll('.fechas-calendar-tmp');
+                const maxDia = Number(fechasDisponibles[fechasDisponibles.length-1].getAttribute('data-dia'));
+                Array.from(fechasDisponibles).slice(0, diaFcMax < maxDia ? diaFcMax: maxDia).forEach((e)=>{
+                    e.classList.add('day-selected');
+                });
+            }
+        }
+    }catch (e) {
+        console.log(e)
+    }
+
+}
+
+function checkFullCalendarAcceso(tempCalendar){
+    try {
+        const anioMes = tempCalendar.querySelector(' #anioMesActual');
+        const anio = anioMes.getAttribute('data-anio');
+        const mes = anioMes.getAttribute('data-mes');
+        const fcMax = $rutina.fechaCliAcceso;
+
+        let isFull = false;
+        if(fcMax.getFullYear()>Number(anio)){
+            isFull = true;
+        }
+
+        if(fcMax.getMonth()+1>Number(mes)){
+            isFull = true;
+        }
+        return isFull;
+    }catch (e) {
+        console.log(e);
+        return true;
+    }
 }

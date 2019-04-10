@@ -99,7 +99,7 @@ public class ClienteFitness implements Serializable {
     private Integer frecuenciaComunicacion;
     @Column(nullable = false)
     private Integer viaConexion;
-    @Column(nullable = true)
+    @Column()
     private String contEmergencia;
     @Column(nullable = false)
     private String tiempoDistancia;

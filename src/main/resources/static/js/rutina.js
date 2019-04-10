@@ -3,6 +3,7 @@ class Rutina {
     constructor(obj) {
         this.fechaInicio = parseFromStringToDate2(obj.fechaInicio);
         this.fechaFin = parseFromStringToDate2(obj.fechaFin);
+        this.fechaCliAcceso = parseFromStringToDate2(obj.fechaCliAcceso != null ? obj.fechaCliAcceso : "01/01/2000");
         this.meses = obj.meses;
         this.anios = obj.anios;
         this.totalSemanas = obj.totalSemanas;

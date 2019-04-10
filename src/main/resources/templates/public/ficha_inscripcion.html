@@ -1222,7 +1222,7 @@
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
                                         <option value="21">21K</option>
-                                        <option value="42">42K</option>
+                                        <option value="42" selected="selected">42K</option>
                                       </select>
                                     </td>
                                     <td colspan="2">
@@ -1341,6 +1341,21 @@
                             </div>
                           </li>
                         </ul>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-group">
+                        <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
+                        <div class="login-register">
+                          <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
+                            <label style="width: 110px !important;" for="Username">Usuario</label>
+                            <input type="text" id="Username" name="Username" style="padding: 6px 12px" aria-invalid="false" class="">
+                          </div>
+                          <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
+                            <label style="width: 112px !important;" for="Password">Contraseña</label>
+                            <input type="password" id="Password" name="Password" style="padding: 6px 12px" aria-invalid="false" class="">
+                          </div>
+                        </div>
                       </div>
                     </li>
                     <li>
@@ -1644,8 +1659,6 @@
         const obj = getFormData($('#frmRegistro'));
         //Ubigeo
 
-        obj.username = String(new Date().getTime());
-        obj.password = "runfit";
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
         obj.cliFit = {};
@@ -1665,11 +1678,12 @@
         obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
         obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
         obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
-        obj.cliFit.objetivosDescripcion = document.getElementById('DesObjetivos').value;
-        obj.cliFit.terrenoPredominante = getValuesConcatInpCheckbox('DesTerPredom');
+        obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;
+        obj.cliFit.desTerPredom = getValuesConcatInpCheckbox('DesTerPredom');
         obj.cliFit.mejoras = getValuesCondicionMejora();
         obj.cliFit.frecuenciaComunicacion = 1;
-        obj.cliFit.viaConexion =  document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim();
+        obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
+        obj.cliFit.tiempoDistancia = "{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}";
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
         condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
         condAnatomica.descripcionDolor = obj.descripcionDolor;
@@ -1709,6 +1723,7 @@
         salud.historialDeportivoAct = obj.historialDeportivoAct;
         //Competencias
         obj.cliFit.competencias = getCompetenciasParticipar();
+        obj.cliFit.fitElementos = [];
 
         //private ListObjetivo objetivos;
         //private CondicionAnatomica condicionAnatomica;
@@ -1721,7 +1736,7 @@
       }
 
       function generateRandomMail(){
-        const t0 = String(new Date().getTime())
+        const t0 = String(new Date().getTime());
         const t1 = t0.slice(-3);
         const t2 = t0.slice(-6).slice(0, 3);
         return `pedro${t1}infante${t2}@gmail.com`;
@@ -2049,6 +2064,12 @@
             },
             ViaConexion: {
               required: true
+            },
+            Username: {
+              required: true
+            },
+            Password: {
+              required: true
             }
           },
           messages: {
@@ -2097,13 +2118,17 @@
 
       function populateForm(){
         //Page 1
-        document.querySelector('#Nombres').value = "Pedro";
+        const t0 = String(new Date().getTime());
+        const t1 = t0.slice(-3);
+        const t2 = t0.slice(-6).slice(0, 3);
+
+        document.querySelector('#Nombres').value = "Pedro "+t1;
         document.querySelector('#Apellidos').value = "Sotelo";
         document.querySelector('#FechaNacimiento').value = "1993-02-28";
         document.querySelector('#TipoDocumentoId').value = 1;
         document.querySelector('#NumeroDocumento').value = 42424242;
         document.querySelector('#Correo').value = generateRandomMail();
-        document.querySelector('#Movil').value = "987651234";
+        document.querySelector('#Movil').value = `51987${t1}234`;
         document.querySelector('#Peso').value = 77;
         document.querySelector('#Talla').value = 177;
         document.querySelector('#Imc').value = 77;
@@ -2124,6 +2149,8 @@
         document.querySelector('#DesObjetivos').value = "Ser el mejor";
         document.querySelectorAll('.distance input')[1].value = "00:23:20";
         document.querySelector('#DesComp').value = "Maratón de Boston";
+        document.querySelector('#Username').value = String(new Date().getTime());
+        document.querySelector('#Password').value = "runfit";
 
         var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;

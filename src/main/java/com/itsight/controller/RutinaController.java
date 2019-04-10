@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -476,8 +477,21 @@ public class RutinaController {
     }
 
     @PostMapping(value = "/elemento/updateDiasSeleccionados")
-    public @ResponseBody String actualizarDiasSeleccionados(@RequestParam String listjson, @RequestParam int anio, @RequestParam int mes , HttpSession session)
+    public @ResponseBody String actualizarDiasSeleccionados(
+            @RequestParam String listjson,
+            @RequestParam int anio,
+            @RequestParam int mes,
+            @RequestParam Date fechaMax, HttpSession session)
     {
+        //Actualizando fecha límite para la visualización de la rutina para el perfil cliente(runner)
+
+        Optional<Object> optRutinaId = Optional.of(session.getAttribute("edicionRutinaId"));
+        if(!optRutinaId.isPresent()){
+            return ResponseCode.SESSION_VALUE_NOT_FOUND.get();
+        }
+
+        rutinaService.updateFechaCliAccesoById((Integer) optRutinaId.get(), fechaMax);
+
         Integer[] sIds = (Integer[]) session.getAttribute("semanaIds");
         List<DiaSemanaDTO> listdias;
         ObjectMapper mapper = new ObjectMapper();

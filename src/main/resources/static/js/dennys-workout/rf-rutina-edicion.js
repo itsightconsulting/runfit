@@ -123,7 +123,7 @@ function init(){
         instanciarTooltips();
         modalEventos();
         //setFechaActual(document.querySelectorAll('input[type="date"]'));
-        obtenerSemanasEnviadas();
+        //obtenerSemanasEnviadas();
         calendarioTmp();
 
     });
@@ -732,6 +732,62 @@ function instanciarGrupoVideos(effImg){
                     rawHTMLCabecera +='</div>';
 
                     document.querySelector('#ArbolGrupoVideo').appendChild(htmlStringToElement(rawHTMLCabecera));
+                    $('#bot1-Msg1').click();
+                }
+            }
+        },
+        error: function (xhr) {
+            window.setInterval(effImg);
+            exception(xhr);
+        },
+        complete: function () {
+            updateAudioFavoritos();
+        }
+    });
+}
+
+function instanciarGrupoAudios(effImg){
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/tipo-audio/obtener/arbol',
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                window.setInterval(effImg);
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    let rawHTMLCabecera = '';
+                    rawHTMLCabecera +='<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                    data.forEach((grupoAudio, i) => {
+                        rawHTMLCabecera +=
+                           `${(i % 4) === 0 ? '<div><div class="row"></div></div>':''}                          
+                            <div class="padding-bottom-10 col col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <h6 class="font-lg">${grupoAudio.nombre}</h6>
+                                ${grupoAudio.lstAudio.map(a=>
+                                    `<ul class="ul-audio">
+                                        <li class="font-md">
+                                            <a class="" href="javascript:void(0);">
+                                            <i data-placement="bottom" rel="tooltip" data-original-title="Favorito" class="ck-favorito-audio fa fa-star fa-fw"
+                                                data-id=${a.id} id='liaudio${a.id}' data-selected="0"></i>
+                                            </a>
+                                            <a class="elegir-audio" href="javascript:void(0);">
+                                            <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-music fa-fw" data-media=${a.rutaWeb} data-index=${a.id}></i>
+                                                ${a.nombre}
+                                            </a>
+                                        </li>
+                                    </ul>`).join('')}
+                            </div>`;
+                    });
+                    rawHTMLCabecera +='</div>';
+
+                    document.querySelector('#ArbolGrupoAudio').appendChild(htmlStringToElement(rawHTMLCabecera));
                     $('#bot1-Msg1').click();
                 }
             }
@@ -1434,9 +1490,11 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('enviar-cliente')){
         e.preventDefault();
-        $(".span-setting").click();
         e.stopPropagation();
 
+        $(".span-setting").click();
+
+        checkCalendarAccesso();
         /*
         var cantidad = $(".enviar-cliente:checked").length;
         var valordiaseleccionado = input.getAttribute('data-id');
@@ -2717,7 +2775,7 @@ function guardarRutina(rutina, btn){
         url: _ctx + "gestion/rutina/generar/rutina/macro/demo",
         dataType: "json",
         data: JSON.stringify(rutina),
-        success: function (data) {
+        success: function () {
             window.location.href = _ctx;
         },
         error: function (xhr) {
@@ -2754,6 +2812,15 @@ function principalesAlCambiarTab(e){
         if(document.querySelector('#ArbolRutinario').children.length == 0) {
             const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
             instanciarMiniPlantillas(effImg);
+        }
+    }
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoAudios') {
+        e.preventDefault();
+        document.querySelector('#OpsAdic').classList.add('hidden');
+        document.querySelector('#DivEditor').classList.add('hidden');
+        if (document.querySelector('#ArbolGrupoAudio').children.length == 0) {
+            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
+            instanciarGrupoAudios(effImg);
         }
     }
     else if(e.target.tagName === "A"){

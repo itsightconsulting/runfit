@@ -2,17 +2,13 @@ package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.domain.jsonb.CompetenciaRunner;
-import com.itsight.domain.jsonb.CondicionAnatomica;
-import com.itsight.domain.jsonb.CondicionMejora;
-import com.itsight.domain.jsonb.Salud;
+import com.itsight.domain.jsonb.*;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,8 +31,9 @@ public class ClienteFitnessDTO implements Serializable {
     private Boolean flagHaceCalentamiento;
     private Boolean flagHaceEstiramientos;
     private String desgasteZapatilla;
-    private String objetivosDescripcion;
-    private String terrenoPredominante;
+    private String desObjetivos;
+    private String desTerPredom;
+    private String tiempoDistancia;
     //private int diaDescanso;
 
     //JSONB
@@ -44,8 +41,9 @@ public class ClienteFitnessDTO implements Serializable {
     private CondicionAnatomica condicionAnatomica;
     private Salud salud;
     private List<CompetenciaRunner> competencias;
+    private List<FitElemento> fitElementos;
     private Integer frecuenciaComunicacion;
-    private String viaConexion;
+    private Integer viaConexion;
     private UsuarioDTO usuario;
     private String trainerId;
     private Object condicionAnatomicaObj;

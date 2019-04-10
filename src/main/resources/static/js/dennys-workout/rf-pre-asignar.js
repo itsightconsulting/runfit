@@ -280,6 +280,9 @@ function principalesEventosFocusOutTabFichaTecnica(e){
 function guardarRutina(rutina, btn, interval){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
+    const fechaNac = getParamFromURL('fn');
+    const cliFullNombre = getParamFromURL('nm');
+    const datosAsURI = '&fn=' + fechaNac + '&nm=' + cliFullNombre;
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -290,7 +293,7 @@ function guardarRutina(rutina, btn, interval){
                 window.clearInterval(interval);
                 const resWithErrors = getResponseCodeWithErrors(data);
                 resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
-                data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn : setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
+                data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
             },
             error: function (xhr) {
                 $('#bot1-Msg1').click();

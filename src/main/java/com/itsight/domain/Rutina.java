@@ -66,6 +66,10 @@ public class Rutina extends AuditingEntity {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Temporal(TemporalType.DATE)
+    private Date fechaCliAcceso;
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+    @Temporal(TemporalType.DATE)
     private Date fechaInicio;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)

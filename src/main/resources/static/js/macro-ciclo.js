@@ -102,6 +102,7 @@ FichaSet = (function(){
             })
         },
         setMaximoDistanciaCompetencia: (comps)=>{
+            console.log(comps);
             let maxDistancia = comps[0].distancia;
             comps.forEach((v,i)=>{ if(i!=0) maxDistancia = v.distancia > maxDistancia ? v.distancia: maxDistancia;})
             document.querySelector('#DistanciaCompetencia').value = maxDistancia;

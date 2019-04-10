@@ -45,6 +45,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     private ConfiguracionGeneralService configuracionGeneralService;
 
+    private RedFitnessService redFitnessService;
+
     @Autowired
     private ClienteService clienteService;
 
@@ -58,7 +60,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             RolService rolService,
             EmailService emailService,
             ConfiguracionClienteService configuracionClienteService,
-            ConfiguracionGeneralService configuracionGeneralService) {
+            ConfiguracionGeneralService configuracionGeneralService,
+            RedFitnessService redFitnessService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
@@ -67,6 +70,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         this.emailService = emailService;
         this.configuracionClienteService = configuracionClienteService;
         this.configuracionGeneralService = configuracionGeneralService;
+        this.redFitnessService = redFitnessService;
     }
 
     @Override
@@ -235,6 +239,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
         ClienteFitness objCliFit = new ClienteFitness();
         BeanUtils.copyProperties(cliente.getCliFit(), objCliFit);
+        objCliFit.setCliente(objCli);
 
         List<ClienteFitness> clienteFitnesses = new ArrayList<>();
         clienteFitnesses.add(objCliFit);
@@ -249,6 +254,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         cliConfg.setCliente(objCli);
         //Registrando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
         configuracionClienteService.save(cliConfg);
+        //Agregandolo a una red cualquiera
+        redFitnessService.save(new RedFitness(2, objCli.getId()));
         return ResponseCode.REGISTRO.get();
     }
 

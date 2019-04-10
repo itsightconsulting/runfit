@@ -79,4 +79,9 @@ public class TipoAudioController {
             return EX_GENERIC.get();
         }
     }
+
+    @GetMapping(value = "/obtener/arbol")
+    public @ResponseBody List<TipoAudio> getTipoAudioChildrens(){
+        return tipoAudioService.findAllWithChildrens();
+    }
 }
