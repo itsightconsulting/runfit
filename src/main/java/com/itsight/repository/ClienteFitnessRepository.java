@@ -15,7 +15,6 @@ public interface ClienteFitnessRepository extends JpaRepository<ClienteFitness, 
     @EntityGraph(value = "clienteFitness.cliente")
     List<ClienteFitness> findAll();
 
-    @EntityGraph(value = "clienteFitness.cliente")
-    @Query("SELECT C FROM ClienteFitness C WHERE C.cliente.id = ?1")
+    @Query("SELECT CF FROM ClienteFitness CF WHERE CF.cliente.id = ?1")
     ClienteFitness findByClienteId(Integer clienteId);
 }

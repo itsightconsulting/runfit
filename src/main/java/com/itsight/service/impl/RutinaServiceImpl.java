@@ -1,5 +1,7 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;

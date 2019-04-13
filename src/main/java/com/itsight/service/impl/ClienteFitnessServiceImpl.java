@@ -148,11 +148,6 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
 
     @Override
     public ClienteFitness findByClienteId(Integer clienteId) {
-        Optional<ClienteFitness> qUsuario = Optional.ofNullable(repository.findByClienteId(clienteId));
-        if(qUsuario.isPresent()){
-            return qUsuario.get();
-        }else{
-            return new ClienteFitness();
-        }
+        return Optional.of(repository.findByClienteId(clienteId)).orElseThrow(()->new EntityNotFoundException());
     }
 }

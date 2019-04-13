@@ -1,8 +1,12 @@
 package com.itsight.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.dto.ResponseDTO;
+import com.itsight.domain.dto.RutinaDTO;
+import com.itsight.domain.pojo.RutinaPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -50,7 +54,7 @@ public class RutinaHshController {
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @GetMapping(value = "/edicion")
-    public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) {
+    public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) throws JsonProcessingException {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0) {
@@ -65,7 +69,7 @@ public class RutinaHshController {
                     session.setAttribute("edicionUsuarioId", runneId);
                     session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
                     session.setAttribute("semanaIds", rutina.getSemanaIds());
-                    /*model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());*/
+                    model.addAttribute("rutina", new ObjectMapper().writeValueAsString(new RutinaPOJO(rutina)));
                     model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
                     return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
                 }

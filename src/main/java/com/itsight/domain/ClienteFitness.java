@@ -50,7 +50,7 @@ public class ClienteFitness implements Serializable {
     @Column(nullable = false)
     private Integer sexo;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
-    @Column(precision = 5, scale = 2, nullable = false)
+    @Column(precision = 6, scale = 3, nullable = false)
     private BigDecimal peso;
     @Column(nullable = false)
     private Integer talla;
@@ -64,7 +64,7 @@ public class ClienteFitness implements Serializable {
     @Column
     private String tiempoUnKilometro;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
-    @Column(precision = 4, scale = 2, nullable = false)
+    @Column(precision = 5, scale = 2, nullable = false)
     private BigDecimal kilometrajePromedioSemana;
     @Column(nullable = false)
     private Integer diasSemanaCorriendo;

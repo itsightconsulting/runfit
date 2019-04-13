@@ -1,5 +1,6 @@
 package com.itsight.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.dto.RutinaDTO;
 import com.itsight.generic.BaseService;

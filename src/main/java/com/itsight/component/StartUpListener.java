@@ -134,6 +134,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private UbPeruService ubPeruService;
 
+    @Autowired
+    private DisciplinaService disciplinaService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -164,6 +167,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingConfiguracionGeneralToTable();
             addingKilometrajeBase();
             addingPaises();
+            addingDisciplinas();
             try {
                 addingUbPeru();
             } catch (IOException ex){
@@ -884,6 +888,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(paisService.findOne(716) == null) paisService.save(new Pais(716, "Zimbabue", "ZW", "ZWE"));
     }
 
+    public void addingDisciplinas(){
+        if(disciplinaService.findOne(1) == null) disciplinaService.save(new Disciplina("Running"));
+        if(disciplinaService.findOne(2) == null) disciplinaService.save(new Disciplina("Ciclismo"));
+        if(disciplinaService.findOne(3) == null) disciplinaService.save(new Disciplina("Natación"));
+        if(disciplinaService.findOne(4) == null) disciplinaService.save(new Disciplina("Boxeo"));
+    }
+
     public void addingUbPeru() throws IOException {
         InputStream is = new ClassPathResource("static/seeds/ub_peru.txt").getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
@@ -961,6 +972,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(2, role2.getRole()));
             trainer.setRoles(rolesJsonB);
             trainer.setSecurityUser(secTrainer);
+            trainer.setPais(604);//Perú!
+            trainer.setUbigeo("150101");
+            trainer.setCanPerValoracion(0);
+            trainer.setTotalValoracion(BigDecimal.valueOf(0L));
             trainerService.save(trainer);
             trainerService.cargarRutinarioCe(secTrainer.getId());
             agregandoPorcentajesBaseTrainer(trainer);

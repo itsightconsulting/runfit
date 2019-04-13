@@ -9,468 +9,771 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.min.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}"/>
+    <style>
+        .mg-bt-10{
+            margin-bottom: 10px;
+        }
+        .fa-15x{
+            font-size: 1.5em;
+        }
+
+        .svc-focus{
+            color: #a8fa00 !important;
+        }
+
+        .servicio:not(.svc-focus):hover  {
+            color: #337ab7 !important;
+            cursor: pointer !important;
+        }
+
+        .div-fichas{
+            cursor: pointer;
+        }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="text-right view-only-desktop">
-          <p class="login_link">Iniciar sesión</p>
-        </div>
-        <div class="navbar-header"><a class="navbar-brand" th:href="@{/p/inicio}"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
-        <ul class="nav navbar-nav navbar-right view-only-desktop">
-          <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
-          <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha_inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
-          <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
-        </ul>
-      </div>
-      <div class="menu_mobile view-only-mobile">
-        <div class="bg-opacity"></div>
-        <ul class="header-options">
-          <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
-          <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
-        </ul>
-        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
-          <p class="name">GUSTAVO ARIAS</p>
-          <p class="email">gjarias09@gmail.com</p>
-        </div>
-        <ul class="options">
-          <li class="active"><a th:href="@{/p/quienes-somos}"> <span>QUIENES SOMOS</span></a></li>
-          <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a th:href="@{/p/contigo}"><span>ASESORES</span></a></li>
-          <li><a th:href="@{/p/registro/trainer}"> <span>EMPRENDE CON NOSOTROS</span></a></li>
-        </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
-      </div>
-      <div id="menu" style="display: none">
-        <div class="menu-desktop view-only-desktop">
-          <div class="container position-relative">
-            <div class="arrow-up"></div>
-            <ul class="asesores-menu">
-              <li><a href="#">Explorar características</a>
-                <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
-              </li>
-              <li><a href="#">Emprende con nosotros</a>
-                <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
-      <div class="login-bg"></div>
-      <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/></div>
-      <div class="login-sesion" style="display: none">
-        <div class="form-group usuario"><span class="fa fa-user-o"></span>
-          <label>Usuario</label>
-          <input type="text"/>
-        </div>
-        <div class="form-group password"><span class="fa fa-unlock-alt"></span>
-          <label>Contraseña</label>
-          <input type="text"/>
-        </div>
-        <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
-        <div class="actions">
-          <button class="btn-login" type="button">INGRESAR</button>
-          <button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
-        </div>
-      </div>
-      <div class="login-register">
-        <div class="form-group usuario"><span class="fa fa-user-o"></span>
-          <label>Nombre completo</label>
-          <input type="text"/>
-        </div>
-        <div class="form-group mail"><span class="fa fa-envelope-o"></span>
-          <label>Correo electrónico</label>
-          <input type="text"/>
-        </div>
-        <div class="form-group password"><span class="fa fa-unlock-alt"></span>
-          <label>Contraseña</label>
-          <input type="text"/>
-        </div>
-        <div class="form-group password"><span class="fa fa-unlock-alt"></span>
-          <label>Confirmar Contraseña</label>
-          <input type="text"/>
-        </div>
-        <div class="actions">
-          <button class="btn-login" type="button">REGISTRAR</button>
-          <p>¿Ya es miembro RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
-        </div>
-      </div>
-    </div>
-    <div id="wrapper">
-      <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
-      </div>
-      <section class="trainers-form">
-        <div class="row">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
-            <div class="col-md-5">
-              <div class="avatar-form">
-                <input type="file"/>
-                <div class="avatar-form-content">
-                  <div class="avatar-form-button">Subir foto...</div>
-                </div>
+              <div class="text-right view-only-desktop">
+                  <p class="login_link">Iniciar sesión</p>
               </div>
-              <fieldset class="rating">
-                <input id="star5" type="radio" name="rating" value="5"/>
-                <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                <input id="star4half" type="radio" name="rating" value="4 and a half"/>
-                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                <input id="star4" type="radio" name="rating" value="4"/>
-                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                <input id="star3half" type="radio" name="rating" value="3 and a half"/>
-                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                <input id="star3" type="radio" name="rating" value="3"/>
-                <label class="full" for="star3" title="Meh - 3 stars"></label>
-                <input id="star2half" type="radio" name="rating" value="2 and a half"/>
-                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                <input id="star2" type="radio" name="rating" value="2"/>
-                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                <input id="star1half" type="radio" name="rating" value="1 and a half"/>
-                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                <input id="star1" type="radio" name="rating" value="1"/>
-                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                <input id="starhalf" type="radio" name="rating" value="half"/>
-                <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-              </fieldset>
-            </div>
-            <div class="col-md-7">
-              <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
-                <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
-                <li><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
+              <div class="navbar-header"><a class="navbar-brand" href="index.html"><img th:src="@{/img/public/logo.png}"></a><span class="fa fa-bars view-only-mobile hamburguer"></span></div>
+              <ul class="nav navbar-nav navbar-right view-only-desktop">
+                  <li><a href="quienessomos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+                  <li><a href="contigo.html" data-menu="atletas"> <span>ATLETAS</span></a></li>
+                  <li class="dropdown" data-menu="asesores"><a href="#" data-toggle="dropdown"><span>ASESORES</span></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="asesores.html">explorar características</a>
+                              <p>Vea cómo la aplicación <strong>Runfit </strong>te ayudará a entrenar de manera más efectiva.</p>
+                          </li>
+                          <li><a href="#">emprende con nosotros</a>
+                              <p>Si deseas formar parte de nuestra familia de asesores conéctate con nosotros.</p>
+                          </li>
+                      </ul>
+                  </li>
+                  <li><a href="emprende-con-nosotros.html" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
               </ul>
-              <div class="tab-content">
-                <div class="tab-pane fade in active" id="about">
-                  <form>
-                    <div class="form-group">
-                      <label>NOMBRE Y APELLIDOS<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                      <select class="form-control"></select>
-                    </div>
-                    <div class="form-group">
-                      <label>ACERCA DE MI<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <div class="pad-right-middle">
-                        <label>IDIOMAS<span class="obligatorio">*</span></label>
-                        <select class="form-control"></select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>HORARIO LABORAL<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <div class="pad-right-middle">
-                        <label>DONDE TRABAJAS<span class="obligatorio">*</span></label>
-                        <select class="form-control"></select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>AL AIRE LIBRE / DOMICILIO</label>
-                      <p>Dar click en la imagen para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
-                      <div class="map" id="map"></div>
-                    </div>
-                    <div class="form-group">
-                      <label>CENTRO DE TRABAJO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>FORMA DE TRABAJO</label>
-                      <ul class="checks">
-                        <li>
-                          <div class="chk-content">Personalizado
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="chk-content">En grupo
-                            <input type="checkbox"/><span class="checkmark"></span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="chk-content">Online
-                            <input type="checkbox"/><span class="checkmark"></span>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>GALERIA DE FOTOS</label><br/>
-                      <button class="btn btn-default btn-white" type="button">EXAMINAR EQUIPO...<span class="obligatorio">*</span></button>
-                    </div>
-                    <button class="btn btn-default btn-black" type="button">GUARDAR</button>
-                  </form>
-                </div>
-                <div class="tab-pane fade" id="contact">
-                  <form>
-                    <div class="form-group">
-                      <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>TELEFONO</label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>CELULAR<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <div class="form-group">
-                      <label>DIRECCION<span class="obligatorio">*</span></label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <button class="btn btn-default btn-black" type="button">GUARDAR</button>
-                  </form>
-                </div>
-                <div class="tab-pane fade" id="service">
-                  <h4>Mis servicios</h4>
-                  <form>
-                    <div class="form-group">
-                      <label>SERVICIO 1<span class="obligatorio">*</span></label>
-                      <textarea class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label>DESCRIPCIÓN</label>
-                      <textarea class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label>QUE INCLUYE</label>
-                      <input class="form-control" type="text"/>
-                    </div>
-                    <button class="btn btn-default btn-black" type="button">AGREGAR SERVICIOS</button>
-                    <p class="sub-title">TARIFARIO<span class="obligatorio">*</span></p>
-                    <h4>Frecuencia</h4>
-                    <div class="form-group">
-                      <select class="form-control"></select>
-                    </div>
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-xs-7">
-                          <label>CANTIDAD DE PERSONAS</label>
-                        </div>
-                        <div class="col-xs-5 text-right">
-                          <ul class="counter">
-                            <li class="count">
-                              <button class="counter-round" type="submit" onclick="add('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
-                            </li>
-                            <li class="result">
-                              <input class="counter-input" id="txtCantidadPersonas" type="text" value="0"/>
-                            </li>
-                            <li class="count">
-                              <button class="counter-round" type="submit" onclick="minus('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-xs-7">
-                          <label>CANTIDAD DE MESES</label>
-                        </div>
-                        <div class="col-xs-5 text-right">
-                          <ul class="counter">
-                            <li class="count">
-                              <button class="counter-round" type="submit" onclick="add('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
-                            </li>
-                            <li class="result">
-                              <input class="counter-input" id="txtCantidadMeses" type="text" value="0"/>
-                            </li>
-                            <li class="count">
-                              <button class="counter-round" type="submit" onclick="minus('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-xs-7">
-                          <label>PRECIO TOTAL</label>
-                        </div>
-                        <div class="col-xs-5 text-right">
-                          <input class="price" type="text" value="150.00"/>
-                        </div>
-                      </div>
-                    </div>
-                    <button class="btn btn-default btn-black" type="button">AGREGAR PAQUETE</button>
-                    <div class="form-group">
-                      <label>INFORMACIÓN ADICIONAL</label>
-                      <textarea class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label>INFORMACIÓN DE PAGO<span class="obligatorio">*</span></label>
-                      <ul class="checks">
-                        <li>
-                          <div class="chk-content">En efectivo
-                            <input type="checkbox" checked="checked"/><span class="checkmark"></span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="chk-content">Transferencia
-                            <input type="checkbox"/><span class="checkmark"></span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="chk-content">Con Tarjeta
-                            <input type="checkbox"/><span class="checkmark"></span>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Información de pago"/>
-                    </div>
-                    <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Documento de identidad"/>
-                    </div>
-                    <div class="form-group">
-                      <select class="form-control"></select>
-                    </div>
-                    <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Número de cuenta"/>
-                    </div>
-                    <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Número de código interbancario"/>
-                    </div>
-                    <div class="form-group">
-                      <input class="form-control" type="text" placeholder="Banco"/>
-                    </div>
-                    <button class="btn btn-default btn-black" type="button">AGREGAR NUEVA CUENTA</button>
-                    <button class="btn btn-default btn-white" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
-                    <button class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
-                    <div class="terms">
-                      <div class="chk-content"><a href="#">Acepto términos y condiciones<span class="obligatorio">*</span></a>
-                        <input type="checkbox"/><span class="checkmark"></span>
-                      </div>
-                    </div>
-                    <button class="btn btn-default btn-black" type="button">GUARDAR</button>
-                  </form>
-                </div>
-                <div class="tab-pane fade" id="staff">
-                  <form>
-                    <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
-                    <ul class="staff">
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="avatar-form-min">
-                          <div class="avatar-form-min-button">Agregar asesor</div>
-                        </div>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-      </section>
-    </div>
-    <footer class="footer">
-      <div class="container">
-        <div class="col-md-3">
-          <p class="title_footer">Equipo</p>
-          <ul>
-            <li><a href="#">
-                <p>Quiénes somos</p></a></li>
-            <li><a href="#">
-                <p>Atletas</p></a></li>
-            <li><a href="#">
-                <p>Entrenadores</p></a></li>
-            <li><a href="#">
-                <p>Emprende con nosotros</p></a></li>
-            <li><a href="#">
-                <p>Preguntas más frecuentes</p></a></li>
-            <li><a href="#">
-                <p>Términos y condiciones</p></a></li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
-        </div>
-        <div class="col-md-3">
-          <p class="title_footer">Síguenos en</p>
-          <ul class="social">
-            <li><a href="#"><span class="fa fa-instagram"></span></a></li>
-            <li><a href="#"><span class="fa fa-facebook"></span></a></li>
-            <li><a href="#"><span class="fa fa-youtube"></span></a></li>
-          </ul>
-        </div>
-        <div class="col-md-2 text-right">
-          <p class="title_footer">Contáctenos</p>
-          <ul>
-            <li>
-              <p>+51 977595834</p>
-            </li>
-            <li>
-              <p>info@runfit.pe</p>
-            </li>
-          </ul>
-        </div>
+          <div class="menu_mobile view-only-mobile">
+              <div class="bg-opacity"></div>
+              <ul class="header-options">
+                  <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
+                  <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
+              </ul>
+              <div class="avatar"><img th:src="@{/img/public/logo.png}">
+                  <p class="name">GUSTAVO ARIAS</p>
+                  <p class="email">gjarias09@gmail.com</p>
+              </div>
+              <ul class="options">
+                  <li class="active"><a href="quienessomos.html"> <span>QUIENES SOMOS</span></a></li>
+                  <li><a href="contigo.html" data-menu="atletas"> <span>ATLETAS</span></a></li>
+                  <li><a href="ficha-inscripcion.html"><span>ASESORES</span></a></li>
+                  <li><a href="emprende-con-nosotros.html"> <span>EMPRENDE CON NOSOTROS</span></a></li>
+              </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
+          </div>
+          <div id="menu" style="display: none">
+              <div class="menu-desktop view-only-desktop">
+                  <div class="container position-relative">
+                      <div class="arrow-up"></div>
+                      <ul class="asesores-menu">
+                          <li><a href="#">Explorar características</a>
+                              <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+                          </li>
+                          <li><a href="#">Emprende con nosotros</a>
+                              <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </nav>
+      <div class="login"><a class="back" href="javascript:openLogin()"><span class="fa fa-chevron-left"></span></a>
+          <div class="login-bg"></div>
+          <div class="avatar"><img th:src="@{/img/public/logo.png}"></div>
+          <div class="login-sesion" style="display: none">
+              <div class="form-group usuario"><span class="fa fa-user-o"></span>
+                  <label>Usuario</label>
+                  <input type="text">
+              </div>
+              <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+                  <label>Contraseña</label>
+                  <input type="text">
+              </div>
+              <div class="form-group text-right"><a href="#">¿Olvido su contraseña?</a></div>
+              <div class="actions">
+                  <button class="btn-login" type="button">INGRESAR</button>
+                  <button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
+              </div>
+          </div>
+          <div class="login-register">
+              <div class="form-group usuario"><span class="fa fa-user-o"></span>
+                  <label>Nombre completo</label>
+                  <input type="text">
+              </div>
+              <div class="form-group mail"><span class="fa fa-envelope-o"></span>
+                  <label>Correo electrónico</label>
+                  <input type="text">
+              </div>
+              <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+                  <label>Contraseña</label>
+                  <input type="text">
+              </div>
+              <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+                  <label>Confirmar Contraseña</label>
+                  <input type="text">
+              </div>
+              <div class="actions">
+                  <button class="btn-login" type="button">REGISTRAR</button>
+                  <p>¿Ya es miembro RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
+              </div>
+          </div>
       </div>
-    </footer>
+      <div id="wrapper">
+          <div class="section banner home">
+              <div class="bg-image"><img class="shadow" th:src="@{/img/public/trainers-shadow.jpg}"></div>
+          </div>
+          <section class="trainers-form">
+              <div class="row">
+                  <div class="container">
+                      <div class="col-md-5">
+                          <div class="avatar-form">
+                              <input type="file" id="inpImgPerfil">
+                              <div class="avatar-form-content">
+                                  <img title="Subir foto" id="ImagePerfil" onclick="javascript:document.getElementById('inpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                              </div>
+                          </div>
+                          <fieldset class="rating">
+                              <input id="star5" type="radio" name="rating" value="5">
+                              <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                              <input id="star4half" type="radio" name="rating" value="4 and a half">
+                              <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                              <input id="star4" type="radio" name="rating" value="4">
+                              <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                              <input id="star3half" type="radio" name="rating" value="3 and a half">
+                              <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                              <input id="star3" type="radio" name="rating" value="3">
+                              <label class="full" for="star3" title="Meh - 3 stars"></label>
+                              <input id="star2half" type="radio" name="rating" value="2 and a half">
+                              <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                              <input id="star2" type="radio" name="rating" value="2">
+                              <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                              <input id="star1half" type="radio" name="rating" value="1 and a half">
+                              <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                              <input id="star1" type="radio" name="rating" value="1">
+                              <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                              <input id="starhalf" type="radio" name="rating" value="half">
+                              <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                          </fieldset>
+                      </div>
+                      <div class="col-md-7">
+                          <ul class="nav nav-tabs">
+                              <li><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
+                              <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                              <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
+                          </ul>
+                          <div class="tab-content">
+                              <div class="tab-pane fade" id="about">
+                                  <form>
+                                      <div class="form-group">
+                                          <div class="pad-right-middle">
+                                              <label>NOMBRE(S)<span class="obligatorio">*</span></label>
+                                              <input class="form-control" name="Nombres" id="Nombres" type="text">
+                                          </div>
+                                          <div class="pad-right-middle">
+                                              <label>APELLIDO(S)<span class="obligatorio">*</span></label>
+                                              <input class="form-control" name="Apellidos" id="Apellidos" type="text">
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="pad-right-middle">
+                                              <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
+                                              <input class="form-control" name="Especialidad" id="Especialidad" type="text">
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
+                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId">
+                                              <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>ACERCA DE MI<span class="obligatorio">*</span></label>
+                                          <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="pad-right-middle" style="width:100%;">
+                                              <label>IDIOMAS<span class="obligatorio">*</span></label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Español
+                                                          <input name="Idiomas" value="Español" data-aka="Seleccionar idiomas" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Inglés
+                                                          <input name="Idiomas" value="Inglés" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Portugues
+                                                          <input name="Idiomas" value="Portugues" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                      </div>
+                                      <div class="form-group" id="Estudios">
+                                          <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
+                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                          <textarea style="resize: both; overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
+                                      </div>
+                                      <div class="form-group" id="ExpLaboral">
+                                          <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
+                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                      </div>
+                                      <div class="form-group" id="Logros">
+                                          <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
+                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>HORARIO LABORAL<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
+                                          <ul class="checks">
+                                              <li>
+                                                  <div class="chk-content">Principiantes
+                                                      <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="chk-content">Intermedios
+                                                      <input name="NivelClientes" value="Intermedios" type="checkbox"/><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="chk-content">Avanzados
+                                                      <input name="NivelClientes" value="Avanzados" type="checkbox"/><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>AL AIRE LIBRE / DOMICILIO</label>
+                                          <p>Dar click en la imagen para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
+                                          <div class="map" id="map"></div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>CENTRO DE TRABAJO<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
+                                      </div>
+                                      <div class="form-group" id="Especialidades">
+                                          <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
+                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>FORMA DE TRABAJO</label>
+                                          <ul class="checks">
+                                              <li>
+                                                  <div class="chk-content">Personalizado
+                                                      <input type="checkbox" name="FormaTrabajo" checked="checked"><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="chk-content">En grupo
+                                                      <input type="checkbox" name="FormaTrabajo"><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="chk-content">Online
+                                                      <input type="checkbox" name="FormaTrabajo"><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>GALERIA DE FOTOS</label><br>
+                                          <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
+                                          <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...<span class="obligatorio">*</span></label>
+                                      </div>
+                                      <div class="row" id="GaleriaFotos" style="padding-bottom: 20px">
+                                          <div class="col-md-12" id="ImgsGaleria">
+
+                                          </div>
+                                          <!--<div class="col-md-12">
+                                              <div class="owl-carousel owl-theme">
+                                                  <div class="item"><img th:src="@{/img/public/andy.png}"></div>
+                                              </div>
+                                          </div>-->
+                                      </div>
+                                      <button class="btn btn-default btn-black" type="button">GUARDAR</button>
+                                      </div>
+                                  </form>
+                              </div>
+                              <div class="tab-pane fade" id="contact">
+                                  <form>
+                                      <div class="form-group">
+                                          <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="Correo" name="Correo">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>TELEFONO</label>
+                                          <input class="form-control" type="text" id="TelefonoFijo" name="TelefonoFijo">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>CELULAR<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="Movil" name="Movil">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
+                                      </div>
+                                      <button class="btn btn-default btn-black" type="button">GUARDAR</button>
+                                  </form>
+                              </div>
+                              <div class="tab-pane fade" id="service">
+                                  <h4>Mis servicios</h4>
+                                  <form>
+                                      <div class="ver-servicios">
+                                      </div>
+                                      <div id="SvcCamposBasicos">
+                                          <div class="form-group">
+                                              <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
+                                              <input class="form-control" id="NombreServicio">
+                                          </div>
+                                          <div class="form-group">
+                                              <label>DESCRIPCIÓN</label>
+                                              <textarea class="form-control" id="DescripcionServicio"></textarea>
+                                          </div>
+                                          <div class="form-group" id="MainIncluyeServicios">
+                                              <label>QUE INCLUYE</label>
+                                              <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                      </div>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIOS</button>
+                                      <p class="sub-title">TARIFARIO<span class="obligatorio">*</span></p>
+                                      <h4>Frecuencia</h4>
+                                      <div class="form-group">
+                                          <select class="form-control" id="FrecuenciaPaquete">
+                                              <option value="Diaria">Diaria</option>
+                                              <option value="Interdiaria">Interdiaria</option>
+                                              <option value="Semanal">Semanal</option>
+                                              <option value="Quincenal">Quincenal</option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="row">
+                                              <div class="col-xs-7">
+                                                  <label>CANTIDAD DE PERSONAS</label>
+                                              </div>
+                                              <div class="col-xs-5 text-right">
+                                                  <ul class="counter">
+                                                      <li class="count">
+                                                          <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
+                                                      </li>
+                                                      <li class="result">
+                                                          <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                      </li>
+                                                      <li class="count">
+                                                          <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="row">
+                                              <div class="col-xs-7">
+                                                  <label>CANTIDAD DE MESES</label>
+                                              </div>
+                                              <div class="col-xs-5 text-right">
+                                                  <ul class="counter">
+                                                      <li class="count">
+                                                          <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
+                                                      </li>
+                                                      <li class="result">
+                                                          <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
+                                                      </li>
+                                                      <li class="count">
+                                                          <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="row">
+                                              <div class="col-xs-7">
+                                                  <label>CANTIDAD DE SESIONES</label>
+                                              </div>
+                                              <div class="col-xs-5 text-right">
+                                                  <ul class="counter">
+                                                      <li class="count">
+                                                          <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
+                                                      </li>
+                                                      <li class="result">
+                                                          <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
+                                                      </li>
+                                                      <li class="count">
+                                                          <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="row">
+                                              <div class="col-xs-7">
+                                                  <label>PRECIO TOTAL(S/.)</label>
+                                              </div>
+                                              <div class="col-xs-5 text-right">
+                                                  <input id="PrecioPaquete" class="price" type="text" value="0.00">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevaTarifa">AGREGAR PAQUETE</button>
+                                      <div class="form-group">
+                                          <label>INFORMACIÓN ADICIONAL</label>
+                                          <textarea class="form-control" id="ServicioInfAdic"></textarea>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>INFORMACIÓN DE PAGO<span class="obligatorio">*</span></label>
+                                          <ul class="checks">
+                                              <li>
+                                                  <div class="chk-content">En efectivo
+                                                      <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="chk-content">Transferencia
+                                                      <input type="checkbox"><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="chk-content">Con Tarjeta
+                                                      <input type="checkbox"><span class="checkmark"></span>
+                                                  </div>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="TitularCuenta" type="text" placeholder="Titular de la cuenta">
+                                      </div>
+                                      <div class="form-group">
+                                          <select class="form-control" id="TitularTipoDoc">
+                                              <option value="DNI">DNI</option>
+                                              <option value="CE">CE</option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="NumeroCuenta" type="text" placeholder="Número de cuenta">
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="NumeroInterbancario" type="text" placeholder="Número de código interbancario">
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="NombreBanco" type="text" placeholder="Banco">
+                                      </div>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR NUEVA CUENTA</button>
+                                      <button class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
+                                      <input type="file" id="inpCondServicio" class="hide">
+                                      <button class="btn btn-default btn-white" type="button" onclick="abrirModalFichas()">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                                      <div class="terms">
+                                          <div class="chk-content"><a href="#">Acepto términos y condiciones<span class="obligatorio">*</span></a>
+                                              <input type="checkbox"><span class="checkmark"></span>
+                                          </div>
+                                      </div>
+                                      <button class="btn btn-default btn-black" type="button">GUARDAR</button>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </div>
+      <footer class="footer">
+          <div class="container">
+              <div class="col-md-3">
+                  <p class="title_footer">Equipo</p>
+                  <ul>
+                      <li><a href="#">
+                          <p>Quiénes somos</p></a></li>
+                      <li><a href="#">
+                          <p>Atletas</p></a></li>
+                      <li><a href="#">
+                          <p>Entrenadores</p></a></li>
+                      <li><a href="#">
+                          <p>Emprende con nosotros</p></a></li>
+                      <li><a href="faq.html">
+                          <p>Preguntas más frecuentes</p></a></li>
+                      <li><a href="terminos-y-condiciones.html">
+                          <p>Términos y condiciones</p></a></li>
+                  </ul>
+              </div>
+              <div class="col-md-4">
+                  <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}">
+              </div>
+              <div class="col-md-3">
+                  <p class="title_footer">Síguenos en</p>
+                  <ul class="social">
+                      <li><a href="#"><span class="fa fa-instagram"></span></a></li>
+                      <li><a href="#"><span class="fa fa-facebook"></span></a></li>
+                      <li><a href="#"><span class="fa fa-youtube"></span></a></li>
+                  </ul>
+              </div>
+              <div class="col-md-2 text-right">
+                  <p class="title_footer">Contáctenos</p>
+                  <ul>
+                      <li>
+                          <p>+51 977595834</p>
+                      </li>
+                      <li>
+                          <p>info@runfit.pe</p>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </footer>
+      <!-- MODALS  -->
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalFichas">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header" style="background: black;color: white">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white"><i class="fa fa-15x fa-close"></i></button>
+                      <h3 class="modal-title">Seleccione ficha</h3>
+                  </div>
+                  <div class="modal-body" style="background: black;height: 460px">
+                      <div class="col-sm-12">
+                          <div class="col-sm-6">
+                              <h4 style="color: #fff">Running</h4>
+                              <div onclick="javascript:this.style.border = '2px solid #a8fa00'" class="div-fichas" style="border: 2px solid gray;border-radius: 15px;width: 100%; height: 90%">
+                                <img style="max-width: 100%;height: 100%;border-radius: 15px" th:src="@{/img/public/home.jpg}"/></div>
+                              <div class="text-center"><input type="checkbox"></div>
+                          </div>
+                          <div class="col-sm-6">
+                              <h4 style="color: #fff">General</h4>
+                              <div onclick="javascript:this.style.border = '2px solid #a8fa00'" class="div-fichas" style="border: 2px solid gray;border-radius: 15px;width: 100%; height: 90%">
+                                <img style="max-width: 100%;height: 100%;border-radius: 15px" th:src="@{/img/public/home-details.png}"/></div>
+                              <div class="text-center"><input type="checkbox"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer text-center" style="background: darkslategray;">
+                      <i class="fa fa-fw fa-2x fa-check" style="color: #a8fa00; cursor:pointer;" onclick="ocultarModalFichas()" title="Confirmar"></i>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
     <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
     <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/forms.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
+    <script>
+        const inpImg = document.getElementById('inpImgPerfil');
+        const imgPerfil = document.getElementById('ImagePerfil');
+        const inpGaleria = document.getElementById('InpGaleria');
+        const btnNuevoServicio = document.getElementById('btnNuevoServicio');
+        const btnNuevaTarifa = document.getElementById('btnNuevaTarifa');
+        const btnNuevaCuentaBanc = document.getElementById('btnNuevaCuentaBanc');
+        const tabService = document.getElementById('service');
+        const servicios = [];
+        const ccBancarias = [];
+        const initTabActive = 3;
+        let selServicioId = -1;
+        let accServicioId = 0;
+        let accTarifaId = 0;
+        let accCuentaId = 0;
+
+
+        (function () {
+            uploadAndShow(inpImg, imgPerfil);
+            uploadImgs(inpGaleria, 'ImgsGaleria');
+            showInitTab(initTabActive);
+            btnNuevoServicio.addEventListener('click', agregarServicio);
+            btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
+            btnNuevaCuentaBanc.addEventListener('click', agregarCuentaBancaria);
+            tabService.addEventListener('click', clickListenerTabService);
+        })();
+
+        function clickListenerTabService(e) {
+            const input = e.target;
+            const clases = input.classList;
+            if (clases.contains('servicio')) {
+                const id = input.getAttribute('data-id');
+                selServicioId = Number(id);
+                const svcFocus = tabService.querySelector('.svc-focus');
+                svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+                clases.add('svc-focus');
+            }
+        }
+
+        function agregarServicio(){
+            mostrarNuevoServicio();
+        }
+        function mostrarNuevoServicio(){
+            const s = getServicio();
+            if(s.valid){
+                selServicioId = s.id;
+                servicios.push(s);
+                addServiceAndcleanCampos(s);
+                $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000})
+            }else{
+                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+            }
+        }
+
+        function getServicio(){
+            const svc = new Object();
+            svc.nombre = document.querySelector('#NombreServicio').value.trim();
+            svc.descripcion = document.querySelector('#DescripcionServicio').value.trim();
+            svc.incluye = getAsStringIncluyeServices();
+            svc.valid = false;
+            if(svc.nombre !== "" && svc.descripcion !== "" && svc.incluye !== ""){
+                svc.valid = true;
+                svc.tarifarios = new Array();
+                svc.infoAdicional = document.querySelector('#ServicioInfAdic').value.trim();
+                svc.id = ++accServicioId;
+            }
+            return svc;
+        }
+
+        function getTarifa(){
+            const tar = new Object();
+            tar.frecuencia = document.querySelector('#FrecuenciaPaquete').value;
+            tar.cantPersonas = document.querySelector('#txtCantidadPersonas').value.trim();
+            tar.cantMeses = document.querySelector('#txtCantidadMeses').value.trim();
+            tar.cantSesiones = document.querySelector('#txtCantidadSesiones').value.trim();
+            tar.valid = false;
+            if(tar.frecuencia !== "" && Number(tar.cantPersonas)>0 && (Number(tar.cantMeses)>0 || Number(tar.cantSesiones)>0)){
+                tar.precio = document.querySelector('#PrecioPaquete').value;
+                tar.valid = true;
+                tar.id = ++accTarifaId;
+            }
+            return tar;
+        }
+
+        function getCuentaBancaria(){
+            const c = new Object();
+            c.titularCuenta = document.querySelector('#TitularCuenta').value.trim();
+            c.titularTipoDoc = document.querySelector('#TitularTipoDoc').value;
+            c.titularNumDoc = document.querySelector('#TitularNumDoc').value.trim();
+            c.numeroCuenta = document.querySelector('#NumeroCuenta').value.trim();
+            c.numeroInterbancario = document.querySelector('#NumeroInterbancario').value.trim();
+            c.nombreBanco = document.querySelector('#NombreBanco').value.trim();
+            c.valid = false;
+            if(c.titularTipoDoc !== "" && c.titularCuenta !== "" && c.titularNumDoc !== "" && c.numeroCuenta !== "" && c.numeroInterbancario !== "" && c.nombreBanco !== ""){
+                c.valid = true;
+                c.id = ++accCuentaId;
+            }
+            return c;
+        }
+
+        function addServiceAndcleanCampos(svc){
+            const svcFocus = tabService.querySelector('.svc-focus');
+            svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+
+            document.querySelector('#ServicioInfAdic').value = "";
+            const element = htmlStringToElement(
+                `<div class="form-group">
+                                <label class="servicio svc-focus" data-id="${svc.id}">${svc.nombre}</label>
+                            </div>`);
+            const resumenServicios = document.querySelector('.ver-servicios');
+            resumenServicios.appendChild(element);
+
+            const divCamposBasicos = document.querySelector('#SvcCamposBasicos');
+            const htmlBasics = `<div class="form-group">
+                                              <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
+                                              <input class="form-control" id="NombreServicio">
+                                          </div>
+                                          <div class="form-group">
+                                              <label>DESCRIPCIÓN</label>
+                                              <textarea class="form-control" id="DescripcionServicio"></textarea>
+                                          </div>
+                                          <div class="form-group" id="MainIncluyeServicios">
+                                              <label>QUE INCLUYE</label>
+                                              <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>`
+            divCamposBasicos.innerHTML = htmlBasics;
+        }
+
+        function getAsStringIncluyeServices(){
+            return Array.from(document.querySelectorAll('#MainIncluyeServicios input')).map(v=>v.value  !==  "" ? v.value : "").filter(v=>v.trim()!=="").join('|');
+        }
+
+        function showInitTab(numTab){
+            const tabIds = ["", "about", "contact", "service"];
+            document.querySelector(`a[href="#${tabIds[numTab]}"]`).parentElement.classList.add('active');
+            document.querySelector(`#${tabIds[numTab]}`).classList.add('in');
+            document.querySelector(`#${tabIds[numTab]}`).classList.add('active');
+        }
+
+        function agregarTarifaAServicio(){
+            const t = getTarifa();
+            if(t.valid){
+                const s = servicios.find(v=>v.id === selServicioId);
+                if(s !== undefined){
+                    cleanPaqueteCampos();
+                    s.tarifarios.push(t);
+                    $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000})
+                }else
+                    $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Agregar primero un servicio</em>" ,timeout: 2500})
+            }else{
+                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+            }
+        }
+
+        function agregarCuentaBancaria(){
+            const c = getCuentaBancaria();
+            if(c.valid){
+                ccBancarias.push(c);
+                cleanCuentaBanCampos();
+                $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000});
+            }else{
+                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+            }
+        }
+
+        function cleanPaqueteCampos(){
+            document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
+            document.querySelector('#txtCantidadPersonas').value = 0;
+            document.querySelector('#txtCantidadMeses').value = 0;
+            document.querySelector('#txtCantidadSesiones').value = 0;
+            document.querySelector('#PrecioPaquete').value = '0.00';
+        }
+
+        function cleanCuentaBanCampos(){
+            document.querySelector('#TitularCuenta').value = "";
+            document.querySelector('#TitularTipoDoc').selectedIndex = 0;
+            document.querySelector('#TitularNumDoc').value = "";
+            document.querySelector('#NumeroCuenta').value = "";
+            document.querySelector('#NumeroInterbancario').value = "";
+            document.querySelector('#NombreBanco').value = "";
+        }
+
+        function abrirModalFichas(){
+            $('#myModalFichas').modal('show');
+        }
+
+        function ocultarModalFichas(){
+            $('#myModalFichas').modal('hide');
+        }
+
+    </script>
   </body>
 </html>

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.json.JsonDateSimpleSerializer;
+import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +76,21 @@ public class Trainer extends AuditingEntity implements Serializable {
     private TipoDocumento tipoDocumento;
 
     @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PaisId", nullable = false, updatable = false)
+    private Pais pais;
+
+    @Column
+    private String ubigeo;
+
+    @Column(nullable = false)
+    private Integer canPerValoracion;
+
+    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
+    @Column(precision = 6, scale = 2, nullable = false)
+    private BigDecimal totalValoracion;
+
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "SecurityUserId")
@@ -82,6 +99,10 @@ public class Trainer extends AuditingEntity implements Serializable {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<RedFitness> lstRedIntegrante;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
+    private List<TrainerFicha> lstTrainerFicha;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
@@ -134,6 +155,14 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
         this.codigoTrainer = codigoTrainer;
         this.setFlagActivo(flagActivo);
+    }
+
+    public void setPais(Pais pais){
+        this.pais = pais;
+    }
+
+    public void setPais(Integer paisId){
+        this.pais = new Pais(paisId);
     }
 
     public void setTipoUsuario(int id) {

@@ -1,9 +1,12 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = false;
-var flag_form_populate = true;
-var initPageActive = 3;
-document.querySelector('.step-0'+initPageActive).classList.toggle('active');
-document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
+var flag_form_populate = false;
+var initPageActive = 1;
+try {
+    document.querySelector('.step-0'+initPageActive).classList.toggle('active');
+    document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
+}catch (e) {}
+
 function time_line() {
     var total = $(".steps ol").length;
     var estilos;
@@ -14,7 +17,6 @@ function time_line() {
         $(".steps ol")[i].className += " cbp_tmtimeline_" + i + "";
         estilos = ".cbp_tmtimeline_" + i + ":before{height: " + (altura_total - altura_rest) + "px}";
         $("html").append("<style>" + estilos + "</style>");
-        console.log(altura_total);
     }
 }
 
@@ -26,7 +28,6 @@ function HorizontalEnum_EntrenaCorrectamente() {
     var estilo = '<style>' + cadena + '</style>'
 
     $('body').append(estilo);
-    console.log(estilo);
 }
 
 function SlashBanner() {
@@ -34,7 +35,6 @@ function SlashBanner() {
     var cadena = '.banner h1::before { width: ' + alto + 'px ;}'
     var estilo = '<style>' + cadena + '</style>'
     $('body').append(estilo);
-    console.log(estilo);
 }
 
 function checkBoxes() {
@@ -110,9 +110,8 @@ function initMap() {
 }
 
 function changecolor() {
-    var pos = $('body').scrollTop();
-    var altura = $(".banner").height() - 100;
-    if (altura <= pos) {
+    var scroll = $(window).scrollTop();
+    if (scroll > 0) {
         $("nav").css({ "background-color": "#000" });
     } else {
         $("nav").css({ "background-color": "transparent" });
@@ -220,6 +219,7 @@ function next_step_cs(i){
     else {
         smallBoxAlertValidation(checkList.inputs);
     }
+    time_line();
 }
 
 function openMenuMobile() {
@@ -253,7 +253,7 @@ function goRegister() {
 }
 
 $(function() {
-    $('body').scroll(function() {
+    $(window).scroll(function() {
         changecolor()
     });
     // initMap();
@@ -266,3 +266,17 @@ $(function() {
     activeItems();
     HorizontalEnum_EntrenaCorrectamente();
 })
+
+function submitReuseLogin(){
+    if($("#login-form").valid()){
+        $("#login-form").submit();
+    }
+}
+
+function hideNavBar(){
+    document.querySelector('nav').classList.add('hide');
+}
+
+(function(){
+    hideNavBar();
+})();

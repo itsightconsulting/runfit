@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.service.CondicionMejoraService;
+import com.itsight.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +17,13 @@ public class PublicoController {
 
     private CondicionMejoraService condicionMejoraService;
 
+    private DisciplinaService disciplinaService;
+
     @Autowired
-    public PublicoController(CondicionMejoraService condicionMejoraService) {
+    public PublicoController(CondicionMejoraService condicionMejoraService,
+                             DisciplinaService disciplinaService) {
         this.condicionMejoraService = condicionMejoraService;
+        this.disciplinaService = disciplinaService;
     }
 
     @GetMapping("/fi/2")
@@ -53,7 +58,8 @@ public class PublicoController {
     }
 
     @GetMapping("/registro/trainer")
-    public ModelAndView registroTrainer(){
+    public ModelAndView registroTrainer(Model model){
+        model.addAttribute("disciplinas", disciplinaService.findAll());
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
     }
 

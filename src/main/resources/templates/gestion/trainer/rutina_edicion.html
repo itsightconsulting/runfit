@@ -21,7 +21,7 @@
 </head>
 
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2 minified">
-
+<input type="hidden" th:value="${rutina}" id="RutinaStringify"/>
 <!-- HEADER -->
 <div th:replace="html-commons/header :: fg-header"></div>
 <!-- END HEADER -->
@@ -1475,13 +1475,10 @@ you can add as many as you like
 <script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/calendario-lateral.js}+'?'+${version}"></script>
 <script th:inline="javascript">
-
     const totalsegundos = 3600;
     /*<![CDATA[*/
     pageSetUp();
     /*]]>*/
 </script>
-
 </body>
-
 </html>

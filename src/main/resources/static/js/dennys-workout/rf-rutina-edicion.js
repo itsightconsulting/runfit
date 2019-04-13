@@ -70,6 +70,7 @@ const distAtletaRdBtn = document.querySelector('#DistanciaRutina');
 const fInitMacro = document.querySelector('#MacroFechaInicio');
 const fFinMacro = document.querySelector('#MacroFechaFin');
 const btnActualizarMvz = document.querySelector('#btnActualizarMvz');
+const rutinaStringify = JSON.parse($('#RutinaStringify').val());
 //TEMP
 const bgMantaIntensidad = ["gold", "gray", "skyblue", "gray"];
 
@@ -84,7 +85,7 @@ function init(){
         //Esconder la opcion de collapse del menú principal
         document.querySelector('#left-panel .minifyme').classList.toggle('hidden');
         //Importante mantener el orden para el correcto funcionamiento
-        $rutina = new Rutina(semana.rutina);
+        $rutina = new Rutina(rutinaStringify);
         $rutina.init(semana);
 
         validators();
@@ -134,7 +135,7 @@ function avanzarRetrocederSemana(numSem, action, parentDiv){
         if(semana != undefined) {
             $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
             //Importante mantener el orden para el correcto funcionamiento
-            $rutina = new Rutina(semana.rutina);
+            $rutina = new Rutina(rutinaStringify);
             $rutina.initEspecifico(semana, numSem);
             instanciarTooltips();
             generarDiasEnviados();
@@ -674,7 +675,7 @@ function instanciarDatosFitnessCliente(){
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('key'),
+        url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {

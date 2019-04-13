@@ -51,11 +51,11 @@ public class ClienteFitnessController {
     }
 
     //Edicion de rutinas
-    @GetMapping(value = "/obtener/secundario/{redFitnessId}")
+    @GetMapping(value = "/obtener/secundario/{clienteId}")
     public @ResponseBody
-    ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "redFitnessId") String redFitnessId) {
-        Integer redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
-        return clienteFitnessService.findOne(redFitId);
+    ClienteFitness obtenerPorUsuarioId(@PathVariable(name = "clienteId") String clienteId) {
+        Integer redFitId = Parseador.getDecodeHash16Id("rf-rutina", clienteId);
+        return clienteFitnessService.findByClienteId(redFitId);
     }
 
     @PostMapping(value = "/agregar")
