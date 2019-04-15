@@ -65,52 +65,7 @@
 
   </style>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="text-right view-only-desktop">
-          <p class="login_link" onclick="javascript:document.querySelector('.login').classList.add('active')">Iniciar sesión</p>
-        </div>
-        <div class="navbar-header"><a class="navbar-brand" href="#"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
-        <ul class="nav navbar-nav navbar-right view-only-desktop">
-          <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
-          <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha_inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
-          <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
-        </ul>
-      </div>
-      <div class="menu_mobile view-only-mobile">
-        <div class="bg-opacity"></div>
-        <ul class="header-options">
-          <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
-          <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
-        </ul>
-        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
-          <p class="name">GUSTAVO ARIAS</p>
-          <p class="email">gjarias09@gmail.com</p>
-        </div>
-        <ul class="options">
-          <li class="active"><a href="quienes_somos.html"> <span>QUIENES SOMOS</span></a></li>
-          <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
-          <li><a href="ficha_inscripcion.html"><span>ASESORES</span></a></li>
-          <li><a href="#"> <span>EMPRENDE CON NOSOTROS</span></a></li>
-        </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
-      </div>
-      <div id="menu" style="display: none">
-        <div class="menu-desktop view-only-desktop">
-          <div class="container position-relative">
-            <div class="arrow-up"></div>
-            <ul class="asesores-menu">
-              <li><a href="#">Explorar características</a>
-                <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
-              </li>
-              <li><a href="#">Emprende con nosotros</a>
-                <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <nav th:replace="html-commons/p/header :: fg-header"></nav>
     <div th:replace="html-commons/reu-login :: fg-login"></div>
     <div id="wrapper">
       <div class="section banner home">
@@ -1381,55 +1336,9 @@
         </div>
       </section>
     </div>
-    <footer class="footer">
-      <div class="container">
-        <div class="col-md-3">
-          <p class="title_footer">Equipo</p>
-          <ul>
-            <li><a href="#">
-                <p>Quiénes somos</p></a></li>
-            <li><a href="#">
-                <p>Atletas</p></a></li>
-            <li><a href="#">
-                <p>Entrenadores</p></a></li>
-            <li><a href="#">
-                <p>Emprende con nosotros</p></a></li>
-            <li><a href="#">
-                <p>Preguntas más frecuentes</p></a></li>
-            <li><a href="#">
-                <p>Términos y condiciones</p></a></li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
-        </div>
-        <div class="col-md-3">
-          <p class="title_footer">Síguenos en</p>
-          <ul class="social">
-            <li><a href="#"><span class="fa fa-instagram"></span></a></li>
-            <li><a href="#"><span class="fa fa-facebook"></span></a></li>
-            <li><a href="#"><span class="fa fa-youtube"></span></a></li>
-          </ul>
-        </div>
-        <div class="col-md-2 text-right">
-          <p class="title_footer">Contáctenos</p>
-          <ul>
-            <li>
-              <p>+51 977595834</p>
-            </li>
-            <li>
-              <p>info@runfit.pe</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </footer>
-    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
-    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
-    <script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
-    <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+    <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
-    <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script th:inline="javascript">
       const composedMuscles = [
         ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"],
@@ -1580,10 +1489,10 @@
 
       function templateMuscleEleList(name){
           return `<li>
-                            <div class="chk-content">${name}
-                                <input data-body="${name}" type="checkbox" name="${name}" checked="checked"/><span class="checkmark"></span>
-                            </div>
-                         </li>`;
+                     <div class="chk-content">${name}
+                         <input data-body="${name}" type="checkbox" name="${name}" checked="checked"/><span class="checkmark"></span>
+                     </div>
+                  </li>`;
       }
 
       function fadeLoadingDiv(div){
@@ -1693,13 +1602,6 @@
         //obj.cliFit.viaConexion = document.getElementById('ViaConexion').value;
         //private UsuarioDTO usuario;
         return obj;
-      }
-
-      function generateRandomMail(){
-        const t0 = String(new Date().getTime());
-        const t1 = t0.slice(-3);
-        const t2 = t0.slice(-6).slice(0, 3);
-        return `pedro${t1}infante${t2}@gmail.com`;
       }
 
       function getCompetenciasParticipar(){
@@ -2068,44 +1970,6 @@
             KilometrajePromedioSemana: {
               required: "El campo es obligatorio"
             }
-          }
-        });
-
-        $("#login-form").validate({
-          // Rules for form validation}
-          ignore: ".ignore",
-          highlight: function (element) {
-            $(element).parent().removeClass('state-success').addClass("state-error");
-            $(element).removeClass('valid');
-          },
-          unhighlight: function (element) {
-            $(element).parent().removeClass("state-error").addClass('state-success');
-            $(element).addClass('valid');
-          },
-          rules: {
-            username: {
-              required: true,
-            },
-            password: {
-              required: true,
-              minlength: 5,
-              maxlength: 20
-            }
-          },
-
-          // Messages for form validation
-          messages: {
-            username: {
-              required: 'Por favor ingresa tu nombre de usuario',
-            },
-            password: {
-              required: 'Por favor ingresa tu password'
-            }
-          },
-
-          // Do not change code below
-          errorPlacement: function (error, element) {
-            error.insertAfter(element.parent());
           }
         });
       }

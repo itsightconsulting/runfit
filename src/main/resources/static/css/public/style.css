@@ -310,7 +310,7 @@ footer ul.social li a {
 }
 
 .tienda_coach .col-md-6.coach {
-  background: url(../img/coach-bg.jpg) top center no-repeat;
+  background: url(../../img/public/coach-bg.jpg) top center no-repeat;
   background-size: cover
 }
 
@@ -325,7 +325,7 @@ footer ul.social li a {
 }
 
 .tienda_coach .col-md-6.tienda {
-  background: url(../img/tienda-bg.jpg) top center no-repeat;
+  background: url(../../img/public/tienda-bg.jpg) top center no-repeat;
   background-size: cover
 }
 

@@ -3,7 +3,7 @@ spring:
     active: development
   jpa:
     hibernate:
-        ddl-auto: none
+        ddl-auto: create
         naming:
           implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     properties:

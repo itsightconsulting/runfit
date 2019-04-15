@@ -1,0 +1,43 @@
+<footer th:fragment="fg-footer" class="footer">
+    <div class="container">
+        <div class="col-md-3">
+            <p class="title_footer">Equipo</p>
+            <ul>
+                <li><a href="#">
+                    <p>Quiénes somos</p></a></li>
+                <li><a href="#">
+                    <p>Atletas</p></a></li>
+                <li><a href="#">
+                    <p>Entrenadores</p></a></li>
+                <li><a href="#">
+                    <p>Emprende con nosotros</p></a></li>
+                <li><a href="#">
+                    <p>Preguntas más frecuentes</p></a></li>
+                <li><a href="#">
+                    <p>Términos y condiciones</p></a></li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
+        </div>
+        <div class="col-md-3">
+            <p class="title_footer">Síguenos en</p>
+            <ul class="social">
+                <li><a href="#"><span class="fa fa-instagram"></span></a></li>
+                <li><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li><a href="#"><span class="fa fa-youtube"></span></a></li>
+            </ul>
+        </div>
+        <div class="col-md-2 text-right">
+            <p class="title_footer">Contáctenos</p>
+            <ul>
+                <li>
+                    <p>+51 977595834</p>
+                </li>
+                <li>
+                    <p>info@runfit.pe</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</footer>

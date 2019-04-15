@@ -584,3 +584,10 @@ function unlockButton(e){
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+function generateRandomMail(){
+    const t0 = String(new Date().getTime());
+    const t1 = t0.slice(-3);
+    const t2 = t0.slice(-6).slice(0, 3);
+    return `pedro${t1}infante${t2}@gmail.com`;
+}

@@ -1,7 +1,8 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = false;
-var flag_form_populate = false;
+var flag_form_populate = true;
 var initPageActive = 1;
+var hiddenHeaderBar = true;
 try {
     document.querySelector('.step-0'+initPageActive).classList.toggle('active');
     document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
@@ -277,6 +278,49 @@ function hideNavBar(){
     document.querySelector('nav').classList.add('hide');
 }
 
+function validLoginForm(){
+    $("#login-form").validate({
+        // Rules for form validation}
+        ignore: ".ignore",
+        highlight: function (element) {
+            $(element).parent().removeClass('state-success').addClass("state-error");
+            $(element).removeClass('valid');
+        },
+        unhighlight: function (element) {
+            $(element).parent().removeClass("state-error").addClass('state-success');
+            $(element).addClass('valid');
+        },
+        rules: {
+            username: {
+                required: true,
+            },
+            password: {
+                required: true,
+                minlength: 5,
+                maxlength: 20
+            }
+        },
+
+        // Messages for form validation
+        messages: {
+            username: {
+                required: 'Por favor ingresa tu nombre de usuario',
+            },
+            password: {
+                required: 'Por favor ingresa tu password'
+            }
+        },
+
+        // Do not change code below
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+}
+
 (function(){
-    hideNavBar();
+    validLoginForm();
+    if(hiddenHeaderBar){
+        hideNavBar();
+    }
 })();

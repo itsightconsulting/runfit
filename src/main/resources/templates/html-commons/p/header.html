@@ -1,0 +1,46 @@
+<nav th:fragment="fg-header" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="text-right view-only-desktop">
+            <p class="login_link" onclick="javascript:document.querySelector('.login').classList.add('active')">Iniciar sesión</p>
+        </div>
+        <div class="navbar-header"><a class="navbar-brand" th:href="@{/p/inicio}"><span class="fa fa-bars view-only-mobile"></span><img th:src="@{/img/public/logo.png}+'?'+${version}"/></a></div>
+        <ul class="nav navbar-nav navbar-right view-only-desktop">
+            <li class="active"><a href="quienes_somos.html" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+            <li><a href="#" data-menu="atletas"> <span>ATLETAS</span></a></li>
+            <li><a href="ficha_inscripcion.html" data-menu="asesores"><span>ASESORES</span></a></li>
+            <li><a href="#" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
+        </ul>
+    </div>
+    <div class="menu_mobile view-only-mobile">
+        <div class="bg-opacity"></div>
+        <ul class="header-options">
+            <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
+            <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
+        </ul>
+        <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
+            <p class="name">GUSTAVO ARIAS</p>
+            <p class="email">gjarias09@gmail.com</p>
+        </div>
+        <ul class="options">
+            <li class="active"><a th:href="@{/p/quienes-somos}"> <span>QUIENES SOMOS</span></a></li>
+            <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
+            <li><a th:href="@{/p/contigo}"><span>ASESORES</span></a></li>
+            <li><a th:href="@{/p/registro/trainer}"> <span>EMPRENDE CON NOSOTROS</span></a></li>
+        </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
+    </div>
+    <div id="menu" style="display: none">
+        <div class="menu-desktop view-only-desktop">
+            <div class="container position-relative">
+                <div class="arrow-up"></div>
+                <ul class="asesores-menu">
+                    <li><a href="#">Explorar características</a>
+                        <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+                    </li>
+                    <li><a href="#">Emprende con nosotros</a>
+                        <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

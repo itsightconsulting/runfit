@@ -8,6 +8,7 @@ public class ViewConstant {
     public static final String MAIN_QUIENES_SOMOS = "public/quienes_somos";
     public static final String MAIN_BUSQUEDA_TRAINER = "public/encuentra_trainer";
     public static final String MAIN_FICHA_INSCRIPCION = "public/ficha_inscripcion";
+    public static final String MAIN_EMPRENDE_CON_NOSOTROS = "public/emprende_con_nosotros";
     public static final String MAIN_REGISTRO_TRAINER= "public/registro_trainer";
     public static final String MAIN_PERFIL_TRAINER= "public/perfil_trainer";
 
@@ -53,79 +54,21 @@ public class ViewConstant {
     public static final String MAIN_MIS_RUTINAS_TRAINER = "trainer/mis_rutinas";
     public static final String MAIN_MIS_RUTINAS_CLIENTE = "cliente/mis_rutinas";
 
-    public static final String INF_CONSTANCIA_CONTRIBUYENTE = "informativas/constanciacontribuyente";
-    public static final String INF_CONSTANCIA_NO_ADEUDO = "informativas/constancianoadeudo";
-    public static final String INF_CERTIFICADO_JURISDICCION = "informativas/certificadojurisdiccion";
-    public static final String INF_LICENCIA_FUNCIONAMIENTO = "informativas/licenciafuncionamiento";
-    public static final String INF_TRAMITE_DIVORCIO = "informativas/tramitedivorcio";
-
     public static final String FORM_FALLO_VISA = "visa/visa-fallo";
     public static final String FORM_CONFIRMATION_VISA = "visa/visa-consolidado";
     public static final String FORM_VISA_TERMINOS = "visa/visa-terminos";
 
 
-    public static final String INICIO = "inicio";
     public static final String PRINCIPAL = "bienvenido";
     public static final String LOGIN = "login";
-    public static final String RECUPERAR_PASSWORD = "recuperar-password";
-    public static final String NUEVA_PASSWORD = "nueva-password";
-    public static final String FORM_USUARIO = "cliente";
-    public static final String LOGOUT = "login";
-    public static final String INDEX = "pagina-inicio";
-    public static final String FORM_USER = "administracion/mtn-cliente";
-    public static final String ADD_USER = "registro-inicial";
-    public static final String VSL_USER = "administracion/edt-cliente";
-    public static final String SHOW_PERFIL = "administracion/cnt-cliente";
-    public static final String VERIFICACION = "registro-verificacion";
     public static final String VISA_PORTAL = "visa/visa-pago";
-    public static final String INTRANET = "login-colaborador";
     public static final String ERROR403 = "error/403";
     public static final String ERROR404 = "error/404";
     public static final String ERROR404PARAMEXCEP = "error/404RE";
     public static final String ERROR500 = "error/500";
-    public static final String FORM_BANDEJA_USUARIO = "administracion/bdj-cliente";
-    public static final String FORM_BANDEJA_COMPARTIDA = "administracion/bdj-compartida";
-
-//	public static final String FORM_BANDEJA_USUARIO_GET = "cliente/bandeja";
-
-
-    public static final String FORM_AREA = "gestion/gst-areas";
-    public static final String FORM_PARAMETRO = "gestion/gst-parametro";
-    public static final String FORM_COLABORADOR = "gestion/gst-colaborador";
-    public static final String FORM_BANDEJA_ADM = "administracion/bdj-formatos";
-//	public static final String FORM_BANDEJA_ADM_GET = "atencion/bandeja";
-
-    public static final String EDIT_MI_FORMATO_CONSTANCIA_NO_ADEUDO = "administracion/formatos/solicitud/edt-constancia-na";
-    public static final String EDIT_MI_FORMATO_CONSTANCIA_DE_CONTRIBUYENTE = "administracion/formatos/solicitud/edt-constancia-co";
-    public static final String EDIT_MI_FORMATO_DECLARACION_JURADA = "administracion/formatos/solicitud/edt-declaracion-jurada";
-    public static final String EDIT_MI_FORMATO_CERTIFICADO_JURISDICCION = "administracion/formatos/solicitud/edt-certificado-jurisdiccion";
-    public static final String EDIT_MI_FORMATO_DIVORCIO = "administracion/formatos/solicitud/edt-tramite-divorcio";
-
-    public static final String EDIT_FORMATO_CONSTANCIA_NO_ADEUDO = "administracion/formatos/edt-constancia-na";
-    public static final String EDIT_FORMATO_CONSTANCIA_DE_CONTRIBUYENTE = "administracion/formatos/edt-constancia-co";
-    public static final String EDIT_FORMATO_DECLARACION_JURADA = "administracion/formatos/edt-declaracion-jurada";
-    public static final String EDIT_FORMATO_CERTIFICADO_JURISDICCION = "administracion/formatos/edt-certificado-jurisdiccion";
-    public static final String EDIT_FORMATO_DIVORCIO = "administracion/formatos/edt-tramite-divorcio";
-
-    public static final String FORM_DECLARACION_JURADA = "administracion/formatos/solicitud/declaracion-jurada";
-    public static final String FORM_CONSTANCIA_NO_ADEUDO = "administracion/formatos/solicitud/constancia-na";
-    public static final String FORM_CONSTANCIA_DE_CONTRIBUYENTE = "administracion/formatos/solicitud/constancia-co";
-    public static final String FORM_CERTIFICADO_JURISDICCION = "administracion/formatos/solicitud/certificado-jurisdiccion";
-    public static final String FORM_DIVORCIO = "administracion/formatos/solicitud/tramite-divorcio";
-
-    public static final String FORM_SIGN_FORMATO = "sign/firma-electronica";
-
-    public static final String FORM_SIGN_FORMATO_MSA = "sign/firma-electronica-msa";
-
 
     //Redirect through http requests
     public static final String REDIRECT_FORM_FALLO_VISA = "redirect:/visa/status";
-    public static final String REDIRECT_FORM_CONFIRMATION_VISA = "redirect:/visa/consolidado";
-    public static final String REDIRECT_FORM_BANDEJA_ADM = "redirect:/atencion/bandeja";
-    public static final String REDIRECT_FORM_BANDEJA_USER = "redirect:/cliente/bandeja";
-    public static final String REDIRECT_INDEX = "redirect:/inicio";
-
-
 
     public static final String MI_USUARIO = "cliente/micuenta";
     public static final String FACTURACION_MENSUAL = "portal/facturacion_mensual";
