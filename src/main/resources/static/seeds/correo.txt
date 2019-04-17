@@ -1,0 +1,3 @@
+asunto,body,moduloId
+Postulación trainer,<h1>Más detalles en: <a href='http://127.0.0.1:8080/postulacion/revisar/%s'>Ver candidato</a></h1>,2
+Decisión trainer,<h1>Postulación Trainer</h1>,2

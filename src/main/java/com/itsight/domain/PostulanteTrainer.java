@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class PreTrainer {
+public class PostulanteTrainer {
 
     @Id
     @GeneratedValue(generator = "pre_trainer_seq")
@@ -46,6 +46,9 @@ public class PreTrainer {
 
     @Column(nullable = false)
     private boolean flagAceptado;
+
+    @Column(nullable = false)
+    private boolean flagRegistrado;
 
     @Column(nullable = false)
     private int intentosAplicacion;

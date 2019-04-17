@@ -20,7 +20,7 @@ public class ThatsWhyWePlay {
         String decodedString = new String(decodedBytes);
         System.out.println(decodedString);*/
 
-        List<VideoDTO> lstVideo = new ArrayList<>();
+        /*List<VideoDTO> lstVideo = new ArrayList<>();
         VideoDTO video = new VideoDTO(1);
         video.setNombre("Video demo con id 1");
 
@@ -63,7 +63,7 @@ public class ThatsWhyWePlay {
 
         lstVideo.add(video1);
 
-        /** **/
+        *//** **//*
         VideoDTO video2 = new VideoDTO(111);
         video2.setNombre("Video demo con id 111");
         video2.setSubCatVideo(subCatVideo1);
@@ -75,7 +75,13 @@ public class ThatsWhyWePlay {
         });
 
         BagForestDTO forest = reconstructForest(lstVideo, 2);
-        System.out.println(forest.getTreesGb().toString());
+        System.out.println(forest.getTreesGb().toString());*/
+        String name = "A";
+        String lName = "B";
+        String nick = "C";
+
+        String x = String.format("Contact {name=%s, lastName=%s, nickName=%s}", name, lName, nick);
+        System.out.println(x);
 
     }
 

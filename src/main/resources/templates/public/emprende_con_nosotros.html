@@ -48,7 +48,7 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <button class="btn btn-black" type="button" id="btnEnviar">ENVIAR</button>
+                  <button class="btn btn-black" type="button" id="btnGuardar">ENVIAR</button>
                 </div>
               </form>
             </div>
@@ -59,17 +59,22 @@
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
-      const btnEnviar = document.querySelector('#btnEnviar');
-      (function () {
-        btnEnviar.addEventListener('click', enviarForm);
+      const btnGuardar = document.querySelector('#btnGuardar');
+      (function (){
+        init();
+      })();
+
+      function init(){
+        btnGuardar.addEventListener('click', enviarForm);
         constraintsValidation();
         if(flag_form_populate){
           populateForm();
         }
-      })();
+      }
 
-      function enviarForm(){
+      function enviarForm(e){
         if($('#frm_registro').valid()){
+          $buttonName = e.target.textContent;
           sendForm();
         }
       }
@@ -81,19 +86,19 @@
         $.ajax({
           type: 'POST',
           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-          url: _ctx + 'p/solicitud/trainer',
+          url: _ctx + 'p/postulacion/trainer/registrar',
           dataType: "text",
           data: params,
+          blockLoading: true,
           success: function (data, textStatus) {
             if (textStatus == "success") {
-              //$.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
+
             }
           },
           error: function (xhr) {
             //exception(xhr);
           },
           complete: function () {
-
           }
         });
       }
@@ -176,7 +181,7 @@
 
         var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;
-          else document.getElementById('btnEnviar').click();
+          else document.getElementById('btnGuardar').click();
           clearInterval( tid );
           // do your work
         }, 100);

@@ -1,10 +1,12 @@
 // jqueryValidation's styles
-var errorClass = 'invalid';
-var errorElement = 'em';
+let errorClass = 'invalid';
+let errorElement = 'em';
 // !- END var for jqueryValidation's styles
-var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
 var _ctx = $('meta[name="_ctx"]').attr('content');
+let $buttonName = "";
+let $gbInterval = 0;
 $('#view_register').attr('hidden', 'hidden');
 const ClaseEditor = Object.freeze([
     {id: 1, clase: 'rf-n', tipo: 1},
@@ -259,7 +261,7 @@ function agregarModalParaVisualizacionImagen() {
 
 function spinnerSwitchTab(effect){
     $.SmartMessageBox({
-        title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+        title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
         content: "" +
             "<br/><i style='font-size: 1.2em;'>La acción solicitada ha iniciado. Por favor espere...</i><i class='fa fa-spinner fa-spin fa-15x pull-right'></i><br/>" +
             "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='http://4.bp.blogspot.com/-lt--oWaKhWM/UtZTNXQkeYI/AAAAAAAAtsU/8liEKT5YJBw/s1600/deatlet13.gif'><div class='row text-center'></div>",
@@ -298,33 +300,6 @@ function spinnerUpload(xhr) {
         if (document.querySelectorAll('.MessageBoxContainer').length > 1) document.querySelectorAll('.MessageBoxContainer')[0].remove();
     }, 100);
 }
-
-$(document).ajaxSend(function (e, xhr, options) {
-    xhr.setRequestHeader(header, token);
-    if ((options.type === 'POST' || options.type === 'PUT') && options.processData == false) {
-        spinnerUpload(xhr);
-    }else if(options.type === 'POST' && options.url.includes("/agregar")){
-        $("#btnGuardar").attr('disabled','disabled');
-        $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
-    }
-});
-
-$(document).ajaxComplete(function (e, xhr, options) {
-    if ((options.type === 'POST' || options.type === 'PUT') && options.processData == false) {
-        $('#bot1-Msg1').click();
-    }else if(options.type === 'POST' && options.url.includes("/agregar")){
-        $('#btnGuardar').removeAttr('disabled');
-        $('#btnGuardar').text('Guardar');
-    }
-});
-
-$(document).ajaxStart(() => {
-
-});
-
-$(document).ajaxStop(() => {
-
-});
 
 function formatBytes(a, b) {
     if (0 == a) return "0 Bytes";
@@ -590,4 +565,57 @@ function generateRandomMail(){
     const t1 = t0.slice(-3);
     const t2 = t0.slice(-6).slice(0, 3);
     return `pedro${t1}infante${t2}@gmail.com`;
+}
+
+(function ajaxEvents(){
+
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+        if (options.processData == false) {
+            spinnerUpload(xhr);
+        }else{
+            if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
+                $("#btnGuardar").attr('disabled','disabled');
+                $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+            }else{
+                $gbInterval = spinnerSwitchTab(efectoImagenTransicion);
+            }
+
+        }
+    });
+
+    $(document).ajaxComplete(function (e, xhr, options) {
+        if (options.processData == false) {//WHEN FILES ARE BEING UPLOADED
+            $('#bot1-Msg1').click();
+        }else{
+            if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
+                $('#btnGuardar').removeAttr('disabled');
+                $('#btnGuardar').text($buttonName);
+            }else{
+                $('#bot1-Msg1').click();
+                window.clearInterval($gbInterval+1);
+            }
+        }
+    });
+
+    $(document).ajaxStart(() => {});
+
+    $(document).ajaxStop(() => {});
+})();
+
+
+function efectoImagenTransicion(){
+    const imgEffect = document.querySelector('#ImgLoading');
+    imgEffect.style.position = 'relative';
+    let refOffSetWidth = imgEffect.parentElement.offsetWidth;
+    let s = 8, k = 1;
+    const intervalLoading = setInterval(function(){
+        imgEffect.style.right = (0 - (k*s)) + 'px';
+        k++;
+        if(Math.abs(k*s)>refOffSetWidth){
+            k=1;
+            imgEffect.style.right = (0 - (k*s)) + 'px';
+        }
+    }, 100);
+    return intervalLoading;
 }

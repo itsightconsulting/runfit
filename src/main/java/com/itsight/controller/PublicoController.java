@@ -1,12 +1,11 @@
 package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.PreTrainer;
+import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.PreTrainerDTO;
 import com.itsight.service.CondicionMejoraService;
 import com.itsight.service.DisciplinaService;
-import com.itsight.service.PreTrainerService;
-import com.itsight.util.Enums;
+import com.itsight.service.PostulanteTrainerService;
 import com.itsight.util.Parseador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/p")
@@ -26,15 +24,15 @@ public class PublicoController {
 
     private DisciplinaService disciplinaService;
 
-    private PreTrainerService preTrainerService;
+    private PostulanteTrainerService postulanteTrainerService;
 
     @Autowired
     public PublicoController(CondicionMejoraService condicionMejoraService,
                              DisciplinaService disciplinaService,
-                             PreTrainerService preTrainerService) {
+                             PostulanteTrainerService postulanteTrainerService) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
-        this.preTrainerService = preTrainerService;
+        this.postulanteTrainerService = postulanteTrainerService;
     }
 
     @GetMapping("/fi/2")
@@ -63,26 +61,37 @@ public class PublicoController {
     }
 
     @GetMapping("/ficha-inscripcion")
-    public ModelAndView fichaInscripcion(Model model){
+    public ModelAndView fichaInscripcion(Model model) {
         model.addAttribute("lstCondMejoras", condicionMejoraService.getAll());
         return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
     }
 
-    @GetMapping("/solicitud/trainer")
+    //TRAINER PROCESS
+
+    @GetMapping("/postulacion/trainer")
     public ModelAndView preRegistroTrainer(){
         return new ModelAndView(ViewConstant.MAIN_EMPRENDE_CON_NOSOTROS);
     }
 
-    @PostMapping("/solicitud/trainer")
+    @PostMapping("/postulacion/trainer/registrar")
     public @ResponseBody String registrarSolicitudTrainer(@ModelAttribute @Valid PreTrainerDTO preTrainerDTO){
-        PreTrainer preTrainer = new PreTrainer();
+        PostulanteTrainer preTrainer = new PostulanteTrainer();
         BeanUtils.copyProperties(preTrainerDTO, preTrainer);
-        return preTrainerService.registrar(preTrainer, null);
+        return postulanteTrainerService.registrar(preTrainer, null);
     }
 
-    @GetMapping("/registro/trainer")
-    public ModelAndView registroTrainer(Model model){
+    @GetMapping("/registro/trainer/{hashPreTrainerId}")
+    public ModelAndView registroTrainer(Model model, @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId){
+        Integer hashId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
+        PostulanteTrainer obj = postulanteTrainerService.findOne(hashId);
+        if(obj == null){
+            return new ModelAndView(ViewConstant.ERROR404);
+        }
+        if(obj.isFlagRechazado() || obj.isFlagRegistrado() || !obj.isFlagAceptado()){
+            return new ModelAndView(ViewConstant.ERROR404);
+        }
         model.addAttribute("disciplinas", disciplinaService.findAll());
+        model.addAttribute("postulante", obj);
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
     }
 
@@ -91,22 +100,5 @@ public class PublicoController {
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
     }
 
-    @GetMapping("/q/pre-trainer/{codPreTrainer}")
-    public ModelAndView miniCvPreTrainer(@PathVariable(value = "codPreTrainer") String codPreTrainer,
-                                                                                Model model){
-        model.addAttribute("trainer", preTrainerService.findOne(Parseador.getDecodeHash32Id("rf-request", codPreTrainer)));
-        return new ModelAndView("portal/eleccion_pre_trainer");
-    }
-
-    @GetMapping("/aprobacion-desaprobacion/trainer/{preTrainerIdHash}/{eleccion}")
-    public @ResponseBody String aprobacionPreTrainer(
-            @PathVariable(value = "preTrainerIdHash") String preTrainerIdHash,
-            @PathVariable(value = "eleccion") String eleccion){
-        Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
-        Integer decision = Integer.parseInt(eleccion);
-        if(preTrainerId == 0 && decision > -1 && decision < 2){
-            return Enums.ResponseCode.NOT_FOUND_MATCHES.get();
-        }
-        return preTrainerService.aprobarDesaprobar(preTrainerId, decision);
-    }
+    //END TRAINER PROCESS
 }

@@ -11,7 +11,7 @@
     <div th:replace="html-commons/reu-login :: fg-login"></div>
     <div id="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/emprende.jpg}" style="height: 180px">
+        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/emprende.jpg}">
           <div class="container">
             <div class="title-page">
               <h1> <i>INTÉGRATE</i><span class="no-watch">000</span></h1>
@@ -83,11 +83,13 @@
         $.ajax({
           type: 'GET',
           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-          url: _ctx + 'p/aprobacion-desaprobacion/trainer/' + arenaHash + "/"+i,
+          url: _ctx + 'postulacion/decision/' + arenaHash + "/"+i,
           dataType: "text",
+          blockLoading: true,
           success: function (data, textStatus) {
             if (textStatus == "success") {
-
+              alert("Aprobación correcta!!!");
+              window.location.href = _ctx + "p/inicio";
             }
           },
           error: function (xhr) {

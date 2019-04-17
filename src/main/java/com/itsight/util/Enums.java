@@ -80,8 +80,37 @@ public class Enums {
         }
     }
 
+    public enum Decision{
+        DESAPROBADO(0),
+        APROBADO(1);
+
+        final int id;
+
+        Decision(int id){
+            this.id = id;
+        }
+
+        public int get(){
+            return id;
+        }
+    }
+
     public enum TipoUsuario{
         FIXORDER, ADMINISTRADOR, ENTRENADOR, CLIENTE
+    }
+
+    public enum Mail{
+        POSTULACION_TRAINER(1);
+
+        final int id;
+
+        Mail(int id){
+            this.id = id;
+        }
+
+        public int get(){
+            return id;
+        }
     }
 
 

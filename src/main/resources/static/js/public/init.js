@@ -1,7 +1,7 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = false;
 var flag_form_populate = true;
-var initPageActive = 1;
+var initPageActive = 3;
 var hiddenHeaderBar = true;
 try {
     document.querySelector('.step-0'+initPageActive).classList.toggle('active');

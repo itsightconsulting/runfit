@@ -1,13 +1,15 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.PreTrainer;
+import com.itsight.domain.Correo;
+import com.itsight.domain.PostulanteTrainer;
 import com.itsight.generic.BaseServiceImpl;
-import com.itsight.repository.PreTrainerRepository;
+import com.itsight.repository.PostulanteTrainerRepository;
+import com.itsight.service.CorreoService;
 import com.itsight.service.EmailService;
-import com.itsight.service.PreTrainerService;
+import com.itsight.service.PostulanteTrainerService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
-import com.itsight.util.Utilitarios;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,35 +17,47 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
+
 @Service
 @Transactional
-public class PreTrainerServiceImpl extends BaseServiceImpl<PreTrainerRepository> implements PreTrainerService {
+public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrainerRepository> implements PostulanteTrainerService {
+
+    @Value("${spring.profiles.active}")
+    private String profile;
+
+    @Value("${spring.mail.username}")
+    private String emitterMail;
 
     private EmailService emailService;
 
-    public PreTrainerServiceImpl(PreTrainerRepository repository,
-                                 EmailService emailService) {
+    private CorreoService correoService;
+
+    public PostulanteTrainerServiceImpl(PostulanteTrainerRepository repository,
+                                        EmailService emailService,
+                                        CorreoService correoService) {
         super(repository);
         this.emailService = emailService;
+        this.correoService = correoService;
     }
 
     @Override
-    public PreTrainer save(PreTrainer entity) {
+    public PostulanteTrainer save(PostulanteTrainer entity) {
         return repository.save(entity);
     }
 
     @Override
-    public PreTrainer update(PreTrainer entity) {
+    public PostulanteTrainer update(PostulanteTrainer entity) {
         return repository.saveAndFlush(entity);
     }
 
     @Override
-    public PreTrainer findOne(Integer id) {
+    public PostulanteTrainer findOne(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
     @Override
-    public PreTrainer findOneWithFT(Integer id) {
+    public PostulanteTrainer findOneWithFT(Integer id) {
         return null;
     }
 
@@ -58,51 +72,51 @@ public class PreTrainerServiceImpl extends BaseServiceImpl<PreTrainerRepository>
     }
 
     @Override
-    public List<PreTrainer> findAll() {
+    public List<PostulanteTrainer> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public List<PreTrainer> findByNombre(String nombre) {
+    public List<PostulanteTrainer> findByNombre(String nombre) {
         return null;
     }
 
     @Override
-    public List<PreTrainer> findByNombreContainingIgnoreCase(String nombre) {
+    public List<PostulanteTrainer> findByNombreContainingIgnoreCase(String nombre) {
         return null;
     }
 
     @Override
-    public List<PreTrainer> findByDescripcionContainingIgnoreCase(String descripcion) {
+    public List<PostulanteTrainer> findByDescripcionContainingIgnoreCase(String descripcion) {
         return null;
     }
 
     @Override
-    public List<PreTrainer> findByFlagActivo(boolean flagActivo) {
+    public List<PostulanteTrainer> findByFlagActivo(boolean flagActivo) {
         return null;
     }
 
     @Override
-    public List<PreTrainer> findByFlagEliminado(boolean flagEliminado) {
+    public List<PostulanteTrainer> findByFlagEliminado(boolean flagEliminado) {
         return null;
     }
 
     @Override
-    public List<PreTrainer> findByIdsIn(List<Integer> ids) {
+    public List<PostulanteTrainer> findByIdsIn(List<Integer> ids) {
         return null;
     }
 
     @Override
-    public List<PreTrainer> listarPorFiltro(String comodin, String estado, String fk) {
+    public List<PostulanteTrainer> listarPorFiltro(String comodin, String estado, String fk) {
         return null;
     }
 
     @Override
-    public String registrar(PreTrainer entity, String wildcard) {
+    public String registrar(PostulanteTrainer entity, String wildcard) {
         //Verificación correo único
-        Optional<PreTrainer> optPreTrainer = Optional.ofNullable(repository.findByCorreo(entity.getCorreo()));
+        Optional<PostulanteTrainer> optPreTrainer = Optional.ofNullable(repository.findByCorreo(entity.getCorreo()));
         if(optPreTrainer.isPresent()){
-            PreTrainer obj = optPreTrainer.get();
+            PostulanteTrainer obj = optPreTrainer.get();
             if(obj.isFlagAceptado()){
                 return "-11";
             }
@@ -110,18 +124,24 @@ public class PreTrainerServiceImpl extends BaseServiceImpl<PreTrainerRepository>
             if(obj.isFlagRechazado()){
                 return "-22";
             }
+            return "-33";
         }
         entity.setFechaCreacion(new Date());
         repository.save(entity);
+        //Receptor
+        String receptor = !profile.equals("production") ? emitterMail : entity.getCorreo();
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
         //Envio de correo
-        emailService.enviarCorreoInformativo("Solicitud para ser parte del staff de entrenadores", "contoso.peru@gmail.com", "<h1>Más detalles en: <a href=\"http://127.0.0.1:8080/p/q/pre-trainer/"+ Parseador.getEncodeHash32Id("rf-request", entity.getId()) +"\">Ver candidato</a></h1>");
+        String hashId = Parseador.getEncodeHash32Id("rf-request", entity.getId());
+        String cuerpo = String.format(correo.getBody(), hashId);
+        emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
         //Save
-
         return Enums.ResponseCode.REGISTRO.get() +"|"+ entity.getId();
     }
 
     @Override
-    public String actualizar(PreTrainer entity, String wildcard) {
+    public String actualizar(PostulanteTrainer entity, String wildcard) {
         return null;
     }
 
@@ -131,13 +151,13 @@ public class PreTrainerServiceImpl extends BaseServiceImpl<PreTrainerRepository>
     }
 
     @Override
-    public String aprobarDesaprobar(Integer preTrainerId, Integer decision) {
-        PreTrainer preTrainer = findOne(preTrainerId);
+    public String decidir(Integer preTrainerId, Integer decisionId) {
+        PostulanteTrainer preTrainer = findOne(preTrainerId);
         if(preTrainer == null){
            return Enums.ResponseCode.EMPTY_RESPONSE.get();
         }
         Date timestamp = new Date();
-        if(decision == 1){
+        if(decisionId == 1){
             preTrainer.setFechaAprobacion(timestamp);
             preTrainer.setFlagAceptado(true);
         }else{
@@ -147,14 +167,16 @@ public class PreTrainerServiceImpl extends BaseServiceImpl<PreTrainerRepository>
         //Save
         repository.save(preTrainer);
 
+        //Receptor
+        String receptor = !profile.equals("production") ? emitterMail : preTrainer.getCorreo();
         //Envio de correo
-        if(decision == 1) {
+        if(decisionId == 1) {
             emailService.enviarCorreoInformativo("Solicitud aprobada",
-                                                "contoso.peru@gmail.com",
+                    receptor,
                                                 "<h1>Más detalles en: <a href=\"http://127.0.0.1:8080/p/registro/trainer/" + Parseador.getEncodeHash32Id("rf-request", preTrainer.getId()) + "\">Llenar ficha de entrenador oficial</a></h1>");
         }else{
             emailService.enviarCorreoInformativo("Gracias por su postulación",
-                                                "contoso.peru@gmail.com",
+                    receptor,
                                                 "<h1>Podrá volver a intentarlo después de 3 meses. Siga mejorando y seguramente la próxima vez será admitido</h1>");
         }
 

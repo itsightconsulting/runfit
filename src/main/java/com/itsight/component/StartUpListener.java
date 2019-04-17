@@ -137,6 +137,12 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private DisciplinaService disciplinaService;
 
+    @Autowired
+    private ModuloService moduloService;
+
+    @Autowired
+    private CorreoService correoService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -170,6 +176,8 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingDisciplinas();
             try {
                 addingUbPeru();
+                addingModulo();
+                addingCorreo();
             } catch (IOException ex){
                 ex.printStackTrace();
             }
@@ -907,7 +915,29 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         }
     }
 
+    public void addingModulo() throws IOException {
+        InputStream is = new ClassPathResource("static/seeds/modulo.txt").getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+        String content = reader.lines().collect(Collectors.joining("\n"));
+        String[] lines = content.split("\n");
+        reader.close();
+        for(int i=1; i<lines.length;i++){
+            String[] line = lines[i].split(",");
+            if (moduloService.findOneByNombre(line[0].trim()) == null) moduloService.save(new Modulo(line[0].trim(), line[1].trim()));
+        }
+    }
 
+    public void addingCorreo() throws IOException {
+        InputStream is = new ClassPathResource("static/seeds/correo.txt").getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        String content = reader.lines().collect(Collectors.joining("\n"));
+        String[] lines = content.split("\n");
+        reader.close();
+        for(int i=1; i<lines.length;i++){
+            String[] line = lines[i].split(",");
+            if (correoService.findOne(i) == null) correoService.save(new Correo(line[0].trim(), line[1].trim(), Integer.parseInt(line[2].trim())));
+        }
+    }
 
     public void addingApplicationParameters() {
         if (parametroService.findByClave("MAIN_ROUTE") == null) {
