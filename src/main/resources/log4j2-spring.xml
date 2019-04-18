@@ -32,9 +32,10 @@
             <AppenderRef ref="AppFileAppender"/>
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
-                  <Logger name="com.itsight.advice" level="warn" additivity="false">
-                     <AppenderRef ref="AppFileAppenderWarn"/>
-                  </Logger>
+        <Logger name="com.itsight.advice" level="warn" additivity="false">
+           <AppenderRef ref="AppFileAppenderWarn"/>
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
         <Root level="info">
             <AppenderRef ref="ConsoleAppender"/>
         </Root>

@@ -267,6 +267,12 @@ function spinnerSwitchTab(effect){
             "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='http://4.bp.blogspot.com/-lt--oWaKhWM/UtZTNXQkeYI/AAAAAAAAtsU/8liEKT5YJBw/s1600/deatlet13.gif'><div class='row text-center'></div>",
         buttons: '[]'
     }, function (ButtonPressed) {
+        if(ButtonPressed.trim() === ""){
+            setTimeout(()=>{
+                const msgBox = document.getElementById('MsgBoxBack');
+                msgBox.children[0].remove();
+            }, 150)
+        }
         if (ButtonPressed === "Cancelar") {
             setTimeout(()=>{
                 if(document.querySelector('.divMessageBox') != undefined) document.querySelector('.divMessageBox').classList.add('hidden');

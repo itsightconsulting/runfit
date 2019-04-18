@@ -92,11 +92,12 @@
           blockLoading: true,
           success: function (data, textStatus) {
             if (textStatus == "success") {
-
+              console.log("Éxito chaval!");
+              console.log(data);
             }
           },
           error: function (xhr) {
-            //exception(xhr);
+            exception(xhr);
           },
           complete: function () {
           }

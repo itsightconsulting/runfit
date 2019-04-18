@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class PreTrainerDTO implements Serializable {
+public class PostulanteTrainerDTO implements Serializable {
 
     private String nombreFull;
 

@@ -44,7 +44,7 @@ public class Administrador extends AuditingEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String correo;
     @Column(length = 16)
-    private String telefonoFijo;
+    private String telefono;
     @Column(nullable = false, length = 16)
     private String movil;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)

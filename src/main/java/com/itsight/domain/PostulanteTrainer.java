@@ -51,7 +51,7 @@ public class PostulanteTrainer {
     private boolean flagRegistrado;
 
     @Column(nullable = false)
-    private int intentosAplicacion;
+    private int intentos;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -70,4 +70,11 @@ public class PostulanteTrainer {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     private Date fechaAprobacion;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+    private Date fechaLimiteAccion;
+
 }

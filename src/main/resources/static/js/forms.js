@@ -101,11 +101,12 @@ function uploadImgs(input, mainDivId) {
     });
 }
 
-function agregarInputDinamico(e, max){
+function agregarInputDinamico(e, max, clase){
     if(e.parentElement.children.length === max){
         e.classList.add('hide');
     }
-    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input class="form-control mg-bt-10" type="text"/>'));
+    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<input class="form-control mg-bt-10 ${clase}" type="text"/>`));
+    return e.previousElementSibling;
 }
 
 function acumuladorMas(id){
@@ -121,5 +122,26 @@ function acumuladorMenos(id){
     const value = Number(e.value);
     if(value > 0){
         e.value = value - 1;
+    }
+}
+
+function getValuesByClass(clase){
+    return Array.from(document.querySelectorAll(`input.${clase}`)).map(v=>v.value).filter(v=>v.trim().length>5).join('|');
+}
+
+function getValuesConcatInpCheckbox(name){
+    const inpts = document.querySelectorAll(`input[name="${name}"]:checked`);
+    if(inpts.length > 0){
+        return Array.from(inpts).map((v)=>
+        {
+            if(v.value === "Otro"){
+                const txtOtro = document.getElementById(`${name}Otro`);
+                if(txtOtro.value.trim().length>0) {
+                    return txtOtro.value;
+                }
+            }else{
+                return v.value;
+            }
+        }).filter(x=>x).join();
     }
 }

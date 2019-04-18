@@ -1,6 +1,7 @@
 package com.itsight.service;
 
 import com.itsight.domain.Trainer;
+import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseService;
 
@@ -17,4 +18,5 @@ public interface TrainerService extends BaseService<Trainer, Integer> {
 
     List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk);
 
+    String registrarPostulante(TrainerFichaDTO trainerFicha);
 }

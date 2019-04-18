@@ -80,7 +80,7 @@
                           </ul>
                           <div class="tab-content">
                               <div class="tab-pane fade" id="about">
-                                  <form>
+                                  <form id="frm_registro">
                                       <div class="form-group">
                                           <div class="pad-right-middle">
                                               <label>NOMBRE(S)<span class="obligatorio">*</span></label>
@@ -113,7 +113,7 @@
                                               <ul class="checks">
                                                   <li>
                                                       <div class="chk-content">Español
-                                                          <input name="Idiomas" value="Español" data-aka="Seleccionar idiomas" type="checkbox"/><span class="checkmark"></span>
+                                                          <input name="Idiomas" value="Español" data-aka="Seleccionar idiomas" type="checkbox" checked="checked"/><span class="checkmark"></span>
                                                       </div>
                                                   </li>
                                                   <li>
@@ -130,8 +130,8 @@
                                       </div>
                                       <div class="form-group" id="Estudios">
                                           <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                       </div>
                                       <div class="form-group">
                                           <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
@@ -139,13 +139,13 @@
                                       </div>
                                       <div class="form-group" id="ExpLaboral">
                                           <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                       </div>
                                       <div class="form-group" id="Logros">
                                           <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                       </div>
                                       <div class="form-group">
                                           <label>HORARIO LABORAL<span class="obligatorio">*</span></label>
@@ -156,7 +156,7 @@
                                           <ul class="checks">
                                               <li>
                                                   <div class="chk-content">Principiantes
-                                                      <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
+                                                      <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
                                                   </div>
                                               </li>
                                               <li>
@@ -182,7 +182,7 @@
                                       </div>
                                       <div class="form-group" id="Especialidades">
                                           <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                          <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
                                           <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                       </div>
                                       <div class="form-group">
@@ -190,17 +190,17 @@
                                           <ul class="checks">
                                               <li>
                                                   <div class="chk-content">Personalizado
-                                                      <input type="checkbox" name="FormaTrabajo" checked="checked"><span class="checkmark"></span>
+                                                      <input type="checkbox" name="FormaTrabajo" value="Personalizado" checked="checked"><span class="checkmark"></span>
                                                   </div>
                                               </li>
                                               <li>
                                                   <div class="chk-content">En grupo
-                                                      <input type="checkbox" name="FormaTrabajo"><span class="checkmark"></span>
+                                                      <input type="checkbox" name="FormaTrabajo" value="En grupo"><span class="checkmark"></span>
                                                   </div>
                                               </li>
                                               <li>
                                                   <div class="chk-content">Online
-                                                      <input type="checkbox" name="FormaTrabajo"><span class="checkmark"></span>
+                                                      <input type="checkbox" name="FormaTrabajo" value="Online"><span class="checkmark"></span>
                                                   </div>
                                               </li>
                                           </ul>
@@ -220,7 +220,7 @@
                                               </div>
                                           </div>-->
                                       </div>
-                                      <button class="btn btn-default btn-black" type="button">GUARDAR</button>
+                                      <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
                                       </div>
                                   </form>
                               </div>
@@ -228,20 +228,63 @@
                                   <form>
                                       <div class="form-group">
                                           <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.correo}" class="form-control" type="text" id="Correo" name="Correo" readonly="readonly">
+                                          <input th:value="${postulante.correo}" class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
                                       </div>
                                       <div class="form-group">
                                           <label>TELEFONO</label>
-                                          <input class="form-control" type="text" id="TelefonoFijo" name="TelefonoFijo">
+                                          <input class="form-control" type="text" id="Telefono" name="Telefono">
                                       </div>
                                       <div class="form-group">
                                           <label>CELULAR<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil" readonly="readonly">
+                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
+                                          <select class="form-control" id="TipoDocumento" name="TipoDocumento">
+                                              <option value="1">DNI</option>
+                                              <option value="2">CE</option>
+                                          </select>
                                       </div>
                                       <div class="form-group">
                                           <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
                                           <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
                                       </div>
+                                      <div class="form-group">
+                                          <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  <div class="col-md-5 col-sm-5">
+                                                      <label>Departamento:</label>
+                                                  </div>
+                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                      <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                          <option selected="selected" value="15">Lima</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-12">
+                                                  <div class="col-md-5 col-sm-5">
+                                                      <label>Provincia:</label>
+                                                  </div>
+                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                      <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                          <option selected="selected" value="01">Lima</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-12">
+                                                  <div class="col-md-5 col-sm-5">
+                                                      <label>Distrito:</label>
+                                                  </div>
+                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                      <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                          <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
                                       <button class="btn btn-default btn-black" type="button">GUARDAR</button>
                                   </form>
                               </div>
@@ -261,8 +304,8 @@
                                           </div>
                                           <div class="form-group" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE</label>
-                                              <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                              <input class="form-control mg-bt-10 inp-svc-incluye" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                       </div>
                                       <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIOS</button>
@@ -356,12 +399,12 @@
                                           <ul class="checks">
                                               <li>
                                                   <div class="chk-content">En efectivo
-                                                      <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                                                      <input type="checkbox"><span class="checkmark"></span>
                                                   </div>
                                               </li>
                                               <li>
                                                   <div class="chk-content">Transferencia
-                                                      <input type="checkbox"><span class="checkmark"></span>
+                                                      <input type="checkbox" checked="checked"><span class="checkmark"></span>
                                                   </div>
                                               </li>
                                               <li>
@@ -390,7 +433,13 @@
                                           <input class="form-control" id="NumeroInterbancario" type="text" placeholder="Número de código interbancario">
                                       </div>
                                       <div class="form-group">
-                                          <input class="form-control" id="NombreBanco" type="text" placeholder="Banco">
+                                          <select name="BancoId" id="BancoId">
+                                              <option value="1">Banco de Crédito del Perú (BCP)</option>
+                                              <option value="2">Banco Continental (BBVA)</option>
+                                              <option value="3">Interbank</option>
+                                              <option value="4">Scotiabank</option>
+                                              <option value="5">Pichincha(Diners)</option>
+                                          </select>
                                       </div>
                                       <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR NUEVA CUENTA</button>
                                       <button class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
@@ -461,20 +510,19 @@
           </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-    <script th:src="@{/js/forms.js}+'?'+${version}" type="text/javascript"></script>
-    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script>
         const inpImg = document.getElementById('inpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
         const inpGaleria = document.getElementById('InpGaleria');
+        const btnGuardar = document.getElementById('btnGuardar')
         const btnNuevoServicio = document.getElementById('btnNuevoServicio');
         const btnNuevaTarifa = document.getElementById('btnNuevaTarifa');
         const btnNuevaCuentaBanc = document.getElementById('btnNuevaCuentaBanc');
         const tabService = document.getElementById('service');
         const servicios = [];
         const ccBancarias = [];
-        const initTabActive = 3;
+        const initTabActive = 1;
         let selServicioId = -1;
         let accServicioId = 0;
         let accTarifaId = 0;
@@ -485,6 +533,7 @@
             uploadAndShow(inpImg, imgPerfil);
             uploadImgs(inpGaleria, 'ImgsGaleria');
             showInitTab(initTabActive);
+            btnGuardar.addEventListener('click', sendForm);
             btnNuevoServicio.addEventListener('click', agregarServicio);
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
             btnNuevaCuentaBanc.addEventListener('click', agregarCuentaBancaria);
@@ -492,7 +541,35 @@
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
+            init();
         })();
+
+        function init(){
+            if(flag_form_populate){
+                populateForm();
+            }
+        }
+
+        function sendForm(){
+            const arrURL = window.location.href.split("/");
+            const hshId = arrURL[arrURL.length-1];
+            const body = generateBody();
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: _ctx + 'p/registro/trainer/'+hshId,
+                dataType: 'json',
+                data: JSON.stringify(body),
+                blockLoading: true,
+                success: function (res) {
+                    console.log(res);
+                }, error: (xhr) => {
+                    console.log(xhr);
+                    //exception(xhr);
+                }, complete: () => {
+                }
+            })
+        }
 
         function clickListenerTabService(e) {
             const input = e.target;
@@ -539,11 +616,11 @@
         function getTarifa(){
             const tar = new Object();
             tar.frecuencia = document.querySelector('#FrecuenciaPaquete').value;
-            tar.cantPersonas = document.querySelector('#txtCantidadPersonas').value.trim();
-            tar.cantMeses = document.querySelector('#txtCantidadMeses').value.trim();
-            tar.cantSesiones = document.querySelector('#txtCantidadSesiones').value.trim();
+            tar.personas = document.querySelector('#txtCantidadPersonas').value.trim();
+            tar.meses = document.querySelector('#txtCantidadMeses').value.trim();
+            tar.sesiones = document.querySelector('#txtCantidadSesiones').value.trim();
             tar.valid = false;
-            if(tar.frecuencia !== "" && Number(tar.cantPersonas)>0 && (Number(tar.cantMeses)>0 || Number(tar.cantSesiones)>0)){
+            if(tar.frecuencia !== "" && Number(tar.personas)>0 && (Number(tar.meses)>0 || Number(tar.sesiones)>0)){
                 tar.precio = document.querySelector('#PrecioPaquete').value;
                 tar.valid = true;
                 tar.id = ++accTarifaId;
@@ -553,12 +630,13 @@
 
         function getCuentaBancaria(){
             const c = new Object();
-            c.titularCuenta = document.querySelector('#TitularCuenta').value.trim();
+            c.titular = document.querySelector('#TitularCuenta').value.trim();
             c.titularTipoDoc = document.querySelector('#TitularTipoDoc').value;
             c.titularNumDoc = document.querySelector('#TitularNumDoc').value.trim();
-            c.numeroCuenta = document.querySelector('#NumeroCuenta').value.trim();
-            c.numeroInterbancario = document.querySelector('#NumeroInterbancario').value.trim();
-            c.nombreBanco = document.querySelector('#NombreBanco').value.trim();
+            c.numero = document.querySelector('#NumeroCuenta').value.trim();
+            c.interbancario = document.querySelector('#NumeroInterbancario').value.trim();
+            c.bancoId = document.querySelector('#BancoId').value.trim();
+            c.monedaId = 1;
             c.valid = false;
             if(c.titularTipoDoc !== "" && c.titularCuenta !== "" && c.titularNumDoc !== "" && c.numeroCuenta !== "" && c.numeroInterbancario !== "" && c.nombreBanco !== ""){
                 c.valid = true;
@@ -647,7 +725,7 @@
             document.querySelector('#TitularNumDoc').value = "";
             document.querySelector('#NumeroCuenta').value = "";
             document.querySelector('#NumeroInterbancario').value = "";
-            document.querySelector('#NombreBanco').value = "";
+            document.querySelector('#BancoId').selectedIndex = 0;
         }
 
 
@@ -671,6 +749,115 @@
 
         function ocultarModalFichas(){
             $('#myModalFichas').modal('hide');
+        }
+
+        function populateForm(){
+            //Page 1
+            const t0 = String(new Date().getTime());
+            const t1 = t0.slice(-3);
+            const t2 = t0.slice(-6).slice(0, 3);
+
+            document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('#Especialidad').value = `Entrenador para maratones`;
+            document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación. Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. Conmigo el trabajo será duro pero valdrá la pena.';
+            //Estudios
+            const inpEst = document.querySelector('.inp-estudio');
+            ["Licenciado en cultura física y deporte",
+            "Diplomado en nutrición para atletas",
+            "Diplomado en rehabilitación enfocada en deportista calificados",
+            "Curso en rescate en el agua",
+            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+            document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
+                '\n' +
+                'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
+            //Experiencia Laboral
+            const inpExp = document.querySelector('.inp-experiencia');
+            ["Entrenador en AquaLab (2013 – hasta la fecha)",
+             "Entrenador freelance (2005 – hasta la fecha)",
+             "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+            //Experiencia Laboral
+            const inpRes = document.querySelector('.inp-resultado');
+            ["Juan Pérez, campeón en natación 100 m libres (2017)",
+                "Rocío Flores, campeona sudamericana 4x100 m (2017)",
+                "Michael Barros, campeón en natación 4x200 (2016)",
+                "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+            document.querySelector('#CentroTrabajo').value = 'AQUALAB - Av. Nicolás de Ribera 145, San Isidro';
+            //Especialidades que domino
+            const inpEspDom = document.querySelector('.inp-esp-domino');
+            ["Entrenamiento en grupo",
+                "Entrenamiento uno a uno",
+                "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+
+            document.querySelector('#Telefono').value = `01 777 6666`;
+            document.querySelector('#NumeroDocumento').value = `23232323`;
+
+            //Servicios
+            document.querySelector('#NombreServicio').value = "Performance PRO";
+            document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. Hacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
+            document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
+                '\n' +
+                'Para más información sobre los servicios médicos, deberás comunicarte al celular de la clínica\n' +
+                '\n' +
+                'Esportiva: 977457815.\n' +
+                'La dirección es: Dos de mayo 516 Torre B, Of. 603 - Miraflores, Lima.';
+
+            const inpSvcInc = document.querySelector('.inp-svc-incluye');
+            ["Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales.",
+                "Recibirás consejos y podrás aclarar tus dudas de forma presencial los días que nos veamos.",
+                "Podrás hacer consultas al equipo de Licenciados en Terapia Física y Rehabilitación de la clínica ESPORTIVA, comunicándote al: +51 977457815.",
+                "Personalización del programa con tu frecuencia cardiaca, ritmos de entrenamiento y forma física.",
+                "Contarás con videos demostrativos ejecutados por atletas profesionales, para que puedas realizar tus ejercicios de manera eficiente y segura.",
+                "Tendrás acceso a un espacio exclusivo dentro de la plataforma, donde podrás ver tu bitácora de entrenamientos, videos, consejos, la planificación de tu temporada a largo plazo, historial de pagos y datos personales.",
+                "Obtendrás descuentos hasta del 30% en servicios médicos profesionales en la clínica ESPORTIVA, dependiendo de los horarios y el servicio que elijas."]
+                .forEach(e => agregarInputDinamico(inpSvcInc, 7, 'inp-svc-incluye').value = e);
+            document.getElementById('btnNuevoServicio').click();
+
+            //Tarifario al servicio agregado anterior
+            document.getElementById('txtCantidadPersonas').value = "1";
+            document.getElementById('txtCantidadMeses').value = "4";
+            document.getElementById('txtCantidadSesiones').value = "14";
+            document.getElementById('PrecioPaquete').value = "800.00";
+            document.getElementById('btnNuevaTarifa').click();
+
+            //Información de pago
+            document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
+            document.getElementById('TitularNumDoc').value = "35311222";
+            document.getElementById('NumeroCuenta').value = "194-91022548-0-66";
+            document.getElementById('NumeroInterbancario').value = "00219419102254806693";
+            document.getElementById('btnNuevaCuentaBanc').click();
+
+            document.querySelector('#inpTermCond').checked = true;
+
+            var tid = setInterval( function () {
+                if ( document.readyState !== 'complete' ) return;
+                else document.getElementById('btnGuardar').click();
+                clearInterval( tid );
+                // do your work
+            }, 100);
+        }
+
+        function generateBody(){
+            const obj = getFormData($('#frm_registro'));
+            //Ubigeo
+
+            obj.paisId = 604;
+            obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+            obj.telefono = document.getElementById('Telefono').value;
+            obj.movil = document.getElementById('Movil').value;
+            obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;
+            obj.numeroDocumento = document.getElementById('NumeroDocumento').value;
+            obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
+            obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
+            obj.especialidades = getValuesByClass('inp-esp-domino');
+            obj.estudios = getValuesByClass('inp-estudio');
+            obj.experiencias = getValuesByClass('inp-experiencia');
+            obj.resultados = getValuesByClass('inp-resultado');
+            obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
+
+            obj.servicios = servicios;
+            obj.cuentas = ccBancarias;
+            return obj;
         }
 
     </script>

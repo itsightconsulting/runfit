@@ -84,7 +84,7 @@
               </div></a>
             </div>
           </div>
-          <form id="frmRegistro" style="margin:0px !important">
+          <form id="frm_registro" style="margin:0px !important">
             <div class="row ficha-01 fade-ficha inpts-1">
               <div class="col-md-12">
                 <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
@@ -158,7 +158,7 @@
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
                               <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento">
-                                <option selected="selected" value="51">Lima</option>
+                                <option selected="selected" value="15">Lima</option>
                               </select>
                             </div>
                           </div>
@@ -1342,7 +1342,7 @@
       let selectedMuscles = [];
 
       const stUbicacion = document.getElementById('stUbicacion');
-      const mainFrm = document.getElementById('frmRegistro');
+      const mainFrm = document.getElementById('frm_registro');
       const btGuardar = document.getElementById('btnGuardar');
 
       (function () {
@@ -1507,7 +1507,7 @@
       }
 
       function generateBody(){
-        const obj = getFormData($('#frmRegistro'));
+        const obj = getFormData($('#frm_registro'));
         //Ubigeo
 
         obj.paisId = 604;
@@ -1597,23 +1597,6 @@
               obj.prioridad = v.querySelector('.inp-prioridad').value;
               return obj;
           });
-      }
-
-      function getValuesConcatInpCheckbox(name){
-        const inpts = document.querySelectorAll(`input[name="${name}"]:checked`);
-        if(inpts.length > 0){
-          return Array.from(inpts).map((v)=>
-            {
-              if(v.value === "Otro"){
-                const txtOtro = document.getElementById(`${name}Otro`);
-                if(txtOtro.value.trim().length>0) {
-                  return txtOtro.value;
-                }
-              }else{
-                return v.value;
-              }
-            }).filter(x=>x).join();
-        }
       }
 
       function getValuesCondicionMejora(){

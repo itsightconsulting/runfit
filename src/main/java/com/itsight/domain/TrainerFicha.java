@@ -60,23 +60,23 @@ public class TrainerFicha implements Serializable {
     private String metodoTrabajo;
     @Lob
     @Column(nullable = false)
-    private String expLaboral;
+    private String experiencias;
     @Lob
     @Column(nullable = false)
-    private String logros;
+    private String resultados;
     @Column(nullable = false)
-    private String nivelClientes;
+    private String niveles;
     @Column(nullable = false)
     private String centroTrabajo;
     @Column(nullable = false)
     private String especialidades;
     @Column(nullable = false)
-    private String formaTrabajo;
+    private String formasTrabajo;
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String miniGaleria;
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String adicionalInfo;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
@@ -86,13 +86,13 @@ public class TrainerFicha implements Serializable {
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<CuentaPago> cuentas;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private UUID uuid;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String rutaWebImg;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String rutaRealImg;
 
     @JsonManagedReference

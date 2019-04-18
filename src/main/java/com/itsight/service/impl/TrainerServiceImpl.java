@@ -1,9 +1,7 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.PorcentajesKilometraje;
-import com.itsight.domain.SecurityRole;
-import com.itsight.domain.SecurityUser;
-import com.itsight.domain.Trainer;
+import com.itsight.domain.*;
+import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.jsonb.PorcKiloTipo;
 import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
@@ -13,18 +11,19 @@ import com.itsight.repository.EspecificacionSubCategoriaRepository;
 import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TrainerRepository;
-import com.itsight.service.EmailService;
-import com.itsight.service.PorcentajesKilometrajeService;
-import com.itsight.service.RolService;
-import com.itsight.service.TrainerService;
+import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,15 +43,19 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     private EmailService emailService;
 
+    private PostulanteTrainerService postulanteTrainerService;
+
     @Value("${domain.name}")
     private String domainName;
 
+    @Autowired
     public TrainerServiceImpl(TrainerRepository repository,
             EspecificacionSubCategoriaRepository especificacionSubCategoriaRepository,
             RolService rolService, SecurityRoleRepository securityRoleRepository,
             SecurityUserRepository securityUserRepository,
             PorcentajesKilometrajeService porcentajesKilometrajeService,
-            EmailService emailService) {
+            EmailService emailService,
+            PostulanteTrainerService postulanteTrainerService) {
         super(repository);
         this.especificacionSubCategoriaRepository = especificacionSubCategoriaRepository;
         this.rolService = rolService;
@@ -60,6 +63,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         this.securityUserRepository = securityUserRepository;
         this.porcentajesKilometrajeService = porcentajesKilometrajeService;
         this.emailService = emailService;
+        this.postulanteTrainerService = postulanteTrainerService;
     }
 
     @Override
@@ -220,6 +224,33 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             }
         }
         return ResponseCode.VF_USUARIO_REPETIDO.get();
+    }
+
+    @Override
+    public String registrarPostulante(TrainerFichaDTO trainerFicha) {
+        TrainerFicha obj = new TrainerFicha();
+        BeanUtils.copyProperties(trainerFicha, obj);
+        Integer i = new Random().nextInt(1000);
+        Trainer trainer = new Trainer(
+                trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
+                trainerFicha.getMovil(), trainerFicha.getCorreo(), "12345678", true, 1, Enums.TipoUsuario.ENTRENADOR.ordinal(), "T51C"+i,true);
+        trainer.setPais(trainerFicha.getPaisId());
+        trainer.setUbigeo(trainerFicha.getUbigeo());
+        trainer.setCanPerValoracion(0);
+        trainer.setTotalValoracion(BigDecimal.valueOf(0L));
+
+        trainer.setUsername(trainerFicha.getCorreo());
+        trainer.setPassword("runfit");
+        List<TrainerFicha> lstTf = new ArrayList<>();
+        obj.setTrainer(trainer);
+        lstTf.add(obj);
+        trainer.setLstTrainerFicha(lstTf);
+        registrar(trainer, "2");
+
+        PostulanteTrainer postulante = postulanteTrainerService.findOne(trainerFicha.getPostulanteTrainerId());
+        postulante.setFlagRegistrado(true);
+        postulanteTrainerService.save(postulante);
+        return ResponseCode.EXITO_GENERICA.get();
     }
 
     @Override

@@ -194,7 +194,7 @@ function validationByNumSheet(numSheet){
     let continuosValidator = true;
     const inptsNoPassed = [];
     alls.forEach(v=>{
-        const isValid = $("#frmRegistro").validate().element(v);
+        const isValid = $("#frm_registro").validate().element(v);
         if(!isValid){
             continuosValidator = false;
             inptsNoPassed.push(v);

@@ -47,7 +47,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String correo;
     @Column(length = 16)
-    private String telefonoFijo;
+    private String telefono;
     @Column(nullable = false, length = 16)
     private String movil;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
@@ -101,7 +101,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     private List<RedFitness> lstRedIntegrante;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer", cascade = CascadeType.PERSIST)
     private List<TrainerFicha> lstTrainerFicha;
 
     @JsonBackReference
@@ -141,12 +141,12 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.codigoTrainer = codigoTrainer;
     }
 
-    public Trainer(String nombres, String apellidos, String correo, String telefonoFijo, String movil, String username,
-                String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, String codigoTrainer, boolean flagActivo) {
+    public Trainer(String nombres, String apellidos, String correo, String telefono, String movil, String username,
+                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, String codigoTrainer, boolean flagActivo) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
-        this.telefonoFijo = telefonoFijo;
+        this.telefono = telefono;
         this.movil = movil;
         this.username = username;
         this.numeroDocumento = numeroDocumento;

@@ -548,7 +548,7 @@ Use search to find needed section.
 
     <!-- breadcrumb -->
     <ol class="breadcrumb">
-      <li>Home</li><li>Error 403</li>
+      <li>Home</li><li th:text="${msg != null} ? ${msg} : 'Error 403'"></li>
     </ol>
     <!-- end breadcrumb -->
 
@@ -577,7 +577,7 @@ Use search to find needed section.
         <div class="row">
           <div class="col-sm-12">
             <div class="text-center error-box">
-              <h1 class="error-text-2 bounceInDown animated"> Error 403 <span class="particle particle--c"></span><span class="particle particle--a"></span><span class="particle particle--b"></span></h1>
+                <h1 class="error-text-2 bounceInDown animated"> <th:block th:text="${msg != null} ? ${msg} : 'Error 403'"></th:block><span class="particle particle--c"></span><span class="particle particle--a"></span><span class="particle particle--b"></span></h1>
               <h2 class="font-xl"><strong><i class="fa fa-fw fa-warning fa-lg text-warning"></i> Acceso <u>No</u> Permitido</strong></h2>
               <br />
               <p class="lead">
