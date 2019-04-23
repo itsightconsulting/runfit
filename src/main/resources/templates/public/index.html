@@ -154,5 +154,9 @@
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
     <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
+    <script th:inline="javascript">
+      (function(){
+      })();
+    </script>
   </body>
 </html>

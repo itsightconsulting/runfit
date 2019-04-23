@@ -579,14 +579,13 @@ function generateRandomMail(){
         xhr.setRequestHeader(header, token);
         if (options.processData == false) {
             spinnerUpload(xhr);
-        }else{
-            if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
+        } else{
+            if((options.type === 'POST' || options.type === 'PUT' || options.type === 'GET') && !options.blockLoading){
                 $("#btnGuardar").attr('disabled','disabled');
                 $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
-            }else{
+            } else{
                 $gbInterval = spinnerSwitchTab(efectoImagenTransicion);
             }
-
         }
     });
 

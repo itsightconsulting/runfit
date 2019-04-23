@@ -30,6 +30,7 @@ public class TrainerFichaDTO implements Serializable {
     private String centroTrabajo;
     private String especialidades;
     private String formasTrabajo;
+    private String nomPag;
 
     private String miniGaleria;
 

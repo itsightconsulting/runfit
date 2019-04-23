@@ -5,4 +5,6 @@ import com.itsight.generic.BaseService;
 
 public interface PostulanteTrainerService extends BaseService<PostulanteTrainer, Integer> {
     String decidir(Integer preTrainerId, Integer decisionId);
+
+    void updateFlagRegistradoById(Integer id, boolean flag);
 }

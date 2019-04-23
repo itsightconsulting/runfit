@@ -854,9 +854,11 @@
             obj.experiencias = getValuesByClass('inp-experiencia');
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
-
+            const rdmNum = Math.floor(Math.random() * 100);
+            const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.servicios = servicios;
             obj.cuentas = ccBancarias;
+            obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
             return obj;
         }
 

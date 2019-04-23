@@ -201,4 +201,9 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
 
         return Enums.ResponseCode.EXITO_GENERICA.get();
     }
+
+    @Override
+    public void updateFlagRegistradoById(Integer id, boolean flag) {
+        repository.updateFlagRegistradoById(id, flag);
+    }
 }

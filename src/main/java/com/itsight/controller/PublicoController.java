@@ -4,6 +4,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
+import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/p")
@@ -31,17 +33,21 @@ public class PublicoController {
 
     private TrainerService trainerService;
 
+    private TrainerFichaService trainerFichaService;
+
     @Autowired
     public PublicoController(CondicionMejoraService condicionMejoraService,
                              DisciplinaService disciplinaService,
                              PostulanteTrainerService postulanteTrainerService,
                              UbPeruService ubPeruService,
-                             TrainerService trainerService) {
+                             TrainerService trainerService,
+                             TrainerFichaService trainerFichaService) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.ubPeruService = ubPeruService;
         this.trainerService = trainerService;
+        this.trainerFichaService = trainerFichaService;
     }
 
     @GetMapping("/fi/2")
@@ -65,13 +71,13 @@ public class PublicoController {
     }
 
     @GetMapping("/busqueda/trainers")
-    public ModelAndView busquedaTrainer(){
+    public ModelAndView busquedaTrainer(Model model){
+        model.addAttribute("trainers", trainerFichaService.findAllWithFgEnt());
         return new ModelAndView(ViewConstant.MAIN_BUSQUEDA_TRAINER);
     }
 
     @GetMapping("/ficha-inscripcion")
     public ModelAndView fichaInscripcion(Model model) {
-        model.addAttribute("lstCondMejoras", condicionMejoraService.getAll());
         return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
     }
 
@@ -137,4 +143,10 @@ public class PublicoController {
     }
 
     //END TRAINER PROCESS
+
+    //TestQueries
+    @GetMapping("/get/all/trainer-ficha")
+    public @ResponseBody List<TrainerFichaPOJO> findAllTrainerResponseBody(){
+        return trainerFichaService.findAllWithFgEnt();
+    }
 }

@@ -2,8 +2,10 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.jsonb.CuentaPago;
 import com.itsight.domain.jsonb.Servicio;
+import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -26,6 +28,86 @@ import java.util.UUID;
 @TypeDefs({
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
+@SqlResultSetMappings({
+    @SqlResultSetMapping(
+        name="getAllByDemo",
+        classes = {
+            @ConstructorResult(
+                targetClass = TrainerFichaPOJO.class,
+                columns = {
+                    @ColumnResult(name = "id", type = Integer.class),
+                    @ColumnResult(name = "nombres", type = String.class),
+                    @ColumnResult(name = "apellidos", type = String.class),
+                    @ColumnResult(name = "especialidad", type = String.class),
+                    @ColumnResult(name = "ubigeo", type = String.class),
+                    @ColumnResult(name = "acerca", type = String.class),
+                    @ColumnResult(name = "canPerValoracion", type = Integer.class),
+                    @ColumnResult(name = "totalValoracion", type = Double.class),
+                    @ColumnResult(name = "rutaWebImg", type = String.class),
+                    @ColumnResult(name = "servicios", type = String.class),
+                    @ColumnResult(name = "nomPag", type = String.class)
+                }
+            )
+        }
+    ),
+    @SqlResultSetMapping(
+            name="getByNomPagPar",
+            classes = {
+                    @ConstructorResult(
+                            targetClass = TrainerFichaPOJO.class,
+                            columns = {
+                                    @ColumnResult(name = "id", type = Integer.class),
+                                    @ColumnResult(name = "nombres", type = String.class),
+                                    @ColumnResult(name = "apellidos", type = String.class),
+                                    @ColumnResult(name = "especialidad", type = String.class),
+                                    @ColumnResult(name = "ubigeo", type = String.class),
+                                    @ColumnResult(name = "acerca", type = String.class),
+                                    @ColumnResult(name = "canPerValoracion", type = Integer.class),
+                                    @ColumnResult(name = "totalValoracion", type = Double.class),
+                                    @ColumnResult(name = "rutaWebImg", type = String.class),
+                                    @ColumnResult(name = "servicios", type = String.class),
+                                    @ColumnResult(name = "nomPag", type = String.class)
+                            }
+                    )
+            }
+    )
+})
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "TrainerFicha.findAllWithFgEnt",
+                      query = "SELECT \n" +
+                              "\tf.trainer_id id,\n" +
+                              "\tt.nombres, \n" +
+                              "\tt.apellidos, \n" +
+                              "\tf.especialidad, \n" +
+                              "\tt.ubigeo, \n" +
+                              "\tf.acerca, \n" +
+                              "\tt.can_per_valoracion canPerValoracion, \n" +
+                              "\tt.total_valoracion totalValoracion,\n" +
+                              "\tf.ruta_web_img rutaWebImg,\n" +
+                              "\tCAST(f.servicios AS text),\n" +
+                              "\tf.nom_pag nomPag \n" +
+                              "FROM trainer t \n" +
+                              "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n",
+                      resultSetMapping = "getAllByDemo"),
+    @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
+                      query = "SELECT \n" +
+                              "\tf.trainer_id id,\n" +
+                              "\tt.nombres, \n" +
+                              "\tt.apellidos, \n" +
+                              "\tf.especialidad, \n" +
+                              "\tt.ubigeo, \n" +
+                              "\tf.acerca, \n" +
+                              "\tt.can_per_valoracion canPerValoracion, \n" +
+                              "\tt.total_valoracion totalValoracion,\n" +
+                              "\tf.ruta_web_img rutaWebImg,\n" +
+                              "\tCAST(f.servicios AS text),\n" +
+                              "\tf.nom_pag nomPag \n" +
+                              "FROM trainer t \n" +
+                              "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
+                              "INNER JOIN disciplina d ON d.disciplina=f.disciplina\n" +
+                               "WHERE f.nom_pag = ?1",
+                      resultSetMapping = "getByNomPagPar")
+})
 @Entity
 @Data
 public class TrainerFicha implements Serializable {
@@ -47,22 +129,17 @@ public class TrainerFicha implements Serializable {
     private String especialidad;
     @Column(nullable = false)
     private Integer disciplinaId;
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String acerca;
     @Column(nullable = false)
     private String idiomas;
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String estudios;
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String metodoTrabajo;
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String experiencias;
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String resultados;
     @Column(nullable = false)
     private String niveles;
@@ -72,11 +149,9 @@ public class TrainerFicha implements Serializable {
     private String especialidades;
     @Column(nullable = false)
     private String formasTrabajo;
-    @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition="TEXT")
     private String miniGaleria;
-    @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition="TEXT")
     private String adicionalInfo;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
@@ -94,6 +169,9 @@ public class TrainerFicha implements Serializable {
 
     @Column(nullable = true)
     private String rutaRealImg;
+
+    @Column(nullable = true, unique = true)
+    private String nomPag;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

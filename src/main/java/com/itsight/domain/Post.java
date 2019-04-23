@@ -55,8 +55,7 @@ public class Post extends AuditingEntity implements Serializable {
     @Size(min = 1, max = 255)
     private String titulo;
 
-    @Lob
-    @Column
+    @Column(columnDefinition="TEXT")
     @Size(max = 7000)
     private String descripcion;
 

@@ -246,10 +246,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         lstTf.add(obj);
         trainer.setLstTrainerFicha(lstTf);
         registrar(trainer, "2");
-
-        PostulanteTrainer postulante = postulanteTrainerService.findOne(trainerFicha.getPostulanteTrainerId());
-        postulante.setFlagRegistrado(true);
-        postulanteTrainerService.save(postulante);
+        postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
         return ResponseCode.EXITO_GENERICA.get();
     }
 

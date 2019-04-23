@@ -101,7 +101,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     private List<RedFitness> lstRedIntegrante;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<TrainerFicha> lstTrainerFicha;
 
     @JsonBackReference

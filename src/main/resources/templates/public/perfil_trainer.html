@@ -55,11 +55,11 @@
                   <form>
                     <div class="form-group">
                       <label>NOMBRE Y APELLIDOS</label>
-                      <p>Pedro Mori Arias</p>
+                      <p id="NombreFull">Pedro Mori Arias</p>
                     </div>
                     <div class="form-group">
                       <label>ESPECIALIDAD</label>
-                      <p>Entrenador de natación</p>
+                      <p id="Especialidad">Entrenador de natación</p>
                     </div>
                     <div class="form-group">
                       <label>ELIGE DEPORTE O ACTIVIDADES QUE REALIZAS</label>
@@ -345,8 +345,51 @@
       </section>
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
-    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
-    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
+    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
+    <script th:inline="javascript">
+      (function(){
+        init();
+      })();
+
+      function init(){
+        getTrainer();
+      }
+
+      function getTrainer(){
+        const urlArr = window.location.href.split("/");
+        const nomPag = urlArr[urlArr.length-1];
+        $.ajax({
+          type: 'GET',
+          url: _ctx + 'p/trainer/get/'+nomPag,
+          dataType: 'json',
+          blockLoading: false,
+          success: function (res) {
+            recrearPerfil(res);
+          }, error: (xhr) => {
+            console.log(xhr);
+          }, complete: () => {
+          }
+        })
+      }
+
+      function recrearPerfil(trainer){
+
+        //Tab Acerca de mí
+        /*document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.;
+        document.querySelector('#').value = trainer.*/
+
+
+      }
+    </script>
   </body>
 </html>

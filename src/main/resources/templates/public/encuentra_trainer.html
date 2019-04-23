@@ -95,80 +95,87 @@
               <button class="btn btn-default btn-black" type="button">BUSCAR</button>
             </div>
           </div>
-          <div class="group-trainer row">
-            <div class="col-md-3 pad-0">
-              <div class="avatar-form">
-                <div class="avatar-form-content"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                <fieldset class="rating">
-                  <input id="star5" type="radio" name="rating" value="5"/>
-                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                  <input id="star4half" type="radio" name="rating" value="4 and a half"/>
-                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                  <input id="star4" type="radio" name="rating" value="4"/>
-                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                  <input id="star3half" type="radio" name="rating" value="3 and a half"/>
-                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                  <input id="star3" type="radio" name="rating" value="3"/>
-                  <label class="full" for="star3" title="Meh - 3 stars"></label>
-                  <input id="star2half" type="radio" name="rating" value="2 and a half"/>
-                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                  <input id="star2" type="radio" name="rating" value="2"/>
-                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                  <input id="star1half" type="radio" name="rating" value="1 and a half"/>
-                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                  <input id="star1" type="radio" name="rating" value="1"/>
-                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                  <input id="starhalf" type="radio" name="rating" value="half"/>
-                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-                </fieldset>
-                <p class="valoration">43 <span>(21 valoraciones)</span></p>
-              </div>
-            </div>
-            <div class="col-md-9">
-              <h4>NOMBRE ENTRENADOR<span class="title">Entrenador de natación</span><span class="location">La Molina - Lima</span></h4>
-              <p>A mediados del 2010, la demanda de atletas que solicitaban una asesoría altamente personalizada aumentó considerablemente. Esto llevó a que el licenciado cubano en cultura física y deportes, Dennys Maymir,  se diera cuenta que un cuadro de Excel y unas cuantas imágenes de ejercicios no eran suficientes para satisfacer al 100% las necesidades de sus atletas. Necesitaba una herramienta más potente, un sistema con el que a cualquier profesional de la salud y el deporte trabajar con su propia metodología, para asesorar de manera efectiva y segura.</p>
-              <button class="btn btn-default btn-black" type="button">VER PERFIL</button>
-            </div>
-          </div>
-          <div class="group-trainer row">
-            <div class="col-md-3 pad-0">
-              <div class="avatar-form">
-                <div class="avatar-form-content"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                <fieldset class="rating">
-                  <input id="star5x" type="radio" name="rating" value="5"/>
-                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                  <input id="star4halfx" type="radio" name="rating" value="4 and a half"/>
-                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                  <input id="star4x" type="radio" name="rating" value="4"/>
-                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                  <input id="star3halfx" type="radio" name="rating" value="3 and a half"/>
-                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                  <input id="star3x" type="radio" name="rating" value="3"/>
-                  <label class="full" for="star3" title="Meh - 3 stars"></label>
-                  <input id="star2halfx" type="radio" name="rating" value="2 and a half"/>
-                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                  <input id="star2x" type="radio" name="rating" value="2"/>
-                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                  <input id="star1halfx" type="radio" name="rating" value="1 and a half"/>
-                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                  <input id="star1x" type="radio" name="rating" value="1"/>
-                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                  <input id="starhalf" type="radio" name="rating" value="half"/>
-                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-                </fieldset>
-                <p class="valoration">43 <span>(21 valoraciones)</span></p>
-              </div>
-            </div>
-            <div class="col-md-9">
-              <h4>NOMBRE ENTRENADOR<span class="title">Entrenador de natación</span><span class="location">La Molina - Lima</span></h4>
-              <p>A mediados del 2010, la demanda de atletas que solicitaban una asesoría altamente personalizada aumentó considerablemente. Esto llevó a que el licenciado cubano en cultura física y deportes, Dennys Maymir,  se diera cuenta que un cuadro de Excel y unas cuantas imágenes de ejercicios no eran suficientes para satisfacer al 100% las necesidades de sus atletas. Necesitaba una herramienta más potente, un sistema con el que a cualquier profesional de la salud y el deporte trabajar con su propia metodología, para asesorar de manera efectiva y segura.</p>
-              <button class="btn btn-default btn-black" type="button">VER PERFIL</button>
-            </div>
+          <div id="Trainers">
+
           </div>
         </div>
       </section>
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+    <script th:inline="javascript">
+      (function(){
+        init();
+      })();
+
+      function init(){
+        listarTrainers();
+      }
+
+      function listarTrainers(){
+        $.ajax({
+          type: 'GET',
+          url: _ctx + 'p/trainer/find/all',
+          dataType: 'json',
+          blockLoading: false,
+          success: function (res) {
+            recrearListado(res);
+          }, error: (xhr) => {
+            console.log(xhr);
+          }, complete: () => {
+          }
+        })
+      }
+
+      function recrearListado(arr){
+        const divTrainers = document.getElementById('Trainers');
+        arr.forEach((e)=>{
+          const acLen = e.acerca.length;
+          if(acLen > 540){
+            e.acerca = e.acerca.slice(0, 540).trim();
+              if(e.acerca.lastIndexOf(".") === e.acerca.length-1){
+                e.acerca = slice.replace(0,539);
+              }
+              e.acerca += "...";
+          };
+
+          const valoraciones = e.canPerValoracion;
+          const acumuladoValoracion = e.totalValoracion;
+          const valoracion = valoraciones === 0 ? 0 : (acumuladoValoracion/valoraciones).toFixed(1);
+          const nomLink = e.nomPag;
+          divTrainers.appendChild(htmlStringToElement(`
+          <div class="group-trainer row">
+              <div class="col-md-3 pad-0">
+              <div class="avatar-form">
+              <div class="avatar-form-content"><img src="/img/public/carousel-1.jpg"></div>
+              <fieldset class="rating">
+              <label class="full" for="star5" title="Awesome - 5 stars"></label>
+              <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+              <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+              <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+              <label class="full" for="star3" title="Meh - 3 stars"></label>
+              <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+              <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+              <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+              <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+              <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+              </fieldset>
+              <p class="valoration">${valoracion} <span>(${valoraciones} valoraciones)</span></p>
+      </div>
+      </div>
+      <div class="col-md-9">
+              <h4>${e.nombres} ${e.apellidos}<span class="title">${e.especialidad}</span><span class="location">La Molina - Lima</span></h4>
+      <p>${e.acerca}</p>
+      <button class="btn btn-default btn-black" type="button" onclick="verPerfil('${nomLink}')">VER PERFIL</button>
+      </div>
+      </div>
+          `));
+        });
+      }
+
+      function verPerfil(nomLink){
+        window.location.href = _ctx + 'p/trainer/'+nomLink;
+      }
+    </script>
   </body>
 </html>

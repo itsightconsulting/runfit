@@ -20,8 +20,7 @@ public class Correo extends AuditingEntity {
     @Column(nullable = false)
     private String asunto;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String body;
 
     @JsonManagedReference
