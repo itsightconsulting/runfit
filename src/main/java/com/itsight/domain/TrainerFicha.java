@@ -36,8 +36,7 @@ import java.util.UUID;
                 targetClass = TrainerFichaPOJO.class,
                 columns = {
                     @ColumnResult(name = "id", type = Integer.class),
-                    @ColumnResult(name = "nombres", type = String.class),
-                    @ColumnResult(name = "apellidos", type = String.class),
+                    @ColumnResult(name = "nombreCompleto", type = String.class),
                     @ColumnResult(name = "especialidad", type = String.class),
                     @ColumnResult(name = "ubigeo", type = String.class),
                     @ColumnResult(name = "acerca", type = String.class),
@@ -57,16 +56,27 @@ import java.util.UUID;
                             targetClass = TrainerFichaPOJO.class,
                             columns = {
                                     @ColumnResult(name = "id", type = Integer.class),
-                                    @ColumnResult(name = "nombres", type = String.class),
-                                    @ColumnResult(name = "apellidos", type = String.class),
+                                    @ColumnResult(name = "nombreCompleto", type = String.class),
                                     @ColumnResult(name = "especialidad", type = String.class),
-                                    @ColumnResult(name = "ubigeo", type = String.class),
+                                    @ColumnResult(name = "disciplina", type = String.class),
                                     @ColumnResult(name = "acerca", type = String.class),
+                                    @ColumnResult(name = "idiomas", type = String.class),
+                                    @ColumnResult(name = "estudios", type = String.class),
+                                    @ColumnResult(name = "metodoTrabajo", type = String.class),
+                                    @ColumnResult(name = "experiencias", type = String.class),
+                                    @ColumnResult(name = "resultados", type = String.class),
+                                    @ColumnResult(name = "niveles", type = String.class),
+                                    @ColumnResult(name = "centroTrabajo", type = String.class),
+                                    @ColumnResult(name = "especialidades", type = String.class),
+                                    @ColumnResult(name = "formasTrabajo", type = String.class),
+                                    @ColumnResult(name = "miniGaleria", type = String.class),
+                                    @ColumnResult(name = "adicionalInfo", type = String.class),
+                                    @ColumnResult(name = "ubigeo", type = String.class),
                                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                                     @ColumnResult(name = "totalValoracion", type = Double.class),
                                     @ColumnResult(name = "rutaWebImg", type = String.class),
                                     @ColumnResult(name = "servicios", type = String.class),
-                                    @ColumnResult(name = "nomPag", type = String.class)
+                                    @ColumnResult(name = "cuentas", type = String.class)
                             }
                     )
             }
@@ -76,8 +86,7 @@ import java.util.UUID;
     @NamedNativeQuery(name = "TrainerFicha.findAllWithFgEnt",
                       query = "SELECT \n" +
                               "\tf.trainer_id id,\n" +
-                              "\tt.nombres, \n" +
-                              "\tt.apellidos, \n" +
+                              "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.especialidad, \n" +
                               "\tt.ubigeo, \n" +
                               "\tf.acerca, \n" +
@@ -92,20 +101,31 @@ import java.util.UUID;
     @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
                       query = "SELECT \n" +
                               "\tf.trainer_id id,\n" +
-                              "\tt.nombres, \n" +
-                              "\tt.apellidos, \n" +
+                              "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.especialidad, \n" +
+                              "\td.nombre disciplina,\n" +
+                              "\tf.acerca,\n" +
+                              "\tf.idiomas,\n" +
+                              "\tf.estudios,\n" +
+                              "\tf.metodo_trabajo metodoTrabajo,\n" +
+                              "\tf.experiencias,\n" +
+                              "\tf.resultados,\n" +
+                              "\tf.niveles,\n" +
+                              "\tf.centro_trabajo centroTrabajo,\n" +
+                              "\tf.especialidades,\n" +
+                              "\tf.formas_trabajo formasTrabajo,\n" +
+                              "\tf.mini_galeria miniGaleria,\n" +
+                              "\tf.adicional_info adicionalInfo,\n" +
                               "\tt.ubigeo, \n" +
-                              "\tf.acerca, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tf.ruta_web_img rutaWebImg,\n" +
                               "\tCAST(f.servicios AS text),\n" +
-                              "\tf.nom_pag nomPag \n" +
+                              "\tCAST(f.cuentas AS text)\n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
-                              "INNER JOIN disciplina d ON d.disciplina=f.disciplina\n" +
-                               "WHERE f.nom_pag = ?1",
+                              "INNER JOIN disciplina d ON d.disciplina_id=f.disciplina_id\n" +
+                              "WHERE f.nom_pag = ?",
                       resultSetMapping = "getByNomPagPar")
 })
 @Entity

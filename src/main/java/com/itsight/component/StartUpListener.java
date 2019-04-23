@@ -904,7 +904,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingUbPeru() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/ub_peru.txt").getInputStream();
+        InputStream is = new ClassPathResource("static/seeds/ub_peru.csv").getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
         String content = reader.lines().collect(Collectors.joining("\n"));
         String[] lines = content.split("\n");
@@ -916,7 +916,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingModulo() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/modulo.txt").getInputStream();
+        InputStream is = new ClassPathResource("static/seeds/modulo.csv").getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
         String content = reader.lines().collect(Collectors.joining("\n"));
         String[] lines = content.split("\n");
@@ -928,7 +928,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingCorreo() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/correo.txt").getInputStream();
+        InputStream is = new ClassPathResource("static/seeds/correo.csv").getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         String content = reader.lines().collect(Collectors.joining("\n"));
         String[] lines = content.split("\n");
