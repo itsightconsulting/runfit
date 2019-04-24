@@ -113,6 +113,8 @@ const dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "S
 const exceptNames = {"-9": "EX_NULL_POINTER", "-10": "EX_NULL_POINTER", "-99": "EX_NUMBER_FORMAT", "-100": "EX_MAX_SIZE_MULTIPART", "-101": "EX_MAX_UPLOAD_SIZE"};
 const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 const regexMail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const banks = [
+    {id: 1,nombre:	"Banco de Comercio"}, {id: 2,nombre:	"Banco de Crédito del Perú"}, {id: 3,nombre:	"Banco Interamericano de Finanzas (BanBif)"}, {id: 4,nombre:	"Banco Pichincha"}, {id: 5,nombre:	"BBVA Continental"}, {id: 6,nombre:	"Citibank Perú"}, {id: 7,nombre:	"Interbank"}, {id: 8,nombre:	"MiBanco"}, {id: 9,nombre:	"Scotiabank Perú"}, {id: 10,nombre:	"Banco GNB Perú"}, {id: 11,nombre:	"Banco Falabella"}, {id: 12,nombre:	"Banco Ripley"}, {id: 13,nombre:	"Banco Santander Perú"}, {id: 14,nombre:	"Banco Azteca"}, {id: 15,nombre:	"Banco Cencosud"}, {id: 16,nombre:	"ICBC PERU BANK"}];
 
 function limpiarMainForm() {
     $('#frm_registro').trigger("reset");
@@ -365,6 +367,13 @@ String.prototype.toHHMMSSM = function () {
 }
 
 String.prototype.toSeconds = function () { if (!this) return null; var hms = this.split(':'); return (+hms[0]) * 60 * 60 + (+hms[1]) * 60 + (+hms[2] || 0); }
+
+String.prototype.replaceAt=function(index, replacement) {
+    if(index>-1)
+        return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+    else
+        return this;
+}
 
 Number.prototype.toPercentage = function(){ return this/100;};
 

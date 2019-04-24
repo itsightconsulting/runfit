@@ -143,6 +143,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private CorreoService correoService;
 
+    @Autowired
+    private BancoService bancoService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -178,6 +181,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 addingUbPeru();
                 addingModulo();
                 addingCorreo();
+                addingBanco();
             } catch (IOException ex){
                 ex.printStackTrace();
             }
@@ -934,8 +938,20 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         String[] lines = content.split("\n");
         reader.close();
         for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split(",");
+            String[] line = lines[i].split("\\|");
             if (correoService.findOne(i) == null) correoService.save(new Correo(line[0].trim(), line[1].trim(), Integer.parseInt(line[2].trim())));
+        }
+    }
+
+    public void addingBanco() throws IOException {
+        InputStream is = new ClassPathResource("static/seeds/banco.csv").getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        String content = reader.lines().collect(Collectors.joining("\n"));
+        String[] lines = content.split("\n");
+        reader.close();
+        for(int i=1; i<lines.length;i++){
+            String[] line = lines[i].split(",");
+            if (bancoService.findOne(i) == null) bancoService.save(new Banco(line[0].trim()));
         }
     }
 

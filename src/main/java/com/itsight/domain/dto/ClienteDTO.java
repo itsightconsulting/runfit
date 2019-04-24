@@ -10,11 +10,12 @@ import java.util.Date;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteDTO implements Serializable  {
-
+    private Integer trainerId;
     private String nombres;
     private String apellidos;
     private String numeroDocumento;
     private String correo;
+    private String correoTrainer;
     private String movil;
     private Date fechaNacimiento;
     private String username;

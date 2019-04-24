@@ -22,9 +22,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.itsight.util.Enums.Mail.NUEVO_CLIENTE;
+import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
 import static com.itsight.util.Enums.ResponseCode;
 
 @Service
@@ -47,6 +50,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     private RedFitnessService redFitnessService;
 
+    private CorreoService correoService;
+
     @Autowired
     private ClienteService clienteService;
 
@@ -61,7 +66,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             EmailService emailService,
             ConfiguracionClienteService configuracionClienteService,
             ConfiguracionGeneralService configuracionGeneralService,
-            RedFitnessService redFitnessService) {
+            RedFitnessService redFitnessService,
+            CorreoService correoService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
@@ -71,6 +77,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         this.configuracionClienteService = configuracionClienteService;
         this.configuracionGeneralService = configuracionGeneralService;
         this.redFitnessService = redFitnessService;
+        this.correoService = correoService;
     }
 
     @Override
@@ -208,7 +215,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
                     //Enviando correo al nuevo cliente
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, cliente.getTipoUsuario().getId(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), sb.toString());
-                    return ResponseCode.REGISTRO.get()+','+String.valueOf(cliente.getId())+','+flagTrainer;
+                    return ResponseCode.REGISTRO.get()+','+cliente.getId()+','+flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();
             } catch (Exception e){
@@ -220,6 +227,17 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     @Override
     public String registroFull(ClienteDTO cliente) {
+        boolean pickTrainer = false;
+        if(cliente.getTrainerId() != null && cliente.getTrainerId() > 0){
+            Boolean suserActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
+            if(suserActive == null){
+                return ResponseCode.NOT_FOUND_MATCHES.get();
+            } else if(suserActive){
+                pickTrainer = true;
+            } else {
+                return ResponseCode.NOT_FOUND_MATCHES.get();
+            }
+        }
         LOGGER.info(cliente.getUsername()+": "+cliente.getPassword());
         Cliente objCli = new Cliente();
         objCli.setFlagActivo(true);
@@ -254,8 +272,18 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         cliConfg.setCliente(objCli);
         //Registrando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
         configuracionClienteService.save(cliConfg);
-        //Agregandolo a una red cualquiera
-        redFitnessService.save(new RedFitness(2, objCli.getId()));
+
+        //Agregandolo a la red de su entrenador
+        if(pickTrainer){
+            redFitnessService.save(new RedFitness(cliente.getTrainerId(), objCli.getId()));
+            emailService.enviarCorreoInformativo("Nuevo cliente Runfit","contoso.peru@gmail.com" /*cliente.getCorreoTrainer()*/, "<h1>Tienes un nuevo cliente</h1>");
+        }
+        //Enviando correo al nuevo cliente
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(NUEVO_CLIENTE.get());
+        //Envio de correo
+        String cuerpo = String.format(correo.getBody(), cliente.getUsername(), cliente.getPassword(), domainName);
+        emailService.enviarCorreoInformativo("Bienvenido a la familia","contoso.peru@gmail.com" /*cliente.getCorreo()*/, cuerpo);
         return ResponseCode.REGISTRO.get();
     }
 

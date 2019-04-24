@@ -10,9 +10,10 @@ import java.io.Serializable;
 public class CuentaPago implements Serializable {
 
     private Integer bancoId;
-    private Integer monedaId;
-    private String numero;
-    private String interbancario;
+    private String numeroSoles;
+    private String numeroDolares;
+    private String interbancarioSoles;
+    private String interbancarioDolares;
     private String titular;
     private String titularTipoDoc;
     private String titularNumDoc;

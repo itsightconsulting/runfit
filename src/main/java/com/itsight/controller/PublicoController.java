@@ -71,13 +71,25 @@ public class PublicoController {
     }
 
     @GetMapping("/busqueda/trainers")
-    public ModelAndView busquedaTrainer(Model model){
-        model.addAttribute("trainers", trainerFichaService.findAllWithFgEnt());
+    public ModelAndView busquedaTrainer(){
         return new ModelAndView(ViewConstant.MAIN_BUSQUEDA_TRAINER);
     }
 
-    @GetMapping("/ficha-inscripcion")
-    public ModelAndView fichaInscripcion(Model model) {
+    @GetMapping({"/ficha-inscripcion", "/ficha-inscripcion"})
+    public ModelAndView fichaInscripcion(
+        @RequestParam(name="key", required=false) String hshTrainerId,
+        @RequestParam(name="ml", required=false) String trainerMailDecode,
+        Model model) {
+        if(hshTrainerId != null){
+            Integer trainerId = Parseador.getDecodeHash32Id("rf-public", hshTrainerId);
+            if(trainerId == 0){
+                return new ModelAndView(ViewConstant.ERROR404);
+            }else{
+                model.addAttribute("trainerId", trainerId);
+                model.addAttribute("correoTrainer", trainerMailDecode);
+            }
+        }
+        model.addAttribute("lstCondMejoras", condicionMejoraService.findAll());
         return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
     }
 

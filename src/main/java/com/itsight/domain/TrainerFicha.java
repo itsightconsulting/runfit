@@ -71,6 +71,7 @@ import java.util.UUID;
                                     @ColumnResult(name = "formasTrabajo", type = String.class),
                                     @ColumnResult(name = "miniGaleria", type = String.class),
                                     @ColumnResult(name = "adicionalInfo", type = String.class),
+                                    @ColumnResult(name = "correo", type = String.class),
                                     @ColumnResult(name = "ubigeo", type = String.class),
                                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                                     @ColumnResult(name = "totalValoracion", type = Double.class),
@@ -100,7 +101,7 @@ import java.util.UUID;
                       resultSetMapping = "getAllByDemo"),
     @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
                       query = "SELECT \n" +
-                              "\tf.trainer_id id,\n" +
+                              "\tf.trainer_id id, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.especialidad, \n" +
                               "\td.nombre disciplina,\n" +
@@ -116,6 +117,7 @@ import java.util.UUID;
                               "\tf.formas_trabajo formasTrabajo,\n" +
                               "\tf.mini_galeria miniGaleria,\n" +
                               "\tf.adicional_info adicionalInfo,\n" +
+                              "\tt.correo,\n" +
                               "\tt.ubigeo, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +

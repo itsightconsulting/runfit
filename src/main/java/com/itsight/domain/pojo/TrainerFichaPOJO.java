@@ -25,6 +25,7 @@ public class TrainerFichaPOJO implements Serializable {
     private String formasTrabajo;
     private String miniGaleria;
     private String adicionalInfo;
+    private String correo;
     private String ubigeo;
     private int canPerValoracion;
     private Double totalValoracion;
@@ -49,7 +50,7 @@ public class TrainerFichaPOJO implements Serializable {
         this.nomPag = nomPag;
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, String especialidad, String disciplina, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String miniGaleria, String adicionalInfo, String ubigeo, int canPerValoracion, Double totalValoracion, String rutaWebImg, String servicios, String cuentas) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, String especialidad, String disciplina, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String miniGaleria, String adicionalInfo, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String rutaWebImg, String servicios, String cuentas) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.especialidad = especialidad;
@@ -66,6 +67,7 @@ public class TrainerFichaPOJO implements Serializable {
         this.formasTrabajo = formasTrabajo;
         this.miniGaleria = miniGaleria;
         this.adicionalInfo = adicionalInfo;
+        this.correo = correo;
         this.ubigeo = ubigeo;
         this.canPerValoracion = canPerValoracion;
         this.totalValoracion = totalValoracion;

@@ -427,18 +427,19 @@
                                           <input class="form-control" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
                                       </div>
                                       <div class="form-group">
-                                          <input class="form-control" id="NumeroCuenta" type="text" placeholder="Número de cuenta">
+                                          <input class="form-control" id="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
                                       </div>
                                       <div class="form-group">
-                                          <input class="form-control" id="NumeroInterbancario" type="text" placeholder="Número de código interbancario">
+                                          <input class="form-control" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
+                                      </div>
+                                      <div class="form-group">
+                                          <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
                                       </div>
                                       <div class="form-group">
                                           <select name="BancoId" id="BancoId">
-                                              <option value="1">Banco de Crédito del Perú (BCP)</option>
-                                              <option value="2">Banco Continental (BBVA)</option>
-                                              <option value="3">Interbank</option>
-                                              <option value="4">Scotiabank</option>
-                                              <option value="5">Pichincha(Diners)</option>
                                           </select>
                                       </div>
                                       <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR NUEVA CUENTA</button>
@@ -545,9 +546,14 @@
         })();
 
         function init(){
+            populateBancos();
             if(flag_form_populate){
                 populateForm();
             }
+        }
+
+        function populateBancos(){
+            document.getElementById('BancoId').innerHTML = banks.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
         }
 
         function sendForm(){
@@ -633,12 +639,13 @@
             c.titular = document.querySelector('#TitularCuenta').value.trim();
             c.titularTipoDoc = document.querySelector('#TitularTipoDoc').value;
             c.titularNumDoc = document.querySelector('#TitularNumDoc').value.trim();
-            c.numero = document.querySelector('#NumeroCuenta').value.trim();
-            c.interbancario = document.querySelector('#NumeroInterbancario').value.trim();
+            c.numeroSoles = document.querySelector('#NumeroCuentaSoles').value.trim();
+            c.numeroDolares = document.querySelector('#NumeroCuentaDolares').value.trim();
+            c.interbancarioSoles = document.querySelector('#InterbancarioSoles').value.trim();
+            c.interbancarioDolares = document.querySelector('#InterbancarioDolares').value.trim();
             c.bancoId = document.querySelector('#BancoId').value.trim();
-            c.monedaId = 1;
             c.valid = false;
-            if(c.titularTipoDoc !== "" && c.titularCuenta !== "" && c.titularNumDoc !== "" && c.numeroCuenta !== "" && c.numeroInterbancario !== "" && c.nombreBanco !== ""){
+            if(c.titularTipoDoc !== "" && c.titular !== "" && c.titularNumDoc !== "" && (c.numeroSoles !== "" || c.numeroDolares !== "") && (c.interbancarioSoles !== "" || c.interbancarioDolares !== "") && c.bancoId !== ""){
                 c.valid = true;
                 c.id = ++accCuentaId;
             }
@@ -723,8 +730,10 @@
             document.querySelector('#TitularCuenta').value = "";
             document.querySelector('#TitularTipoDoc').selectedIndex = 0;
             document.querySelector('#TitularNumDoc').value = "";
-            document.querySelector('#NumeroCuenta').value = "";
-            document.querySelector('#NumeroInterbancario').value = "";
+            document.querySelector('#NumeroCuentaSoles').value = "";
+            document.querySelector('#NumeroCuentaDolares').value = "";
+            document.querySelector('#InterbancarioSoles').value = "";
+            document.querySelector('#InterbancarioDolares').value = "";
             document.querySelector('#BancoId').selectedIndex = 0;
         }
 
@@ -823,8 +832,10 @@
             //Información de pago
             document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
             document.getElementById('TitularNumDoc').value = "35311222";
-            document.getElementById('NumeroCuenta').value = "194-91022548-0-66";
-            document.getElementById('NumeroInterbancario').value = "00219419102254806693";
+            document.getElementById('NumeroCuentaSoles').value = "194-91022548-0-66";
+            document.getElementById('InterbancarioSoles').value = "00219419102254806693";
+            document.getElementById('NumeroCuentaDolares').value = "192-91022548-0-66";
+            document.getElementById('InterbancarioDolares').value = "10219419102254806693";
             document.getElementById('btnNuevaCuentaBanc').click();
 
             document.querySelector('#inpTermCond').checked = true;

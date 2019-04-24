@@ -100,7 +100,9 @@ public class Enums {
     }
 
     public enum Mail{
-        POSTULACION_TRAINER(1);
+        POSTULACION_TRAINER(1),
+        DEMO(2),
+        NUEVO_CLIENTE(3);
 
         final int id;
 

@@ -1,7 +1,5 @@
 package com.itsight.util;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public class MailContents {
 
     public static StringBuilder contenidoNuevoUsuario(String username, String originalPassword, int tipoUsuario, String domainName){

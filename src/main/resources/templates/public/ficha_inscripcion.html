@@ -1304,6 +1304,9 @@
                               <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
+                          <input id="TrainerId" type="hidden" th:value="${trainerId}">
+                          <input id="CorreoTrainer" type="hidden" th:value="${correoTrainer}">
+                          trainerMailDecode
                         </ul><br/>
                       </div>
                       <div class="form-group">
@@ -1508,8 +1511,11 @@
 
       function generateBody(){
         const obj = getFormData($('#frm_registro'));
+        const trainerId = document.getElementById('TrainerId');
+        const correoTrainer = document.getElementById('CorreoTrainer');
+        obj.trainerId = trainerId.value === "" ? null : trainerId.value;
+        obj.correoTrainer = correoTrainer.value === "" ? null : atob(correoTrainer.value);
         //Ubigeo
-
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
         obj.cliFit = {};
