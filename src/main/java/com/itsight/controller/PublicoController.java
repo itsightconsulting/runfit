@@ -1,10 +1,13 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.BandejaTemporal;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
+import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -18,6 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/p")
@@ -34,6 +41,9 @@ public class PublicoController {
     private TrainerService trainerService;
 
     private TrainerFichaService trainerFichaService;
+
+    @Autowired
+    private BandejaTemporalRepository bandejaTemporalRepository;
 
     @Autowired
     public PublicoController(CondicionMejoraService condicionMejoraService,
@@ -101,39 +111,62 @@ public class PublicoController {
     }
 
     @PostMapping("/postulacion/trainer/registrar")
-    public @ResponseBody String registrarSolicitudTrainer(@ModelAttribute @Valid PostulanteTrainerDTO postulanteTrainerDTO){
+    public @ResponseBody String registrarSolicitudTrainer(
+            @ModelAttribute @Valid PostulanteTrainerDTO postulanteTrainerDTO){
         PostulanteTrainer preTrainer = new PostulanteTrainer();
         BeanUtils.copyProperties(postulanteTrainerDTO, preTrainer);
-        return postulanteTrainerService.registrar(preTrainer, null);
+        return jsonResponse(postulanteTrainerService.registrar(preTrainer, null));
     }
 
     @GetMapping("/formulario/trainer/{hashPreTrainerId}")
-    public ModelAndView formularioRegistroTrainer(Model model, @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId){
-        Integer hashId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
-        PostulanteTrainer obj = postulanteTrainerService.findOne(hashId);
-        if(obj == null){
+    public ModelAndView formularioRegistroTrainer(Model model,
+                @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId){
+        Integer preTraId = 0;
+
+        if(hashPreTrainerId.length() == 32){
+            preTraId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
+        }
+
+        if(preTraId == 0){
             return new ModelAndView(ViewConstant.ERROR404);
         }
-        if(obj.isFlagRechazado() || obj.isFlagRegistrado() || !obj.isFlagAceptado()){
+
+        PostulanteTrainer post = postulanteTrainerService.findOne(preTraId);
+        if(post == null){
             return new ModelAndView(ViewConstant.ERROR404);
         }
+        if(post.isFlagRechazado() || post.isFlagRegistrado() || !post.isFlagAceptado()){
+            return new ModelAndView(ViewConstant.ERROR404);
+        }
+
         Date now = new Date();
-        if(now.after(obj.getFechaLimiteAccion())){
+        if(now.after(post.getFechaLimiteAccion())){
             model.addAttribute("msg", "El vínculo ha expirado");
             return new ModelAndView(ViewConstant.ERROR403);
         }
         model.addAttribute("disciplinas", disciplinaService.findAll());
-        model.addAttribute("postulante", obj);
+        model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
     }
 
     @PostMapping("/registro/trainer/{hashPreTrainerId}")
-    public @ResponseBody String registroTrainer(@PathVariable(name = "hashPreTrainerId") String hashPreTrainerId, @RequestBody @Valid TrainerFichaDTO trainerFicha){
-        Integer postTraId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
+    public @ResponseBody String registroTrainer(
+                @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId,
+                @RequestBody @Valid TrainerFichaDTO trainerFicha) throws CustomValidationException {
+        Integer postTraId = 0;
+
+        if(hashPreTrainerId.length() == 32){
+            postTraId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
+        }
+
+        if(postTraId == 0){
+            throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
+        }
+
         PostulanteTrainer postulante = postulanteTrainerService.findOne(postTraId);
         if(postulante == null){
-            return Enums.ResponseCode.NOT_FOUND_MATCHES.get();
+            throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
         }
 
         if(!postulante.isFlagAceptado()){
@@ -146,7 +179,7 @@ public class PublicoController {
             return trainerService.registrarPostulante(trainerFicha);
         }
 
-        return "-1";
+        return jsonResponse(REGISTRO.get());
     }
 
     @GetMapping("/busqueda/trainer/{codTrainer}")
@@ -160,5 +193,10 @@ public class PublicoController {
     @GetMapping("/get/all/trainer-ficha")
     public @ResponseBody List<TrainerFichaPOJO> findAllTrainerResponseBody(){
         return trainerFichaService.findAllWithFgEnt();
+    }
+
+    @GetMapping("/bandeja")
+    public @ResponseBody List<BandejaTemporal> getBandejaGeneral(){
+        return bandejaTemporalRepository.findAllByOrderByIdDesc();
     }
 }

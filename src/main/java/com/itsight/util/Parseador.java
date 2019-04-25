@@ -52,9 +52,9 @@ public class Parseador {
 	public static int fromStringToInt(String cadena) {
 		try {
 			return Integer.parseInt(cadena);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			// TODO: handle exception
-			return 0;
+			return -1;
 		}
 	}
 	

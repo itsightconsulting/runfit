@@ -262,5 +262,9 @@ public class Utilitarios {
             return false;
         }
     }
+
+    public static String jsonResponse(String r) {
+        return "{\"res\":\""+ r +"\"}";
+    }
 }
 

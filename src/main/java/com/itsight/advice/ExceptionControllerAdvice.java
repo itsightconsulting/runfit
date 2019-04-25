@@ -2,6 +2,7 @@ package com.itsight.advice;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.dto.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import static com.itsight.util.Enums.ResponseCode.*;
@@ -21,6 +22,16 @@ import static com.itsight.util.Enums.ResponseCode.*;
 public class ExceptionControllerAdvice {
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionControllerAdvice.class);
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomValidationException.class)
+    public @ResponseBody ErrorResponse handlerCustomValidationException(CustomValidationException ex) {
+        LOGGER.warn(ex.getMessage());
+        for(int i = 0; i<2;i++){
+            LOGGER.warn(ex.getStackTrace()[i].toString());
+        }
+        return new ErrorResponse(ex.getMessage(), ex.getInternalCode());
+    }
 
     @ExceptionHandler(NumberFormatException.class)
     public @ResponseBody
@@ -80,7 +91,6 @@ public class ExceptionControllerAdvice {
         }
         return new ModelAndView(ViewConstant.ERROR404PARAMEXCEP);
     }
-
     /*@ExceptionHandler(MethodArgumentNotValidException.class)
     public @ResponseBody String handlerMethodArgumentNotValidException(HttpServletRequest req, Exception ex) {
         logger.warn(req.getRequestURL());

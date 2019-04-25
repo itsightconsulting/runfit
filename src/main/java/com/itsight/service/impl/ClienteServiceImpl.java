@@ -18,16 +18,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itsight.util.Enums.Mail.NUEVO_CLIENTE;
-import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
 import static com.itsight.util.Enums.ResponseCode;
 
 @Service

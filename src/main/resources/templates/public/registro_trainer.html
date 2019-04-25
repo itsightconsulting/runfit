@@ -570,8 +570,7 @@
                 success: function (res) {
                     console.log(res);
                 }, error: (xhr) => {
-                    console.log(xhr);
-                    //exception(xhr);
+                    exception(xhr);
                 }, complete: () => {
                 }
             })
@@ -858,6 +857,7 @@
             obj.movil = document.getElementById('Movil').value;
             obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;
             obj.numeroDocumento = document.getElementById('NumeroDocumento').value;
+            obj.correo = document.getElementById('Correo').value;
             obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
             obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
             obj.especialidades = getValuesByClass('inp-esp-domino');

@@ -1,15 +1,23 @@
 package com.itsight.controller;
 
+import com.itsight.constants.ViewConstant;
+import com.itsight.advice.CustomValidationException;
+import com.itsight.domain.PostulanteTrainer;
 import com.itsight.service.PostulanteTrainerService;
+import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
 
 import static com.itsight.util.Enums.Decision.APROBADO;
 import static com.itsight.util.Enums.Decision.DESAPROBADO;
@@ -28,27 +36,51 @@ public class PostulanteTrainerController {
         this.postulanteTrainerService = postulanteTrainerService;
     }
 
+    @GetMapping("/obtenerListado")
+    public @ResponseBody List<PostulanteTrainer> obtenerTodos(){
+        return postulanteTrainerService.findAll();
+    }
+
     @GetMapping("/revisar/{codPreTrainer}")
     public ModelAndView revisarMiniCvPostulante(
             @PathVariable(value = "codPreTrainer") String codPreTrainer,
             Model model)
     {
-        model.addAttribute("trainer", postulanteTrainerService.findOne(Parseador.getDecodeHash32Id("rf-request", codPreTrainer)));
-        return new ModelAndView("portal/eleccion_pre_trainer");
+        if(codPreTrainer.length() == 32){
+            PostulanteTrainer post = postulanteTrainerService.findOne(Parseador.getDecodeHash32Id("rf-request", codPreTrainer));
+            if(post.isFlagAceptado()){
+                return new ModelAndView(ViewConstant.ERROR404);
+            }
+            if(post.isFlagRechazado() && new Date().before(post.getFechaLimiteAccion())){
+                return new ModelAndView(ViewConstant.ERROR404);
+            }
+            if(!post.isFlagAceptado()){
+                model.addAttribute("trainer", post);
+                return new ModelAndView("portal/eleccion_pre_trainer");
+            }
+        }
+        return new ModelAndView(ViewConstant.ERROR404);
     }
 
-    @GetMapping("/decision/{preTrainerIdHash}/{eleccionId}")
+    @PutMapping("/decision")
     public @ResponseBody String decidirPostulacion(
-            @PathVariable(value = "preTrainerIdHash") String preTrainerIdHash,
-            @PathVariable(value = "eleccionId") String eleccionId){
+            @RequestParam(value = "key") String preTrainerIdHash,
+            @RequestParam(value = "o") String eleccionId) throws CustomValidationException{
+
+        if(preTrainerIdHash.length() != 32 || eleccionId.length() != 1){
+            throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
+        }
+
+        Integer parseEleccionId = Parseador.fromStringToInt(eleccionId);
+        if(parseEleccionId == -1){
+            throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
+        }
+
         Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
-        Integer eleccId = Integer.parseInt(eleccionId);
-        if(preTrainerId == 0){
-            return NOT_FOUND_MATCHES.get();
+
+        if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()) {
+            return postulanteTrainerService.decidir(preTrainerId, parseEleccionId);
         }
-        if (eleccId == APROBADO.get() || eleccId == DESAPROBADO.get()) {
-            return postulanteTrainerService.decidir(preTrainerId, eleccId);
-        }
-        return EX_VALIDATION_FAILED.get();
+        throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
     }
 }

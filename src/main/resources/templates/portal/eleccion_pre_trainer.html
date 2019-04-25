@@ -81,10 +81,10 @@
         const arenaHash = arrURI[arrURI.length-1];
         const i = decision;//num 0 o 1
         $.ajax({
-          type: 'GET',
+          type: 'PUT',
           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-          url: _ctx + 'postulacion/decision/' + arenaHash + "/"+i,
-          dataType: "text",
+          url: _ctx + 'postulacion/decision?key=' + arenaHash + "&o="+i,
+          dataType: "json",
           blockLoading: true,
           success: function (data, textStatus) {
             if (textStatus == "success") {
@@ -92,7 +92,7 @@
             }
           },
           error: function (xhr) {
-            //exception(xhr);
+            exception(xhr);
           },
           complete: function () {
 

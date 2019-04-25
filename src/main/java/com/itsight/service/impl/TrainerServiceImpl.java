@@ -216,7 +216,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                     //Enviando correo al nuevo trainer
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(trainer.getUsername(), originalPassword, trainer.getTipoUsuario().getId(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", trainer.getCorreo(), sb.toString());
-                    return ResponseCode.REGISTRO.get() + ',' + String.valueOf(trainer.getId()) + ',' + flagTrainer;
+                    return ResponseCode.REGISTRO.get() + ',' + trainer.getId() + ',' + flagTrainer;
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();
             }catch (Exception e){

@@ -1,5 +1,7 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Correo;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.generic.BaseServiceImpl;
@@ -12,6 +14,7 @@ import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Service
 @Transactional
@@ -30,6 +34,9 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
 
     @Value("${spring.mail.username}")
     private String emitterMail;
+
+    @Value("${domain.name}")
+    private String domainName;
 
     private EmailService emailService;
 
@@ -132,7 +139,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
                     String hashId = Parseador.getEncodeHash32Id("rf-request", obj.getId());
                     String cuerpo = String.format(correo.getBody(), hashId);
                     emailService.enviarCorreoInformativo(correo.getAsunto(), obj.getCorreo(), cuerpo);
-                    return Enums.ResponseCode.ACTUALIZACION.get() +"|"+ entity.getId();
+                    return ACTUALIZACION.get() +"|"+ entity.getId();
                 }else{
                     return "Usted no puede volver a postular hasta la fecha: "+obj.getFechaLimiteAccion();
                 }
@@ -153,7 +160,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         String cuerpo = String.format(correo.getBody(), hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
         //Save
-        return Enums.ResponseCode.REGISTRO.get() +"|"+ entity.getId();
+        return REGISTRO.get() +"|"+ entity.getId();
     }
 
     @Override
@@ -167,11 +174,20 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
     }
 
     @Override
-    public String decidir(Integer preTrainerId, Integer decisionId) {
+    public String decidir(Integer preTrainerId, Integer decisionId) throws CustomValidationException{
         PostulanteTrainer preTrainer = findOne(preTrainerId);
         if(preTrainer == null){
-           return Enums.ResponseCode.EMPTY_RESPONSE.get();
+           return EMPTY_RESPONSE.get();
         }
+
+        if(preTrainer.isFlagAceptado()){
+            throw new CustomValidationException("Postulante ya ha sido aceptado con anterioridad", EX_VALIDATION_FAILED.get());
+        }
+
+        if(preTrainer.isFlagRechazado() && new Date().before(preTrainer.getFechaLimiteAccion())){
+            throw new CustomValidationException("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación", EX_VALIDATION_FAILED.get());
+        }
+
         Date timestamp = new Date();
         if(decisionId == 1){
             preTrainer.setFechaAprobacion(timestamp);
@@ -185,21 +201,26 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         //Save
         repository.save(preTrainer);
 
+        boolean isProduction = profile.equals("production");
+
         //Receptor
-        String receptor = !profile.equals("production") ? emitterMail : preTrainer.getCorreo();
+        String receptor = !isProduction ? emitterMail : preTrainer.getCorreo();
+
         //Envio de correo
+        String hshId = Parseador.getEncodeHash32Id("rf-request", preTrainer.getId());
         if(decisionId == 1) {
-            emailService.enviarCorreoInformativo("Solicitud aprobada",
-                    receptor,
-                                                "<h1>Más detalles en: <a href=\"http://127.0.0.1:8080/p/formulario/trainer/" + Parseador.getEncodeHash32Id("rf-request", preTrainer.getId()) + "\">Llenar ficha de entrenador oficial</a></h1>");
+            Correo mail = correoService.findOne(4);
+            emailService.enviarCorreoInformativo(mail.getAsunto(), receptor,
+                    String.format(mail.getBody(), domainName, hshId));
         }else{
-            emailService.enviarCorreoInformativo("Gracias por su postulación",
+            Correo mail = correoService.findOne(5);
+            emailService.enviarCorreoInformativo(mail.getAsunto(),
                     receptor,
-                                                "<h1>Podrá volver a intentarlo después de 90 días. Siga mejorando y seguramente la próxima vez será admitido</h1>");
+                    mail.getBody());
         }
 
 
-        return Enums.ResponseCode.EXITO_GENERICA.get();
+        return EXITO_GENERICA.get();
     }
 
     @Override
