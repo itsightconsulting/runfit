@@ -4,6 +4,8 @@ import com.itsight.domain.BandejaTemporal;
 import com.itsight.generic.EmailGeneric;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.service.EmailService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -20,6 +22,8 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
     public JavaMailSender emailSender;
 
     public BandejaTemporalRepository bandejaTemporalRepository;
+
+    public static final Logger LOGGER = LogManager.getLogger(EmailServiceImpl.class);
     
     @Autowired
     public EmailServiceImpl(JavaMailSender emailSender, BandejaTemporalRepository bandejaTemporalRepository) {
@@ -68,8 +72,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
             }
         } catch (MailException ex) {
-            ex.printStackTrace();
-            System.err.println(ex.getMessage());
+            LOGGER.warn(ex.getMessage());
         }
     }
 }

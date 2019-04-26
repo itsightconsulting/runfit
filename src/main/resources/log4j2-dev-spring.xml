@@ -12,14 +12,7 @@
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
-        <File name="AppFileAppender" fileName="${LOG_PATH}/app_log.log">
-            <PatternLayout>
-                <pattern>
-                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
-                </pattern>
-            </PatternLayout>
-        </File>
-        <File name="AppFileAppenderWarn" fileName="${LOG_PATH}/app_log_warn.log">
+        <File name="AppFileAppender" fileName="${LOG_PATH}/app.log">
             <PatternLayout>
                 <pattern>
                     [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
@@ -29,11 +22,15 @@
     </Appenders>
     <Loggers>
         <Logger name="com.itsight.aop" level="info" additivity="false">
-            <AppenderRef ref="AppFileAppender"/>
+            <!--<AppenderRef ref="AppFileAppender"/>-->
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+        <Logger name="com.itsight" level="warn" additivity="false">
+            <!--<AppenderRef ref="AppFileAppender"/>-->
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
         <Logger name="com.itsight.advice" level="warn" additivity="false">
-           <AppenderRef ref="AppFileAppenderWarn"/>
+           <!--<AppenderRef ref="AppFileAppender"/>-->
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
         <Root level="info">
