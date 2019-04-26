@@ -52,10 +52,15 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
 
     @Override
     public void enviarCorreoInformativo(String asunto, String receptor, String contenido) {
-        MimeMessagePreparator preparator = mimeMessagePreparator(asunto, receptor, contenido);
+        MimeMessagePreparator preparator;
         try {
-            boolean isProd = profile.equals("herokudev");
-            if(isProd) {
+            boolean isProdOrHku = profile.equals("production") || profile.equals("herokudev");
+            if(isProdOrHku) {
+                if(profile.equals("herokudev")){
+                    preparator = mimeMessagePreparator(asunto, "contoso.peru@gmail.com", contenido);
+                }else{
+                    preparator = mimeMessagePreparator(asunto, receptor, contenido);
+                }
                 emailSender.send(preparator);
             }else {
                 Integer ixUrl = contenido.indexOf("href=");

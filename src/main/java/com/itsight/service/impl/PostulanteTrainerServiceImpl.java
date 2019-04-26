@@ -138,7 +138,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
                     Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
                     //Envio de correo
                     String hashId = Parseador.getEncodeHash32Id("rf-request", obj.getId());
-                    String cuerpo = String.format(correo.getBody(), hashId);
+                    String cuerpo = String.format(correo.getBody(), domainName, hashId);
                     emailService.enviarCorreoInformativo(correo.getAsunto(), obj.getCorreo(), cuerpo);
                     return ACTUALIZACION.get() +"|"+ entity.getId();
                 }else{
@@ -241,7 +241,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
         //Envio de correo
         String hashId = Parseador.getEncodeHash32Id("rf-request", id);
-        String cuerpo = String.format(correo.getBody(), hashId);
+        String cuerpo = String.format(correo.getBody(), domainName, hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
     }
 }
