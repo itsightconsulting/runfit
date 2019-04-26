@@ -175,6 +175,23 @@ function smallBoxAlertValidation(inputsNotPassed){
     )
 }
 d  = [];
+
+function smallBoxAlertValidation2(inputsNotPassed){
+    const tout = (2000*(inputsNotPassed.length)) + 4000;
+    const strCamps = inputsNotPassed.map(v=>`<i class="fa fa-dot-circle-o fa-fw"></i>
+                                            ${v}<br>`).join('');
+    $.smallBox(
+        {
+            color: '#cc4d4d',
+            content: `Los valores de los campos no son apropiados:<br>
+                      <span style="padding-bottom: 3px"></span>
+                      <p style="height: 80px; overflow-y: auto;">${strCamps}</p>`,
+            timeout: tout,
+            icon: "fa fa-exclamation-circle"
+        }
+    )
+}
+
 function validationByNumSheet(numSheet){
     const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
     const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));

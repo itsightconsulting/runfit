@@ -230,17 +230,16 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     public String registrarPostulante(TrainerFichaDTO trainerFicha) {
         TrainerFicha obj = new TrainerFicha();
         BeanUtils.copyProperties(trainerFicha, obj);
-        Integer i = new Random().nextInt(1000);
         Trainer trainer = new Trainer(
                 trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
-                trainerFicha.getMovil(), trainerFicha.getCorreo(), "12345678", true, 1, Enums.TipoUsuario.ENTRENADOR.ordinal(), "T51C"+i,true);
+                trainerFicha.getMovil(), trainerFicha.getUsername(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),true);
         trainer.setPais(trainerFicha.getPaisId());
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
-        trainer.setTotalValoracion(BigDecimal.valueOf(0L));
+        trainer.setTotalValoracion(0.0);
 
-        trainer.setUsername(trainerFicha.getCorreo());
-        trainer.setPassword("runfit");
+        trainer.setUsername(trainerFicha.getUsername());
+        trainer.setPassword(trainerFicha.getPassword());
         List<TrainerFicha> lstTf = new ArrayList<>();
         obj.setTrainer(trainer);
         lstTf.add(obj);
@@ -345,11 +344,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
-    }
-
-    @Override
-    public String findCodigoTrainerById(Integer id) {
-        return repository.findCodigoTrainerById(id);
     }
 
     @Override

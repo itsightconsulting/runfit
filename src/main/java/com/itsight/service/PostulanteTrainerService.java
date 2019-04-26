@@ -8,4 +8,6 @@ public interface PostulanteTrainerService extends BaseService<PostulanteTrainer,
     String decidir(Integer preTrainerId, Integer decisionId) throws CustomValidationException;
 
     void updateFlagRegistradoById(Integer id, boolean flag);
+
+    void updateFlagCuentaConfirmada(Integer id, boolean flag, String receptor);
 }

@@ -1,14 +1,13 @@
 package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.itsight.validation.ExtendedEmailValidator;
 import com.itsight.domain.jsonb.CuentaPago;
 import com.itsight.domain.jsonb.Servicio;
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,20 +22,33 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min=5, max = 50)
     @NotNull
     private String nombres;
-    @Size(max = 65)
+    @Size(min = 7, max = 40)
     @NotNull
+    @ExtendedEmailValidator
     private String correo;
+    @Size(min=5, max = 40)
+    @NotNull
+    private String username;
+    @Size(min=8, max = 30)
+    @NotNull
+    private String password;
     @Size(max = 200)
     @NotNull
     private String especialidad;
-    @Min(value = 1)
+    @Positive
+    @NotNull
+    private Integer tipoDocumentoId;
+    @Size(max = 16)
+    @NotNull
+    private String documento;
+    @Positive
     @NotNull
     private Integer disciplinaId;
-    @Min(value = 1)
+    @Positive
     @NotNull
     private Integer paisId;
-    @Size(min = 3)
-    @NotNull
+    @Size(max = 10)
+    @NotBlank
     private String ubigeo;
     @Size(min = 80, max = 2000)
     @NotNull
@@ -71,14 +83,15 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 6, max = 40)
     @NotNull
     private String nomPag;
+    @Size(max = 3000)
     private String miniGaleria;
-    @NotNull
     @Valid
     private List<Servicio> servicios;
-    @NotNull
     @Valid
     private List<CuentaPago> cuentas;
+    @Size(max = 14)
     private String telefono;
+    @Size(max = 14)
     private String movil;
 
 }

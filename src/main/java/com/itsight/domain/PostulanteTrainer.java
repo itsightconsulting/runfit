@@ -51,6 +51,9 @@ public class PostulanteTrainer {
     private boolean flagRegistrado;
 
     @Column(nullable = false)
+    private boolean flagCuentaConfirmada;
+
+    @Column(nullable = false)
     private int intentos;
 
     @Column(nullable = false, updatable = false)

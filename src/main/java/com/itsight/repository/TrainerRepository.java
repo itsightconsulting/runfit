@@ -14,9 +14,6 @@ import java.util.List;
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
-    @Query(value = "SELECT T.codigoTrainer FROM Trainer T WHERE T.id = ?1")
-    String findCodigoTrainerById(Integer id);
-
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.fechaUltimoAcceso =?1 WHERE T.id = ?2")
     void updateFechaUltimoAcceso(Date fechaUltimoAcceso, Integer id);

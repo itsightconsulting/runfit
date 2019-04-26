@@ -198,12 +198,23 @@ function exception(xhr, errorName) {
                     });
                 }
                 else if(xhr['status'] == 400){
-                    $.smallBox({
-                        content: "<i> Usted ha realizado una petición incorrecta...</i>",
-                        color: "#8a6d3b",
-                        iconSmall: "fa fa-info fa-3x fadeInRight animated",
-                        timeout: 5000,
-                    });
+                    if(typeof xhr.responseJSON == 'object' && typeof xhr.responseJSON.message !== 'undefined' && xhr.responseJSON.message === 'Validation has failed'){
+                        const errors = [];
+                        xhr.responseJSON.subErrors.forEach(v=>{
+                            const field = capitalizeFirstLetter(v.object);
+                            document.getElementById(field).classList.toggle('state-error');
+                            errors.push(`${field}: ${capitalizeFirstLetter(v.message)}`);
+
+                        });
+                        smallBoxAlertValidation2(errors);
+                    }else{
+                        $.smallBox({
+                            content: "<i> Usted ha realizado una petición incorrecta...</i>",
+                            color: "#8a6d3b",
+                            iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                            timeout: 5000,
+                        });
+                    }
                 }
             }
 

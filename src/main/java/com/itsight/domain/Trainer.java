@@ -55,7 +55,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     private Date fechaNacimiento;
     @Column(nullable = false, updatable = false)
     private String username;
-    @Column(updatable = false)
+    @Column()
     private String codigoTrainer;
     @Column(nullable = false)
     private boolean flagRutinarioCe;
@@ -88,7 +88,7 @@ public class Trainer extends AuditingEntity implements Serializable {
 
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     @Column(precision = 6, scale = 2, nullable = false)
-    private BigDecimal totalValoracion;
+    private Double totalValoracion;
 
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
@@ -142,7 +142,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     }
 
     public Trainer(String nombres, String apellidos, String correo, String telefono, String movil, String username,
-                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, String codigoTrainer, boolean flagActivo) {
+                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, boolean flagActivo) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -153,7 +153,6 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.flagRutinarioCe = flagRutinarioCe;
         this.tipoDocumento = new TipoDocumento(tipoDocumentId);
         this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
-        this.codigoTrainer = codigoTrainer;
         this.setFlagActivo(flagActivo);
     }
 

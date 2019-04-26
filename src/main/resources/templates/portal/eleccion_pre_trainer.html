@@ -49,7 +49,7 @@
                 </div>
                 <div class="text-right">
 
-                  <button class="btn btn-black" type="button" id="btnEnviar"><i class="fa fa-fw fa-check"></i>Aprobar</button>
+                  <button class="btn btn-black" type="button" id="btnAprobar"><i class="fa fa-fw fa-check"></i>Aprobar</button>
                   <button class="btn btn-black" type="button" id="btnRechazar">Rechazar<i class="fa-fw fa fa-close"></i></button>
                 </div>
               </form>
@@ -61,16 +61,19 @@
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
-      const btnEnviar = document.querySelector('#btnEnviar');
+      const btnAprobar = document.querySelector('#btnAprobar');
       const btnRechazar = document.querySelector('#btnRechazar');
       (function () {
-        btnEnviar.addEventListener('click', enviarForm);
+        btnAprobar.addEventListener('click', enviarForm);
         btnRechazar.addEventListener('click', enviarForm);
+        if(flag_form_populate){
+          btnAprobar.click();
+        }
       })();
 
       function enviarForm(e){
           let decision = 0;
-          if(e.target.id == "btnEnviar"){
+          if(e.target.id == "btnAprobar"){
             decision = 1;
           }
           sendForm(decision);

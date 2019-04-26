@@ -176,11 +176,11 @@ public class TrainerFicha implements Serializable {
     @Column(nullable = true, columnDefinition="TEXT")
     private String adicionalInfo;
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb", nullable = false)
+    @Column(columnDefinition = "jsonb", nullable = true)
     private List<Servicio> servicios;
 
     @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb", nullable = false)
+    @Column(columnDefinition = "jsonb", nullable = true)
     private List<CuentaPago> cuentas;
 
     @Column(nullable = true)

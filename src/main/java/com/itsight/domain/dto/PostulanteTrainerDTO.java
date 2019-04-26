@@ -1,5 +1,6 @@
 package com.itsight.domain.dto;
 
+import com.itsight.validation.ExtendedEmailValidator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class PostulanteTrainerDTO implements Serializable {
     private String nombreFull;
 
     @Size(max = 40)
+    @ExtendedEmailValidator
     private String correo;
 
     @Size(max = 16)

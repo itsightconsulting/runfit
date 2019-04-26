@@ -110,6 +110,40 @@ public class PublicoController {
         return new ModelAndView(ViewConstant.MAIN_EMPRENDE_CON_NOSOTROS);
     }
 
+    @GetMapping("/a")
+    public ModelAndView a(){
+        return new ModelAndView(ViewConstant.MAIN_INF_POSITIVO);
+    }
+
+    @GetMapping("/postulacion/trainer/verificar-correo/{hashPreTrainerId}")
+    public ModelAndView confirmarCorreoPostulacionTrainer(
+            Model model,
+            @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId){
+        Integer preTraId = 0;
+
+        if(hashPreTrainerId.length() == 32){
+            preTraId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
+        }
+
+        if(preTraId == 0){
+            return new ModelAndView(ViewConstant.ERROR404);
+        }
+
+        PostulanteTrainer post = postulanteTrainerService.findOne(preTraId);
+        if(post == null){
+            return new ModelAndView(ViewConstant.ERROR404);
+        }
+
+        if(post.isFlagCuentaConfirmada()){
+            return new ModelAndView(ViewConstant.ERROR404);
+        }
+
+        postulanteTrainerService.updateFlagCuentaConfirmada(post.getId(), true, post.getCorreo());
+        model.addAttribute("msg", "Su cuenta ha sido verificada satisfactoriamente, " +
+         "pronto recibirá un correo nuestro con el resultado de su postulación. Gracias por su tiempo.");
+        return new ModelAndView(ViewConstant.MAIN_INF_POSITIVO);
+    }
+
     @PostMapping("/postulacion/trainer/registrar")
     public @ResponseBody String registrarSolicitudTrainer(
             @ModelAttribute @Valid PostulanteTrainerDTO postulanteTrainerDTO){
@@ -174,6 +208,8 @@ public class PublicoController {
         }
 
         if(postulante.isFlagAceptado() && !postulante.isFlagRegistrado()){
+            //Nos aseguramos que el correo sea el mismo que se encuentra en BD
+            //y no el que enviaron en la petición post
             trainerFicha.setCorreo(postulante.getCorreo());
             trainerFicha.setPostulanteTrainerId(postTraId);
             return trainerService.registrarPostulante(trainerFicha);

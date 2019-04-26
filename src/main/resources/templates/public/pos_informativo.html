@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+  <title>Trainers | Fitness | Runfit</title>
+  <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
+  <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+</head>
+<body>
+<nav th:replace="html-commons/p/header :: fg-header"></nav>
+<div th:replace="html-commons/reu-login :: fg-login"></div>
+<div id="wrapper">
+  <div class="section banner home">
+    <div class="bg-image"><img class="shadow" th:src="@{/img/public/trainers-shadow.jpg}"></div>
+  </div>
+  <section class="faq tyc">
+    <div class="container text-center">
+      <h2 class="subtitle" th:text="${msg}">MSG</h2>
+      <img src="https://freepngimg.com/thumb/success/6-2-success-png-image.png" style="height: 50px; width: 50px">
+    </div>
+  </section>
+</div>
+<footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+<th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+</body>
+</html>

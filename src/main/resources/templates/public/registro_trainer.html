@@ -284,6 +284,14 @@
                                               </div>
                                           </div>
                                       </div>
+                                      <div class="form-group">
+                                          <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="Username" name="Username">
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="password" id="Password" name="Password">
+                                      </div>
 
                                       <button class="btn btn-default btn-black" type="button">GUARDAR</button>
                                   </form>
@@ -560,6 +568,7 @@
             const arrURL = window.location.href.split("/");
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
@@ -767,6 +776,8 @@
 
             document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
             document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('#Username').value = "Pedro"+t1 + ""+ t2;
+            document.querySelector('#Password').value = "runfit123";
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación. Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. Conmigo el trabajo será duro pero valdrá la pena.';
             //Estudios
@@ -856,8 +867,10 @@
             obj.telefono = document.getElementById('Telefono').value;
             obj.movil = document.getElementById('Movil').value;
             obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;
-            obj.numeroDocumento = document.getElementById('NumeroDocumento').value;
+            obj.documento = document.getElementById('NumeroDocumento').value;
             obj.correo = document.getElementById('Correo').value;
+            obj.username = document.getElementById('Username').value;
+            obj.password = document.getElementById('Password').value;
             obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
             obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
             obj.especialidades = getValuesByClass('inp-esp-domino');

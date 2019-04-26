@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
+import static com.itsight.util.Enums.Mail.POSTULANTE_TRAINER_CONFIRMAR_CORREO;
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @Service
@@ -153,8 +154,9 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         repository.save(entity);
         //Receptor
         String receptor = !profile.equals("production") ? emitterMail : entity.getCorreo();
+
         //Obtener cuerpo del correo
-        Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
+        Correo correo = correoService.findOne(POSTULANTE_TRAINER_CONFIRMAR_CORREO.get());
         //Envio de correo
         String hashId = Parseador.getEncodeHash32Id("rf-request", entity.getId());
         String cuerpo = String.format(correo.getBody(), hashId);
@@ -178,6 +180,10 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         PostulanteTrainer preTrainer = findOne(preTrainerId);
         if(preTrainer == null){
            return EMPTY_RESPONSE.get();
+        }
+
+        if(!preTrainer.isFlagCuentaConfirmada()){
+            throw new CustomValidationException("Postulante no ha confirmado su cuenta de correo electrónico", EX_VALIDATION_FAILED.get());
         }
 
         if(preTrainer.isFlagAceptado()){
@@ -226,5 +232,16 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
     @Override
     public void updateFlagRegistradoById(Integer id, boolean flag) {
         repository.updateFlagRegistradoById(id, flag);
+    }
+
+    @Override
+    public void updateFlagCuentaConfirmada(Integer id, boolean flag, String receptor) {
+        repository.updateFlagCuentaConfirmada(id, flag);
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
+        //Envio de correo
+        String hashId = Parseador.getEncodeHash32Id("rf-request", id);
+        String cuerpo = String.format(correo.getBody(), hashId);
+        emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
     }
 }

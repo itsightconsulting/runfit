@@ -14,4 +14,10 @@ public interface PostulanteTrainerRepository extends JpaRepository<PostulanteTra
     @Modifying
     @Query("UPDATE PostulanteTrainer P SET P.flagRegistrado = ?2 WHERE P.id = ?1")
     void updateFlagRegistradoById(Integer id, boolean flag);
+
+    @Modifying
+    @Query("UPDATE PostulanteTrainer P SET P.flagCuentaConfirmada = ?2 WHERE P.id = ?1")
+    void updateFlagCuentaConfirmada(Integer id, boolean flag);
+
+
 }

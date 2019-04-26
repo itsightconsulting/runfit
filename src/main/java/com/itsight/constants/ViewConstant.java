@@ -12,6 +12,10 @@ public class ViewConstant {
     public static final String MAIN_REGISTRO_TRAINER= "public/registro_trainer";
     public static final String MAIN_PERFIL_TRAINER= "public/perfil_trainer";
 
+    //MAIN INFORMATIVOS
+    public static final String MAIN_INF_POSITIVO= "public/pos_informativo";
+    public static final String MAIN_INF_NEGATIVO= "public/neg_informativo";
+
     //MAIN Views
     public static final String MAIN_USUARIO = "gestion/usuario";
     public static final String MAIN_RUTINA_PLANTILLA = "gestion/rutina_plantilla";

@@ -1014,7 +1014,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer(
                 "Alejandro "+ i, "Gonzales Prada", correoUsuario, "543213"+i,
-                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuario.ENTRENADOR.ordinal(), "T51C"+i,true);
+                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuario.ENTRENADOR.ordinal(),true);
             List<com.itsight.domain.jsonb.Rol> rolesJsonB = new ArrayList<>();
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(1, role1.getRole()));
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(2, role2.getRole()));
@@ -1023,7 +1023,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             trainer.setPais(604);//Perú!
             trainer.setUbigeo("150101");
             trainer.setCanPerValoracion(0);
-            trainer.setTotalValoracion(BigDecimal.valueOf(0L));
+            trainer.setTotalValoracion(0.0);
             trainerService.save(trainer);
             trainerService.cargarRutinarioCe(secTrainer.getId());
             agregandoPorcentajesBaseTrainer(trainer);
