@@ -54,7 +54,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
     public void enviarCorreoInformativo(String asunto, String receptor, String contenido) {
         MimeMessagePreparator preparator = mimeMessagePreparator(asunto, receptor, contenido);
         try {
-            boolean isProd = profile.equals("production");
+            boolean isProd = profile.equals("herokudev");
             if(isProd) {
                 emailSender.send(preparator);
             }else {
