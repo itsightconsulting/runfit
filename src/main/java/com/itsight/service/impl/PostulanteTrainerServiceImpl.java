@@ -1,7 +1,6 @@
 package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
-import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Correo;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.generic.BaseServiceImpl;
@@ -14,7 +13,6 @@ import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -122,13 +120,14 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
     }
 
     @Override
-    public String registrar(PostulanteTrainer entity, String wildcard) {
+    public String registrar(PostulanteTrainer entity, String wildcard) throws CustomValidationException {
         //Verificación correo único
         Optional<PostulanteTrainer> optPreTrainer = Optional.ofNullable(repository.findByCorreo(entity.getCorreo()));
         if(optPreTrainer.isPresent()){
             PostulanteTrainer obj = optPreTrainer.get();
             if(obj.isFlagAceptado()){
-                return "-11";
+                System.out.println(">>>>>>>>>>>");
+                throw new CustomValidationException(Enums.Mensaje.CORREO_REPETIDO.get(), EX_VALIDATION_FAILED.get());
             }
 
             if(obj.isFlagRechazado()){
@@ -141,13 +140,13 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
                     String cuerpo = String.format(correo.getBody(), domainName, hashId);
                     emailService.enviarCorreoInformativo(correo.getAsunto(), obj.getCorreo(), cuerpo);
                     return ACTUALIZACION.get() +"|"+ entity.getId();
-                }else{
-                    return "Usted no puede volver a postular hasta la fecha: "+obj.getFechaLimiteAccion();
+                } else {
+                    throw new CustomValidationException(String.format(Enums.Mensaje.POSTULACION_BLOQUEADA.get(), obj.getFechaLimiteAccion()), EX_VALIDATION_FAILED.get());
                 }
             }
-            return "Usted ya se encuentra registrado, por favor espere hasta que nuestros gestores puedan aprobar " +
-             "o rechazar su postulación. Será notificado vía correo electrónico en el transcurso del día. Gracias " +
-              "por su espera";
+
+            throw new CustomValidationException("Usted ya se encuentra registrado, por favor espere hasta que nuestros gestores puedan aprobar o rechazar su postulación. Será notificado vía correo electrónico en el transcurso del día. Gracias por su espera", EX_VALIDATION_FAILED.get());
+
         }
         entity.setFechaCreacion(new Date());
         entity.setIntentos(1);
@@ -159,7 +158,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         Correo correo = correoService.findOne(POSTULANTE_TRAINER_CONFIRMAR_CORREO.get());
         //Envio de correo
         String hashId = Parseador.getEncodeHash32Id("rf-request", entity.getId());
-        String cuerpo = String.format(correo.getBody(), hashId);
+        String cuerpo = String.format(correo.getBody(), domainName, hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
         //Save
         return REGISTRO.get() +"|"+ entity.getId();

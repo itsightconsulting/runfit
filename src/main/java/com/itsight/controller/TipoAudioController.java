@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.TipoAudio;
 import com.itsight.service.TipoAudioService;
@@ -58,7 +59,8 @@ public class TipoAudioController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute @Valid TipoAudio tipoAudio, BindingResult bindingResult) {
+    String nuevo(@ModelAttribute @Valid TipoAudio tipoAudio, BindingResult bindingResult) throws CustomValidationException
+     {
         if(!bindingResult.hasErrors()){
             if (tipoAudio.getId() == 0) {
                 return tipoAudioService.registrar(tipoAudio, null);

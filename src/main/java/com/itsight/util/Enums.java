@@ -115,5 +115,20 @@ public class Enums {
         }
     }
 
+    public enum Mensaje{
+        CORREO_REPETIDO("El correo ingresado ya se encuentra registrado en nuestra base de datos"),
+        POSTULACION_BLOQUEADA("Usted no puede volver a postular hasta después de la fecha: %s");
+
+        final String msg;
+
+        Mensaje(String msg){
+            this.msg = msg;
+        }
+
+        public String get(){
+            return msg;
+        }
+    }
+
 
 }

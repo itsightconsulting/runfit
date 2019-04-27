@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Producto;
 import com.itsight.domain.ProductoPresentacion;
@@ -90,7 +91,7 @@ public class ProductoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute Producto producto, @ModelAttribute ProductoPresentacion presentacion, String categoriaId) {
+    String nuevo(@ModelAttribute Producto producto, @ModelAttribute ProductoPresentacion presentacion, String categoriaId) throws CustomValidationException {
         producto.setProductoPresentacion(presentacion);
         if (producto.getId() == 0)
             return productoService.registrar(producto, categoriaId);

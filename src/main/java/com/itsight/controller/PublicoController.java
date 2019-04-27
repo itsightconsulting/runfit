@@ -146,7 +146,7 @@ public class PublicoController {
 
     @PostMapping("/postulacion/trainer/registrar")
     public @ResponseBody String registrarSolicitudTrainer(
-            @ModelAttribute @Valid PostulanteTrainerDTO postulanteTrainerDTO){
+            @ModelAttribute @Valid PostulanteTrainerDTO postulanteTrainerDTO) throws CustomValidationException {
         PostulanteTrainer preTrainer = new PostulanteTrainer();
         BeanUtils.copyProperties(postulanteTrainerDTO, preTrainer);
         return jsonResponse(postulanteTrainerService.registrar(preTrainer, null));

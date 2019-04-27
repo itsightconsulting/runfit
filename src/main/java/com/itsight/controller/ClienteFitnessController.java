@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.dto.ClienteFitnessDTO;
@@ -60,7 +61,7 @@ public class ClienteFitnessController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@RequestBody ClienteFitnessDTO clienteFitDto, BindingResult bindingResult) {
+    String nuevo(@RequestBody ClienteFitnessDTO clienteFitDto, BindingResult bindingResult) throws CustomValidationException {
         if(!bindingResult.hasErrors()){
             return clienteFitnessService.registrar(clienteFitDto);
         }else{

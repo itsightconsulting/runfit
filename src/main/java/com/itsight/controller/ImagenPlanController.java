@@ -3,6 +3,7 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ImagenPlan;
 import com.itsight.service.ImagenPlanService;
@@ -57,7 +58,7 @@ public class ImagenPlanController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String addImagenPlan(@ModelAttribute ImagenPlan imagenPlan) {
+    String addImagenPlan(@ModelAttribute ImagenPlan imagenPlan) throws CustomValidationException {
         if (imagenPlan.getId() == 0)
             return imagenPlanService.registrar(imagenPlan, null);
         return imagenPlanService.actualizar(imagenPlan, null);

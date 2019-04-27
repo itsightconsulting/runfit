@@ -1,6 +1,7 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Descuento;
 import com.itsight.service.DescuentoService;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +37,7 @@ public class DescuentoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute Descuento descuento, String tipoDescuentoId, String productoId) {
+    String nuevo(@ModelAttribute Descuento descuento, String tipoDescuentoId, String productoId) throws CustomValidationException {
         if (descuento.getId() == 0) {
             descuento.setTipoDescuento(Integer.parseInt(tipoDescuentoId));
             descuento.setProductoPresentacion(Integer.parseInt(productoId));

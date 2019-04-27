@@ -30,7 +30,5 @@ public class WorkoutApplicationTests {
         Set<ConstraintViolation<TrainerFichaDTO>> violations = validator.validate(trainer);
         violations.forEach((e)-> System.out.println(e.toString()));
         Assertions.assertTrue(violations.isEmpty());
-
     }
-
 }

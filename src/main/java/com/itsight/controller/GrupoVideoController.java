@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.GrupoVideo;
 import com.itsight.service.GrupoVideoService;
@@ -60,7 +61,7 @@ public class GrupoVideoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute GrupoVideo grupoVideo) {
+    String nuevo(@ModelAttribute GrupoVideo grupoVideo) throws CustomValidationException {
         if (grupoVideo.getId() == 0) {
             return grupoVideoService.registrar(grupoVideo, null);
         }

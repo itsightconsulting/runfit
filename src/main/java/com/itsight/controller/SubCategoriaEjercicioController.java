@@ -1,6 +1,7 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.domain.SubCategoriaEjercicio;
@@ -52,14 +53,12 @@ public class SubCategoriaEjercicioController {
     }
 
     @GetMapping(value = "/obtener")
-    public @ResponseBody
-    SubCategoriaEjercicio obtenerPorId(@RequestParam(value = "id") int subCategoriaEjercicioId) {
+    public @ResponseBody SubCategoriaEjercicio obtenerPorId(@RequestParam(value = "id") int subCategoriaEjercicioId) {
         return subCategoriaEjercicioService.findOne(subCategoriaEjercicioId);
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody
-    String nuevo(@ModelAttribute @Valid SubCategoriaEjercicio subCategoriaEjercicio, BindingResult bindingResult, @RequestParam int categoriaEjercicioId) {
+    public @ResponseBody String nuevo(@ModelAttribute @Valid SubCategoriaEjercicio subCategoriaEjercicio, BindingResult bindingResult, @RequestParam int categoriaEjercicioId) throws CustomValidationException {
         if(!bindingResult.hasErrors()){
             subCategoriaEjercicio.setCategoriaEjercicio(new CategoriaEjercicio(categoriaEjercicioId));
             if (subCategoriaEjercicio.getId() == 0) {
@@ -71,8 +70,7 @@ public class SubCategoriaEjercicioController {
     }
 
     @PutMapping(value = "/desactivar")
-    public @ResponseBody
-    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
+    public @ResponseBody String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
         try {
             subCategoriaEjercicioService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();

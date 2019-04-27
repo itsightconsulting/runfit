@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CategoriaVideo;
 import com.itsight.domain.GrupoVideo;
@@ -54,7 +55,7 @@ public class CategoriaVideoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute CategoriaVideo categoriaVideo, @RequestParam int grupoVideoId) {
+    String nuevo(@ModelAttribute CategoriaVideo categoriaVideo, @RequestParam int grupoVideoId) throws CustomValidationException {
 
         categoriaVideo.setGrupoVideo(new GrupoVideo(grupoVideoId));
         if (categoriaVideo.getId() == 0) {

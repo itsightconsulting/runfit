@@ -3,6 +3,7 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Plan;
 import com.itsight.domain.Cliente;
@@ -105,16 +106,14 @@ public class PlanController {
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody
-    String addPlan(@ModelAttribute Plan plan) {
+    public @ResponseBody String addPlan(@ModelAttribute Plan plan) throws CustomValidationException {
         if (plan.getId() == 0)
             return planService.registrar(plan, null);
         return planService.actualizar(plan, null);
     }
 
     @PostMapping(value = "/desactivar")
-    public @ResponseBody
-    String disabledPlan(@RequestParam(value = "id") int planId) {
+    public @ResponseBody String disabledPlan(@RequestParam(value = "id") int planId) {
         Plan plan = planService.getPlanById(planId);
         if (plan.isFlagActivo())
             plan.setFlagActivo(false);
@@ -125,8 +124,7 @@ public class PlanController {
     }
 
     @RequestMapping(value = "/cargarImagen", method = RequestMethod.POST)
-    public @ResponseBody
-    String registrarFileVigenciaPoder(
+    public @ResponseBody String registrarFileVigenciaPoder(
             @RequestParam(value = "imagen") MultipartFile imagen,
             @RequestParam(value = "planId") Integer planId,
             @RequestParam(value = "tipoImagenId") Integer tipoImagenId, HttpServletRequest request) {

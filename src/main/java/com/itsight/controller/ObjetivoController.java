@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Objetivo;
 import com.itsight.service.ObjetivoService;
@@ -46,7 +47,7 @@ public class ObjetivoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute Objetivo objetivo) {
+    String nuevo(@ModelAttribute Objetivo objetivo) throws CustomValidationException {
         if (objetivo.getId() == 0) {
             return objetivoService.registrar(objetivo, null);
         }

@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Post;
 import com.itsight.domain.Trainer;
@@ -55,7 +56,7 @@ public class TrainerController {
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody String nuevo(@ModelAttribute Trainer trainer, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId, @RequestParam String rols) {
+    public @ResponseBody String nuevo(@ModelAttribute Trainer trainer, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId, @RequestParam String rols) throws CustomValidationException {
         trainer.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (trainer.getId() == 0) {
             trainer.setTipoUsuario(Integer.parseInt(perfilId));

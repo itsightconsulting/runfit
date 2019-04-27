@@ -1,6 +1,7 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Categoria;
 import com.itsight.service.CategoriaService;
@@ -68,7 +69,7 @@ public class CategoriaController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute Categoria categoria) {
+    String nuevo(@ModelAttribute Categoria categoria) throws CustomValidationException {
         if (categoria.getId() == 0) {
             return categoriaService.registrar(categoria, null);
         }

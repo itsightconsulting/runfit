@@ -170,7 +170,7 @@ function exception(xhr, errorName) {
     }else{
         if (xhr["responseJSON"] != null || JSON.parse(xhr["responseText"])["status"] == "401" ) {
 
-            if(sCode != 401 && sCode != 403 && sCode != 400){
+            if(sCode != 401 && sCode != 403 && sCode != 400 && sCode !== 409){
                 $.smallBox({
                     content: "<i> Comuníquese con el administrador <br/> Code error: " + xhr['status'] + " <br/> Detail: " + xhr['responseJSON']['error'] + "</i>",
                     color: "#8a6d3b",
@@ -196,8 +196,7 @@ function exception(xhr, errorName) {
                         iconSmall: "fa fa-info fa-3x fadeInRight animated",
                         timeout: 5000,
                     });
-                }
-                else if(xhr['status'] == 400){
+                } else if(xhr['status'] == 400){
                     if(typeof xhr.responseJSON == 'object' && typeof xhr.responseJSON.message !== 'undefined' && xhr.responseJSON.message === 'Validation has failed'){
                         const errors = [];
                         xhr.responseJSON.subErrors.forEach(v=>{
@@ -208,13 +207,22 @@ function exception(xhr, errorName) {
                         });
                         smallBoxAlertValidation2(errors);
                     }else{
-                        $.smallBox({
-                            content: "<i> Usted ha realizado una petición incorrecta...</i>",
-                            color: "#8a6d3b",
-                            iconSmall: "fa fa-info fa-3x fadeInRight animated",
-                            timeout: 5000,
-                        });
+
+                            $.smallBox({
+                                content: "<i> Usted ha realizado una petición incorrecta...</i>",
+                                color: "#8a6d3b",
+                                iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                                timeout: 5000,
+                            });
+
                     }
+                } else if(xhr["status"] === 409){
+                    $.smallBox({
+                        content: "<i> "+xhr.responseJSON.message+"...</i>",
+                        color: "#8a6d3b",
+                        iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                        timeout: 5000,
+                    });
                 }
             }
 

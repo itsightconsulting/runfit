@@ -3,6 +3,7 @@ package com.itsight.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Paquete;
 import com.itsight.service.PaqueteService;
@@ -97,7 +98,7 @@ public class PaqueteController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String addPackage(@ModelAttribute Paquete paquete) {
+    String addPackage(@ModelAttribute Paquete paquete) throws CustomValidationException {
         paquete.setPlan(paquete.getFkPlan());
         if (paquete.getId() == 0) {
             return paqueteService.registrar(paquete, String.valueOf(paquete.getFkPlan()));

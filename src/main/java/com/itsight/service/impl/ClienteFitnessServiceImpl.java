@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.RedFitness;
@@ -123,7 +124,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public String registrar(ClienteFitnessDTO usuarioFitness) {
+    public String registrar(ClienteFitnessDTO usuarioFitness) throws CustomValidationException {
         ClienteFitness clienteFitness1 = new ClienteFitness();
         BeanUtils.copyProperties(usuarioFitness, clienteFitness1);
         clienteFitness1.setCompetencias(usuarioFitness.getCompetencias());

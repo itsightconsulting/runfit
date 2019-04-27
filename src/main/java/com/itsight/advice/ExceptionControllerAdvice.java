@@ -23,7 +23,7 @@ public class ExceptionControllerAdvice {
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionControllerAdvice.class);
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CustomValidationException.class)
     public @ResponseBody ErrorResponse handlerCustomValidationException(CustomValidationException ex) {
         LOGGER.warn(ex.getMessage());

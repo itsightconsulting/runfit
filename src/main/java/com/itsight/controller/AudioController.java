@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Audio;
 import com.itsight.service.AudioService;
@@ -75,7 +76,7 @@ public class AudioController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute @Valid Audio audio, String tipoAudioId) {
+    String nuevo(@ModelAttribute @Valid Audio audio, String tipoAudioId) throws CustomValidationException {
         audio.setTipoAudio(Integer.parseInt(tipoAudioId));
         if (audio.getId() == 0)
             return audioService.registrar(audio, null);

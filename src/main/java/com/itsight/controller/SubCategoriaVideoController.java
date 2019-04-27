@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.SubCategoriaVideo;
 import com.itsight.service.GrupoVideoService;
@@ -67,7 +68,7 @@ public class SubCategoriaVideoController {
     public @ResponseBody
     String nuevo(@ModelAttribute @Valid SubCategoriaVideo subCategoriaVideo,
                  @RequestParam int categoriaVideoId,
-                 BindingResult bindingResult) {
+                 BindingResult bindingResult) throws CustomValidationException {
         if(!bindingResult.hasErrors()){
             if (subCategoriaVideo.getId() == 0) {
                 SubCategoriaVideo obj = new SubCategoriaVideo(subCategoriaVideo.getNombre(), categoriaVideoId);

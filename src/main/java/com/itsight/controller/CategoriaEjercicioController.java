@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CategoriaEjercicio;
 import com.itsight.service.CategoriaEjercicioService;
@@ -60,7 +61,7 @@ public class CategoriaEjercicioController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute CategoriaEjercicio categoriaEjercicio) {
+    String nuevo(@ModelAttribute CategoriaEjercicio categoriaEjercicio) throws CustomValidationException {
         if (categoriaEjercicio.getId() == 0) {
             return categoriaEjercicioService.registrar(categoriaEjercicio, null);
         }

@@ -1,5 +1,7 @@
 package com.itsight.generic;
 
+import com.itsight.advice.CustomValidationException;
+
 import java.util.List;
 
 public interface BaseService<T, V> {
@@ -32,7 +34,7 @@ public interface BaseService<T, V> {
 
     List<T> listarPorFiltro(String comodin, String estado, String fk);
 
-    String registrar(T entity, String wildcard);
+    String registrar(T entity, String wildcard) throws CustomValidationException;
 
     String actualizar(T entity, String wildcard);
 

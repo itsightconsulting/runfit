@@ -19,16 +19,38 @@
                 </pattern>
             </PatternLayout>
         </File>
+        <!--SMTP Appender-->
+        <SMTP name="MailAppender"
+              subject="Runfit - Log4j2 SMTP [PROD]"
+              to="contoso.peru@gmail.com"
+              from="contoso.peru@gmail.com"
+              cc="contoso.peru@gmail.com"
+              smtpHost="smtp.gmail.com"
+              smtpPort="465"
+              smtpUsername="contoso.peru@gmail.com"
+              smtpPassword="p1ls3n@147"
+              smtpProtocol="smtps"
+              smtpDebug="false"
+              bufferSize="2">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+        </SMTP>
     </Appenders>
     <Loggers>
         <Logger name="com.itsight.aop" level="info" additivity="false">
             <AppenderRef ref="AppFileAppender"/>
         </Logger>
-        <Logger name="com.itsight" level="warn" additivity="false">
+        <Logger name="com.itsight.service.impl" level="warn" additivity="false">
             <AppenderRef ref="AppFileAppender"/>
         </Logger>
         <Logger name="com.itsight.advice" level="warn" additivity="false">
            <AppenderRef ref="AppFileAppender"/>
+        </Logger>
+        <Logger name="com.itsight.service.impl.EmailServiceImpl" level="error" additivity="false">
+            <AppenderRef ref="AppFileAppender"/>
+            <AppenderRef ref="MailAppender"/>
         </Logger>
         <Root level="info">
             <AppenderRef ref="ConsoleAppender"/>

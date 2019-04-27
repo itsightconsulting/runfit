@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.TipoDocumento;
 import com.itsight.service.TipoDocumentoService;
@@ -56,7 +57,7 @@ public class TipoDocumentoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute @Valid TipoDocumento tipoDocumento, BindingResult bindingResult) {
+    String nuevo(@ModelAttribute @Valid TipoDocumento tipoDocumento, BindingResult bindingResult) throws CustomValidationException {
         if(!bindingResult.hasErrors()){
             if (tipoDocumento.getId() == 0) {
                 return tipoDocumentoService.registrar(tipoDocumento, null);

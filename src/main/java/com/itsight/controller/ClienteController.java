@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
@@ -40,7 +41,7 @@ public class ClienteController {
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody String nuevo(@ModelAttribute Cliente cliente, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId, @RequestParam String rols) {
+    public @ResponseBody String nuevo(@ModelAttribute Cliente cliente, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId, @RequestParam String rols) throws CustomValidationException {
         cliente.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (cliente.getId() == 0) {
             cliente.setTipoUsuario(Integer.parseInt(perfilId));

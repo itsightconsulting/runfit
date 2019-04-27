@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Musculo;
 import com.itsight.service.MusculoService;
@@ -54,7 +55,7 @@ public class MusculoController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute Musculo musculo) {
+    String nuevo(@ModelAttribute Musculo musculo) throws CustomValidationException {
         if (musculo.getId() == 0) {
             return musculoService.registrar(musculo, null);
         }

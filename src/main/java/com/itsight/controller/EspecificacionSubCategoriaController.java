@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.service.CategoriaEjercicioService;
@@ -94,7 +95,7 @@ public class EspecificacionSubCategoriaController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute EspecificacionSubCategoria especificacionSubCategoria, @RequestParam int subCategoriaEjercicioId) {
+    String nuevo(@ModelAttribute EspecificacionSubCategoria especificacionSubCategoria, @RequestParam int subCategoriaEjercicioId) throws CustomValidationException {
 
         especificacionSubCategoria.setSubCategoriaEjercicio(new SubCategoriaEjercicio(subCategoriaEjercicioId));
         if (especificacionSubCategoria.getId() == 0) {

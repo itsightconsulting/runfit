@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Administrador;
 import com.itsight.domain.pojo.UsuarioPOJO;
@@ -74,7 +75,7 @@ public class AdministradorController {
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody String nuevo(@ModelAttribute Administrador administrador, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId,  @RequestParam String rols) {
+    public @ResponseBody String nuevo(@ModelAttribute Administrador administrador, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId,  @RequestParam String rols) throws CustomValidationException {
         administrador.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (administrador.getId() == 0) {
             administrador.setTipoUsuario(Integer.parseInt(perfilId));

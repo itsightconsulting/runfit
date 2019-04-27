@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CondicionMejora;
 import com.itsight.domain.dto.CondicionMejoraDTO;
@@ -54,7 +55,7 @@ public class CondicionMejoraController {
 
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@ModelAttribute CondicionMejora capacidadMejora) {
+    String nuevo(@ModelAttribute CondicionMejora capacidadMejora) throws CustomValidationException {
         if (capacidadMejora.getId() == 0) {
             return condicionMejoraService.registrar(capacidadMejora, null);
         }

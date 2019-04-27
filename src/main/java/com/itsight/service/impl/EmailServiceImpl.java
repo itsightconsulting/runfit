@@ -60,6 +60,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
         try {
             boolean isProdOrHku = profile.equals("production") || profile.equals("herokudev");
             if(isProdOrHku) {
+                /* Artificio para enviar mail con referencia circular*/
                 if(profile.equals("herokudev")){
                     preparator = mimeMessagePreparator(asunto, "contoso.peru@gmail.com", contenido);
                 }else{
@@ -72,7 +73,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
             }
         } catch (MailException ex) {
-            LOGGER.warn(ex.getMessage());
+            LOGGER.error(ex.getMessage());
         }
     }
 }

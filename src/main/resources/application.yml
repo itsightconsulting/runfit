@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: herokudev
+    active: development
   jpa:
     hibernate:
         ddl-auto: none
@@ -35,7 +35,7 @@ spring:
   mail:
     host: smtp.gmail.com
     username: contoso.peru@gmail.com
-    password: p1ls3n@147
+    password: p1ls3n@14
     port: 587
     properties:
       mail:
