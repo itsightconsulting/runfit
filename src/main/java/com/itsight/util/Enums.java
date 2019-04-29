@@ -115,13 +115,28 @@ public class Enums {
         }
     }
 
-    public enum Mensaje{
+    public enum Msg{
         CORREO_REPETIDO("El correo ingresado ya se encuentra registrado en nuestra base de datos"),
-        POSTULACION_BLOQUEADA("Usted no puede volver a postular hasta después de la fecha: %s");
-
+        POSTULACION_BLOQUEADA("Usted no puede volver a postular hasta después de la fecha: %s debido a que su última postulación fue rechazada"),
+        POSTULACION_EN_PROCESO("Usted ya se encuentra registrado, por favor espere hasta que nuestros gestores puedan aprobar o rechazar su postulación. Será notificado vía correo electrónico en el transcurso del día. Gracias por su espera"),
+        POSTULACION_NUEVA("Como último paso, necesitamos que verifique su correo ingresando a su bandeja en donde encontrará un email nuestro. Gracias."),
+        POSTULACION_RE_INTENTO("Su nueva postulación se ha realizado con éxito. Pronto recibirá una respuesta nuestra, gracias."),
+        RESOURCE_NOT_FOUND("Página no encontrada </br>Error 404"),
+        CUENTA_YA_VERIFICADA("La cuenta ya ha sido verificada con anterioridad"),
+        CUENTA_VERIFICADA("Su cuenta ha sido verificada satisfactoriamente, pronto recibirá un correo nuestro con el resultado de su postulación. Gracias por su tiempo."),
+        POSTULANTE_ACEPTADO_ANT("El postulante ha sido aceptado anteriormente"),
+        POSTULANTE_RECHAZADO_ANT("El postulante ha sido rechazado anteriormente"),
+        ELECCION_INVALIDA("Ha elegido una opción no válida inválida"),
+        VALIDACION_FALLIDA("La validación ha fallado"),
+        POSTULANTE_MAIL_SC("Postulante no ha confirmado su cuenta de correo electrónico"),
+        POSTULANTE_RECH_PV("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación"),
+        POSTULANTE_ACEP("Ha <strong>APROBADO</strong> al candidato con éxito"),
+        POSTULANTE_RECH("Ha <strong>RECHAZADO</strong> al candidato con éxito"),
+        POSTULANTE_YA_REG("Usted ya ha usado este link para registrarse, sino recuerda sus credenciales puede recuperarlas en la opción olvidó contraseña: <a href='/login'>aquí</a>"),
+        POST_LINK_EXP_PR("El vínculo ha expirado, para poder registrarse debe comunicarse con la plataforma, en la parte inferior de la página encontrará un apartado con datos de contacto.");
         final String msg;
 
-        Mensaje(String msg){
+        Msg(String msg){
             this.msg = msg;
         }
 

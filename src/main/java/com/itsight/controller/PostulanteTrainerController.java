@@ -6,6 +6,7 @@ import com.itsight.domain.PostulanteTrainer;
 import com.itsight.service.PostulanteTrainerService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +22,10 @@ import java.util.List;
 
 import static com.itsight.util.Enums.Decision.APROBADO;
 import static com.itsight.util.Enums.Decision.DESAPROBADO;
+import static com.itsight.util.Enums.Msg.VALIDACION_FALLIDA;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 import static com.itsight.util.Enums.ResponseCode.NOT_FOUND_MATCHES;
+import static com.itsight.util.Utilitarios.jsonResponse;
 
 
 @Controller
@@ -42,24 +45,27 @@ public class PostulanteTrainerController {
     }
 
     @GetMapping("/revisar/{codPreTrainer}")
-    public ModelAndView revisarMiniCvPostulante(
-            @PathVariable(value = "codPreTrainer") String codPreTrainer,
-            Model model)
+    public ModelAndView revisarMiniCvPostulante(@PathVariable(value = "codPreTrainer") String codPreTrainer, Model model)
     {
         if(codPreTrainer.length() == 32){
             PostulanteTrainer post = postulanteTrainerService.findOne(Parseador.getDecodeHash32Id("rf-request", codPreTrainer));
             if(post.isFlagAceptado()){
-                return new ModelAndView(ViewConstant.ERROR404);
+                model.addAttribute("msg", Enums.Msg.POSTULANTE_ACEPTADO_ANT.get());
+                return new ModelAndView(ViewConstant.MAIN_INF_P);
             }
+
             if(post.isFlagRechazado() && new Date().before(post.getFechaLimiteAccion())){
-                return new ModelAndView(ViewConstant.ERROR404);
+                model.addAttribute("msg", Enums.Msg.POSTULANTE_RECHAZADO_ANT.get());
+                return new ModelAndView(ViewConstant.MAIN_INF_N);
             }
+
             if(!post.isFlagAceptado()){
-                model.addAttribute("trainer", post);
-                return new ModelAndView("portal/eleccion_pre_trainer");
+                model.addAttribute("post", post);
+                return new ModelAndView(ViewConstant.MAIN_VER_POSTULANE);
             }
         }
-        return new ModelAndView(ViewConstant.ERROR404);
+        model.addAttribute("msg", Enums.Msg.RESOURCE_NOT_FOUND.get());
+        return new ModelAndView(ViewConstant.MAIN_INF_N);
     }
 
     @PutMapping("/decision")
@@ -68,19 +74,18 @@ public class PostulanteTrainerController {
             @RequestParam(value = "o") String eleccionId) throws CustomValidationException{
 
         if(preTrainerIdHash.length() != 32 || eleccionId.length() != 1){
-            throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
+            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
         }
 
         Integer parseEleccionId = Parseador.fromStringToInt(eleccionId);
-        if(parseEleccionId == -1){
-            throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
+        if(parseEleccionId == -1) {
+            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
         }
 
         Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
-
         if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()) {
-            return postulanteTrainerService.decidir(preTrainerId, parseEleccionId);
+            return jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId));
         }
-        throw new CustomValidationException("La validación ha fallado", EX_VALIDATION_FAILED.get());
+        throw new CustomValidationException(Enums.Msg.ELECCION_INVALIDA.get(), EX_VALIDATION_FAILED.get());
     }
 }

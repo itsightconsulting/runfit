@@ -10,6 +10,7 @@ import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
+import com.itsight.util.Enums.Msg;
 import com.itsight.util.Parseador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +113,7 @@ public class PublicoController {
 
     @GetMapping("/a")
     public ModelAndView a(){
-        return new ModelAndView(ViewConstant.MAIN_INF_POSITIVO);
+        return new ModelAndView(ViewConstant.MAIN_INF_P);
     }
 
     @GetMapping("/postulacion/trainer/verificar-correo/{hashPreTrainerId}")
@@ -126,22 +127,22 @@ public class PublicoController {
         }
 
         if(preTraId == 0){
-            return new ModelAndView(ViewConstant.ERROR404);
+            return new ModelAndView(ViewConstant.P_ERROR404);
         }
 
         PostulanteTrainer post = postulanteTrainerService.findOne(preTraId);
         if(post == null){
-            return new ModelAndView(ViewConstant.ERROR404);
+            return new ModelAndView(ViewConstant.P_ERROR404);
         }
 
         if(post.isFlagCuentaConfirmada()){
-            return new ModelAndView(ViewConstant.ERROR404);
+            model.addAttribute("msg", Msg.CUENTA_YA_VERIFICADA.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_P);
         }
 
         postulanteTrainerService.updateFlagCuentaConfirmada(post.getId(), true, post.getCorreo());
-        model.addAttribute("msg", "Su cuenta ha sido verificada satisfactoriamente, " +
-         "pronto recibirá un correo nuestro con el resultado de su postulación. Gracias por su tiempo.");
-        return new ModelAndView(ViewConstant.MAIN_INF_POSITIVO);
+        model.addAttribute("msg", Msg.CUENTA_VERIFICADA.get());
+        return new ModelAndView(ViewConstant.MAIN_INF_P);
     }
 
     @PostMapping("/postulacion/trainer/registrar")
@@ -162,22 +163,28 @@ public class PublicoController {
         }
 
         if(preTraId == 0){
-            return new ModelAndView(ViewConstant.ERROR404);
+            return new ModelAndView(ViewConstant.P_ERROR404);
         }
 
         PostulanteTrainer post = postulanteTrainerService.findOne(preTraId);
         if(post == null){
-            return new ModelAndView(ViewConstant.ERROR404);
+            return new ModelAndView(ViewConstant.P_ERROR404);
         }
-        if(post.isFlagRechazado() || post.isFlagRegistrado() || !post.isFlagAceptado()){
-            return new ModelAndView(ViewConstant.ERROR404);
+        if(post.isFlagRechazado()|| !post.isFlagAceptado()){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        if(post.isFlagRegistrado()){
+            model.addAttribute("msg", Msg.POSTULANTE_YA_REG.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_P);
         }
 
         Date now = new Date();
         if(now.after(post.getFechaLimiteAccion())){
-            model.addAttribute("msg", "El vínculo ha expirado");
-            return new ModelAndView(ViewConstant.ERROR403);
+            model.addAttribute("msg", Msg.POST_LINK_EXP_PR.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_N);
         }
+
         model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));

@@ -13,15 +13,20 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+
 @Service
 public class EmailServiceImpl extends EmailGeneric implements EmailService {
 
     @Value("${spring.profiles.active}")
     private String profile;
-	
-    public JavaMailSender emailSender;
 
-    public BandejaTemporalRepository bandejaTemporalRepository;
+    @Value("${spring.mail.username}")
+    private String emitterMail;
+	
+    private JavaMailSender emailSender;
+
+    private BandejaTemporalRepository bandejaTemporalRepository;
 
     public static final Logger LOGGER = LogManager.getLogger(EmailServiceImpl.class);
     
@@ -60,9 +65,10 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
         try {
             boolean isProdOrHku = profile.equals("production") || profile.equals("herokudev");
             if(isProdOrHku) {
-                /* Artificio para enviar mail con referencia circular*/
+                //Receptor
                 if(profile.equals("herokudev")){
-                    preparator = mimeMessagePreparator(asunto, "contoso.peru@gmail.com", contenido);
+                    receptor = emitterMail;
+                    preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 }else{
                     preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 }
@@ -73,6 +79,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
             }
         } catch (MailException ex) {
+            //Importante el log.error ya que este dispara el envío del error al correo configurado en el SMTP del log4j2.xml
             LOGGER.error(ex.getMessage());
         }
     }

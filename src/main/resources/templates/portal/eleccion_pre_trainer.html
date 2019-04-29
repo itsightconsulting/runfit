@@ -30,21 +30,21 @@
                 <div class="col-md-8">
                   <div class="form-group">
                     <label for="Correo">CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                    <input name="Correo" id="Correo" class="form-control" type="text" disabled="disabled" th:value="${trainer.correo}">
+                    <input name="Correo" id="Correo" class="form-control" type="text" disabled="disabled" th:value="${post.correo}">
                   </div>
                   <div class="form-group">
                     <label for="Movil">TELÉFONO<span class="obligatorio">*</span></label>
-                    <input id="Movil" name="Movil" class="form-control" type="text" disabled="disabled" th:value="${trainer.movil}">
+                    <input id="Movil" name="Movil" class="form-control" type="text" disabled="disabled" th:value="${post.movil}">
                   </div>
                   <div class="form-group">
                     <label for="NombreFull">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                    <input id="NombreFull" name="NombreFull" class="form-control" type="text" disabled="disabled" th:value="${trainer.nombreFull}">
+                    <input id="NombreFull" name="NombreFull" class="form-control" type="text" disabled="disabled" th:value="${post.nombreFull}">
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
                     <label for="Mensaje">DEJANOS UN MENSAJE Y COMÉNTANOS SOBRE TUS INTERESES</label>
-                    <textarea id="Mensaje" name="Mensaje" class="form-control" disabled="disabled" th:utext="${trainer.mensaje}"></textarea>
+                    <textarea id="Mensaje" name="Mensaje" class="form-control" disabled="disabled" th:utext="${post.mensaje}"></textarea>
                   </div>
                 </div>
                 <div class="text-right">
@@ -67,7 +67,7 @@
         btnAprobar.addEventListener('click', enviarForm);
         btnRechazar.addEventListener('click', enviarForm);
         if(flag_form_populate){
-          btnAprobar.click();
+          //btnAprobar.click();
         }
       })();
 
@@ -91,7 +91,7 @@
           blockLoading: true,
           success: function (data, textStatus) {
             if (textStatus == "success") {
-              window.location.href = _ctx + "p/inicio";
+              reqSuccess(data);
             }
           },
           error: function (xhr) {

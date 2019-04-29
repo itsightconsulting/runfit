@@ -161,6 +161,19 @@ function irListado(x) {
     });
 }
 
+function reqSuccess(r){
+    if(isNaN(r.res)){
+        const msg = r.res;
+        $("#frm_registro :input").prop("disabled", true);
+        $.smallBox({content: "<i class='fa fa-check'></i> "+msg,
+                    color: '#111509',
+                    timeout: 10000
+        });
+    } else{
+        $.smallBox({});
+    }
+}
+
 function exception(xhr, errorName) {
     console.log(xhr);
     const sCode = xhr['status'];

@@ -126,8 +126,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         if(optPreTrainer.isPresent()){
             PostulanteTrainer obj = optPreTrainer.get();
             if(obj.isFlagAceptado()){
-                System.out.println(">>>>>>>>>>>");
-                throw new CustomValidationException(Enums.Mensaje.CORREO_REPETIDO.get(), EX_VALIDATION_FAILED.get());
+                throw new CustomValidationException(Enums.Msg.CORREO_REPETIDO.get(), EX_VALIDATION_FAILED.get());
             }
 
             if(obj.isFlagRechazado()){
@@ -139,29 +138,28 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
                     String hashId = Parseador.getEncodeHash32Id("rf-request", obj.getId());
                     String cuerpo = String.format(correo.getBody(), domainName, hashId);
                     emailService.enviarCorreoInformativo(correo.getAsunto(), obj.getCorreo(), cuerpo);
-                    return ACTUALIZACION.get() +"|"+ entity.getId();
+                    //Actualizando el flag en esta nueva postulación
+                    obj.setFlagRechazado(false);
+                    obj.setIntentos(obj.getIntentos()+1);
+                    repository.save(obj);
+                    return Enums.Msg.POSTULACION_RE_INTENTO.get();
                 } else {
-                    throw new CustomValidationException(String.format(Enums.Mensaje.POSTULACION_BLOQUEADA.get(), obj.getFechaLimiteAccion()), EX_VALIDATION_FAILED.get());
+                    throw new CustomValidationException(String.format(Enums.Msg.POSTULACION_BLOQUEADA.get(), obj.getFechaLimiteAccion()), EX_VALIDATION_FAILED.get());
                 }
             }
-
-            throw new CustomValidationException("Usted ya se encuentra registrado, por favor espere hasta que nuestros gestores puedan aprobar o rechazar su postulación. Será notificado vía correo electrónico en el transcurso del día. Gracias por su espera", EX_VALIDATION_FAILED.get());
-
+            throw new CustomValidationException(Enums.Msg.POSTULACION_EN_PROCESO.get(), EX_VALIDATION_FAILED.get());
         }
         entity.setFechaCreacion(new Date());
         entity.setIntentos(1);
         repository.save(entity);
-        //Receptor
-        String receptor = !profile.equals("production") ? emitterMail : entity.getCorreo();
 
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(POSTULANTE_TRAINER_CONFIRMAR_CORREO.get());
         //Envio de correo
         String hashId = Parseador.getEncodeHash32Id("rf-request", entity.getId());
         String cuerpo = String.format(correo.getBody(), domainName, hashId);
-        emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
-        //Save
-        return REGISTRO.get() +"|"+ entity.getId();
+        emailService.enviarCorreoInformativo(correo.getAsunto(), entity.getCorreo(), cuerpo);
+        return Enums.Msg.POSTULACION_NUEVA.get();
     }
 
     @Override
@@ -182,34 +180,34 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         }
 
         if(!preTrainer.isFlagCuentaConfirmada()){
-            throw new CustomValidationException("Postulante no ha confirmado su cuenta de correo electrónico", EX_VALIDATION_FAILED.get());
+            throw new CustomValidationException(Enums.Msg.POSTULANTE_MAIL_SC.get(), EX_VALIDATION_FAILED.get());
         }
 
         if(preTrainer.isFlagAceptado()){
-            throw new CustomValidationException("Postulante ya ha sido aceptado con anterioridad", EX_VALIDATION_FAILED.get());
+            throw new CustomValidationException(Enums.Msg.POSTULANTE_ACEPTADO_ANT.get(), EX_VALIDATION_FAILED.get());
         }
 
         if(preTrainer.isFlagRechazado() && new Date().before(preTrainer.getFechaLimiteAccion())){
-            throw new CustomValidationException("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación", EX_VALIDATION_FAILED.get());
+            throw new CustomValidationException(Enums.Msg.POSTULANTE_RECH_PV.get(), EX_VALIDATION_FAILED.get());
         }
 
         Date timestamp = new Date();
         if(decisionId == 1){
             preTrainer.setFechaAprobacion(timestamp);
-            preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(7, ChronoUnit.DAYS)));
+            preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plusSeconds(10)));
+            //preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(14, ChronoUnit.DAYS)));
             preTrainer.setFlagAceptado(true);
-        }else{
+        }else {
             preTrainer.setFechaRechazo(timestamp);
             preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(90, ChronoUnit.DAYS)));
+            //preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plusSeconds(30)));
             preTrainer.setFlagRechazado(true);
         }
         //Save
         repository.save(preTrainer);
 
-        boolean isProduction = profile.equals("production");
-
         //Receptor
-        String receptor = !isProduction ? emitterMail : preTrainer.getCorreo();
+        String receptor = preTrainer.getCorreo();
 
         //Envio de correo
         String hshId = Parseador.getEncodeHash32Id("rf-request", preTrainer.getId());
@@ -217,15 +215,13 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
             Correo mail = correoService.findOne(4);
             emailService.enviarCorreoInformativo(mail.getAsunto(), receptor,
                     String.format(mail.getBody(), domainName, hshId));
-        }else{
+        } else{
             Correo mail = correoService.findOne(5);
             emailService.enviarCorreoInformativo(mail.getAsunto(),
                     receptor,
                     mail.getBody());
         }
-
-
-        return EXITO_GENERICA.get();
+        return decisionId == 1 ? Enums.Msg.POSTULANTE_ACEP.get() : Enums.Msg.POSTULANTE_RECH.get();
     }
 
     @Override

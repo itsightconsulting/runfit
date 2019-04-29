@@ -98,8 +98,7 @@
           blockLoading: true,
           success: function (data, textStatus) {
             if (textStatus == "success") {
-              $.smallBox({});
-              console.log(data);
+              reqSuccess(data);
             }
           },
           error: function (xhr) {
