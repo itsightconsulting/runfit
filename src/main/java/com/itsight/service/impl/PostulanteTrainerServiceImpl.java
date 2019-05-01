@@ -194,8 +194,8 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         Date timestamp = new Date();
         if(decisionId == 1){
             preTrainer.setFechaAprobacion(timestamp);
-            preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plusSeconds(10)));
-            //preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(14, ChronoUnit.DAYS)));
+            //preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plusSeconds(10)));
+            preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(14, ChronoUnit.DAYS)));
             preTrainer.setFlagAceptado(true);
         }else {
             preTrainer.setFechaRechazo(timestamp);

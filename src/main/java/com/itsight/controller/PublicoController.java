@@ -1,5 +1,19 @@
 package com.itsight.controller;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.event.ProgressListener;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.BandejaTemporal;
@@ -14,14 +28,21 @@ import com.itsight.util.Enums.Msg;
 import com.itsight.util.Parseador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Executors;
 
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 import static com.itsight.util.Enums.ResponseCode.REGISTRO;
@@ -241,5 +262,124 @@ public class PublicoController {
     @GetMapping("/bandeja")
     public @ResponseBody List<BandejaTemporal> getBandejaGeneral(){
         return bandejaTemporalRepository.findAllByOrderByIdDesc();
+    }
+
+    @PostMapping(value = "/simple-imagen")
+    public @ResponseBody String subirImagenAmazonS3(
+            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+
+        if (!file.isEmpty()) {
+
+            String[] splitNameFile = file.getOriginalFilename().split("\\.");
+            String extension = "." + splitNameFile[splitNameFile.length - 1];
+            String fullPath = "";
+            UUID uuid = UUID.randomUUID();
+
+            // Pasando la imagen de la vista a un arreglo de bytes para luego convertirlo y
+            // transferirlo a un nuevo file con un nombre, ruta generado con anterioridad
+
+
+            try {
+
+                String clientRegion = "sa-east-1";
+                String existingBucketName = "dev-runfit";
+                String keyName = uuid+extension;
+
+                BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAS37G4KTWCUSHASND", "LlGNF/xUZhb3jpBytfzyILhxqWnZpKIvxLeS7zTP");
+
+                AmazonS3 amazonS3 = AmazonS3ClientBuilder
+                        .standard()
+                        .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                        .withRegion(clientRegion)
+                        .build();
+
+                int maxUploadThreads = 5;
+
+                TransferManager tm = TransferManagerBuilder
+                        .standard()
+                        .withS3Client(amazonS3)
+                        .withMultipartUploadThreshold((long) (5 * 1024 * 1024))
+                        .withExecutorFactory(() -> Executors.newFixedThreadPool(maxUploadThreads))
+                        .build();
+                File f = new File("G://andy2.png");
+                if(f.exists()){
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                    System.out.println(f.length());
+                }
+                ProgressListener progressListener =
+                        progressEvent -> System.out.println("Transferred bytes: " + progressEvent.getBytesTransferred());
+
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(file.getSize());
+                PutObjectRequest request = new PutObjectRequest(existingBucketName, keyName, file.getInputStream(), metadata);
+
+                request.setGeneralProgressListener(progressListener);
+
+                Upload upload = tm.upload(request);
+
+                try {
+                    upload.waitForCompletion();
+                    System.out.println("Upload complete.");
+                } catch (AmazonClientException e) {
+                    System.out.println("Error occurred while uploading file");
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } /*catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }*/
+            return "1";
+        }
+        return "-1";
+    }
+
+    @GetMapping("/api/file/{keyname}")
+    public ResponseEntity<byte[]> descargarFile(@PathVariable String keyname) {
+        ByteArrayOutputStream downloadInputStream = downloadFile(keyname);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                //.header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + keyname + "\"")
+                .body(downloadInputStream.toByteArray());
+    }
+
+    public ByteArrayOutputStream downloadFile(String keyName) {
+        try {
+            String clientRegion = "sa-east-1";
+            String existingBucketName = "dev-runfit";
+            BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAS37G4KTWCUSHASND", "LlGNF/xUZhb3jpBytfzyILhxqWnZpKIvxLeS7zTP");
+
+            AmazonS3 amazonS3 = AmazonS3ClientBuilder
+                    .standard()
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                    .withRegion(clientRegion)
+                    .build();
+
+            S3Object s3object = amazonS3.getObject(new GetObjectRequest(existingBucketName, keyName));
+
+            InputStream is = s3object.getObjectContent();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            int len;
+            byte[] buffer = new byte[4096];
+            while ((len = is.read(buffer, 0, buffer.length)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+
+            return baos;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (AmazonServiceException ase) {
+            throw ase;
+        } catch (AmazonClientException ace) {
+            throw ace;
+        }
+
+        return null;
     }
 }

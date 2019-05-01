@@ -44,9 +44,9 @@
                   <div class="container">
                       <div class="col-md-5">
                           <div class="avatar-form">
-                              <input type="file" id="inpImgPerfil">
+                              <input type="file" id="InpImgPerfil">
                               <div class="avatar-form-content">
-                                  <img title="Subir foto" id="ImagePerfil" onclick="javascript:document.getElementById('inpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                                  <img title="Subir foto" id="ImagePerfil" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                               </div>
                           </div>
                           <fieldset class="rating">
@@ -521,7 +521,7 @@
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script>
-        const inpImg = document.getElementById('inpImgPerfil');
+        const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
         const inpGaleria = document.getElementById('InpGaleria');
         const btnGuardar = document.getElementById('btnGuardar')
@@ -539,7 +539,7 @@
 
 
         (function () {
-            uploadAndShow(inpImg, imgPerfil);
+            uploadAndShow(inpImgPerfil, imgPerfil);
             uploadImgs(inpGaleria, 'ImgsGaleria');
             showInitTab(initTabActive);
             btnGuardar.addEventListener('click', sendForm);
@@ -547,11 +547,60 @@
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
             btnNuevaCuentaBanc.addEventListener('click', agregarCuentaBancaria);
             tabService.addEventListener('click', clickListenerTabService);
+            inpImgPerfil.addEventListener('change', uploadFotoPerfil);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
             init();
         })();
+
+        function uploadFotoPerfil(e){
+            //submit the form here
+            let file = e.target;
+            if (file.files.length > 0) {
+                file = file.files[0];
+                const data = new FormData();
+                console.log(file);
+                data.append("file", file);
+
+                $.ajax({
+                    type: 'POST',
+                    url: _ctx+'p/simple-imagen',
+                    data : data,
+                    contentType: false,
+                    processData: false,
+                    xhr: function() {
+                        var myXhr = $.ajaxSettings.xhr();
+                        if(myXhr.upload){
+                            myXhr.upload.addEventListener('progress', progress, false);
+                        }
+                        return myXhr;
+                    },
+                    success: function (data, textStatus) {
+                        if (textStatus == "success") {
+                            if(data == "-99"){
+                                bootbox.alert("El archivo no ha podido ser guardado debido. Para mayor información comunicarse con el administrador.");
+                            } else if(data == "-1"){
+                                bootbox.alert("El archivo no ha podido ser guardado debido. Para mayor información comunicarse con el administrador.");
+                            } else{
+                                $.smallBox({
+                                    content: "<i> El archivo se reemplazo satisfactoriamente...</i>",
+                                    iconSmall: "fa fa-refresh fa-2x"
+                                });
+                            }
+
+                        }
+                    },
+                    error: function (xhr) {
+                        if(xhr["responseJSON"] != null)
+                            exception(xhr["status"], xhr["responseJSON"]["error"]);
+                        else
+                            exception(xhr["status"], xhr["status"]);
+                    },
+                    complete: function () {}
+                });
+            }
+        }
 
         function init(){
             populateBancos();
@@ -850,12 +899,12 @@
 
             document.querySelector('#inpTermCond').checked = true;
 
-            var tid = setInterval( function () {
+            /*var tid = setInterval( function () {
                 if ( document.readyState !== 'complete' ) return;
                 else document.getElementById('btnGuardar').click();
                 clearInterval( tid );
                 // do your work
-            }, 100);
+            }, 100);*/
         }
 
         function generateBody(){
