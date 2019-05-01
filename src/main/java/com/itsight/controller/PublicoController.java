@@ -7,10 +7,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.event.ProgressListener;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
@@ -28,6 +25,7 @@ import com.itsight.util.Enums.Msg;
 import com.itsight.util.Parseador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -63,6 +62,18 @@ public class PublicoController {
     private TrainerService trainerService;
 
     private TrainerFichaService trainerFichaService;
+
+    @Value("${amazon.aws.s3.access.key}")
+    private String aws3accessKey;
+
+    @Value("${amazon.aws.s3.secret.key}")
+    private String aws3secretKey;
+
+    @Value("${amazon.aws.s3.region}")
+    private String aws3region;
+
+    @Value("${amazon.aws.s3.bucket}")
+    private String aws3bucket;
 
     @Autowired
     private BandejaTemporalRepository bandejaTemporalRepository;
@@ -272,7 +283,6 @@ public class PublicoController {
 
             String[] splitNameFile = file.getOriginalFilename().split("\\.");
             String extension = "." + splitNameFile[splitNameFile.length - 1];
-            String fullPath = "";
             UUID uuid = UUID.randomUUID();
 
             // Pasando la imagen de la vista a un arreglo de bytes para luego convertirlo y
@@ -280,17 +290,14 @@ public class PublicoController {
 
 
             try {
-
-                String clientRegion = "sa-east-1";
-                String existingBucketName = "dev-runfit";
                 String keyName = uuid+extension;
 
-                BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAS37G4KTWCUSHASND", "LlGNF/xUZhb3jpBytfzyILhxqWnZpKIvxLeS7zTP");
+                BasicAWSCredentials awsCreds = new BasicAWSCredentials(aws3accessKey, aws3secretKey);
 
                 AmazonS3 amazonS3 = AmazonS3ClientBuilder
                         .standard()
                         .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                        .withRegion(clientRegion)
+                        .withRegion(aws3region)
                         .build();
 
                 int maxUploadThreads = 5;
@@ -301,17 +308,18 @@ public class PublicoController {
                         .withMultipartUploadThreshold((long) (5 * 1024 * 1024))
                         .withExecutorFactory(() -> Executors.newFixedThreadPool(maxUploadThreads))
                         .build();
-                File f = new File("G://andy2.png");
-                if(f.exists()){
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                    System.out.println(f.length());
-                }
+                System.out.println(file.getSize());
+
                 ProgressListener progressListener =
                         progressEvent -> System.out.println("Transferred bytes: " + progressEvent.getBytesTransferred());
 
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(file.getSize());
-                PutObjectRequest request = new PutObjectRequest(existingBucketName, keyName, file.getInputStream(), metadata);
+                PutObjectRequest request = new PutObjectRequest(aws3bucket, keyName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+                List<Tag> tags = new ArrayList<>();
+                tags.add(new Tag("one", "rf-test"));
+                tags.add(new Tag("two", "undesired"));
+                request.setTagging(new ObjectTagging(tags));
 
                 request.setGeneralProgressListener(progressListener);
 
@@ -351,17 +359,15 @@ public class PublicoController {
 
     public ByteArrayOutputStream downloadFile(String keyName) {
         try {
-            String clientRegion = "sa-east-1";
-            String existingBucketName = "dev-runfit";
-            BasicAWSCredentials awsCreds = new BasicAWSCredentials("AKIAS37G4KTWCUSHASND", "LlGNF/xUZhb3jpBytfzyILhxqWnZpKIvxLeS7zTP");
+            BasicAWSCredentials awsCreds = new BasicAWSCredentials(aws3accessKey, aws3secretKey);
 
             AmazonS3 amazonS3 = AmazonS3ClientBuilder
                     .standard()
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                    .withRegion(clientRegion)
+                    .withRegion(aws3region)
                     .build();
 
-            S3Object s3object = amazonS3.getObject(new GetObjectRequest(existingBucketName, keyName));
+            S3Object s3object = amazonS3.getObject(new GetObjectRequest(aws3bucket, keyName));
 
             InputStream is = s3object.getObjectContent();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
