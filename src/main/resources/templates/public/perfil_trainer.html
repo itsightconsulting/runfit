@@ -23,7 +23,7 @@
           <div class="container">
             <div class="col-md-5">
               <div class="avatar-form">
-                <div class="avatar-form-content"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
+                <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;"/></div>
               </div>
               <fieldset class="rating">
                 <input id="star5" type="radio" name="rating" value="5"/>
@@ -291,6 +291,7 @@
         document.querySelector('#NombreFull').textContent = t.nombreCompleto;
         document.querySelector('#Especialidad').textContent = t.especialidad;
         document.querySelector('#Disciplina').textContent = t.disciplina;
+        document.querySelector('#ImagenPerfil img').src = 'https://s3-sa-east-1.amazonaws.com/dev-runfit/perfil/'+t.rutaWebImg;
         document.querySelector('#Acerca').textContent = t.acerca.replace(/\r?\n/g, '<br />');
 
         let idiomas = "Español|Ingles".split("|");

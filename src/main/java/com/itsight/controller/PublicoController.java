@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,7 +52,7 @@ import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/p")
-@PropertySource("classpath:aws-auths.properties")
+@PropertySource("${aws.auths.file}")
 public class PublicoController {
 
     private CondicionMejoraService condicionMejoraService;
@@ -229,7 +230,11 @@ public class PublicoController {
     @PostMapping("/registro/trainer/{hashPreTrainerId}")
     public @ResponseBody String registroTrainer(
                 @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId,
-                @RequestBody @Valid TrainerFichaDTO trainerFicha) throws CustomValidationException {
+                @RequestBody @Valid TrainerFichaDTO trainerFicha, HttpSession session) throws CustomValidationException {
+        String uriImgPerfil = "";
+        if(session.getAttribute("uri_img") != null){
+            uriImgPerfil = session.getAttribute("uri_img").toString();
+        }
         Integer postTraId = 0;
 
         if(hashPreTrainerId.length() == 32){
@@ -254,8 +259,10 @@ public class PublicoController {
             //y no el que enviaron en la petición post
             trainerFicha.setCorreo(postulante.getCorreo());
             trainerFicha.setPostulanteTrainerId(postTraId);
+            trainerFicha.setFotoPerfil(uriImgPerfil);
             return trainerService.registrarPostulante(trainerFicha);
         }
+
 
         return jsonResponse(REGISTRO.get());
     }
@@ -280,7 +287,7 @@ public class PublicoController {
 
     @PostMapping(value = "/simple-imagen")
     public @ResponseBody String subirImagenAmazonS3(
-            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+            @RequestPart(value = "file", required = false) MultipartFile file, HttpSession session) throws IOException {
 
         if (!file.isEmpty()) {
 
@@ -294,7 +301,7 @@ public class PublicoController {
 
             try {
                 String keyName = uuid+extension;
-
+                System.out.println(aws3accessKey+"|"+aws3secretKey);
                 BasicAWSCredentials awsCreds = new BasicAWSCredentials(aws3accessKey, aws3secretKey);
 
                 AmazonS3 amazonS3 = AmazonS3ClientBuilder
@@ -318,7 +325,7 @@ public class PublicoController {
 
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(file.getSize());
-                PutObjectRequest request = new PutObjectRequest(aws3bucket, "aws/thanks/directory/"+keyName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+                PutObjectRequest request = new PutObjectRequest(aws3bucket, "perfil/"+keyName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead);
                 List<Tag> tags = new ArrayList<>();
                 tags.add(new Tag("one", "rf-test"));
                 tags.add(new Tag("two", "undesired"));
@@ -327,7 +334,7 @@ public class PublicoController {
                 request.setGeneralProgressListener(progressListener);
 
                 Upload upload = tm.upload(request);
-
+                session.setAttribute("uri_img", keyName);
                 try {
                     upload.waitForCompletion();
                     System.out.println("Upload complete.");

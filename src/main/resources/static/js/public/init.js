@@ -1,8 +1,8 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 1 == 1;
-var initPageActive = 3;
-var hiddenHeaderBar = 1 == 1;
+var flag_form_populate = 0 == 1;
+var initPageActive = 1;
+var hiddenHeaderBar = 0 == 1;
 try {
     document.querySelector('.step-0'+initPageActive).classList.toggle('active');
     document.querySelector('.inpts-'+initPageActive).classList.toggle('active');

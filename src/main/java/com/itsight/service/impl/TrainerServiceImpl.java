@@ -229,6 +229,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public String registrarPostulante(TrainerFichaDTO trainerFicha) {
         TrainerFicha obj = new TrainerFicha();
+        obj.setRutaWebImg(trainerFicha.getFotoPerfil());
         BeanUtils.copyProperties(trainerFicha, obj);
         Trainer trainer = new Trainer(
                 trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
