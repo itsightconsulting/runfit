@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
@@ -52,7 +53,7 @@ import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/p")
-@PropertySource("${aws.auths.file}")
+//@PropertySource("${aws.auths.file}")
 public class PublicoController {
 
     private CondicionMejoraService condicionMejoraService;
@@ -67,17 +68,20 @@ public class PublicoController {
 
     private TrainerFichaService trainerFichaService;
 
-    @Value("${amazon.aws.s3.access.key}")
+    /*@Value("${amazon.aws.s3.access.key}")
     private String aws3accessKey;
 
     @Value("${amazon.aws.s3.secret.key}")
-    private String aws3secretKey;
+    private String aws3secretKey;*/
 
     @Value("${amazon.aws.s3.region}")
     private String aws3region;
 
     @Value("${amazon.aws.s3.bucket}")
     private String aws3bucket;
+
+    @Autowired
+    private ServletContext context;
 
     @Autowired
     private BandejaTemporalRepository bandejaTemporalRepository;
@@ -301,8 +305,9 @@ public class PublicoController {
 
             try {
                 String keyName = uuid+extension;
-                System.out.println(aws3accessKey+"|"+aws3secretKey);
-                BasicAWSCredentials awsCreds = new BasicAWSCredentials(aws3accessKey, aws3secretKey);
+
+
+                BasicAWSCredentials awsCreds = new BasicAWSCredentials(context.getAttribute("awss3keyname").toString(), context.getAttribute("awss3keysecret").toString());
 
                 AmazonS3 amazonS3 = AmazonS3ClientBuilder
                         .standard()
@@ -369,7 +374,8 @@ public class PublicoController {
 
     public ByteArrayOutputStream downloadFile(String keyName) {
         try {
-            BasicAWSCredentials awsCreds = new BasicAWSCredentials(aws3accessKey, aws3secretKey);
+
+            BasicAWSCredentials awsCreds = new BasicAWSCredentials(context.getAttribute("awss3keyname").toString(), context.getAttribute("awss3keysecret").toString());
 
             AmazonS3 amazonS3 = AmazonS3ClientBuilder
                     .standard()
