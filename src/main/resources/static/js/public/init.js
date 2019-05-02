@@ -296,43 +296,46 @@ function hideNavBar(){
 }
 
 function validLoginForm(){
-    $("#login-form").validate({
-        // Rules for form validation}
-        ignore: ".ignore",
-        highlight: function (element) {
-            $(element).parent().removeClass('state-success').addClass("state-error");
-            $(element).removeClass('valid');
-        },
-        unhighlight: function (element) {
-            $(element).parent().removeClass("state-error").addClass('state-success');
-            $(element).addClass('valid');
-        },
-        rules: {
-            username: {
-                required: true,
+    const frm_login_base = document.getElementById('login-form');
+    if(frm_login_base != undefined){
+        $("#login-form").validate({
+            // Rules for form validation}
+            ignore: ".ignore",
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
             },
-            password: {
-                required: true,
-                minlength: 5,
-                maxlength: 20
-            }
-        },
-
-        // Messages for form validation
-        messages: {
-            username: {
-                required: 'Por favor ingresa tu nombre de usuario',
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
             },
-            password: {
-                required: 'Por favor ingresa tu password'
-            }
-        },
+            rules: {
+                username: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20
+                }
+            },
 
-        // Do not change code below
-        errorPlacement: function (error, element) {
-            error.insertAfter(element.parent());
-        }
-    });
+            // Messages for form validation
+            messages: {
+                username: {
+                    required: 'Por favor ingresa tu nombre de usuario',
+                },
+                password: {
+                    required: 'Por favor ingresa tu password'
+                }
+            },
+
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+    }
 }
 
 (function(){

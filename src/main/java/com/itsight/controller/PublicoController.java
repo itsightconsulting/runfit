@@ -122,6 +122,16 @@ public class PublicoController {
         return new ModelAndView(ViewConstant.MAIN_BUSQUEDA_TRAINER);
     }
 
+    @GetMapping("/preguntas-frecuentes")
+    public ModelAndView preguntasFrecuentes(){
+        return new ModelAndView(ViewConstant.MAIN_PREGUNTAS_FRECUENTES);
+    }
+
+    @GetMapping("/terminos-y-condiciones")
+    public ModelAndView terminosYcondiciones(){
+        return new ModelAndView(ViewConstant.MAIN_TERMINOS_Y_CONDICIONES);
+    }
+
     @GetMapping({"/ficha-inscripcion", "/ficha-inscripcion"})
     public ModelAndView fichaInscripcion(
         @RequestParam(name="key", required=false) String hshTrainerId,

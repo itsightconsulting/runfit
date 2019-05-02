@@ -374,7 +374,7 @@ footer ul.social li a {
   position: relative;
   box-sizing: border-box;
   padding: 70px 0 45px;
-  background: url(../img/entrena-bg.jpg) top center no-repeat;
+  background: url(/img/public/entrena-bg.jpg) top center no-repeat;
   background-size: cover
 }
 
@@ -1205,7 +1205,7 @@ h1 {
 
 .colaboradores .top-section {
   position: relative;
-  background: url(../img/colaboradores.png) no-repeat top center;
+  background: url(/img/public/colaboradores.png) no-repeat top center;
   background-size: cover
 }
 
