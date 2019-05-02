@@ -33,7 +33,6 @@
       </section>
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
-    <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
-    <script th:src="@{/js/public/init.js}+'?'+${version}" type="text/javascript"></script>
+    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
   </body>
 </html>

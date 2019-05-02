@@ -241,7 +241,7 @@ function next_step_cs(i){
 }
 
 function openMenuMobile() {
-    $(".navbar-brand span").click(function () {
+    $("span.hamburguer").click(function () {
         var menu = $(".menu_mobile")
         if (menu.hasClass('active')) {
             menu.removeClass('active')
@@ -296,8 +296,6 @@ function hideNavBar(){
 }
 
 function validLoginForm(){
-    const frm_login_base = document.getElementById('login-form');
-    if(frm_login_base != undefined){
         $("#login-form").validate({
             // Rules for form validation}
             ignore: ".ignore",
@@ -335,7 +333,6 @@ function validLoginForm(){
                 error.insertAfter(element.parent());
             }
         });
-    }
 }
 
 (function(){

@@ -2,3 +2,7 @@
 .login_link{
     cursor: pointer;
 }
+
+footer li a span.fa{
+    padding-top: 3px;
+}
