@@ -4,8 +4,14 @@ var flag_form_populate = 0 == 1;
 var initPageActive = 1;
 var hiddenHeaderBar = 0 == 1;
 try {
+    //Remarcar página visitada
+    const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`)
+    if(pubMenu != undefined){
+        pubMenu.parentElement.classList.add('active');
+    }
     document.querySelector('.step-0'+initPageActive).classList.toggle('active');
     document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
+    a = document.querySelector(`a[href="${window.location.pathname}"]`);
 }catch (e) {}
 
 function time_line() {

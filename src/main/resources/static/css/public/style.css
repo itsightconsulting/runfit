@@ -35,7 +35,7 @@
 
 .navbar {
   transition: all .5s;
-  height: 180px
+  height: 103px
 }
 
 .navbar span.hamburguer {
@@ -55,13 +55,13 @@
 }
 
 .navbar-inverse .login_link {
-  margin: 25px 0 -15px;
+  margin: 15px 0 -15px;
   font-size: 14px;
   color: #a8fa00
 }
 
 .navbar-inverse ul.navbar-right {
-  margin-top: 25px
+  margin-top: 18px
 }
 
 .navbar-inverse ul.navbar-right li {
@@ -78,7 +78,7 @@
 }
 
 .navbar-inverse ul.navbar-right li.active a span {
-  padding-bottom: 30px;
+  padding-bottom: 9px;
   border-bottom: 4px solid #a8fa00
 }
 
@@ -89,7 +89,7 @@
 
 .navbar-inverse ul.navbar-right li.active a:hover span,
 .navbar-inverse ul.navbar-right li.active a:focus span {
-  padding-bottom: 30px;
+  padding-bottom: 9px;
   border-bottom: 4px solid #a8fa00
 }
 
@@ -226,6 +226,18 @@
   border-right: 1px solid #a8fa00
 }
 
+.navbar-inverse .login_link{
+  cursor: pointer;
+}
+
+.navbar-brand{
+  padding-top: 0px;
+}
+
+.logo-header{
+  height: 70px;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar {
     height: 80px
@@ -280,6 +292,10 @@ footer ul.social li a {
   font-size: 20px;
   box-sizing: border-box;
   text-align: center
+}
+
+footer li a span.fa{
+  padding-top: 3px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -534,6 +550,10 @@ footer ul.social li a {
   }
   .entrena_correctamente ol li .item p {
     display: none
+  }
+
+  .navbar-brand{
+    padding: 15px 15px !important;
   }
 }
 
@@ -942,7 +962,7 @@ h1 {
 }
 
 .ver-servicios .form-group label {
-  background: url(img/ver.png) no-repeat left center;
+  background: url(/img/ver.png) no-repeat left center;
   padding: 9px 0 8px 52px;
   margin: 8px 0;
   font-family: Montserrat-Regular;
@@ -1921,7 +1941,7 @@ h1 {
 }
 
 .faq .content-collapse h3.more {
-  background: url("../img/view-more.png") no-repeat left center
+  background: url("/img/public/view-more.png") no-repeat left center
 }
 
 .faq .content-collapse h3.less {
