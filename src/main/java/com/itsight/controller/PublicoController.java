@@ -315,7 +315,7 @@ public class PublicoController {
 
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(file.getSize());
-                PutObjectRequest request = new PutObjectRequest(aws3bucket, keyName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+                PutObjectRequest request = new PutObjectRequest(aws3bucket, "aws/thanks/directory/"+keyName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead);
                 List<Tag> tags = new ArrayList<>();
                 tags.add(new Tag("one", "rf-test"));
                 tags.add(new Tag("two", "undesired"));
