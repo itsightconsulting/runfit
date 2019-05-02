@@ -156,9 +156,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private BagForestRepository bagForestRepository;
 
-    @Value("${spring.profiles.active}")
-    private String profile;
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
@@ -210,22 +207,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         addingToContextSession();
         addingInitUsers();
         creatingFileDirectories();
-
-        /*if(profile.equals("herokudev")){*/
-            try {
-
-                InputStream is = new ClassPathResource("aws-auths.properties").getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                String content = reader.lines().collect(Collectors.joining("\n"));
-                String[] lines = content.split("\n");
-                String key = "amazon.aws.s3.access.key=";
-                String secret = "amazon.aws.s3.access.secret=";
-                context.setAttribute("awss3keyname", lines[0].trim().substring(key.length()).trim());
-                context.setAttribute("awss3keysecret", lines[1].trim().substring(secret.length()).trim());
-            } catch(Exception ex) {
-                ex.printStackTrace();
-            }
-        /*}*/
     }
 
     public void insertACategoriaEjercicio() {
