@@ -374,21 +374,21 @@
 
       function reconstruirTarifario(tarifas){
           console.log(tarifas);
-          tarifas.forEach(e=>document.getElementById('Tarifario').appendChild(htmlStringToElement(`
+          tarifas.forEach((e,i)=>document.getElementById('Tarifario').appendChild(htmlStringToElement(`
                               <div class="col-xs-12 col-sm-6 col-md-4">
-                                  <div class="panel panel-primary">
-                                      <div class="panel-heading">
+                                  <div class="panel panel-primary" style="border-color: #ab9898;">
+                                      <div class="panel-heading" style="background: #a8fa00;">
                                           <h4 class="panel-title" style="color:white; !important;">
                                               Plan 1</h4>
                                       </div>
                                       <div class="panel-body no-padding text-align-center">
                                           <div class="the-price">
-                                              <h1>S/. ${parseFloat(e.precio).toFixed(0)}</h1>
+                                              <h1>S/. <span id="svcPre${i}" data-price="${e.precio}">${parseFloat(e.precio).toFixed(0)}</span></h1>
                                           </div>
                                           <table class="table">
                                               <tbody>
                                               <tr>
-                                                  <td>Personas: <span>${e.personas}</span></td>
+                                                  <td>Personas: <span id="svcCanPer${i}">${e.personas}</span></td>
                                               </tr>
                                               <tr class="active">
                                                   <td>Meses: <span>${e.meses}</span></td>
@@ -398,9 +398,40 @@
                                               </tr>
                                               </tbody>
                                           </table>
+                                          <ul class="counter" style="margin-left: 0px;padding-left: 0px;">
+                                            <li class="count">
+                                                <button class="counter-round" type="button" data-svc-ix="${i}" onclick="calculadoraMas(${i})"><span class="fa fa-plus"></span></button>
+                                            </li>
+
+                                            <li class="count">
+                                                <button class="counter-round" type="button" data-svc-ix="${i}" onclick="calculadoraMenos(${i})"><span class="fa fa-minus"></span></button>
+                                            </li>
+                                          </ul>
                                       </div>
                                   </div>
                               </div>`)));
+      }
+
+      function calculadoraMas(svcIx){
+          const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
+          const price = document.getElementById(`svcPre${svcIx}`);
+          const actualPrice = Number(price.textContent.trim());
+          const basePrice = Number(price.getAttribute('data-price').trim());
+          price.textContent = actualPrice+basePrice;
+          cantidadPersonas.textContent = Number(cantidadPersonas.textContent)+1;
+
+      }
+
+      function calculadoraMenos(svcIx){
+          const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
+          const price = document.getElementById(`svcPre${svcIx}`);
+          const actualPrice = Number(price.textContent.trim());
+          const basePrice = Number(price.getAttribute('data-price').trim());
+          const final = actualPrice-basePrice;
+          if(final>0){
+              price.textContent = final;
+              cantidadPersonas.textContent = Number(cantidadPersonas.textContent)-1;
+          }
       }
     </script>
   </body>
