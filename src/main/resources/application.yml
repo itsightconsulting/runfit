@@ -29,8 +29,8 @@ spring:
     #static-locations: file:src/main/resources/static/
   servlet:
     multipart:
-      max-request-size: 256MB
-      max-file-size: 128MB
+      max-request-size: 128MB
+      max-file-size: 64MB
 # Mail properties
   mail:
     host: smtp.gmail.com

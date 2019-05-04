@@ -21,8 +21,8 @@
             <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
         </ul>
         <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
-            <p class="name">GUSTAVO ARIAS</p>
-            <p class="email">gjarias09@gmail.com</p>
+            <p class="name"><!-- Dennys Gorina --></p>
+            <p class="email" th:if="${#authentication != null}" th:text="${#authentication.name}"></p>
         </div>
         <ul class="options">
             <li><a th:href="@{/p/quienes-somos}"> <span>QUIENES SOMOS</span></a></li>

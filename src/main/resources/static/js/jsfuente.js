@@ -618,14 +618,21 @@ function generateRandomMail(){
 
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
-        if (options.processData == false) {
+        if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
         } else{
             if((options.type === 'POST' || options.type === 'PUT' || options.type === 'GET') && !options.blockLoading){
                 $("#btnGuardar").attr('disabled','disabled');
-                $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+                if(!options.bridgeMultipart){
+                    $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+                }
             } else{
-                $gbInterval = spinnerSwitchTab(efectoImagenTransicion);
+                if(options.bridgeMultipart){
+                    spinnerUpload(xhr);
+                }else{
+                    $gbInterval = spinnerSwitchTab(efectoImagenTransicion);
+                }
+
             }
         }
     });
@@ -635,11 +642,12 @@ function generateRandomMail(){
             $('#bot1-Msg1').click();
         }else{
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
-                $('#btnGuardar').removeAttr('disabled');
-                $('#btnGuardar').text($buttonName);
+                if(!options.bridgeMultipart){
+                    $('#btnGuardar').removeAttr('disabled');
+                    $('#btnGuardar').text($buttonName);
+                }
             }else{
                 $('#bot1-Msg1').click();
-                window.clearInterval($gbInterval+1);
             }
         }
     });
@@ -647,6 +655,11 @@ function generateRandomMail(){
     $(document).ajaxStart(() => {});
 
     $(document).ajaxStop(() => {});
+
+    $(document).ajaxError(function (e, xhr, options) {
+        alert(1);
+        $('#btnGuardar').removeAttr('disabled');
+    });
 })();
 
 

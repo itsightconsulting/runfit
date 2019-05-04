@@ -177,7 +177,7 @@
           <div class="group-trainer row">
               <div class="col-md-3 pad-0">
               <div class="avatar-form">
-              <div class="avatar-form-content"><img src="https://s3-sa-east-1.amazonaws.com/dev-runfit/perfil/${e.rutaWebImg}" style="max-height: 100% !important;"></div>
+              <div class="avatar-form-content"><img src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.id}/${e.rutaWebImg}" style="max-height: 100% !important;"></div>
               <fieldset class="rating">
               <label class="full" for="star5" title="Awesome - 5 stars"></label>
               <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
@@ -197,6 +197,7 @@
               <h4>${e.nombreCompleto}<span class="title">${e.especialidad}</span><span class="location">La Molina - Lima</span></h4>
       <p>${e.acerca}</p>
       <button class="btn btn-default btn-black" type="button" onclick="verPerfil('${nomLink}')">VER PERFIL</button>
+      <button class="btn btn-default btn-white" type="button" onclick="verPerfilDirectServices('${nomLink}')">VER SERVICIOS</button>
       </div>
       </div>
           `));
@@ -205,6 +206,11 @@
 
       function verPerfil(nomLink){
         window.location.href = _ctx + 'p/trainer/'+nomLink;
+      }
+
+      function verPerfilDirectServices(nomLink){
+        window.location.href = _ctx + 'p/trainer/'+nomLink+"#service";
+
       }
     </script>
   </body>

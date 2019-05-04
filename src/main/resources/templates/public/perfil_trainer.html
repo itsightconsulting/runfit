@@ -263,6 +263,11 @@
         getTrainer();
       }
 
+      function checkTab(){
+          const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
+          document.querySelector(`li a[href="${tabHref}"]`).click();
+      }
+
       function irARegistro(){
         const hshId = getHash32Id('rf-public', $perfil.id);
         const trainerCorreo = btoa($perfil.correo).replace(/\=/g,'');
@@ -280,6 +285,7 @@
           success: function (res) {
             $perfil = res;
             recrearPerfil(res);
+            checkTab();
           }, error: (xhr) => {
             console.log(xhr);
           }, complete: () => {
@@ -291,7 +297,7 @@
         document.querySelector('#NombreFull').textContent = t.nombreCompleto;
         document.querySelector('#Especialidad').textContent = t.especialidad;
         document.querySelector('#Disciplina').textContent = t.disciplina;
-        document.querySelector('#ImagenPerfil img').src = 'https://s3-sa-east-1.amazonaws.com/dev-runfit/perfil/'+t.rutaWebImg;
+        document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.rutaWebImg;
         document.querySelector('#Acerca').textContent = t.acerca.replace(/\r?\n/g, '<br />');
 
         let idiomas = "Español|Ingles".split("|");

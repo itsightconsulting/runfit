@@ -93,7 +93,8 @@ public class TrainerFichaDTO implements Serializable {
     private String telefono;
     @Size(max = 14)
     private String movil;
-
-    private String fotoPerfil;
+    @Size(min = 3, max = 6)
+    @NotNull
+    private String imgExt;
 
 }

@@ -548,57 +548,50 @@
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
             btnNuevaCuentaBanc.addEventListener('click', agregarCuentaBancaria);
             tabService.addEventListener('click', clickListenerTabService);
-            inpImgPerfil.addEventListener('change', uploadFotoPerfil);
+            //inpImgPerfil.addEventListener('change', capturarImgPerfil);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
             init();
         })();
 
-        function uploadFotoPerfil(e){
+        function uploadFotoPerfil(d, body){
             //submit the form here
-            let file = e.target;
+            const hshId = d.res;
+            const rdmUUID = d.uuid;
+            let file = inpImgPerfil;
             if (file.files.length > 0) {
                 file = file.files[0];
                 const data = new FormData();
-                console.log(file);
                 data.append("file", file);
 
                 $.ajax({
-                    type: 'POST',
-                    url: _ctx+'p/simple-imagen',
+                    type: 'PUT',
+                    url: _ctx+'p/trainer/subir/foto/perfil/'+hshId+'/'+rdmUUID,
                     data : data,
                     contentType: false,
                     processData: false,
+                    dataType: 'json',
                     xhr: function() {
-                        var myXhr = $.ajaxSettings.xhr();
+                        const myXhr = $.ajaxSettings.xhr();
                         if(myXhr.upload){
                             myXhr.upload.addEventListener('progress', progress, false);
                         }
                         return myXhr;
                     },
-                    success: function (data, textStatus) {
-                        if (textStatus == "success") {
-                            if(data == "-99"){
-                                bootbox.alert("El archivo no ha podido ser guardado debido. Para mayor información comunicarse con el administrador.");
-                            } else if(data == "-1"){
-                                bootbox.alert("El archivo no ha podido ser guardado debido. Para mayor información comunicarse con el administrador.");
-                            } else{
-                                $.smallBox({
-                                    content: "<i> El archivo se reemplazo satisfactoriamente...</i>",
-                                    iconSmall: "fa fa-refresh fa-2x"
-                                });
-                            }
-
-                        }
+                    success: function (data) {
+                        reqSuccess(data);
+                        setTimeout(()=>{
+                            document.querySelector('.login_link').click();
+                            document.querySelector('input[name="username"]').value = body.username;
+                            document.querySelector('input[name="password"]').value = "";
+                            //submitReuseLogin();
+                        }, 6000);
                     },
-                    error: function (xhr) {
-                        if(xhr["responseJSON"] != null)
-                            exception(xhr["status"], xhr["responseJSON"]["error"]);
-                        else
-                            exception(xhr["status"], xhr["status"]);
+                    error: (xhr)=>{
+                        exception(xhr);
                     },
-                    complete: function () {}
+                    complete: ()=> {}
                 });
             }
         }
@@ -619,15 +612,20 @@
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
 
+            const imgPerfilExtension = inpImgPerfil.files[0].name.substr(inpImgPerfil.files[0].name.lastIndexOf(".")+1);
+            body.imgExt = imgPerfilExtension;
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
-                url: _ctx + 'p/registro/trainer/'+hshId,
+                url: _ctx + 'p/trainer/registro/'+hshId,
                 dataType: 'json',
                 data: JSON.stringify(body),
-                blockLoading: true,
-                success: function (res) {
-                    console.log(res);
+                blockLoading: false,
+                bridgeMultipart: true,
+                success: (d)=> {
+                    //Subir imgen
+                    uploadFotoPerfil(d, body);
                 }, error: (xhr) => {
                     exception(xhr);
                 }, complete: () => {
@@ -644,12 +642,48 @@
                 const svcFocus = tabService.querySelector('.svc-focus');
                 svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
                 clases.add('svc-focus');
+                mostrarDetalleServicio(selServicioId);
             }
+        }
+
+        function setIncluyeDelServicio(incluidos){
+            const arr = incluidos.split("|");
+            const mainIncluidos = document.querySelector('#MainIncluyeServicios');
+            if(arr < 2){
+                mainIncluidos.querySelector('input').value = arr[0];
+            } else {
+                addServiceAndcleanCampos("", true);
+            }
+        }
+
+        function mostrarDetalleServicio(svc){
+
+            document.querySelector('#NombreServicio').value = svc.nombre;
+            document.querySelector('#DescripcionServicio').value = svc.descripcion;
+
+            setIncluyeDelServicio(svc.incluye);
+
+
+            /*document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
+            document.querySelector('#txtCantidadPersonas').value = 0;
+            document.querySelector('#txtCantidadMeses').value = 0;
+            document.querySelector('#txtCantidadSesiones').value = 0;
+            document.querySelector('#PrecioPaquete').value = '0.00';
+
+            document.querySelector('#TitularCuenta').value = "";
+            document.querySelector('#TitularTipoDoc').selectedIndex = 0;
+            document.querySelector('#TitularNumDoc').value = "";
+            document.querySelector('#NumeroCuentaSoles').value = "";
+            document.querySelector('#NumeroCuentaDolares').value = "";
+            document.querySelector('#InterbancarioSoles').value = "";
+            document.querySelector('#InterbancarioDolares').value = "";
+            document.querySelector('#BancoId').selectedIndex = 0;*/
         }
 
         function agregarServicio(){
             mostrarNuevoServicio();
         }
+
         function mostrarNuevoServicio(){
             const s = getServicio();
             if(s.valid){
@@ -710,17 +744,19 @@
             return c;
         }
 
-        function addServiceAndcleanCampos(svc){
-            const svcFocus = tabService.querySelector('.svc-focus');
-            svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+        function addServiceAndcleanCampos(svc, justClean){
+            if(justClean == undefined){
+                const svcFocus = tabService.querySelector('.svc-focus');
+                svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
 
-            document.querySelector('#ServicioInfAdic').value = "";
-            const element = htmlStringToElement(
-                `<div class="form-group">
+                document.querySelector('#ServicioInfAdic').value = "";
+                const element = htmlStringToElement(
+                    `<div class="form-group">
                                 <label class="servicio svc-focus" data-id="${svc.id}">${svc.nombre}</label>
                             </div>`);
-            const resumenServicios = document.querySelector('.ver-servicios');
-            resumenServicios.appendChild(element);
+                const resumenServicios = document.querySelector('.ver-servicios');
+                resumenServicios.appendChild(element);
+            }
 
             const divCamposBasicos = document.querySelector('#SvcCamposBasicos');
             const htmlBasics = `<div class="form-group">

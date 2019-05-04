@@ -1,8 +1,24 @@
 package com.itsight.generic;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.itsight.advice.CustomValidationException;
+import com.itsight.domain.pojo.AwsStresPOJO;
+import org.apache.logging.log4j.Logger;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public interface BaseService<T, V> {
 
@@ -40,4 +56,56 @@ public interface BaseService<T, V> {
 
     void actualizarFlagActivoById(V id, boolean flagActivo);
 
+    default String subirImagen(MultipartFile file, Integer id, String uuid) throws CustomValidationException {
+        return null;
+    }
+
+    default boolean uploadImageToAws3(MultipartFile file, AwsStresPOJO credentials, final Logger logger) {
+        if (!file.isEmpty()) {
+            String[] splitNameFile = file.getOriginalFilename().split("\\.");
+            String extension = "." + splitNameFile[splitNameFile.length - 1];
+
+            try {
+                String objectName = credentials.getUuid()+extension;
+                String fullPath = credentials.getPrefix()+objectName;
+
+                AmazonS3 amazonS3 = AmazonS3ClientBuilder
+                        .standard()
+                        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(credentials.getAccessKeyId(), credentials.getSecretKey())))
+                        .withRegion(credentials.getRegion())
+                        .build();
+
+                int maxUploadThreads = 5;
+
+                TransferManager tm = TransferManagerBuilder
+                        .standard()
+                        .withS3Client(amazonS3)
+                        .withMultipartUploadThreshold((long) (5 * 1024 * 1024))
+                        .withExecutorFactory(() -> Executors.newFixedThreadPool(maxUploadThreads))
+                        .build();
+
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(file.getSize());
+
+                PutObjectRequest request = new PutObjectRequest(
+                    credentials.getBucket(),
+                    fullPath,
+                    file.getInputStream(),
+                    metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+
+                Upload upload = tm.upload(request);
+                upload.waitForCompletion();
+                return true;
+            } catch (IllegalStateException e) {
+                logger.warn(e.getMessage());
+            } catch (AmazonClientException e) {
+                logger.warn(e.getMessage());
+            } catch (InterruptedException e) {
+                logger.warn(e.getMessage());
+            } catch (IOException e){
+                logger.warn(e.getMessage());
+            }
+        }
+        return false;
+    }
 }

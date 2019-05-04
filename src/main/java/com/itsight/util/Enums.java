@@ -116,6 +116,7 @@ public class Enums {
     }
 
     public enum Msg{
+        REGISTRO_EXITOSO("Se ha registrado correctamente"),
         CORREO_REPETIDO("El correo ingresado ya se encuentra registrado en nuestra base de datos"),
         POSTULACION_BLOQUEADA("Usted no puede volver a postular hasta después de la fecha: %s debido a que su última postulación fue rechazada"),
         POSTULACION_EN_PROCESO("Usted ya se encuentra registrado, por favor espere hasta que nuestros gestores puedan aprobar o rechazar su postulación. Será notificado vía correo electrónico en el transcurso del día. Gracias por su espera"),
@@ -128,6 +129,7 @@ public class Enums {
         POSTULANTE_RECHAZADO_ANT("El postulante ha sido rechazado anteriormente"),
         ELECCION_INVALIDA("Ha elegido una opción no válida inválida"),
         VALIDACION_FALLIDA("La validación ha fallado"),
+        FAIL_SUBIDA_IMG_PERFIL("La imagen de perfil no ha podido ser cargada, intentelo más tarde"),
         POSTULANTE_MAIL_SC("Postulante no ha confirmado su cuenta de correo electrónico"),
         POSTULANTE_RECH_PV("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación"),
         POSTULANTE_ACEP("Ha <strong>APROBADO</strong> al candidato con éxito"),

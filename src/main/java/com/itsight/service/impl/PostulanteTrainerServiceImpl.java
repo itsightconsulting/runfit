@@ -13,6 +13,7 @@ import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -22,7 +23,9 @@ import java.util.Optional;
 
 import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
 import static com.itsight.util.Enums.Mail.POSTULANTE_TRAINER_CONFIRMAR_CORREO;
-import static com.itsight.util.Enums.ResponseCode.*;
+import static com.itsight.util.Enums.Msg.POSTULACION_NUEVA;
+import static com.itsight.util.Enums.ResponseCode.EMPTY_RESPONSE;
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
 @Transactional
@@ -159,7 +162,7 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         String hashId = Parseador.getEncodeHash32Id("rf-request", entity.getId());
         String cuerpo = String.format(correo.getBody(), domainName, hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), entity.getCorreo(), cuerpo);
-        return Enums.Msg.POSTULACION_NUEVA.get();
+        return POSTULACION_NUEVA.get();
     }
 
     @Override

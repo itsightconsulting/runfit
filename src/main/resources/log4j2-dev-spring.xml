@@ -47,6 +47,10 @@
             <!--<AppenderRef ref="AppFileAppender"/>-->
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
+        <Logger name="com.itsight.service" level="warn" additivity="false">
+            <!--<AppenderRef ref="AppFileAppender"/>-->
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
         <Logger name="com.itsight.advice" level="warn" additivity="false">
             <!--<AppenderRef ref="AppFileAppender"/>-->
             <AppenderRef ref="ConsoleAppender"/>

@@ -1,10 +1,13 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.*;
+import com.itsight.domain.dto.RefUploadIds;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.jsonb.PorcKiloTipo;
 import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.AwsStresPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.EspecificacionSubCategoriaRepository;
@@ -17,19 +20,26 @@ import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.itsight.util.Enums.Msg.*;
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
 @Transactional
 public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> implements TrainerService {
+
+    public static final Logger LOGGER = LogManager.getLogger(TrainerServiceImpl.class);
 
     private SecurityRoleRepository securityRoleRepository;
 
@@ -216,7 +226,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                     //Enviando correo al nuevo trainer
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(trainer.getUsername(), originalPassword, trainer.getTipoUsuario().getId(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", trainer.getCorreo(), sb.toString());
-                    return ResponseCode.REGISTRO.get() + ',' + trainer.getId() + ',' + flagTrainer;
+                    return trainer.getId().toString();
                 }
                 return ResponseCode.EX_VALIDATION_FAILED.get();
             }catch (Exception e){
@@ -227,10 +237,10 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public String registrarPostulante(TrainerFichaDTO trainerFicha) {
+    public RefUploadIds registrarPostulante(TrainerFichaDTO trainerFicha){
         TrainerFicha obj = new TrainerFicha();
-        obj.setRutaWebImg(trainerFicha.getFotoPerfil());
         BeanUtils.copyProperties(trainerFicha, obj);
+
         Trainer trainer = new Trainer(
                 trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
                 trainerFicha.getMovil(), trainerFicha.getUsername(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),true);
@@ -244,10 +254,16 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         List<TrainerFicha> lstTf = new ArrayList<>();
         obj.setTrainer(trainer);
         lstTf.add(obj);
+        String uuid = UUID.randomUUID().toString();
+        String nombreImagen = uuid+"."+trainerFicha.getImgExt();
+        obj.setRutaWebImg(nombreImagen);
+
         trainer.setLstTrainerFicha(lstTf);
-        registrar(trainer, "2");
+        //Registrando
+        String trainerId = registrar(trainer, "2");
+        //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
-        return ResponseCode.EXITO_GENERICA.get();
+        return new RefUploadIds(Integer.parseInt(trainerId), uuid);
     }
 
     @Override
@@ -389,5 +405,14 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         repository.updateFlagRutinarioCeById(trainerId,true);
         especificacionSubCategoriaRepository.registrarEspecificacionNuevoEntrenador(trainerId);
         return ResponseCode.REGISTRO.get();
+    }
+
+    @Override
+    public String subirImagen(MultipartFile file, Integer id, String uuid) throws CustomValidationException {
+        boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuid), LOGGER);
+        if(success){
+            return REGISTRO_EXITOSO.get();
+        }
+        throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
     }
 }

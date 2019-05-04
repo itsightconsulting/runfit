@@ -266,5 +266,9 @@ public class Utilitarios {
     public static String jsonResponse(String r) {
         return "{\"res\":\""+ r +"\"}";
     }
+
+    public static String jsonResponse(String r, String uuid) {
+        return "{\"res\":\""+ r +"\",\"uuid\":\""+ uuid +"\"}";
+    }
 }
 
