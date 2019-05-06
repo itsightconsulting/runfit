@@ -2663,7 +2663,7 @@ img.tibial {
 }
 
 .rango.bg-slide {
-  background: url(../img/slider.png) center no-repeat;
+  background: url(../../img/public/slider.png) center no-repeat;
   background-size: contain;
   height: 30px
 }
