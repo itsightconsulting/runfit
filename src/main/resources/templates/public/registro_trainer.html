@@ -545,7 +545,7 @@
         const tabService = document.getElementById('service');
         const servicios = [];
         const ccBancarias = [];
-        const initTabActive = 3;
+        const initTabActive = 1;
         let selServicioId = -1;
         let accServicioId = 0;
         let accTarifaId = 0;
@@ -572,7 +572,7 @@
         function uploadFotoPerfil(d, body){
             //submit the form here
             const hshId = d.res;
-            const rdmUUID = d.uuid;
+            const rdmUUID = d.rdm.slice(0,-4);
             let file = inpImgPerfil;
             if (file.files.length > 0) {
                 file = file.files[0];
@@ -582,6 +582,53 @@
                 $.ajax({
                     type: 'PUT',
                     url: _ctx+'p/trainer/subir/foto/perfil/'+hshId+'/'+rdmUUID,
+                    data : data,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    xhr: function() {
+                        const myXhr = $.ajaxSettings.xhr();
+                        if(myXhr.upload){
+                            myXhr.upload.addEventListener('progress', progress, false);
+                        }
+                        return myXhr;
+                    },
+                    success: function (data) {
+                        reqSuccess(data);
+                        setTimeout(()=>{
+                            document.querySelector('.login_link').click();
+                            document.querySelector('input[name="username"]').value = body.username;
+                            document.querySelector('input[name="password"]').value = "";
+                            //submitReuseLogin();
+                        }, 6000);
+                    },
+                    error: (xhr)=>{
+                        exception(xhr);
+                    },
+                    complete: ()=> {}
+                });
+            }
+        }
+
+        function getImgUuids(rdms){
+            return rdms.split("@")[0].slice(0,-4)+"|"+rdms.split("@")[1].split("|").map(e=>e.slice(0,-4)).join('|');
+        }
+
+        function uploadFotosPerfil(d, body){
+            //submit the form here
+            const hshId = d.res;
+            const rdmsUUIDs = getImgUuids(d.rdm);
+            let file = inpImgPerfil;
+            if (file.files.length > 0) {
+                file = file.files[0];
+                const data = new FormData();
+                data.append("files", file);
+                Array.from(inpGaleria.files).forEach(f=>{
+                    data.append("files", f);
+                });
+                $.ajax({
+                    type: 'PUT',
+                    url: _ctx+'p/trainer/subir/fotos/perfil/'+hshId+'/'+rdmsUUIDs,
                     data : data,
                     contentType: false,
                     processData: false,
@@ -648,7 +695,7 @@
             const exts = {};
             exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
             exts.extsImgsGaleria = extsImgsGaleria !== "" ? "@extsImgsGaleria:"+extsImgsGaleria : "";
-            body.imgExt = extImgPerfil + extsImgsGaleria;
+            body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria;
             console.log(exts);
             $.ajax({
                 type: 'POST',
@@ -664,7 +711,7 @@
                     if(extsImgsGaleria === ""){
                         uploadFotoPerfil(d, body);
                     }else{
-                        alert(1);
+                        uploadFotosPerfil(d, body)
                     }
                 }, error: (xhr) => {
                     exception(xhr);

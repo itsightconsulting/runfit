@@ -60,6 +60,10 @@ public interface BaseService<T, V> {
         return null;
     }
 
+    default String subirImagenes(MultipartFile[] files, Integer id, String uuid) throws CustomValidationException {
+        return null;
+    }
+
     default boolean uploadImageToAws3(MultipartFile file, AwsStresPOJO credentials, final Logger logger) {
         if (!file.isEmpty()) {
             String[] splitNameFile = file.getOriginalFilename().split("\\.");
@@ -107,5 +111,58 @@ public interface BaseService<T, V> {
             }
         }
         return false;
+    }
+
+    default boolean uploadMultipleToAws3(MultipartFile[] files, AwsStresPOJO credentials, final Logger logger) {
+        AmazonS3 amazonS3 = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(credentials.getAccessKeyId(), credentials.getSecretKey())))
+                .withRegion(credentials.getRegion())
+                .build();
+
+        int maxUploadThreads = 5;
+
+        TransferManager tm = TransferManagerBuilder
+                .standard()
+                .withS3Client(amazonS3)
+                .withMultipartUploadThreshold((long) (5 * 1024 * 1024))
+                .withExecutorFactory(() -> Executors.newFixedThreadPool(maxUploadThreads))
+                .build();
+        String[] uuids = credentials.getUuid().split("\\|");
+        for(int i=0; i<files.length;i++){
+            MultipartFile file = files[i];
+            if (!file.isEmpty()) {
+                String[] splitNameFile = file.getOriginalFilename().split("\\.");
+                String extension = "." + splitNameFile[splitNameFile.length - 1];
+
+                try {
+                    String objectName = uuids[i]+extension;
+                    String fullPath = credentials.getPrefix()+objectName;
+
+                    ObjectMetadata metadata = new ObjectMetadata();
+                    metadata.setContentLength(file.getSize());
+
+                    PutObjectRequest request = new PutObjectRequest(
+                            credentials.getBucket(),
+                            fullPath,
+                            file.getInputStream(),
+                            metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+
+                    Upload upload = tm.upload(request);
+                    upload.waitForCompletion();
+                    break;
+                } catch (IllegalStateException e) {
+                    logger.warn(e.getMessage());
+                } catch (AmazonClientException e) {
+                    logger.warn(e.getMessage());
+                } catch (InterruptedException e) {
+                    logger.warn(e.getMessage());
+                } catch (IOException e){
+                    logger.warn(e.getMessage());
+                }
+                break;
+            }
+        }
+        return true;
     }
 }

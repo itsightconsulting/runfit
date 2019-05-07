@@ -261,6 +261,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         int extsLen = extensiones.length;
         RefUploadIds refUpload = new RefUploadIds();
         refUpload.setNombreImgPerfil(extensiones[0]);//imgPerfil
+        refUpload.setNombresImgsGaleria();
         if(extsLen == 2){
             refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
             obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
@@ -423,6 +424,15 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public String subirImagen(MultipartFile file, Integer id, String uuid) throws CustomValidationException {
         boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuid), LOGGER);
+        if(success){
+            return REGISTRO_EXITOSO.get();
+        }
+        throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public String subirImagenes(MultipartFile[] files, Integer id, String uuids) throws CustomValidationException {
+        boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids), LOGGER);
         if(success){
             return REGISTRO_EXITOSO.get();
         }

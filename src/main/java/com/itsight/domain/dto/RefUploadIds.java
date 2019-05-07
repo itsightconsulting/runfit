@@ -22,19 +22,26 @@ public class RefUploadIds {
         this.nombreImgPerfil = nombreImgPerfil;
     }
 
+    public void setNombresImgsGaleria() {
+        this.nombresImgsGaleria = "";
+    }
+
     public void setNombreImgPerfil(String extImgPerfil) {
-        System.out.println(extImgPerfil);
-        this.nombreImgPerfil = UUID.randomUUID().toString()+"."+extImgPerfil.substring(extImgPerfil.indexOf("extImgPerfil:"));
+        if(extImgPerfil.contains("extImgPerfil:")){
+            this.nombreImgPerfil = UUID.randomUUID().toString()+"."+extImgPerfil.substring("extImgPerfil:".length());
+        }
     }
 
     public void setNombresImgsGaleria(String extensiones) {
-        String[] exts = extensiones.substring(extensiones.indexOf("extsImgsGaleria:")).split("\\|");
-        String nombres = "";
-        String sep = "";
-        for(int i=0; i<exts.length;i++){
-            nombres += sep+UUID.randomUUID().toString()+"."+exts[i];
-            sep="|";
+        if(extensiones.contains("extsImgsGaleria:")) {
+            String[] exts = extensiones.substring("extsImgsGaleria:".length()).split("\\|");
+            String nombres = "";
+            String sep = "";
+            for(int i=0; i<exts.length;i++){
+                nombres += sep+UUID.randomUUID().toString()+"."+exts[i];
+                sep="|";
+            }
+            this.nombresImgsGaleria = nombres;
         }
-        this.nombresImgsGaleria = nombres;
     }
 }
