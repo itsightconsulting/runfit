@@ -5,6 +5,7 @@ import com.itsight.validation.ExtendedEmailValidator;
 import com.itsight.domain.jsonb.CuentaPago;
 import com.itsight.domain.jsonb.Servicio;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -96,5 +97,9 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 3, max = 6)
     @NotNull
     private String imgExt;
+    @Positive
+    @NotNull
+    @Max(36)
+    private Integer fichaClienteId;
 
 }

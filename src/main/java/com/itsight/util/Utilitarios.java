@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static com.itsight.util.Enums.MsgPeticion.*;
+
 public class Utilitarios {
 
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -136,21 +138,6 @@ public class Utilitarios {
         return month;
     }
 
-    public static final String randomString() {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(targetStringLength);
-        for (int i = 0; i < targetStringLength; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-        String generatedString = buffer.toString();
-        return generatedString;
-    }
-
     public static String nombreMes(int mes) {
         String nombre;
         switch (mes) {
@@ -194,10 +181,6 @@ public class Utilitarios {
         return nombre;
     }
 
-    public static String customErrorResponse(String code, String validErrors) {
-        return code + "|" + validErrors;
-    }
-
     public static String customResponse(String code, String domainPk) {
         return code + "|" + domainPk;
     }
@@ -207,15 +190,6 @@ public class Utilitarios {
                 .filter(x -> (x != null))
                 .toArray(String[]::new);
         return array;
-    }
-
-    public static Integer[] agregarElementoArray(Integer[] inArray, int nuevoElemento){
-        Integer[] nuevoArray = new Integer[inArray.length+1];
-        for (int i=0; i<nuevoArray.length-1;i++){
-            nuevoArray[i] = inArray[i];
-        }
-        nuevoArray[inArray.length] = nuevoElemento;
-        return nuevoArray;
     }
 
     public static Integer[] agregarElementoArray(Integer[] inArray, Integer nuevoElemento){
@@ -268,7 +242,18 @@ public class Utilitarios {
     }
 
     public static String jsonResponse(String r, String uuid) {
-        return "{\"res\":\""+ r +"\",\"uuid\":\""+ uuid +"\"}";
+        return "{\"res\":\""+ r +"\",\"rdm\":\""+ uuid +"\"}";
+    }
+
+    public static String getPeticionParaTipoRutina(String fichaId){
+        String msg = "";
+        switch(fichaId){
+            case "1":
+                msg = FICHA_RUNNER.get();break;
+            case "2":
+                msg = FICHA_GENERAL.get();break;
+        }
+        return msg;
     }
 }
 

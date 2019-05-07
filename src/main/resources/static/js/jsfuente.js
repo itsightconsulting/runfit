@@ -621,7 +621,7 @@ function generateRandomMail(){
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
         } else{
-            if((options.type === 'POST' || options.type === 'PUT' || options.type === 'GET') && !options.blockLoading){
+            if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
                 $("#btnGuardar").attr('disabled','disabled');
                 if(!options.bridgeMultipart){
                     $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
@@ -657,7 +657,6 @@ function generateRandomMail(){
     $(document).ajaxStop(() => {});
 
     $(document).ajaxError(function (e, xhr, options) {
-        alert(1);
         $('#btnGuardar').removeAttr('disabled');
     });
 })();

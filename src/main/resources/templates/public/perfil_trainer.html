@@ -265,13 +265,25 @@
 
       function checkTab(){
           const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
-          document.querySelector(`li a[href="${tabHref}"]`).click();
+          if(!tabHref.includes('http')){
+              document.querySelector(`li a[href="${tabHref}"]`).click();
+          }
       }
 
       function irARegistro(){
         const hshId = getHash32Id('rf-public', $perfil.id);
         const trainerCorreo = btoa($perfil.correo).replace(/\=/g,'');
-        window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo;
+        const fichaIds = $perfil.fichaClienteIds.split("|");
+        if(fichaIds.length==1){
+            const id = fichaIds[0];
+            if(id === "1"){
+                window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo;
+            }else if(id === "2"){
+                window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo;
+            }
+        }else{
+
+        }
       }
 
       function getTrainer(){

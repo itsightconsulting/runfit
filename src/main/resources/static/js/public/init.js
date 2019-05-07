@@ -142,21 +142,21 @@ function tabColaboradores() {
     })
 }
 
-function next_step(sheetNumber) {
-    const checkList = validationByNumSheet(sheetNumber);
+function next_step(sheetNumber, toSheetNumber) {
+    const checkList = validationByNumSheet(sheetNumber, toSheetNumber);
     if(checkList.isValid){
         if ($(".ficha-01").hasClass("active")) {
-            $(".ficha-01").removeClass("active")
-            $('.step-01').removeClass("active")
-            $(".ficha-02").addClass("active")
-            $('.step-02').addClass("active")
+            $(".ficha-01").removeClass("active");
+            $('.step-01').removeClass("active");
+            $(".ficha-02").addClass("active");
+            $('.step-02').addClass("active");
             $("body" ).scrollTop( 0 );
             time_line();
         } else if ($(".ficha-02").hasClass("active")) {
-            $(".ficha-02").removeClass("active")
-            $('.step-02').removeClass("active")
-            $(".ficha-03").addClass("active")
-            $('.step-03').addClass("active")
+            $(".ficha-02").removeClass("active");
+            $('.step-02').removeClass("active");
+            $(".ficha-03").addClass("active");
+            $('.step-03').addClass("active");
             $("body" ).scrollTop( 0 );
             time_line();
         }
@@ -198,24 +198,19 @@ function smallBoxAlertValidation2(inputsNotPassed){
     )
 }
 
-function validationByNumSheet(numSheet){
-    const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
-    const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));
-    const rgsInputs = Array.from(sheetContainer.querySelectorAll(`input[type="range"]`));
-    const txtAreas = Array.from(sheetContainer.querySelectorAll(`textarea.form-control`));
-    const selects = Array.from(sheetContainer.querySelectorAll(`select.form-control`));
-    const rdsButtons = Array.from(sheetContainer.querySelectorAll(`input[type="radio"]`));
-    const fRdsButtons = Array.from(
-                                new Set(rdsButtons.map(v=>v.name))
-                                ).map(v=>document.querySelector(`input[name="${v}"]`));
-
-    const chkbuttons = Array.from(sheetContainer.querySelectorAll(`input[type="checkbox"]`));
-    const fChkbuttons = Array.from(
-                                new Set(chkbuttons.map(v=>v.name))
-                                ).map(v=>document.querySelector(`input[name="${v}"]`));
-    const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons).concat(txtAreas).concat(rgsInputs);
+function validationByNumSheet(numSheet, sheetNumberTo){
     let continuosValidator = true;
     const inptsNoPassed = [];
+
+    let alls = getAllInputsByNumberSheet(numSheet);
+    if(numSheet == "1" && sheetNumberTo === 3){
+        alls = alls.concat(getAllInputsByNumberSheet(2));
+    }
+
+    if(numSheet == "1" && sheetNumberTo === 2){
+        getCondicionesMejora();
+    }
+
     alls.forEach(v=>{
         const isValid = $("#frm_registro").validate().element(v);
         if(!isValid){
@@ -226,10 +221,29 @@ function validationByNumSheet(numSheet){
     return {isValid: continuosValidator, inputs: inptsNoPassed};
 }
 
+function getAllInputsByNumberSheet(numSheet){
+    const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
+    const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));
+    const rgsInputs = Array.from(sheetContainer.querySelectorAll(`input[type="range"]`));
+    const txtAreas = Array.from(sheetContainer.querySelectorAll(`textarea.form-control`));
+    const selects = Array.from(sheetContainer.querySelectorAll(`select.form-control`));
+    const rdsButtons = Array.from(sheetContainer.querySelectorAll(`input[type="radio"]`));
+    const fRdsButtons = Array.from(
+        new Set(rdsButtons.map(v=>v.name))
+    ).map(v=>document.querySelector(`input[name="${v}"]`));
+
+    const chkbuttons = Array.from(sheetContainer.querySelectorAll(`input[type="checkbox"]`));
+    const fChkbuttons = Array.from(
+        new Set(chkbuttons.map(v=>v.name))
+    ).map(v=>document.querySelector(`input[name="${v}"]`));
+    const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons).concat(txtAreas).concat(rgsInputs);
+    return alls;
+}
+
 function next_step_cs(i){
     const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
-
-    const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet);
+    const sheetNumberTo = i;
+    const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet, sheetNumberTo);
     if(skip_validation || checkList.isValid){
         const all = document.querySelectorAll('.fade-ficha');
         const sels = document.querySelectorAll('.step');

@@ -5,6 +5,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -42,6 +43,18 @@ public class ExceptionControllerAdvice {
         }
         return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
     }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public @ResponseBody
+    ResponseEntity<String> handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        LOGGER.warn(ex.getMessage());
+        for(int i = 0; i<10;i++){
+            LOGGER.warn(ex.getStackTrace()[i].toString());
+        }
+        return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public @ResponseBody

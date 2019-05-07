@@ -147,5 +147,19 @@ public class Enums {
         }
     }
 
+    public enum MsgPeticion{
+        FICHA_RUNNER("Estimado asesor, en esta ocasión quisiera que use la ficha de runner ya que es la disciplina en la que quiero mejorar. Gracias."),
+        FICHA_GENERAL("Estimado asesor, en esta ocasión quisiera que use la ficha general. Gracias.");
+        final String msg;
+
+        MsgPeticion(String msg){
+            this.msg = msg;
+        }
+
+        public String get(){
+            return msg;
+        }
+    }
+
 
 }

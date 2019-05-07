@@ -42,7 +42,7 @@ public class ClienteFitnessController {
         model.addAttribute("lstMusculos", musculoService.findAll());
         model.addAttribute("lstTd", tipoDocumentoService.findAll());
         model.addAttribute("lstEntrenadores", trainerService.findAll());
-        return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
+        return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION_RUNNING);
     }
 
     @GetMapping(value = "/obtener")

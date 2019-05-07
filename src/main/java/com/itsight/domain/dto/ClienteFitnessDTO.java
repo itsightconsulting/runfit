@@ -47,6 +47,7 @@ public class ClienteFitnessDTO implements Serializable {
     private UsuarioDTO usuario;
     private String trainerId;
     private Object condicionAnatomicaObj;
+    private String fichaId;
 
     public ClienteFitnessDTO(){}
 }

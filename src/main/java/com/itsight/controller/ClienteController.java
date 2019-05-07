@@ -52,14 +52,7 @@ public class ClienteController {
 
     @PostMapping(value = "/fitness/agregar")
     public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
-        /*if(!bindingResult.hasErrors()){*/
-            return clienteService.registroFull(cliente);
-        /*}else{
-            List<ApiSubError> errors = new ArrayList<>();
-            for(FieldError x :  bindingResult.getFieldErrors()){
-                errors.add(new ApiSubError(x.getField(), x.getObjectName(), x.getRejectedValue(), x.getDefaultMessage()));
-            }
-            return new ObjectMapper().writeValueAsString(errors);
-        }*/
+        System.out.println(cliente.getCliFit().toString());
+        return clienteService.registroFull(cliente);
     }
 }

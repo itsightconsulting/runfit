@@ -1148,7 +1148,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setCliente(cli);
             clienteFitnessService.save(cliFit);
             if(i<4)
-                trainers.forEach(t -> redFitnessService.save( new RedFitness(t.getId(), cli.getId())));
+                trainers.forEach(t -> redFitnessService.save( new RedFitness(t.getId(), cli.getId(), "")));
         }
     }
 

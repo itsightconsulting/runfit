@@ -32,7 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.itsight.util.Enums.Msg.*;
+import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
+import static com.itsight.util.Enums.Msg.REGISTRO_EXITOSO;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
@@ -248,22 +249,34 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
+        trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteId()));
 
         trainer.setUsername(trainerFicha.getUsername());
         trainer.setPassword(trainerFicha.getPassword());
         List<TrainerFicha> lstTf = new ArrayList<>();
         obj.setTrainer(trainer);
         lstTf.add(obj);
-        String uuid = UUID.randomUUID().toString();
-        String nombreImagen = uuid+"."+trainerFicha.getImgExt();
-        obj.setRutaWebImg(nombreImagen);
+        //Autogenerando uuids para imagenes que se registrarán after esta request
+        String[] extensiones = trainerFicha.getImgExt().split("@");
+        int extsLen = extensiones.length;
+        RefUploadIds refUpload = new RefUploadIds();
+        refUpload.setNombreImgPerfil(extensiones[0]);//imgPerfil
+        if(extsLen == 2){
+            refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
+            obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
+        }else if(extsLen == 3){
+
+        }
+        String nombreImagenPerfil = refUpload.getNombreImgPerfil();
+        obj.setRutaWebImg(nombreImagenPerfil);
 
         trainer.setLstTrainerFicha(lstTf);
         //Registrando
         String trainerId = registrar(trainer, "2");
         //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
-        return new RefUploadIds(Integer.parseInt(trainerId), uuid);
+        refUpload.setTrainerId(Integer.parseInt(trainerId));
+        return refUpload;
     }
 
     @Override

@@ -4,12 +4,12 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.BandejaTemporal;
 import com.itsight.domain.PostulanteTrainer;
+import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums.Msg;
-import com.itsight.util.Parseador;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,6 +63,11 @@ public class PublicoController extends BaseController {
         return new ModelAndView(ViewConstant.MAIN_CONTIGO);
     }
 
+    @GetMapping("/asesores")
+    public ModelAndView asesores(){
+        return new ModelAndView(ViewConstant.MAIN_ASESORES);
+    }
+
     @GetMapping("/quienes-somos")
     public ModelAndView quienesSomos(){
         return new ModelAndView(ViewConstant.MAIN_QUIENES_SOMOS);
@@ -83,22 +88,26 @@ public class PublicoController extends BaseController {
         return new ModelAndView(ViewConstant.MAIN_TERMINOS_Y_CONDICIONES);
     }
 
-    @GetMapping({"/ficha-inscripcion", "/ficha-inscripcion"})
-    public ModelAndView fichaInscripcion(
-        @RequestParam(name="key", required=false) String hshTrainerId,
-        @RequestParam(name="ml", required=false) String trainerMailDecode,
-        Model model) {
-        if(hshTrainerId != null){
-            Integer trainerId = Parseador.getDecodeHash32Id("rf-public", hshTrainerId);
-            if(trainerId == 0){
-                return new ModelAndView(ViewConstant.ERROR404);
-            }else{
-                model.addAttribute("trainerId", trainerId);
-                model.addAttribute("correoTrainer", trainerMailDecode);
-            }
-        }
-        model.addAttribute("lstCondMejoras", condicionMejoraService.findAll());
-        return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION);
+    @GetMapping("/ficha-inscripcion")
+    public ModelAndView fichaInscripcionRunner(
+            @RequestParam(name="key", required=false) String hshTrainerId,
+            @RequestParam(name="ml", required=false) String trainerMailDecode,
+            Model model) {
+        return getFichaApropiada(model,
+                                hshTrainerId,
+                                trainerMailDecode,
+                                ViewConstant.MAIN_FICHA_INSCRIPCION_RUNNING);
+    }
+
+    @GetMapping("/ficha-inscripcion/general")
+    public ModelAndView fichaInscripcionGeneral(
+            @RequestParam(name="key", required=false) String hshTrainerId,
+            @RequestParam(name="ml", required=false) String trainerMailDecode,
+            Model model) {
+        return getFichaApropiada(model,
+                                hshTrainerId,
+                                trainerMailDecode,
+                                ViewConstant.MAIN_FICHA_INSCRIPCION_GENERAL);
     }
 
     //TRAINER PROCESS
@@ -198,5 +207,11 @@ public class PublicoController extends BaseController {
     @GetMapping("/bandeja")
     public @ResponseBody List<BandejaTemporal> getBandejaGeneral(){
         return bandejaTemporalRepository.findAllByOrderByIdDesc();
+    }
+
+    @GetMapping(value = "/condicion-mejora/listar/todos")
+    public @ResponseBody
+    List<CondicionMejoraDTO> listarCondicionesMejora(){
+        return condicionMejoraService.getAll();
     }
 }

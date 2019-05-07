@@ -57,6 +57,8 @@ public class Trainer extends AuditingEntity implements Serializable {
     private String username;
     @Column()
     private String codigoTrainer;
+    @Column(nullable = true)
+    private String fichaClienteIds;
     @Column(nullable = false)
     private boolean flagRutinarioCe;
     @Type(type = "jsonb")

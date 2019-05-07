@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.itsight.util.Enums.Msg.VALIDACION_FALLIDA;
@@ -75,7 +76,7 @@ public class TrainerFichaController extends BaseController {
     @PostMapping("/registro/{hashPreTrainerId}")
     public @ResponseBody String registroTrainer(
             @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId,
-            @RequestBody TrainerFichaDTO trainerFicha) throws CustomValidationException {
+            @RequestBody @Valid TrainerFichaDTO trainerFicha) throws CustomValidationException {
 
         Integer postTraId = 0;
 
@@ -101,8 +102,12 @@ public class TrainerFichaController extends BaseController {
             //y no el que enviaron en la petición post
             trainerFicha.setCorreo(postulante.getCorreo());
             trainerFicha.setPostulanteTrainerId(postTraId);
-            RefUploadIds ids = trainerService.registrarPostulante(trainerFicha);
-            return jsonResponse(Parseador.getEncodeHash32Id("rf-load-media", ids.getId()), ids.getUuid());
+            RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha);
+            String gal = refsUpload.getNombresImgsGaleria().equals("") ? "" : "@"+refsUpload.getNombresImgsGaleria();
+            String finalUploadNames = refsUpload.getNombreImgPerfil() +  gal;
+            return jsonResponse(
+                        Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
+                        finalUploadNames);
         }
         return jsonResponse(REGISTRO.get());
     }

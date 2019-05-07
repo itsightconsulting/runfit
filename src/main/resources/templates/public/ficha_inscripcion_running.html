@@ -333,7 +333,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <button class="btn btn-bg-black" type="button" onclick="next_step(1)">Siguiente</button>
+                        <button class="btn btn-bg-black" type="button" onclick="next_step(1, 2)">Siguiente</button>
                       </div>
                     </li>
                   </ol>
@@ -629,7 +629,6 @@
                         </div>
                       </li>
                       <li>
-
                         <div class="form-group">
                           <label>¿Cuál es el nivel de atleta con el que te identificarías?<span class="obligatorio">*</span></label>
                           <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control">
@@ -643,12 +642,8 @@
                         <div class="form-group">
                           <label>De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
                           <div class="col-md-12 pad-0">
-                            <ul class="checks">
-                              <li th:each="cm: ${lstCondMejoras}">
-                                <div class="chk-content" th:inline="text">[[${cm.nombre}]]
-                                  <input name="CondicionMejora" th:value="${cm.id}" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>
+                            <ul class="checks" id="CondicionesMejora">
+
                             </ul>
                           </div>
                           <div class="form-group"><br/>
@@ -1346,6 +1341,7 @@
       const stUbicacion = document.getElementById('stUbicacion');
       const mainFrm = document.getElementById('frm_registro');
       const btGuardar = document.getElementById('btnGuardar');
+      let lstCondMejoras = [];
 
       (function () {
         init();
@@ -1361,7 +1357,33 @@
       function mainSeeders(){
         getUbigeoPeruLim();
         if(flag_form_populate){
-          populateForm();
+          getCondicionesMejora();
+          setTimeout(()=>populateForm(), 700);
+
+        }
+      }
+
+      function getCondicionesMejora(){
+        const len = lstCondMejoras.length;
+        if(len == 0){
+          $.ajax({
+            type: 'GET',
+            url: _ctx + 'p/condicion-mejora/listar/todos',
+            dataType: 'json',
+            success: function (res) {
+              lstCondMejoras = res;
+              const divConMej = document.getElementById('CondicionesMejora');
+              res.forEach(e=>{
+                divConMej.appendChild(htmlStringToElement(
+                              `<li>
+                                <div class="chk-content" th:inline="text">${e.nombre}
+                                  <input name="CondicionMejora" value="${e.id}" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
+                                </div>
+                              </li>`
+                ))
+              })
+            }
+          })
         }
       }
 
@@ -1540,6 +1562,8 @@
         obj.cliFit.frecuenciaComunicacion = 1;
         obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
         obj.cliFit.tiempoDistancia = "{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}";
+        obj.cliFit.fichaId =  1;//Runner = 1
+
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
         condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
         condAnatomica.descripcionDolor = obj.descripcionDolor;
@@ -1581,13 +1605,6 @@
         obj.cliFit.competencias = getCompetenciasParticipar();
         obj.cliFit.fitElementos = [];
 
-        //private ListObjetivo objetivos;
-        //private CondicionAnatomica condicionAnatomica;
-        //private Salud salud;
-        //private ListCompetenciaRunner competencias;
-        //obj.cliFit.frecuenciaComunicacion = document.getElementById('FrecuenciaComunicacion').value;
-        //obj.cliFit.viaConexion = document.getElementById('ViaConexion').value;
-        //private UsuarioDTO usuario;
         return obj;
       }
 

@@ -1,8 +1,6 @@
 package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.jsonb.CuentaPago;
 import com.itsight.domain.jsonb.Servicio;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
@@ -57,6 +55,7 @@ import java.util.UUID;
                             columns = {
                                     @ColumnResult(name = "id", type = Integer.class),
                                     @ColumnResult(name = "nombreCompleto", type = String.class),
+                                    @ColumnResult(name = "fichaClienteIds", type = String.class),
                                     @ColumnResult(name = "especialidad", type = String.class),
                                     @ColumnResult(name = "disciplina", type = String.class),
                                     @ColumnResult(name = "acerca", type = String.class),
@@ -103,6 +102,7 @@ import java.util.UUID;
                       query = "SELECT \n" +
                               "\tf.trainer_id id, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
+                              "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.especialidad, \n" +
                               "\td.nombre disciplina,\n" +
                               "\tf.acerca,\n" +

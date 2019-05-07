@@ -143,7 +143,7 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
         clienteFitness1.setCliente(cliente);
         repository.save(clienteFitness1);
         //Añadiendo al cliente a la rUsuarioed del entrenador que eligio
-        redFitnessService.save(new RedFitness(Integer.parseInt(usuarioFitness.getTrainerId()), cliente.getId()));
+        redFitnessService.save(new RedFitness(Integer.parseInt(usuarioFitness.getTrainerId()), cliente.getId(), ""));
         return Enums.ResponseCode.REGISTRO.get() +","+ "1";
     }
 

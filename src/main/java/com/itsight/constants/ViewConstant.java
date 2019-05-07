@@ -9,10 +9,12 @@ public class ViewConstant {
     public static final String MAIN_PREGUNTAS_FRECUENTES = "public/preguntas_frecuentes";
     public static final String MAIN_TERMINOS_Y_CONDICIONES = "public/full_terminos_condiciones";
     public static final String MAIN_BUSQUEDA_TRAINER = "public/encuentra_trainer";
-    public static final String MAIN_FICHA_INSCRIPCION = "public/ficha_inscripcion";
+    public static final String MAIN_FICHA_INSCRIPCION_RUNNING = "public/ficha_inscripcion_running";
+    public static final String MAIN_FICHA_INSCRIPCION_GENERAL = "public/ficha_inscripcion_general";
     public static final String MAIN_EMPRENDE_CON_NOSOTROS = "public/emprende_con_nosotros";
     public static final String MAIN_REGISTRO_TRAINER= "public/registro_trainer";
     public static final String MAIN_PERFIL_TRAINER= "public/perfil_trainer";
+    public static final String MAIN_ASESORES= "public/asesores";
 
     //More about publics
     public static final String MAIN_VER_POSTULANE = "portal/eleccion_pre_trainer";

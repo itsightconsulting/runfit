@@ -52,6 +52,8 @@ public class RedFitness implements Serializable {
     private int estadoPlan;
     @Column
     private String nota;
+    @Column
+    private String msgCliente;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Temporal(TemporalType.DATE)
@@ -80,9 +82,10 @@ public class RedFitness implements Serializable {
         this.id = id;
     }
 
-    public RedFitness(Integer trainerId, Integer clienteId){
+    public RedFitness(Integer trainerId, Integer clienteId, String msgCliente){
         this.trainer = new Trainer(trainerId);
         this.cliente = new Cliente(clienteId);
+        this.msgCliente = msgCliente;
         this.fechaCreacion = new Date();
         this.estadoPlan = EstadoPlan.SIN_PLAN.get();
     }

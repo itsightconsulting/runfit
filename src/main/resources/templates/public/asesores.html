@@ -1,0 +1,78 @@
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+  <title>Asesores | Fitness | Runfit</title>
+  <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
+  <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+</head>
+<body>
+<nav th:replace="html-commons/p/header :: fg-header"></nav>
+<div th:replace="html-commons/reu-login :: fg-login"></div>
+<div id="wrapper">
+  <div class="section banner home">
+    <div class="bg-image"><img class="banner-home" th:src="@{/img/public/asesores.jpg}+'?'+${version}">
+      <div class="container">
+        <div class="title-page">
+          <h1>CONÉCTATE<span>CON NOSOTROS</span></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="time-line container">
+    <ol>
+      <li>
+        <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-1.png}+'?'+${version}">
+          <h2>llega a más clientes <span>con nosotros</span></h2>
+          <p>Haremos llegar tus servicios a miles de clientes potenciales para que puedas aumentar tu cartera a través de nuestras redes sociales. </p>
+        </div>
+      </li>
+      <li>
+        <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-2.png}+'?'+${version}">
+          <h2>herramientas de  <span>gestión</span></h2>
+          <p>A través de un sofisticado sistema de planificación y acceso a  más de 500 vídeos ejecutados por atletas profesionales, planea programas de entrenamiento, guárdalos en tu biblioteca y actualízalos en el calendario de tus clientes en cualquier momento. </p>
+        </div>
+      </li>
+      <li>
+        <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-3.png}+'?'+${version}">
+          <h2>haz seguimiento del <span>cumplimiento</span></h2>
+          <p>Supervisa el cumplimiento del programa por parte del cliente para asegurar que se mantenga en el camino correcto hacia alcanzar sus objetivos. </p>
+        </div>
+      </li>
+      <li>
+        <div class="item"><img class="icon-img" th:src="@{/img/public/contigo-4.png}+'?'+${version}">
+          <h2>obtén información <span>del mercado</span></h2>
+          <p>Obtendrás información estadística del mercado para que puedas trazar tus estrategias de venta.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+  <section class="tienda_coach">
+    <div class="col-md-6 coach">
+      <div class="bg-color"></div>
+      <div class="text-center"><img th:src="@{/img/public/coach.png}+'?'+${version}">
+        <h3>Encuentra a tu coach</h3>
+        <p>Deja que un experto te ayude en cada paso del camino. Elige al especialista que se adecue a tus necesidades. </p>
+        <div class="col-md-12">
+          <a th:href="@{/p/busqueda/trainers}">
+            <button class="btn btn-default" type="button">Encuentralo</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 tienda">
+      <div class="bg-color"></div>
+      <div class="text-center"><img th:src="@{/img/public/tienda.png}+'?'+${version}">
+        <h3>Nuestra tienda</h3>
+        <p>Complementa tu preparación con nuestras guías y programas de entrenamientos, elaborados por los mejores profesionales del mercado.</p>
+        <div class="col-md-12">
+          <button class="btn btn-default" type="button">Explora</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+<th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+</body>
+</html>
