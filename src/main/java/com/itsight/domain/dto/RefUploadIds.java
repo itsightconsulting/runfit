@@ -8,10 +8,11 @@ import java.util.UUID;
 public class RefUploadIds {
 
     private Integer trainerId;
-
-    private String nombresImgsGaleria;
-
     private String nombreImgPerfil;
+    private String nombresImgsGaleria;
+    private String nombresCondSvcs;
+
+
 
 
     public RefUploadIds(){}
@@ -20,6 +21,10 @@ public class RefUploadIds {
         this.trainerId = trainerId;
         this.nombresImgsGaleria = nombresImgsGaleria;
         this.nombreImgPerfil = nombreImgPerfil;
+    }
+
+    public void setNombresCondSvcs() {
+        this.nombresCondSvcs = "";
     }
 
     public void setNombresImgsGaleria() {
@@ -42,6 +47,23 @@ public class RefUploadIds {
                 sep="|";
             }
             this.nombresImgsGaleria = nombres;
+        }
+    }
+
+    public void setNombresCondSvcs(String extensiones) {
+        if(extensiones.contains("extsCondSvcs:")) {
+            String[] exts = extensiones.substring("extsCondSvcs:".length()).split("\\|");
+            String nombres = "";
+            String sep = "";
+            for(int i=0; i<exts.length;i++){
+                if(!exts[i].equals("")){
+                    nombres += sep+UUID.randomUUID().toString()+"."+exts[i];
+                    sep="|";
+                }else{
+                    nombres +="|";
+                }
+            }
+            this.nombresCondSvcs = nombres;
         }
     }
 }

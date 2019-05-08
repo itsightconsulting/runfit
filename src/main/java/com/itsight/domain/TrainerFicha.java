@@ -96,7 +96,7 @@ import java.util.UUID;
                               "\tCAST(f.servicios AS text),\n" +
                               "\tf.nom_pag nomPag \n" +
                               "FROM trainer t \n" +
-                              "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n",
+                              "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id ORDER BY 1 DESC\n",
                       resultSetMapping = "getAllByDemo"),
     @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
                       query = "SELECT \n" +

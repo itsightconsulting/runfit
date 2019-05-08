@@ -223,7 +223,7 @@
                                           <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
                                           <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...<span class="obligatorio">*</span></label>
                                       </div>
-                                      <div class="row" id="GaleriaFotos" style="padding-bottom: 20px">
+                                      <div class="row" style="padding-bottom: 20px">
                                           <div class="col-md-12" id="ImgsGaleria">
 
                                           </div>
@@ -329,7 +329,7 @@
                                               <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                       </div>
-                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIOS</button>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIO</button>
                                       <p class="sub-title">TARIFARIO<span class="obligatorio">*</span></p>
                                       <div class="row">
                                           <div class="col col-md-12 text-center" id="Tarifarios">
@@ -468,7 +468,7 @@
                                           <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
                                       </div>
                                       <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR NUEVA CUENTA</button>
-                                      <button class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
+                                      <button id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
                                       <input type="file" id="inpCondServicio" class="hide">
                                       <button id="btnModalFichas" class="btn btn-default btn-white" type="button" onclick="abrirModalFichas()">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
                                       <div class="terms" onclick="javascript:abrirModalTermCond()">
@@ -543,8 +543,10 @@
         const btnNuevaTarifa = document.getElementById('btnNuevaTarifa');
         const btnNuevaCuentaBanc = document.getElementById('btnNuevaCuentaBanc');
         const tabService = document.getElementById('service');
+        const inpCondServicio = document.getElementById('inpCondServicio');
         const servicios = [];
         const ccBancarias = [];
+        let termConSvc = [];
         const initTabActive = 1;
         let selServicioId = -1;
         let accServicioId = 0;
@@ -562,6 +564,7 @@
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
             btnNuevaCuentaBanc.addEventListener('click', agregarCuentaBancaria);
             tabService.addEventListener('click', clickListenerTabService);
+            inpCondServicio.addEventListener('change', asociarCondSvc);
             //inpImgPerfil.addEventListener('change', capturarImgPerfil);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
@@ -569,10 +572,33 @@
             init();
         })();
 
+        function asociarCondSvc(e){
+            if(selServicioId > 0){
+                const input = e.target;
+                const obj = {};
+                obj.servicioId = selServicioId;
+                obj.file = input.files[0];
+                const exist = termConSvc.find(v=>v.servicioId === obj.servicioId);
+                if(exist !== undefined){
+                    exist.file = obj.file;
+                }else{
+                    termConSvc.push(obj);
+                }
+                const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
+                btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+obj.file.name+"<span class=\"obligatorio\">*</span>";
+            } else{
+                $.smallBox({color: "rgb(204, 77, 77)",
+                            content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>Primero debe agregar un servicio</em>" ,
+                            timeout: 3500})
+            }
+
+
+        }
+
         function uploadFotoPerfil(d, body){
             //submit the form here
             const hshId = d.res;
-            const rdmUUID = d.rdm.slice(0,-4);
+            const rdmUUID = d.rdm.slice(0,d.rdm.lastIndexOf("."));
             let file = inpImgPerfil;
             if (file.files.length > 0) {
                 file = file.files[0];
@@ -611,7 +637,25 @@
         }
 
         function getImgUuids(rdms){
-            return rdms.split("@")[0].slice(0,-4)+"|"+rdms.split("@")[1].split("|").map(e=>e.slice(0,-4)).join('|');
+            const all = rdms.split("@");
+            let imgPerfil = all[0];
+            imgPerfil = imgPerfil.slice(imgPerfil, imgPerfil.lastIndexOf("."));
+
+            let galeria ="";
+
+            if(all.length == 2){
+                let imgsGaleria = all[1];
+                galeria = imgsGaleria.split("|").filter(v=>v!=="").map(e=>e.slice(0,e.lastIndexOf("."))).join('|');//Solo para este caso se necesita el .filter(v=>!=="")
+            }
+            let flCondSvcs="";
+
+            if(all.length == 3){
+                let imgsGaleria = all[1];
+                galeria = imgsGaleria.split("|").map(e=>e.slice(0,e.lastIndexOf("."))).join('|');
+                let condSvcs = all[2];
+                flCondSvcs = condSvcs.split("|").filter(v=>v!=="").map(e=>e.slice(0,e.lastIndexOf("."))).join('|');
+            }
+            return imgPerfil + "|" + galeria + "|" + flCondSvcs;
         }
 
         function uploadFotosPerfil(d, body){
@@ -626,6 +670,10 @@
                 Array.from(inpGaleria.files).forEach(f=>{
                     data.append("files", f);
                 });
+                termConSvc.forEach(v=>{
+                    data.append("files", v.file);
+                })
+
                 $.ajax({
                     type: 'PUT',
                     url: _ctx+'p/trainer/subir/fotos/perfil/'+hshId+'/'+rdmsUUIDs,
@@ -689,14 +737,37 @@
             const arrURL = window.location.href.split("/");
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
+            const nmImgPerfil = inpImgPerfil.files[0].name;
+            const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
 
-            const extImgPerfil = inpImgPerfil.files[0].type.split("/")[1];
-            const extsImgsGaleria = Array.from(inpGaleria.files).map(e=>e.type.split("/")[1]).join("|");
+            const extsImgsGaleria = Array.from(inpGaleria.files)
+                                        .map(e=>{
+                                            const nm = e.name;
+                                            return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))
+                                        }).join("|");
+
+            servicios.forEach(v=>{
+                const exists = termConSvc.some(w=>w.servicioId===v.id)
+                if(!exists){
+                    termConSvc.push({servicioId: v.id});
+                }
+
+            })
+            termConSvc.sort((a, b) => a.servicioId < b.servicioId ? -1 : 1);
+
+            const extsCondSvcs = termConSvc
+                                .map(e=>{
+                                    if(e.file === undefined){
+                                        return "";
+                                    }
+                                    const nm = e.file.name;
+                                    return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))
+                                }).join("|");
             const exts = {};
             exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
             exts.extsImgsGaleria = extsImgsGaleria !== "" ? "@extsImgsGaleria:"+extsImgsGaleria : "";
-            body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria;
-            console.log(exts);
+            exts.extsCondSvcs = extsCondSvcs !== "" ? "@extsCondSvcs:"+extsCondSvcs : "";
+            body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria + exts.extsCondSvcs;
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
@@ -706,9 +777,8 @@
                 blockLoading: false,
                 bridgeMultipart: true,
                 success: (d)=> {
-                    console.log(d);
                     //Subir imgen
-                    if(extsImgsGaleria === ""){
+                    if(extsImgsGaleria === "" && extsCondSvcs === ""){
                         uploadFotoPerfil(d, body);
                     }else{
                         uploadFotosPerfil(d, body)
@@ -778,6 +848,16 @@
             document.querySelector('#DescripcionServicio').value = svc.descripcion;
             console.log(svc);
             setIncluyeDelServicio(svc.incluye);
+
+            const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
+            const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
+            if(condSvcFile !== undefined){
+                const nomFile = condSvcFile.file.name;
+                btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+            }else{
+                btnSubirCondServicio.innerHTML = "ADJUNTAR CONDICIONES DEL SERVICIO<span class=\"obligatorio\">*</span>";
+            }
+
 
 
             /*document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
@@ -917,7 +997,7 @@
             if(t.valid){
                 document.getElementById('Tarifarios')
                     .appendChild(
-                    htmlStringToElement(`<div class="col-md-2 mg-bt-10" data-id="${t.id}"><a href="javascript:void(0)" class="tarifa-svc">${t.frecuencia}<i class="fa fa-ticket fa-fw fa-2x tarifa-svc mg-bt-6"></i></a></div>`));
+                    htmlStringToElement(`<div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}"><a href="javascript:void(0)" class="tarifa-svc">${t.frecuencia}<i class="fa fa-ticket fa-fw fa-2x tarifa-svc mg-bt-6"></i></a></div>`));
 
             }
         }

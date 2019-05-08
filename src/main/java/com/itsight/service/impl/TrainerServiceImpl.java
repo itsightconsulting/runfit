@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.Msg.REGISTRO_EXITOSO;
@@ -262,11 +263,27 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         RefUploadIds refUpload = new RefUploadIds();
         refUpload.setNombreImgPerfil(extensiones[0]);//imgPerfil
         refUpload.setNombresImgsGaleria();
+        refUpload.setNombresCondSvcs();
         if(extsLen == 2){
             refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
             obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
+            refUpload.setNombresCondSvcs(extensiones[1]);//filesCondsSvcs|Se prueba si esta en la posición uno ya que puede que no se hayan subido fotos a la galeria pero si condiciones de servicio
+            String[] noms = refUpload.getNombresCondSvcs().split("\\|");
+            for(int i=0; i<noms.length; i++){
+                if(!noms[i].equals("")){
+                    obj.getServicios().get(i).setCondicionesServicioRuWeb(noms[i]);
+                }
+            }
         }else if(extsLen == 3){
-
+            refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
+            obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
+            refUpload.setNombresCondSvcs(extensiones[2]);//filesCondsSvcs
+            String[] noms = refUpload.getNombresCondSvcs().split("\\|");
+            for(int i=0; i<noms.length; i++){
+                if(!noms[i].equals("")){
+                    obj.getServicios().get(i).setCondicionesServicioRuWeb(noms[i]);
+                }
+            }
         }
         String nombreImagenPerfil = refUpload.getNombreImgPerfil();
         obj.setRutaWebImg(nombreImagenPerfil);

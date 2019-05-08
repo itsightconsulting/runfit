@@ -104,7 +104,8 @@ public class TrainerFichaController extends BaseController {
             trainerFicha.setPostulanteTrainerId(postTraId);
             RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha);
             String gal = refsUpload.getNombresImgsGaleria().equals("") ? "" : "@"+refsUpload.getNombresImgsGaleria();
-            String finalUploadNames = refsUpload.getNombreImgPerfil() +  gal;
+            String svcsFiles = refsUpload.getNombresCondSvcs().equals("") ? "" : "@"+refsUpload.getNombresCondSvcs();
+            String finalUploadNames = refsUpload.getNombreImgPerfil() +  gal + svcsFiles;
             return jsonResponse(
                         Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
                         finalUploadNames);

@@ -86,6 +86,7 @@
 
 <script>
     $(function () {
+        const testing = false;
         // Validation
         $("#login-form").validate({
             // Rules for form validation}
@@ -124,6 +125,12 @@
                 error.insertAfter(element.parent());
             }
         });
+
+        if(testing) {
+            document.querySelector('input[name="username"]').value = "trainer1@runfit.pe";
+            document.querySelector('input[name="password"]').value = "runfit";
+            document.getElementById('login-form').submit();
+        }
     });
 </script>
 </body>

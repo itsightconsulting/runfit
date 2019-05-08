@@ -118,14 +118,7 @@
                       <div class="form-group">
                         <label>GALERÍA DE FOTOS</label>
                         <div class="row">
-                          <div class="col-md-12">
-                            <div id="MiniGaleria" class="owl-carousel owl-theme">
-                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                              <div class="item"><img th:src="@{/img/public/carousel-1.jpg}+'?'+${version}"/></div>
-                            </div>
+                          <div class="col-md-12" id="ImgsGaleria">
                           </div>
                         </div>
                       </div>
@@ -133,12 +126,12 @@
                   </form>
                 </div>
                 <div class="tab-pane fade" id="contact">
-                      <form>
+                      <form id="frm_contacto">
                           <h1 class="title-form">COMPÁRTENOS TUS DATOS PARA CONTACTARNOS LO ANTES POSIBLE</h1>
                           <div class="form-group">
                               <div class="pad-right-middle">
                                   <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                                  <input class="form-control" type="text">
+                                  <input id="Nombre" name="Nombre" class="form-control" type="text">
                               </div>
                           </div>
                           <div class="form-group">
@@ -146,17 +139,17 @@
                               <ul class="checks">
                                   <li>
                                       <div class="chk-content">Mujer
-                                          <input type="checkbox" checked="checked"><span class="checkmark"></span>
+                                          <input name="Sexo" type="radio" value="2" checked="checked"><span class="checkmark"></span>
                                       </div>
                                   </li>
                                   <li>
                                       <div class="chk-content">Hombre
-                                          <input type="checkbox"><span class="checkmark"></span>
+                                          <input name="Sexo" type="radio" value="1"><span class="checkmark"></span>
                                       </div>
                                   </li>
                                   <li>
                                       <div class="chk-content">Otro
-                                          <input type="checkbox"><span class="checkmark"></span>
+                                          <input name="Sexo" type="radio" value="3"><span class="checkmark"></span>
                                       </div>
                                   </li>
                               </ul>
@@ -164,20 +157,20 @@
                           <div class="form-group">
                               <div class="pad-right-middle">
                                   <label>CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                                  <input class="form-control" type="text">
+                                  <input id="Correo" name="Correo" class="form-control" type="text">
                               </div>
                           </div>
                           <div class="form-group">
                               <div class="pad-right-middle">
                                   <label>CELULAR<span class="obligatorio">*</span></label>
-                                  <input class="form-control" type="text">
+                                  <input id="Movil" name="Movil" class="form-control" type="text">
                               </div>
                           </div>
                           <div class="form-group">
                               <label>CUÉNTANOS EN QUÉ TE PODEMOS AYUDAR</label>
-                              <textarea class="form-control"></textarea>
+                              <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
                           </div>
-                          <button class="btn btn-default btn-black" type="button">ENVIAR</button>
+                          <button id="btnInfoContacto" class="btn btn-default btn-black" type="button">ENVIAR</button>
                       </form>
                   </div>
                 <div class="tab-pane fade" id="service">
@@ -254,8 +247,11 @@
     <script th:inline="javascript">
       let $perfil = {};
       const btnElegir = document.getElementById('btnElegir');
+      const btnInfoContacto = document.getElementById('btnInfoContacto');
+
       (function () {
           btnElegir.addEventListener('click', irARegistro);
+          btnInfoContacto.addEventListener('click', registrarContactoTrainer);
           init();
       })();
 
@@ -286,6 +282,32 @@
         }
       }
 
+      function registrarContactoTrainer(){
+          const $frm = document.getElementById('frm_contacto');
+          const params = getFormData($($frm));
+          params.sexo = document.querySelector('input[name="Sexo"]:checked').value;
+          params.correoTrainer = $perfil.correo;
+          const hshId = getHash32Id("rf-cont-tra", $perfil.id);//TEMP
+          $.ajax({
+              type: 'POST',
+              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+              url: _ctx + 'p/contacto/trainer/registrar/'+hshId,
+              dataType: "json",
+              data: params,
+              blockLoading: true,
+              success: function (data, textStatus) {
+                  if (textStatus == "success") {
+                      reqSuccess(data);
+                  }
+              },
+              error: function (xhr) {
+                  exception(xhr);
+              },
+              complete: function () {
+              }
+          });
+      }
+
       function getTrainer(){
         const urlArr = window.location.href.split("/");
         const nomPag = urlArr[urlArr.length-1];
@@ -299,7 +321,7 @@
             recrearPerfil(res);
             checkTab();
           }, error: (xhr) => {
-            console.log(xhr);
+             exception(xhr);
           }, complete: () => {
           }
         })
@@ -330,6 +352,10 @@
         reconstruirServicios(t.servicios, t.adicionalInfo != undefined ? t.adicionalInfo : "Ninguna");
         reconstruirCuentaBanco(t.cuentas);
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
+        const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
+        if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
+            poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
+        }
       }
 
       function reconstruirLista(e, stringArr){
@@ -391,7 +417,6 @@
       }
 
       function reconstruirTarifario(tarifas){
-          console.log(tarifas);
           tarifas.forEach((e,i)=>document.getElementById('Tarifario').appendChild(htmlStringToElement(`
                               <div class="col-xs-12 col-sm-6 col-md-4">
                                   <div class="panel panel-primary" style="border-color: #ab9898;">

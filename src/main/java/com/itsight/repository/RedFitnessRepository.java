@@ -17,7 +17,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @EntityGraph(value = "redFitness.cliente")
     RedFitness findOneById(Integer id);
 
-    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id, R.nota, R.contadorRutinas, R.estadoPlan, R.fechaFinalPlanificacion, CONCAT(C.apellidos,' ', C.nombres), C.movil, C.fechaUltimoAcceso, C.id, C.correo, C.fechaNacimiento) FROM RedFitness R JOIN R.cliente C WHERE R.trainer.id = ?1")
+    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id, R.nota, R.msgCliente, R.contadorRutinas, R.estadoPlan, R.fechaFinalPlanificacion, CONCAT(C.apellidos,' ', C.nombres), C.movil, C.fechaUltimoAcceso, C.id, C.correo, C.fechaNacimiento) FROM RedFitness R JOIN R.cliente C WHERE R.trainer.id = ?1")
     List<RedFitCliDTO> findAllByTrainerId(Integer trainerId);
 
     @Modifying

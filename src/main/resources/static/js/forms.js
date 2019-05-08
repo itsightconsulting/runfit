@@ -51,7 +51,7 @@ function readURLCs(input, img, ix, mainDivId) {
             $(img).attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[ix]);
-        imgTemps.push(img)
+        imgTemps.push(img);
         if(input.files.length == ix+1){
             const dvCarusel = document.createElement('div');
             dvCarusel.className = 'owl-carousel owl-theme';
@@ -69,6 +69,26 @@ function readURLCs(input, img, ix, mainDivId) {
             carousel();
         }
     }
+}
+
+function poblarCarusel(srcs, mainDivId, baseSrc) {
+    const dvCarusel = document.createElement('div');
+    const mainDiv = document.querySelector('#'+mainDivId);
+    Array.from(srcs).forEach(src=>{
+        let img = document.createElement('img');
+        img.src = baseSrc + src;
+        dvCarusel.className = 'owl-carousel owl-theme';
+        const dvItem = document.createElement('div');
+        dvItem.classList.add('item');
+        dvItem.appendChild(img);
+        dvCarusel.appendChild(dvItem);
+        /*if(mainDiv.children.length == 1){
+            mainDiv.children[0].remove();
+        }*/
+    })
+
+    mainDiv.appendChild(dvCarusel);
+    carousel();
 }
 
 function uploadImgs(input, mainDivId) {

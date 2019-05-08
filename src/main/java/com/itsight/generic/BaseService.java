@@ -134,11 +134,9 @@ public interface BaseService<T, V> {
             if (!file.isEmpty()) {
                 String[] splitNameFile = file.getOriginalFilename().split("\\.");
                 String extension = "." + splitNameFile[splitNameFile.length - 1];
-
+                String objectName = uuids[i]+extension;
+                String fullPath = credentials.getPrefix()+objectName;
                 try {
-                    String objectName = uuids[i]+extension;
-                    String fullPath = credentials.getPrefix()+objectName;
-
                     ObjectMetadata metadata = new ObjectMetadata();
                     metadata.setContentLength(file.getSize());
 
@@ -150,17 +148,20 @@ public interface BaseService<T, V> {
 
                     Upload upload = tm.upload(request);
                     upload.waitForCompletion();
-                    break;
                 } catch (IllegalStateException e) {
+                    logger.warn("Path file: "+fullPath);
                     logger.warn(e.getMessage());
                 } catch (AmazonClientException e) {
+                    logger.warn("Path file: "+fullPath);
                     logger.warn(e.getMessage());
                 } catch (InterruptedException e) {
+                    logger.warn("Path file: "+fullPath);
                     logger.warn(e.getMessage());
                 } catch (IOException e){
+                    logger.warn("Path file: "+fullPath);
                     logger.warn(e.getMessage());
                 }
-                break;
+
             }
         }
         return true;

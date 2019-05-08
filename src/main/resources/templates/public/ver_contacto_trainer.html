@@ -24,21 +24,21 @@
           <div class="container"><img class="bg-image" th:src="@{/img/public/emprende_form.png}">
             <div class="col-md-4"></div>
             <div class="col-md-8">
-              <h3>SI DESEAS FORMAR PARTE DE NUESTRA FAMILIA<span>DE ASESORES, CONTACTE CON NOSOTROS.</span></h3>
+              <h3>DESEA FORMAR PARTE DE NUESTRA FAMILIA<span> DE CLIENTES, CONTACTALO!</span></h3>
               <hr>
               <form class="row" id="frm_registro">
                 <div class="col-md-8">
                   <div class="form-group">
                     <label for="Correo">CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                    <input name="Correo" id="Correo" class="form-control" type="text" disabled="disabled" th:value="${post.correo}">
+                    <input name="Correo" id="Correo" class="form-control" type="text" disabled="disabled" th:value="${contacto.correo}">
                   </div>
                   <div class="form-group">
                     <label for="Movil">TELÉFONO<span class="obligatorio">*</span></label>
-                    <input id="Movil" name="Movil" class="form-control" type="text" disabled="disabled" th:value="${post.movil}">
+                    <input id="Movil" name="Movil" class="form-control" type="text" disabled="disabled" th:value="${contacto.movil}">
                   </div>
                   <div class="form-group">
-                    <label for="NombreFull">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                    <input id="NombreFull" name="NombreFull" class="form-control" type="text" disabled="disabled" th:value="${post.nombreFull}">
+                    <label for="Nombre">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
+                    <input id="Nombre" name="Nombre" class="form-control" type="text" disabled="disabled" th:value="${contacto.nombre}">
                   </div>
                 </div>
                 <div class="col-md-12">
@@ -46,11 +46,6 @@
                     <label for="Mensaje">DEJANOS UN MENSAJE Y COMÉNTANOS SOBRE TUS INTERESES</label>
                     <textarea id="Mensaje" name="Mensaje" class="form-control" disabled="disabled" th:utext="${post.mensaje}"></textarea>
                   </div>
-                </div>
-                <div class="text-right">
-
-                  <button class="btn btn-black" type="button" id="btnAprobar"><i class="fa fa-fw fa-check"></i>Aprobar</button>
-                  <button class="btn btn-black" type="button" id="btnRechazar">Rechazar<i class="fa-fw fa fa-close"></i></button>
                 </div>
               </form>
             </div>
@@ -61,49 +56,9 @@
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
-      const btnAprobar = document.querySelector('#btnAprobar');
-      const btnRechazar = document.querySelector('#btnRechazar');
       (function () {
-        btnAprobar.addEventListener('click', enviarForm);
-        btnRechazar.addEventListener('click', enviarForm);
-        if(flag_form_populate){
-          btnAprobar.click();
-        }
+
       })();
-
-      function enviarForm(e){
-          let decision = 0;
-          if(e.target.id == "btnAprobar"){
-            decision = 1;
-          }
-          sendForm(decision);
-      }
-
-      function sendForm(decision){
-        const arrURI = window.location.href.split("/");
-        const arenaHash = arrURI[arrURI.length-1];
-        const i = decision;//num 0 o 1
-        $.ajax({
-          type: 'PUT',
-          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-          url: _ctx + 'postulacion/decision?key=' + arenaHash + "&o="+i,
-          dataType: "json",
-          blockLoading: true,
-          success: function (data, textStatus) {
-            if (textStatus == "success") {
-              reqSuccess(data);
-              window.location.href = _ctx + "p/bandeja";
-            }
-          },
-          error: function (xhr) {
-            exception(xhr);
-          },
-          complete: function () {
-
-          }
-        });
-      }
-
     </script>
   </body>
 </html>

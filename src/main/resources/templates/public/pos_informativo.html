@@ -23,5 +23,11 @@
 </div>
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+<script th:inline="javascript">
+  (function(){
+    window.location.href = _ctx + "p/bandeja";
+  })();
+
+</script>
 </body>
 </html>

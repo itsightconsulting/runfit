@@ -18,6 +18,7 @@ public class ViewConstant {
 
     //More about publics
     public static final String MAIN_VER_POSTULANE = "portal/eleccion_pre_trainer";
+    public static final String MAIN_VER_CONTACTO_TRAINER = "public/ver_contacto_trainer";
 
     //MAIN INFORMATIVOS
     public static final String MAIN_INF_P = "public/pos_informativo";

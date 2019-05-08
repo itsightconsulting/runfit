@@ -114,6 +114,10 @@ public class Trainer extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<Post> lstPost;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
+    private List<ContactoTrainer> lstContactoTrainer;
+
     @Transient
     private String password;
 
