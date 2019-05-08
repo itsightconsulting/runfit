@@ -12,6 +12,7 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -76,7 +77,9 @@ import java.util.UUID;
                                     @ColumnResult(name = "totalValoracion", type = Double.class),
                                     @ColumnResult(name = "rutaWebImg", type = String.class),
                                     @ColumnResult(name = "servicios", type = String.class),
-                                    @ColumnResult(name = "cuentas", type = String.class)
+                                    @ColumnResult(name = "cuentas", type = String.class),
+                                    @ColumnResult(name = "mapCoordenadas", type = String.class),
+                                    @ColumnResult(name = "mapCircleRadio", type = String.class)
                             }
                     )
             }
@@ -123,7 +126,9 @@ import java.util.UUID;
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tf.ruta_web_img rutaWebImg,\n" +
                               "\tCAST(f.servicios AS text),\n" +
-                              "\tCAST(f.cuentas AS text)\n" +
+                              "\tCAST(f.cuentas AS text),\n" +
+                              "\tf.map_coordenadas mapCoordenadas,\n" +
+                              "\tf.map_circle_radio mapCircleRadio \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "INNER JOIN disciplina d ON d.disciplina_id=f.disciplina_id\n" +
@@ -194,6 +199,11 @@ public class TrainerFicha implements Serializable {
 
     @Column(nullable = true, unique = true)
     private String nomPag;
+
+    @Column(nullable = true)
+    private String mapCoordenadas;
+    @Column(nullable = true)
+    private String mapCircleRadio;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

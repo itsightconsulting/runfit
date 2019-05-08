@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
+import static com.itsight.util.Enums.Msg.CONTACTO_TRAINER;
 
 @Service
 @Transactional
@@ -123,7 +124,7 @@ public class ContactoTrainerServiceImpl extends BaseServiceImpl<ContactoTrainerR
         String hashId = Parseador.getEncodeHash32Id("rf-cont-tra", entity.getId());
         String cuerpo = String.format(correo.getBody(), domainName, hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), entity.getCorreoTrainer(), cuerpo);
-        return Enums.ResponseCode.REGISTRO.get();
+        return CONTACTO_TRAINER.get();
     }
 
     @Override

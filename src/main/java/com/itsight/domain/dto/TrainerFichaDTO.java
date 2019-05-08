@@ -101,5 +101,9 @@ public class TrainerFichaDTO implements Serializable {
     @NotNull
     @Max(36)
     private Integer fichaClienteId;
+    @Size(max = 100)
+    private String mapCoordenadas;
+    @Size(max = 20)
+    private String mapCircleRadio;
 
 }

@@ -104,6 +104,7 @@
                       <div class="form-group">
                         <label>CENTRO DE TRABAJO</label>
                         <p id="CentroTrabajo"></p>
+                        <div class="map" id="map"></div>
                       </div>
                       <div class="form-group">
                         <label>ESPECIALIDADES QUE DOMINO</label>
@@ -356,8 +357,24 @@
         if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
             poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
         }
-      }
 
+        if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){
+            setTimeout(() => {
+                const allCord = t.mapCoordenadas.split(",");
+                var cityCircle = new google.maps.Circle({
+                    strokeColor: '#57ff0e',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#8ee2ff',
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: {lat: Number(allCord[0].substr(1)), lng: Number(allCord[1].slice(0, -1))},
+                    radius: Number(t.mapCircleRadio)
+                });
+            }, 1000);
+
+        }
+      }
       function reconstruirLista(e, stringArr){
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
       }

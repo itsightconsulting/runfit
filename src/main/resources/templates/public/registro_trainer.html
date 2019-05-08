@@ -532,7 +532,13 @@
               </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
+      <div class="col-md-6 no-padding-991" id="status" style="display: none">
+          <b>Coordenadas:</b> --
+          <br class="cb"/><b>Radio:</b> --
+      </div>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+
+    <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script>
         const inpImgPerfil = document.getElementById('InpImgPerfil');
@@ -768,6 +774,14 @@
             exts.extsImgsGaleria = extsImgsGaleria !== "" ? "@extsImgsGaleria:"+extsImgsGaleria : "";
             exts.extsCondSvcs = extsCondSvcs !== "" ? "@extsCondSvcs:"+extsCondSvcs : "";
             body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria + exts.extsCondSvcs;
+            if(document.getElementById('Coordenadas') != null){
+                body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
+            }
+
+            if(document.getElementById('RadioCirculo') != null){
+                body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
+            }
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',

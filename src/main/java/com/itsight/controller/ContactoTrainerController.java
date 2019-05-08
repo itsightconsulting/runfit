@@ -48,7 +48,7 @@ public class ContactoTrainerController extends BaseController{
 
         }
         if(conTrainer.isFlagLeido() || conTrainer.isFlagLeidoFueraFecha()){
-            model.addAttribute("contacto", contactoTrainerService.findOne(conTraId));
+            model.addAttribute("contacto", conTrainer);
             return new ModelAndView();
         }
 
@@ -60,7 +60,7 @@ public class ContactoTrainerController extends BaseController{
         }else{
             conTrainer.setFlagLeidoFueraFecha(true);
         }
-        model.addAttribute("contacto", contactoTrainerService.findOne(conTraId));
+        model.addAttribute("contacto", conTrainer);
         return new ModelAndView(ViewConstant.MAIN_VER_CONTACTO_TRAINER);
     }
 }
