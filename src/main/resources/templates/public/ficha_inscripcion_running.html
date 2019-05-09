@@ -8,6 +8,17 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
   </head>
   <style>
+      #tblCompetencia td > input {
+          background: transparent;
+      }
+
+      #tblCompetencia td > select {
+        background: transparent; !important;
+      }
+
+      #tblCompetencia .state-success, #tblCompetencia .state-error {
+        border: none !important;
+      }
 
       #HumanMuscles{
         max-width: 100%;
@@ -597,8 +608,9 @@
                       <li>
                         <div class="form-group more-inputs">
                           <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                          <input id="ContactoEmergencia" name="ContactoEmergencia" data-aka="Completar contacto de emergencia" class="form-control inp-cont-emer" placeholder="Ejem: (51) 987654321 / Julio" type="text"/>
-                          <a href="#" onclick="javascript:agregarInputDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
+                          <input id="ContactoEmergenciaNombre" name="ContactoEmergencia" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/>
+                          <input id="ContactoEmergenciaMovil" name="ContactoEmergencia" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/>
+                          <a href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
                         </div>
                         <p class="title-form-group">Historial deportivo</p>
                         <div class="form-group">
@@ -641,10 +653,8 @@
                       <li>
                         <div class="form-group">
                           <label>De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
-                          <div class="col-md-12 pad-0">
-                            <ul class="checks" id="CondicionesMejora">
+                          <div id="CondicionesMejora">
 
-                            </ul>
                           </div>
                           <div class="form-group"><br/>
                             <button class="btn btn-bg-black" type="button" onclick="next_step(2)">Siguiente</button>
@@ -1135,8 +1145,9 @@
                                     </td>
                                     <td colspan="2"><i onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: gray;cursor: not-allowed;"></i>
                                       <select class="form-control inp-prioridad" style="max-width: 95% !important;">
-                                        <option value="1">Prioritario</option>
-                                        <option value="2">Secundario</option>
+                                        <option value="1">Alta</option>
+                                        <option value="2">Media</option>
+                                        <option value="3">Baja</option>
                                       </select>
                                     </td>
                                   </tr>
@@ -1162,8 +1173,9 @@
                                     </td>
                                     <td colspan="2"><i title="Eliminar competencia" onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: #c93030;cursor: pointer;"></i>
                                       <select class="form-control inp-prioridad" style="max-width: 95% !important;">
-                                        <option value="1">Prioritario</option>
-                                        <option value="2">Secundario</option>
+                                        <option value="1">Alta</option>
+                                        <option value="2">Media</option>
+                                        <option value="3">Baja</option>
                                       </select>
                                     </td>
                                   </tr>
@@ -1171,7 +1183,7 @@
                               </table>
                             </div>
                           </div>
-                          <a href="javascript:void(0);" onclick="agregarFilaCompetencia()"><i class="fa fa-plus fa-2x" style="float: right;margin-right: 12px;padding-bottom: 10px;"></i></a>
+                          <a class="btn btn-black pull-right" onclick="agregarFilaCompetencia()" style="font-size: 1em; !important;">Agregar<i class="fa fa-plus-circle fa-fw"></i></a>
                         </div>
                       </div>
                     </li>
@@ -1316,10 +1328,10 @@
         <div class="row contact-us">
           <div class="container">
             <div class="col-md-9">
-              <p>¿SI TIENES ALGUNA PREGUNTA? ESTAREMOS FELICES DE AYUDARTE?</p><span>Lorem ipsum dolor sit amet, has minim mollis accusamus ut.</span>
+              <p>¿TIENES ALGUNA PREGUNTA? ¡ENVIÁRNOSLA!</p><span>Contacta con nosotros y envíanos tu duda o sugerencia</span>
             </div>
             <div class="col-md-3 pad-0 text-right">
-              <button class="btn btn-black" type="button">CONTÁCTANOS</button>
+              <a th:href="@{/p/contacto}" target="_blank" ><button class="btn btn-black" type="button">CONTÁCTANOS</button></a>
             </div>
           </div>
         </div>
@@ -1359,7 +1371,6 @@
         if(flag_form_populate){
           getCondicionesMejora();
           setTimeout(()=>populateForm(), 700);
-
         }
       }
 
@@ -1373,15 +1384,29 @@
             success: function (res) {
               lstCondMejoras = res;
               const divConMej = document.getElementById('CondicionesMejora');
-              res.forEach(e=>{
-                divConMej.appendChild(htmlStringToElement(
-                              `<li>
-                                <div class="chk-content" th:inline="text">${e.nombre}
-                                  <input name="CondicionMejora" value="${e.id}" data-aka="Aspectos a mejorar" type="checkbox"/><span class="checkmark"></span>
-                                </div>
-                              </li>`
-                ))
-              })
+              const f4 = '<div class="col-md-4 pad-0"><ul class="checks">'+res.slice(0, 4).map(e=>`
+                            <li>
+                              <div class="chk-content">${e.nombre}
+                                <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
+                              </div>
+                            </li>
+              `).join('')+'</ul></div>';
+              const s4 = '<div class="col-md-8 pad-0"><ul class="checks">'+res.slice(4, 8).map(e=>`
+                            <li>
+                              <div class="chk-content">${e.nombre}
+                                <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
+                              </div>
+                            </li>
+              `).join('')+'</ul></div>';
+              const ls3 = '<div class="row"><div class="col-md-12"><br><ul class="checks">'+res.slice(8, 11).map(e=>`
+                            <li>
+                              <div class="chk-content">${e.nombre}
+                                <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
+                              </div>
+                            </li>
+              `).join('')+'</ul></div></div>';
+              divConMej.innerHTML = `${f4}${s4}${ls3}`;
+              specificCheckBoxes('CondicionesMejora');
             }
           })
         }
@@ -1440,12 +1465,12 @@
       }
 
       function musculosDelCuerpo(e){
-        e.preventDefault();
-        e.stopPropagation();
         const input = e.target;
         const clases = input.classList;
 
         if(clases.contains('body-muscle')){
+          e.preventDefault();
+          e.stopPropagation();
           const id = input.id;
 
           const isCompMuscle = checkComposedMuscle(composedMuscles, id);
@@ -1628,6 +1653,24 @@
       }
 
       function getValuesEmergencyContact(){
+        const prContNombre = document.querySelector('#ContactoEmergenciaNombre').value;
+        const prContMovil = document.querySelector('#ContactoEmergenciaMovil').value;
+        if(prContNombre.trim().length>2 && prContNombre.trim().length>6){
+          let others = Array.from(document.querySelectorAll('.inp-cont-emer')).slice(2).map((e,i,k)=>{
+            if(i%2==0){
+              if(e.value.trim().length>2 && k[i+1].value.trim().length>6){
+                return e.value.trim()+"_"+ k[i+1].value.trim();
+              }
+            }
+          }).filter(v=>v!==undefined).join('|');
+          if(others.length>0){
+            others = "|"+others;
+          }
+
+          return prContNombre+"_"+prContMovil+others;
+        }else{
+          return "";
+        }
         return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
       }
 
@@ -1983,7 +2026,8 @@
         document.querySelector('#Imc').value = 77;
 
         //Page 2
-        document.querySelector('#ContactoEmergencia').value = "987654321/Augusto";
+        document.querySelector('#ContactoEmergenciaNombre').value = "Augusto";
+        document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
         document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
         document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
         document.querySelector('#FrecuenciaCardiaca').value = 177;

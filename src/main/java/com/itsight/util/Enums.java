@@ -19,6 +19,7 @@ public class Enums {
         EX_MAX_SIZE_MULTIPART(-100),
         EX_MAX_UPLOAD_SIZE(-101),
         EX_ARRAY_INDEX_OUT(-102),
+        EX_SQL_EXCEPTION(-103),
         VF_USUARIO_REPETIDO(-150);
 
         final int code;
@@ -103,7 +104,8 @@ public class Enums {
         POSTULACION_TRAINER(1),
         POSTULANTE_TRAINER_CONFIRMAR_CORREO(2),
         NUEVO_CLIENTE(3),
-        CONTACTO_TRAINER(6);
+        CONTACTO_TRAINER(6),
+        CONTACTO_CONSULTA(7);
 
         final int id;
 
@@ -137,7 +139,8 @@ public class Enums {
         POSTULANTE_RECH("Ha <strong>RECHAZADO</strong> al candidato con éxito"),
         POSTULANTE_YA_REG("Usted ya ha usado este link para registrarse, sino recuerda sus credenciales puede recuperarlas en la opción olvidó contraseña: <a href='/login'>aquí</a>"),
         POST_LINK_EXP_PR("El vínculo ha expirado, para poder registrarse debe comunicarse con la plataforma, en la parte inferior de la página encontrará un apartado con datos de contacto."),
-        CONTACTO_TRAINER("El asesor ha sido notificado y pronto se pondrá en contacto. Que tenga usted un buen día!");
+        CONTACTO_TRAINER("El asesor ha sido notificado y pronto se pondrá en contacto. Que tenga usted un buen día!"),
+        CONSULTA_CONTACTO_ENVIADA("Su consulta ha sido enviada. Gracias por comunicarse con nosotros.");
         final String msg;
 
         Msg(String msg){

@@ -5,3 +5,4 @@ Bienvenido a la familia|<h4>Bienvenido a Dennys Workout,</h4><p> Nos hace muy fe
 Runfit, postulación satisfactoria|<h1>Más detalles en: <a href='%s/p/formulario/trainer/%s'>Llenar ficha de entrenador oficial</a></h1>|2
 Runfit, gracias por su postulación|<h1>Podrá volver a intentarlo después de 90 días. Siga mejorando y seguramente la próxima vez será admitido</h1>|2
 Runfit, potencial cliente|<h1>Más detalles en: <a href='%s/p/contacto/trainer/%s'>Ver datos de interesado</a></h1>|2
+Runfit, consulta usuario|<p>La persona %s con correo %s y número de celular %s ha realizado la siguiente consulta: %s</p>|2

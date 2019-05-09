@@ -3,8 +3,11 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ContactoTrainer;
+import com.itsight.domain.Contacto;
 import com.itsight.domain.dto.ContactoTrainerDTO;
 import com.itsight.service.ContactoTrainerService;
+import com.itsight.domain.dto.ContactoDTO;
+import com.itsight.service.ContactoService;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +21,47 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("/p/contacto")
-public class ContactoTrainerController extends BaseController{
+public class ContactoController extends BaseController{
 
     private ContactoTrainerService contactoTrainerService;
 
+    private ContactoService contactoService;
+
     @Autowired
-    public ContactoTrainerController(ContactoTrainerService contactoTrainerService) {
+    public ContactoController(
+            ContactoTrainerService contactoTrainerService,
+            ContactoService contactoService) {
         this.contactoTrainerService = contactoTrainerService;
+        this.contactoService = contactoService;
     }
 
-    @PostMapping("/trainer/registrar/{hshTrainerId}")
+    @GetMapping("")
+    public ModelAndView verFormularioContacto(){
+        return new ModelAndView(ViewConstant.MAIN_VER_CONTACTO_RUNFIT);
+    }
+
+    @PostMapping("/registrar")
+    public @ResponseBody String nuevoContactoGeneral(
+            @ModelAttribute @Valid ContactoDTO contactoDto) throws CustomValidationException {
+        Contacto contacto = new Contacto();
+        BeanUtils.copyProperties(contactoDto, contacto);
+        return Utilitarios.jsonResponse(contactoService.registrar(contacto, null));
+    }
+
+    @PostMapping("/trainer/registrar/{trainerId}")
     public @ResponseBody String nuevoContacto(
             @ModelAttribute @Valid ContactoTrainerDTO contactoTrainer,
-            @PathVariable(name = "hshTrainerId") String hshTrainerId) throws CustomValidationException {
-        Integer trainerId = getDecodeHashId("rf-cont-tra", hshTrainerId);
+            @PathVariable(name = "trainerId") String trainerId) throws CustomValidationException {
         ContactoTrainer contacto = new ContactoTrainer();
         BeanUtils.copyProperties(contactoTrainer, contacto);
-        return Utilitarios.jsonResponse(contactoTrainerService.registrar(contacto, trainerId.toString()));
+        return Utilitarios.jsonResponse(contactoTrainerService.registrar(contacto, trainerId));
     }
 
     @GetMapping("/trainer/{hshConTraId}")
     public ModelAndView verDatosClienteInteresado(
             @PathVariable(name = "hshConTraId") String hshConTraId,
             Model model) throws CustomValidationException {
-        Integer conTraId = getDecodeHashId("rf-cont-tra", hshConTraId);
+        Integer conTraId = getDecodeHashId("rf-contacto", hshConTraId);
         ContactoTrainer conTrainer = contactoTrainerService.findOne(conTraId);
         if(conTrainer == null) {
             return new ModelAndView(ViewConstant.P_ERROR404);
@@ -49,16 +69,16 @@ public class ContactoTrainerController extends BaseController{
         }
         if(conTrainer.isFlagLeido() || conTrainer.isFlagLeidoFueraFecha()){
             model.addAttribute("contacto", conTrainer);
-            return new ModelAndView();
+            return new ModelAndView(ViewConstant.MAIN_VER_CONTACTO_TRAINER);
         }
 
         Date now = new Date();
         conTrainer.setFechaVisualizacion(now);
 
         if(conTrainer.getFechaExpiracion().before(now)){
-            conTrainer.setFlagLeido(true);
+            contactoTrainerService.updateFlagLeido(true, conTrainer.getId());
         }else{
-            conTrainer.setFlagLeidoFueraFecha(true);
+            contactoTrainerService.updateFlagLeidoFueraFecha(true, conTrainer.getId());
         }
         model.addAttribute("contacto", conTrainer);
         return new ModelAndView(ViewConstant.MAIN_VER_CONTACTO_TRAINER);

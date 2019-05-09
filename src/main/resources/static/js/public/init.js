@@ -1,7 +1,7 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 1 == 1;
 var flag_form_populate = 1 == 1;
-var initPageActive = 1;
+var initPageActive = 3;
 var hiddenHeaderBar = 0 == 1;
 try {
     //Remarcar página visitada
@@ -42,6 +42,20 @@ function SlashBanner() {
     var cadena = '.banner h1::before { width: ' + alto + 'px ;}'
     var estilo = '<style>' + cadena + '</style>'
     $('body').append(estilo);
+}
+
+function specificCheckBoxes(id) {
+    $("#"+id+" .chk-content").click(function() {
+        var _self = $(this).find('input')
+        var clase = _self.attr("data-body");
+        if (_self.is(':checked')) {
+            $("." + clase + "").fadeOut();
+            _self.prop('checked', false)
+        } else {
+            _self.prop('checked', true)
+            $("." + clase + "").fadeIn();
+        }
+    })
 }
 
 function checkBoxes() {

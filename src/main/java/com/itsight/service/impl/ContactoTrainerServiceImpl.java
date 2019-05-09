@@ -19,7 +19,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
-import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
 import static com.itsight.util.Enums.Msg.CONTACTO_TRAINER;
 
 @Service
@@ -121,7 +120,7 @@ public class ContactoTrainerServiceImpl extends BaseServiceImpl<ContactoTrainerR
 
         Correo correo = correoService.findOne(Enums.Mail.CONTACTO_TRAINER.get());
         //Envio de correo
-        String hashId = Parseador.getEncodeHash32Id("rf-cont-tra", entity.getId());
+        String hashId = Parseador.getEncodeHash32Id("rf-contacto", entity.getId());
         String cuerpo = String.format(correo.getBody(), domainName, hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), entity.getCorreoTrainer(), cuerpo);
         return CONTACTO_TRAINER.get();
@@ -136,5 +135,15 @@ public class ContactoTrainerServiceImpl extends BaseServiceImpl<ContactoTrainerR
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public void updateFlagLeido(boolean flag, Integer id) {
+        repository.updateFlagLeido(flag, id);
+    }
+
+    @Override
+    public void updateFlagLeidoFueraFecha(boolean flag, Integer id) {
+        repository.updateFlagLeidoFueraFecha(flag, id);
     }
 }

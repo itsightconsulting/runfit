@@ -1,0 +1,100 @@
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+  <head>
+    <title>Contacto con la plataforma | Fitness | Runfit</title>
+    <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+  </head>
+  <body>
+    <nav th:replace="html-commons/p/header :: fg-header"></nav>
+    <div th:replace="html-commons/reu-login :: fg-login"></div>
+    <div id="wrapper">
+      <div class="section banner home">
+        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/emprende.jpg}">
+          <div class="container">
+            <div class="title-page">
+              <h1> <i>CONTACTO</i><span class="no-watch">000</span></h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="trainers-form">
+        <div class="row emprende-form">
+          <div class="container"><img class="bg-image" th:src="@{/img/public/emprende_form.png}">
+            <div class="col-md-4"></div>
+            <div class="col-md-8">
+              <h3>DÉJENOS SU CONSULTA</h3>
+              <form class="row" id="frm_registro">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="Nombre">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
+                    <input id="Nombre" name="Nombre" class="form-control" type="text">
+                  </div>
+                  <div class="form-group">
+                    <label for="Correo">CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
+                    <input name="Correo" id="Correo" class="form-control" type="text">
+                  </div>
+                  <div class="form-group">
+                    <label for="Movil">TELÉFONO<span class="obligatorio">*</span></label>
+                    <input id="Movil" name="Movil" class="form-control" type="text">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="Mensaje">MENSAJE<span class="obligatorio">*</span></label>
+                    <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <button class="btn btn-black" type="button" id="btnGuardar">ENVIAR</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+    <script th:inline="javascript">
+      (function () {
+        const btnGuardar = document.getElementById('btnGuardar');
+        btnGuardar.addEventListener('click', registrarComunicacion)
+        if(flag_form_populate){
+          randomData();
+        }
+      })();
+
+      function randomData(){
+        document.querySelector('#Nombre').value = new Date().getTime();
+        document.querySelector('#Correo').value = "d"+new Date().getTime()+"@gmail.com";
+        document.querySelector('#Movil').value = "987654321";
+        document.querySelector('#Mensaje').value = "Aloha";
+      }
+
+      function registrarComunicacion(){
+        const $frm = document.getElementById('frm_registro');
+        const params = getFormData($($frm));
+        $.ajax({
+          type: 'POST',
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          url: _ctx + 'p/contacto/registrar',
+          dataType: "json",
+          data: params,
+          blockLoading: true,
+          success: function (data, textStatus) {
+            if (textStatus == "success") {
+              reqSuccess(data);
+            }
+          },
+          error: function (xhr) {
+            exception(xhr);
+          },
+          complete: function () {
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

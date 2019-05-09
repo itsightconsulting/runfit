@@ -52,7 +52,7 @@ public class ExceptionControllerAdvice {
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(EX_SQL_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
     }
 
 

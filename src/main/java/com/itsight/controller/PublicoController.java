@@ -88,6 +88,11 @@ public class PublicoController extends BaseController {
         return new ModelAndView(ViewConstant.MAIN_TERMINOS_Y_CONDICIONES);
     }
 
+    @GetMapping("/recurso-no-encontrado")
+    public ModelAndView recursoNoEncontrado(){
+        return new ModelAndView(ViewConstant.P_ERROR404);
+    }
+
     @GetMapping("/ficha-inscripcion")
     public ModelAndView fichaInscripcionRunner(
             @RequestParam(name="key", required=false) String hshTrainerId,

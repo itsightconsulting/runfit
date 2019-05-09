@@ -12,11 +12,14 @@ import com.itsight.service.TrainerService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -49,28 +52,19 @@ public class TrainerFichaController extends BaseController {
         return trainerFichaService.findAllWithFgEnt();
     }
 
-    /*@GetMapping("/{nomPag:.+}")
-    public ModelAndView getTrainerByUsername(Model model, @PathVariable(name = "nomPag") String nomPag){
-        TrainerFicha trainerFicha = trainerFichaService.findByNomPag(nomPag);
-        if(trainerFicha != null){
-            model.addAttribute("trainer", trainerFicha);
-            return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
-        }
-        return new ModelAndView(ViewConstant.ERROR404);
-    }*/
-
     @GetMapping("/{nomPag:.+}")
     public @ResponseBody ModelAndView getTrainerByUsername(){
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
     }
 
     @GetMapping("/get/{nomPag:.+}")
-    public @ResponseBody TrainerFichaPOJO getTrainerByUsername(@PathVariable(name = "nomPag") String nomPag){
-        TrainerFichaPOJO  trainerFicha = trainerFichaService.findByNomPagPar(nomPag);
-        if(trainerFicha != null){
-            return trainerFicha;
+    public @ResponseBody
+    ResponseEntity<TrainerFichaPOJO> getTrainerByUsername(@PathVariable(name = "nomPag") String nomPag) throws CustomValidationException {
+        TrainerFichaPOJO t = trainerFichaService.findByNomPagPar(nomPag);
+        if(t != null){
+            return new ResponseEntity<>(t, HttpStatus.OK);
         }
-        return new TrainerFichaPOJO();
+        return new ResponseEntity<>(t, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/registro/{hashPreTrainerId}")

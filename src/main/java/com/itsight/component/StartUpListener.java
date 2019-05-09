@@ -537,22 +537,22 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             condicionMejoraService.save(new CondicionMejora("Métodos respiratorios"));
         }
         if (condicionMejoraService.findOne(6) == null) {
-            condicionMejoraService.save(new CondicionMejora("Disciplina"));
+            condicionMejoraService.save(new CondicionMejora("Proceso de recuperación"));
         }
         if (condicionMejoraService.findOne(7) == null) {
-            condicionMejoraService.save(new CondicionMejora("Hábitos alimenticios"));
+            condicionMejoraService.save(new CondicionMejora("Técnica de carrera"));
         }
         if (condicionMejoraService.findOne(8) == null) {
-            condicionMejoraService.save(new CondicionMejora("Cantidad y calidad de sueño"));
+            condicionMejoraService.save(new CondicionMejora("Disciplina"));
         }
         if (condicionMejoraService.findOne(9) == null) {
-            condicionMejoraService.save(new CondicionMejora("Administración del esfuerzo"));
+            condicionMejoraService.save(new CondicionMejora("Hábitos alimenticios"));
         }
         if (condicionMejoraService.findOne(10) == null) {
-            condicionMejoraService.save(new CondicionMejora("Proceso de recuperación"));
+            condicionMejoraService.save(new CondicionMejora("Cantidad y calidad de sueño"));
         }
         if (condicionMejoraService.findOne(11) == null) {
-            condicionMejoraService.save(new CondicionMejora("Proceso de recuperación"));
+            condicionMejoraService.save(new CondicionMejora("Administración del esfuerzo"));
         }
     }
 
@@ -960,6 +960,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void addingApplicationParameters() {
         if (parametroService.findByClave("MAIN_ROUTE") == null) {
             parametroService.add(new Parametro("MAIN_ROUTE", mainRoute));
+        }
+        if (parametroService.findByClave("EMAIL_RECEPTOR_CONSULTAS") == null) {
+            parametroService.add(new Parametro("EMAIL_RECEPTOR_CONSULTAS", "info@runfit.pe"));
         }
     }
 

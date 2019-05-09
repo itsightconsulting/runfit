@@ -13,27 +13,27 @@ public class ContactoTrainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ContactoTrainerId")
     private Integer id;
-    @Column(name = "Nombre")
+    @Column(name = "Nombre", nullable = false)
     private String nombre;
-    @Column(name = "Sexo")
+    @Column(name = "Sexo", nullable = false)
     private Integer sexo;
-    @Column(name = "Correo")
+    @Column(name = "Correo", nullable = false)
     private String correo;
-    @Column(name = "Movil")
+    @Column(name = "Movil", nullable = false)
     private String movil;
-    @Column(name = "mensaje")
+    @Column(name = "mensaje", nullable = false)
     private String mensaje;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "FechaCreacion")
+    @Column(name = "FechaCreacion", nullable = false, updatable = false)
     private Date fechaCreacion;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "FechaExpiracion")
+    @Column(name = "FechaExpiracion", nullable = false, updatable = false)
     private Date fechaExpiracion;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "FechaVisualizacion")
     private Date fechaVisualizacion;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
+    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId", updatable = false)
     private Trainer trainer;
     @Column(name = "FlagLeido")
     private boolean flagLeido;

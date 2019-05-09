@@ -74,23 +74,35 @@ function readURLCs(input, img, ix, mainDivId) {
 function poblarCarusel(srcs, mainDivId, baseSrc) {
     const dvCarusel = document.createElement('div');
     const mainDiv = document.querySelector('#'+mainDivId);
-    Array.from(srcs).forEach(src=>{
+    Array.from(srcs).forEach((src,i)=>{
         let img = document.createElement('img');
         img.src = baseSrc + src;
+        img.setAttribute('data-toggle', 'modal');
+        img.setAttribute('data-target', '#myModal');
         dvCarusel.className = 'owl-carousel owl-theme';
         const dvItem = document.createElement('div');
         dvItem.classList.add('item');
-        dvItem.appendChild(img);
+
+        let enlace = document.createElement('a');
+        enlace.href="#myGallery";
+        enlace.setAttribute('data-slide-to', i);
+        enlace.appendChild(img)
+
+        dvItem.appendChild(enlace);
         dvCarusel.appendChild(dvItem);
-        /*if(mainDiv.children.length == 1){
-            mainDiv.children[0].remove();
-        }*/
+
+        const galeriaModal = document.querySelector('#myGallery .carousel-inner');
+        galeriaModal.appendChild(htmlStringToElement(`
+                                                                <div class="gal-modal-img hidden"> 
+                                                                    <img src="${baseSrc + src}"/>
+                                                                    <div class="carousel-caption">
+                                                                    </div>
+                                                                </div>`));
     })
 
     mainDiv.appendChild(dvCarusel);
     carousel();
 }
-
 function uploadImgs(input, mainDivId) {
 
     var _URL = window.URL || window.webkitURL;
@@ -164,4 +176,14 @@ function getValuesConcatInpCheckbox(name){
             }
         }).filter(x=>x).join();
     }
+}
+
+
+
+function agregarInputsDinamico(e){
+    if(e.parentElement.children.length == 6){
+        e.classList.add('hide');
+    }
+    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Nombre del contacto" class="form-control inp-cont-emer" type="text"/>'));
+    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Celular del contacto" class="form-control inp-cont-emer" type="text"/>'));
 }

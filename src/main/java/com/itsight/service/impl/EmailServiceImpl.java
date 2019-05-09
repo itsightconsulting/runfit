@@ -73,7 +73,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
                     preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 }
                 emailSender.send(preparator);
-            }else {
+            } else {
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));

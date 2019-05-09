@@ -241,6 +241,36 @@
         </div>
       </section>
     </div>
+    <!-- MODALS -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">Galería
+                    <div class="pull-left"></div>
+                    <button type="button" class="close" data-dismiss="modal" title="Close"> <span class="fa fa-close"></span></button>
+                </div>
+                <div class="modal-body">
+
+                    <!--CAROUSEL CODE GOES HERE-->
+                    <!--begin carousel-->
+                    <div id="myGallery" class="carousel slide" data-interval="false">
+                        <div class="carousel-inner text-center">
+
+                        </div>
+                        <!--end carousel-inner-->
+                        <!--Begin Previous and Next buttons-->
+                        <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="fa fa-chevron-left"></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="fa fa-chevron-right"></span></a>
+                        <!--end carousel--></div>
+                    <!--end modal-body--></div>
+                <div class="modal-footer">
+                    <div class="pull-left">
+                        <!--<small>Fotografías de <a th:href="@{/web/inicio}" target="new">Estudios Prosemer</a></small>-->
+                    </div>
+                    <button class="btn-sm close" type="button" data-dismiss="modal">Cerrar</button>
+                    <!--end modal-footer--></div>
+                <!--end modal-content--></div>
+            <!--end modal-dialoge--></div>
+        <!--end myModal-->></div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
@@ -263,7 +293,10 @@
       function checkTab(){
           const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
           if(!tabHref.includes('http')){
-              document.querySelector(`li a[href="${tabHref}"]`).click();
+              const e = document.querySelector(`li a[href="${tabHref}"]`);
+              if(e != null){
+                e.click();
+              }
           }
       }
 
@@ -288,11 +321,11 @@
           const params = getFormData($($frm));
           params.sexo = document.querySelector('input[name="Sexo"]:checked').value;
           params.correoTrainer = $perfil.correo;
-          const hshId = getHash32Id("rf-cont-tra", $perfil.id);//TEMP
+          const trainerId = $perfil.id;
           $.ajax({
               type: 'POST',
               contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: _ctx + 'p/contacto/trainer/registrar/'+hshId,
+              url: _ctx + 'p/contacto/trainer/registrar/'+trainerId,
               dataType: "json",
               data: params,
               blockLoading: true,
@@ -322,6 +355,9 @@
             recrearPerfil(res);
             checkTab();
           }, error: (xhr) => {
+             if(xhr.status == 404){
+                 window.location.href = _ctx+"p/recurso-no-encontrado";
+             }
              exception(xhr);
           }, complete: () => {
           }
@@ -361,7 +397,7 @@
         if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){
             setTimeout(() => {
                 const allCord = t.mapCoordenadas.split(",");
-                var cityCircle = new google.maps.Circle({
+                new google.maps.Circle({
                     strokeColor: '#57ff0e',
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
@@ -372,8 +408,14 @@
                     radius: Number(t.mapCircleRadio)
                 });
             }, 1000);
-
         }
+
+          if(flag_form_populate){
+              document.querySelector('#Nombre').value = t.nombreCompleto;
+              document.querySelector('#Correo').value = t.correo;
+              document.querySelector('#Movil').value = "987654321";
+              document.querySelector('#Mensaje').value = "Aloha";
+          }
       }
       function reconstruirLista(e, stringArr){
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
