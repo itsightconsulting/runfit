@@ -105,5 +105,7 @@ public class TrainerFichaDTO implements Serializable {
     private String mapCoordenadas;
     @Size(max = 20)
     private String mapCircleRadio;
+    @Size(max = 600)
+    private String redes;
 
 }

@@ -87,8 +87,6 @@ public class TrainerController {
         return new ModelAndView(ViewConstant.MI_USUARIO);
     }
 
-
-
     @GetMapping(value = "/obtenerListadoPost")
     public @ResponseBody
     List<Post> listarPostsEntrenador(HttpSession session) {

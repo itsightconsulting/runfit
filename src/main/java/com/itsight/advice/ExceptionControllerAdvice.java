@@ -5,6 +5,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,16 @@ public class ExceptionControllerAdvice {
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
         return new ResponseEntity<>(EX_SQL_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLGrammarException.class)
+    public @ResponseBody
+    ResponseEntity<String> handlerSQLGrammarException(SQLGrammarException ex) {
+        LOGGER.warn(ex.getMessage());
+        for(int i = 0; i<10;i++){
+            LOGGER.warn(ex.getStackTrace()[i].toString());
+        }
+        return new ResponseEntity<>(EX_SQL_GRAMMAR_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
     }
 
 

@@ -109,12 +109,12 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     }
 
     @Override
-    public TrainerFicha findByNomPag(String nomPag) {
-        return repository.findByNomPag(nomPag);
+    public TrainerFichaPOJO findByNomPagPar(String nomPag) {
+        return repository.findByNomPagPar(nomPag);
     }
 
     @Override
-    public TrainerFichaPOJO findByNomPagPar(String nomPag) {
-        return repository.findByNomPagPar(nomPag);
+    public TrainerFichaPOJO findByTrainerId(Integer trainerId) {
+        return repository.findByTrainerId(trainerId);
     }
 }

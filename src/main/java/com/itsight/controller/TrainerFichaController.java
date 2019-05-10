@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,10 +58,29 @@ public class TrainerFichaController extends BaseController {
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
     }
 
+    @GetMapping("/ver/{hshTrainerId}")
+    public @ResponseBody ModelAndView getTrainerById(Model model){
+        model.addAttribute("porAprobar", true);
+        return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
+    }
+
     @GetMapping("/get/{nomPag:.+}")
     public @ResponseBody
     ResponseEntity<TrainerFichaPOJO> getTrainerByUsername(@PathVariable(name = "nomPag") String nomPag) throws CustomValidationException {
         TrainerFichaPOJO t = trainerFichaService.findByNomPagPar(nomPag);
+        if(t != null){
+            return new ResponseEntity<>(t, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(t, HttpStatus.NOT_FOUND);
+    }
+
+
+
+    @GetMapping("/get/sec/{hshTrainerId}")
+    public @ResponseBody
+    ResponseEntity<TrainerFichaPOJO> getTrainerByIdParaAprobacionFinal(@PathVariable(name = "hshTrainerId") String hshTrainerId) throws CustomValidationException {
+        Integer trainerId = getDecodeHashId("rf-aprobacion", hshTrainerId);
+        TrainerFichaPOJO t = trainerFichaService.findByTrainerId(trainerId);
         if(t != null){
             return new ResponseEntity<>(t, HttpStatus.OK);
         }
@@ -122,4 +142,6 @@ public class TrainerFichaController extends BaseController {
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
         return jsonResponse(trainerService.subirImagenes(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid));
     }
+
+
 }

@@ -21,4 +21,7 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
 
     @Query(nativeQuery = true)
     TrainerFichaPOJO findByNomPagPar(String nomPag);
+
+    @Query(nativeQuery = true)
+    TrainerFichaPOJO findByTrainerId(Integer trainerId);
 }

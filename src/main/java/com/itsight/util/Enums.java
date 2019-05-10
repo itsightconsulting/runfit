@@ -20,6 +20,7 @@ public class Enums {
         EX_MAX_UPLOAD_SIZE(-101),
         EX_ARRAY_INDEX_OUT(-102),
         EX_SQL_EXCEPTION(-103),
+        EX_SQL_GRAMMAR_EXCEPTION(-104),
         VF_USUARIO_REPETIDO(-150);
 
         final int code;
@@ -105,7 +106,8 @@ public class Enums {
         POSTULANTE_TRAINER_CONFIRMAR_CORREO(2),
         NUEVO_CLIENTE(3),
         CONTACTO_TRAINER(6),
-        CONTACTO_CONSULTA(7);
+        CONTACTO_CONSULTA(7),
+        ULTIMA_ETAPA_POSTULANTE(8);
 
         final int id;
 

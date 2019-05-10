@@ -117,10 +117,10 @@ public class ContactoServiceImpl extends BaseServiceImpl<ContactoRepository> imp
 
         Correo correo = correoService.findOne(Enums.Mail.CONTACTO_CONSULTA.get());
         //GET correo receptor de consultas generales a la plataforma
-        Parametro parametro = parametroService.findByClave("EMAIL_RECEPTOR_CONSULTAS");
+        String emailReceptorConsultas = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), entity.getNombre(), entity.getCorreo(), entity.getMovil(), entity.getMensaje());
-        emailService.enviarCorreoInformativo(correo.getAsunto(), parametro.getValor(), cuerpo);
+        emailService.enviarCorreoInformativo(correo.getAsunto(), emailReceptorConsultas, cuerpo);
 
         return Enums.Msg.CONSULTA_CONTACTO_ENVIADA.get();
     }

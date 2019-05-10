@@ -122,17 +122,6 @@ var map;
 
 function initMap() {
 
-    var citymap = {
-        /*lima: {
-            center: { lat: -12.046374, lng: -77.042793 },
-            population: 2714856
-        },*/
-        /*x:{
-            center: {lat: -12.099942324386461, lng:  -77.01760089777832},
-            population:909.62
-        }*/
-    };
-
     var mapa = document.getElementById('map');
     if(mapa != null) {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -140,21 +129,6 @@ function initMap() {
             zoom: 12
         });
     }
-
-    /*for (var city in citymap) {
-        // Add the circle for this city to the map.
-        var cityCircle = new google.maps.Circle({
-            strokeColor: '#57ff0e',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#8ee2ff',
-            fillOpacity: 0.35,
-            map: map,
-            center: citymap[city].center,
-            radius: citymap[city].population * 1
-        });
-    }*/
-
 }
 
 function changecolor() {

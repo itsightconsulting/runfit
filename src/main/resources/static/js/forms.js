@@ -79,6 +79,7 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
         img.src = baseSrc + src;
         img.setAttribute('data-toggle', 'modal');
         img.setAttribute('data-target', '#myModal');
+        img.classList.add('img-gal');
         dvCarusel.className = 'owl-carousel owl-theme';
         const dvItem = document.createElement('div');
         dvItem.classList.add('item');
@@ -90,14 +91,16 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
 
         dvItem.appendChild(enlace);
         dvCarusel.appendChild(dvItem);
-
-        const galeriaModal = document.querySelector('#myGallery .carousel-inner');
+        const modal = document.querySelector('#myGallery');
+        const galeriaModal = modal.querySelector('.carousel-inner');
         galeriaModal.appendChild(htmlStringToElement(`
-                                                                <div class="gal-modal-img hidden"> 
-                                                                    <img src="${baseSrc + src}"/>
+                                                                <div class="item ${i== 0 ? 'active':''}"> 
+                                                                    <img src="${baseSrc + src}" style="display: block;margin: auto"/>
                                                                     <div class="carousel-caption">
                                                                     </div>
                                                                 </div>`));
+        const indicadoresGaleria = modal.querySelector('.carousel-indicators');
+        indicadoresGaleria.appendChild(htmlStringToElement(`<li data-target="#myGallery" data-slide-to="${i}" class=""></li>`));
     })
 
     mainDiv.appendChild(dvCarusel);

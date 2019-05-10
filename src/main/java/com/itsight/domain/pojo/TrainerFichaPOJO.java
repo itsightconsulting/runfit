@@ -37,6 +37,7 @@ public class TrainerFichaPOJO implements Serializable {
     private String nomPag;
     private String mapCoordenadas;
     private String mapCircleRadio;
+    private String redes;
 
     public TrainerFichaPOJO() {
     }
@@ -54,7 +55,7 @@ public class TrainerFichaPOJO implements Serializable {
         this.nomPag = nomPag;
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, String fichaClienteIds, String especialidad, String disciplina, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String miniGaleria, String adicionalInfo, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String rutaWebImg, String servicios, String cuentas, String mapCoordenadas, String mapCircleRadio) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, String fichaClienteIds, String especialidad, String disciplina, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String miniGaleria, String adicionalInfo, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String rutaWebImg, String servicios, String cuentas, String mapCoordenadas, String mapCircleRadio, String redes) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.fichaClienteIds = fichaClienteIds;
@@ -81,5 +82,6 @@ public class TrainerFichaPOJO implements Serializable {
         this.cuentas = cuentas;
         this.mapCoordenadas = mapCoordenadas;
         this.mapCircleRadio = mapCircleRadio;
+        this.redes = redes;
     }
 }

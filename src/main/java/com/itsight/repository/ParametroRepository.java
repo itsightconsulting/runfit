@@ -2,6 +2,7 @@ package com.itsight.repository;
 
 import com.itsight.domain.Parametro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface ParametroRepository extends JpaRepository<Parametro, Integer> {
 
     Parametro findByClave(String clave);
 
+    @Query(nativeQuery = true, value = "SELECT clave FROM parametro WHERE clave = ?1")
+    String getValorByClave(String clave);
 }

@@ -20,4 +20,5 @@ public interface ParametroService {
 
     List<Parametro> findAllByClave(String clave);
 
+    String getValorByClave(String clave);
 }

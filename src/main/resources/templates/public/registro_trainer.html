@@ -186,11 +186,11 @@
                                       </div>
                                       <div class="form-group">
                                           <label>AL AIRE LIBRE / DOMICILIO</label>
-                                          <p>Dar click en la imagen para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
+                                          <p>Dar click en el mapa para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
                                           <div class="map" id="map"></div>
                                       </div>
                                       <div class="form-group">
-                                          <label>CENTRO DE TRABAJO<span class="obligatorio">*</span></label>
+                                          <label>CENTRO DE TRABAJO</label>
                                           <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
                                       </div>
                                       <div class="form-group" id="Especialidades">
@@ -227,11 +227,25 @@
                                           <div class="col-md-12" id="ImgsGaleria">
 
                                           </div>
-                                          <!--<div class="col-md-12">
-                                              <div class="owl-carousel owl-theme">
-                                                  <div class="item"><img th:src="@{/img/public/andy.png}"></div>
-                                              </div>
-                                          </div>-->
+                                      </div>
+                                      <div class="form-group rs">
+                                          <label>REDES SOCIALES</label>
+                                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
+                                          <div class="col-xs-11 no_padding">
+                                              <input class="form-control" id="RsFb" type="text">
+                                          </div>
+                                      </div>
+                                      <div class="form-group rs">
+                                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
+                                          <div class="col-xs-11 no_padding">
+                                              <input class="form-control" id="RsIn" type="text">
+                                          </div>
+                                      </div>
+                                      <div class="form-group rs">
+                                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
+                                          <div class="col-xs-11 no_padding">
+                                              <input class="form-control" id="RsYo" type="text">
+                                          </div>
                                       </div>
                                       <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
                                       </div>
@@ -467,7 +481,7 @@
                                       <div class="form-group">
                                           <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
                                       </div>
-                                      <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR NUEVA CUENTA</button>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR CUENTA BANCARIA</button>
                                       <button id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
                                       <input type="file" id="inpCondServicio" class="hide">
                                       <button id="btnModalFichas" class="btn btn-default btn-white" type="button" onclick="abrirModalFichas()">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
@@ -1200,7 +1214,38 @@
             obj.servicios = servicios;
             obj.cuentas = ccBancarias;
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
+            const redes = getRedesSociales();
+            if(redes.have){
+                obj.redes = redes.nombres;
+            }
             return obj;
+        }
+        
+        function getRedesSociales(){
+            let res = {};
+            res.nombres = "";
+            res.have = false;
+            const fb = document.querySelector('#RsFb').value.trim();
+            const instagran = document.querySelector('#RsIn').value.trim();
+            const youtube = document.querySelector('#RsYo').value.trim();
+
+            if(fb.length > 4){
+                res.have = true;
+                res.nombres+= "fb:"+fb.trim();
+            }
+
+            if(instagran.length > 4){
+                res.nombres+= res.have ? "|":"";
+                res.have = true;
+                res.nombres+= "in:"+instagran.trim();
+            }
+
+            if(youtube.length > 4){
+                res.nombres+= res.have ? "|":"";
+                res.have = true;
+                res.nombres+= "yo:"+youtube.trim();
+            }
+            return res;
         }
 
     </script>

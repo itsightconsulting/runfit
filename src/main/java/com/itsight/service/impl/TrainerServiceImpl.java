@@ -33,6 +33,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
+import static com.itsight.util.Enums.Mail.ULTIMA_ETAPA_POSTULANTE;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.Msg.REGISTRO_EXITOSO;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
@@ -55,7 +57,11 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     private EmailService emailService;
 
+    private CorreoService correoService;
+
     private PostulanteTrainerService postulanteTrainerService;
+
+    private ParametroService parametroService;
 
     @Value("${domain.name}")
     private String domainName;
@@ -67,7 +73,9 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             SecurityUserRepository securityUserRepository,
             PorcentajesKilometrajeService porcentajesKilometrajeService,
             EmailService emailService,
-            PostulanteTrainerService postulanteTrainerService) {
+            CorreoService correoService,
+            PostulanteTrainerService postulanteTrainerService,
+            ParametroService parametroService) {
         super(repository);
         this.especificacionSubCategoriaRepository = especificacionSubCategoriaRepository;
         this.rolService = rolService;
@@ -75,7 +83,9 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         this.securityUserRepository = securityUserRepository;
         this.porcentajesKilometrajeService = porcentajesKilometrajeService;
         this.emailService = emailService;
+        this.correoService = correoService;
         this.postulanteTrainerService = postulanteTrainerService;
+        this.parametroService = parametroService;
     }
 
     @Override
@@ -243,9 +253,10 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         TrainerFicha obj = new TrainerFicha();
         BeanUtils.copyProperties(trainerFicha, obj);
 
+        //No activamos el usuario en su registro ya que aún queda pasar por una última aprobación de toda la información que brindo para su perfil
         Trainer trainer = new Trainer(
                 trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
-                trainerFicha.getMovil(), trainerFicha.getUsername(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),true);
+                trainerFicha.getMovil(), trainerFicha.getUsername(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),false);
         trainer.setPais(trainerFicha.getPaisId());
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
@@ -294,6 +305,14 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
         refUpload.setTrainerId(Integer.parseInt(trainerId));
+
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());
+        //Envio de correo
+        String hashId = Parseador.getEncodeHash32Id("rf-aprobacion", trainer.getId());
+        String cuerpo = String.format(correo.getBody(), domainName, hashId);
+        String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+        emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
         return refUpload;
     }
 

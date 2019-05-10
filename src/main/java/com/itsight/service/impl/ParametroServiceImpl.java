@@ -61,4 +61,9 @@ public class ParametroServiceImpl implements ParametroService {
         // TODO Auto-generated method stub
         return parametroRepository.findAllByClaveContaining(clave);
     }
+
+    @Override
+    public String getValorByClave(String clave) {
+        return parametroRepository.getValorByClave(clave);
+    }
 }
