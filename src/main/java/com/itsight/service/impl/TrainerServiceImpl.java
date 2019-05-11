@@ -16,6 +16,7 @@ import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TrainerRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
+import com.itsight.util.Enums.Msg;
 import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
@@ -31,12 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
-import static com.itsight.util.Enums.Mail.ULTIMA_ETAPA_POSTULANTE;
+import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
-import static com.itsight.util.Enums.Msg.REGISTRO_EXITOSO;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
@@ -411,6 +409,18 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
+        securityUserRepository.updateEstadoById(id, flagActivo);
+    }
+
+    @Override
+    public void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String destinatario) {
+        repository.updateFlagActivoById(id, flag);
+        securityUserRepository.updateEstadoById(id, flag);
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(PERFIL_TRAINER_APROBADO.get());
+        //Envio de correo
+        String cuerpo = String.format(correo.getBody(), domainName);
+        emailService.enviarCorreoInformativo(correo.getAsunto(), destinatario, cuerpo);
     }
 
     @Override
@@ -461,7 +471,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     public String subirImagen(MultipartFile file, Integer id, String uuid) throws CustomValidationException {
         boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuid), LOGGER);
         if(success){
-            return REGISTRO_EXITOSO.get();
+            return Msg.POSTULANTE_ULTIMA_ETAPA.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
     }
@@ -470,7 +480,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     public String subirImagenes(MultipartFile[] files, Integer id, String uuids) throws CustomValidationException {
         boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids), LOGGER);
         if(success){
-            return REGISTRO_EXITOSO.get();
+            return Msg.POSTULANTE_ULTIMA_ETAPA.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
     }

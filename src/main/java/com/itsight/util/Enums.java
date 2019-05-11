@@ -107,7 +107,9 @@ public class Enums {
         NUEVO_CLIENTE(3),
         CONTACTO_TRAINER(6),
         CONTACTO_CONSULTA(7),
-        ULTIMA_ETAPA_POSTULANTE(8);
+        ULTIMA_ETAPA_POSTULANTE(8),
+        PERFIL_POST_OBS(9),
+        PERFIL_TRAINER_APROBADO(10);
 
         final int id;
 
@@ -139,10 +141,15 @@ public class Enums {
         POSTULANTE_RECH_PV("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación"),
         POSTULANTE_ACEP("Ha <strong>APROBADO</strong> al candidato con éxito"),
         POSTULANTE_RECH("Ha <strong>RECHAZADO</strong> al candidato con éxito"),
+        POSTULANTE_ULTIMA_ETAPA("Registro correcto. Como último paso, pronto revisaremos su perfil para una aprobación final. Usted será notificado a su correo, gracias por su tiempo!"),
         POSTULANTE_YA_REG("Usted ya ha usado este link para registrarse, sino recuerda sus credenciales puede recuperarlas en la opción olvidó contraseña: <a href='/login'>aquí</a>"),
         POST_LINK_EXP_PR("El vínculo ha expirado, para poder registrarse debe comunicarse con la plataforma, en la parte inferior de la página encontrará un apartado con datos de contacto."),
         CONTACTO_TRAINER("El asesor ha sido notificado y pronto se pondrá en contacto. Que tenga usted un buen día!"),
-        CONSULTA_CONTACTO_ENVIADA("Su consulta ha sido enviada. Gracias por comunicarse con nosotros.");
+        CONSULTA_CONTACTO_ENVIADA("Su consulta ha sido enviada. Gracias por comunicarse con nosotros."),
+        APROBACION_FINAL_PERFIL_TRAINER("Usted ha aprobado satisfactoriamente el perfil del trainer. Este último acaba de ser notificado."),
+        PERFIL_APROBADO_ANTERIORMENTE("El perfil del entrenador que quieres visitar ya ha sido aprobado con anterioridad."),
+        PERFIL_EN_REVISION("El perfil del entrenador que quieres visitar ya ha sido observado con anterioridad."),
+        OBS_PERFIL_TRAINER("Se ha enviado las observaciones al entrenador satisfactoriamente via correo.");
         final String msg;
 
         Msg(String msg){

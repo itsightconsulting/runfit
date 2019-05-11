@@ -243,6 +243,9 @@ public class TrainerFicha implements Serializable {
     private String mapCircleRadio;
     @Column(nullable = true)
     private String redes;
+    @Column(nullable = true)
+    private Boolean flagFichaAceptada;
+
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import static com.itsight.util.Enums.ResponseCode.*;
 
@@ -33,6 +34,16 @@ public class ExceptionControllerAdvice {
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
         return new ErrorResponse(ex.getMessage(), ex.getInternalCode());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(SecCustomValidationException.class)
+    public ModelAndView handlerSecCustomValidationException(SecCustomValidationException ex) {
+        LOGGER.warn(ex.getMessage());
+        for(int i = 0; i<2;i++){
+            LOGGER.warn(ex.getStackTrace()[i].toString());
+        }
+        return new ModelAndView(ViewConstant.P_ERROR404);
     }
 
     @ExceptionHandler(NumberFormatException.class)

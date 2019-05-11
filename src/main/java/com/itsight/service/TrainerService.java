@@ -21,4 +21,6 @@ public interface TrainerService extends BaseService<Trainer, Integer> {
     List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk);
 
     RefUploadIds registrarPostulante(TrainerFichaDTO trainerFicha);
+
+    void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String correo);
 }

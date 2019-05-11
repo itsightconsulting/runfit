@@ -161,13 +161,14 @@ function irListado(x) {
     });
 }
 
-function reqSuccess(r){
+function reqSuccess(r, timeout){
+    const miliseconds = timeout !== undefined ? timeout : 10000;
     if(isNaN(r.res)){
         const msg = r.res;
         $("#frm_registro :input").prop("disabled", true);
         $.smallBox({content: "<i class='fa fa-check'></i> "+msg,
                     color: '#111509',
-                    timeout: 10000
+                    timeout: miliseconds
         });
     } else{
         $.smallBox({});
@@ -623,9 +624,8 @@ function generateRandomMail(){
         } else{
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
                 $("#btnGuardar").attr('disabled','disabled');
-                if(!options.bridgeMultipart){
-                    $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
-                }
+                $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+
             } else{
                 if(options.bridgeMultipart){
                     spinnerUpload(xhr);
@@ -644,6 +644,8 @@ function generateRandomMail(){
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
                 if(!options.bridgeMultipart){
                     $('#btnGuardar').removeAttr('disabled');
+                    $('#btnGuardar').text($buttonName);
+                }else{
                     $('#btnGuardar').text($buttonName);
                 }
             }else{

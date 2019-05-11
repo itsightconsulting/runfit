@@ -13,7 +13,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Servicio implements Serializable {
 
-    @Size(min = 5, max = 50)
+    @Size(min = 2, max = 50)
     @NotNull
     private String nombre;
     @Size(min = 5, max = 2000)

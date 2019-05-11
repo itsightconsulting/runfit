@@ -32,6 +32,10 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     @Query(value = "UPDATE SecurityUser SU SET SU.enabled =?2 WHERE SU.username = ?1")
     void updateEstadoByUsername(String username, boolean flag);
 
+    @Modifying
+    @Query(value = "UPDATE SecurityUser SU SET SU.enabled =?2 WHERE SU.id = ?1")
+    void updateEstadoById(Integer id, boolean flag);
+
     @Query(value = "SELECT SU.password FROM SecurityUser SU WHERE SU.id = ?1")
     String findPasswordById(Integer id);
 

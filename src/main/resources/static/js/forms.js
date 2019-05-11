@@ -144,6 +144,14 @@ function agregarInputDinamico(e, max, clase){
     return e.previousElementSibling;
 }
 
+function agregarTextareaDinamico(e, max, clase){
+    if(e.parentElement.children.length === max){
+        e.classList.add('hide');
+    }
+    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<textarea class="form-control mg-bt-10 ${clase}" type="text"></textarea>`));
+    return e.previousElementSibling;
+}
+
 function acumuladorMas(id){
     const e = document.getElementById(id);
     const value = Number(e.value);

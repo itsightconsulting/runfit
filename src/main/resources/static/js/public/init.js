@@ -5,13 +5,13 @@ var initPageActive = 3;
 var hiddenHeaderBar = 0 == 1;
 try {
     //Remarcar página visitada
-    const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`)
+    const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);
     if(pubMenu != undefined){
         pubMenu.parentElement.classList.add('active');
     }
     document.querySelector('.step-0'+initPageActive).classList.toggle('active');
     document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
-    a = document.querySelector(`a[href="${window.location.pathname}"]`);
+    //a = pubMenu;
 }catch (e) {}
 
 function time_line() {
@@ -306,6 +306,9 @@ function goRegister() {
 }
 
 $(function() {
+    if($(window).scrollTop()>0){
+        $("nav").css({ "background-color": "#000" });
+    }
     $(window).scroll(function() {
         changecolor()
     });
@@ -321,8 +324,11 @@ $(function() {
 })
 
 function submitReuseLogin(){
-    if($("#login-form").valid()){
-        $("#login-form").submit();
+    const frmLogin = document.getElementById('login-form');
+    if($(frmLogin).valid()){
+        const btnLogin = document.getElementById('btn-login');
+        btnLogin.setAttribute('disabled','disabled');
+        frmLogin.submit();
     }
 }
 

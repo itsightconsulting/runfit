@@ -62,28 +62,6 @@
                                   <img title="Subir foto" id="ImagePerfil" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                               </div>
                           </div>
-                          <fieldset class="rating">
-                              <input id="star5" type="radio" name="rating" value="5">
-                              <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                              <input id="star4half" type="radio" name="rating" value="4 and a half">
-                              <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                              <input id="star4" type="radio" name="rating" value="4">
-                              <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                              <input id="star3half" type="radio" name="rating" value="3 and a half">
-                              <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                              <input id="star3" type="radio" name="rating" value="3">
-                              <label class="full" for="star3" title="Meh - 3 stars"></label>
-                              <input id="star2half" type="radio" name="rating" value="2 and a half">
-                              <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                              <input id="star2" type="radio" name="rating" value="2">
-                              <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                              <input id="star1half" type="radio" name="rating" value="1 and a half">
-                              <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                              <input id="star1" type="radio" name="rating" value="1">
-                              <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                              <input id="starhalf" type="radio" name="rating" value="half">
-                              <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-                          </fieldset>
                       </div>
                       <div class="col-md-7">
                           <ul class="nav nav-tabs">
@@ -339,8 +317,8 @@
                                           </div>
                                           <div class="form-group" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE</label>
-                                              <input class="form-control mg-bt-10 inp-svc-incluye" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                              <textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                       </div>
                                       <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIO</button>
@@ -640,13 +618,7 @@
                         return myXhr;
                     },
                     success: function (data) {
-                        reqSuccess(data);
-                        setTimeout(()=>{
-                            document.querySelector('.login_link').click();
-                            document.querySelector('input[name="username"]').value = body.username;
-                            document.querySelector('input[name="password"]').value = "";
-                            //submitReuseLogin();
-                        }, 6000);
+                        reqSuccess(data, 3600000);
                     },
                     error: (xhr)=>{
                         exception(xhr);
@@ -709,13 +681,7 @@
                         return myXhr;
                     },
                     success: function (data) {
-                        reqSuccess(data);
-                        setTimeout(()=>{
-                            document.querySelector('.login_link').click();
-                            document.querySelector('input[name="username"]').value = body.username;
-                            document.querySelector('input[name="password"]').value = "";
-                            //submitReuseLogin();
-                        }, 6000);
+                        reqSuccess(data, 3600000);
                     },
                     error: (xhr)=>{
                         exception(xhr);
@@ -796,6 +762,8 @@
                 body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
             }
 
+            $buttonName = "Guardar";
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
@@ -840,6 +808,9 @@
                 svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
                 padre.classList.add('tarifa-svc-pick');
                 mostrarDetalleTarifaSvc(Number(tarifaId));
+            } else if(clases.contains('edit-svc')){
+                const svcId = Number(input.getAttribute('data-id'));
+                editarServicio(svcId);
             }
         }
 
@@ -859,13 +830,13 @@
             } else {
                 mainIncluidos.innerHTML =
                     `<label>QUE INCLUYE</label>
-                     <input class="form-control mg-bt-10 inp-svc-incluye" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales.">
+                     <textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea>
                      <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
-                const firstInput = mainIncluidos.querySelector('input');
+                const firstInput = mainIncluidos.querySelector('textarea');
                 const btnPlus = mainIncluidos.querySelector('a');
                 firstInput.value = arrIncluidos[0];
                 arrIncluidos.slice(1).forEach(e=>{
-                    agregarInputDinamico(btnPlus, 10, 'inp-svc-incluye').value = e;
+                    agregarTextareaDinamico(btnPlus, 10, 'inp-svc-incluye').value = e;
                 })
             }
         }
@@ -908,6 +879,16 @@
             mostrarNuevoServicio();
         }
 
+        function editarServicio(svcId){
+            const svc = servicios.find(s=>s.id===svcId);
+            if(svc !== undefined){
+                setBasicsServicio(svc);
+                service.querySelector('.svc-focus').click();
+            }else {
+                $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
+            }
+        }
+
         function mostrarNuevoServicio(){
             const s = getServicio();
             if(s.valid){
@@ -915,6 +896,11 @@
                 servicios.push(s);
                 addServiceAndcleanCampos(s);
                 $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000})
+                const editButtons = service.querySelectorAll('.edit');
+                editButtons.forEach(e=>{
+                    e.classList.add('hidden');
+                });
+                service.querySelector(`.ver-servicios .edit[data-id="${s.id}"]`).classList.remove('hidden');
             }else{
                 $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
             }
@@ -933,6 +919,23 @@
                 svc.id = ++accServicioId;
             }
             return svc;
+        }
+
+        function setBasicsServicio(svc){
+            const nombre = document.querySelector('#NombreServicio').value.trim();
+            const descripcion = document.querySelector('#DescripcionServicio').value.trim();
+            const incluye = getAsStringIncluyeServices();
+            if(nombre !== "" && descripcion !== "" && incluye !== ""){
+                svc.nombre = nombre;
+                svc.descripcion = descripcion;
+                svc.incluye = incluye;
+                service.querySelector('.svc-focus').textContent = nombre;
+            }else{
+                $.smallBox({
+                    color: 'alert',
+                    content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>Los nuevos datos que edito del servicio son inválidos, verifique que el nombre, descripción no se encuentren vacíos</i>'
+                });
+            }
         }
 
         function getTarifa(){
@@ -974,7 +977,10 @@
 
             document.querySelector('#ServicioInfAdic').value = "";
             const element = htmlStringToElement(
-                `<div class="form-group">
+                        `<div class="form-group editar">
+                            <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);" title="Confirmar modificaciones al servicio">
+                                <img class="edit-svc" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
+                            </a>
                             <label class="servicio svc-focus" data-id="${svc.id}">${svc.nombre}</label>
                         </div>`);
             const resumenServicios = document.querySelector('.ver-servicios');
@@ -992,14 +998,14 @@
                                           </div>
                                           <div class="form-group" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE</label>
-                                              <input class="form-control mg-bt-10" type="text" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                              <textarea class="form-control mg-bt-10" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>`
             divCamposBasicos.innerHTML = htmlBasics;
         }
 
         function getAsStringIncluyeServices(){
-            return Array.from(document.querySelectorAll('#MainIncluyeServicios input')).map(v=>v.value  !==  "" ? v.value : "").filter(v=>v.trim()!=="").join('|');
+            return Array.from(document.querySelectorAll('#MainIncluyeServicios textarea')).map(v=>v.value  !==  "" ? v.value : "").filter(v=>v.trim()!=="").join('|');
         }
 
         function showInitTab(numTab){
@@ -1159,7 +1165,7 @@
                 "Contarás con videos demostrativos ejecutados por atletas profesionales, para que puedas realizar tus ejercicios de manera eficiente y segura.",
                 "Tendrás acceso a un espacio exclusivo dentro de la plataforma, donde podrás ver tu bitácora de entrenamientos, videos, consejos, la planificación de tu temporada a largo plazo, historial de pagos y datos personales.",
                 "Obtendrás descuentos hasta del 30% en servicios médicos profesionales en la clínica ESPORTIVA, dependiendo de los horarios y el servicio que elijas."]
-                .forEach(e => agregarInputDinamico(inpSvcInc, 7, 'inp-svc-incluye').value = e);
+                .forEach(e => agregarTextareaDinamico(inpSvcInc, 7, 'inp-svc-incluye').value = e);
             document.getElementById('btnNuevoServicio').click();
 
             //Tarifario al servicio agregado anterior

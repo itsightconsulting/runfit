@@ -42,17 +42,20 @@ public class Validador {
     }
 
     public static boolean validarCorreo(String correo) {
-        Pattern pat = null;
-        Matcher mat = null;
+        Pattern pat;
+        Matcher mat;
+        if(!correo.equals("")) {
+            pat = Pattern
+                    .compile("[a-zA-Z0-9]+[.[a-zA-Z0-9_-]+]*@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$");
 
-        pat = Pattern
-                .compile("[a-zA-Z0-9]+[.[a-zA-Z0-9_-]+]*@[a-z0-9][\\w\\.-]*[a-z0-9]\\.[a-z][a-z\\.]*[a-z]$");
+            mat = pat.matcher(correo);
 
-        mat = pat.matcher(correo);
-
-        return mat.find();
-
+            return mat.find();
+        }
+        return false;
     }
+
+
 
     public static boolean esCero(Integer numero) {
         if (esNulo(numero))

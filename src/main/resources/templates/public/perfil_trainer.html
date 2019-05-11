@@ -34,7 +34,7 @@
               <div class="avatar-form">
                 <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;"/></div>
               </div>
-              <fieldset class="rating">
+              <fieldset class="rating hidden">
                 <input id="star5" type="radio" name="rating" value="5"/>
                 <label class="full" for="star5" title="Awesome - 5 stars"></label>
                 <input id="star4half" type="radio" name="rating" value="4 and a half"/>
@@ -56,7 +56,7 @@
                 <input id="starhalf" type="radio" name="rating" value="half"/>
                 <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
               </fieldset>
-              <p class="valoration">43 <span>(21 valoraciones)</span></p>
+              <p class="valoration hidden">43 <span>(21 valoraciones)</span></p>
             </div>
             <div class="col-md-7">
               <ul class="nav nav-tabs">
@@ -147,7 +147,6 @@
                       <div class="form-group rs hidden" id="RsIn">
                           <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                           <div class="col-xs-11 no_padding">
-
                               <a href="#" target="_blank">INS</a>
                           </div>
                       </div>
@@ -157,9 +156,19 @@
                               <a href="#" target="_blank">Y2</a>
                           </div>
                       </div>
-                      <div th:if="${porAprobar}" class="form-group">
-                          <button class="btn btn-default btn-black"><i class="fa fa-check"></i>Aprobar</button>
-                          <button class="btn btn-default btn-white">Notificar corrección</button>
+                      <hr>
+                      <div th:if="${porAprobar}" class="form-group div-aprobacion">
+                          <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                          <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>Aprobar</button>
+                          <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">Notificar corrección</button>
+                          <div class="hidden" id="SeccionCorreccion">
+                              <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
+                              <div style="text-align: right">
+                                <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
+                                 <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
+                              </div>
+                          </div>
+
                       </div>
                     </div>
                   </form>
@@ -311,13 +320,22 @@
       let $perfil = {};
       const btnElegir = document.getElementById('btnElegir');
       const btnInfoContacto = document.getElementById('btnInfoContacto');
+      const btnAprobarTrainer = document.getElementById('btnAprobarTrainer');
+      const btnAbrirCajaNotificacion = document.getElementById('btnAbrirCajaNotificacion');
       const body = document.querySelector('body');
 
 
       (function () {
           btnElegir.addEventListener('click', irARegistro);
           btnInfoContacto.addEventListener('click', registrarContactoTrainer);
-          //body.addEventListener('click', bodyClickEventListener);
+          if(btnAprobarTrainer !== null){
+              btnAprobarTrainer.addEventListener('click', aprobacionFinalTrainer);
+              btnAbrirCajaNotificacion.addEventListener('click', (e)=>{
+                  e.preventDefault();
+                  document.getElementById('SeccionCorreccion').classList.remove('hidden');
+              });
+          }
+
           init();
       })();
 
@@ -333,11 +351,18 @@
               });
               all[ix].parentElement.classList.remove('hidden');
           }
-
       }
 
       function init(){
         getTrainer();
+        checkFrom();
+      }
+
+      function checkFrom(){
+          if(btnAprobarTrainer === null){
+              document.querySelector('.rating').classList.remove('hidden');
+              document.querySelector('.valoration').classList.remove('hidden');
+          }
       }
 
       function checkTab(){
@@ -392,10 +417,61 @@
           });
       }
 
+      function aprobacionFinalTrainer(e){
+          e.preventDefault();
+          const hshId = document.getElementById('HshTrainerId').value;
+          const correo = $perfil.correo;
+          $.ajax({
+              type: 'POST',
+              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+              url: _ctx + 'p/trainer/ultima-aprobacion/'+hshId+'/'+correo,
+              dataType: "json",
+              blockLoading: true,
+              success: function (data, textStatus) {
+                  if (textStatus == "success") {
+                      reqSuccess(data);
+                      document.querySelector('.div-aprobacion').classList.add('hidden');
+                  }
+              },
+              error: function (xhr) {
+                  exception(xhr);
+              },
+              complete: function () {
+              }
+          });
+      }
+
+      function enviarInfoACorregir(){
+          const obj = {};
+          const hshTrainerId = document.getElementById('HshTrainerId').value;
+          obj.hshTrainerId = hshTrainerId;
+          obj.correo = $perfil.correo;
+          obj.obs = document.getElementById('Obs').value;
+
+          $.ajax({
+              type: 'GET',
+              url: _ctx + 'p/trainer/perfil/observaciones',
+              dataType: "json",
+              data: obj,
+              blockLoading: true,
+              success: function (data, textStatus) {
+                  if (textStatus == "success") {
+                      reqSuccess(data);
+                      document.querySelector('.div-aprobacion').classList.add('hidden');
+                  }
+              },
+              error: function (xhr) {
+                  exception(xhr);
+              },
+              complete: function () {
+              }
+          });
+      }
+
       function getTrainer(){
         const urlArr = window.location.href.split("/");
         const nomPag = urlArr[urlArr.length-1];
-        const extraPath = urlArr.some(p=>p==="ver") ? 'sec/':'';
+        let extraPath = urlArr.some(p=>p==="ver" || p==="revision" ) ? 'sec/':'';
         $.ajax({
           type: 'GET',
           url: _ctx + 'p/trainer/get/'+extraPath+nomPag,
@@ -504,6 +580,10 @@
               document.querySelector('#Correo').value = t.correo;
               document.querySelector('#Movil').value = "987654321";
               document.querySelector('#Mensaje').value = "Aloha";
+          }
+          const obs = document.getElementById('Obs');
+          if(obs != undefined){
+              obs.value = "Demostración";
           }
       }
       function reconstruirLista(e, stringArr){
