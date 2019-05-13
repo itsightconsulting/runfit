@@ -43,6 +43,14 @@
             border-bottom: 5px solid #a8fa00;
             border-radius: 50%;
         }
+
+        .fa-plus-cs{
+            cursor:pointer;
+        }
+
+        .img-cc{
+            opacity: 0.3;
+        }
     </style>
   </head>
   <body>
@@ -303,7 +311,7 @@
                               </div>
                               <div class="tab-pane fade" id="service">
                                   <h4>Mis servicios</h4>
-                                  <form>
+                                  <div>
                                       <div class="ver-servicios">
                                       </div>
                                       <div id="SvcCamposBasicos">
@@ -312,7 +320,7 @@
                                               <input class="form-control" id="NombreServicio">
                                           </div>
                                           <div class="form-group">
-                                              <label>DESCRIPCIÓN</label>
+                                              <label>DESCRIPCIÓN<span class="obligatorio">*</span></label>
                                               <textarea class="form-control" id="DescripcionServicio"></textarea>
                                           </div>
                                           <div class="form-group" id="MainIncluyeServicios">
@@ -320,147 +328,179 @@
                                               <textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea>
                                               <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
+                                          <div class="form-group">
+                                              <label>INFORMACIÓN ADICIONAL</label>
+                                              <textarea class="form-control" id="ServicioInfAdic"></textarea>
+                                          </div>
                                       </div>
-                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIO</button>
-                                      <p class="sub-title">TARIFARIO<span class="obligatorio">*</span></p>
+                                      <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
+                                        <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
+                                      </h4>
                                       <div class="row">
                                           <div class="col col-md-12 text-center" id="Tarifarios">
                                           </div>
                                       </div>
-                                      <h4>Frecuencia</h4>
-                                      <div class="form-group">
-                                          <select class="form-control" id="FrecuenciaPaquete">
-                                              <option value="Diaria">Diaria</option>
-                                              <option value="Interdiaria">Interdiaria</option>
-                                              <option value="Semanal">Semanal</option>
-                                              <option value="Quincenal">Quincenal</option>
-                                          </select>
-                                      </div>
-                                      <div class="form-group">
-                                          <div class="row">
-                                              <div class="col-xs-7">
-                                                  <label>CANTIDAD DE PERSONAS</label>
-                                              </div>
-                                              <div class="col-xs-5 text-right">
-                                                  <ul class="counter">
-                                                      <li class="count">
-                                                          <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
-                                                      </li>
-                                                      <li class="result">
-                                                          <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
-                                                      </li>
-                                                      <li class="count">
-                                                          <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
-                                                      </li>
-                                                  </ul>
-                                              </div>
+                                      <div class="clase-tarifario collapse in" id="contentTarifario">
+                                          <div class="form-group">
+                                              <label for="NombreTarifario">Nombre</label>
+                                              <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
                                           </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <div class="row">
-                                              <div class="col-xs-7">
-                                                  <label>CANTIDAD DE MESES</label>
-                                              </div>
-                                              <div class="col-xs-5 text-right">
-                                                  <ul class="counter">
-                                                      <li class="count">
-                                                          <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
-                                                      </li>
-                                                      <li class="result">
-                                                          <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
-                                                      </li>
-                                                      <li class="count">
-                                                          <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
-                                                      </li>
-                                                  </ul>
-                                              </div>
+
+                                          <div class="form-group">
+                                              <label for="FrecuenciaPaquete">Frecuencia</label>
+                                              <select class="form-control" id="FrecuenciaPaquete">
+                                                  <option value="Diaria">Diaria</option>
+                                                  <option value="Interdiaria">Interdiaria</option>
+                                                  <option value="Semanal">Semanal</option>
+                                                  <option value="Quincenal">Quincenal</option>
+                                              </select>
                                           </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <div class="row">
-                                              <div class="col-xs-7">
-                                                  <label>CANTIDAD DE SESIONES</label>
-                                              </div>
-                                              <div class="col-xs-5 text-right">
-                                                  <ul class="counter">
-                                                      <li class="count">
-                                                          <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
-                                                      </li>
-                                                      <li class="result">
-                                                          <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
-                                                      </li>
-                                                      <li class="count">
-                                                          <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <div class="row">
-                                              <div class="col-xs-7">
-                                                  <label>PRECIO TOTAL(S/.)</label>
-                                              </div>
-                                              <div class="col-xs-5 text-right">
-                                                  <input id="PrecioPaquete" class="price" type="text" value="0.00">
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <button class="btn btn-default btn-black" type="button" id="btnNuevaTarifa">AGREGAR PAQUETE</button>
-                                      <div class="form-group">
-                                          <label>INFORMACIÓN ADICIONAL</label>
-                                          <textarea class="form-control" id="ServicioInfAdic"></textarea>
-                                      </div>
-                                      <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span></h4>
-                                      <div class="form-group">
-                                          <ul class="checks">
-                                              <li>
-                                                  <div class="chk-content">En efectivo
-                                                      <input type="radio" name="MetodoPago"><span class="checkmark"></span>
+                                          <div class="form-group">
+                                              <div class="row">
+                                                  <div class="col-xs-7">
+                                                      <label>CANTIDAD DE PERSONAS</label>
                                                   </div>
-                                              </li>
-                                              <li>
-                                                  <div class="chk-content">Transferencia
-                                                      <input type="radio" name="MetodoPago" checked="checked"><span class="checkmark"></span>
+                                                  <div class="col-xs-5 text-right">
+                                                      <ul class="counter">
+                                                          <li class="count">
+                                                              <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
+                                                          </li>
+                                                          <li class="result">
+                                                              <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                          </li>
+                                                          <li class="count">
+                                                              <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
+                                                          </li>
+                                                      </ul>
                                                   </div>
-                                              </li>
-                                              <li>
-                                                  <div class="chk-content">Con Tarjeta
-                                                      <input type="radio" name="MetodoPago"><span class="checkmark"></span>
+                                              </div>
+                                          </div>
+                                          <div class="form-group">
+                                              <div class="row">
+                                                  <div class="col-xs-7">
+                                                      <label>CANTIDAD DE MESES</label>
                                                   </div>
-                                              </li>
-                                          </ul>
+                                                  <div class="col-xs-5 text-right">
+                                                      <ul class="counter">
+                                                          <li class="count">
+                                                              <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
+                                                          </li>
+                                                          <li class="result">
+                                                              <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
+                                                          </li>
+                                                          <li class="count">
+                                                              <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
+                                                          </li>
+                                                      </ul>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="form-group">
+                                              <div class="row">
+                                                  <div class="col-xs-7">
+                                                      <label>CANTIDAD DE SESIONES</label>
+                                                  </div>
+                                                  <div class="col-xs-5 text-right">
+                                                      <ul class="counter">
+                                                          <li class="count">
+                                                              <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
+                                                          </li>
+                                                          <li class="result">
+                                                              <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
+                                                          </li>
+                                                          <li class="count">
+                                                              <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
+                                                          </li>
+                                                      </ul>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="form-group">
+                                              <div class="row">
+                                                  <div class="col-xs-7">
+                                                      <label>PRECIO TOTAL(S/.)</label>
+                                                  </div>
+                                                  <div class="col-xs-5 text-right">
+                                                      <input id="PrecioPaquete" class="price" type="text" value="0.00">
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <button class="btn btn-default btn-black" type="button" id="btnNuevaTarifa">AGREGAR PAQUETE</button>
                                       </div>
-                                      <div class="form-group">
-                                          <select class="form-control" name="BancoId" id="BancoId">
-                                          </select>
+                                      <hr>
+                                      <button rel="tooltip"
+                                        title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
+                                        id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
+                                        <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
+                                      </button>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIO</button>
+                                      <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
+                                        <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Después de seleccionar el método de pago, click en agregar y repita tantas veces como métodos de pago acepte"></i>
+                                        <i data-toggle="collapse" data-target="#contentInfoPago" rel="tooltip" data-original-title="Mostrar/Ocultar" class="fa fa-chevron-up fa-plus-cs " style="color: #a8fa00;float:right;"></i>
+                                      </h4>
+                                      <div class="row">
+                                          <div class="col col-md-12 text-center" id="MediosPagosAgregados">
+                                            <h1>Pendiente...</h1>
+                                          </div>
                                       </div>
-                                      <div class="form-group">
-                                          <input class="form-control" id="TitularCuenta" type="text" placeholder="Titular de la cuenta">
+                                      <div class="collapse in" id="contentInfoPago">
+                                          <div class="form-group">
+                                              <ul class="checks">
+                                                  <li id="MetodoEfectivo">
+                                                      <div class="chk-content info-pago">En efectivo
+                                                          <input type="radio" value="1" name="MetodoPago" checked="checked"><span class="checkmark info-pago"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content info-pago">Transferencia
+                                                          <input type="radio" value="2" name="MetodoPago"><span class="checkmark info-pago"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content info-pago">Con Tarjeta
+                                                          <input type="radio" value="3" name="MetodoPago"><span class="checkmark info-pago"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <select class="form-control" name="BancoId" id="BancoId">
+                                              </select>
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <input class="form-control" id="TitularCuenta" type="text" placeholder="Titular de la cuenta">
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <select class="form-control" id="TitularTipoDoc">
+                                                  <option value="DNI">DNI</option>
+                                                  <option value="CE">CE</option>
+                                              </select>
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <input class="form-control" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <input class="form-control" id="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <input class="form-control" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <input class="form-control" id="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
+                                          </div>
+                                          <div class="form-group info-cuenta hidden">
+                                              <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
+                                          </div>
+                                          <div class="form-group info-tarjetas hidden">
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="2" class="img-cc cc-elegir" th:src="@{/img/visa.png}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="3" class="img-cc cc-elegir" th:src="@{/img/amex.png}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}"></a>
+                                          </div>
+                                          <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago">AGREGAR INFORMACIÓN PAGO</button>
                                       </div>
-                                      <div class="form-group">
-                                          <select class="form-control" id="TitularTipoDoc">
-                                              <option value="DNI">DNI</option>
-                                              <option value="CE">CE</option>
-                                          </select>
-                                      </div>
-                                      <div class="form-group">
-                                          <input class="form-control" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
-                                      </div>
-                                      <div class="form-group">
-                                          <input class="form-control" id="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
-                                      </div>
-                                      <div class="form-group">
-                                          <input class="form-control" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">
-                                      </div>
-                                      <div class="form-group">
-                                          <input class="form-control" id="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
-                                      </div>
-                                      <div class="form-group">
-                                          <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
-                                      </div>
-                                      <button class="btn btn-default btn-black" type="button" id="btnNuevaCuentaBanc">AGREGAR CUENTA BANCARIA</button>
-                                      <button id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">ADJUNTAR CONDICIONES DEL SERVICIO<span class="obligatorio">*</span></button>
+                                      <hr>
                                       <input type="file" id="inpCondServicio" class="hide">
                                       <button id="btnModalFichas" class="btn btn-default btn-white" type="button" onclick="abrirModalFichas()">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
                                       <div class="terms" onclick="javascript:abrirModalTermCond()">
@@ -539,13 +579,14 @@
         const btnGuardar = document.getElementById('btnGuardar')
         const btnNuevoServicio = document.getElementById('btnNuevoServicio');
         const btnNuevaTarifa = document.getElementById('btnNuevaTarifa');
-        const btnNuevaCuentaBanc = document.getElementById('btnNuevaCuentaBanc');
+        const btnNuevaInfoPago = document.getElementById('btnNuevaInfoPago');
         const tabService = document.getElementById('service');
         const inpCondServicio = document.getElementById('inpCondServicio');
         const servicios = [];
         const ccBancarias = [];
+        const metodosPago = [];
         let termConSvc = [];
-        const initTabActive = 1;
+        const initTabActive = 3;
         let selServicioId = -1;
         let accServicioId = 0;
         let accTarifaId = 0;
@@ -560,7 +601,7 @@
             btnGuardar.addEventListener('click', sendForm);
             btnNuevoServicio.addEventListener('click', agregarServicio);
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
-            btnNuevaCuentaBanc.addEventListener('click', agregarCuentaBancaria);
+            btnNuevaInfoPago.addEventListener('click', agregarNuevaInfoPago);
             tabService.addEventListener('click', clickListenerTabService);
             inpCondServicio.addEventListener('change', asociarCondSvc);
             //inpImgPerfil.addEventListener('change', capturarImgPerfil);
@@ -694,9 +735,17 @@
         function init(){
             modalEventos();
             populateBancos();
+            activeTooltips();
             if(flag_form_populate){
                 populateForm();
             }
+        }
+
+        function activeTooltips(){
+            const all = document.querySelectorAll('i[rel="tooltip"]');
+            all.forEach(e=>{
+                $(e).tooltip();
+            })
         }
 
         function modalEventos(){
@@ -811,6 +860,34 @@
             } else if(clases.contains('edit-svc')){
                 const svcId = Number(input.getAttribute('data-id'));
                 editarServicio(svcId);
+            } else if(clases.contains('fa-plus-cs')){
+                clases.toggle('fa-chevron-up');
+                clases.toggle('fa-chevron-down');
+            } else if(clases.contains('info-pago')){
+                const parent = input.parentElement;
+                const qInput = parent.querySelector('input');
+                let nomButton = "Agregar información pago";
+                if(qInput.value === "1"){
+                    tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
+                    tabService.querySelector('.info-tarjetas').classList.add('hidden');
+                }
+                if(qInput.value === "2"){
+                    tabService.querySelector('.info-tarjetas').classList.add('hidden');
+                    tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.remove('hidden'));
+                    nomButton = "Agregar nueva cuenta bancaria";
+                }
+
+                if(qInput.value === "3"){
+                    const exists = metodosPago.some(e=>e.infoPagoId ===3);
+                    if(exists){
+                        nomButton = "Modificar con nueva elección";
+                    }
+                    tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
+                    tabService.querySelector('.info-tarjetas').classList.remove('hidden');
+                }
+                btnNuevaInfoPago.innerText = nomButton;
+            } else if(clases.contains('cc-elegir')){
+                input.classList.toggle('img-cc');
             }
         }
 
@@ -845,6 +922,7 @@
             const svc = servicios.find(e=>e.id===servicioId);
             document.querySelector('#NombreServicio').value = svc.nombre;
             document.querySelector('#DescripcionServicio').value = svc.descripcion;
+            document.querySelector('#ServicioInfAdic').value = svc.infoAdicional;
             console.log(svc);
             setIncluyeDelServicio(svc.incluye);
 
@@ -901,7 +979,7 @@
                     e.classList.add('hidden');
                 });
                 service.querySelector(`.ver-servicios .edit[data-id="${s.id}"]`).classList.remove('hidden');
-            }else{
+            } else{
                 $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
             }
         }
@@ -993,13 +1071,17 @@
                                               <input class="form-control" id="NombreServicio">
                                           </div>
                                           <div class="form-group">
-                                              <label>DESCRIPCIÓN</label>
+                                              <label>DESCRIPCIÓN<span class="obligatorio">*</span></label>
                                               <textarea class="form-control" id="DescripcionServicio"></textarea>
                                           </div>
                                           <div class="form-group" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE</label>
                                               <textarea class="form-control mg-bt-10" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea>
                                               <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>INFORMACIÓN ADICIONAL</label>
+                                              <textarea class="form-control" id="ServicioInfAdic"></textarea>
                                           </div>`
             divCamposBasicos.innerHTML = htmlBasics;
         }
@@ -1036,14 +1118,49 @@
             }
         }
 
-        function agregarCuentaBancaria(){
-            const c = getCuentaBancaria();
-            if(c.valid){
-                ccBancarias.push(c);
-                cleanCuentaBanCampos();
-                $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000});
+        function agregarNuevaInfoPago(){
+            const checkOpcion = document.querySelector('input[name="MetodoPago"]:checked');
+            if(checkOpcion != null){
+                const v = Number(checkOpcion.value);
+                const obj = {};
+                if(v === 1){
+                    obj.infoPagoId = 1;
+                    obj.detalle = "Efectivo";
+                    checkExistsInfoPago(obj);
+                    document.getElementById('MetodoEfectivo').classList.add('hidden');
+                }
+                if(v === 2){
+                    const c = getCuentaBancaria();
+                    if(c.valid){
+                        ccBancarias.push(c);
+                        cleanCuentaBanCampos();
+                        $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
+                    }else{
+                        $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 3500})
+                    }
+                }
+                if(v === 3){
+                    const ccs = Array.from(document.querySelectorAll('.cc-elegir:not(.img-cc)')).map(e=>e.getAttribute('data-id')).join('|');
+                    if(ccs.length>0){
+                        obj.infoPagoId = 3;
+                        obj.detalle = ccs;
+                        checkExistsInfoPago(obj);
+                        $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
+                    }else{
+                        $.smallBox({color: 'alert',content: '<i>Aún no ha seleccionado ninguna tarjeta</i>'});
+                    }
+                }
             }else{
-                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+                $.smallBox({color: 'alert',content: '<i>Primero debe seleccionar un tipo de medio de pago</i>'});
+            }
+        }
+
+        function checkExistsInfoPago(o){
+            const exists = metodosPago.some(e=>e.infoPagoId===o.infoPagoId);
+            if(exists){
+                metodosPago.find(e=>e.infoPagoId===o.infoPagoId).detalle = o.detalle;
+            }else{
+                metodosPago.push(o);
             }
         }
 
@@ -1182,7 +1299,7 @@
             document.getElementById('InterbancarioSoles').value = "00219419102254806693";
             document.getElementById('NumeroCuentaDolares').value = "192-91022548-0-66";
             document.getElementById('InterbancarioDolares').value = "10219419102254806693";
-            document.getElementById('btnNuevaCuentaBanc').click();
+            document.getElementById('btnNuevaInfoPago').click();
 
             document.querySelector('#inpTermCond').checked = true;
 

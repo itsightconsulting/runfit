@@ -109,7 +109,8 @@ public class Enums {
         CONTACTO_CONSULTA(7),
         ULTIMA_ETAPA_POSTULANTE(8),
         PERFIL_POST_OBS(9),
-        PERFIL_TRAINER_APROBADO(10);
+        PERFIL_TRAINER_APROBADO(10),
+        PERFIL_CHECK_OBS_SUBS(11);
 
         final int id;
 
@@ -149,7 +150,8 @@ public class Enums {
         APROBACION_FINAL_PERFIL_TRAINER("Usted ha aprobado satisfactoriamente el perfil del trainer. Este último acaba de ser notificado."),
         PERFIL_APROBADO_ANTERIORMENTE("El perfil del entrenador que quieres visitar ya ha sido aprobado con anterioridad."),
         PERFIL_EN_REVISION("El perfil del entrenador que quieres visitar ya ha sido observado con anterioridad."),
-        OBS_PERFIL_TRAINER("Se ha enviado las observaciones al entrenador satisfactoriamente via correo.");
+        OBS_PERFIL_TRAINER("Se ha enviado las observaciones al entrenador satisfactoriamente via correo."),
+        OBS_PERFIL_SUBSANADAS("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias");
         final String msg;
 
         Msg(String msg){

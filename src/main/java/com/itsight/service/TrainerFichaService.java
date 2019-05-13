@@ -2,6 +2,7 @@ package com.itsight.service;
 
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
+import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseService;
 
@@ -18,4 +19,6 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
     String enviarCorreoPerfilObs(PerfilObsDTO perfilObs, Integer trainerId);
 
     Boolean getFlagFichaAceptadaByTrainerId(Integer trainerId);
+
+    String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId);
 }

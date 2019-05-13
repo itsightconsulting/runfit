@@ -1,7 +1,7 @@
 package com.workout;
 
 import com.itsight.configuration.WebMvcConfiguration;
-import com.itsight.domain.dto.TrainerFichaDTO;
+import com.itsight.domain.dto.TrainerDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,9 @@ public class WorkoutApplicationTests {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        TrainerFichaDTO trainer = new TrainerFichaDTO();
+        TrainerDTO trainer = new TrainerDTO();
         trainer.setCorreo("peterpaul.0194@gmail.com");
-        Set<ConstraintViolation<TrainerFichaDTO>> violations = validator.validate(trainer);
+        Set<ConstraintViolation<TrainerDTO>> violations = validator.validate(trainer);
         violations.forEach((e)-> System.out.println(e.toString()));
         Assertions.assertTrue(violations.isEmpty());
     }

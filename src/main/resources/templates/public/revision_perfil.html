@@ -34,34 +34,10 @@
               <div class="avatar-form">
                 <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;"/></div>
               </div>
-              <fieldset class="rating hidden">
-                <input id="star5" type="radio" name="rating" value="5"/>
-                <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                <input id="star4half" type="radio" name="rating" value="4 and a half"/>
-                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                <input id="star4" type="radio" name="rating" value="4"/>
-                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                <input id="star3half" type="radio" name="rating" value="3 and a half"/>
-                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                <input id="star3" type="radio" name="rating" value="3"/>
-                <label class="full" for="star3" title="Meh - 3 stars"></label>
-                <input id="star2half" type="radio" name="rating" value="2 and a half"/>
-                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                <input id="star2" type="radio" name="rating" value="2"/>
-                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                <input id="star1half" type="radio" name="rating" value="1 and a half"/>
-                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                <input id="star1" type="radio" name="rating" value="1"/>
-                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                <input id="starhalf" type="radio" name="rating" value="half"/>
-                <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-              </fieldset>
-              <p class="valoration hidden">43 <span>(21 valoraciones)</span></p>
             </div>
             <div class="col-md-7">
               <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
                 <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
               </ul>
               <div class="tab-content">
@@ -157,70 +133,13 @@
                           </div>
                       </div>
                       <hr>
-                      <div th:if="${porAprobar}" class="form-group div-aprobacion">
+                      <div class="form-group div-actualizacion">
                           <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                          <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>Aprobar</button>
-                          <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">Notificar corrección</button>
-                          <div class="hidden" id="SeccionCorreccion">
-                              <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
-                              <div style="text-align: right">
-                                <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
-                                 <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
-                              </div>
-                          </div>
-
+                          <button class="btn btn-default btn-black" id="btnActualizarPerfil"><i class="fa fa-check"></i>Actualizar y enviar</button>
                       </div>
                     </div>
                   </form>
                 </div>
-                <div class="tab-pane fade" id="contact">
-                      <form id="frm_contacto">
-                          <h1 class="title-form">COMPÁRTENOS TUS DATOS PARA CONTACTARNOS LO ANTES POSIBLE</h1>
-                          <div class="form-group">
-                              <div class="pad-right-middle">
-                                  <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                                  <input id="Nombre" name="Nombre" class="form-control" type="text">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label>¿CUÁL ES TU SEXO?</label>
-                              <ul class="checks">
-                                  <li>
-                                      <div class="chk-content">Mujer
-                                          <input name="Sexo" type="radio" value="2" checked="checked"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Hombre
-                                          <input name="Sexo" type="radio" value="1"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Otro
-                                          <input name="Sexo" type="radio" value="3"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                              </ul>
-                          </div>
-                          <div class="form-group">
-                              <div class="pad-right-middle">
-                                  <label>CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                                  <input id="Correo" name="Correo" class="form-control" type="text">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="pad-right-middle">
-                                  <label>CELULAR<span class="obligatorio">*</span></label>
-                                  <input id="Movil" name="Movil" class="form-control" type="text">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label>CUÉNTANOS EN QUÉ TE PODEMOS AYUDAR</label>
-                              <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
-                          </div>
-                          <button id="btnInfoContacto" class="btn btn-default btn-black" type="button">ENVIAR</button>
-                      </form>
-                  </div>
                 <div class="tab-pane fade" id="service">
                       <h3>MIS SERVICIOS</h3>
                       <h1 class="title-form">DALE UN VISTAZO A NUESTROS SERVICIOS </h1>
@@ -279,7 +198,6 @@
                               <label>Nota</label>
                               <p>Para la confirmación de recepción del pago, enviar la constancia de transferencia o voucher por correo electrónico, a la siguiente dirección: info@runfit.pe</p><i>*En caso que realice el pago en efectivo, enviar un correo a la empresa, comunicando la fecha en que lo realizó.</i>
                           </div>
-                          <button id="btnElegir" class="btn btn-default btn-black" type="button">INSCRÍBETE</button>
                       </form>
                   </div>
               </div>
@@ -318,24 +236,14 @@
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script th:inline="javascript">
       let $perfil = {};
-      const btnElegir = document.getElementById('btnElegir');
-      const btnInfoContacto = document.getElementById('btnInfoContacto');
-      const btnAprobarTrainer = document.getElementById('btnAprobarTrainer');
-      const btnAbrirCajaNotificacion = document.getElementById('btnAbrirCajaNotificacion');
+      const btnActualizarPerfil = document.getElementById('btnActualizarPerfil');
       const body = document.querySelector('body');
 
 
       (function () {
-          btnElegir.addEventListener('click', irARegistro);
-          btnInfoContacto.addEventListener('click', registrarContactoTrainer);
-          if(btnAprobarTrainer !== null){
-              btnAprobarTrainer.addEventListener('click', aprobacionFinalTrainer);
-              btnAbrirCajaNotificacion.addEventListener('click', (e)=>{
-                  e.preventDefault();
-                  document.getElementById('SeccionCorreccion').classList.remove('hidden');
-              });
+          if(btnActualizarPerfil !== null){
+              btnActualizarPerfil.addEventListener('click', actualizarPerfil);
           }
-
           init();
       })();
 
@@ -355,19 +263,6 @@
 
       function init(){
         getTrainer();
-        checkFrom();
-      }
-
-      function checkFrom(){
-          if(btnAprobarTrainer === null){
-              document.querySelector('.rating').classList.remove('hidden');
-              document.querySelector('.valoration').classList.remove('hidden');
-
-          }else{
-              document.querySelector('#btnInfoContacto').classList.add('hidden');
-              document.querySelector('#btnElegir').classList.add('hidden');
-              disabledForm('frm_contacto');
-          }
       }
 
       function checkTab(){
@@ -380,62 +275,22 @@
           }
       }
 
-      function irARegistro(){
-        const hshId = getHash32Id('rf-public', $perfil.id);
-        const trainerCorreo = btoa($perfil.correo).replace(/\=/g,'');
-        const fichaIds = $perfil.fichaClienteIds.split("|");
-        if(fichaIds.length==1){
-            const id = fichaIds[0];
-            if(id === "1"){
-                window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo;
-            }else if(id === "2"){
-                window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo;
-            }
-        }else{
-
-        }
-      }
-
-      function registrarContactoTrainer(){
-          const $frm = document.getElementById('frm_contacto');
-          const params = getFormData($($frm));
-          params.sexo = document.querySelector('input[name="Sexo"]:checked').value;
-          params.correoTrainer = $perfil.correo;
-          const trainerId = $perfil.id;
-          $.ajax({
-              type: 'POST',
-              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: _ctx + 'p/contacto/trainer/registrar/'+trainerId,
-              dataType: "json",
-              data: params,
-              blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
-                  }
-              },
-              error: function (xhr) {
-                  exception(xhr);
-              },
-              complete: function () {
-              }
-          });
-      }
-
-      function aprobacionFinalTrainer(e){
+      function actualizarPerfil(e){
           e.preventDefault();
           const hshId = document.getElementById('HshTrainerId').value;
-          const correo = $perfil.correo;
+          const d = {};
+          d.trainerId = hshId;
           $.ajax({
-              type: 'POST',
-              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: _ctx + 'p/trainer/ultima-aprobacion/'+hshId+'/'+correo,
+              type: 'PUT',
+              contentType: 'application/json',
+              url: _ctx + 'p/trainer/subsanar/observaciones/perfil',
               dataType: "json",
+              data: JSON.stringify(d),
               blockLoading: true,
               success: function (data, textStatus) {
                   if (textStatus == "success") {
                       reqSuccess(data);
-                      document.querySelector('.div-aprobacion').classList.add('hidden');
+                      document.querySelector('.div-actualizacion').classList.add('hidden');
                   }
               },
               error: function (xhr) {
@@ -462,7 +317,7 @@
               success: function (data, textStatus) {
                   if (textStatus == "success") {
                       reqSuccess(data);
-                      document.querySelector('.div-aprobacion').classList.add('hidden');
+                      document.querySelector('.div-actualizacion').classList.add('hidden');
                   }
               },
               error: function (xhr) {
@@ -579,17 +434,6 @@
             }
             document.getElementById('lblRedes').classList.remove('hidden');
         }
-
-          if(flag_form_populate){
-              document.querySelector('#Nombre').value = t.nombreCompleto;
-              document.querySelector('#Correo').value = t.correo;
-              document.querySelector('#Movil').value = "987654321";
-              document.querySelector('#Mensaje').value = "Aloha";
-          }
-          const obs = document.getElementById('Obs');
-          if(obs != undefined){
-              obs.value = "Demostración";
-          }
       }
       function reconstruirLista(e, stringArr){
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));

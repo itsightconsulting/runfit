@@ -141,15 +141,19 @@ function changecolor() {
 }
 
 function tabColaboradores() {
+    $(".deportistas .item").addClass("active");
     $(".deportistas .item").click(function() {
+        $(".deportistas .item").removeClass("active");
+        $(this).addClass("active");
         var data = $(this).attr('data-info')
         $('.description_collaborator').fadeOut();
         //change image
         var img = $(".deportistas .item");
+
         img.each(function(x, item) {
-            var name = $(this).attr('data-info')
-            if (name != data) {
-                $(this).find('img').attr('src', _ctx+'img/public/' + data + '-bn.png')
+            let name = $(this).attr('data-info')
+            if(!($(this).hasClass("active"))) {
+                $(this).find('img').attr('src', _ctx+'img/public/' + name + '-bn.png')
             }
         })
         $('.' + data + '-tab').fadeIn();

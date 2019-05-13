@@ -9,3 +9,4 @@ Runfit, consulta usuario|<p>La persona %s con correo %s y número de celular %s 
 Runfit, ficha completada por trainer|<p>Más detalles en: <a href='%s/p/trainer/ver/%s'>Ver ficha de trainer</a></p>|2
 Runfit, observaciones a la info de su perfil|<p>Observaciones: %s <br><br> Subsanar observaciones: <a href='%s/p/trainer/get/revision/%s'>Ver mi perfil</a></p>|2
 Runfit, usted ya forma parte de nuestro staff|<p>Bienvenido a la familia! Usted oficialmente forma parte de esta plataforma <br> Si desea ver su perfil público, ingrese a: <a href='%s/p/busqueda/trainers'>Buscarme</a></p>|2
+Runfit, observaciones subsanadas pendientes de revisión|<p>Más detalles en: <a href='%s/p/trainer/ver/%s'>Ver perfil trainer</a></p>|2

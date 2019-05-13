@@ -175,6 +175,13 @@ function reqSuccess(r, timeout){
     }
 }
 
+function disabledForm(frmId){
+    $(`#${frmId} input`).prop('disabled', true);
+    $(`#${frmId} textarea`).prop('disabled', true);
+    $(`#${frmId} checkbox`).prop('disabled', true);
+    $(`#${frmId} radio`).prop('disabled', true);
+}
+
 function exception(xhr, errorName) {
     console.log(xhr);
     const sCode = xhr['status'];

@@ -3,18 +3,22 @@ package com.itsight.service.impl;
 import com.itsight.domain.Correo;
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
+import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.TrainerFichaRepository;
 import com.itsight.service.CorreoService;
 import com.itsight.service.EmailService;
+import com.itsight.service.ParametroService;
 import com.itsight.service.TrainerFichaService;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.itsight.util.Enums.Mail.PERFIL_CHECK_OBS_SUBS;
 import static com.itsight.util.Enums.Mail.PERFIL_POST_OBS;
 import static com.itsight.util.Enums.Msg.OBS_PERFIL_TRAINER;
 
@@ -26,13 +30,19 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     private CorreoService correoService;
 
+    private ParametroService parametroService;
+
     @Value("${domain.name}")
     private String domainName;
 
-    public TrainerFichaServiceImpl(TrainerFichaRepository repository, EmailService emailService, CorreoService correoService) {
+    public TrainerFichaServiceImpl(TrainerFichaRepository repository,
+                EmailService emailService,
+                CorreoService correoService,
+                ParametroService parametroService) {
         super(repository);
         this.emailService = emailService;
         this.correoService = correoService;
+        this.parametroService = parametroService;
     }
 
     @Override
@@ -149,5 +159,18 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     @Override
     public Boolean getFlagFichaAceptadaByTrainerId(Integer trainerId) {
         return repository.getFlagFichaAceptadaByTrainerId(trainerId);
+    }
+
+    @Override
+    public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) {
+        repository.updateFlagFichaAceptadaByTrainerId(null, trainerId);
+
+        String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());
+        //Envio de correo
+        String cuerpo = String.format(correo.getBody(), domainName, trainerFicha.getTrainerId());//TrainerId esta como hash
+        emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+        return Enums.Msg.OBS_PERFIL_SUBSANADAS.get();
     }
 }

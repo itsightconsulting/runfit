@@ -6,6 +6,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.PerfilObsDTO;
 import com.itsight.domain.dto.RefUploadIds;
+import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
@@ -68,18 +69,26 @@ public class TrainerFichaController extends BaseController {
 
 
     @GetMapping("/get/revision/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerByIdRevision(Model model, @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
+    public @ResponseBody ModelAndView getTrainerByIdRevision(Model model,
+                @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
         Integer trainerId = getDecodeHashIdSecCustom("rf-aprobacion", hshTrainerId);
         Boolean isActived = securityUserRepository.findEnabledById(trainerId);
         if(isActived == null){
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
         if(isActived){
-            model.addAttribute("msg", PERFIL_APROBADO_ANTERIORMENTE.get());
-            return new ModelAndView(ViewConstant.MAIN_INF_N);
+            return new ModelAndView(ViewConstant.P_ERROR404);
         } else {
-            return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
+            model.addAttribute("hshTrainerId", hshTrainerId);
+            return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
         }
+    }
+
+    @PutMapping("/subsanar/observaciones/perfil")
+    public @ResponseBody String subsanarObservacionesPerfil(
+            @RequestBody TrainerFichaDTO trainerFicha) throws CustomValidationException {
+        Integer trainerId = getDecodeHashId("rf-aprobacion", trainerFicha.getTrainerId());
+        return jsonResponse(trainerFichaService.actualizarObservacionesPerfil(trainerFicha, trainerId));
     }
 
     @GetMapping("/ver/{hshTrainerId}")
@@ -94,7 +103,7 @@ public class TrainerFichaController extends BaseController {
         if(isActived){
             model.addAttribute("msg", PERFIL_APROBADO_ANTERIORMENTE.get());
             return new ModelAndView(ViewConstant.MAIN_INF_N);
-        }else {
+        } else {
             Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
             if(flag == null){
                 return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
@@ -148,7 +157,7 @@ public class TrainerFichaController extends BaseController {
     @PostMapping("/registro/{hashPreTrainerId}")
     public @ResponseBody String registroTrainer(
             @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId,
-            @RequestBody @Valid TrainerFichaDTO trainerFicha) throws CustomValidationException {
+            @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException {
 
         Integer postTraId = 0;
 

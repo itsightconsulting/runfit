@@ -3,7 +3,7 @@ package com.itsight.service.impl;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.RefUploadIds;
-import com.itsight.domain.dto.TrainerFichaDTO;
+import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.jsonb.PorcKiloTipo;
 import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
@@ -247,7 +247,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public RefUploadIds registrarPostulante(TrainerFichaDTO trainerFicha){
+    public RefUploadIds registrarPostulante(TrainerDTO trainerFicha){
         TrainerFicha obj = new TrainerFicha();
         BeanUtils.copyProperties(trainerFicha, obj);
 
@@ -259,7 +259,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
-        trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteId()));
+        trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteId()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)
 
         trainer.setUsername(trainerFicha.getUsername());
         trainer.setPassword(trainerFicha.getPassword());
