@@ -44,7 +44,7 @@ function cropperDemo(){
     setTimeout(()=>{
         const image = document.getElementById('ImagePerfil');
         cropper = new Cropper(image, {
-            aspectRatio: 16 / 9,
+            aspectRatio: 1 / 1,
             crop(event) {
                 console.log(event.detail.x);
                 console.log(event.detail.y);
@@ -54,8 +54,11 @@ function cropperDemo(){
                 console.log(event.detail.scaleX);
                 console.log(event.detail.scaleY);
             },
+            zoomOnWheel: false,
+            viewMode: 1
         });
     }, 2000);
+    $('#myModalCropper').modal('show')
 }
 
 const imgTemps = [];

@@ -476,6 +476,7 @@ if(typeof actions != "undefined" &&actions.querySelector('.docs-buttons') != und
 
                 case 'getCroppedCanvas':
                     if (result) {
+                        console.log(result);
                         // Bootstrap's Modal
                         $('#getCroppedCanvasModal').modal().find('.modal-body').html(result);
 
