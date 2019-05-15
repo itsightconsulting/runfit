@@ -16,10 +16,10 @@ import java.util.List;
 public class TrainerDTO implements Serializable {
 
     private int postulanteTrainerId;
-    @Size(min=5, max = 50)
+    @Size(min=3, max = 50)
     @NotNull
     private String apellidos;
-    @Size(min=5, max = 50)
+    @Size(min=3, max = 50)
     @NotNull
     private String nombres;
     @Size(min = 7, max = 40)
@@ -30,16 +30,16 @@ public class TrainerDTO implements Serializable {
     @NotNull
     private String username;
     @Size(min=8, max = 30)
-    @NotNull
+    @NotBlank
     private String password;
     @Size(max = 200)
-    @NotNull
+    @NotBlank
     private String especialidad;
     @Positive
     @NotNull
     private Integer tipoDocumentoId;
     @Size(max = 16)
-    @NotNull
+    @NotBlank
     private String documento;
     @Positive
     @NotNull
@@ -92,12 +92,13 @@ public class TrainerDTO implements Serializable {
     @Size(max = 14)
     private String telefono;
     @Size(max = 14)
+    @NotBlank
     private String movil;
-    @Size(min = 3, max = 200)
-    @NotNull
+    @Size(min = 16, max = 200, message = "Debe subir una foto de perfil")
+    @NotNull(message = "Debe subir una foto de perfil")
     private String imgExt;
-    @Positive
-    @NotNull
+    @Positive(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")
+    @NotNull(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")
     @Max(36)
     private Integer fichaClienteId;
     @Size(max = 100)

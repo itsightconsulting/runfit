@@ -14,7 +14,6 @@ function readURL(input, img) {
 }
 
 function uploadImg(input, img) {
-
     var _URL = window.URL || window.webkitURL;
 
     $(input).change(function () {
@@ -25,6 +24,7 @@ function uploadImg(input, img) {
             imgTemp.onload = function () {
                 //Previsualizar
                 readURL($(input)[0], img);
+                cropperDemo();
             };
             imgTemp.onerror = function () {
                 $(input).val("");
@@ -38,6 +38,24 @@ function uploadImg(input, img) {
             imgTemp.src = _URL.createObjectURL(file);
         }
     });
+}
+
+function cropperDemo(){
+    setTimeout(()=>{
+        const image = document.getElementById('ImagePerfil');
+        cropper = new Cropper(image, {
+            aspectRatio: 16 / 9,
+            crop(event) {
+                console.log(event.detail.x);
+                console.log(event.detail.y);
+                console.log(event.detail.width);
+                console.log(event.detail.height);
+                console.log(event.detail.rotate);
+                console.log(event.detail.scaleX);
+                console.log(event.detail.scaleY);
+            },
+        });
+    }, 2000);
 }
 
 const imgTemps = [];

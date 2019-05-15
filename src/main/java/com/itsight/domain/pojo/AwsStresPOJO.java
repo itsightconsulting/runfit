@@ -14,5 +14,6 @@ public class AwsStresPOJO {
     private String bucket;
     private String prefix;
     private String uuid;
+    private String extension;
 
 }

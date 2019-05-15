@@ -9,6 +9,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Tarifario implements Serializable {
 
+    private String nombre;
     private Integer personas;
     private Integer meses;
     private Integer sesiones;

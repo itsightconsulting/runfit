@@ -222,7 +222,8 @@ function exception(xhr, errorName) {
                         const errors = [];
                         xhr.responseJSON.subErrors.forEach(v=>{
                             const field = capitalizeFirstLetter(v.object);
-                            document.getElementById(field).classList.toggle('state-error');
+                            const ele = document.getElementById(field);
+                            ele != undefined ? ele.classList.toggle('state-error') : "";
                             errors.push(`${field}: ${capitalizeFirstLetter(v.message)}`);
 
                         });

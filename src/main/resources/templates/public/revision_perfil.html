@@ -453,8 +453,9 @@
 
       function reconstruirCuentaBanco(cuentas){
           cuentas = JSON.parse(cuentas);
-          const pc = cuentas[0];
-          document.getElementById('CuentaBanco').appendChild(htmlStringToElement(`<table class="table">
+          if(cuentas.length>0){
+              const pc = cuentas[0];
+              document.getElementById('CuentaBanco').appendChild(htmlStringToElement(`<table class="table">
                                       <thead>
                                       <tr>
                                           <th>MONEDA</th>
@@ -491,6 +492,7 @@
                                       </tbody>
                                   </table>
           `));
+          }
       }
 
       function reconstruirTarifario(tarifas){

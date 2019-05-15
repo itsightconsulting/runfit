@@ -5,6 +5,7 @@
     <title>Inscripción de entrenadores | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
     <style>
         .mg-bt-6{
             margin-bottom: 6px !important;
@@ -51,6 +52,10 @@
         .img-cc{
             opacity: 0.3;
         }
+
+        .div-fichas:hover{
+            color: #a8fa00;
+        }
     </style>
   </head>
   <body>
@@ -66,8 +71,29 @@
                       <div class="col-md-5">
                           <div class="avatar-form">
                               <input type="file" id="InpImgPerfil">
-                              <div class="avatar-form-content">
+                              <div class="avatar-form-content img-container">
                                   <img title="Subir foto" id="ImagePerfil" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                              </div>
+                          </div>
+                          <div class="row" id="actions">
+                              <div class="col-md-12 docs-buttons">
+                                  <div class="btn-group btn-group-crop">
+                                      <button type="button" class="btn btn-success" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
+              Get Cropped Canvas
+            </span>
+                                      </button>
+                                      <button type="button" class="btn btn-success" data-method="getCroppedCanvas" data-option="{ &quot;width&quot;: 160, &quot;height&quot;: 90 }">
+            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ width: 160, height: 90 })">
+              160×90
+            </span>
+                                      </button>
+                                      <button type="button" class="btn btn-success" data-method="getCroppedCanvas" data-option="{ &quot;width&quot;: 320, &quot;height&quot;: 180 }">
+            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ width: 320, height: 180 })">
+              320×180
+            </span>
+                                      </button>
+                                  </div>
                               </div>
                           </div>
                       </div>
@@ -126,114 +152,112 @@
                                                       </div>
                                                   </li>
                                               </ul>
-                                      </div>
-                                      <div class="form-group" id="Estudios">
-                                          <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
-                                          <textarea style="resize: both; overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
-                                      </div>
-                                      <div class="form-group" id="ExpLaboral">
-                                          <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                      </div>
-                                      <div class="form-group" id="Logros">
-                                          <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>HORARIO LABORAL<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text">
-                                      </div>
-                                      <div class="form-group">
-                                          <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
-                                          <ul class="checks">
-                                              <li>
-                                                  <div class="chk-content">Principiantes
-                                                      <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="chk-content">Intermedios
-                                                      <input name="NivelClientes" value="Intermedios" type="checkbox"/><span class="checkmark"></span>
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="chk-content">Avanzados
-                                                      <input name="NivelClientes" value="Avanzados" type="checkbox"/><span class="checkmark"></span>
-                                                  </div>
-                                              </li>
-                                          </ul>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>AL AIRE LIBRE / DOMICILIO</label>
-                                          <p>Dar click en el mapa para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
-                                          <div class="map" id="map"></div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>CENTRO DE TRABAJO</label>
-                                          <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
-                                      </div>
-                                      <div class="form-group" id="Especialidades">
-                                          <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                          <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
-                                          <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>FORMA DE TRABAJO</label>
-                                          <ul class="checks">
-                                              <li>
-                                                  <div class="chk-content">Personalizado
-                                                      <input type="checkbox" name="FormaTrabajo" value="Personalizado" checked="checked"><span class="checkmark"></span>
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="chk-content">En grupo
-                                                      <input type="checkbox" name="FormaTrabajo" value="En grupo"><span class="checkmark"></span>
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="chk-content">Online
-                                                      <input type="checkbox" name="FormaTrabajo" value="Online"><span class="checkmark"></span>
-                                                  </div>
-                                              </li>
-                                          </ul>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>GALERIA DE FOTOS</label><br>
-                                          <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
-                                          <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...<span class="obligatorio">*</span></label>
-                                      </div>
-                                      <div class="row" style="padding-bottom: 20px">
-                                          <div class="col-md-12" id="ImgsGaleria">
-
+                                           </div>
+                                          <div class="form-group" id="Estudios">
+                                              <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
-                                      </div>
-                                      <div class="form-group rs">
-                                          <label>REDES SOCIALES</label>
-                                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
-                                          <div class="col-xs-11 no_padding">
-                                              <input class="form-control" id="RsFb" type="text">
+                                          <div class="form-group">
+                                              <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                              <textarea style="resize: both; overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
                                           </div>
-                                      </div>
-                                      <div class="form-group rs">
-                                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
-                                          <div class="col-xs-11 no_padding">
-                                              <input class="form-control" id="RsIn" type="text">
+                                          <div class="form-group" id="ExpLaboral">
+                                              <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
-                                      </div>
-                                      <div class="form-group rs">
-                                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
-                                          <div class="col-xs-11 no_padding">
-                                              <input class="form-control" id="RsYo" type="text">
+                                          <div class="form-group" id="Logros">
+                                              <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
-                                      </div>
-                                      <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
+                                          <div class="form-group">
+                                              <label>HORARIO LABORAL<span class="obligatorio">*</span></label>
+                                              <input class="form-control" type="text">
+                                          </div>
+                                          <div class="form-group">
+                                              <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Principiantes
+                                                          <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Intermedios
+                                                          <input name="NivelClientes" value="Intermedios" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Avanzados
+                                                          <input name="NivelClientes" value="Avanzados" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>AL AIRE LIBRE / DOMICILIO</label>
+                                              <p>Dar click en el mapa para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
+                                              <div class="map" id="map"></div>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>CENTRO DE TRABAJO</label>
+                                              <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
+                                          </div>
+                                          <div class="form-group" id="Especialidades">
+                                              <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>FORMA DE TRABAJO</label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Personalizado
+                                                          <input type="checkbox" name="FormaTrabajo" value="Personalizado" checked="checked"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">En grupo
+                                                          <input type="checkbox" name="FormaTrabajo" value="En grupo"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Online
+                                                          <input type="checkbox" name="FormaTrabajo" value="Online"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>GALERIA DE FOTOS</label><br>
+                                              <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
+                                              <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...<span class="obligatorio">*</span></label>
+                                          </div>
+                                          <div class="row" style="padding-bottom: 20px">
+                                              <div class="col-md-12" id="ImgsGaleria">
+                                              </div>
+                                          </div>
+                                          <div class="form-group rs">
+                                              <label>REDES SOCIALES</label>
+                                              <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
+                                              <div class="col-xs-11 no_padding">
+                                                  <input class="form-control" id="RsFb" type="text">
+                                              </div>
+                                          </div>
+                                          <div class="form-group rs">
+                                              <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
+                                              <div class="col-xs-11 no_padding">
+                                                  <input class="form-control" id="RsIn" type="text">
+                                              </div>
+                                          </div>
+                                          <div class="form-group rs">
+                                              <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
+                                              <div class="col-xs-11 no_padding">
+                                                  <input class="form-control" id="RsYo" type="text">
+                                              </div>
+                                          </div>
                                       </div>
                                   </form>
                               </div>
@@ -305,8 +329,6 @@
                                           <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
                                           <input class="form-control" type="password" id="Password" name="Password">
                                       </div>
-
-                                      <button class="btn btn-default btn-black" type="button">GUARDAR</button>
                                   </form>
                               </div>
                               <div class="tab-pane fade" id="service">
@@ -334,6 +356,7 @@
                                           </div>
                                       </div>
                                       <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
+                                        <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
                                         <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
                                       </h4>
                                       <div class="row">
@@ -428,20 +451,26 @@
                                           <button class="btn btn-default btn-black" type="button" id="btnNuevaTarifa">AGREGAR PAQUETE</button>
                                       </div>
                                       <hr>
-                                      <button rel="tooltip"
-                                        title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
-                                        id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
-                                        <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
-                                      </button>
                                       <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIO</button>
+                                      <button rel="tooltip"
+                                              title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
+                                              id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
+                                          <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
+                                      </button>
                                       <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Después de seleccionar el método de pago, click en agregar y repita tantas veces como métodos de pago acepte"></i>
                                         <i data-toggle="collapse" data-target="#contentInfoPago" rel="tooltip" data-original-title="Mostrar/Ocultar" class="fa fa-chevron-up fa-plus-cs " style="color: #a8fa00;float:right;"></i>
                                       </h4>
                                       <div class="row">
-                                          <div class="col col-md-12 text-center" id="MediosPagosAgregados">
-                                            <h1>Pendiente...</h1>
+                                          <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
+                                              <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                              <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1" style="padding-right: 30px"><img th:src="@{/img/mastercard.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                              <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2" style="padding-right: 30px"><img th:src="@{/img/visa.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                              <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3" style="padding-right: 30px"><img th:src="@{/img/amex.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                              <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                              <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
                                           </div>
+
                                       </div>
                                       <div class="collapse in" id="contentInfoPago">
                                           <div class="form-group">
@@ -492,26 +521,40 @@
                                               <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
                                           </div>
                                           <div class="form-group info-tarjetas hidden">
-                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}" style="width: 64px;"></a>
-                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="2" class="img-cc cc-elegir" th:src="@{/img/visa.png}" style="width: 64px;"></a>
-                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="3" class="img-cc cc-elegir" th:src="@{/img/amex.png}" style="width: 64px;"></a>
-                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}" style="width: 64px;"></a>
-                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}+'?'+${version}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="2" class="img-cc cc-elegir" th:src="@{/img/visa.png}+'?'+${version}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="3" class="img-cc cc-elegir" th:src="@{/img/amex.png}+'?'+${version}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}+'?'+${version}" style="width: 64px;"></a>
+                                              <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}+'?'+${version}"></a>
                                           </div>
                                           <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago">AGREGAR INFORMACIÓN PAGO</button>
                                       </div>
                                       <hr>
                                       <input type="file" id="inpCondServicio" class="hide">
-                                      <button id="btnModalFichas" class="btn btn-default btn-white" type="button" onclick="abrirModalFichas()">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                                      <button data-ficha-id="0" style="margin-bottom: 10px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                                      <input type="hidden" id="FichaClienteId"/>
+                                      <div class="row collapse" id="FichasDisponibles">
+                                          <div class="col col-md-12 text-center" style="padding-bottom:15px">
+                                              <div class="col-md-6" style="margin-bottom: 10px;">
+                                                  <h6>Standard</h6>
+                                                  <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                              </div>
+                                              <div class="col-md-6" style="margin-bottom: 10px;">
+                                                  <h6>Running</h6>
+                                                  <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                                              </div>
+                                              <hr>
+                                          </div>
+                                      </div>
                                       <div class="terms" onclick="javascript:abrirModalTermCond()">
                                           <div class="chk-content"><a href="javascript:void(0)">Acepto términos y condiciones<span class="obligatorio">*</span></a>
                                               <input id="inpTermCond" type="checkbox"><span class="checkmark"></span>
                                           </div>
                                       </div>
-                                      <button class="btn btn-default btn-black" type="button">GUARDAR</button>
                                   </form>
                               </div>
                           </div>
+                              <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
                       </div>
                   </div>
               </div>
@@ -519,35 +562,6 @@
       </div>
       <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
       <!-- MODALS  -->
-      <div class="modal fade" tabindex="-1" role="dialog" id="myModalFichas">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header" style="background: #a8fa00;color: white">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white"><i class="fa fa-15x fa-close"></i></button>
-                      <h3 class="modal-title">Seleccione ficha</h3>
-                  </div>
-                  <div class="modal-body" style="background: white;height: 68%">
-                      <div class="col-sm-12" id="Fichas">
-                          <div class="col-sm-6 col-xs-6">
-                              <h4 style="color: #000">Running</h4>
-                              <div onclick="javascript:elegirFicha(this)" class="div-fichas" data-id="1" data-nombre="Running" style="border: 2px solid gray;border-radius: 15px;width: 100%; height: 90%">
-                                <img style="max-width: 100%;height: 100%;border-radius: 12px" th:src="@{/img/public/home.jpg}+'?'+${version}"/></div>
-                              <div class="text-center"><input type="radio" name="FichaCliente" data-id="1"></div>
-                          </div>
-                          <div class="col-sm-6 col-xs-6">
-                              <h4 style="color: #000">Standard</h4>
-                              <div onclick="javascript:elegirFicha(this)" class="div-fichas" data-id="2" data-nombre="General" style="border: 2px solid gray;border-radius: 15px;width: 100%; height: 90%">
-                                <img style="max-width: 100%;height: 100%;border-radius: 12px" th:src="@{/img/public/home-details.png}+'?'+${version}"/></div>
-                              <div class="text-center"><input type="radio" name="FichaCliente" data-id="2" checked="checked"></div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="modal-footer text-center" style="background: #a8fa00;">
-                      <i class="fa fa-fw fa-2x fa-check" style="color: white; cursor:pointer;" onclick="ocultarModalFichas()" title="Confirmar"></i>
-                  </div>
-              </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
       <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond">
           <div class="modal-dialog" role="document" style="width: 95%">
               <div class="modal-content" style="width: 100%">
@@ -564,6 +578,65 @@
               </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalCC">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header" style="background: #a8fa00;color: white">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
+                      <h3 class="modal-title">Cuenta Bancaria</h3>
+                  </div>
+                  <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
+                      <div class="col-sm-12" id="CuentaBancariaUnica">
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Tipo documento:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-td"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Número de documento:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-nd"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Cuenta dólares:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cd"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div></div>
+                          <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Interbancario dólares:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
+                            <input id="ModalCuentaBancoId" type="hidden"/>
+                      </div>
+                  </div>
+                  <div class="modal-footer text-center" style="background: #a8fa00;">
+                      <i class="fa fa-fw fa-2x fa-trash-o" style="cursor:pointer;" onclick="eliminarCuentaBanco()" title="Eliminar cuenta bancaria"></i>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div>
+      <div class="modal fade docs-cropped" id="getCroppedCanvasModal" role="dialog" aria-hidden="true" aria-labelledby="getCroppedCanvasTitle" tabindex="-1">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="getCroppedCanvasTitle">Cropped</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <a class="btn btn-primary" id="download" href="javascript:void(0);" download="cropped.jpg">Download</a>
+                  </div>
+              </div>
+          </div>
+      </div><!-- /.modal -->
       <div class="col-md-6 no-padding-991" id="status" style="display: none">
           <b>Coordenadas:</b> --
           <br class="cb"/><b>Radio:</b> --
@@ -572,6 +645,7 @@
 
     <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
     <script>
         const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
@@ -583,15 +657,39 @@
         const tabService = document.getElementById('service');
         const inpCondServicio = document.getElementById('inpCondServicio');
         const servicios = [];
-        const ccBancarias = [];
+        let ccBancarias = [];
         const metodosPago = [];
         let termConSvc = [];
-        const initTabActive = 3;
+        const initTabActive = 1;
         let selServicioId = -1;
         let accServicioId = 0;
         let accTarifaId = 0;
         let accCuentaId = 0;
         let terminosAceptados = false;
+
+
+        //Cropper
+
+        var Cropper = window.Cropper;
+        var URL = window.URL || window.webkitURL;
+        var container = document.querySelector('.img-container');
+        var image = container.getElementsByTagName('img').item(0);
+        var download = document.getElementById('download');
+        var actions = document.getElementById('actions');
+        var dataX = document.getElementById('dataX');
+        var dataY = document.getElementById('dataY');
+        var dataHeight = document.getElementById('dataHeight');
+        var dataWidth = document.getElementById('dataWidth');
+        var dataRotate = document.getElementById('dataRotate');
+        var dataScaleX = document.getElementById('dataScaleX');
+        var dataScaleY = document.getElementById('dataScaleY');
+
+
+        var cropper;
+        var originalImageURL = image.src;
+        var uploadedImageType = 'image/jpeg';
+        var uploadedImageName = 'cropped.jpg';
+        var uploadedImageURL;
 
 
         (function () {
@@ -642,7 +740,16 @@
             if (file.files.length > 0) {
                 file = file.files[0];
                 const data = new FormData();
-                data.append("file", file);
+
+
+                const blobBin = atob($('#getCroppedCanvasModal canvas')[0].toDataURL().split(',')[1]);
+                var array = [];
+                for(var i = 0; i < blobBin.length; i++) {
+                    array.push(blobBin.charCodeAt(i));
+                }
+                var ff=new Blob([new Uint8Array(array)], {type: 'image/png'});
+                data.append("file", ff);
+                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
 
                 $.ajax({
                     type: 'PUT',
@@ -738,6 +845,7 @@
             activeTooltips();
             if(flag_form_populate){
                 populateForm();
+
             }
         }
 
@@ -749,13 +857,6 @@
         }
 
         function modalEventos(){
-            $('#myModalFichas').on('hidden.bs.modal', ()=> {
-                const btnModalFichas = document.getElementById('btnModalFichas');
-                const fichas = document.querySelector('#Fichas');
-                const fichaId = fichas.querySelector('input[name="FichaCliente"]:checked').getAttribute('data-id');
-                const divFicha = fichas.querySelector(`.div-fichas[data-id="${fichaId}"]`).getAttribute('data-nombre');
-                btnModalFichas.textContent = `Ficha elegida: ${divFicha}`;
-            })
 
             $('#myModalTermCond').on('hidden.bs.modal', ()=> {
                 if(!terminosAceptados) {
@@ -772,7 +873,7 @@
             const arrURL = window.location.href.split("/");
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
-            const nmImgPerfil = inpImgPerfil.files[0].name;
+            const nmImgPerfil = inpImgPerfil.files[0] == undefined ? "" : inpImgPerfil.files[0].name;
             const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
 
             const extsImgsGaleria = Array.from(inpGaleria.files)
@@ -847,7 +948,7 @@
                 mostrarDetalleServicio(selServicioId);
             } else if(clases.contains('tarifa-svc')){
                 let padre = {};
-                if(input.tagName === "I"){
+                if(input.tagName === "IMG"){
                     padre = input.parentElement.parentElement;
                 } else if(input.tagName === "A"){
                     padre = input.parentElement;
@@ -888,11 +989,49 @@
                 btnNuevaInfoPago.innerText = nomButton;
             } else if(clases.contains('cc-elegir')){
                 input.classList.toggle('img-cc');
+            } else if(clases.contains('cc-bancaria')){
+                const inputBancoId = document.getElementById('ModalCuentaBancoId');
+                const ccId = Number(input.getAttribute('data-id'));
+                inputBancoId.value = ccId;
+                const d = ccBancarias.find(e => e.id === ccId);
+                $('#myModalCC').modal('show');
+                const dC = document.getElementById('CuentaBancariaUnica');
+                dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id==d.bancoId).nombre;
+                dC.querySelector('.cc-titular').textContent = d.titular;
+                dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
+                dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
+                dC.querySelector('.cc-cs').textContent = d.numeroSoles;
+                dC.querySelector('.cc-cd').textContent = d.numeroDolares;
+                dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
+                dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
+            } else if(clases.contains('div-fichas')){
+                const btn = document.getElementById('btnElegirFicha');
+                const fichaName = input.previousElementSibling.textContent.trim();
+                btn.innerText = "Ficha seleccionada: "+fichaName;
+                btn.click();
+                btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
             }
+        }
+
+        function eliminarCuentaBanco(){
+            $.smallBox({
+                color: "rgb(204, 77, 77)",
+                content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>¿Estás seguro de eliminar esta cuenta bancaria?</em><br><br>" +
+                         "<div class='text-center'><button onclick='confirmarEliminarCB();' class='btn btn-danger' style='margin: 10px'>SI</button><button class='btn btn-primary' style='margin: 10px'>NO</button></div>" ,
+                timeout: 12000});
+
+        }
+
+        function confirmarEliminarCB(){
+            const cbId = Number(document.getElementById('ModalCuentaBancoId').value);
+            ccBancarias = ccBancarias.filter(c => c.id !== cbId);
+            tabService.querySelector(`.cc-bancaria[data-id="${cbId}"]`).parentElement.remove();
+            $('#myModalCC').modal('hide');
         }
 
         function mostrarDetalleTarifaSvc(tarifaId){
             const t = servicios.find(v => v.id === selServicioId).tarifarios.find(t=>t.id === tarifaId);
+            document.querySelector('#NombreTarifario').value = t.nombre;
             document.querySelector('#txtCantidadPersonas').value = t.personas;
             document.querySelector('#txtCantidadMeses').value = t.meses;
             document.querySelector('#txtCantidadSesiones').value = t.sesiones;
@@ -908,7 +1047,7 @@
                 mainIncluidos.innerHTML =
                     `<label>QUE INCLUYE</label>
                      <textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea>
-                     <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
+                     <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
                 const firstInput = mainIncluidos.querySelector('textarea');
                 const btnPlus = mainIncluidos.querySelector('a');
                 firstInput.value = arrIncluidos[0];
@@ -932,25 +1071,8 @@
                 const nomFile = condSvcFile.file.name;
                 btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
             }else{
-                btnSubirCondServicio.innerHTML = "ADJUNTAR CONDICIONES DEL SERVICIO<span class=\"obligatorio\">*</span>";
+                btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
             }
-
-
-
-            /*document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
-            document.querySelector('#txtCantidadPersonas').value = 0;
-            document.querySelector('#txtCantidadMeses').value = 0;
-            document.querySelector('#txtCantidadSesiones').value = 0;
-            document.querySelector('#PrecioPaquete').value = '0.00';
-
-            document.querySelector('#TitularCuenta').value = "";
-            document.querySelector('#TitularTipoDoc').selectedIndex = 0;
-            document.querySelector('#TitularNumDoc').value = "";
-            document.querySelector('#NumeroCuentaSoles').value = "";
-            document.querySelector('#NumeroCuentaDolares').value = "";
-            document.querySelector('#InterbancarioSoles').value = "";
-            document.querySelector('#InterbancarioDolares').value = "";
-            document.querySelector('#BancoId').selectedIndex = 0;*/
         }
 
         function agregarServicio(){
@@ -1018,12 +1140,13 @@
 
         function getTarifa(){
             const tar = new Object();
+            tar.nombre = document.querySelector('#NombreTarifario').value;
             tar.frecuencia = document.querySelector('#FrecuenciaPaquete').value;
             tar.personas = document.querySelector('#txtCantidadPersonas').value.trim();
             tar.meses = document.querySelector('#txtCantidadMeses').value.trim();
             tar.sesiones = document.querySelector('#txtCantidadSesiones').value.trim();
             tar.valid = false;
-            if(tar.frecuencia !== "" && Number(tar.personas)>0 && (Number(tar.meses)>0 || Number(tar.sesiones)>0)){
+            if(tar.nombre !== "" && tar.frecuencia !== "" && Number(tar.personas)>0 && (Number(tar.meses)>0 || Number(tar.sesiones)>0)){
                 tar.precio = document.querySelector('#PrecioPaquete').value;
                 tar.valid = true;
                 tar.id = ++accTarifaId;
@@ -1105,16 +1228,13 @@
                     cleanPaqueteCampos();
                     s.tarifarios.push(t);
                     $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000})
+                    document.getElementById('Tarifarios')
+                        .appendChild(
+                            htmlStringToElement(`<div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}"><a href="javascript:void(0)" class="tarifa-svc"><h6>${t.nombre}</h6><img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/></a></div>`));
                 }else
                     $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Agregar primero un servicio</em>" ,timeout: 2500})
             }else{
                 $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
-            }
-            if(t.valid){
-                document.getElementById('Tarifarios')
-                    .appendChild(
-                    htmlStringToElement(`<div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}"><a href="javascript:void(0)" class="tarifa-svc">${t.frecuencia}<i class="fa fa-ticket fa-fw fa-2x tarifa-svc mg-bt-6"></i></a></div>`));
-
             }
         }
 
@@ -1133,8 +1253,10 @@
                     const c = getCuentaBancaria();
                     if(c.valid){
                         ccBancarias.push(c);
+                        const mePagos = document.getElementById('MediosPagosAgregados');
                         cleanCuentaBanCampos();
                         $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
+                        mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.id}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.id}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
                     }else{
                         $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 3500})
                     }
@@ -1153,6 +1275,22 @@
             }else{
                 $.smallBox({color: 'alert',content: '<i>Primero debe seleccionar un tipo de medio de pago</i>'});
             }
+
+            showInfoPagosSelected();
+        }
+
+        function showInfoPagosSelected(){
+            tabService.querySelectorAll('.cc-elegido').forEach(e=>e.classList.add('hidden'));
+            if(metodosPago.find(e=>e.infoPagoId===1)){
+                tabService.querySelector('.cc-elegido[data-id="0"]').classList.remove('hidden');
+            }
+
+            if(metodosPago.find(e=>e.infoPagoId===3)){
+                const ccs = metodosPago.find(e => e.infoPagoId === 3).detalle.split("|");
+                ccs.forEach(id=>{
+                    tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+                })
+            }
         }
 
         function checkExistsInfoPago(o){
@@ -1165,6 +1303,7 @@
         }
 
         function cleanPaqueteCampos(){
+            document.querySelector('#NombreTarifario').value = "";
             document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
             document.querySelector('#txtCantidadPersonas').value = 0;
             document.querySelector('#txtCantidadMeses').value = 0;
@@ -1196,29 +1335,6 @@
             document.getElementById('inpTermCond').checked=true;
             terminosAceptados = true;
             $('#myModalTermCond').modal('hide');
-        }
-
-        function abrirModalFichas(){
-            $('#myModalFichas').modal('show');
-        }
-
-        function ocultarModalFichas(){
-            $('#myModalFichas').modal('hide');
-        }
-
-        function elegirFicha(e){
-            const fichaId = Number(e.getAttribute('data-id'));
-            const divFichas = document.querySelector('#Fichas');
-            divFichas.querySelectorAll('input').forEach(v=>{
-                v.checked = false;
-            });
-            divFichas.querySelectorAll('div').forEach(v=>{
-                if(v.hasAttribute('data-id')){
-                    v.classList.remove('ficha-pick');
-                }
-            });
-            divFichas.querySelector(`input[data-id="${fichaId}"]`).checked = true;
-            divFichas.querySelector(`div[data-id="${fichaId}"]`).classList.add('ficha-pick');
         }
 
         function populateForm(){
@@ -1286,6 +1402,7 @@
             document.getElementById('btnNuevoServicio').click();
 
             //Tarifario al servicio agregado anterior
+            document.getElementById('NombreTarifario').value = "De amateur a profesional";
             document.getElementById('txtCantidadPersonas').value = "1";
             document.getElementById('txtCantidadMeses').value = "4";
             document.getElementById('txtCantidadSesiones').value = "14";
@@ -1302,6 +1419,11 @@
             document.getElementById('btnNuevaInfoPago').click();
 
             document.querySelector('#inpTermCond').checked = true;
+
+            setTimeout(()=>{
+                document.getElementById('btnElegirFicha').click();
+                setTimeout(()=>{document.querySelector('.div-fichas').click()}, 500)
+                }, 500);
 
             /*var tid = setInterval( function () {
                 if ( document.readyState !== 'complete' ) return;
@@ -1331,7 +1453,7 @@
             obj.experiencias = getValuesByClass('inp-experiencia');
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
-            obj.fichaClienteId = Number(document.querySelector('input[name="FichaCliente"]:checked').getAttribute('data-id'));
+            obj.fichaClienteId = Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
             const rdmNum = Math.floor(Math.random() * 100);
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.servicios = servicios;

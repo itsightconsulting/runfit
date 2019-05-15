@@ -56,7 +56,7 @@ public interface BaseService<T, V> {
 
     void actualizarFlagActivoById(V id, boolean flagActivo);
 
-    default String subirImagen(MultipartFile file, Integer id, String uuid) throws CustomValidationException {
+    default String subirImagen(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
         return null;
     }
 
@@ -66,8 +66,14 @@ public interface BaseService<T, V> {
 
     default boolean uploadImageToAws3(MultipartFile file, AwsStresPOJO credentials, final Logger logger) {
         if (!file.isEmpty()) {
+
             String[] splitNameFile = file.getOriginalFilename().split("\\.");
-            String extension = "." + splitNameFile[splitNameFile.length - 1];
+            String extension;
+            if(splitNameFile.length == 1){
+                extension = "." + credentials.getExtension();
+            }else{
+                extension =  "." +splitNameFile[splitNameFile.length - 1];
+            }
 
             try {
                 String objectName = credentials.getUuid()+extension;

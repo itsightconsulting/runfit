@@ -33,7 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.itsight.util.Enums.Mail.*;
+import static com.itsight.util.Enums.Mail.PERFIL_TRAINER_APROBADO;
+import static com.itsight.util.Enums.Mail.ULTIMA_ETAPA_POSTULANTE;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
@@ -468,8 +469,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public String subirImagen(MultipartFile file, Integer id, String uuid) throws CustomValidationException {
-        boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuid), LOGGER);
+    public String subirImagen(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
+        boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuid, extension), LOGGER);
         if(success){
             return Msg.POSTULANTE_ULTIMA_ETAPA.get();
         }
@@ -478,7 +479,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     @Override
     public String subirImagenes(MultipartFile[] files, Integer id, String uuids) throws CustomValidationException {
-        boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids), LOGGER);
+        boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids, ""), LOGGER);
         if(success){
             return Msg.POSTULANTE_ULTIMA_ETAPA.get();
         }

@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
 
 import static com.itsight.util.Enums.Msg.*;
@@ -197,9 +198,10 @@ public class TrainerFichaController extends BaseController {
     @PutMapping("/subir/foto/perfil/{trainerHshId}/{rdmUUID}")
     public @ResponseBody String subirImagenPerfil(
             @RequestPart(name = "file") MultipartFile imgPerfil,
+            @RequestPart(name = "fileExtension", required = false) String extFile,
             @PathVariable(name = "trainerHshId") String hshTrainerId,
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return jsonResponse(trainerService.subirImagen(imgPerfil, getDecodeHashId("rf-load-media", hshTrainerId), uuid));
+        return jsonResponse(trainerService.subirImagen(imgPerfil, getDecodeHashId("rf-load-media", hshTrainerId), uuid, extFile));
     }
 
     @PutMapping("/subir/fotos/perfil/{trainerHshId}/{rdmUUID}")
