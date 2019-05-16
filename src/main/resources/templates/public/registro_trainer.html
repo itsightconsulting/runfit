@@ -40,9 +40,9 @@
             border: 4px solid #a8fa00 !important;
         }
 
-        .tarifa-svc-pick{
+        .tarifa-svc-pick {
             border-bottom: 5px solid #a8fa00;
-            border-radius: 50%;
+            border-radius: 20%;
         }
 
         .fa-plus-cs{
@@ -55,6 +55,10 @@
 
         .div-fichas:hover{
             color: #a8fa00;
+        }
+
+        .padding-0{
+            padding: 0px;
         }
     </style>
   </head>
@@ -72,28 +76,7 @@
                           <div class="avatar-form">
                               <input type="file" id="InpImgPerfil">
                               <div class="avatar-form-content img-container">
-                                  <img title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
-                              </div>
-                          </div>
-                          <div class="row" id="actions">
-                              <div class="col-md-12 docs-buttons">
-                                  <div class="btn-group btn-group-crop">
-                                      <button type="button" class="btn btn-success" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
-            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
-              Get Cropped Canvas
-            </span>
-                                      </button>
-                                      <button type="button" class="btn btn-success" data-method="getCroppedCanvas" data-option="{ &quot;width&quot;: 160, &quot;height&quot;: 90 }">
-            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ width: 160, height: 90 })">
-              160×90
-            </span>
-                                      </button>
-                                      <button type="button" class="btn btn-success" data-method="getCroppedCanvas" data-option="{ &quot;width&quot;: 320, &quot;height&quot;: 180 }">
-            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ width: 320, height: 180 })">
-              320×180
-            </span>
-                                      </button>
-                                  </div>
+                                  <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                               </div>
                           </div>
                       </div>
@@ -448,10 +431,26 @@
                                                   </div>
                                               </div>
                                           </div>
-                                          <button class="btn btn-default btn-black" type="button" id="btnNuevaTarifa">AGREGAR PAQUETE</button>
+                                          <div class="col-md-12 padding-0">
+                                              <div class="col-md-6 padding-0">
+                                                  <button class="btn btn-default btn-black" id="btnNuevaTarifa">
+                                                    <i class="fa fa-plus-circle fa-fw"></i>
+                                                    AGREGAR PAQUETE
+                                                  </button>
+                                              </div>
+                                              <div class="col-md-6">
+                                                  <button class="btn btn-default btn-white" id="btnEliminarPaquete">
+                                                    <i class="fa fa-trash fa-fw"></i>
+                                                    ELIMINAR PAQUETE
+                                                  </button>
+                                              </div>
+                                          </div>
                                       </div>
                                       <hr>
-                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">AGREGAR SERVICIO</button>
+                                      <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">
+                                          <i class="fa fa-plus-circle fa-fw"></i>
+                                          AGREGAR SERVICIO
+                                      </button>
                                       <button rel="tooltip"
                                               title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
                                               id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
@@ -470,7 +469,6 @@
                                               <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
                                               <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
                                           </div>
-
                                       </div>
                                       <div class="collapse in" id="contentInfoPago">
                                           <div class="form-group">
@@ -621,38 +619,34 @@
           </div><!-- /.modal-dialog -->
       </div>
       <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper">
-          <div class="modal-dialog" role="document" style="width: 70%;height: 90%">
+          <div class="modal-dialog" role="document" style="width: 70%;height: 90%;">
               <div class="modal-content" style="width: 100%">
                   <div class="modal-body" style="height: 90%;padding: 0px">
                       <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
-                          <img id="ImagePerfil" style="max-width: 90%; max-height: 100%">
+                          <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
                       </div>
                   </div>
-                  <a href="javascript:void(0)" onclick="ocultarModalTermCondYAceptar()" data-toggle="hover" rel="tooltip" data-original-title="Aceptar los términos y condiciones">
-                      <div class="modal-footer mod-term-cond" style="background: #889197;text-align: center;">
-                          <i class="fa fa-fw fa-2x fa-cut" style="color: white; cursor:pointer;"></i>
+                  <div class="modal-footer" style="background: #000000;text-align: center;border:none">
+                      <div class="row" id="actions">
+                          <div class="col-md-12 docs-buttons">
+                              <div class="btn-group btn-group-crop">
+                                  <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
+                                            <i class="fa fa-check-circle fa-fw"></i>Confirmar
+                                        </span>
+                                  </button>
+                                  <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="">
+                                            <i class="fa fa-refresh fa-fw"></i>Cambiar
+                                        </span>
+                                  </button>
+                              </div>
+                          </div>
                       </div>
-                  </a>
-              </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-      <div class="modal fade docs-cropped" id="getCroppedCanvasModal" role="dialog" aria-hidden="true" aria-labelledby="getCroppedCanvasTitle" tabindex="-1">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="getCroppedCanvasTitle">Cropped</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div class="modal-body"></div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <a class="btn btn-primary" id="download" href="javascript:void(0);" download="cropped.jpg">Download</a>
                   </div>
               </div>
           </div>
-      </div><!-- /.modal -->
+      </div>
       <div class="col-md-6 no-padding-991" id="status" style="display: none">
           <b>Coordenadas:</b> --
           <br class="cb"/><b>Radio:</b> --
@@ -670,43 +664,24 @@
         const btnNuevoServicio = document.getElementById('btnNuevoServicio');
         const btnNuevaTarifa = document.getElementById('btnNuevaTarifa');
         const btnNuevaInfoPago = document.getElementById('btnNuevaInfoPago');
+        const btnEliminarPaquete = document.getElementById('btnEliminarPaquete');
         const tabService = document.getElementById('service');
         const inpCondServicio = document.getElementById('inpCondServicio');
         const servicios = [];
         let ccBancarias = [];
         const metodosPago = [];
         let termConSvc = [];
-        const initTabActive = 1;
+        const initTabActive = 3;
         let selServicioId = -1;
         let accServicioId = 0;
         let accTarifaId = 0;
         let accCuentaId = 0;
         let terminosAceptados = false;
+        let cropper = {};
 
 
         //Cropper
-
-        var Cropper = window.Cropper;
-        var URL = window.URL || window.webkitURL;
-        var container = document.querySelector('.img-container');
-        var image = container.getElementsByTagName('img').item(0);
-        var download = document.getElementById('download');
-        var actions = document.getElementById('actions');
-        var dataX = document.getElementById('dataX');
-        var dataY = document.getElementById('dataY');
-        var dataHeight = document.getElementById('dataHeight');
-        var dataWidth = document.getElementById('dataWidth');
-        var dataRotate = document.getElementById('dataRotate');
-        var dataScaleX = document.getElementById('dataScaleX');
-        var dataScaleY = document.getElementById('dataScaleY');
-
-
-        var cropper;
-        var originalImageURL = image.src;
-        var uploadedImageType = 'image/jpeg';
-        var uploadedImageName = 'cropped.jpg';
-        var uploadedImageURL;
-
+        const actions = document.getElementById('actions');
 
         (function () {
             uploadAndShow(inpImgPerfil, imgPerfil);
@@ -716,14 +691,28 @@
             btnNuevoServicio.addEventListener('click', agregarServicio);
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
             btnNuevaInfoPago.addEventListener('click', agregarNuevaInfoPago);
+            btnEliminarPaquete.addEventListener('click', eliminarPaqueteDeServicio);
             tabService.addEventListener('click', clickListenerTabService);
             inpCondServicio.addEventListener('change', asociarCondSvc);
-            //inpImgPerfil.addEventListener('change', capturarImgPerfil);
+            inpImgPerfil.addEventListener('change', changeImgPerfil);
+            inpImgPerfil.addEventListener('click', clickImgPerfiL);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
             init();
         })();
+
+        function clickImgPerfiL(e){
+            if(typeof cropper.canvas === 'object'){
+                e.preventDefault();
+                $('#myModalCropper').modal('show');
+            }
+        }
+
+        function changeImgPerfil(){
+
+            $('#myModalCropper').modal('show');
+        }
 
         function asociarCondSvc(e){
             if(selServicioId > 0){
@@ -748,7 +737,7 @@
 
         }
 
-        function uploadFotoPerfil(d, body){
+        function uploadFotoPerfil(d){
             //submit the form here
             const hshId = d.res;
             const rdmUUID = d.rdm.slice(0,d.rdm.lastIndexOf("."));
@@ -757,8 +746,7 @@
                 file = file.files[0];
                 const data = new FormData();
 
-
-                const blobBin = atob($('#getCroppedCanvasModal canvas')[0].toDataURL().split(',')[1]);
+                const blobBin = atob($('#FinalImagenRecortada')[0].src.split(',')[1]);
                 var array = [];
                 for(var i = 0; i < blobBin.length; i++) {
                     array.push(blobBin.charCodeAt(i));
@@ -814,7 +802,7 @@
             return imgPerfil + "|" + galeria + "|" + flCondSvcs;
         }
 
-        function uploadFotosPerfil(d, body){
+        function uploadFotosPerfil(d){
             //submit the form here
             const hshId = d.res;
             const rdmsUUIDs = getImgUuids(d.rdm);
@@ -823,6 +811,7 @@
                 file = file.files[0];
                 const data = new FormData();
                 data.append("files", file);
+                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
                 Array.from(inpGaleria.files).forEach(f=>{
                     data.append("files", f);
                 });
@@ -863,6 +852,58 @@
                 populateForm();
 
             }
+
+            actions.querySelector('.docs-buttons').onclick = function (e) {
+
+                let target = e.target;
+                let result;
+                let data;
+
+                if (!cropper) {
+                    return;
+                }
+
+                while (target !== this) {
+                    if (target.getAttribute('data-method')) {
+                        break;
+                    }
+
+                    target = target.parentNode;
+                }
+
+                if (target === this || target.disabled || target.className.indexOf('disabled') > -1) {
+                    return;
+                }
+
+                data = {
+                    method: target.getAttribute('data-method'),
+                    target: target.getAttribute('data-target'),
+                    option: target.getAttribute('data-option') || undefined,
+                    secondOption: target.getAttribute('data-second-option') || undefined
+                };
+
+                if (data.method) {
+                    switch (data.method) {
+                        case 'getCroppedCanvas':
+                            try {
+                                data.option = JSON.parse(data.option);
+                            } catch (e) {
+                                console.log(e.message);
+                            }
+                            break;
+                    }
+
+                    result = cropper[data.method](data.option, data.secondOption);
+
+                    switch (data.method) {
+                        case 'getCroppedCanvas':
+                            if (result) {
+                                $('#FinalImagenRecortada').attr('src', result.toDataURL(inpImgPerfil.files[0].type));
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
         function activeTooltips(){
@@ -877,6 +918,18 @@
             $('#myModalTermCond').on('hidden.bs.modal', ()=> {
                 if(!terminosAceptados) {
                     document.getElementById('inpTermCond').checked = false;
+                }
+            })
+
+            $('#myModalCropper').on('shown.bs.modal', ()=>{
+                if(typeof cropper.canvas !== 'object'){
+                    const image = document.getElementById('ImagePerfil');
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        crop(event) {},
+                        zoomOnWheel: false,
+                        viewMode: 1
+                    });
                 }
             })
         }
@@ -962,9 +1015,9 @@
                 svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
                 clases.add('svc-focus');
                 mostrarDetalleServicio(selServicioId);
-            } else if(clases.contains('tarifa-svc')){
+            } else if(clases.contains('tarifa-svc')) {
                 let padre = {};
-                if(input.tagName === "IMG"){
+                if(input.tagName === "IMG" || input.tagName === "H6"){
                     padre = input.parentElement.parentElement;
                 } else if(input.tagName === "A"){
                     padre = input.parentElement;
@@ -973,6 +1026,7 @@
                 const svcFocus = tabService.querySelector('.tarifa-svc-pick');
                 svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
                 padre.classList.add('tarifa-svc-pick');
+                padre.querySelector('.edit').classList.remove('hidden');
                 mostrarDetalleTarifaSvc(Number(tarifaId));
             } else if(clases.contains('edit-svc')){
                 const svcId = Number(input.getAttribute('data-id'));
@@ -1073,6 +1127,30 @@
             }
         }
 
+        function setTarifarios(tarifarios){
+            const dt = document.getElementById('Tarifarios');
+            dt.innerHTML = "";
+            tarifarios.forEach(t=>{
+                dt.appendChild(
+                    htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
+            })
+        }
+
+        function putTarifario(id, nombre){
+        setTimeout(()=>{
+            $(tabService.querySelector('#Tarifarios a.edit')).tooltip();
+        }, 500);
+        return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
+                    <a href="javascript:void(0)" class="tarifa-svc">
+                        <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                        <h6 class="tarifa-svc">${nombre}</h6>
+                    </a>
+                    <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
+                        <img style="margin: 0px 0px 5px" class="edit-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
+                    </a>
+                </div>`
+        }
+
         function mostrarDetalleServicio(servicioId){
             const svc = servicios.find(e=>e.id===servicioId);
             document.querySelector('#NombreServicio').value = svc.nombre;
@@ -1089,23 +1167,11 @@
             }else{
                 btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
             }
+
+            setTarifarios(svc.tarifarios);
         }
 
         function agregarServicio(){
-            mostrarNuevoServicio();
-        }
-
-        function editarServicio(svcId){
-            const svc = servicios.find(s=>s.id===svcId);
-            if(svc !== undefined){
-                setBasicsServicio(svc);
-                service.querySelector('.svc-focus').click();
-            }else {
-                $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
-            }
-        }
-
-        function mostrarNuevoServicio(){
             const s = getServicio();
             if(s.valid){
                 selServicioId = s.id;
@@ -1117,8 +1183,20 @@
                     e.classList.add('hidden');
                 });
                 service.querySelector(`.ver-servicios .edit[data-id="${s.id}"]`).classList.remove('hidden');
+                document.getElementById('Tarifarios').innerHTML = "";
+                tabService.querySelector('.servicio.svc-focus').click();
             } else{
                 $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+            }
+        }
+
+        function editarServicio(svcId){
+            const svc = servicios.find(s=>s.id===svcId);
+            if(svc !== undefined){
+                setBasicsServicio(svc);
+                service.querySelector('.svc-focus').click();
+            }else {
+                $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
             }
         }
 
@@ -1246,7 +1324,7 @@
                     $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000})
                     document.getElementById('Tarifarios')
                         .appendChild(
-                            htmlStringToElement(`<div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}"><a href="javascript:void(0)" class="tarifa-svc"><h6>${t.nombre}</h6><img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/></a></div>`));
+                            htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
                 }else
                     $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Agregar primero un servicio</em>" ,timeout: 2500})
             }else{
@@ -1293,6 +1371,21 @@
             }
 
             showInfoPagosSelected();
+        }
+
+        function eliminarPaqueteDeServicio(){
+            const t = tabService.querySelector('#Tarifarios .tarifa-svc-pick');
+            if(t){
+                const tId = Number(t.getAttribute('data-id'));
+                const s = servicios.find(s=>s.id===selServicioId);
+                s.tarifarios = s.tarifarios.filter(t=>t.id!==tId);
+                cleanPaqueteCampos();
+                t.remove();
+            }else{
+                $.smallBox({
+                    color: 'alert',
+                    content: '<i>No ha seleccionado ningún tarifario a eliminar</i>'});
+            }
         }
 
         function showInfoPagosSelected(){
@@ -1474,6 +1567,7 @@
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.servicios = servicios;
             obj.cuentas = ccBancarias;
+            obj.mediosPago = Array.from($('#MediosPagosAgregados a.cc-elegido:not(".hidden")')).map(e=>e.getAttribute('data-id')).join('|');
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
             const redes = getRedesSociales();
             if(redes.have){
@@ -1507,6 +1601,12 @@
                 res.nombres+= "yo:"+youtube.trim();
             }
             return res;
+        }
+
+        function elegirOtraImagenCropper(){
+            cropper.destroy();
+            cropper = {};
+            inpImgPerfil.click();
         }
 
     </script>

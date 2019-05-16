@@ -7,6 +7,8 @@ let header = $("meta[name='_csrf_header']").attr("content");
 var _ctx = $('meta[name="_ctx"]').attr('content');
 let $buttonName = "";
 let $gbInterval = 0;
+var _URL = window.URL || window.webkitURL;
+
 $('#view_register').attr('hidden', 'hidden');
 const ClaseEditor = Object.freeze([
     {id: 1, clase: 'rf-n', tipo: 1},

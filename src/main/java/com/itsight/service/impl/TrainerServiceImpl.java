@@ -478,8 +478,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public String subirImagenes(MultipartFile[] files, Integer id, String uuids) throws CustomValidationException {
-        boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids, ""), LOGGER);
+    public String subirImagenes(MultipartFile[] files, Integer id, String uuids, String extension) throws CustomValidationException {
+        boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids, extension), LOGGER);
         if(success){
             return Msg.POSTULANTE_ULTIMA_ETAPA.get();
         }

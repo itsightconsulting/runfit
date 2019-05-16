@@ -14,7 +14,6 @@ function readURL(input, img) {
 }
 
 function uploadImg(input, img) {
-    var _URL = window.URL || window.webkitURL;
 
     $(input).change(function () {
         //submit the form here
@@ -24,7 +23,6 @@ function uploadImg(input, img) {
             imgTemp.onload = function () {
                 //Previsualizar
                 readURL($(input)[0], img);
-                cropperDemo();
             };
             imgTemp.onerror = function () {
                 $(input).val("");
@@ -40,29 +38,8 @@ function uploadImg(input, img) {
     });
 }
 
-function cropperDemo(){
-    setTimeout(()=>{
-        const image = document.getElementById('ImagePerfil');
-        cropper = new Cropper(image, {
-            aspectRatio: 1 / 1,
-            crop(event) {
-                console.log(event.detail.x);
-                console.log(event.detail.y);
-                console.log(event.detail.width);
-                console.log(event.detail.height);
-                console.log(event.detail.rotate);
-                console.log(event.detail.scaleX);
-                console.log(event.detail.scaleY);
-            },
-            zoomOnWheel: false,
-            viewMode: 1
-        });
-    }, 2000);
-    $('#myModalCropper').modal('show')
-}
-
 const imgTemps = [];
-const srcs = [];
+//const srcs = [];
 
 function readURLCs(input, img, ix, mainDivId) {
     if (input.files && input.files[ix]) {
@@ -128,8 +105,6 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
     carousel();
 }
 function uploadImgs(input, mainDivId) {
-
-    var _URL = window.URL || window.webkitURL;
 
     $(input).change(function () {
         //submit the form here

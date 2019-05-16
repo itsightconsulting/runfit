@@ -78,6 +78,7 @@ import java.util.UUID;
                                     @ColumnResult(name = "rutaWebImg", type = String.class),
                                     @ColumnResult(name = "servicios", type = String.class),
                                     @ColumnResult(name = "cuentas", type = String.class),
+                                    @ColumnResult(name = "mediosPago", type = String.class),
                                     @ColumnResult(name = "mapCoordenadas", type = String.class),
                                     @ColumnResult(name = "mapCircleRadio", type = String.class),
                                     @ColumnResult(name = "redes", type = String.class)
@@ -129,6 +130,7 @@ import java.util.UUID;
                               "\tf.ruta_web_img rutaWebImg,\n" +
                               "\tCAST(f.servicios AS text),\n" +
                               "\tCAST(f.cuentas AS text),\n" +
+                              "\tf.medios_pago mediosPago,\n" +
                               "\tf.map_coordenadas mapCoordenadas,\n" +
                               "\tf.map_circle_radio mapCircleRadio, \n" +
                               "\tf.redes \n" +
@@ -138,39 +140,40 @@ import java.util.UUID;
                               "WHERE f.nom_pag = ?",
                       resultSetMapping = "getByNomPagParOrTrainerId"),
         @NamedNativeQuery(name = "TrainerFicha.findByTrainerId",
-                query = "SELECT \n" +
-                        "\tf.trainer_id id, \n" +
-                        "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
-                        "\tt.ficha_cliente_ids fichaClienteIds,\n" +
-                        "\tf.especialidad, \n" +
-                        "\td.nombre disciplina,\n" +
-                        "\tf.acerca,\n" +
-                        "\tf.idiomas,\n" +
-                        "\tf.estudios,\n" +
-                        "\tf.metodo_trabajo metodoTrabajo,\n" +
-                        "\tf.experiencias,\n" +
-                        "\tf.resultados,\n" +
-                        "\tf.niveles,\n" +
-                        "\tf.centro_trabajo centroTrabajo,\n" +
-                        "\tf.especialidades,\n" +
-                        "\tf.formas_trabajo formasTrabajo,\n" +
-                        "\tf.mini_galeria miniGaleria,\n" +
-                        "\tf.adicional_info adicionalInfo,\n" +
-                        "\tt.correo,\n" +
-                        "\tt.ubigeo, \n" +
-                        "\tt.can_per_valoracion canPerValoracion, \n" +
-                        "\tt.total_valoracion totalValoracion,\n" +
-                        "\tf.ruta_web_img rutaWebImg,\n" +
-                        "\tCAST(f.servicios AS text),\n" +
-                        "\tCAST(f.cuentas AS text),\n" +
-                        "\tf.map_coordenadas mapCoordenadas,\n" +
-                        "\tf.map_circle_radio mapCircleRadio, \n" +
-                        "\tf.redes \n" +
-                        "FROM trainer t \n" +
-                        "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
-                        "INNER JOIN disciplina d ON d.disciplina_id=f.disciplina_id\n" +
-                        "WHERE t.security_user_id = ?",
-                resultSetMapping = "getByNomPagParOrTrainerId")
+                      query = "SELECT \n" +
+                              "\tf.trainer_id id, \n" +
+                              "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
+                              "\tt.ficha_cliente_ids fichaClienteIds,\n" +
+                              "\tf.especialidad, \n" +
+                              "\td.nombre disciplina,\n" +
+                              "\tf.acerca,\n" +
+                              "\tf.idiomas,\n" +
+                              "\tf.estudios,\n" +
+                              "\tf.metodo_trabajo metodoTrabajo,\n" +
+                              "\tf.experiencias,\n" +
+                              "\tf.resultados,\n" +
+                              "\tf.niveles,\n" +
+                              "\tf.centro_trabajo centroTrabajo,\n" +
+                              "\tf.especialidades,\n" +
+                              "\tf.formas_trabajo formasTrabajo,\n" +
+                              "\tf.mini_galeria miniGaleria,\n" +
+                              "\tf.adicional_info adicionalInfo,\n" +
+                              "\tt.correo,\n" +
+                              "\tt.ubigeo, \n" +
+                              "\tt.can_per_valoracion canPerValoracion, \n" +
+                              "\tt.total_valoracion totalValoracion,\n" +
+                              "\tf.ruta_web_img rutaWebImg,\n" +
+                              "\tCAST(f.servicios AS text),\n" +
+                              "\tCAST(f.cuentas AS text),\n" +
+                              "\tf.medios_pago mediosPago,\n" +
+                              "\tf.map_coordenadas mapCoordenadas,\n" +
+                              "\tf.map_circle_radio mapCircleRadio, \n" +
+                              "\tf.redes \n" +
+                              "FROM trainer t \n" +
+                              "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
+                              "INNER JOIN disciplina d ON d.disciplina_id=f.disciplina_id\n" +
+                              "WHERE t.security_user_id = ?",
+                      resultSetMapping = "getByNomPagParOrTrainerId")
 })
 @Entity
 @Data
@@ -236,6 +239,9 @@ public class TrainerFicha implements Serializable {
 
     @Column(nullable = true, unique = true)
     private String nomPag;
+
+    @Column(nullable = true)
+    private String mediosPago;
 
     @Column(nullable = true)
     private String mapCoordenadas;

@@ -32,7 +32,7 @@
           <div class="container">
             <div class="col-md-5">
               <div class="avatar-form">
-                <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;"/></div>
+                <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/></div>
               </div>
               <fieldset class="rating hidden">
                 <input id="star5" type="radio" name="rating" value="5"/>
@@ -239,38 +239,27 @@
                                   <li></li>
                               </ul>
                           </div>
-                          <p class="sub-title">TARIFARIO</p>
-
-                          <!-- TARIFARIOS -->
-                          <div class="form-group">
-                              <div id="Tarifario"  class="row text-center">
-                              </div>
-                          </div>
-                          <!-- END TARIFARIOS-->
-
                           <div class="form-group">
                               <label>INFORMACIÓN ADICIONAL</label>
                               <p id="InfoAdicional"></p>
                           </div>
-                          <div class="form-group">
-                              <label>INFORMACIÓN DE PAGO</label>
-                              <ul class="checks">
-                                  <li>
-                                      <div class="chk-content">En efectivo
-                                          <input type="checkbox"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Transferencia
-                                          <input type="checkbox" checked="checked"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Con Tarjeta
-                                          <input type="checkbox"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                              </ul>
+                          <!-- TARIFARIOS -->
+                          <h4 class="sub-title">TARIFARIO</h4>
+                          <div class="row">
+                              <div class="col col-md-12 text-center" id="Tarifarios">
+                              </div>
+                          </div>
+                          <!-- END TARIFARIOS-->
+                          <h4>INFORMACIÓN DE PAGO</h4>
+                          <div class="row">
+                              <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1" style="padding-right: 30px"><img th:src="@{/img/mastercard.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2" style="padding-right: 30px"><img th:src="@{/img/visa.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3" style="padding-right: 30px"><img th:src="@{/img/amex.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
+                              </div>
                           </div>
                           <div class="form-group" id="CuentaBanco">
 
@@ -312,6 +301,45 @@
                 <!--end modal-content--></div>
             <!--end modal-dialoge--></div>
         <!--end myModal-->></div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModalCC">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #a8fa00;color: white">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
+                    <h3 class="modal-title">Cuenta Bancaria</h3>
+                </div>
+                <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
+                    <div class="col-sm-12" id="CuentaBancariaUnica">
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Tipo documento:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-td"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Número de documento:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-nd"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Cuenta dólares:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cd"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div></div>
+                        <div class="row">
+                            <div class="col col-md-5 col-xs-12"><strong>Interbancario dólares:</strong></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
+                        <input id="ModalCuentaBancoId" type="hidden"/>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
@@ -322,12 +350,15 @@
       const btnInfoContacto = document.getElementById('btnInfoContacto');
       const btnAprobarTrainer = document.getElementById('btnAprobarTrainer');
       const btnAbrirCajaNotificacion = document.getElementById('btnAbrirCajaNotificacion');
+      const tabService = document.getElementById('service');
       const body = document.querySelector('body');
+      let ccBancarias = [];
 
 
       (function () {
           btnElegir.addEventListener('click', irARegistro);
           btnInfoContacto.addEventListener('click', registrarContactoTrainer);
+          tabService.addEventListener('click', clickListenerTabService);
           if(btnAprobarTrainer !== null){
               btnAprobarTrainer.addEventListener('click', aprobacionFinalTrainer);
               btnAbrirCajaNotificacion.addEventListener('click', (e)=>{
@@ -338,6 +369,27 @@
 
           init();
       })();
+
+      function clickListenerTabService(e) {
+          const input = e.target;
+          const clases = input.classList;
+          if (clases.contains('cc-bancaria')) {
+              const inputBancoId = document.getElementById('ModalCuentaBancoId');
+              const ccId = Number(input.getAttribute('data-id'));
+              inputBancoId.value = ccId;
+              const d = ccBancarias.find(e => e.bancoId === ccId);
+              $('#myModalCC').modal('show');
+              const dC = document.getElementById('CuentaBancariaUnica');
+              dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id===d.bancoId).nombre;
+              dC.querySelector('.cc-titular').textContent = d.titular;
+              dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
+              dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
+              dC.querySelector('.cc-cs').textContent = d.numeroSoles;
+              dC.querySelector('.cc-cd').textContent = d.numeroDolares;
+              dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
+              dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
+          }
+      }
 
       function bodyClickEventListener(e){
           const input = e.target;
@@ -520,8 +572,9 @@
         let frmt = document.querySelector('#FormasTrabajo');
         reconstruirLista(frmt, t.formasTrabajo);
         reconstruirServicios(t.servicios, t.adicionalInfo != undefined ? t.adicionalInfo : "Ninguna");
-        reconstruirCuentaBanco(t.cuentas);
+        //reconstruirCuentaBanco(t.cuentas);
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
+        mostrarMediosPago(t.mediosPago, t.cuentas);
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
         if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
             document.getElementById('lblGaleriaFotos').classList.remove('hidden');
@@ -652,64 +705,29 @@
       }
 
       function reconstruirTarifario(tarifas){
-          tarifas.forEach((e,i)=>document.getElementById('Tarifario').appendChild(htmlStringToElement(`
-                              <div class="col-xs-12 col-sm-6 col-md-4">
-                                  <div class="panel panel-primary" style="border-color: #ab9898;">
-                                      <div class="panel-heading" style="background: #a8fa00;">
-                                          <h4 class="panel-title" style="color:white; !important;">
-                                              Plan 1</h4>
-                                      </div>
-                                      <div class="panel-body no-padding text-align-center">
-                                          <div class="the-price">
-                                              <h1>S/. <span id="svcPre${i}" data-price="${e.precio}">${parseFloat(e.precio).toFixed(0)}</span></h1>
-                                          </div>
-                                          <table class="table">
-                                              <tbody>
-                                              <tr>
-                                                  <td>Personas: <span id="svcCanPer${i}">${e.personas}</span></td>
-                                              </tr>
-                                              <tr class="active">
-                                                  <td>Meses: <span>${e.meses}</span></td>
-                                              </tr>
-                                              <tr>
-                                                  <td>Sesiones: <span>${e.sesiones}</span></td>
-                                              </tr>
-                                              </tbody>
-                                          </table>
-                                          <ul class="counter" style="margin-left: 0px;padding-left: 0px;">
-                                            <li class="count">
-                                                <button class="counter-round" type="button" data-svc-ix="${i}" onclick="calculadoraMas(${i})"><span class="fa fa-plus"></span></button>
-                                            </li>
-
-                                            <li class="count">
-                                                <button class="counter-round" type="button" data-svc-ix="${i}" onclick="calculadoraMenos(${i})"><span class="fa fa-minus"></span></button>
-                                            </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>`)));
+          tarifas.forEach((t)=>document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
+                            <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
+                                <a href="javascript:void(0)" class="tarifa-svc">
+                                    <h6>${t.nombre}</h6>
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                                </a>
+                            </div>`)));
       }
 
-      function calculadoraMas(svcIx){
-          const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
-          const price = document.getElementById(`svcPre${svcIx}`);
-          const actualPrice = Number(price.textContent.trim());
-          const basePrice = Number(price.getAttribute('data-price').trim());
-          price.textContent = actualPrice+basePrice;
-          cantidadPersonas.textContent = Number(cantidadPersonas.textContent)+1;
+      function mostrarMediosPago(mediosPago, cuentas){
+        const ccs = mediosPago.split("|");
+        ccs.forEach(id=>{
+            tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+        })
 
-      }
-
-      function calculadoraMenos(svcIx){
-          const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
-          const price = document.getElementById(`svcPre${svcIx}`);
-          const actualPrice = Number(price.textContent.trim());
-          const basePrice = Number(price.getAttribute('data-price').trim());
-          const final = actualPrice-basePrice;
-          if(final>0){
-              price.textContent = final;
-              cantidadPersonas.textContent = Number(cantidadPersonas.textContent)-1;
-          }
+        if(cuentas != undefined){
+            cuentas = JSON.parse(cuentas);
+            ccBancarias = cuentas;
+            const mePagos = document.getElementById('MediosPagosAgregados');
+            cuentas.forEach(c=>{
+                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
+            });
+        }
       }
     </script>
   </body>

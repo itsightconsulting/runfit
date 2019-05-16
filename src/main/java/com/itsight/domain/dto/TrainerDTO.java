@@ -89,6 +89,8 @@ public class TrainerDTO implements Serializable {
     private List<Servicio> servicios;
     @Valid
     private List<CuentaPago> cuentas;
+    @NotBlank
+    private String mediosPago;
     @Size(max = 14)
     private String telefono;
     @Size(max = 14)

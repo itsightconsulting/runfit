@@ -60,7 +60,7 @@ public interface BaseService<T, V> {
         return null;
     }
 
-    default String subirImagenes(MultipartFile[] files, Integer id, String uuid) throws CustomValidationException {
+    default String subirImagenes(MultipartFile[] files, Integer id, String uuid, String extension) throws CustomValidationException {
         return null;
     }
 
@@ -69,10 +69,10 @@ public interface BaseService<T, V> {
 
             String[] splitNameFile = file.getOriginalFilename().split("\\.");
             String extension;
-            if(splitNameFile.length == 1){
+            if(file.getOriginalFilename().equals("blob")){
                 extension = "." + credentials.getExtension();
             }else{
-                extension =  "." +splitNameFile[splitNameFile.length - 1];
+                extension = "." + splitNameFile[splitNameFile.length - 1];
             }
 
             try {
@@ -139,7 +139,12 @@ public interface BaseService<T, V> {
             MultipartFile file = files[i];
             if (!file.isEmpty()) {
                 String[] splitNameFile = file.getOriginalFilename().split("\\.");
-                String extension = "." + splitNameFile[splitNameFile.length - 1];
+                String extension;
+                if(file.getOriginalFilename().equals("blob")){
+                    extension = "." + credentials.getExtension();
+                }else{
+                    extension = "." + splitNameFile[splitNameFile.length - 1];
+                }
                 String objectName = uuids[i]+extension;
                 String fullPath = credentials.getPrefix()+objectName;
                 try {

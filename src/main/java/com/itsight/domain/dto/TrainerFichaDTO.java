@@ -57,6 +57,8 @@ public class TrainerFichaDTO implements Serializable {
     private List<Servicio> servicios;
     @Valid
     private List<CuentaPago> cuentas;
+    @NotBlank
+    private String mediosPago;
     @Size(max = 3000)
     private String miniGaleria;
     @Size(min = 3, max = 200)

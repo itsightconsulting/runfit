@@ -207,9 +207,10 @@ public class TrainerFichaController extends BaseController {
     @PutMapping("/subir/fotos/perfil/{trainerHshId}/{rdmUUID}")
     public @ResponseBody String subirImagenesPerfil(
             @RequestPart(name = "files") MultipartFile[] imgs,
+            @RequestPart(name = "fileExtension", required = false) String extFile,
             @PathVariable(name = "trainerHshId") String hshTrainerId,
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return jsonResponse(trainerService.subirImagenes(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid));
+        return jsonResponse(trainerService.subirImagenes(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid, extFile));
     }
 
 
