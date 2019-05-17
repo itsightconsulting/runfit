@@ -69,8 +69,9 @@ import java.util.UUID;
                                     @ColumnResult(name = "centroTrabajo", type = String.class),
                                     @ColumnResult(name = "especialidades", type = String.class),
                                     @ColumnResult(name = "formasTrabajo", type = String.class),
+                                    @ColumnResult(name = "horario", type = String.class),
                                     @ColumnResult(name = "miniGaleria", type = String.class),
-                                    @ColumnResult(name = "adicionalInfo", type = String.class),
+                                    @ColumnResult(name = "nota", type = String.class),
                                     @ColumnResult(name = "correo", type = String.class),
                                     @ColumnResult(name = "ubigeo", type = String.class),
                                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
@@ -80,7 +81,7 @@ import java.util.UUID;
                                     @ColumnResult(name = "cuentas", type = String.class),
                                     @ColumnResult(name = "mediosPago", type = String.class),
                                     @ColumnResult(name = "mapCoordenadas", type = String.class),
-                                    @ColumnResult(name = "mapCircleRadio", type = String.class),
+                                    @ColumnResult(name = "mapCircleRadio", type = Double.class),
                                     @ColumnResult(name = "redes", type = String.class)
                             }
                     )
@@ -121,8 +122,9 @@ import java.util.UUID;
                               "\tf.centro_trabajo centroTrabajo,\n" +
                               "\tf.especialidades,\n" +
                               "\tf.formas_trabajo formasTrabajo,\n" +
+                              "\tf.horario" +
                               "\tf.mini_galeria miniGaleria,\n" +
-                              "\tf.adicional_info adicionalInfo,\n" +
+                              "\tf.nota,\n" +
                               "\tt.correo,\n" +
                               "\tt.ubigeo, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
@@ -156,8 +158,9 @@ import java.util.UUID;
                               "\tf.centro_trabajo centroTrabajo,\n" +
                               "\tf.especialidades,\n" +
                               "\tf.formas_trabajo formasTrabajo,\n" +
+                              "\tf.horario,\n" +
                               "\tf.mini_galeria miniGaleria,\n" +
-                              "\tf.adicional_info adicionalInfo,\n" +
+                              "\tf.nota,\n" +
                               "\tt.correo,\n" +
                               "\tt.ubigeo, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
@@ -216,10 +219,12 @@ public class TrainerFicha implements Serializable {
     private String especialidades;
     @Column(nullable = false)
     private String formasTrabajo;
+    @Column(nullable = true)
+    private String horario;
     @Column(nullable = true, columnDefinition="TEXT")
     private String miniGaleria;
     @Column(nullable = true, columnDefinition="TEXT")
-    private String adicionalInfo;
+    private String nota;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = true)
     private List<Servicio> servicios;
@@ -234,9 +239,6 @@ public class TrainerFicha implements Serializable {
     @Column(nullable = true)
     private String rutaWebImg;
 
-    @Column(nullable = true)
-    private String rutaRealImg;
-
     @Column(nullable = true, unique = true)
     private String nomPag;
 
@@ -245,8 +247,8 @@ public class TrainerFicha implements Serializable {
 
     @Column(nullable = true)
     private String mapCoordenadas;
-    @Column(nullable = true)
-    private String mapCircleRadio;
+    @Column(nullable = true, precision = 7, scale = 2)
+    private Double mapCircleRadio;
     @Column(nullable = true)
     private String redes;
     @Column(nullable = true)

@@ -53,6 +53,10 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 10, max = 100)
     @NotNull
     private String formasTrabajo;
+    @Size(min = 8, max = 150)
+    private String horario;
+    @Size(max = 400)
+    private String nota;
     @Valid
     private List<Servicio> servicios;
     @Valid
@@ -70,8 +74,8 @@ public class TrainerFichaDTO implements Serializable {
     private Integer fichaClienteId;
     @Size(max = 100)
     private String mapCoordenadas;
-    @Size(max = 20)
-    private String mapCircleRadio;
+    @Digits(integer = 5, fraction = 2)
+    private Double mapCircleRadio;
     @Size(max = 600)
     private String redes;
 

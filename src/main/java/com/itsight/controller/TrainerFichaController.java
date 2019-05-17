@@ -10,6 +10,7 @@ import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
+import com.itsight.service.DisciplinaService;
 import com.itsight.service.PostulanteTrainerService;
 import com.itsight.service.TrainerFichaService;
 import com.itsight.service.TrainerService;
@@ -26,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.util.List;
 
 import static com.itsight.util.Enums.Msg.*;
@@ -46,15 +46,19 @@ public class TrainerFichaController extends BaseController {
 
     private SecurityUserRepository securityUserRepository;
 
+    private DisciplinaService disciplinaService;
+
     @Autowired
     public TrainerFichaController(TrainerFichaService trainerFichaService,
                                   PostulanteTrainerService postulanteTrainerService,
                                   TrainerService trainerService,
-                                  SecurityUserRepository securityUserRepository) {
+                                  SecurityUserRepository securityUserRepository,
+                                  DisciplinaService disciplinaService) {
         this.trainerFichaService = trainerFichaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.trainerService = trainerService;
         this.securityUserRepository = securityUserRepository;
+        this.disciplinaService = disciplinaService;
     }
 
     @GetMapping("/find/all")
@@ -81,6 +85,7 @@ public class TrainerFichaController extends BaseController {
             return new ModelAndView(ViewConstant.P_ERROR404);
         } else {
             model.addAttribute("hshTrainerId", hshTrainerId);
+            model.addAttribute("disciplinas", disciplinaService.findAll());
             return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
         }
     }

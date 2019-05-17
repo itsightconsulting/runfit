@@ -5,6 +5,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+
+import java.sql.BatchUpdateException;
 
 import static com.itsight.util.Enums.ResponseCode.*;
 
@@ -55,7 +58,6 @@ public class ExceptionControllerAdvice {
         }
         return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public @ResponseBody

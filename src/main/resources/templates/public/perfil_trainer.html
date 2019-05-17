@@ -114,10 +114,10 @@
                         <label>CENTRO DE TRABAJO</label>
                         <p id="CentroTrabajo"></p>
                       </div>
-                        <div class="form-group hidden" id="lblRangoMapa">
-                            <label>RANGO DE ATENCIÓN PRESENCIAL</label>
-                            <div class="map" id="map"></div>
-                        </div>
+                      <div class="form-group hidden" id="lblRangoMapa">
+                          <label>RANGO DE ATENCIÓN PRESENCIAL</label>
+                          <div class="map" id="map"></div>
+                      </div>
                       <div class="form-group">
                         <label>ESPECIALIDADES QUE DOMINO</label>
                         <ul id="Especialidades" class="list-description">
@@ -127,6 +127,10 @@
                         <label>FORMA DE TRABAJO</label>
                         <ul id="FormasTrabajo" class="list-description">
                         </ul>
+                      </div>
+                      <div class="form-group" id="dvHorario">
+                          <label>HORARIO LABORAL</label>
+                          <p id="Horario">
                       </div>
                       <div class="form-group hidden" id="lblGaleriaFotos">
                         <label>GALERÍA DE FOTOS</label>
@@ -264,9 +268,9 @@
                           <div class="form-group" id="CuentaBanco">
 
                           </div>
-                          <div class="form-group">
+                          <div class="form-group hidden" id="divNotaFinal">
                               <label>Nota</label>
-                              <p>Para la confirmación de recepción del pago, enviar la constancia de transferencia o voucher por correo electrónico, a la siguiente dirección: info@runfit.pe</p><i>*En caso que realice el pago en efectivo, enviar un correo a la empresa, comunicando la fecha en que lo realizó.</i>
+                              <p id="NotaFinal"></p>
                           </div>
                           <button id="btnElegir" class="btn btn-default btn-black" type="button">INSCRÍBETE</button>
                       </form>
@@ -553,9 +557,9 @@
         document.querySelector('#Especialidad').textContent = t.especialidad;
         document.querySelector('#Disciplina').textContent = t.disciplina;
         document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.rutaWebImg;
-        document.querySelector('#Acerca').textContent = t.acerca.replace(/\r?\n/g, '<br />');
+        document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
 
-        let idiomas = "Español|Ingles".split("|");
+        let idiomas = t.idiomas.split("|");
         document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${e}</p></li>`).join('')+'</ul>'));
         let est = document.querySelector('#Estudios');
         reconstruirLista(est, t.estudios);
@@ -571,6 +575,11 @@
         reconstruirLista(espc, t.especialidades);
         let frmt = document.querySelector('#FormasTrabajo');
         reconstruirLista(frmt, t.formasTrabajo);
+        if(t.horario){
+            document.querySelector('#Horario').textContent = t.horario;
+        }else{
+            document.querySelector('#dvHorario').classList.add('hidden');
+        }
         reconstruirServicios(t.servicios, t.adicionalInfo != undefined ? t.adicionalInfo : "Ninguna");
         //reconstruirCuentaBanco(t.cuentas);
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
@@ -643,6 +652,11 @@
           if(obs != undefined){
               obs.value = "Demostración";
           }
+
+          if(t.nota){
+              document.getElementById('divNotaFinal').classList.remove('hidden');
+              document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+          }
       }
       function reconstruirLista(e, stringArr){
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
@@ -708,8 +722,8 @@
           tarifas.forEach((t)=>document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
-                                    <h6>${t.nombre}</h6>
                                     <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                                    <h6>${t.nombre}</h6>
                                 </a>
                             </div>`)));
       }

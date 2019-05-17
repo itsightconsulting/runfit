@@ -141,10 +141,10 @@ function agregarInputDinamico(e, max, clase){
 }
 
 function agregarTextareaDinamico(e, max, clase){
-    if(e.parentElement.children.length === max){
+    if(e.parentElement.children.length === max+1){
         e.classList.add('hide');
     }
-    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<textarea class="form-control mg-bt-10 ${clase}" type="text"></textarea>`));
+    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<li><textarea class="form-control mg-bt-10 ${clase}" type="text"></textarea></li>`));
     return e.previousElementSibling;
 }
 
@@ -181,7 +181,7 @@ function getValuesConcatInpCheckbox(name){
             }else{
                 return v.value;
             }
-        }).filter(x=>x).join();
+        }).filter(x=>x).join('|');
     }
 }
 

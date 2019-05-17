@@ -2,381 +2,916 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-  <title>Perfil trainer específico | Fitness | Runfit</title>
-  <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
-  <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-  <style>
-      .rf-color{
-        color: #a8fa00 !important;
-      }
+    <title>Inscripción de entrenadores | Fitness | Runfit</title>
+    <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
+    <style>
+        .mg-bt-6{
+            margin-bottom: 6px !important;
+        }
+        .mg-bt-10{
+            margin-bottom: 10px;
+        }
 
-      .glyphicon-chevron-left:before{
-        content: none !important;
-      }
+        .fa-15x{
+            font-size: 1.5em;
+        }
 
-      .glyphicon-chevron-right:before{
-          content: none !important;
-      }
+        .svc-focus{
+            color: #a8fa00 !important;
+        }
 
-  </style>
+        .servicio:not(.svc-focus):hover  {
+            color: #337ab7 !important;
+            cursor: pointer !important;
+        }
+
+        .div-fichas{
+            cursor: pointer;
+        }
+
+        .mod-term-cond:hover{
+            background: #00C853 !important;
+            color: white;
+        }
+
+        .ficha-pick{
+            border: 4px solid #a8fa00 !important;
+        }
+
+        .tarifa-svc-pick {
+            border-bottom: 5px solid #a8fa00;
+            border-radius: 20%;
+        }
+
+        .fa-plus-cs{
+            cursor:pointer;
+        }
+
+        .img-cc{
+            opacity: 0.3;
+        }
+
+        .div-fichas:hover{
+            color: #a8fa00;
+        }
+
+        .padding-0{
+            padding: 0px;
+        }
+
+        .glyphicon-chevron-left:before{
+            content: none !important;
+        }
+
+        .glyphicon-chevron-right:before{
+            content: none !important;
+        }
+    </style>
 </head>
-  <body>
-    <nav th:replace="html-commons/p/header :: fg-header"></nav>
-    <div th:replace="html-commons/reu-login :: fg-login"></div>
-    <div id="wrapper">
-      <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
-      </div>
-      <section class="trainers-form">
-        <div class="row">
-          <div class="container">
-            <div class="col-md-5">
-              <div class="avatar-form">
-                <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;"/></div>
-              </div>
-            </div>
-            <div class="col-md-7">
-              <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
-              </ul>
-              <div class="tab-content">
-                <div class="tab-pane fade in active" id="about">
-                  <form>
-                    <div class="form-group">
-                      <label>NOMBRE Y APELLIDOS</label>
-                      <p id="NombreFull"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>ESPECIALIDAD</label>
-                      <p id="Especialidad"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>ELIGE DEPORTE O ACTIVIDADES QUE REALIZAS</label>
-                      <p id="Disciplina"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>ACERCA DE MI</label>
-                      <p id="Acerca"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>IDIOMAS QUE DOMINO</label>
-                      <p id="Idiomas"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>ESTUDIOS Y CERTIFICACIONES</label>
-                      <ul id="Estudios" class="list-description">
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <label>MÉTODO DE TRABAJO</label>
-                      <p id="MetodoTrabajo"></p>
-                    </div>
-                    <div class="form-group">
-                      <label>EXPERIENCIA LABORAL</label>
-                      <ul id="Experiencias" class="list-description">
-                      </ul>
-                      <div class="form-group">
-                        <label>RESULTADOS OBTENIDOS COMO PROFESIONAL</label>
-                        <ul id="Resultados" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS</label>
-                        <ul id="Niveles" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <label>CENTRO DE TRABAJO</label>
-                        <p id="CentroTrabajo"></p>
-                      </div>
-                        <div class="form-group hidden" id="lblRangoMapa">
-                            <label>RANGO DE ATENCIÓN PRESENCIAL</label>
-                            <div class="map" id="map"></div>
-                        </div>
-                      <div class="form-group">
-                        <label>ESPECIALIDADES QUE DOMINO</label>
-                        <ul id="Especialidades" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <label>FORMA DE TRABAJO</label>
-                        <ul id="FormasTrabajo" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group hidden" id="lblGaleriaFotos">
-                        <label>GALERÍA DE FOTOS</label>
-                        <div class="row">
-                          <div class="col-md-12" id="ImgsGaleria">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group hidden" id="lblRedes">
-                          <label>REDES SOCIALES</label>
-                      </div>
-                      <div class="form-group rs hidden" id="RsFb">
-                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
-                          <div class="col-xs-11 no_padding">
-                              <a href="#" target="_blank">FB</a>
-                          </div>
-                      </div>
-                      <div class="form-group rs hidden" id="RsIn">
-                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
-                          <div class="col-xs-11 no_padding">
-                              <a href="#" target="_blank">INS</a>
-                          </div>
-                      </div>
-                      <div class="form-group rs hidden" id="RsYo">
-                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
-                          <div class="col-xs-11 no_padding">
-                              <a href="#" target="_blank">Y2</a>
-                          </div>
-                      </div>
-                      <hr>
-                      <div class="form-group div-actualizacion">
-                          <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                          <button class="btn btn-default btn-black" id="btnActualizarPerfil"><i class="fa fa-check"></i>Actualizar y enviar</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="tab-pane fade" id="service">
-                      <h3>MIS SERVICIOS</h3>
-                      <h1 class="title-form">DALE UN VISTAZO A NUESTROS SERVICIOS </h1>
-                      <form>
-                          <div class="ver-servicios">
-                              <div id="NomServicios" class="form-group">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label>DESCRIPCIÓN</label>
-                              <p id="DescripcionServicio"></p>
-                          </div>
-                          <div class="form-group">
-                              <label>QUE INCLUYE</label>
-                              <ul id="IncluyeServicio" class="list-counter">
-                                  <li></li>
-                              </ul>
-                          </div>
-                          <p class="sub-title">TARIFARIO</p>
-
-                          <!-- TARIFARIOS -->
-                          <div class="form-group">
-                              <div id="Tarifario"  class="row text-center">
-                              </div>
-                          </div>
-                          <!-- END TARIFARIOS-->
-
-                          <div class="form-group">
-                              <label>INFORMACIÓN ADICIONAL</label>
-                              <p id="InfoAdicional"></p>
-                          </div>
-                          <div class="form-group">
-                              <label>INFORMACIÓN DE PAGO</label>
-                              <ul class="checks">
-                                  <li>
-                                      <div class="chk-content">En efectivo
-                                          <input type="checkbox"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Transferencia
-                                          <input type="checkbox" checked="checked"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Con Tarjeta
-                                          <input type="checkbox"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                              </ul>
-                          </div>
-                          <div class="form-group" id="CuentaBanco">
-
-                          </div>
-                          <div class="form-group">
-                              <label>Nota</label>
-                              <p>Para la confirmación de recepción del pago, enviar la constancia de transferencia o voucher por correo electrónico, a la siguiente dirección: info@runfit.pe</p><i>*En caso que realice el pago en efectivo, enviar un correo a la empresa, comunicando la fecha en que lo realizó.</i>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+<body>
+<nav th:replace="html-commons/p/header :: fg-header"></nav>
+<div th:replace="html-commons/reu-login :: fg-login"></div>
+<div id="wrapper">
+    <div class="section banner home">
+        <div class="bg-image"><img class="shadow" th:src="@{/img/public/trainers-shadow.jpg}"></div>
     </div>
-    <!-- MODALS -->
-    <div class="modal fade slide in" id="myModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body" style="padding: 0px !important">
-                    <!--CAROUSEL CODE GOES HERE-->
-                    <!--begin carousel-->
-                    <div id="myGallery" class="carousel slide" data-interval="false">
-                        <ol class="carousel-indicators">
-                        </ol>
-                        <div class="carousel-inner text-center">
-
+    <section class="trainers-form">
+        <div class="row">
+            <div class="container">
+                <div class="col-md-5">
+                    <div class="avatar-form">
+                        <input type="file" id="InpImgPerfil">
+                        <div class="avatar-form-content img-container">
+                            <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                         </div>
-                        <!--end carousel-inner-->
-                        <!--Begin Previous and Next buttons-->
-                        <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"><i class="fa fa-chevron-left"></i></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"><i class="fa fa-chevron-right"></i></span></a>
-                        <!--end carousel--></div>
-                    <!--end modal-body--></div>
-                <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
-                    <span class="" style="color: white;font-size: 1.4em;">Cerrar<i style="font-size: 1.2em !important;" class="fa-fw fa fa-close"></i></span>
+                    </div>
                 </div>
-                <!--end modal-content--></div>
-            <!--end modal-dialoge--></div>
-        <!--end myModal-->></div>
-    <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
-    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-    <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
-    <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
-    <script th:inline="javascript">
-      let $perfil = {};
-      const btnActualizarPerfil = document.getElementById('btnActualizarPerfil');
-      const body = document.querySelector('body');
+                <div class="col-md-7">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
+                        <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="about">
+                            <form id="frm_registro">
+                                <div class="form-group">
+                                    <div class="">
+                                        <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
+                                        <input class="form-control" name="NombreFull" id="NombreFull" type="text" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="">
+                                        <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
+                                        <input class="form-control" name="Especialidad" id="Especialidad" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
+                                    <select class="form-control" id="DisciplinaId" name="DisciplinaId">
+                                        <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>ACERCA DE MI<span class="obligatorio">*</span></label>
+                                    <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div class="pad-right-middle" style="width:100%;">
+                                        <label>IDIOMAS<span class="obligatorio">*</span></label>
+                                        <ul class="checks" id="Idiomas">
+                                            <li>
+                                                <div class="chk-content">Español
+                                                    <input name="Idiomas" value="Español" data-aka="Seleccionar idiomas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">Inglés
+                                                    <input name="Idiomas" value="Inglés" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">Portugues
+                                                    <input name="Idiomas" value="Portugues" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group" id="Estudios">
+                                        <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
+                                        <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                        <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                        <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
+                                    </div>
+                                    <div class="form-group" id="ExpLaboral">
+                                        <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
+                                        <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                        <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                    </div>
+                                    <div class="form-group" id="Logros">
+                                        <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
+                                        <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                        <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                    </div>
+                                    <div class="form-group" id="dvHorario">
+                                        <label>HORARIO LABORAL</label>
+                                        <input class="form-control" id="Horario" name="Horario" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
+                                        <ul class="checks" id="Niveles">
+                                            <li>
+                                                <div class="chk-content">Principiantes
+                                                    <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">Intermedios
+                                                    <input name="NivelClientes" value="Intermedios" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">Avanzados
+                                                    <input name="NivelClientes" value="Avanzados" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group hidden" id="lblRangoMapa">
+                                        <label>AL AIRE LIBRE / DOMICILIO</label>
+                                        <p>Dar click en el mapa para poder elegir el rango de desplazamiento. También puedes escribir la dirección.</p>
+                                        <div class="map" id="map"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CENTRO DE TRABAJO</label>
+                                        <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
+                                    </div>
+                                    <div class="form-group" id="Especialidades">
+                                        <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
+                                        <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                        <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>FORMA DE TRABAJO</label>
+                                        <ul class="checks" id="FormasTrabajo">
+                                            <li>
+                                                <div class="chk-content">Personalizado
+                                                    <input type="checkbox" name="FormaTrabajo" value="Personalizado" checked="checked"><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">En grupo
+                                                    <input type="checkbox" name="FormaTrabajo" value="En grupo"><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">Online
+                                                    <input type="checkbox" name="FormaTrabajo" value="Online"><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group hidden" id="lblGaleriaFotos">
+                                        <label>GALERÍA DE FOTOS</label>
+                                        <div class="row">
+                                            <div class="col-md-12" id="ImgsGaleria">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group rs">
+                                        <label>REDES SOCIALES</label>
+                                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
+                                        <div class="col-xs-11 no_padding">
+                                            <input class="form-control" id="RsFb" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group rs">
+                                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
+                                        <div class="col-xs-11 no_padding">
+                                            <input class="form-control" id="RsIn" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group rs">
+                                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
+                                        <div class="col-xs-11 no_padding">
+                                            <input class="form-control" id="RsYo" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="service">
+                            <h4>Mis servicios</h4>
+                            <div>
+                                <div class="ver-servicios">
+                                </div>
+                                <div id="SvcCamposBasicos">
+                                    <div class="form-group">
+                                        <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
+                                        <input class="form-control" id="NombreServicio">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>DESCRIPCIÓN<span class="obligatorio">*</span></label>
+                                        <textarea class="form-control" id="DescripcionServicio"></textarea>
+                                    </div>
+                                    <div class="form-group list-counter" id="MainIncluyeServicios">
+                                        <label>QUE INCLUYE</label>
+                                        <li><textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                                        <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>INFORMACIÓN ADICIONAL</label>
+                                        <textarea class="form-control" id="ServicioInfAdic"></textarea>
+                                    </div>
+                                </div>
+                                <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
+                                    <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
+                                    <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
+                                </h4>
+                                <div class="row">
+                                    <div class="col col-md-12 text-center" id="Tarifarios">
+                                    </div>
+                                </div>
+                                <div class="clase-tarifario collapse in" id="contentTarifario">
+                                    <div class="form-group">
+                                        <label for="NombreTarifario">Nombre</label>
+                                        <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label for="FrecuenciaPaquete">Frecuencia</label>
+                                        <select class="form-control" id="FrecuenciaPaquete">
+                                            <option value="Diaria">Diaria</option>
+                                            <option value="Interdiaria">Interdiaria</option>
+                                            <option value="Semanal">Semanal</option>
+                                            <option value="Quincenal">Quincenal</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>CANTIDAD DE PERSONAS</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="counter">
+                                                    <li class="count">
+                                                        <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
+                                                    </li>
+                                                    <li class="result">
+                                                        <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                    </li>
+                                                    <li class="count">
+                                                        <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>CANTIDAD DE MESES</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="counter">
+                                                    <li class="count">
+                                                        <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
+                                                    </li>
+                                                    <li class="result">
+                                                        <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
+                                                    </li>
+                                                    <li class="count">
+                                                        <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>CANTIDAD DE SESIONES</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="counter">
+                                                    <li class="count">
+                                                        <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
+                                                    </li>
+                                                    <li class="result">
+                                                        <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
+                                                    </li>
+                                                    <li class="count">
+                                                        <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>PRECIO TOTAL(S/.)</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <input id="PrecioPaquete" class="price" type="text" value="0.00">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <button rel="tooltip"
+                                        title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
+                                        id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
+                                    <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
+                                </button>
+                                <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
+                                    <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Después de seleccionar el método de pago, click en agregar y repita tantas veces como métodos de pago acepte"></i>
+                                    <i data-toggle="collapse" data-target="#contentInfoPago" rel="tooltip" data-original-title="Mostrar/Ocultar" class="fa fa-chevron-up fa-plus-cs " style="color: #a8fa00;float:right;"></i>
+                                </h4>
+                                <div class="row">
+                                    <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1" style="padding-right: 30px"><img th:src="@{/img/mastercard.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2" style="padding-right: 30px"><img th:src="@{/img/visa.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3" style="padding-right: 30px"><img th:src="@{/img/amex.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
+                                        <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
+                                    </div>
+                                </div>
+                                <div class="collapse in" id="contentInfoPago">
+                                    <div class="form-group">
+                                        <ul class="checks">
+                                            <li id="MetodoEfectivo">
+                                                <div class="chk-content info-pago">En efectivo
+                                                    <input type="radio" value="1" name="MetodoPago" checked="checked"><span class="checkmark info-pago"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content info-pago">Transferencia
+                                                    <input type="radio" value="2" name="MetodoPago"><span class="checkmark info-pago"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content info-pago">Con Tarjeta
+                                                    <input type="radio" value="3" name="MetodoPago"><span class="checkmark info-pago"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <select class="form-control" name="BancoId" id="BancoId">
+                                        </select>
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <input class="form-control" id="TitularCuenta" type="text" placeholder="Titular de la cuenta">
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <select class="form-control" id="TitularTipoDoc">
+                                            <option value="DNI">DNI</option>
+                                            <option value="CE">CE</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <input class="form-control" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <input class="form-control" id="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <input class="form-control" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <input class="form-control" id="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
+                                    </div>
+                                    <div class="form-group info-cuenta hidden">
+                                        <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
+                                    </div>
+                                    <div class="form-group info-tarjetas hidden">
+                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}+'?'+${version}" style="width: 64px;"></a>
+                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="2" class="img-cc cc-elegir" th:src="@{/img/visa.png}+'?'+${version}" style="width: 64px;"></a>
+                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="3" class="img-cc cc-elegir" th:src="@{/img/amex.png}+'?'+${version}" style="width: 64px;"></a>
+                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}+'?'+${version}" style="width: 64px;"></a>
+                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}+'?'+${version}"></a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <input type="file" id="inpCondServicio" class="hide">
+                                <button data-ficha-id="0" style="margin-bottom: 10px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                                <input type="hidden" id="FichaClienteId"/>
+                                <div class="row collapse" id="FichasDisponibles">
+                                    <div class="col col-md-12 text-center" style="padding-bottom:15px">
+                                        <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                            <h6>Standard</h6>
+                                            <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                            <h6>Running</h6>
+                                            <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>NOTA
+                                        <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
+                                    </label>
+                                    <textarea class="form-control" id="NotaFinal"></textarea>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="form-group div-actualizacion">
+                            <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                            <button class="btn btn-default btn-black" id="btnActualizarPerfil"><i class="fa fa-check"></i>Actualizar y enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</div>
+<footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+<!-- MODALS  -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModalCC">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #a8fa00;color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
+                <h3 class="modal-title">Cuenta Bancaria</h3>
+            </div>
+            <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
+                <div class="col-sm-12" id="CuentaBancariaUnica">
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Tipo documento:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-td"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Número de documento:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-nd"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Cuenta dólares:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-cd"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div></div>
+                    <div class="row">
+                        <div class="col col-md-5 col-xs-12"><strong>Interbancario dólares:</strong></div>
+                        <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
+                    <input id="ModalCuentaBancoId" type="hidden"/>
+                </div>
+            </div>
+            <div class="modal-footer text-center" style="background: #a8fa00;">
+                <i class="fa fa-fw fa-2x fa-trash-o" style="cursor:pointer;" onclick="eliminarCuentaBanco()" title="Eliminar cuenta bancaria"></i>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper">
+    <div class="modal-dialog" role="document" style="width: 70%;height: 90%;">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-body" style="height: 90%;padding: 0px">
+                <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
+                    <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
+                </div>
+            </div>
+            <div class="modal-footer" style="background: #000000;text-align: center;border:none">
+                <div class="row" id="actions">
+                    <div class="col-md-12 docs-buttons">
+                        <div class="btn-group btn-group-crop">
+                            <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
+                                            <i class="fa fa-check-circle fa-fw"></i>Confirmar
+                                        </span>
+                            </button>
+                            <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="">
+                                            <i class="fa fa-refresh fa-fw"></i>Cambiar
+                                        </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade slide in" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding: 0px !important">
+                <!--CAROUSEL CODE GOES HERE-->
+                <!--begin carousel-->
+                <div id="myGallery" class="carousel slide" data-interval="false">
+                    <ol class="carousel-indicators">
+                    </ol>
+                    <div class="carousel-inner text-center">
 
-      (function () {
-          if(btnActualizarPerfil !== null){
-              btnActualizarPerfil.addEventListener('click', actualizarPerfil);
-          }
-          init();
-      })();
+                    </div>
+                    <!--end carousel-inner-->
+                    <!--Begin Previous and Next buttons-->
+                    <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"><i class="fa fa-chevron-left"></i></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"><i class="fa fa-chevron-right"></i></span></a>
+                    <!--end carousel--></div>
+                <!--end modal-body--></div>
+            <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
+                <span class="" style="color: white;font-size: 1.4em;">Cerrar<i style="font-size: 1.2em !important;" class="fa-fw fa fa-close"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 no-padding-991" id="status" style="display: none">
+    <b>Coordenadas:</b> --
+    <br class="cb"/><b>Radio:</b> --
+</div>
+<th:block th:insert="html-commons/p/js :: fg-js"></th:block>
 
-      function bodyClickEventListener(e){
-          const input = e.target;
-          const clases = input.classList;
-          if(clases.contains('img-gal')){
-              const galModal = document.getElementById('myModal');
-              const ix = Number(input.parentElement.getAttribute('data-slide-to'));
-              const all = galModal.querySelectorAll('img');
-              all.forEach(v=>{
-                  v.parentElement.classList.add('hidden')
-              });
-              all[ix].parentElement.classList.remove('hidden');
-          }
-      }
+<script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
+<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
+<script th:inline="javascript">
+    let $perfil = {};
+    const btnActualizarPerfil = document.getElementById('btnActualizarPerfil');
+    const imgPerfil = document.getElementById('ImagePerfil');
+    const body = document.querySelector('body');
+    const tabService = document.getElementById('service');
+    const inpImgPerfil = document.getElementById('InpImgPerfil');
+    const servicios = [];
+    let ccBancarias = [];
+    const metodosPago = [];
+    let selServicioId = -1;
+    let termConSvc = [];
+    //Cropper
+    let cropper = {};
+    const actions = document.getElementById('actions');
 
-      function init(){
+    (function () {
+        uploadAndShow(inpImgPerfil, imgPerfil);
+        inpImgPerfil.addEventListener('change', changeImgPerfil);
+        inpImgPerfil.addEventListener('click', clickImgPerfiL);
+        tabService.addEventListener('click', clickListenerTabService);
+        if(btnActualizarPerfil !== null){
+            btnActualizarPerfil.addEventListener('click', actualizarPerfil);
+        }
+        init();
+    })();
+
+    function bodyClickEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+        if(clases.contains('img-gal')){
+            const galModal = document.getElementById('myModal');
+            const ix = Number(input.parentElement.getAttribute('data-slide-to'));
+            const all = galModal.querySelectorAll('img');
+            all.forEach(v=>{
+                v.parentElement.classList.add('hidden')
+            });
+            all[ix].parentElement.classList.remove('hidden');
+        }
+    }
+
+    function clickListenerTabService(e) {
+        const input = e.target;
+        const clases = input.classList;
+        if (clases.contains('servicio')) {
+            const id = input.getAttribute('data-id');
+            selServicioId = Number(id);
+            const svcFocus = tabService.querySelector('.svc-focus');
+            svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+            clases.add('svc-focus');
+            mostrarDetalleServicio(selServicioId);
+            const actualEdit = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
+            if(actualEdit){
+                actualEdit.classList.add('hidden');
+            }
+            tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
+        } else if(clases.contains('tarifa-svc')) {
+            let padre = {};
+            if(input.tagName === "IMG" || input.tagName === "H6"){
+                padre = input.parentElement.parentElement;
+            } else if(input.tagName === "A"){
+                padre = input.parentElement;
+            }
+            const tarifaId = padre.getAttribute('data-id');
+            const svcFocus = tabService.querySelector('.tarifa-svc-pick');
+            svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
+            padre.classList.add('tarifa-svc-pick');
+            const abuelo = padre.parentElement;
+            abuelo.querySelectorAll('.edit').forEach(e=>e.classList.add('hidden'));
+            padre.querySelector('.edit').classList.remove('hidden');
+            mostrarDetalleTarifaSvc(Number(tarifaId));
+        } else if(clases.contains('edit-svc')){
+            const svcId = Number(input.getAttribute('data-id'));
+            editarServicio(svcId);
+        } else if(clases.contains('edit-tar-svc')){
+            const tId = Number(input.getAttribute('data-id'));
+            editarTarifa(tId);
+        } else if(clases.contains('fa-plus-cs')){
+            clases.toggle('fa-chevron-up');
+            clases.toggle('fa-chevron-down');
+        } else if(clases.contains('info-pago')){
+            const parent = input.parentElement;
+            const qInput = parent.querySelector('input');
+            let nomButton = "Agregar información pago";
+            if(qInput.value === "1"){
+                tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
+                tabService.querySelector('.info-tarjetas').classList.add('hidden');
+            }
+            if(qInput.value === "2"){
+                tabService.querySelector('.info-tarjetas').classList.add('hidden');
+                tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.remove('hidden'));
+                nomButton = "Agregar nueva cuenta bancaria";
+            }
+
+            if(qInput.value === "3"){
+                const exists = metodosPago.some(e=>e.infoPagoId ===3);
+                if(exists){
+                    nomButton = "Modificar con nueva elección";
+                }
+                tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
+                tabService.querySelector('.info-tarjetas').classList.remove('hidden');
+            }
+            btnNuevaInfoPago.innerText = nomButton;
+        } else if(clases.contains('cc-elegir')){
+            input.classList.toggle('img-cc');
+        } else if(clases.contains('cc-bancaria')){
+            const inputBancoId = document.getElementById('ModalCuentaBancoId');
+            const ccId = Number(input.getAttribute('data-id'));
+            inputBancoId.value = ccId;
+            const d = ccBancarias.find(e => e.id === ccId);
+            $('#myModalCC').modal('show');
+            const dC = document.getElementById('CuentaBancariaUnica');
+            dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id==d.bancoId).nombre;
+            dC.querySelector('.cc-titular').textContent = d.titular;
+            dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
+            dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
+            dC.querySelector('.cc-cs').textContent = d.numeroSoles;
+            dC.querySelector('.cc-cd').textContent = d.numeroDolares;
+            dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
+            dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
+        } else if(clases.contains('div-fichas')){
+            const btn = document.getElementById('btnElegirFicha');
+            const fichaName = input.previousElementSibling.textContent.trim();
+            btn.innerText = "Ficha seleccionada: "+fichaName;
+            btn.click();
+            btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
+        }
+    }
+
+    function init(){
+        modalEventos();
         getTrainer();
-      }
+        actions.querySelector('.docs-buttons').onclick = function (e) {
 
-      function checkTab(){
-          const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
-          if(!tabHref.includes('http')){
-              const e = document.querySelector(`li a[href="${tabHref}"]`);
-              if(e != null){
+            let target = e.target;
+            let result;
+            let data;
+
+            if (!cropper) {
+                return;
+            }
+
+            while (target !== this) {
+                if (target.getAttribute('data-method')) {
+                    break;
+                }
+
+                target = target.parentNode;
+            }
+
+            if (target === this || target.disabled || target.className.indexOf('disabled') > -1) {
+                return;
+            }
+
+            data = {
+                method: target.getAttribute('data-method'),
+                target: target.getAttribute('data-target'),
+                option: target.getAttribute('data-option') || undefined,
+                secondOption: target.getAttribute('data-second-option') || undefined
+            };
+
+            if (data.method) {
+                switch (data.method) {
+                    case 'getCroppedCanvas':
+                        try {
+                            data.option = JSON.parse(data.option);
+                        } catch (e) {
+                            console.log(e.message);
+                        }
+                        break;
+                }
+
+                result = cropper[data.method](data.option, data.secondOption);
+
+                switch (data.method) {
+                    case 'getCroppedCanvas':
+                        if (result) {
+                            $('#FinalImagenRecortada').attr('src', result.toDataURL(inpImgPerfil.files[0].type));
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    function modalEventos(){
+
+        $('#myModalCropper').on('shown.bs.modal', ()=>{
+            if(typeof cropper.canvas !== 'object'){
+                const image = document.getElementById('ImagePerfil');
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    crop(event) {},
+                    zoomOnWheel: false,
+                    viewMode: 1
+                });
+            }
+        })
+    }
+
+    function clickImgPerfiL(e){
+        if(typeof cropper.canvas === 'object'){
+            e.preventDefault();
+            $('#myModalCropper').modal('show');
+        }
+    }
+
+    function changeImgPerfil(){
+        $('#myModalCropper').modal('show');
+    }
+
+    function checkTab(){
+        const tabHref = window.location.href.substring(window.location.href.indexOf("#"));
+        if(!tabHref.includes('http')){
+            const e = document.querySelector(`li a[href="${tabHref}"]`);
+            if(e != null){
                 e.click();
-              }
-          }
-      }
+            }
+        }
+    }
 
-      function actualizarPerfil(e){
-          e.preventDefault();
-          const hshId = document.getElementById('HshTrainerId').value;
-          const d = {};
-          d.trainerId = hshId;
-          $.ajax({
-              type: 'PUT',
-              contentType: 'application/json',
-              url: _ctx + 'p/trainer/subsanar/observaciones/perfil',
-              dataType: "json",
-              data: JSON.stringify(d),
-              blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
-                      document.querySelector('.div-actualizacion').classList.add('hidden');
-                  }
-              },
-              error: function (xhr) {
-                  exception(xhr);
-              },
-              complete: function () {
-              }
-          });
-      }
+    function actualizarPerfil(e){
+        e.preventDefault();
+        const hshId = document.getElementById('HshTrainerId').value;
+        const d = {};
+        d.trainerId = hshId;
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/json',
+            url: _ctx + 'p/trainer/subsanar/observaciones/perfil',
+            dataType: "json",
+            data: JSON.stringify(d),
+            blockLoading: true,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    reqSuccess(data);
+                    document.querySelector('.div-actualizacion').classList.add('hidden');
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    }
 
-      function enviarInfoACorregir(){
-          const obj = {};
-          const hshTrainerId = document.getElementById('HshTrainerId').value;
-          obj.hshTrainerId = hshTrainerId;
-          obj.correo = $perfil.correo;
-          obj.obs = document.getElementById('Obs').value;
+    function enviarInfoACorregir(){
+        const obj = {};
+        const hshTrainerId = document.getElementById('HshTrainerId').value;
+        obj.hshTrainerId = hshTrainerId;
+        obj.correo = $perfil.correo;
+        obj.obs = document.getElementById('Obs').value;
 
-          $.ajax({
-              type: 'GET',
-              url: _ctx + 'p/trainer/perfil/observaciones',
-              dataType: "json",
-              data: obj,
-              blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
-                      document.querySelector('.div-actualizacion').classList.add('hidden');
-                  }
-              },
-              error: function (xhr) {
-                  exception(xhr);
-              },
-              complete: function () {
-              }
-          });
-      }
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'p/trainer/perfil/observaciones',
+            dataType: "json",
+            data: obj,
+            blockLoading: true,
+            success: function (data, textStatus) {
+                if (textStatus == "success") {
+                    reqSuccess(data);
+                    document.querySelector('.div-actualizacion').classList.add('hidden');
+                }
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        });
+    }
 
-      function getTrainer(){
+    function getTrainer(){
         const urlArr = window.location.href.split("/");
         const nomPag = urlArr[urlArr.length-1];
         let extraPath = urlArr.some(p=>p==="ver" || p==="revision" ) ? 'sec/':'';
         $.ajax({
-          type: 'GET',
-          url: _ctx + 'p/trainer/get/'+extraPath+nomPag,
-          dataType: 'json',
-          blockLoading: false,
-          success: function (res) {
-            $perfil = res;
-            recrearPerfil(res);
-            checkTab();
-          }, error: (xhr) => {
-             if(xhr.status == 404){
-                 window.location.href = _ctx+"p/recurso-no-encontrado";
-             }
-             exception(xhr);
-          }, complete: () => {
-          }
+            type: 'GET',
+            url: _ctx + 'p/trainer/get/'+extraPath+nomPag,
+            dataType: 'json',
+            blockLoading: false,
+            success: function (res) {
+                $perfil = res;
+                recrearPerfil(res);
+                checkTab();
+            }, error: (xhr) => {
+                if(xhr.status == 404){
+                    window.location.href = _ctx+"p/recurso-no-encontrado";
+                }
+                exception(xhr);
+            }, complete: () => {
+            }
         })
-      }
+    }
 
-      function recrearPerfil(t){
-        document.querySelector('#NombreFull').textContent = t.nombreCompleto;
-        document.querySelector('#Especialidad').textContent = t.especialidad;
-        document.querySelector('#Disciplina').textContent = t.disciplina;
-        document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.rutaWebImg;
-        document.querySelector('#Acerca').textContent = t.acerca.replace(/\r?\n/g, '<br />');
+    function recrearPerfil(t){
+        document.querySelector('#NombreFull').value = t.nombreCompleto;
+        document.querySelector('#Especialidad').value = t.especialidad;
+        Array.from(document.querySelector('#DisciplinaId').options).forEach(v=>{
+            if(v.text === t.disciplina){
+                document.querySelector('#DisciplinaId').selectedIndex = v.index;
+            }
+        });
+        document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.rutaWebImg;
+        document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
 
-        let idiomas = "Español|Ingles".split("|");
-        document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${e}</p></li>`).join('')+'</ul>'));
-        let est = document.querySelector('#Estudios');
-        reconstruirLista(est, t.estudios);
-        document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
-        document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
-        let exp = document.querySelector('#Experiencias');
-        reconstruirLista(exp, t.experiencias);
-        let res = document.querySelector('#Resultados');
-        reconstruirLista(res, t.resultados);
-        let nvl = document.querySelector('#Niveles')
-        reconstruirLista(nvl, t.niveles);
-        let espc = document.querySelector('#Especialidades');
-        reconstruirLista(espc, t.especialidades);
-        let frmt = document.querySelector('#FormasTrabajo');
-        reconstruirLista(frmt, t.formasTrabajo);
-        reconstruirServicios(t.servicios, t.adicionalInfo != undefined ? t.adicionalInfo : "Ninguna");
-        reconstruirCuentaBanco(t.cuentas);
-        reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
+        let idiomas = t.idiomas.split("|");
+        const divIdiomas = document.querySelector('#Idiomas');
+        idiomas.forEach(i=> divIdiomas.querySelector(`input[value="${i}"]`).checked = true);
+        const inpEst = document.querySelector('.inp-estudio');
+        t.estudios.split("|").forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+        document.querySelector('#MetodoTrabajo').value = t.metodoTrabajo.replace(/\r?\n/g, '\n');
+        document.querySelector('#CentroTrabajo').value = t.centroTrabajo;
+        const inpExp = document.querySelector('.inp-experiencia');
+        t.experiencias.split("|").forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+        const inpRes = document.querySelector('.inp-resultado');
+        t.resultados.split("|").forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+        /*let nvl = document.querySelector('#Niveles');
+        reconstruirLista(nvl, t.niveles);*/
+        let niveles = t.niveles.split("|");
+        const divNiveles = document.querySelector('#Niveles');
+        niveles.forEach(i=> divNiveles.querySelector(`input[value="${i}"]`).checked = true);
+        const inpEspDom = document.querySelector('.inp-esp-domino');
+        t.especialidades.split("|").forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+        let formasTra = t.formasTrabajo.split("|");
+        const divFT = document.querySelector('#FormasTrabajo');
+        formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
+        document.querySelector('#Horario').value = t.horario;
+        reconstruirServicios(t.servicios);
+        /*reconstruirCuentaBanco(t.cuentas);
+        reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);*/
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
         if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
             document.getElementById('lblGaleriaFotos').classList.remove('hidden');
@@ -411,8 +946,8 @@
                 r.classList.remove('hidden');
                 const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
                 const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.querySelector('a').href = f;
-                r.querySelector('a').textContent = f;
+                r.value = f;
+
             }
             const existsIn = t.redes.includes('in:');
             if(existsIn){
@@ -420,8 +955,7 @@
                 r.classList.remove('hidden');
                 const pre = t.redes.slice(t.redes.indexOf("in:")+3);
                 const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.querySelector('a').href = f;
-                r.querySelector('a').textContent = f;
+                r.value = f;
             }
             const existsYo = t.redes.includes('yo:');
             if(existsYo){
@@ -429,33 +963,43 @@
                 r.classList.remove('hidden');
                 const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
                 const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.querySelector('a').href = f;
-                r.querySelector('a').textContent = f;
+                r.value = f;
             }
-            document.getElementById('lblRedes').classList.remove('hidden');
         }
-      }
-      function reconstruirLista(e, stringArr){
-          stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
-      }
 
-      function reconstruirServicios(ser, infAd){
-          const servicios = JSON.parse(ser);
-          const dvServicios = document.getElementById('NomServicios');
-          dvServicios.innerHTML = servicios.map((e) => `<label>${e.nombre}</label>`).join('');
-          dvServicios.firstElementChild.classList.add('rf-color');
-          const fSs = servicios[0];
-          document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
-          const dvIncServicio = document.getElementById('IncluyeServicio');
-          dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          document.getElementById('InfoAdicional').innerHTML = infAd.replace(/\r?\n/g, '<br />');
-      }
+        if(t.nota){
+            document.getElementById('divNotaFinal').classList.remove('hidden');
+            document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+        }
+    }
 
-      function reconstruirCuentaBanco(cuentas){
-          cuentas = JSON.parse(cuentas);
-          if(cuentas.length>0){
-              const pc = cuentas[0];
-              document.getElementById('CuentaBanco').appendChild(htmlStringToElement(`<table class="table">
+    function reconstruirLista(e, stringArr){
+        stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
+    }
+
+    function reconstruirServicios(svcs){
+        if(!svcs) return;
+        const allSvcs = JSON.parse(svcs);
+        const resumenServicios = document.querySelector('.ver-servicios');
+        allSvcs.forEach((svc, ix)=>{
+            svc.id = ix+1;
+            const element = htmlStringToElement(
+                `<div class="form-group editar">
+                            <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);" title="Confirmar modificaciones al servicio">
+                                <img class="edit-svc" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
+                            </a>
+                            <label class="servicio" data-id="${svc.id}">${svc.nombre}</label>
+                        </div>`);
+            resumenServicios.appendChild(element);
+            servicios.push(svc);
+        });
+    }
+
+    function reconstruirCuentaBanco(cuentas){
+        cuentas = JSON.parse(cuentas);
+        if(cuentas.length>0){
+            const pc = cuentas[0];
+            document.getElementById('CuentaBanco').appendChild(htmlStringToElement(`<table class="table">
                                       <thead>
                                       <tr>
                                           <th>MONEDA</th>
@@ -492,69 +1036,112 @@
                                       </tbody>
                                   </table>
           `));
-          }
-      }
+        }
+    }
 
-      function reconstruirTarifario(tarifas){
-          tarifas.forEach((e,i)=>document.getElementById('Tarifario').appendChild(htmlStringToElement(`
-                              <div class="col-xs-12 col-sm-6 col-md-4">
-                                  <div class="panel panel-primary" style="border-color: #ab9898;">
-                                      <div class="panel-heading" style="background: #a8fa00;">
-                                          <h4 class="panel-title" style="color:white; !important;">
-                                              Plan 1</h4>
-                                      </div>
-                                      <div class="panel-body no-padding text-align-center">
-                                          <div class="the-price">
-                                              <h1>S/. <span id="svcPre${i}" data-price="${e.precio}">${parseFloat(e.precio).toFixed(0)}</span></h1>
-                                          </div>
-                                          <table class="table">
-                                              <tbody>
-                                              <tr>
-                                                  <td>Personas: <span id="svcCanPer${i}">${e.personas}</span></td>
-                                              </tr>
-                                              <tr class="active">
-                                                  <td>Meses: <span>${e.meses}</span></td>
-                                              </tr>
-                                              <tr>
-                                                  <td>Sesiones: <span>${e.sesiones}</span></td>
-                                              </tr>
-                                              </tbody>
-                                          </table>
-                                          <ul class="counter" style="margin-left: 0px;padding-left: 0px;">
-                                            <li class="count">
-                                                <button class="counter-round" type="button" data-svc-ix="${i}" onclick="calculadoraMas(${i})"><span class="fa fa-plus"></span></button>
-                                            </li>
+    function reconstruirTarifario(tarifas){
+        tarifas.forEach((t)=>document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
+                            <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
+                                <a href="javascript:void(0)" class="tarifa-svc">
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                                    <h6>${t.nombre}</h6>
+                                </a>
+                            </div>`)));
+    }
 
-                                            <li class="count">
-                                                <button class="counter-round" type="button" data-svc-ix="${i}" onclick="calculadoraMenos(${i})"><span class="fa fa-minus"></span></button>
-                                            </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>`)));
-      }
+    function calculadoraMas(svcIx){
+        const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
+        const price = document.getElementById(`svcPre${svcIx}`);
+        const actualPrice = Number(price.textContent.trim());
+        const basePrice = Number(price.getAttribute('data-price').trim());
+        price.textContent = actualPrice+basePrice;
+        cantidadPersonas.textContent = Number(cantidadPersonas.textContent)+1;
 
-      function calculadoraMas(svcIx){
-          const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
-          const price = document.getElementById(`svcPre${svcIx}`);
-          const actualPrice = Number(price.textContent.trim());
-          const basePrice = Number(price.getAttribute('data-price').trim());
-          price.textContent = actualPrice+basePrice;
-          cantidadPersonas.textContent = Number(cantidadPersonas.textContent)+1;
+    }
 
-      }
+    function calculadoraMenos(svcIx){
+        const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
+        const price = document.getElementById(`svcPre${svcIx}`);
+        const actualPrice = Number(price.textContent.trim());
+        const basePrice = Number(price.getAttribute('data-price').trim());
+        const final = actualPrice-basePrice;
+        if(final>0){
+            price.textContent = final;
+            cantidadPersonas.textContent = Number(cantidadPersonas.textContent)-1;
+        }
+    }
 
-      function calculadoraMenos(svcIx){
-          const cantidadPersonas = document.getElementById(`svcCanPer${svcIx}`);
-          const price = document.getElementById(`svcPre${svcIx}`);
-          const actualPrice = Number(price.textContent.trim());
-          const basePrice = Number(price.getAttribute('data-price').trim());
-          const final = actualPrice-basePrice;
-          if(final>0){
-              price.textContent = final;
-              cantidadPersonas.textContent = Number(cantidadPersonas.textContent)-1;
-          }
-      }
-    </script>
-  </body>
+    function mostrarDetalleServicio(servicioId){
+        const svc = servicios.find(e=>e.id===servicioId);
+        document.querySelector('#NombreServicio').value = svc.nombre;
+        document.querySelector('#DescripcionServicio').value = svc.descripcion;
+        document.querySelector('#ServicioInfAdic').value = svc.infoAdicional;
+        setIncluyeDelServicio(svc.incluye);
+
+        const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
+        const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
+        if(condSvcFile !== undefined){
+            const nomFile = condSvcFile.file.name;
+            btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+        }else{
+            btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
+        }
+
+        setTarifarios(svc.tarifarios);
+    }
+
+    function setIncluyeDelServicio(incluidos){
+        const arrIncluidos = incluidos.split("|");
+        const mainIncluidos = document.querySelector('#MainIncluyeServicios');
+        if(arrIncluidos < 2){
+            mainIncluidos.querySelector('input').value = arrIncluidos[0];
+        } else {
+            mainIncluidos.innerHTML =
+                `<label>QUE INCLUYE</label>
+                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                     <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
+            const firstInput = mainIncluidos.querySelector('textarea');
+            const btnPlus = mainIncluidos.querySelector('a');
+            firstInput.value = arrIncluidos[0];
+            arrIncluidos.slice(1).forEach(e=>{
+                agregarTextareaDinamico(btnPlus, 10, 'inp-svc-incluye').firstElementChild.value = e;
+            })
+        }
+    }
+
+    function setTarifarios(tarifarios){
+        const dt = document.getElementById('Tarifarios');
+        dt.innerHTML = "";
+        tarifarios.forEach((t, i)=>{
+            t.id = i+1;
+            dt.appendChild(
+                htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
+        })
+    }
+
+    function putTarifario(id, nombre){
+        setTimeout(()=>{
+            $(tabService.querySelector(`#Tarifarios a.edit[data-id="${id}"]`)).tooltip();
+        }, 500);
+        return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
+                        <a href="javascript:void(0)" class="tarifa-svc">
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                            <h6 class="tarifa-svc">${nombre}</h6>
+                        </a>
+                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
+                            <img style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
+                        </a>
+                    </div>`
+    }
+
+    function mostrarDetalleTarifaSvc(tarifaId){
+        const t = servicios.find(v => v.id === selServicioId).tarifarios.find(t=>t.id === tarifaId);
+        document.querySelector('#NombreTarifario').value = t.nombre;
+        document.querySelector('#txtCantidadPersonas').value = t.personas;
+        document.querySelector('#txtCantidadMeses').value = t.meses;
+        document.querySelector('#txtCantidadSesiones').value = t.sesiones;
+        document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
+    }
+</script>
+</body>
 </html>
