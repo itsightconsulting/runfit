@@ -31,7 +31,7 @@ public class TrainerFichaPOJO implements Serializable {
     private String ubigeo;
     private int canPerValoracion;
     private Double totalValoracion;
-    private String rutaWebImg;
+    private String nomImgPerfil;
     private String servicios;
     private String cuentas;
     private String mediosPago;
@@ -43,7 +43,7 @@ public class TrainerFichaPOJO implements Serializable {
     public TrainerFichaPOJO() {
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, String especialidad, String ubigeo, String acerca, int canPerValoracion, Double totalValoracion, String rutaWebImg, String servicios, String nomPag) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, String especialidad, String ubigeo, String acerca, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String servicios, String nomPag) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.especialidad = especialidad;
@@ -51,12 +51,12 @@ public class TrainerFichaPOJO implements Serializable {
         this.acerca = acerca;
         this.canPerValoracion = canPerValoracion;
         this.totalValoracion = totalValoracion;
-        this.rutaWebImg = rutaWebImg;
+        this.nomImgPerfil = nomImgPerfil;
         this.servicios = servicios;
         this.nomPag = nomPag;
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, String fichaClienteIds, String especialidad, String disciplina, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String horario, String miniGaleria, String nota, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String rutaWebImg, String servicios, String cuentas, String mediosPago, String mapCoordenadas, Double mapCircleRadio, String redes) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, String fichaClienteIds, String especialidad, String disciplina, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String horario, String miniGaleria, String nota, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String servicios, String cuentas, String mediosPago, String mapCoordenadas, Double mapCircleRadio, String redes) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.fichaClienteIds = fichaClienteIds;
@@ -79,7 +79,7 @@ public class TrainerFichaPOJO implements Serializable {
         this.ubigeo = ubigeo;
         this.canPerValoracion = canPerValoracion;
         this.totalValoracion = totalValoracion;
-        this.rutaWebImg = rutaWebImg;
+        this.nomImgPerfil = nomImgPerfil;
         this.servicios = servicios;
         this.cuentas = cuentas;
         this.mediosPago = mediosPago;

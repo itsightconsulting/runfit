@@ -29,7 +29,7 @@ public class SecurityServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
         try {
-            SecurityUserDTO user = securityUserRepository.findByUsernameNative(username);
+            SecurityUserDTO user = securityUserRepository.findByUsernameNative(username.toLowerCase());
             if (user != null && user.isEnabled()) {
                 return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
             }

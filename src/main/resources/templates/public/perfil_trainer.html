@@ -18,6 +18,15 @@
           content: none !important;
       }
 
+      .servicio:not(.svc-focus):hover  {
+          color: #337ab7 !important;
+          cursor: pointer !important;
+      }
+
+      .svc-focus{
+          color: #a8fa00 !important;
+      }
+
   </style>
 </head>
   <body>
@@ -226,7 +235,6 @@
                       </form>
                   </div>
                 <div class="tab-pane fade" id="service">
-                      <h3>MIS SERVICIOS</h3>
                       <h1 class="title-form">DALE UN VISTAZO A NUESTROS SERVICIOS </h1>
                       <form>
                           <div class="ver-servicios">
@@ -237,7 +245,7 @@
                               <label>DESCRIPCIÓN</label>
                               <p id="DescripcionServicio"></p>
                           </div>
-                          <div class="form-group">
+                          <div class="form-group" id="MainIncluyeServicios">
                               <label>QUE INCLUYE</label>
                               <ul id="IncluyeServicio" class="list-counter">
                                   <li></li>
@@ -251,6 +259,9 @@
                           <h4 class="sub-title">TARIFARIO</h4>
                           <div class="row">
                               <div class="col col-md-12 text-center" id="Tarifarios">
+                              </div>
+                              <div class="col col-md-12" style="cursor: pointer; padding: 10px 15px" data-target="#modalTYC" data-toggle="modal">
+                                  <a>Ver términos y condiciones del paquete <i class="fa fa-file-pdf-o"></i></a>
                               </div>
                           </div>
                           <!-- END TARIFARIOS-->
@@ -344,6 +355,18 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+    <div class="modal fade slide in" id="modalTYC">
+        <div class="modal-dialog modal-lg" style="width: 70%; height: 85%;">
+            <div class="modal-content">
+                <div class="modal-body" style="padding: 0px !important">
+                    <embed src="" type="application/pdf" id="TYC" style="width: 100%; height: 100%"/>
+                </div>
+                <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
+                    <span class="" style="color: #a8fa00;font-size: 1.4em;"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-check-circle-o"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
@@ -357,6 +380,8 @@
       const tabService = document.getElementById('service');
       const body = document.querySelector('body');
       let ccBancarias = [];
+      let servicios = [];
+      let selServicioId = -1;
 
 
       (function () {
@@ -377,7 +402,14 @@
       function clickListenerTabService(e) {
           const input = e.target;
           const clases = input.classList;
-          if (clases.contains('cc-bancaria')) {
+          if (clases.contains('servicio')) {
+              const id = input.getAttribute('data-id');
+              selServicioId = Number(id);
+              const svcFocus = tabService.querySelector('.svc-focus');
+              svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+              clases.add('svc-focus');
+              mostrarDetalleServicio(selServicioId);
+          } else if (clases.contains('cc-bancaria')) {
               const inputBancoId = document.getElementById('ModalCuentaBancoId');
               const ccId = Number(input.getAttribute('data-id'));
               inputBancoId.value = ccId;
@@ -393,6 +425,36 @@
               dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
               dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
           }
+      }
+
+      function mostrarDetalleServicio(servicioId){
+          const svc = servicios.find((e, ix)=>ix===servicioId);
+          console.log(servicioId, svc);
+          document.querySelector('#DescripcionServicio').textContent = svc.descripcion;
+          document.querySelector('#InfoAdicional').textContent = svc.infoAdicional;
+          setIncluyeDelServicio(svc.incluye);
+
+          /*const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
+          const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
+          if(condSvcFile !== undefined){
+              let nomFile = condSvcFile.file.name;
+              if(nomFile.trim().length>19){
+                  nomFile = nomFile.substring(0, 16).trim()+"...";
+              }
+              btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+          }else{
+              btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
+          }
+          setTarifarios(svc.tarifarios);*/
+      }
+
+      function setIncluyeDelServicio(incluidos){
+          incluidos = incluidos.split("|");
+          const mainIncluidos = document.querySelector('#IncluyeServicio');
+          mainIncluidos.innerHTML = "";
+          incluidos.forEach(e=>{
+              mainIncluidos.appendChild(htmlStringToElement(`<li>${e.replace(/\r?\n/g, '\n')}</li>`));
+          });
       }
 
       function bodyClickEventListener(e){
@@ -540,6 +602,7 @@
           blockLoading: false,
           success: function (res) {
             $perfil = res;
+            servicios = JSON.parse($perfil.servicios);
             recrearPerfil(res);
             checkTab();
           }, error: (xhr) => {
@@ -556,7 +619,7 @@
         document.querySelector('#NombreFull').textContent = t.nombreCompleto;
         document.querySelector('#Especialidad').textContent = t.especialidad;
         document.querySelector('#Disciplina').textContent = t.disciplina;
-        document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.rutaWebImg;
+        document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
 
         let idiomas = t.idiomas.split("|");
@@ -580,7 +643,7 @@
         }else{
             document.querySelector('#dvHorario').classList.add('hidden');
         }
-        reconstruirServicios(t.servicios, t.adicionalInfo != undefined ? t.adicionalInfo : "Ninguna");
+        reconstruirServicios(t.servicios);
         //reconstruirCuentaBanco(t.cuentas);
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
         mostrarMediosPago(t.mediosPago, t.cuentas);
@@ -662,16 +725,16 @@
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
       }
 
-      function reconstruirServicios(ser, infAd){
+      function reconstruirServicios(ser){
           const servicios = JSON.parse(ser);
           const dvServicios = document.getElementById('NomServicios');
-          dvServicios.innerHTML = servicios.map((e) => `<label>${e.nombre}</label>`).join('');
-          dvServicios.firstElementChild.classList.add('rf-color');
+          dvServicios.innerHTML = servicios.map((e, ix) => `<label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${ix}">${e.nombre}</label>`).join('');
           const fSs = servicios[0];
           document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          document.getElementById('InfoAdicional').innerHTML = infAd.replace(/\r?\n/g, '<br />');
+          document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
+          document.getElementById('TYC').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+servicios[0].condicionesServicioRuWeb;
       }
 
       function reconstruirCuentaBanco(cuentas){

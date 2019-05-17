@@ -1,5 +1,7 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Correo;
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
@@ -12,6 +14,8 @@ import com.itsight.service.EmailService;
 import com.itsight.service.ParametroService;
 import com.itsight.service.TrainerFichaService;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -162,15 +166,14 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     }
 
     @Override
-    public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) {
-        repository.updateFlagFichaAceptadaByTrainerId(null, trainerId);
-
+    public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) throws JsonProcessingException {
+        repository.actualizarFichaByTrainerId(trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getDisciplinaId(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), new ObjectMapper().writeValueAsString(trainerFicha.getServicios()), trainerId);
         String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), domainName, trainerFicha.getTrainerId());//TrainerId esta como hash
         emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
-        return Enums.Msg.OBS_PERFIL_SUBSANADAS.get();
+        return Parseador.getEncodeHash32Id("rf-load-media", trainerId);
     }
 }

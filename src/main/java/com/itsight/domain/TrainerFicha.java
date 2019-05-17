@@ -41,7 +41,7 @@ import java.util.UUID;
                     @ColumnResult(name = "acerca", type = String.class),
                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                     @ColumnResult(name = "totalValoracion", type = Double.class),
-                    @ColumnResult(name = "rutaWebImg", type = String.class),
+                    @ColumnResult(name = "nomImgPerfil", type = String.class),
                     @ColumnResult(name = "servicios", type = String.class),
                     @ColumnResult(name = "nomPag", type = String.class)
                 }
@@ -76,7 +76,7 @@ import java.util.UUID;
                                     @ColumnResult(name = "ubigeo", type = String.class),
                                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                                     @ColumnResult(name = "totalValoracion", type = Double.class),
-                                    @ColumnResult(name = "rutaWebImg", type = String.class),
+                                    @ColumnResult(name = "nomImgPerfil", type = String.class),
                                     @ColumnResult(name = "servicios", type = String.class),
                                     @ColumnResult(name = "cuentas", type = String.class),
                                     @ColumnResult(name = "mediosPago", type = String.class),
@@ -98,7 +98,7 @@ import java.util.UUID;
                               "\tf.acerca, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
-                              "\tf.ruta_web_img rutaWebImg,\n" +
+                              "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
                               "\tCAST(f.servicios AS text),\n" +
                               "\tf.nom_pag nomPag \n" +
                               "FROM trainer t \n" +
@@ -122,14 +122,14 @@ import java.util.UUID;
                               "\tf.centro_trabajo centroTrabajo,\n" +
                               "\tf.especialidades,\n" +
                               "\tf.formas_trabajo formasTrabajo,\n" +
-                              "\tf.horario" +
+                              "\tf.horario,\n" +
                               "\tf.mini_galeria miniGaleria,\n" +
                               "\tf.nota,\n" +
                               "\tt.correo,\n" +
                               "\tt.ubigeo, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
-                              "\tf.ruta_web_img rutaWebImg,\n" +
+                              "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
                               "\tCAST(f.servicios AS text),\n" +
                               "\tCAST(f.cuentas AS text),\n" +
                               "\tf.medios_pago mediosPago,\n" +
@@ -165,7 +165,7 @@ import java.util.UUID;
                               "\tt.ubigeo, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
-                              "\tf.ruta_web_img rutaWebImg,\n" +
+                              "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
                               "\tCAST(f.servicios AS text),\n" +
                               "\tCAST(f.cuentas AS text),\n" +
                               "\tf.medios_pago mediosPago,\n" +
@@ -233,13 +233,13 @@ public class TrainerFicha implements Serializable {
     @Column(columnDefinition = "jsonb", nullable = true)
     private List<CuentaPago> cuentas;
 
-    @Column(nullable = true)
-    private UUID uuid;
+    @Column(nullable = false)
+    private UUID uuidFp;
 
-    @Column(nullable = true)
-    private String rutaWebImg;
+    @Column(nullable = false)
+    private String extFp;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = true, updatable = false)
     private String nomPag;
 
     @Column(nullable = true)

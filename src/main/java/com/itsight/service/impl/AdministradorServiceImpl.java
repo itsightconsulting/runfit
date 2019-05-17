@@ -162,6 +162,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public String registrar(Administrador administrador, String rols) {
         // TODO Auto-generated method stub
+        administrador.setUsername(administrador.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(administrador.getUsername()) == null) {
             try{
                 if(administrador.getTipoUsuario().getId() == 1 ){//1: Administrador

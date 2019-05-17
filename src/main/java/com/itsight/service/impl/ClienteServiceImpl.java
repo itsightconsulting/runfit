@@ -181,6 +181,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public String registrar(Cliente cliente, String rols) {
         // TODO Auto-generated method stub
+        cliente.setUsername(cliente.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(cliente.getUsername()) == null) {
             try {
                 if(cliente.getTipoUsuario().getId() == 3){//3: Cliente
@@ -194,7 +195,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
                     cliente.setPassword(Utilitarios.encoderPassword(cliente.getPassword()));
                     //Añadiendo las credenciales de ingreso
-                    SecurityUser secUser = new SecurityUser(cliente.getUsername(), cliente.getPassword(), cliente.isFlagActivo());
+                    SecurityUser secUser = new SecurityUser(cliente.getUsername().toLowerCase(), cliente.getPassword(), cliente.isFlagActivo());
                     //Añadiendo el role de colaborador
                     Set<SecurityRole> listSr = new HashSet<>();
                     for (Rol rol : cliente.getRoles()){
@@ -245,7 +246,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         objCli.setTipoDocumento(cliente.getTipoDocumentoId());
         objCli.setPais(cliente.getPaisId());
 
-        SecurityUser secCliente = new SecurityUser(cliente.getUsername(), cliente.getPassword());
+        SecurityUser secCliente = new SecurityUser(cliente.getUsername().toLowerCase(), cliente.getPassword());
         secCliente.setRoles(Enums.TipoUsuario.CLIENTE.ordinal());
 
         objCli.setSecurityUser(secCliente);

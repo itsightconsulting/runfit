@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +32,30 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
 
     @Query("SELECT T.flagFichaAceptada FROM TrainerFicha T WHERE T.trainer.id = ?1")
     Boolean getFlagFichaAceptadaByTrainerId(Integer trainerId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE trainer_ficha \n" +
+            "SET \n" +
+            "acerca =:acerca, \n" +
+            "centro_trabajo =:centroTrabajo,\n" +
+            "disciplina_id =:disciplinaId,\n" +
+            "especialidad =:especialidad,\n" +
+            "especialidades =:especilidades,\n" +
+            "estudios =:estudios,\n" +
+            "experiencias =:experiencias,\n" +
+            "ext_fp =:extFp,\n" +
+            "flag_ficha_aceptada = null,\n" +
+            "formas_trabajo =:formasTrabajo,\n" +
+            "horario =:horario,\n" +
+            "idiomas =:idiomas,\n" +
+            "metodo_trabajo =:metodoTrabajo,\n" +
+            "niveles =:niveles,\n" +
+            "nota =:nota,\n" +
+            "redes =:redes,\n" +
+            "resultados =:resultados,\n" +
+            "servicios =CAST(:servicios as jsonb)\n" +
+            "WHERE trainer_id=:trainerId")
+    void actualizarFichaByTrainerId(
+            @Param(value = "acerca") String acerca, @Param(value = "centroTrabajo") String centroTrabajo, @Param(value = "disciplinaId") Integer disciplinaId, @Param(value = "especialidad") String especialidad, @Param(value = "especilidades") String especilidades, @Param(value = "estudios") String estudios, @Param(value = "experiencias") String experiencias, @Param(value = "extFp") String extFp, @Param(value = "formasTrabajo") String formasTrabajo, @Param(value = "horario") String horario, @Param(value = "idiomas") String idiomas, @Param(value = "metodoTrabajo") String metodoTrabajo, @Param(value = "niveles") String niveles, @Param(value = "nota") String nota, @Param(value = "redes") String redes, @Param(value = "resultados") String resultados, @Param(value = "servicios") String servicios, @Param(value = "trainerId") Integer trainerId
+    );
 }

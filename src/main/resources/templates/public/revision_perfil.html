@@ -370,8 +370,6 @@
                                     <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
                                 </button>
                                 <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
-                                    <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Después de seleccionar el método de pago, click en agregar y repita tantas veces como métodos de pago acepte"></i>
-                                    <i data-toggle="collapse" data-target="#contentInfoPago" rel="tooltip" data-original-title="Mostrar/Ocultar" class="fa fa-chevron-up fa-plus-cs " style="color: #a8fa00;float:right;"></i>
                                 </h4>
                                 <div class="row">
                                     <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
@@ -384,25 +382,6 @@
                                     </div>
                                 </div>
                                 <div class="collapse in" id="contentInfoPago">
-                                    <div class="form-group">
-                                        <ul class="checks">
-                                            <li id="MetodoEfectivo">
-                                                <div class="chk-content info-pago">En efectivo
-                                                    <input type="radio" value="1" name="MetodoPago" checked="checked"><span class="checkmark info-pago"></span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="chk-content info-pago">Transferencia
-                                                    <input type="radio" value="2" name="MetodoPago"><span class="checkmark info-pago"></span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="chk-content info-pago">Con Tarjeta
-                                                    <input type="radio" value="3" name="MetodoPago"><span class="checkmark info-pago"></span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
                                     <div class="form-group info-cuenta hidden">
                                         <select class="form-control" name="BancoId" id="BancoId">
                                         </select>
@@ -441,22 +420,8 @@
                                 </div>
                                 <hr>
                                 <input type="file" id="inpCondServicio" class="hide">
-                                <button data-ficha-id="0" style="margin-bottom: 10px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
                                 <input type="hidden" id="FichaClienteId"/>
-                                <div class="row collapse" id="FichasDisponibles">
-                                    <div class="col col-md-12 text-center" style="padding-bottom:15px">
-                                        <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                            <h6>Standard</h6>
-                                            <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                            <h6>Running</h6>
-                                            <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
-                                        </div>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div class="form-group">
+                                <div class="form-group hidden" id="divNotaFinal">
                                     <label>NOTA
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
                                     </label>
@@ -467,7 +432,7 @@
                         </div>
                         <div class="form-group div-actualizacion">
                             <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                            <button class="btn btn-default btn-black" id="btnActualizarPerfil"><i class="fa fa-check"></i>Actualizar y enviar</button>
+                            <button class="btn btn-default btn-black" id="btnActualizarPerfil"><i class="fa fa-check"></i>ACTUALIZAR Y ENVIAR</button>
                         </div>
                     </div>
                 </div>
@@ -511,9 +476,6 @@
                         <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
                     <input id="ModalCuentaBancoId" type="hidden"/>
                 </div>
-            </div>
-            <div class="modal-footer text-center" style="background: #a8fa00;">
-                <i class="fa fa-fw fa-2x fa-trash-o" style="cursor:pointer;" onclick="eliminarCuentaBanco()" title="Eliminar cuenta bancaria"></i>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -591,6 +553,7 @@
     const metodosPago = [];
     let selServicioId = -1;
     let termConSvc = [];
+    let accTarifaId = 0;
     //Cropper
     let cropper = {};
     const actions = document.getElementById('actions');
@@ -688,7 +651,7 @@
             const inputBancoId = document.getElementById('ModalCuentaBancoId');
             const ccId = Number(input.getAttribute('data-id'));
             inputBancoId.value = ccId;
-            const d = ccBancarias.find(e => e.id === ccId);
+            const d = ccBancarias.find(e => e.bancoId === ccId);
             $('#myModalCC').modal('show');
             const dC = document.getElementById('CuentaBancariaUnica');
             dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id==d.bancoId).nombre;
@@ -803,18 +766,28 @@
     function actualizarPerfil(e){
         e.preventDefault();
         const hshId = document.getElementById('HshTrainerId').value;
-        const d = {};
+        const d = generateBodyToUpdate();
         d.trainerId = hshId;
+        d.servicios = servicios;
+        $buttonName = "ACTUALIZAR Y ENVIAR";
+        console.log(d);
         $.ajax({
             type: 'PUT',
             contentType: 'application/json',
             url: _ctx + 'p/trainer/subsanar/observaciones/perfil',
             dataType: "json",
             data: JSON.stringify(d),
-            blockLoading: true,
+            blockLoading: false,
+            bridgeMultipart: true,
             success: function (data, textStatus) {
                 if (textStatus == "success") {
-                    reqSuccess(data);
+                    if(!document.getElementById('FinalImagenRecortada').src.startsWith("https")){
+                        uploadFotoPerfil(data);
+                    }else{
+                        reqSuccess({res:
+                            "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"},
+                             3600000);
+                    }
                     document.querySelector('.div-actualizacion').classList.add('hidden');
                 }
             },
@@ -824,6 +797,49 @@
             complete: function () {
             }
         });
+    }
+
+    function uploadFotoPerfil(d){
+        //submit the form here
+        const hshId = d.res;
+        const rdmUUID = $perfil.nomImgPerfil.substring(0, $perfil.nomImgPerfil.lastIndexOf("."));
+        let file = inpImgPerfil;
+        if (file.files.length > 0) {
+            file = file.files[0];
+            const data = new FormData();
+
+            const blobBin = atob($('#FinalImagenRecortada')[0].src.split(',')[1]);
+            var array = [];
+            for(var i = 0; i < blobBin.length; i++) {
+                array.push(blobBin.charCodeAt(i));
+            }
+            var ff=new Blob([new Uint8Array(array)], {type: file.type});
+            data.append("file", ff);
+            data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+
+            $.ajax({
+                type: 'PUT',
+                url: _ctx+'p/trainer/subir/foto/perfil/'+hshId+'/'+rdmUUID,
+                data : data,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                xhr: function() {
+                    const myXhr = $.ajaxSettings.xhr();
+                    if(myXhr.upload){
+                        myXhr.upload.addEventListener('progress', progress, false);
+                    }
+                    return myXhr;
+                },
+                success: function (data) {
+                    reqSuccess(data, 3600000);
+                },
+                error: (xhr)=>{
+                    exception(xhr);
+                },
+                complete: ()=> {}
+            });
+        }
     }
 
     function enviarInfoACorregir(){
@@ -884,7 +900,7 @@
                 document.querySelector('#DisciplinaId').selectedIndex = v.index;
             }
         });
-        document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.rutaWebImg;
+        document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
 
         let idiomas = t.idiomas.split("|");
@@ -910,6 +926,7 @@
         formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
         document.querySelector('#Horario').value = t.horario;
         reconstruirServicios(t.servicios);
+        mostrarMediosPago(t.mediosPago, t.cuentas);
         /*reconstruirCuentaBanco(t.cuentas);
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);*/
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
@@ -1141,6 +1158,145 @@
         document.querySelector('#txtCantidadMeses').value = t.meses;
         document.querySelector('#txtCantidadSesiones').value = t.sesiones;
         document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
+    }
+
+    function editarTarifa(tId){
+        const t = getTarifa();
+        if(t.valid) {
+            let tarifa = servicios.find(s=>s.id===selServicioId).tarifarios.find(t=>t.id===tId);
+            tarifa.nombre = t.nombre;
+            tarifa.frecuencia = t.frecuencia;
+            tarifa.meses = t.meses;
+            tarifa.personas = t.personas;
+            tarifa.sesiones = t.sesiones;
+            tarifa.precio = t.precio;
+            tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
+        } else{
+            $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+        }
+    }
+
+    function getTarifa(){
+        const tar = new Object();
+        tar.nombre = document.querySelector('#NombreTarifario').value;
+        tar.frecuencia = document.querySelector('#FrecuenciaPaquete').value;
+        tar.personas = document.querySelector('#txtCantidadPersonas').value.trim();
+        tar.meses = document.querySelector('#txtCantidadMeses').value.trim();
+        tar.sesiones = document.querySelector('#txtCantidadSesiones').value.trim();
+        tar.valid = false;
+        if(tar.nombre !== "" && tar.frecuencia !== "" && Number(tar.personas)>0 && (Number(tar.meses)>0 || Number(tar.sesiones)>0)){
+            tar.precio = document.querySelector('#PrecioPaquete').value;
+            tar.valid = true;
+            tar.id = ++accTarifaId;
+        }
+        return tar;
+    }
+
+    function mostrarMediosPago(mediosPago, cuentas){
+        const ccs = mediosPago.split("|");
+        ccs.forEach(id=>{
+            tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+        })
+
+        if(cuentas != undefined){
+            cuentas = JSON.parse(cuentas);
+            ccBancarias = cuentas;
+            const mePagos = document.getElementById('MediosPagosAgregados');
+            cuentas.forEach(c=>{
+                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
+            });
+        }
+    }
+
+    function getRedesSociales(){
+        let res = {};
+        res.nombres = "";
+        res.have = false;
+        const fb = document.querySelector('#RsFb').value.trim();
+        const instagran = document.querySelector('#RsIn').value.trim();
+        const youtube = document.querySelector('#RsYo').value.trim();
+
+        if(fb.length > 4){
+            res.have = true;
+            res.nombres+= "fb:"+fb.trim();
+        }
+
+        if(instagran.length > 4){
+            res.nombres+= res.have ? "|":"";
+            res.have = true;
+            res.nombres+= "in:"+instagran.trim();
+        }
+
+        if(youtube.length > 4){
+            res.nombres+= res.have ? "|":"";
+            res.have = true;
+            res.nombres+= "yo:"+youtube.trim();
+        }
+        return res;
+    }
+
+    function editarServicio(svcId){
+        const svc = servicios.find(s=>s.id===svcId);
+        if(svc !== undefined){
+            setBasicsServicio(svc);
+            service.querySelector('.svc-focus').click();
+        }else {
+            $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
+        }
+    }
+
+    function setBasicsServicio(svc){
+        const nombre = document.querySelector('#NombreServicio').value.trim();
+        const descripcion = document.querySelector('#DescripcionServicio').value.trim();
+        const incluye = getAsStringIncluyeServices();
+        const infoAdicional = document.querySelector('#ServicioInfAdic').value.trim();
+        if(nombre !== "" && descripcion !== "" && incluye !== ""){
+            svc.nombre = nombre;
+            svc.descripcion = descripcion;
+            svc.incluye = incluye;
+            svc.infoAdicional = infoAdicional;
+            service.querySelector('.svc-focus').textContent = nombre;
+        }else{
+            $.smallBox({
+                color: 'alert',
+                content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>Los nuevos datos que edito del servicio son inválidos, verifique que el nombre, descripción no se encuentren vacíos</i>'
+            });
+        }
+    }
+
+    function getAsStringIncluyeServices(){
+        return Array.from(document.querySelectorAll('#MainIncluyeServicios textarea')).map(v=>v.value  !==  "" ? v.value : "").filter(v=>v.trim()!=="").join('|');
+    }
+
+    function generateBodyToUpdate(){
+        const obj = getFormData($('#frm_registro'));
+
+        obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
+        obj.estudios = getValuesByClass('inp-estudio');
+        obj.experiencias = getValuesByClass('inp-experiencia');
+        obj.resultados = getValuesByClass('inp-resultado');
+        obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
+        obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
+        obj.especialidades = getValuesByClass('inp-esp-domino');
+        let redes = getRedesSociales();
+        if(redes.have){
+            obj.redes = redes.nombres;
+        }
+        obj.nota = document.getElementById('NotaFinal').value;
+        obj.servicios = servicios;
+        obj.mediosPago = $perfil.mediosPago;
+        let finalExtension = "";
+        let finalImagenRecortada = document.getElementById('FinalImagenRecortada');
+        if(finalImagenRecortada.src.startsWith("https")){
+            finalExtension = $perfil.nomImgPerfil.substring($perfil.nomImgPerfil.lastIndexOf("."));
+        }else{
+            finalExtension = inpImgPerfil.files[0].name.substring(inpImgPerfil.files[0].name.lastIndexOf("."));
+        }
+        obj.imgExt = finalExtension;
+        if(!obj.horario){
+            delete obj['horario'];
+        }
+        return obj;
     }
 </script>
 </body>

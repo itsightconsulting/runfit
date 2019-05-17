@@ -438,7 +438,7 @@
                                                     AGREGAR PAQUETE
                                                   </button>
                                               </div>
-                                              <div class="col-md-6">
+                                              <div class="col-md-6 padding-0">
                                                   <button class="btn btn-default btn-white" id="btnEliminarPaquete">
                                                     <i class="fa fa-trash fa-fw"></i>
                                                     ELIMINAR PAQUETE
@@ -677,7 +677,7 @@
         let ccBancarias = [];
         const metodosPago = [];
         let termConSvc = [];
-        const initTabActive = 1;
+        const initTabActive = 3;
         let selServicioId = -1;
         let accServicioId = 0;
         let accTarifaId = 0;
@@ -730,7 +730,11 @@
                     termConSvc.push(obj);
                 }
                 const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
-                btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+obj.file.name+"<span class=\"obligatorio\">*</span>";
+                let nomFile = obj.file.name;
+                if(nomFile.trim().length>19){
+                    nomFile = nomFile.substring(0, 16).trim()+"...";
+                }
+                btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
             } else{
                 $.smallBox({color: "rgb(204, 77, 77)",
                             content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>Primero debe agregar un servicio</em>" ,
@@ -754,7 +758,7 @@
                 for(var i = 0; i < blobBin.length; i++) {
                     array.push(blobBin.charCodeAt(i));
                 }
-                var ff=new Blob([new Uint8Array(array)], {type: 'image/png'});
+                var ff=new Blob([new Uint8Array(array)], {type: file.type});
                 data.append("file", ff);
                 data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
 
@@ -985,27 +989,33 @@
             }
 
             $buttonName = "Guardar";
-
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: _ctx + 'p/trainer/registro/'+hshId,
-                dataType: 'json',
-                data: JSON.stringify(body),
-                blockLoading: false,
-                bridgeMultipart: true,
-                success: (d)=> {
-                    //Subir imgen
-                    if(extsImgsGaleria === "" && extsCondSvcs === ""){
-                        uploadFotoPerfil(d, body);
-                    }else{
-                        uploadFotosPerfil(d, body)
+            if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: _ctx + 'p/trainer/registro/'+hshId,
+                    dataType: 'json',
+                    data: JSON.stringify(body),
+                    blockLoading: false,
+                    bridgeMultipart: true,
+                    success: (d)=> {
+                        //Subir imgen
+                        if(extsImgsGaleria === "" && extsCondSvcs === ""){
+                            uploadFotoPerfil(d, body);
+                        }else{
+                            uploadFotosPerfil(d, body)
+                        }
+                    }, error: (xhr) => {
+                        exception(xhr);
+                    }, complete: () => {
                     }
-                }, error: (xhr) => {
-                    exception(xhr);
-                }, complete: () => {
-                }
-            })
+                })
+            }else{
+                $.smallBox({color: 'alert',
+                            content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
+                            timeout: 5000});
+            }
+
         }
 
         function clickListenerTabService(e) {
@@ -1171,12 +1181,14 @@
             const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
             const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
             if(condSvcFile !== undefined){
-                const nomFile = condSvcFile.file.name;
+                let nomFile = condSvcFile.file.name;
+                if(nomFile.trim().length>19){
+                    nomFile = nomFile.substring(0, 16).trim()+"...";
+                }
                 btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
             }else{
                 btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
             }
-
             setTarifarios(svc.tarifarios);
         }
 
@@ -1244,10 +1256,12 @@
             const nombre = document.querySelector('#NombreServicio').value.trim();
             const descripcion = document.querySelector('#DescripcionServicio').value.trim();
             const incluye = getAsStringIncluyeServices();
+            const infoAdicional = document.querySelector('#ServicioInfAdic').value.trim();
             if(nombre !== "" && descripcion !== "" && incluye !== ""){
                 svc.nombre = nombre;
                 svc.descripcion = descripcion;
                 svc.incluye = incluye;
+                svc.infoAdicional = infoAdicional;
                 service.querySelector('.svc-focus').textContent = nombre;
             }else{
                 $.smallBox({
@@ -1606,7 +1620,7 @@
             }
             return obj;
         }
-        
+
         function getRedesSociales(){
             let res = {};
             res.nombres = "";

@@ -100,7 +100,7 @@ public class TrainerDTO implements Serializable {
     @Size(max = 14)
     @NotBlank
     private String movil;
-    @Size(min = 16, max = 200, message = "Debe subir una foto de perfil")
+    @Size(min = 16, max = 240, message = "Debe subir una foto de perfil")
     @NotNull(message = "Debe subir una foto de perfil")
     private String imgExt;
     @Positive(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")

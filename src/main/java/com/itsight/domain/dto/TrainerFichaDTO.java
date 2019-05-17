@@ -18,7 +18,7 @@ public class TrainerFichaDTO implements Serializable {
     @Size(max = 32)
     private String trainerId;
     @Size(max = 200)
-    @NotNull
+    @NotBlank
     private String especialidad;
     @Positive
     @NotNull
@@ -68,10 +68,6 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 3, max = 200)
     @NotNull
     private String imgExt;
-    @Positive
-    @NotNull
-    @Max(36)
-    private Integer fichaClienteId;
     @Size(max = 100)
     private String mapCoordenadas;
     @Digits(integer = 5, fraction = 2)

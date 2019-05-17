@@ -195,6 +195,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public String registrar(Trainer trainer, String rols) {
         // TODO Auto-generated method stub
+        trainer.setUsername(trainer.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(trainer.getUsername()) == null) {
             try{
                 if(trainer.getTipoUsuario().getId() == 2) {//2: Entrenador
@@ -208,7 +209,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
                     trainer.setPassword(Utilitarios.encoderPassword(trainer.getPassword()));
                     //Añadiendo las credenciales de ingreso
-                    SecurityUser secUser = new SecurityUser(trainer.getUsername(), trainer.getPassword(), trainer.isFlagActivo());
+                    SecurityUser secUser = new SecurityUser(trainer.getUsername().toLowerCase(), trainer.getPassword(), trainer.isFlagActivo());
                     //Añadiendo el role de colaborador
                     Set<SecurityRole> listSr = new HashSet<>();
                     for (Rol rol : trainer.getRoles()) {
@@ -255,14 +256,14 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         //No activamos el usuario en su registro ya que aún queda pasar por una última aprobación de toda la información que brindo para su perfil
         Trainer trainer = new Trainer(
                 trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
-                trainerFicha.getMovil(), trainerFicha.getUsername(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),false);
+                trainerFicha.getMovil(), trainerFicha.getUsername().toLowerCase(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),false);
         trainer.setPais(trainerFicha.getPaisId());
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
         trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteId()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)
 
-        trainer.setUsername(trainerFicha.getUsername());
+        trainer.setUsername(trainerFicha.getUsername().toLowerCase());
         trainer.setPassword(trainerFicha.getPassword());
         List<TrainerFicha> lstTf = new ArrayList<>();
         obj.setTrainer(trainer);
@@ -271,7 +272,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         String[] extensiones = trainerFicha.getImgExt().split("@");
         int extsLen = extensiones.length;
         RefUploadIds refUpload = new RefUploadIds();
-        refUpload.setNombreImgPerfil(extensiones[0]);//imgPerfil
+        refUpload.setUuidFp(extensiones[0]);//imgPerfil
         refUpload.setNombresImgsGaleria();
         refUpload.setNombresCondSvcs();
         if(extsLen == 2){
@@ -295,8 +296,9 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 }
             }
         }
-        String nombreImagenPerfil = refUpload.getNombreImgPerfil();
-        obj.setRutaWebImg(nombreImagenPerfil);
+        //Img perfil
+        obj.setUuidFp(refUpload.getUuidFp());
+        obj.setExtFp(refUpload.getExtFp());
 
         trainer.setLstTrainerFicha(lstTf);
         //Registrando

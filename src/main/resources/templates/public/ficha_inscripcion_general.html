@@ -1529,11 +1529,13 @@
     //Page 3
     document.querySelector('#DesObjetivos').value = "Ser el mejor";
     document.querySelector('#Username').value = String(new Date().getTime());
-    document.querySelector('#Password').value = "runfit";
+    document.querySelector('#Password').value = "runfit123";
 
     var tid = setInterval( function () {
       if ( document.readyState !== 'complete' ) return;
-      else document.getElementById('btnGuardar').click();
+      else {
+        document.getElementById('btnGuardar').click();
+      }
       clearInterval( tid );
       // do your work
     }, 100);

@@ -1,5 +1,6 @@
 package com.itsight.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
@@ -20,5 +21,5 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
 
     Boolean getFlagFichaAceptadaByTrainerId(Integer trainerId);
 
-    String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId);
+    String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) throws JsonProcessingException;
 }

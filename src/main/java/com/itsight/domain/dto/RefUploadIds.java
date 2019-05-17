@@ -8,7 +8,8 @@ import java.util.UUID;
 public class RefUploadIds {
 
     private Integer trainerId;
-    private String nombreImgPerfil;
+    private UUID uuidFp;
+    private String extFp;
     private String nombresImgsGaleria;
     private String nombresCondSvcs;
 
@@ -17,10 +18,10 @@ public class RefUploadIds {
 
     public RefUploadIds(){}
 
-    public RefUploadIds(Integer trainerId, String nombresImgsGaleria, String nombreImgPerfil) {
+    public RefUploadIds(Integer trainerId, String nombresImgsGaleria, UUID uuidFp) {
         this.trainerId = trainerId;
         this.nombresImgsGaleria = nombresImgsGaleria;
-        this.nombreImgPerfil = nombreImgPerfil;
+        this.uuidFp = uuidFp;
     }
 
     public void setNombresCondSvcs() {
@@ -31,9 +32,10 @@ public class RefUploadIds {
         this.nombresImgsGaleria = "";
     }
 
-    public void setNombreImgPerfil(String extImgPerfil) {
+    public void setUuidFp(String extImgPerfil) {
         if(extImgPerfil.contains("extImgPerfil:")){
-            this.nombreImgPerfil = UUID.randomUUID().toString()+"."+extImgPerfil.substring("extImgPerfil:".length());
+            this.uuidFp = UUID.randomUUID();
+            this.extFp = "."+extImgPerfil.substring("extImgPerfil:".length());
         }
     }
 

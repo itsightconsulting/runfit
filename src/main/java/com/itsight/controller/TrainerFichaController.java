@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
@@ -92,7 +93,7 @@ public class TrainerFichaController extends BaseController {
 
     @PutMapping("/subsanar/observaciones/perfil")
     public @ResponseBody String subsanarObservacionesPerfil(
-            @RequestBody TrainerFichaDTO trainerFicha) throws CustomValidationException {
+            @RequestBody @Valid TrainerFichaDTO trainerFicha) throws CustomValidationException, JsonProcessingException {
         Integer trainerId = getDecodeHashId("rf-aprobacion", trainerFicha.getTrainerId());
         return jsonResponse(trainerFichaService.actualizarObservacionesPerfil(trainerFicha, trainerId));
     }
@@ -192,7 +193,7 @@ public class TrainerFichaController extends BaseController {
             RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha);
             String gal = refsUpload.getNombresImgsGaleria().equals("") ? "" : "@"+refsUpload.getNombresImgsGaleria();
             String svcsFiles = refsUpload.getNombresCondSvcs().equals("") ? "" : "@"+refsUpload.getNombresCondSvcs();
-            String finalUploadNames = refsUpload.getNombreImgPerfil() +  gal + svcsFiles;
+            String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp() +  gal + svcsFiles;
             return jsonResponse(
                         Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
                         finalUploadNames);
