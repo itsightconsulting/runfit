@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
@@ -87,6 +88,7 @@
                               <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                           </ul>
                           <div class="tab-content">
+
                               <div class="tab-pane fade" id="about">
                                   <form id="frm_registro">
                                       <div class="form-group">
@@ -245,74 +247,72 @@
                                   </form>
                               </div>
                               <div class="tab-pane fade" id="contact">
-                                  <form>
-                                      <div class="form-group">
-                                          <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.correo}" class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
-                                      </div>
-                                      <div class="form-group">
-                                          <label>TELEFONO</label>
-                                          <input class="form-control" type="text" id="Telefono" name="Telefono">
-                                      </div>
-                                      <div class="form-group">
-                                          <label>CELULAR<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil">
-                                      </div>
-                                      <div class="form-group">
-                                          <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                          <select class="form-control" id="TipoDocumento" name="TipoDocumento">
-                                              <option value="1">DNI</option>
-                                              <option value="2">CE</option>
-                                          </select>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
-                                      </div>
-                                      <div class="form-group">
-                                          <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
-                                          <div class="row">
-                                              <div class="col-md-12">
-                                                  <div class="col-md-5 col-sm-5">
-                                                      <label>Departamento:</label>
-                                                  </div>
-                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
-                                                          <option selected="selected" value="15">Lima</option>
-                                                      </select>
-                                                  </div>
+                                  <div class="form-group">
+                                      <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
+                                      <input th:value="${postulante.correo}" class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>TELEFONO</label>
+                                      <input class="form-control" type="text" id="Telefono" name="Telefono">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>CELULAR<span class="obligatorio">*</span></label>
+                                      <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
+                                      <select class="form-control" id="TipoDocumento" name="TipoDocumento">
+                                          <option value="1">DNI</option>
+                                          <option value="2">CE</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group">
+                                      <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <div class="col-md-5 col-sm-5">
+                                                  <label>Departamento:</label>
                                               </div>
-                                              <div class="col-md-12">
-                                                  <div class="col-md-5 col-sm-5">
-                                                      <label>Provincia:</label>
-                                                  </div>
-                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
-                                                          <option selected="selected" value="01">Lima</option>
-                                                      </select>
-                                                  </div>
+                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                  <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                      <option selected="selected" value="15">Lima</option>
+                                                  </select>
                                               </div>
-                                              <div class="col-md-12">
-                                                  <div class="col-md-5 col-sm-5">
-                                                      <label>Distrito:</label>
-                                                  </div>
-                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
-                                                          <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
-                                                      </select>
-                                                  </div>
+                                          </div>
+                                          <div class="col-md-12">
+                                              <div class="col-md-5 col-sm-5">
+                                                  <label>Provincia:</label>
+                                              </div>
+                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                  <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                      <option selected="selected" value="01">Lima</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-12">
+                                              <div class="col-md-5 col-sm-5">
+                                                  <label>Distrito:</label>
+                                              </div>
+                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                  <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                      <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
+                                                  </select>
                                               </div>
                                           </div>
                                       </div>
-                                      <div class="form-group">
-                                          <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="Username" name="Username">
-                                      </div>
-                                      <div class="form-group">
-                                          <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="password" id="Password" name="Password">
-                                      </div>
-                                  </form>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="Username" name="Username">
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="password" id="Password" name="Password">
+                                  </div>
                               </div>
                               <div class="tab-pane fade" id="service">
                                   <h4>Mis servicios</h4>
@@ -555,10 +555,10 @@
                                               <input id="inpTermCond" type="checkbox"><span class="checkmark"></span>
                                           </div>
                                       </div>
-                                  </form>
                               </div>
                           </div>
-                              <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
+                          <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
+
                       </div>
                   </div>
               </div>
@@ -697,6 +697,7 @@
             btnNuevaInfoPago.addEventListener('click', agregarNuevaInfoPago);
             btnEliminarPaquete.addEventListener('click', eliminarPaqueteDeServicio);
             tabService.addEventListener('click', clickListenerTabService);
+            tabService.addEventListener('change', changeListenerTabService);
             inpCondServicio.addEventListener('change', asociarCondSvc);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
@@ -718,30 +719,6 @@
         }
 
         function asociarCondSvc(e){
-            if(selServicioId > 0){
-                const input = e.target;
-                const obj = {};
-                obj.servicioId = selServicioId;
-                obj.file = input.files[0];
-                const exist = termConSvc.find(v=>v.servicioId === obj.servicioId);
-                if(exist !== undefined){
-                    exist.file = obj.file;
-                }else{
-                    termConSvc.push(obj);
-                }
-                const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
-                let nomFile = obj.file.name;
-                if(nomFile.trim().length>19){
-                    nomFile = nomFile.substring(0, 16).trim()+"...";
-                }
-                btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
-            } else{
-                $.smallBox({color: "rgb(204, 77, 77)",
-                            content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>Primero debe agregar un servicio</em>" ,
-                            timeout: 3500})
-            }
-
-
         }
 
         function uploadFotoPerfil(d){
@@ -1103,6 +1080,35 @@
             }
         }
 
+        function changeListenerTabService(e){
+            const input = e.target;
+            const clases = input.classList;
+            if(clases.contains('inp-svc-tyc')){
+                if(selServicioId > 0){
+                    const input = e.target;
+                    const obj = {};
+                    obj.servicioId = selServicioId;
+                    obj.file = input.files[0];
+                    const exist = termConSvc.find(v=>v.servicioId === obj.servicioId);
+                    if(exist !== undefined){
+                        exist.file = obj.file;
+                    }else{
+                        termConSvc.push(obj);
+                    }
+                    const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
+                    let nomFile = obj.file.name;
+                    if(nomFile.trim().length>19){
+                        nomFile = nomFile.substring(0, 16).trim()+"...";
+                    }
+                    btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+                } else {
+                    $.smallBox({color: "rgb(204, 77, 77)",
+                        content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>Ha ocurrido un error al cargar su archivo. Por favor omita este paso pora ahora</em>" ,
+                        timeout: 3500})
+                }
+            }
+        }
+
         function eliminarCuentaBanco(){
             $.smallBox({
                 color: "rgb(204, 77, 77)",
@@ -1122,6 +1128,12 @@
         function mostrarDetalleTarifaSvc(tarifaId){
             const t = servicios.find(v => v.id === selServicioId).tarifarios.find(t=>t.id === tarifaId);
             document.querySelector('#NombreTarifario').value = t.nombre;
+            const slcFre = document.querySelector('#FrecuenciaPaquete');
+            Array.from(slcFre.options).forEach(v=>{
+                if(v.text === t.frecuencia){
+                    document.querySelector('#FrecuenciaPaquete').selectedIndex = v.index;
+                }
+            });
             document.querySelector('#txtCantidadPersonas').value = t.personas;
             document.querySelector('#txtCantidadMeses').value = t.meses;
             document.querySelector('#txtCantidadSesiones').value = t.sesiones;
@@ -1177,7 +1189,11 @@
             document.querySelector('#DescripcionServicio').value = svc.descripcion;
             document.querySelector('#ServicioInfAdic').value = svc.infoAdicional;
             setIncluyeDelServicio(svc.incluye);
+            setFileTermCond();
+            setTarifarios(svc.tarifarios);
+        }
 
+        function setFileTermCond(){
             const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
             const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
             if(condSvcFile !== undefined){
@@ -1189,7 +1205,6 @@
             }else{
                 btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
             }
-            setTarifarios(svc.tarifarios);
         }
 
         function agregarServicio(){
@@ -1206,9 +1221,20 @@
                 service.querySelector(`.ver-servicios .edit[data-id="${s.id}"]`).classList.remove('hidden');
                 document.getElementById('Tarifarios').innerHTML = "";
                 tabService.querySelector('.servicio.svc-focus').click();
+                agregarInputTermCond();
             } else{
                 $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
             }
+        }
+
+        function agregarInputTermCond(){
+            const inpFile = document.createElement('input');
+            inpFile.type = 'file';
+            inpFile.id = "inpCondServicio"+selServicioId;
+            inpFile.className = "inp-svc-tyc hidden";
+            inpFile.accept = "application/pdf";
+            inpCondServicio.insertAdjacentElement('afterend', inpFile);
+            btnSubirCondServicio.setAttribute('onclick', "javascript:document.getElementById('"+inpFile.id+"').click()");
         }
 
         function editarServicio(svcId){
@@ -1493,8 +1519,8 @@
 
             document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
             document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
-            document.querySelector('#Username').value = "Pedro"+t1 + ""+ t2;
-            document.querySelector('#Password').value = "runfit123";
+            document.getElementById('Username').value = "Pedro"+t1 + ""+ t2;
+            document.getElementById('Password').value = "runfit123";
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
             //Estudios

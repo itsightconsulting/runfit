@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
@@ -27,6 +28,14 @@
           color: #a8fa00 !important;
       }
 
+      .tarifa-svc-pick {
+          border-bottom: 5px solid #a8fa00;
+          border-radius: 20%;
+      }
+
+      .txt-tar{
+        margin-bottom: 5px !important;
+      }
   </style>
 </head>
   <body>
@@ -34,7 +43,9 @@
     <div th:replace="html-commons/reu-login :: fg-login"></div>
     <div id="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
+        <div class="bg-image">
+            <img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/>
+        </div>
       </div>
       <section class="trainers-form">
         <div class="row">
@@ -70,7 +81,7 @@
             <div class="col-md-7">
               <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                <li class="hidden"><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
                 <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
               </ul>
               <div class="tab-content">
@@ -255,15 +266,81 @@
                               <label>INFORMACIÓN ADICIONAL</label>
                               <p id="InfoAdicional"></p>
                           </div>
+                          <div id="EnlaceTYC" class="form-group hidden">
+                            <label>TÉRMINOS Y CONDICIONES:
+                                <a href="#"><i rel="tooltip" title="Ver términos y condiciones" class="fa fa-fw fa-eye" data-target="#modalTYC" data-toggle="modal"></i></a>
+                            </label>
+                          </div>
                           <!-- TARIFARIOS -->
-                          <h4 class="sub-title">TARIFARIO</h4>
+                          <h4 class="sub-title">TARIFARIOS</h4>
                           <div class="row">
                               <div class="col col-md-12 text-center" id="Tarifarios">
                               </div>
-                              <div class="col col-md-12" style="cursor: pointer; padding: 10px 15px" data-target="#modalTYC" data-toggle="modal">
-                                  <a>Ver términos y condiciones del paquete <i class="fa fa-file-pdf-o"></i></a>
+                          </div>
+                          <!-- DETALLE PAQUETE -->
+                          <div class="clase-tarifario collapse in" id="contentTarifario">
+                              <div class="form-group txt-tar">
+                                  <label for="NombreTarifario">NOMBRE</label>
+                                  <span  id="NombreTarifario" name="NombreTarifario"></span>
+                              </div>
+                              <div class="form-group txt-tar">
+                                  <label for="FrecuenciaPaquete">FRECUENCIA</label>
+                                  <span id="FrecuenciaPaquete"></span>
+                              </div>
+                              <div class="form-group txt-tar">
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>CANTIDAD DE PERSONAS</label>
+                                      </div>
+                                      <div class="col-xs-5 text-right">
+                                          <ul class="counter">
+                                              <li class="result">
+                                                  <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group txt-tar">
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>CANTIDAD DE MESES</label>
+                                      </div>
+                                      <div class="col-xs-5 text-right">
+                                          <ul class="counter">
+                                              <li class="result">
+                                                  <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group txt-tar">
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>CANTIDAD DE SESIONES</label>
+                                      </div>
+                                      <div class="col-xs-5 text-right">
+                                          <ul class="counter">
+                                              <li class="result">
+                                                  <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group txt-tar">
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.)</label>
+                                      </div>
+                                      <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
+                                          <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
+                                      </div>
+                                  </div>
                               </div>
                           </div>
+                          <!-- END DETALLE PAQUETE -->
                           <!-- END TARIFARIOS-->
                           <h4>INFORMACIÓN DE PAGO</h4>
                           <div class="row">
@@ -358,8 +435,7 @@
     <div class="modal fade slide in" id="modalTYC">
         <div class="modal-dialog modal-lg" style="width: 70%; height: 85%;">
             <div class="modal-content">
-                <div class="modal-body" style="padding: 0px !important">
-                    <embed src="" type="application/pdf" id="TYC" style="width: 100%; height: 100%"/>
+                <div class="modal-body" style="padding: 0px !important" id="TYC">
                 </div>
                 <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
                     <span class="" style="color: #a8fa00;font-size: 1.4em;"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-check-circle-o"></i></span>
@@ -424,28 +500,76 @@
               dC.querySelector('.cc-cd').textContent = d.numeroDolares;
               dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
               dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
+          } else if(clases.contains('tarifa-svc')) {
+              let padre = {};
+              if(input.tagName === "IMG" || input.tagName === "H6"){
+                  padre = input.parentElement.parentElement;
+              } else if(input.tagName === "A"){
+                  padre = input.parentElement;
+              }
+              const svcFocus = tabService.querySelector('.tarifa-svc-pick');
+              svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
+              padre.classList.add('tarifa-svc-pick');
+              mostrarDetalleTarifaSvc(Number(padre.getAttribute('data-id')));
           }
+      }
+
+      function mostrarDetalleTarifaSvc(tarifaId){
+          const t = servicios.find((v,ix) => ix === selServicioId).tarifarios.find((t, ix)=>ix === tarifaId);
+          document.querySelector('#NombreTarifario').textContent = t.nombre;
+          document.querySelector('#FrecuenciaPaquete').textContent = t.frecuencia;
+          document.querySelector('#txtCantidadPersonas').value = t.personas;
+          document.querySelector('#txtCantidadMeses').value = t.meses;
+          document.querySelector('#txtCantidadSesiones').value = t.sesiones;
+          document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
       }
 
       function mostrarDetalleServicio(servicioId){
           const svc = servicios.find((e, ix)=>ix===servicioId);
-          console.log(servicioId, svc);
           document.querySelector('#DescripcionServicio').textContent = svc.descripcion;
           document.querySelector('#InfoAdicional').textContent = svc.infoAdicional;
           setIncluyeDelServicio(svc.incluye);
+          setFileTermCond(svc);
+          setTarifarios(svc.tarifarios);
+      }
 
-          /*const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
-          const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
-          if(condSvcFile !== undefined){
-              let nomFile = condSvcFile.file.name;
-              if(nomFile.trim().length>19){
-                  nomFile = nomFile.substring(0, 16).trim()+"...";
-              }
-              btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
-          }else{
-              btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
+      function setFileTermCond(svc){
+          if(svc.condicionesServicioRuWeb){
+              document.getElementById('EnlaceTYC').classList.remove('hidden');
+              const doc = document.createElement('embed');
+              doc.type = "application/pdf";
+              doc.style = "width: 100%; height: 100%";
+              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.condicionesServicioRuWeb;
+              document.getElementById('TYC').innerHTML = "";
+              document.getElementById('TYC').appendChild(doc);
+          } else {
+              document.getElementById('EnlaceTYC').classList.add('hidden');
           }
-          setTarifarios(svc.tarifarios);*/
+      }
+
+      function setTarifarios(tarifarios){
+          const dt = document.getElementById('Tarifarios');
+          dt.innerHTML = "";
+          tarifarios.forEach((t,ix)=>{
+              t.id = ix;
+              dt.appendChild(
+                  htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
+          })
+      }
+
+      function putTarifario(id, nombre){
+          setTimeout(()=>{
+              $(tabService.querySelector(`#Tarifarios a.edit[data-id="${id}"]`)).tooltip();
+          }, 500);
+          return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
+                        <a href="javascript:void(0)" class="tarifa-svc">
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                            <h6 class="tarifa-svc">${nombre}</h6>
+                        </a>
+                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
+                            <img style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
+                        </a>
+                    </div>`
       }
 
       function setIncluyeDelServicio(incluidos){
@@ -480,7 +604,7 @@
           if(btnAprobarTrainer === null){
               document.querySelector('.rating').classList.remove('hidden');
               document.querySelector('.valoration').classList.remove('hidden');
-
+              $('.nav-tabs a[href="#contact"]').parent()[0].classList.remove('hidden');
           }else{
               document.querySelector('#btnInfoContacto').classList.add('hidden');
               document.querySelector('#btnElegir').classList.add('hidden');
@@ -632,7 +756,7 @@
         reconstruirLista(exp, t.experiencias);
         let res = document.querySelector('#Resultados');
         reconstruirLista(res, t.resultados);
-        let nvl = document.querySelector('#Niveles')
+        let nvl = document.querySelector('#Niveles');
         reconstruirLista(nvl, t.niveles);
         let espc = document.querySelector('#Especialidades');
         reconstruirLista(espc, t.especialidades);
@@ -648,6 +772,7 @@
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
         mostrarMediosPago(t.mediosPago, t.cuentas);
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
+
         if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
             document.getElementById('lblGaleriaFotos').classList.remove('hidden');
             poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
@@ -720,6 +845,9 @@
               document.getElementById('divNotaFinal').classList.remove('hidden');
               document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
           }
+
+          selServicioId = 0;
+          $('#Tarifarios .tarifa-svc')[0].click();
       }
       function reconstruirLista(e, stringArr){
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
@@ -734,7 +862,15 @@
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
           document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
-          document.getElementById('TYC').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+servicios[0].condicionesServicioRuWeb;
+          if(servicios[0].condicionesServicioRuWeb){
+              document.getElementById('EnlaceTYC').classList.remove('hidden');
+              const doc = document.createElement('embed');
+              doc.type = "application/pdf";
+              doc.style = "width: 100%; height: 100%";
+              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+servicios[0].condicionesServicioRuWeb;
+              document.getElementById('TYC').innerHTML = "";
+              document.getElementById('TYC').appendChild(doc);
+          }
       }
 
       function reconstruirCuentaBanco(cuentas){
@@ -782,13 +918,15 @@
       }
 
       function reconstruirTarifario(tarifas){
-          tarifas.forEach((t)=>document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
-                            <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
+          tarifas.forEach((t, ix)=>{
+                        t.id = ix;
+                        document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
+                            <div class="col-md-3 col-xs-4 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
                                     <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
-                                    <h6>${t.nombre}</h6>
+                                    <h6 class="tarifa-svc">${t.nombre}</h6>
                                 </a>
-                            </div>`)));
+                            </div>`))});
       }
 
       function mostrarMediosPago(mediosPago, cuentas){

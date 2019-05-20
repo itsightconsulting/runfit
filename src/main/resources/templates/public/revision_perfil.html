@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
@@ -7,6 +8,8 @@
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
     <style>
+        html, body { height:100% !important}
+
         .mg-bt-6{
             margin-bottom: 6px !important;
         }
@@ -68,6 +71,10 @@
         .glyphicon-chevron-right:before{
             content: none !important;
         }
+
+        #FinalImagenRecortada {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -84,7 +91,8 @@
                     <div class="avatar-form">
                         <input type="file" id="InpImgPerfil">
                         <div class="avatar-form-content img-container">
-                            <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                            <img id="FinalImagenRecortada" title="Cambiar foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                            <i rel="tooltip" title="Si desea actualizar la imagen de perfil, clickee sobre la imagen actual 📸" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-exclamation-circle"></i>
                         </div>
                     </div>
                 </div>
@@ -268,6 +276,11 @@
                                         <label>INFORMACIÓN ADICIONAL</label>
                                         <textarea class="form-control" id="ServicioInfAdic"></textarea>
                                     </div>
+                                    <div id="EnlaceTYC" class="form-group hidden">
+                                        <label>TÉRMINOS Y CONDICIONES:
+                                            <a href="#"><i rel="tooltip" title="Ver términos y condiciones" class="fa fa-fw fa-eye" data-target="#modalTYC" data-toggle="modal"></i></a>
+                                        </label>
+                                    </div>
                                 </div>
                                 <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
                                     <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
@@ -364,11 +377,6 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <button rel="tooltip"
-                                        title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
-                                        id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
-                                    <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
-                                </button>
                                 <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
                                 </h4>
                                 <div class="row">
@@ -437,6 +445,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 </div>
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
@@ -532,6 +541,17 @@
         </div>
     </div>
 </div>
+<div class="modal fade slide in" id="modalTYC">
+    <div class="modal-dialog modal-lg" style="width: 70%; height: 85%;">
+        <div class="modal-content">
+            <div class="modal-body" style="padding: 0px !important" id="TYC">
+            </div>
+            <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
+                <span class="" style="color: #a8fa00;font-size: 1.4em;"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-check-circle-o"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="col-md-6 no-padding-991" id="status" style="display: none">
     <b>Coordenadas:</b> --
     <br class="cb"/><b>Radio:</b> --
@@ -566,6 +586,9 @@
         if(btnActualizarPerfil !== null){
             btnActualizarPerfil.addEventListener('click', actualizarPerfil);
         }
+        document.querySelectorAll('i[rel="tooltip"]').forEach(e=>{
+            $(e).tooltip();
+        })
         init();
     })();
 
@@ -1094,17 +1117,22 @@
         document.querySelector('#DescripcionServicio').value = svc.descripcion;
         document.querySelector('#ServicioInfAdic').value = svc.infoAdicional;
         setIncluyeDelServicio(svc.incluye);
-
-        const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
-        const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
-        if(condSvcFile !== undefined){
-            const nomFile = condSvcFile.file.name;
-            btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
-        }else{
-            btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
-        }
-
+        setFileTermCond(svc);
         setTarifarios(svc.tarifarios);
+    }
+
+    function setFileTermCond(svc){
+        if(svc.condicionesServicioRuWeb){
+            document.getElementById('EnlaceTYC').classList.remove('hidden');
+            const doc = document.createElement('embed');
+            doc.type = "application/pdf";
+            doc.style = "width: 100%; height: 100%";
+            doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.condicionesServicioRuWeb;
+            document.getElementById('TYC').innerHTML = "";
+            document.getElementById('TYC').appendChild(doc);
+        } else {
+            document.getElementById('EnlaceTYC').classList.add('hidden');
+        }
     }
 
     function setIncluyeDelServicio(incluidos){
@@ -1240,6 +1268,12 @@
         if(svc !== undefined){
             setBasicsServicio(svc);
             service.querySelector('.svc-focus').click();
+            $.smallBox({content: "<i class='fa fa-check'></i> "+"El servicio se ha actualizado satisfactoriamente. " +
+                                                                "No olvide al finalizar todas las ediciones confirmar las actualizaciones con el botón " +
+                                                                "que se encuentra en el pie de esta página",
+                color: '#111509',
+                timeout: 6000
+            });
         }else {
             $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
         }
@@ -1297,6 +1331,12 @@
             delete obj['horario'];
         }
         return obj;
+    }
+
+    function elegirOtraImagenCropper(){
+        cropper.destroy();
+        cropper = {};
+        inpImgPerfil.click();
     }
 </script>
 </body>
