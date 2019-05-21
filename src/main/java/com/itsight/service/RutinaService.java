@@ -33,5 +33,7 @@ public interface RutinaService extends BaseService<Rutina, Integer> {
     String actualizarFlagActivo(boolean flagActivo);
 
     void updateFechaCliAccesoById(Integer id, Date fechaMax);
+
+    Integer getMaxRutinaIdByClienteId(Integer clienteId);
 }
 

@@ -66,8 +66,17 @@ public class ClienteFullController {
 
 
     @GetMapping(value = "/get/obtenerSemanasPorRutina")
-    public @ResponseBody List<Semana> obtenerPrimeraSemanaRutina(@RequestParam int idrutina) {
-        return semanaService.findByRutinaIdOrderByIdDesc(idrutina);
+    public @ResponseBody List<Semana> obtenerTodasSemanasDeUltimaRutina(HttpSession session) {
+        int userId = (int) session.getAttribute("id");
+        Integer lastRutinaId = rutinaService.getMaxRutinaIdByClienteId(userId);
+        return semanaService.findByRutinaIdOrderByIdDesc(lastRutinaId);
+    }
+
+    @GetMapping(value = "/get/ultima-rutina")
+    public @ResponseBody Rutina obtenerInfoUltimaRutinaGenerada(HttpSession session) {
+        int userId = (int) session.getAttribute("id");
+        Integer lastRutinaId = rutinaService.getMaxRutinaIdByClienteId(userId);
+        return rutinaService.findOne(lastRutinaId);
     }
 
     @GetMapping(value = "/get/rutinas")

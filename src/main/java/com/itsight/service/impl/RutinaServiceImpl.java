@@ -254,4 +254,9 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     public void updateFechaCliAccesoById(Integer id, Date fechaMax) {
         repository.updateFechaCliAccesoById(id, fechaMax);
     }
+
+    @Override
+    public Integer getMaxRutinaIdByClienteId(Integer clienteId) {
+        return repository.getMaxRutinaIdByClienteId(clienteId);
+    }
 }

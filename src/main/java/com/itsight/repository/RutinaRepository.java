@@ -57,4 +57,7 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
     @Modifying
     @Query("UPDATE Rutina R SET R.fechaCliAcceso = ?2 WHERE R.id = ?1")
     void updateFechaCliAccesoById(Integer id, Date fechaMax);
+
+    @Query(value = "SELECT MAX(R.id) FROM Rutina R WHERE R.cliente.id = ?1")
+    Integer getMaxRutinaIdByClienteId(Integer clienteId);
 }
