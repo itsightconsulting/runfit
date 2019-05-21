@@ -186,7 +186,7 @@ function getRutinas(){
 
 function getSemanas(id) {
     const params = {};
-    params.idrutina = id;
+    params.idrutina = $('#HshRutinaId').val();
 
     $.ajax({
         type: 'GET',

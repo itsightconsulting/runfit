@@ -49,6 +49,11 @@ public class AuthController {
         return ViewConstant.PRINCIPAL;
     }
 
+    @GetMapping(value = {"/inicio"})
+    public String indexCliente() {
+        return ViewConstant.CLIENTE_INDEX;
+    }
+
     @GetMapping(value = "/accesoDenegado", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String permisosInsuficientes() {
         return ViewConstant.ERROR403;

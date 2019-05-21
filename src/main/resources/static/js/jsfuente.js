@@ -315,7 +315,11 @@ function spinnerSwitchTab(effect){
         if(ButtonPressed.trim() === ""){
             setTimeout(()=>{
                 const msgBox = document.getElementById('MsgBoxBack');
-                msgBox.children[0].remove();
+                if(msgBox){
+                    if(msgBox.children && msgBox.children.length>0){
+                        msgBox.children[0].remove();
+                    }
+                }
             }, 150)
         }
         if (ButtonPressed === "Cancelar") {
@@ -662,6 +666,7 @@ function generateRandomMail(){
                 $('#bot1-Msg1').click();
             }
         }
+        clearInterval($gbInterval);
     });
 
     $(document).ajaxStart(() => {});

@@ -912,7 +912,8 @@
                         aspectRatio: 1,
                         crop(event) {},
                         zoomOnWheel: false,
-                        viewMode: 1
+                        viewMode: 1,
+                        minContainerHeight: image.height > window.innerHeight * 0.8 ? window.innerHeight * 0.8 : image.height
                     });
                 }
             })
