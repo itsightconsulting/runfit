@@ -32,6 +32,10 @@ public class TrainerDTO implements Serializable {
     @Size(min=8, max = 30)
     @NotBlank
     private String password;
+    @NotNull
+    @Min(1)
+    @Max(3)
+    private Integer sexo;
     @Size(max = 200)
     @NotBlank
     private String especialidad;

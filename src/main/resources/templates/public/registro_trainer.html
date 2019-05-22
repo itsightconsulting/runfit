@@ -92,6 +92,26 @@
                               <div class="tab-pane fade" id="about">
                                   <form id="frm_registro">
                                       <div class="form-group">
+                                          <div class="pad-right-middle" style="width: 100%">
+                                              <label>SEXO<span class="obligatorio">*</span></label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Femenino
+                                                          <input name="Sexo" value="2" data-aka="Seleccionar sexo" type="radio" checked="checked"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Masculino
+                                                          <input name="Sexo" value="1" type="radio"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Otro
+                                                          <input name="Sexo" value="3" type="radio"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
                                           <div class="pad-right-middle">
                                               <label>NOMBRE(S)<span class="obligatorio">*</span></label>
                                               <input class="form-control" name="Nombres" id="Nombres" type="text">
@@ -966,6 +986,8 @@
                 body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
             }
 
+            body.sexo = Number($('input[name="Sexo"]:checked').val());
+
             $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
                 $.ajax({
@@ -1196,7 +1218,7 @@
 
         function setFileTermCond(){
             const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
-            const condSvcFile = termConSvc.find(v=>v.servicioId === servicioId);
+            const condSvcFile = termConSvc.find(v=>v.servicioId === selServicioId);
             if(condSvcFile !== undefined){
                 let nomFile = condSvcFile.file.name;
                 if(nomFile.trim().length>19){

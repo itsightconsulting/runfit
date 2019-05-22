@@ -329,7 +329,7 @@ function spinnerSwitchTab(effect){
         }
     })
     return setTimeout(()=>{
-        $('#bot1-Msg1').toggleClass('hidden');
+        $('.MessageBoxButtonSection button').toggleClass('hidden');
         return effect();}, 100);
 }
 
@@ -636,9 +636,12 @@ function generateRandomMail(){
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
         } else{
+
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
                 $("#btnGuardar").attr('disabled','disabled');
                 $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+
+            } else if(options.type === 'GET' && options.noOne !== undefined){
 
             } else{
                 if(options.bridgeMultipart){
@@ -666,7 +669,10 @@ function generateRandomMail(){
                 $('#bot1-Msg1').click();
             }
         }
-        clearInterval($gbInterval);
+
+        if(options.noOne === undefined) {
+            clearInterval($gbInterval);
+        }
     });
 
     $(document).ajaxStart(() => {});

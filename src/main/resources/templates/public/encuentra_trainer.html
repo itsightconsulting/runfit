@@ -22,7 +22,7 @@
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>BÚSQUEDA POR NOMBRE</label>
-                <input class="form-control" type="text">
+                <input class="form-control" type="text" id="Nombres">
               </div>
             </div>
             <div class="col-md-4">  
@@ -105,7 +105,7 @@
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>NIVEL DE RENDIMIENTO</label>
-                <select class="form-control">
+                <select class="form-control" id="NivelAtleta">
                   <option value="0">Seleccione</option>
                   <option value="1">Principiante</option>
                   <option value="2">Intermedio</option>
@@ -120,7 +120,7 @@
               <button id="btnLimpiar" class="btn btn-default btn-white view-only-desktop" type="button">LIMPIAR TODO</button>
             </div>
             <div class="col-md-6 text-right">
-              <button class="btn btn-default btn-black" type="button">BUSCAR</button>
+              <button class="btn btn-default btn-black" type="button" id="btnBuscar">BUSCAR</button>
             </div>
           </div>
           <div id="Trainers">
@@ -134,8 +134,11 @@
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
       const btnLimpiar = document.getElementById('btnLimpiar');
+      const btnBuscar = document.getElementById('btnBuscar');
+
       (function(){
         btnLimpiar.addEventListener('click', limpiarMainForm);
+        btnBuscar.addEventListener('click', busquedaDinamica);
         init();
       })();
 
@@ -151,6 +154,61 @@
           blockLoading: false,
           success: function (res) {
             recrearListado(res);
+          }, error: (xhr) => {
+            console.log(xhr);
+          }, complete: () => {
+          }
+        })
+      }
+
+      function busquedaDinamica(){
+        const d = {};
+        const nv = $('#NivelAtleta').val();
+        let nvValue = "";
+        if(nv == "1"){
+          nvValue = "Principiantes";
+        }
+
+        if(nv == "2"){
+          nvValue = "Intermedios";
+        }
+
+        if(nv == "3"){
+          nvValue = "Avanzados";
+        }
+        /*d.niveles = "";
+        d.idiomas = "";
+        d.acerca = "";*/
+        d.niveles = nvValue;
+        //d.idiomas = "Portugues|Español";
+        d.nombres = $('#Nombres').val();
+        if(!d.nombres){
+          delete d['nombres'];
+        }
+
+        if(!d.niveles){
+          delete d['niveles'];
+        }
+        $.ajax({
+          type: 'GET',
+          url: _ctx + 'p/trainer/find/dinamico',
+          dataType: 'json',
+          data: d,
+          blockLoading: true,
+          success: function (res) {
+
+            document.getElementById('Trainers').innerHTML = "";
+            if(res.length === 0){
+              const noOne = document.createElement('div');
+              noOne.className = "";
+              noOne.style.fontSize = "1.5em";
+              noOne.style.color = "#a8fa00";
+              noOne.style.padding = "15px 0px";
+              noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se ha encontrado ninguna coincidencia. Pruebe nuevamente con otra búsqueda";
+              document.getElementById('Trainers').appendChild(noOne);
+            }else{
+              recrearListado(res);
+            }
           }, error: (xhr) => {
             console.log(xhr);
           }, complete: () => {

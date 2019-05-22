@@ -196,6 +196,8 @@ public class TrainerFicha implements Serializable {
     @Column(name="TrainerFichaId")
     private Integer id;
     @Column(nullable = false)
+    private Integer sexo;
+    @Column(nullable = false)
     private String especialidad;
     @Column(nullable = false)
     private Integer disciplinaId;

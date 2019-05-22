@@ -11,10 +11,7 @@ import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
-import com.itsight.service.DisciplinaService;
-import com.itsight.service.PostulanteTrainerService;
-import com.itsight.service.TrainerFichaService;
-import com.itsight.service.TrainerService;
+import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Validador;
@@ -49,22 +46,37 @@ public class TrainerFichaController extends BaseController {
 
     private DisciplinaService disciplinaService;
 
+    private TrainerProcedureInvoker trainerProcedureInvoker;
+
     @Autowired
     public TrainerFichaController(TrainerFichaService trainerFichaService,
                                   PostulanteTrainerService postulanteTrainerService,
                                   TrainerService trainerService,
                                   SecurityUserRepository securityUserRepository,
-                                  DisciplinaService disciplinaService) {
+                                  DisciplinaService disciplinaService,
+                                  TrainerProcedureInvoker trainerProcedureInvoker) {
         this.trainerFichaService = trainerFichaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.trainerService = trainerService;
         this.securityUserRepository = securityUserRepository;
         this.disciplinaService = disciplinaService;
+        this.trainerProcedureInvoker = trainerProcedureInvoker;
     }
 
     @GetMapping("/find/all")
     public @ResponseBody List<TrainerFichaPOJO> listarTodos(){
         return trainerFichaService.findAllWithFgEnt();
+    }
+
+    @GetMapping("/find/dinamico")
+    public @ResponseBody List<TrainerFichaPOJO> listarDinamico(
+            @RequestParam(required = false) String idiomas,
+            @RequestParam(required = false) String niveles,
+            @RequestParam(required = false) String nombres,
+            @RequestParam(required = false) String acerca
+        ){
+
+        return trainerProcedureInvoker.findAllByNombreDynamic(idiomas, niveles, nombres, acerca);
     }
 
     @GetMapping("/{nomPag:.+}")

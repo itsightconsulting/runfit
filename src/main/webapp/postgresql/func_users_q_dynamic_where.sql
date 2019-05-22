@@ -9,7 +9,7 @@ CREATE OR REPLACE FUNCTION func_users_q_dynamic_where(
 			   fechaUltimoAcceso timestamp,
 			   flagActivo boolean,
 			   tipoUsuarioId int,
-			   tipoUsuario text) AS 
+			   tipoUsuario text) AS
 $func$
 SELECT * FROM tipo_usuario;
                       select
