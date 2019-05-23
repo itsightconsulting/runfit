@@ -87,13 +87,13 @@
               <div class="tab-content">
                 <div class="tab-pane fade in active" id="about">
                   <form>
-                      <div class="form-group">
-                          <label>SEXO</label>
-                          <p id="Sexo">UNDEFINED</p>
-                      </div>
                     <div class="form-group">
-                      <label>NOMBRE Y APELLIDOS</label>
+                      <label>NOMBRE</label>
                       <p id="NombreFull"></p>
+                    </div>
+                    <div class="form-group hidden" id="txtSexo">
+                          <label>SEXO</label>
+                          <p id="Sexo"></p>
                     </div>
                     <div class="form-group">
                       <label>ESPECIALIDAD</label>
@@ -184,20 +184,6 @@
                               <a href="#" target="_blank">Y2</a>
                           </div>
                       </div>
-                      <hr>
-                      <div th:if="${porAprobar}" class="form-group div-aprobacion">
-                          <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                          <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>Aprobar</button>
-                          <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">Notificar corrección</button>
-                          <div class="hidden" id="SeccionCorreccion">
-                              <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
-                              <div style="text-align: right">
-                                <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
-                                 <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
-                              </div>
-                          </div>
-
-                      </div>
                     </div>
                   </form>
                 </div>
@@ -214,18 +200,13 @@
                               <label>¿CUÁL ES TU SEXO?</label>
                               <ul class="checks">
                                   <li>
-                                      <div class="chk-content">Mujer
-                                          <input name="Sexo" type="radio" value="2" checked="checked"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
                                       <div class="chk-content">Hombre
                                           <input name="Sexo" type="radio" value="1"><span class="checkmark"></span>
                                       </div>
                                   </li>
                                   <li>
-                                      <div class="chk-content">Otro
-                                          <input name="Sexo" type="radio" value="3"><span class="checkmark"></span>
+                                      <div class="chk-content">Mujer
+                                          <input name="Sexo" type="radio" value="2"><span class="checkmark"></span>
                                       </div>
                                   </li>
                               </ul>
@@ -367,6 +348,19 @@
                           <button id="btnElegir" class="btn btn-default btn-black" type="button">INSCRÍBETE</button>
                       </form>
                   </div>
+                <hr>
+                <div th:if="${porAprobar}" class="form-group div-aprobacion">
+                    <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                    <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
+                    <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
+                    <div class="hidden" id="SeccionCorreccion">
+                        <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
+                        <div style="text-align: right">
+                            <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
+                                <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
+                        </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
@@ -439,7 +433,7 @@
     <div class="modal fade slide in" id="modalTYC">
         <div class="modal-dialog modal-lg" style="width: 70%; height: 85%;">
             <div class="modal-content">
-                <div class="modal-body" style="padding: 0px !important" id="TYC">
+                <div class="modal-body" style="padding: 0px !important; height: 550px;" id="TYC">
                 </div>
                 <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
                     <span class="" style="color: #a8fa00;font-size: 1.4em;"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-check-circle-o"></i></span>
@@ -612,6 +606,7 @@
           }else{
               document.querySelector('#btnInfoContacto').classList.add('hidden');
               document.querySelector('#btnElegir').classList.add('hidden');
+              document.querySelector('#txtSexo').classList.remove('hidden');
               disabledForm('frm_contacto');
           }
       }
@@ -645,9 +640,11 @@
       function registrarContactoTrainer(){
           const $frm = document.getElementById('frm_contacto');
           const params = getFormData($($frm));
-          params.sexo = document.querySelector('input[name="Sexo"]:checked').value;
+          const inpSexo = document.querySelector('input[name="Sexo"]:checked');
+          params.sexo = inpSexo === null ? '': inpSexo.value;
           params.correoTrainer = $perfil.correo;
           const trainerId = $perfil.id;
+          $('#btnInfoContacto').attr('disabled', 'disabled');
           $.ajax({
               type: 'POST',
               contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -661,9 +658,11 @@
                   }
               },
               error: function (xhr) {
+                  $('#btnInfoContacto').removeAttr('disabled');
                   exception(xhr);
               },
               complete: function () {
+
               }
           });
       }
@@ -745,13 +744,14 @@
 
       function recrearPerfil(t){
         document.querySelector('#NombreFull').textContent = t.nombreCompleto;
+        document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#Especialidad').textContent = t.especialidad;
         document.querySelector('#Disciplina').textContent = t.disciplina;
         document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
 
         let idiomas = t.idiomas.split("|");
-        document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${e}</p></li>`).join('')+'</ul>'));
+        document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${_idiomas.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         let est = document.querySelector('#Estudios');
         reconstruirLista(est, t.estudios);
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
@@ -760,12 +760,12 @@
         reconstruirLista(exp, t.experiencias);
         let res = document.querySelector('#Resultados');
         reconstruirLista(res, t.resultados);
-        let nvl = document.querySelector('#Niveles');
-        reconstruirLista(nvl, t.niveles);
+        let niveles = t.niveles.split("|");
+        document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         let espc = document.querySelector('#Especialidades');
         reconstruirLista(espc, t.especialidades);
-        let frmt = document.querySelector('#FormasTrabajo');
-        reconstruirLista(frmt, t.formasTrabajo);
+        let formsTrabajo = t.formasTrabajo.split("|");
+        document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(t.horario){
             document.querySelector('#Horario').textContent = t.horario;
         }else{
@@ -839,6 +839,7 @@
               document.querySelector('#Correo').value = t.correo;
               document.querySelector('#Movil').value = "987654321";
               document.querySelector('#Mensaje').value = "Aloha";
+              document.querySelector('input[name="Sexo"]').checked = true;
           }
           const obs = document.getElementById('Obs');
           if(obs != undefined){

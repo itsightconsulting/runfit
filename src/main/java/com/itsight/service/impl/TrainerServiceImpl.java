@@ -249,7 +249,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public RefUploadIds registrarPostulante(TrainerDTO trainerFicha){
+    public RefUploadIds registrarPostulante(TrainerDTO trainerFicha, int tipoTrainerId){
         TrainerFicha obj = new TrainerFicha();
         BeanUtils.copyProperties(trainerFicha, obj);
 
@@ -265,6 +265,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
         trainer.setUsername(trainerFicha.getUsername().toLowerCase());
         trainer.setPassword(trainerFicha.getPassword());
+        trainer.setTipoTrainer(tipoTrainerId);
         List<TrainerFicha> lstTf = new ArrayList<>();
         obj.setTrainer(trainer);
         lstTf.add(obj);

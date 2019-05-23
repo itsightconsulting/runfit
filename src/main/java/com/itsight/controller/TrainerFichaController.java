@@ -5,10 +5,7 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.PostulanteTrainer;
-import com.itsight.domain.dto.PerfilObsDTO;
-import com.itsight.domain.dto.RefUploadIds;
-import com.itsight.domain.dto.TrainerDTO;
-import com.itsight.domain.dto.TrainerFichaDTO;
+import com.itsight.domain.dto.*;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
@@ -70,13 +67,8 @@ public class TrainerFichaController extends BaseController {
 
     @GetMapping("/find/dinamico")
     public @ResponseBody List<TrainerFichaPOJO> listarDinamico(
-            @RequestParam(required = false) String idiomas,
-            @RequestParam(required = false) String niveles,
-            @RequestParam(required = false) String nombres,
-            @RequestParam(required = false) String acerca
-        ){
-
-        return trainerProcedureInvoker.findAllByNombreDynamic(idiomas, niveles, nombres, acerca);
+        @ModelAttribute @Valid TrainerQueryDTO query){
+        return trainerProcedureInvoker.findAllByDynamic(query);
     }
 
     @GetMapping("/{nomPag:.+}")
@@ -202,7 +194,7 @@ public class TrainerFichaController extends BaseController {
             //y no el que enviaron en la petición post
             trainerFicha.setCorreo(postulante.getCorreo());
             trainerFicha.setPostulanteTrainerId(postTraId);
-            RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha);
+            RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, Enums.TipoTrainer.PARTICULAR.get());
             String gal = refsUpload.getNombresImgsGaleria().equals("") ? "" : "@"+refsUpload.getNombresImgsGaleria();
             String svcsFiles = refsUpload.getNombresCondSvcs().equals("") ? "" : "@"+refsUpload.getNombresCondSvcs();
             String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp() +  gal + svcsFiles;

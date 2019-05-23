@@ -13,6 +13,7 @@ public class ViewConstant {
     public static final String MAIN_FICHA_INSCRIPCION_GENERAL = "public/ficha_inscripcion_general";
     public static final String MAIN_EMPRENDE_CON_NOSOTROS = "public/emprende_con_nosotros";
     public static final String MAIN_REGISTRO_TRAINER= "public/registro_trainer";
+    public static final String MAIN_REGISTRO_TRAINER_EMPRESA= "public/registro_trainer_emp";
     public static final String MAIN_PERFIL_TRAINER= "public/perfil_trainer";
     public static final String MAIN_REVISION_TRAINER= "public/revision_perfil";
     public static final String MAIN_ASESORES= "public/asesores";

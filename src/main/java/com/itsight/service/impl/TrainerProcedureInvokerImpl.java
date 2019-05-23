@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.itsight.domain.dto.TrainerQueryDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.TrainerProcedureInvoker;
@@ -24,16 +25,22 @@ public class TrainerProcedureInvokerImpl implements TrainerProcedureInvoker {
     }
 
     @Override
-    public List<TrainerFichaPOJO> findAllByNombreDynamic(String idiomas, String niveles, String nombreFull, String acerca) {
+    public List<TrainerFichaPOJO> findAllByDynamic(TrainerQueryDTO query) {
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_trainers_q_dynamic_where", "getAllByDemo");
         storedProcedureQuery.registerStoredProcedureParameter(0, String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(2, String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(3, String.class, ParameterMode.IN);
-        storedProcedureQuery.setParameter(0, idiomas);
-        storedProcedureQuery.setParameter(1, niveles);
-        storedProcedureQuery.setParameter(2, nombreFull);
-        storedProcedureQuery.setParameter(3, acerca);
+        storedProcedureQuery.registerStoredProcedureParameter(4, String.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(5, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(6, String.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, query.getIdiomas());
+        storedProcedureQuery.setParameter(1, query.getNiveles());
+        storedProcedureQuery.setParameter(2, query.getFormasTrabajo());
+        storedProcedureQuery.setParameter(3, query.getNombres());
+        storedProcedureQuery.setParameter(4, query.getAcerca());
+        storedProcedureQuery.setParameter(5, query.getSexo());
+        storedProcedureQuery.setParameter(6, query.getUbigeo());
         return storedProcedureQuery.getResultList();
     }
 }

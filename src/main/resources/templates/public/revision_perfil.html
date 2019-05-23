@@ -103,31 +103,26 @@
                         <div class="tab-pane fade active in" id="about">
                             <form id="frm_registro">
                                 <div class="form-group">
+                                    <div class="">
+                                        <label>NOMBRE<span class="obligatorio">*</span></label>
+                                        <input class="form-control" name="NombreFull" id="NombreFull" type="text" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="pad-right-middle" style="width: 100%">
                                         <label>SEXO<span class="obligatorio">*</span></label>
                                         <ul class="checks">
-                                            <li>
-                                                <div class="chk-content">Femenino
-                                                    <input name="Sexo" value="2" data-aka="Seleccionar sexo" type="radio" checked="checked"><span class="checkmark"></span>
-                                                </div>
-                                            </li>
                                             <li>
                                                 <div class="chk-content">Masculino
                                                     <input name="Sexo" value="1" type="radio"><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="chk-content">Otro
-                                                    <input name="Sexo" value="3" type="radio"><span class="checkmark"></span>
+                                                <div class="chk-content">Femenino
+                                                    <input name="Sexo" value="2" data-aka="Seleccionar sexo" type="radio"><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                         </ul>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="">
-                                        <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                                        <input class="form-control" name="NombreFull" id="NombreFull" type="text" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -150,19 +145,29 @@
                                     <div class="pad-right-middle" style="width:100%;">
                                         <label>IDIOMAS<span class="obligatorio">*</span></label>
                                         <ul class="checks" id="Idiomas">
-                                            <li>
+                                            <li style="margin-right: 22px;">
                                                 <div class="chk-content">Español
-                                                    <input name="Idiomas" value="Español" data-aka="Seleccionar idiomas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                    <input name="Idiomas" value="es" data-aka="Seleccionar idiomas" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
-                                            <li>
+                                            <li style="margin-right: 22px;">
                                                 <div class="chk-content">Inglés
-                                                    <input name="Idiomas" value="Inglés" type="checkbox"/><span class="checkmark"></span>
+                                                    <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="chk-content">Portugues
-                                                    <input name="Idiomas" value="Portugues" type="checkbox"/><span class="checkmark"></span>
+                                            <li style="margin-right: 22px;">
+                                                <div class="chk-content">Portugués
+                                                    <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li style="margin-right: 22px;">
+                                                <div class="chk-content">Francés
+                                                    <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li style="margin-right: 22px;">
+                                                <div class="chk-content">Chino
+                                                    <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                         </ul>
@@ -194,18 +199,23 @@
                                         <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
                                         <ul class="checks" id="Niveles">
                                             <li>
-                                                <div class="chk-content">Principiantes
-                                                    <input name="NivelClientes" value="Principiantes" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                <div class="chk-content">Principiante
+                                                    <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="chk-content">Intermedios
-                                                    <input name="NivelClientes" value="Intermedios" type="checkbox"/><span class="checkmark"></span>
+                                                <div class="chk-content">Intermedio
+                                                    <input name="NivelClientes" value="in" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="chk-content">Avanzados
-                                                    <input name="NivelClientes" value="Avanzados" type="checkbox"/><span class="checkmark"></span>
+                                                <div class="chk-content">Avanzado
+                                                    <input name="NivelClientes" value="av" type="checkbox"/><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="chk-content">Profesional
+                                                    <input name="NivelClientes" value="pf" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                         </ul>
@@ -228,18 +238,23 @@
                                         <label>FORMA DE TRABAJO</label>
                                         <ul class="checks" id="FormasTrabajo">
                                             <li>
+                                                <div class="chk-content">Al aire libre
+                                                    <input type="checkbox" name="FormaTrabajo" value="ai"><span class="checkmark"></span>
+                                                </div>
+                                            </li>
+                                            <li>
                                                 <div class="chk-content">Personalizado
-                                                    <input type="checkbox" name="FormaTrabajo" value="Personalizado" checked="checked"><span class="checkmark"></span>
+                                                    <input type="checkbox" name="FormaTrabajo" value="pe"><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="chk-content">En grupo
-                                                    <input type="checkbox" name="FormaTrabajo" value="En grupo"><span class="checkmark"></span>
+                                                    <input type="checkbox" name="FormaTrabajo" value="eg"><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="chk-content">Online
-                                                    <input type="checkbox" name="FormaTrabajo" value="Online"><span class="checkmark"></span>
+                                                    <input type="checkbox" name="FormaTrabajo" value="on"><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                         </ul>
@@ -886,33 +901,6 @@
         }
     }
 
-    function enviarInfoACorregir(){
-        const obj = {};
-        const hshTrainerId = document.getElementById('HshTrainerId').value;
-        obj.hshTrainerId = hshTrainerId;
-        obj.correo = $perfil.correo;
-        obj.obs = document.getElementById('Obs').value;
-
-        $.ajax({
-            type: 'GET',
-            url: _ctx + 'p/trainer/perfil/observaciones',
-            dataType: "json",
-            data: obj,
-            blockLoading: true,
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    reqSuccess(data);
-                    document.querySelector('.div-actualizacion').classList.add('hidden');
-                }
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-            }
-        });
-    }
-
     function getTrainer(){
         const urlArr = window.location.href.split("/");
         const nomPag = urlArr[urlArr.length-1];
@@ -938,6 +926,7 @@
 
     function recrearPerfil(t){
         document.querySelector('#NombreFull').value = t.nombreCompleto;
+        document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
         document.querySelector('#Especialidad').value = t.especialidad;
         Array.from(document.querySelector('#DisciplinaId').options).forEach(v=>{
             if(v.text === t.disciplina){
@@ -1340,6 +1329,7 @@
         obj.nota = document.getElementById('NotaFinal').value;
         obj.servicios = servicios;
         obj.mediosPago = $perfil.mediosPago;
+        obj.sexo = document.querySelector('input[name="Sexo"]:checked').value;
         let finalExtension = "";
         let finalImagenRecortada = document.getElementById('FinalImagenRecortada');
         if(finalImagenRecortada.src.startsWith("https")){

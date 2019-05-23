@@ -167,7 +167,7 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     @Override
     public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) throws JsonProcessingException {
-        repository.actualizarFichaByTrainerId(trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getDisciplinaId(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), new ObjectMapper().writeValueAsString(trainerFicha.getServicios()), trainerId);
+        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getDisciplinaId(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), new ObjectMapper().writeValueAsString(trainerFicha.getServicios()), trainerId);
         String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());

@@ -93,6 +93,11 @@ public class Trainer extends AuditingEntity implements Serializable {
     private Double totalValoracion;
 
     @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TipoTrainerId", nullable = false, updatable = false)
+    private TipoTrainer tipoTrainer;
+
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "SecurityUserId")
@@ -179,5 +184,13 @@ public class Trainer extends AuditingEntity implements Serializable {
 
     public String getNombreCompleto() {
         return this.apellidos + ", " + this.nombres;
+    }
+
+    public void setTipoTrainer(Integer tipoTrainerId) {
+        this.tipoTrainer = new TipoTrainer(tipoTrainerId);
+    }
+
+    public void setTipoTrainer(TipoTrainer tipoTrainer) {
+        this.tipoTrainer = tipoTrainer;
     }
 }

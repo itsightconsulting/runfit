@@ -89,8 +89,9 @@
                       </div>
                       <div class="col-md-7">
                           <ul class="nav nav-tabs">
-                              <li><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
+                              <li><a data-toggle="tab" href="#about"><span>ACERCA DE NOSOTROS</span></a></li>
                               <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                              <li><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
                               <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                           </ul>
                           <div class="tab-content">
@@ -99,32 +100,10 @@
                                   <form id="frm_registro">
                                       <div class="form-group">
                                           <div class="">
-                                              <label>NOMBRE(S)<span class="obligatorio">*</span></label>
+                                              <label>NOMBRE DE LA EMPRESA<span class="obligatorio">*</span></label>
                                               <input class="form-control" name="Nombres" id="Nombres" type="text">
                                           </div>
-                                          <div class="">
-                                              <label>APELLIDO(S)<span class="obligatorio">*</span></label>
-                                              <input class="form-control" name="Apellidos" id="Apellidos" type="text">
-                                          </div>
-                                          <div class="pad-right-middle" style="width: 100%">
-                                              <label>SEXO<span class="obligatorio">*</span></label>
-                                              <ul class="checks">
-                                                  <li>
-                                                      <div class="chk-content">Masculino
-                                                          <input name="Sexo" value="1" type="radio"><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">Femenino
-                                                          <input name="Sexo" value="2" data-aka="Seleccionar sexo" type="radio"><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                              </ul>
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
-                                          <input class="form-control" name="Especialidad" id="Especialidad" type="text">
+                                          <input class="form-control" name="Apellidos" id="Apellidos" type="hidden">
                                       </div>
                                       <div class="form-group">
                                           <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
@@ -133,8 +112,12 @@
                                           </select>
                                       </div>
                                       <div class="form-group">
-                                          <label>ACERCA DE MI<span class="obligatorio">*</span></label>
+                                          <label>ACERCA DE LA EMPRESA<span class="obligatorio">*</span></label>
                                           <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                          <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
                                       </div>
                                       <div class="form-group">
                                           <div class="pad-right-middle" style="width:100%;">
@@ -166,29 +149,16 @@
                                                       </div>
                                                   </li>
                                               </ul>
-                                           </div>
-                                          <div class="form-group" id="Estudios">
-                                              <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                          </div>
-                                          <div class="form-group">
-                                              <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
-                                              <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
-                                          </div>
-                                          <div class="form-group" id="ExpLaboral">
-                                              <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                           <div class="form-group" id="Logros">
-                                              <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
+                                              <label>RESULTADOS OBTENIDOS COMO EMPRESA<span class="obligatorio">*</span></label>
                                               <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
                                               <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                           <div class="form-group" id="dvHorario">
-                                              <label>HORARIO LABORAL</label>
-                                              <input class="form-control" id="Horario" name="Horario" type="text">
+                                              <label>HORARIO LABORAL DE LA EMPRESA<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-horario" id="Horario" name="Horario" type="text" placeholder="Ejem: Lunes a viernes: 6:00 am a 11:00 pm">
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 4, 'inp-horario')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                           <div class="form-group">
                                               <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
@@ -216,7 +186,7 @@
                                               </ul>
                                           </div>
                                           <div class="form-group">
-                                              <label>AL AIRE LIBRE / DOMICILIO</label>
+                                              <label>AL AIRE LIBRE / LOCAL</label>
                                               <p>Dar click en el mapa para poder elegir el rango de desplazamiento. <span class="view-only-desktop">También puedes buscar la dirección y luego elegir el rango.</span></p>
                                               <input id="pac-input" class="controls form-control view-only-desktop" type="text" placeholder="Buscar dirección o lugar">
                                               <div class="map" id="map"></div>
@@ -224,11 +194,6 @@
                                           <div class="form-group">
                                               <label>CENTRO DE TRABAJO</label>
                                               <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
-                                          </div>
-                                          <div class="form-group" id="Especialidades">
-                                              <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                           <div class="form-group">
                                               <label>FORMA DE TRABAJO<span class="obligatorio">*</span></label>
@@ -353,6 +318,21 @@
                                       <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
                                       <input class="form-control" type="password" id="Password" name="Password">
                                   </div>
+                              </div>
+                              <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
+                                  <form>
+                                      <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
+                                      <div style="text-align: center;">
+                                          <ul class="staff">
+                                              <li>
+                                                  <div class="avatar-form-min">
+                                                      <div class="avatar-form-min-button" for="AsesoresFoto">Agregar asesor</div>
+                                                      <input type="file" id="AsesoresFoto" name="AsesoresFoto" accept="application/pdf">
+                                                  </div>
+                                              </li>
+                                          </ul>    
+                                      </div>
+                                  </form>
                               </div>
                               <div class="tab-pane fade" id="service">
                                   <h4>Mis servicios</h4>
@@ -595,10 +575,9 @@
                                               <input id="inpTermCond" type="checkbox"><span class="checkmark"></span>
                                           </div>
                                       </div>
+                                  </div>
                               </div>
-                          </div>
-                          <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
-
+                              <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
                       </div>
                   </div>
               </div>
@@ -873,7 +852,7 @@
             populateBancos();
             activeTooltips();
             if(flag_form_populate){
-                populateForm();
+                //populateForm();
 
             }
 

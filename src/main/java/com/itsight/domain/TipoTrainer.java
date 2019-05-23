@@ -18,7 +18,18 @@ public class TipoTrainer {
     @Column(nullable = false)
     private String nombre;
 
-    /*@JsonBackReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoTrainer")
-    private List<Trainer> lstCliente;*/
+    private List<Trainer> lstTrainer;
+
+    public TipoTrainer() {
+    }
+
+    public TipoTrainer(Integer id) {
+        this.id = id;
+    }
+
+    public TipoTrainer(String nombre) {
+        this.nombre = nombre;
+    }
 }

@@ -56,6 +56,7 @@ import java.util.UUID;
                             columns = {
                                     @ColumnResult(name = "id", type = Integer.class),
                                     @ColumnResult(name = "nombreCompleto", type = String.class),
+                                    @ColumnResult(name = "sexo", type = Integer.class),
                                     @ColumnResult(name = "fichaClienteIds", type = String.class),
                                     @ColumnResult(name = "especialidad", type = String.class),
                                     @ColumnResult(name = "disciplina", type = String.class),
@@ -109,6 +110,7 @@ import java.util.UUID;
                       query = "SELECT \n" +
                               "\tf.trainer_id id, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
+                              "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.especialidad, \n" +
                               "\td.nombre disciplina,\n" +
@@ -145,6 +147,7 @@ import java.util.UUID;
                       query = "SELECT \n" +
                               "\tf.trainer_id id, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
+                              "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.especialidad, \n" +
                               "\td.nombre disciplina,\n" +

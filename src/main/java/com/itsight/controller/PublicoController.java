@@ -8,6 +8,7 @@ import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
+import com.itsight.repository.IdiomaRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums.Msg;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,8 @@ public class PublicoController extends BaseController {
 
     private TrainerFichaService trainerFichaService;
 
+    private IdiomaRepository idiomaRepository;
+
     @Autowired
     private BandejaTemporalRepository bandejaTemporalRepository;
 
@@ -45,12 +48,14 @@ public class PublicoController extends BaseController {
                              DisciplinaService disciplinaService,
                              PostulanteTrainerService postulanteTrainerService,
                              UbPeruService ubPeruService,
-                             TrainerFichaService trainerFichaService) {
+                             TrainerFichaService trainerFichaService,
+                             IdiomaRepository idiomaRepository) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.ubPeruService = ubPeruService;
         this.trainerFichaService = trainerFichaService;
+        this.idiomaRepository = idiomaRepository;
     }
 
     @GetMapping("/inicio")
@@ -74,7 +79,10 @@ public class PublicoController extends BaseController {
     }
 
     @GetMapping("/busqueda/trainers")
-    public ModelAndView busquedaTrainer(){
+    public ModelAndView busquedaTrainer(Model model)
+    {
+        model.addAttribute("idiomas", idiomaRepository.findAll());
+        model.addAttribute("peLiDistritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_BUSQUEDA_TRAINER);
     }
 
@@ -193,7 +201,7 @@ public class PublicoController extends BaseController {
         model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
-        return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
+        return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_EMPRESA);
     }
 
     @GetMapping("/busqueda/trainer/{codTrainer}")

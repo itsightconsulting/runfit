@@ -18,7 +18,8 @@ public class TrainerFichaDTO implements Serializable {
     @Size(max = 32)
     private String trainerId;
     @NotNull
-    @Size(min = 1, max = 3)
+    @Positive
+    @Max(3)
     private Integer sexo;
     @Size(max = 200)
     @NotBlank
@@ -29,7 +30,7 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 80, max = 2000)
     @NotNull
     private String acerca;
-    @Size(min = 4, max = 100)
+    @Size(min = 2, max = 100)
     @NotNull
     private String idiomas;
     @Size(min = 8, max = 500)
@@ -44,7 +45,7 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 10, max = 500)
     @NotNull
     private String resultados;
-    @Size(min = 5, max = 80)
+    @Size(min = 2, max = 80)
     @NotNull
     private String niveles;
     @Size(min = 10, max = 120)
@@ -53,7 +54,7 @@ public class TrainerFichaDTO implements Serializable {
     @Size(min = 10, max = 100)
     @NotNull
     private String especialidades;
-    @Size(min = 10, max = 100)
+    @Size(min = 2, max = 50)
     @NotNull
     private String formasTrabajo;
     @Size(min = 8, max = 150)

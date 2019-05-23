@@ -6,10 +6,7 @@ import com.itsight.domain.Parametro;
 import com.itsight.domain.Rol;
 import com.itsight.domain.*;
 import com.itsight.domain.jsonb.*;
-import com.itsight.repository.BagForestRepository;
-import com.itsight.repository.PostRepository;
-import com.itsight.repository.SecurityUserRepository;
-import com.itsight.repository.TipoDescuentoRepository;
+import com.itsight.repository.*;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -146,6 +143,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private BancoService bancoService;
 
+    @Autowired
+    private TipoTrainerService tipoTrainerService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -155,6 +155,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private BagForestRepository bagForestRepository;
+
+    @Autowired
+    private IdiomaRepository idiomaRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -177,11 +180,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingKilometrajeBase();
             addingPaises();
             addingDisciplinas();
+            addingTipoTrainers();
             try {
                 addingUbPeru();
                 addingModulo();
                 addingCorreo();
                 addingBanco();
+                addingIdioma();
             } catch (IOException ex){
                 ex.printStackTrace();
             }
@@ -909,6 +914,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(disciplinaService.findOne(4) == null) disciplinaService.save(new Disciplina("Boxeo"));
     }
 
+    public void addingTipoTrainers(){
+        if(tipoTrainerService.findOne(1) == null) tipoTrainerService.save(new TipoTrainer("Particular"));
+        if(tipoTrainerService.findOne(2) == null) tipoTrainerService.save(new TipoTrainer("Empresa"));
+    }
+
     public void addingUbPeru() throws IOException {
         InputStream is = new ClassPathResource("static/seeds/ub_peru.csv").getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
@@ -954,6 +964,18 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         for(int i=1; i<lines.length;i++){
             String[] line = lines[i].split(",");
             if (bancoService.findOne(i) == null) bancoService.save(new Banco(line[0].trim()));
+        }
+    }
+
+    public void addingIdioma() throws IOException {
+        InputStream is = new ClassPathResource("static/seeds/idioma.csv").getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        String content = reader.lines().collect(Collectors.joining("\n"));
+        String[] lines = content.split("\n");
+        reader.close();
+        for(int i=1; i<lines.length;i++){
+            String[] line = lines[i].split(",");
+            if (idiomaRepository.findById(i).orElse(null) == null) idiomaRepository.save(new Idioma(line[0].trim(), line[1].trim()));
         }
     }
 
@@ -1013,7 +1035,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             roles.add(role2);
             if(i==1) roles.add(role3);
             secTrainer.setRoles(roles);
-
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer(
                 "Alejandro "+ i, "Gonzales Prada", correoUsuario, "543213"+i,
@@ -1027,6 +1048,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             trainer.setUbigeo("150101");
             trainer.setCanPerValoracion(0);
             trainer.setTotalValoracion(0.0);
+            TipoTrainer tp = new TipoTrainer();
+            tp.setId(1);
+            trainer.setTipoTrainer(tp);
             trainerService.save(trainer);
             trainerService.cargarRutinarioCe(secTrainer.getId());
             agregandoPorcentajesBaseTrainer(trainer);
