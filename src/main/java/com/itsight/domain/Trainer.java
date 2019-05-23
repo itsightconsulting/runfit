@@ -17,8 +17,7 @@ import org.hibernate.annotations.TypeDefs;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NamedEntityGraphs({
@@ -33,7 +32,7 @@ import java.util.List;
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
-@EqualsAndHashCode(callSuper = false)
+//@EqualsAndHashCode(callSuper = false)
 public class Trainer extends AuditingEntity implements Serializable {
 
     @Id
@@ -123,6 +122,14 @@ public class Trainer extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<ContactoTrainer> lstContactoTrainer;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "trainer_disciplina",joinColumns = {
+        @JoinColumn(name = "SecurityUserId")
+    }, inverseJoinColumns = {
+        @JoinColumn(name = "DisciplinaId")
+    })
+    private Set<Disciplina> disciplinas = new HashSet<>();
+
     @Transient
     private String password;
 
@@ -192,5 +199,27 @@ public class Trainer extends AuditingEntity implements Serializable {
 
     public void setTipoTrainer(TipoTrainer tipoTrainer) {
         this.tipoTrainer = tipoTrainer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Trainer)) return false;
+        return id != null && id.equals(((Trainer) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    public void addDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+        disciplina.getTrainers().add(this);
+    }
+
+    public void removeDisciplina(Disciplina disciplina) {
+        disciplinas.remove(disciplina);
+        disciplina.getTrainers().remove(this);
     }
 }

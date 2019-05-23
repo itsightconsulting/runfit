@@ -6,6 +6,7 @@ import com.itsight.domain.jsonb.Servicio;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;

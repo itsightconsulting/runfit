@@ -1,8 +1,12 @@
 package com.itsight.domain;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Disciplina {
@@ -12,10 +16,12 @@ public class Disciplina {
     @Column(name = "DisciplinaId")
     private Integer id;
 
-    @NotNull
     @Size(min = 1, max = 255)
-    @Column(nullable = false)
+    @NaturalId
     private String nombre;
+
+    @ManyToMany(mappedBy = "disciplinas")
+    private Set<Trainer> trainers = new HashSet<>();
 
     public Disciplina() {}
 
@@ -43,6 +49,11 @@ public class Disciplina {
         this.nombre = nombre;
     }
 
+    public Set<Trainer> getTrainers() {
+        return trainers;
+    }
 
-
+    public void setTrainers(Set<Trainer> trainers) {
+        this.trainers = trainers;
+    }
 }

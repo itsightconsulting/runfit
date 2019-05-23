@@ -201,7 +201,7 @@ public class PublicoController extends BaseController {
         model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
-        return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_EMPRESA);
+        return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
     }
 
     @GetMapping("/busqueda/trainer/{codTrainer}")

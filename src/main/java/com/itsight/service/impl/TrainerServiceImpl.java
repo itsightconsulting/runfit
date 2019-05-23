@@ -62,6 +62,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     private ParametroService parametroService;
 
+    private DisciplinaService disciplinaService;
+
     @Value("${domain.name}")
     private String domainName;
 
@@ -74,7 +76,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             EmailService emailService,
             CorreoService correoService,
             PostulanteTrainerService postulanteTrainerService,
-            ParametroService parametroService) {
+            ParametroService parametroService,
+                              DisciplinaService disciplinaService) {
         super(repository);
         this.especificacionSubCategoriaRepository = especificacionSubCategoriaRepository;
         this.rolService = rolService;
@@ -85,6 +88,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         this.correoService = correoService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.parametroService = parametroService;
+        this.disciplinaService = disciplinaService;
     }
 
     @Override
@@ -226,6 +230,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                     }
                     //Guardando trainer de autenticacion
                     trainer.setSecurityUser(secUser);
+                    trainer.addDisciplina(disciplinaService.findOne(1));
+                    trainer.addDisciplina(disciplinaService.findOne(2));
                     repository.save(trainer);
                     //securityUserRepository.save(secUser);
                     //Generando las mini_plantillas al entrenador en caso lo sea
