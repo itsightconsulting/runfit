@@ -27,4 +27,7 @@ public class TrainerQueryDTO implements Serializable {
     private Integer sexo;
     @Size(min = 6, max = 6)
     private String ubigeo;
+    @Size(min = 2, max = 30)
+    private String servicio;
+
 }

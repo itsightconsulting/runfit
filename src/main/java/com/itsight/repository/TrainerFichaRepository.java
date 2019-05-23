@@ -39,7 +39,6 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
             "sexo =:sexo, \n" +
             "acerca =:acerca, \n" +
             "centro_trabajo =:centroTrabajo,\n" +
-            "disciplina_id =:disciplinaId,\n" +
             "especialidad =:especialidad,\n" +
             "especialidades =:especilidades,\n" +
             "estudios =:estudios,\n" +
@@ -57,6 +56,6 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
             "servicios =CAST(:servicios as jsonb)\n" +
             "WHERE trainer_id=:trainerId")
     void actualizarFichaByTrainerId(
-            @Param(value = "sexo") Integer sexo, @Param(value = "acerca") String acerca, @Param(value = "centroTrabajo") String centroTrabajo, @Param(value = "disciplinaId") Integer disciplinaId, @Param(value = "especialidad") String especialidad, @Param(value = "especilidades") String especilidades, @Param(value = "estudios") String estudios, @Param(value = "experiencias") String experiencias, @Param(value = "extFp") String extFp, @Param(value = "formasTrabajo") String formasTrabajo, @Param(value = "horario") String horario, @Param(value = "idiomas") String idiomas, @Param(value = "metodoTrabajo") String metodoTrabajo, @Param(value = "niveles") String niveles, @Param(value = "nota") String nota, @Param(value = "redes") String redes, @Param(value = "resultados") String resultados, @Param(value = "servicios") String servicios, @Param(value = "trainerId") Integer trainerId
+            @Param(value = "sexo") Integer sexo, @Param(value = "acerca") String acerca, @Param(value = "centroTrabajo") String centroTrabajo, @Param(value = "especialidad") String especialidad, @Param(value = "especilidades") String especilidades, @Param(value = "estudios") String estudios, @Param(value = "experiencias") String experiencias, @Param(value = "extFp") String extFp, @Param(value = "formasTrabajo") String formasTrabajo, @Param(value = "horario") String horario, @Param(value = "idiomas") String idiomas, @Param(value = "metodoTrabajo") String metodoTrabajo, @Param(value = "niveles") String niveles, @Param(value = "nota") String nota, @Param(value = "redes") String redes, @Param(value = "resultados") String resultados, @Param(value = "servicios") String servicios, @Param(value = "trainerId") Integer trainerId
     );
 }

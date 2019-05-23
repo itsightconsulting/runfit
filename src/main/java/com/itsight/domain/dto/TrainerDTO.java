@@ -47,9 +47,6 @@ public class TrainerDTO implements Serializable {
     private String documento;
     @Positive
     @NotNull
-    private Integer disciplinaId;
-    @Positive
-    @NotNull
     private Integer paisId;
     @Size(max = 10)
     @NotBlank
@@ -117,5 +114,8 @@ public class TrainerDTO implements Serializable {
     private Double mapCircleRadio;
     @Size(max = 600)
     private String redes;
+    @NotBlank
+    @Size(max = 30)
+    private String disciplinaIds;
 
 }

@@ -128,7 +128,7 @@
                                       </div>
                                       <div class="form-group">
                                           <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId">
+                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId" multiple="multiple" style=" height:80px !important;">
                                               <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
                                           </select>
                                       </div>
@@ -1007,6 +1007,7 @@
             }
 
             body.sexo = Number($('input[name="Sexo"]:checked').val());
+            body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
 
             $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
@@ -1646,6 +1647,7 @@
                 }, 500);
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
+            Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
 
             /*var tid = setInterval( function () {
                 if ( document.readyState !== 'complete' ) return;

@@ -34,6 +34,7 @@ public class TrainerProcedureInvokerImpl implements TrainerProcedureInvoker {
         storedProcedureQuery.registerStoredProcedureParameter(4, String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(5, Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(6, String.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(7, String.class, ParameterMode.IN);
         storedProcedureQuery.setParameter(0, query.getIdiomas());
         storedProcedureQuery.setParameter(1, query.getNiveles());
         storedProcedureQuery.setParameter(2, query.getFormasTrabajo());
@@ -41,6 +42,7 @@ public class TrainerProcedureInvokerImpl implements TrainerProcedureInvoker {
         storedProcedureQuery.setParameter(4, query.getAcerca());
         storedProcedureQuery.setParameter(5, query.getSexo());
         storedProcedureQuery.setParameter(6, query.getUbigeo());
+        storedProcedureQuery.setParameter(7, query.getServicio());
         return storedProcedureQuery.getResultList();
     }
 }

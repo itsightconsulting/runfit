@@ -43,7 +43,6 @@ import java.util.UUID;
                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                     @ColumnResult(name = "totalValoracion", type = Double.class),
                     @ColumnResult(name = "nomImgPerfil", type = String.class),
-                    @ColumnResult(name = "servicios", type = String.class),
                     @ColumnResult(name = "nomPag", type = String.class)
                 }
             )
@@ -60,7 +59,6 @@ import java.util.UUID;
                                     @ColumnResult(name = "sexo", type = Integer.class),
                                     @ColumnResult(name = "fichaClienteIds", type = String.class),
                                     @ColumnResult(name = "especialidad", type = String.class),
-                                    @ColumnResult(name = "disciplina", type = String.class),
                                     @ColumnResult(name = "acerca", type = String.class),
                                     @ColumnResult(name = "idiomas", type = String.class),
                                     @ColumnResult(name = "estudios", type = String.class),
@@ -79,7 +77,6 @@ import java.util.UUID;
                                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                                     @ColumnResult(name = "totalValoracion", type = Double.class),
                                     @ColumnResult(name = "nomImgPerfil", type = String.class),
-                                    @ColumnResult(name = "servicios", type = String.class),
                                     @ColumnResult(name = "cuentas", type = String.class),
                                     @ColumnResult(name = "mediosPago", type = String.class),
                                     @ColumnResult(name = "mapCoordenadas", type = String.class),
@@ -101,7 +98,6 @@ import java.util.UUID;
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
-                              "\tCAST(f.servicios AS text),\n" +
                               "\tf.nom_pag nomPag \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id \n" +
@@ -114,7 +110,6 @@ import java.util.UUID;
                               "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.especialidad, \n" +
-                              "\td.nombre disciplina,\n" +
                               "\tf.acerca,\n" +
                               "\tf.idiomas,\n" +
                               "\tf.estudios,\n" +
@@ -133,7 +128,6 @@ import java.util.UUID;
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
-                              "\tCAST(f.servicios AS text),\n" +
                               "\tCAST(f.cuentas AS text),\n" +
                               "\tf.medios_pago mediosPago,\n" +
                               "\tf.map_coordenadas mapCoordenadas,\n" +
@@ -141,7 +135,6 @@ import java.util.UUID;
                               "\tf.redes \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
-                              "INNER JOIN disciplina d ON d.disciplina_id=f.disciplina_id\n" +
                               "WHERE f.nom_pag = ?",
                       resultSetMapping = "getByNomPagParOrTrainerId"),
         @NamedNativeQuery(name = "TrainerFicha.findByTrainerId",
@@ -151,7 +144,6 @@ import java.util.UUID;
                               "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
                               "\tf.especialidad, \n" +
-                              "\td.nombre disciplina,\n" +
                               "\tf.acerca,\n" +
                               "\tf.idiomas,\n" +
                               "\tf.estudios,\n" +
@@ -170,7 +162,6 @@ import java.util.UUID;
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
-                              "\tCAST(f.servicios AS text),\n" +
                               "\tCAST(f.cuentas AS text),\n" +
                               "\tf.medios_pago mediosPago,\n" +
                               "\tf.map_coordenadas mapCoordenadas,\n" +
@@ -178,7 +169,6 @@ import java.util.UUID;
                               "\tf.redes \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
-                              "INNER JOIN disciplina d ON d.disciplina_id=f.disciplina_id\n" +
                               "WHERE t.security_user_id = ?",
                       resultSetMapping = "getByNomPagParOrTrainerId")
 })
@@ -203,8 +193,6 @@ public class TrainerFicha implements Serializable {
     private Integer sexo;
     @Column(nullable = false)
     private String especialidad;
-    @Column(nullable = false)
-    private Integer disciplinaId;
     @Column(nullable = false, columnDefinition="TEXT")
     private String acerca;
     @Column(nullable = false)
@@ -231,10 +219,6 @@ public class TrainerFicha implements Serializable {
     private String miniGaleria;
     @Column(nullable = true, columnDefinition="TEXT")
     private String nota;
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb", nullable = true)
-    private List<Servicio> servicios;
-
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = true)
     private List<CuentaPago> cuentas;

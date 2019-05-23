@@ -24,9 +24,6 @@ public class TrainerFichaDTO implements Serializable {
     @Size(max = 200)
     @NotBlank
     private String especialidad;
-    @Positive
-    @NotNull
-    private Integer disciplinaId;
     @Size(min = 80, max = 2000)
     @NotNull
     private String acerca;

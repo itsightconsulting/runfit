@@ -28,7 +28,4 @@ public class Servicio implements Serializable {
     @Valid
     private List<Tarifario> tarifarios;
 
-    @Size(max = 50)
-    private String condicionesServicioRuWeb;
-
 }

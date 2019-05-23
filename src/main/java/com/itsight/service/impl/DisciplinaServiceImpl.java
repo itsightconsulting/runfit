@@ -104,4 +104,14 @@ public class DisciplinaServiceImpl extends BaseServiceImpl<DisciplinaRepository>
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
+
+    @Override
+    public void guardarMultipleTrainerDisciplina(Integer trainerId, String disIds) {
+        repository.saveMultipleTrainerDisciplina(trainerId, disIds);
+    }
+
+    @Override
+    public List<String> obtenerDisciplinasByTrainerId(Integer trainerId) {
+        return repository.getDisciplinasByTrainerId(trainerId);
+    }
 }

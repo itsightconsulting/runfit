@@ -199,6 +199,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public String registrar(Trainer trainer, String rols) {
         // TODO Auto-generated method stub
+        //Just for trainer form
         trainer.setUsername(trainer.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(trainer.getUsername()) == null) {
             try{
@@ -230,8 +231,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                     }
                     //Guardando trainer de autenticacion
                     trainer.setSecurityUser(secUser);
-                    trainer.addDisciplina(disciplinaService.findOne(1));
-                    trainer.addDisciplina(disciplinaService.findOne(2));
                     repository.save(trainer);
                     //securityUserRepository.save(secUser);
                     //Generando las mini_plantillas al entrenador en caso lo sea
@@ -268,7 +267,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
         trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteId()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)
-
+        //Agregando disciplinas
         trainer.setUsername(trainerFicha.getUsername().toLowerCase());
         trainer.setPassword(trainerFicha.getPassword());
         trainer.setTipoTrainer(tipoTrainerId);
@@ -282,14 +281,27 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         refUpload.setUuidFp(extensiones[0]);//imgPerfil
         refUpload.setNombresImgsGaleria();
         refUpload.setNombresCondSvcs();
+
+        //Seteando los servicios
+        List<Servicio> servicios = new ArrayList<>();
+        for(int i=0; i<trainerFicha.getServicios().size(); i++){
+            Servicio servicio = new Servicio();
+            BeanUtils.copyProperties(trainerFicha.getServicios().get(i), servicio);
+            servicio.setTrainer(trainer);
+            servicios.add(servicio);
+        }
+
+
         if(extsLen == 2){
             refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
             obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
-            refUpload.setNombresCondSvcs(extensiones[1]);//filesCondsSvcs|Se prueba si esta en la posición uno ya que puede que no se hayan subido fotos a la galeria pero si condiciones de servicio
+            refUpload.setNombresCondSvcs(extensiones[1]);//filesCondsSvcs|Se prueba si esta en la posición uno ya que puede que no se hayan subido fotos a la galeria pero sin condiciones de servicio
             String[] noms = refUpload.getNombresCondSvcs().split("\\|");
             for(int i=0; i<noms.length; i++){
                 if(!noms[i].equals("")){
-                    obj.getServicios().get(i).setCondicionesServicioRuWeb(noms[i]);
+                    String[] fnNom = noms[i].split("\\.");
+                    servicios.get(i).setTycUUID(UUID.fromString(fnNom[0]));
+                    servicios.get(i).setTycExt("."+fnNom[1]);
                 }
             }
         }else if(extsLen == 3){
@@ -299,20 +311,27 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             String[] noms = refUpload.getNombresCondSvcs().split("\\|");
             for(int i=0; i<noms.length; i++){
                 if(!noms[i].equals("")){
-                    obj.getServicios().get(i).setCondicionesServicioRuWeb(noms[i]);
+                    String[] fnNom = noms[i].split("\\.");
+                    servicios.get(i).setTycUUID(UUID.fromString(fnNom[0]));
+                    servicios.get(i).setTycExt("."+fnNom[1]);
                 }
             }
         }
+        //Servicios latest
+        trainer.setLstServicio(servicios);
+        trainer.setLstTrainerFicha(lstTf);
+
         //Img perfil
         obj.setUuidFp(refUpload.getUuidFp());
         obj.setExtFp(refUpload.getExtFp());
 
-        trainer.setLstTrainerFicha(lstTf);
         //Registrando
-        String trainerId = registrar(trainer, "2");
+        String trainerId = registrar(trainer, String.valueOf(Enums.TipoUsuario.ENTRENADOR.ordinal()));
         //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
         refUpload.setTrainerId(Integer.parseInt(trainerId));
+        //Registrando las disciplinas
+        disciplinaService.guardarMultipleTrainerDisciplina(trainer.getId(), trainerFicha.getDisciplinaIds());
 
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());

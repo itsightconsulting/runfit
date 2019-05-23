@@ -132,10 +132,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                    <select class="form-control" id="DisciplinaId" name="DisciplinaId">
-                                        <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
-                                    </select>
+                                    <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS</label>
+                                    <ul id="Disciplina" class="list-description">
+                                        <li th:each="d : ${disciplinas}">
+                                            <p th:attr="data-disc-id=${#strings.substringBefore(d, ',')}" th:text="${#strings.substringAfter(d, ',')}"></p>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="form-group">
                                     <label>ACERCA DE MI<span class="obligatorio">*</span></label>
@@ -603,7 +605,7 @@
     const body = document.querySelector('body');
     const tabService = document.getElementById('service');
     const inpImgPerfil = document.getElementById('InpImgPerfil');
-    const servicios = [];
+    let servicios = [];
     let ccBancarias = [];
     const metodosPago = [];
     let selServicioId = -1;
@@ -913,6 +915,7 @@
             success: function (res) {
                 $perfil = res;
                 recrearPerfil(res);
+                getServiciosAsync(res.id);
                 checkTab();
             }, error: (xhr) => {
                 if(xhr.status == 404){
@@ -928,11 +931,11 @@
         document.querySelector('#NombreFull').value = t.nombreCompleto;
         document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
         document.querySelector('#Especialidad').value = t.especialidad;
-        Array.from(document.querySelector('#DisciplinaId').options).forEach(v=>{
+        /*Array.from(document.querySelector('#DisciplinaId').options).forEach(v=>{
             if(v.text === t.disciplina){
                 document.querySelector('#DisciplinaId').selectedIndex = v.index;
             }
-        });
+        });*/
         document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
 
@@ -958,7 +961,6 @@
         const divFT = document.querySelector('#FormasTrabajo');
         formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
         document.querySelector('#Horario').value = t.horario;
-        reconstruirServicios(t.servicios);
         mostrarMediosPago(t.mediosPago, t.cuentas);
         /*reconstruirCuentaBanco(t.cuentas);
         reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);*/
@@ -1029,9 +1031,8 @@
 
     function reconstruirServicios(svcs){
         if(!svcs) return;
-        const allSvcs = JSON.parse(svcs);
         const resumenServicios = document.querySelector('.ver-servicios');
-        allSvcs.forEach((svc, ix)=>{
+        svcs.forEach((svc, ix)=>{
             svc.id = ix+1;
             const element = htmlStringToElement(
                 `<div class="form-group editar">
@@ -1041,7 +1042,6 @@
                             <label class="servicio" data-id="${svc.id}">${svc.nombre}</label>
                         </div>`);
             resumenServicios.appendChild(element);
-            servicios.push(svc);
         });
     }
 
@@ -1090,13 +1090,14 @@
     }
 
     function reconstruirTarifario(tarifas){
-        tarifas.forEach((t)=>document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
+        tarifas.forEach((t,i)=>{t.id = i;
+        document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
                                     <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
                                     <h6>${t.nombre}</h6>
                                 </a>
-                            </div>`)));
+                            </div>`))});
     }
 
     function calculadoraMas(svcIx){
@@ -1348,6 +1349,34 @@
         cropper.destroy();
         cropper = {};
         inpImgPerfil.click();
+    }
+
+    function getServiciosAsync(trainerId){
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'p/trainer/get/servicios/' + trainerId,
+            dataType: 'json',
+            blockLoading: false,
+            success: function (res) {
+                res.forEach(e => {
+                    if(e.tarifarios) {
+                        e.tarifarios = JSON.parse(e.tarifarios);
+                    }
+                })
+                servicios = res;
+                reconstruirServicios(servicios);
+                //reconstruirCuentaBanco(t.cuentas);
+                reconstruirTarifario(servicios[0].tarifarios);
+                tabService.querySelector('.servicio').click();
+                $('#Tarifarios .tarifa-svc')[0].click();
+            }, error: (xhr) => {
+                if (xhr.status == 404) {
+                    window.location.href = _ctx + "p/recurso-no-encontrado";
+                }
+                exception(xhr);
+            }, complete: () => {
+            }
+        })
     }
 </script>
 </body>

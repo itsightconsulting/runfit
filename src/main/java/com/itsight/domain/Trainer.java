@@ -9,15 +9,15 @@ import com.itsight.json.JsonDateSimpleSerializer;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @NamedEntityGraphs({
@@ -119,6 +119,10 @@ public class Trainer extends AuditingEntity implements Serializable {
     private List<Post> lstPost;
 
     @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Servicio> lstServicio;
+
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<ContactoTrainer> lstContactoTrainer;
 
@@ -128,7 +132,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     }, inverseJoinColumns = {
         @JoinColumn(name = "DisciplinaId")
     })
-    private Set<Disciplina> disciplinas = new HashSet<>();
+    private List<Disciplina> disciplinas = new ArrayList<>();
 
     @Transient
     private String password;

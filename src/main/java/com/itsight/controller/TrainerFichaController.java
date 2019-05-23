@@ -6,6 +6,7 @@ import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.*;
+import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
@@ -45,19 +46,23 @@ public class TrainerFichaController extends BaseController {
 
     private TrainerProcedureInvoker trainerProcedureInvoker;
 
+    private ServicioService servicioService;
+
     @Autowired
     public TrainerFichaController(TrainerFichaService trainerFichaService,
                                   PostulanteTrainerService postulanteTrainerService,
                                   TrainerService trainerService,
                                   SecurityUserRepository securityUserRepository,
                                   DisciplinaService disciplinaService,
-                                  TrainerProcedureInvoker trainerProcedureInvoker) {
+                                  TrainerProcedureInvoker trainerProcedureInvoker,
+                                  ServicioService servicioService) {
         this.trainerFichaService = trainerFichaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.trainerService = trainerService;
         this.securityUserRepository = securityUserRepository;
         this.disciplinaService = disciplinaService;
         this.trainerProcedureInvoker = trainerProcedureInvoker;
+        this.servicioService = servicioService;
     }
 
     @GetMapping("/find/all")
@@ -77,7 +82,6 @@ public class TrainerFichaController extends BaseController {
     }
 
 
-
     @GetMapping("/get/revision/{hshTrainerId}")
     public @ResponseBody ModelAndView getTrainerByIdRevision(Model model,
                 @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
@@ -90,7 +94,7 @@ public class TrainerFichaController extends BaseController {
             return new ModelAndView(ViewConstant.P_ERROR404);
         } else {
             model.addAttribute("hshTrainerId", hshTrainerId);
-            model.addAttribute("disciplinas", disciplinaService.findAll());
+            model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
             return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
         }
     }
@@ -117,6 +121,7 @@ public class TrainerFichaController extends BaseController {
         } else {
             Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
             if(flag == null){
+                model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
                 return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
             }//Si entra acá es porque ya ha sido observado, nunca entrará aca cuando haya sido aprobado debido a la primera
             //validación antes de esta
@@ -125,8 +130,18 @@ public class TrainerFichaController extends BaseController {
         }
     }
 
+    @GetMapping("/get/disciplinas/{trainerId}")
+    public @ResponseBody List<String> obtenerDisciplinas(@PathVariable() String trainerId){
+        return disciplinaService.obtenerDisciplinasByTrainerId(Integer.parseInt(trainerId));
+    }
+
+    @GetMapping("/get/servicios/{trainerId}")
+    public @ResponseBody List<ServicioPOJO> obtenerServicios(@PathVariable() String trainerId){
+        return servicioService.findAllByTrainerId(Integer.parseInt(trainerId));
+    }
+
     @GetMapping("/perfil/observaciones")
-    public @ResponseBody String enviarObservacionesPerfilATrainer(@ModelAttribute @Valid PerfilObsDTO perfilObs) throws CustomValidationException {
+    public @ResponseBody String enviarObservacionesPerfil(@ModelAttribute @Valid PerfilObsDTO perfilObs) throws CustomValidationException {
         Integer trainerId = getDecodeHashId("rf-aprobacion", perfilObs.getHshTrainerId());
         return jsonResponse(trainerFichaService.enviarCorreoPerfilObs(perfilObs, trainerId));
     }
@@ -140,7 +155,6 @@ public class TrainerFichaController extends BaseController {
         }
         return new ResponseEntity<>(t, HttpStatus.NOT_FOUND);
     }
-
 
     @GetMapping("/get/sec/{hshTrainerId}")
     public @ResponseBody

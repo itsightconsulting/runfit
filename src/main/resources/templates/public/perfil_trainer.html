@@ -101,7 +101,11 @@
                     </div>
                     <div class="form-group">
                       <label>ELIGE DEPORTE O ACTIVIDADES QUE REALIZAS</label>
-                      <p id="Disciplina"></p>
+                      <ul id="Disciplina" class="list-description">
+                          <li th:each="d : ${disciplinas}">
+                            <p th:attr="data-disc-id=${#strings.substringBefore(d, ',')}" th:text="${#strings.substringAfter(d, ',')}"></p>
+                          </li>
+                      </ul>
                     </div>
                     <div class="form-group">
                       <label>ACERCA DE MI</label>
@@ -532,7 +536,7 @@
       }
 
       function setFileTermCond(svc){
-          if(svc.condicionesServicioRuWeb){
+          if(svc.tyc){
               document.getElementById('EnlaceTYC').classList.remove('hidden');
               const doc = document.createElement('embed');
               doc.type = "application/pdf";
@@ -617,6 +621,10 @@
               const e = document.querySelector(`li a[href="${tabHref}"]`);
               if(e != null){
                 e.click();
+                  console.log($(window).scrollTop());
+                  setTimeout(() => {
+                      $(window).scrollTop(100);
+                  }, 501);
               }
           }
       }
@@ -729,9 +737,11 @@
           blockLoading: false,
           success: function (res) {
             $perfil = res;
-            servicios = JSON.parse($perfil.servicios);
             recrearPerfil(res);
+            getDisciplinasAsync(res.id);
+            getServiciosAsync(res.id);
             checkTab();
+
           }, error: (xhr) => {
              if(xhr.status == 404){
                  window.location.href = _ctx+"p/recurso-no-encontrado";
@@ -742,11 +752,69 @@
         })
       }
 
+      function getDisciplinasAsync(trainerId){
+          if(btnAprobarTrainer === null) {
+              $.ajax({
+                  type: 'GET',
+                  url: _ctx + 'p/trainer/get/disciplinas/' + trainerId,
+                  dataType: 'json',
+                  blockLoading: false,
+                  success: function (res) {
+                      setDisciplinas(res);
+                  }, error: (xhr) => {
+                      if (xhr.status == 404) {
+                          window.location.href = _ctx + "p/recurso-no-encontrado";
+                      }
+                      exception(xhr);
+                  }, complete: () => {
+                  }
+              })
+          }
+      }
+
+      function getServiciosAsync(trainerId){
+          $.ajax({
+              type: 'GET',
+              url: _ctx + 'p/trainer/get/servicios/' + trainerId,
+              dataType: 'json',
+              blockLoading: false,
+              success: function (res) {
+                  res.forEach(e => {
+                    if(e.tarifarios) {
+                        e.tarifarios = JSON.parse(e.tarifarios);
+                    }
+                  })
+                  servicios = res;
+                  reconstruirServicios(servicios);
+                  //reconstruirCuentaBanco(t.cuentas);
+                  reconstruirTarifario(servicios[0].tarifarios);
+                  $('#Tarifarios .tarifa-svc')[0].click();
+              }, error: (xhr) => {
+                  if (xhr.status == 404) {
+                      window.location.href = _ctx + "p/recurso-no-encontrado";
+                  }
+                  exception(xhr);
+              }, complete: () => {
+              }
+          })
+      }
+
+      function setDisciplinas(arr) {
+          const div = document.getElementById('Disciplina');
+          const objArr = Array.from(arr).map(e =>{ return {id: e.split(',')[0], nm: e.split(',')[1]}});
+          objArr.forEach(e=> {
+              div.appendChild(htmlStringToElement(`
+              <li>
+                  <p data-disc-id="${e.id}">${e.nm}</p>
+              </li>
+              `));
+          })
+      }
+
       function recrearPerfil(t){
         document.querySelector('#NombreFull').textContent = t.nombreCompleto;
         document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#Especialidad').textContent = t.especialidad;
-        document.querySelector('#Disciplina').textContent = t.disciplina;
         document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
 
@@ -771,9 +839,6 @@
         }else{
             document.querySelector('#dvHorario').classList.add('hidden');
         }
-        reconstruirServicios(t.servicios);
-        //reconstruirCuentaBanco(t.cuentas);
-        reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);
         mostrarMediosPago(t.mediosPago, t.cuentas);
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
 
@@ -850,16 +915,14 @@
               document.getElementById('divNotaFinal').classList.remove('hidden');
               document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
           }
-
           selServicioId = 0;
-          $('#Tarifarios .tarifa-svc')[0].click();
       }
+
       function reconstruirLista(e, stringArr){
           stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
       }
 
-      function reconstruirServicios(ser){
-          const servicios = JSON.parse(ser);
+      function reconstruirServicios(servicios){
           const dvServicios = document.getElementById('NomServicios');
           dvServicios.innerHTML = servicios.map((e, ix) => `<label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${ix}">${e.nombre}</label>`).join('');
           const fSs = servicios[0];

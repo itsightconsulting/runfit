@@ -114,7 +114,6 @@ function day_of_week() {
     $(".days-of-week li").click(function() {
         $(".days-of-week li").removeClass("active");
         $(this).addClass("active");
-
     })
 }
 

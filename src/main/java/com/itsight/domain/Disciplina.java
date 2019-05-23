@@ -1,12 +1,12 @@
 package com.itsight.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Disciplina {
@@ -20,8 +20,9 @@ public class Disciplina {
     @NaturalId
     private String nombre;
 
-    @ManyToMany(mappedBy = "disciplinas")
-    private Set<Trainer> trainers = new HashSet<>();
+    @JsonBackReference
+    @ManyToMany(mappedBy = "disciplinas", fetch = FetchType.LAZY)
+    private List<Trainer> trainers = new ArrayList<>();
 
     public Disciplina() {}
 
@@ -49,11 +50,25 @@ public class Disciplina {
         this.nombre = nombre;
     }
 
-    public Set<Trainer> getTrainers() {
+    public List<Trainer> getTrainers() {
         return trainers;
     }
 
-    public void setTrainers(Set<Trainer> trainers) {
+    public void setTrainers(List<Trainer> trainers) {
         this.trainers = trainers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Disciplina that = (Disciplina) o;
+        /*return nombre.equals(that.nombre);*/
+        return Objects.equals(nombre, that.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre);
     }
 }
