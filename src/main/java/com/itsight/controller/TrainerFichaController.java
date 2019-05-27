@@ -102,6 +102,7 @@ public class TrainerFichaController extends BaseController {
     @PutMapping("/subsanar/observaciones/perfil")
     public @ResponseBody String subsanarObservacionesPerfil(
             @RequestBody @Valid TrainerFichaDTO trainerFicha) throws CustomValidationException, JsonProcessingException {
+        System.out.println(trainerFicha.toString());
         Integer trainerId = getDecodeHashId("rf-aprobacion", trainerFicha.getTrainerId());
         return jsonResponse(trainerFichaService.actualizarObservacionesPerfil(trainerFicha, trainerId));
     }

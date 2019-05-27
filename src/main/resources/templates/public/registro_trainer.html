@@ -1051,6 +1051,7 @@
                 mostrarDetalleServicio(selServicioId);
                 tabService.querySelector('.ver-servicios .edit:not(.hidden)').classList.add('hidden');
                 tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
+                agregarInputTermCond();
             } else if(clases.contains('tarifa-svc')) {
                 let padre = {};
                 if(input.tagName === "IMG" || input.tagName === "H6"){
@@ -1601,7 +1602,7 @@
 
             //Servicios
             document.querySelector('#NombreServicio').value = "Performance PRO";
-            document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. Hacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
+            document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
             document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
                 '\n' +
                 'Para más información sobre los servicios médicos, deberás comunicarte al celular de la clínica\n' +

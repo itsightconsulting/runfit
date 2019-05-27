@@ -1,21 +1,16 @@
 package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Correo;
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
+import com.itsight.domain.dto.ServicioDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.TrainerFichaRepository;
-import com.itsight.service.CorreoService;
-import com.itsight.service.EmailService;
-import com.itsight.service.ParametroService;
-import com.itsight.service.TrainerFichaService;
-import com.itsight.util.Enums;
+import com.itsight.service.*;
 import com.itsight.util.Parseador;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,17 +31,21 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     private ParametroService parametroService;
 
+    private ServicioService servicioService;
+
     @Value("${domain.name}")
     private String domainName;
 
     public TrainerFichaServiceImpl(TrainerFichaRepository repository,
                 EmailService emailService,
                 CorreoService correoService,
-                ParametroService parametroService) {
+                ParametroService parametroService,
+                ServicioService servicioService) {
         super(repository);
         this.emailService = emailService;
         this.correoService = correoService;
         this.parametroService = parametroService;
+        this.servicioService = servicioService;
     }
 
     @Override
@@ -167,7 +166,14 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     @Override
     public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) throws JsonProcessingException {
-        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), new ObjectMapper().writeValueAsString(trainerFicha.getServicios()), trainerId);
+        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), trainerId);
+        //Actualizando servicios
+        if(!trainerFicha.getServicios().isEmpty()){
+            for(int i=0; i<trainerFicha.getServicios().size(); i++){
+                ServicioDTO s = trainerFicha.getServicios().get(i);
+                servicioService.actualizarByIdAndTrainerId(s.getId(), s.getNombre(), s.getDescripcion(), s.getIncluye(), s.getInfoAdicional(), s.getTarifarios(), trainerId);
+            }
+        }
         String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());

@@ -46,7 +46,7 @@ public class EspecificacionSubCategoriaController {
 
     @GetMapping(value = {"/v2"})
     public @ResponseBody
-    String obtenerArbolMiniPlantilla(HttpSession session) throws JsonProcessingException {
+    String obtenerArbolMiniPlantilla(HttpSession session) throws JsonProcessingException, InterruptedException {
         List<MiniPlantilla> minis = miniPlantillaService.findAllByTrainerId(Integer.parseInt(session.getAttribute("id").toString()));
         if(minis.isEmpty()){
             return Enums.ResponseCode.EMPTY_RESPONSE.get();

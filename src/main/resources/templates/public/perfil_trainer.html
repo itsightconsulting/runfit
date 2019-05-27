@@ -528,20 +528,20 @@
 
       function mostrarDetalleServicio(servicioId){
           const svc = servicios.find((e, ix)=>ix===servicioId);
-          document.querySelector('#DescripcionServicio').textContent = svc.descripcion;
-          document.querySelector('#InfoAdicional').textContent = svc.infoAdicional;
+          document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
+          document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional.replace(/\r?\n/g, '<br />');
           setIncluyeDelServicio(svc.incluye);
           setFileTermCond(svc);
           setTarifarios(svc.tarifarios);
       }
 
       function setFileTermCond(svc){
-          if(svc.tyc){
+          if(svc.tycFile){
               document.getElementById('EnlaceTYC').classList.remove('hidden');
               const doc = document.createElement('embed');
               doc.type = "application/pdf";
               doc.style = "width: 100%; height: 100%";
-              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.condicionesServicioRuWeb;
+              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
               document.getElementById('TYC').innerHTML = "";
               document.getElementById('TYC').appendChild(doc);
           } else {
@@ -758,7 +758,7 @@
                   type: 'GET',
                   url: _ctx + 'p/trainer/get/disciplinas/' + trainerId,
                   dataType: 'json',
-                  blockLoading: false,
+                  noOne: true,
                   success: function (res) {
                       setDisciplinas(res);
                   }, error: (xhr) => {
@@ -777,7 +777,7 @@
               type: 'GET',
               url: _ctx + 'p/trainer/get/servicios/' + trainerId,
               dataType: 'json',
-              blockLoading: false,
+              noOne: true,
               success: function (res) {
                   res.forEach(e => {
                     if(e.tarifarios) {
@@ -786,8 +786,8 @@
                   })
                   servicios = res;
                   reconstruirServicios(servicios);
-                  //reconstruirCuentaBanco(t.cuentas);
                   reconstruirTarifario(servicios[0].tarifarios);
+                  setFileTermCond(servicios[0]);
                   $('#Tarifarios .tarifa-svc')[0].click();
               }, error: (xhr) => {
                   if (xhr.status == 404) {
@@ -929,6 +929,7 @@
           document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
+          console.log(servicios[0].infoAdicional);
           document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
           if(servicios[0].condicionesServicioRuWeb){
               document.getElementById('EnlaceTYC').classList.remove('hidden');

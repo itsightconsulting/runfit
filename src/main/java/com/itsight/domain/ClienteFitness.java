@@ -78,11 +78,6 @@ public class ClienteFitness implements Serializable {
     private String desObjetivos;
     @Column(nullable = false)
     private String desTerPredom;
-    //@Column(nullable = false)
-    //private int diaDescanso;
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
-    private List<TiempoDisponible> tiemposDisponibles;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private CondicionAnatomica condicionAnatomica;

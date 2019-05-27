@@ -676,6 +676,7 @@ function instanciarDatosFitnessCliente(){
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
+        noOne: true,
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
@@ -733,7 +734,6 @@ function instanciarGrupoVideos(effImg){
                     rawHTMLCabecera +='</div>';
 
                     document.querySelector('#ArbolGrupoVideo').appendChild(htmlStringToElement(rawHTMLCabecera));
-                    $('#bot1-Msg1').click();
                 }
             }
         },
@@ -753,6 +753,7 @@ function instanciarGrupoAudios(effImg){
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/tipo-audio/obtener/arbol',
+        blockLoading: true,
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
@@ -787,9 +788,7 @@ function instanciarGrupoAudios(effImg){
                             </div>`;
                     });
                     rawHTMLCabecera +='</div>';
-
                     document.querySelector('#ArbolGrupoAudio').appendChild(htmlStringToElement(rawHTMLCabecera));
-                    $('#bot1-Msg1').click();
                 }
             }
         },
@@ -875,6 +874,7 @@ function obtenerKilometrajeBaseBD(distancia, nivel){
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'calculo/kilometraje/base/obtener',
         dataType: "json",
+        noOne: true,
         data: o,
         success: function (data, textStatus) {
             if (textStatus == "success") {
@@ -950,7 +950,7 @@ function generandoVideosCuerpo(subCatVideo){
 
 }
 
-function instanciarMiniPlantillas(effImg){
+function instanciarMiniPlantillas(){
 
     $.ajax({
         type: 'GET',
@@ -959,7 +959,6 @@ function instanciarMiniPlantillas(effImg){
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
-                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -978,7 +977,6 @@ function instanciarMiniPlantillas(effImg){
                     });
                     rawHTML += '</div>'
                     document.querySelector('#ArbolRutinario').appendChild(htmlStringToElement(rawHTML));
-                    $('#bot1-Msg1').click();
                 }
             }
         },
@@ -2811,8 +2809,7 @@ function principalesAlCambiarTab(e){
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
         document.querySelector('#DivEditor').classList.add('hidden');
         if(document.querySelector('#ArbolRutinario').children.length == 0) {
-            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
-            instanciarMiniPlantillas(effImg);
+            instanciarMiniPlantillas();
         }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoAudios') {
@@ -2922,6 +2919,8 @@ function updateAudioFavoritos() {
         contentType: "application/json",
         url: _ctx + "gestion/rutina/elemento/obtenermisfavoritos",
         dataType: "json",
+        blockLoading: false,
+        noOne: true,
         success: function (data) {
             if(data != null){
                 let listaAudios = [];
@@ -3061,7 +3060,6 @@ function obtenerRutinaConsolidadoBD(effImg){
         },
         complete: function () {
             window.setInterval(effImg);
-            $('#bot1-Msg1').click();
         }
     })
 }

@@ -605,6 +605,7 @@
     const body = document.querySelector('body');
     const tabService = document.getElementById('service');
     const inpImgPerfil = document.getElementById('InpImgPerfil');
+    let serviciosSm = [];
     let servicios = [];
     let ccBancarias = [];
     const metodosPago = [];
@@ -829,9 +830,8 @@
         const hshId = document.getElementById('HshTrainerId').value;
         const d = generateBodyToUpdate();
         d.trainerId = hshId;
-        d.servicios = servicios;
+        d.servicios = checkServicios();
         $buttonName = "ACTUALIZAR Y ENVIAR";
-        console.log(d);
         $.ajax({
             type: 'PUT',
             contentType: 'application/json',
@@ -858,6 +858,26 @@
             complete: function () {
             }
         });
+    }
+
+    function checkServicios(){
+        const svcs = JSON.parse(JSON.stringify(servicios));
+        svcs.forEach(e=>{
+            e.tarifarios.forEach(t=>{
+                delete t.id;
+                t.meses = Number(t.meses);
+                t.personas = Number(t.personas);
+                t.precio = Number(t.precio);
+                t.sesiones = Number(t.sesiones);
+            })
+        });
+        return svcs.filter((s, ix)=>{
+            return s.descripcion !== serviciosSm[ix].descripcion ||
+                   s.incluye !== serviciosSm[ix].incluye ||
+                   s.infoAdicional !== serviciosSm[ix].infoAdicional ||
+                   s.nombre !== serviciosSm[ix].nombre ||
+                   JSON.stringify(s.tarifarios) !== JSON.stringify(serviciosSm[ix].tarifarios)
+        })
     }
 
     function uploadFotoPerfil(d){
@@ -1033,7 +1053,6 @@
         if(!svcs) return;
         const resumenServicios = document.querySelector('.ver-servicios');
         svcs.forEach((svc, ix)=>{
-            svc.id = ix+1;
             const element = htmlStringToElement(
                 `<div class="form-group editar">
                             <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);" title="Confirmar modificaciones al servicio">
@@ -1363,6 +1382,7 @@
                         e.tarifarios = JSON.parse(e.tarifarios);
                     }
                 })
+                serviciosSm = JSON.parse(JSON.stringify(res));
                 servicios = res;
                 reconstruirServicios(servicios);
                 //reconstruirCuentaBanco(t.cuentas);

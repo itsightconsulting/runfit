@@ -15,10 +15,18 @@ CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
                   canPerValoracion int,
                   totalValoracion double precision,
                   nomImgPerfil text,
-                  servicios text,
                   nomPag text) AS
 $func$
-select
+select DISTINCT id,
+       nombreCompleto,
+       especialidad,
+       ubigeo,
+       acerca,
+       canPerValoracion,
+       totalValoracion,
+       nomImgPerfil,
+       nomPag
+from (select
     ff.trainer_id id,
     concat(jt.nombres, ' ',jt.apellidos) nombreCompleto,
     especialidad,
@@ -27,18 +35,16 @@ select
     can_per_valoracion canPerValoracion,
     total_valoracion totalValoracion,
     CONCAT(ff.uuid_fp, ff.ext_fp) nomImgPerfil,
-    servicios::text servicios,
-    nom_pag nomPag
+    nom_pag nomPag,
+    s2.nombre servicio,
+    jt.flag_activo fg,
+    ff.sexo
 from trainer_ficha ff
          inner join trainer jt on ff.trainer_id=jt.security_user_id
+         inner join servicio s2 on ff.trainer_id = s2.trainer_id
 where
-    ($4 IS NULL OR LOWER(concat(jt.nombres, ' ',jt.apellidos)) LIKE LOWER(CONCAT('%',$4,'%'))) AND
-    ($5 IS NULL OR LOWER(ff.acerca) LIKE LOWER(CONCAT('%',$5,'%'))) AND
-    ($6 IS NULL OR ff.sexo = $6) AND
-    ($7 IS NULL OR jt.ubigeo = $7) AND
-        jt.flag_activo = true AND
         ff.trainer_id IN
-        (select id from (select id,
+        (select distinct id from (select id,
                                 idioma,
                                 nivel,
                                 unnest(string_to_array(formasTrabajo, '|')) ft
@@ -58,8 +64,13 @@ where
              ($1 IS NULL OR b.idioma = any(string_to_array($1,'|'))) AND
              ($2 IS NULL OR b.nivel = any(string_to_array($2,'|'))) AND
              ($3 IS NULL OR b.ft = any(string_to_array($3,'|')))
-         UNION ALL
-         SELECT s.trainer_id id FROM servicio s WHERE LOWER(s.nombre) LIKE CONCAT('%', $8,'%')
          ORDER BY 1
-        )
+        )) as y
+    WHERE
+    ($4 IS NULL OR LOWER(concat(y.nombreCompleto)) LIKE LOWER(CONCAT('%',$4,'%'))) AND
+    ($5 IS NULL OR LOWER(y.acerca) LIKE LOWER(CONCAT('%',$5,'%'))) AND
+    ($6 IS NULL OR y.sexo = $6) AND
+    ($7 IS NULL OR y.ubigeo = $7) AND
+    ($8 IS NULL OR LOWER(y.servicio) LIKE CONCAT('%', $8,'%')) AND
+     y.fg = true
 $func$ LANGUAGE sql;

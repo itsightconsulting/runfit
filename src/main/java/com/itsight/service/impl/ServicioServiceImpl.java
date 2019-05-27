@@ -1,7 +1,10 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Servicio;
+import com.itsight.domain.jsonb.Tarifario;
 import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ServicioRepository;
@@ -110,5 +113,11 @@ public class ServicioServiceImpl extends BaseServiceImpl<ServicioRepository> imp
     @Override
     public List<ServicioPOJO> findAllByTrainerId(Integer trainerId) {
         return repository.findAllByTrainerId(trainerId);
+    }
+
+    @Override
+    public void actualizarByIdAndTrainerId(Integer id, String nombre, String descripcion, String incluye, String infoAdicional, List<Tarifario> tarifarios, Integer trainerId) throws JsonProcessingException {
+        String tarifariosString = new ObjectMapper().writeValueAsString(tarifarios);
+        repository.updateByIdAndTrainerId(id, nombre, descripcion, incluye, infoAdicional, tarifariosString, trainerId);
     }
 }

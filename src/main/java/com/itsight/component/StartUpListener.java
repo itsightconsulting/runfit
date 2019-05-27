@@ -1143,7 +1143,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             ca.setFrecuenciaCardiaca(65+i);
             ca.setFrecuenciaCardiacaMaxima(190-i);
             cliFit.setCondicionAnatomica(ca);
-            cliFit.setTiemposDisponibles(new ArrayList<>());
             cliFit.setSalud(new Salud());
             cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
             cliFit.setMejoras(new ArrayList<>());

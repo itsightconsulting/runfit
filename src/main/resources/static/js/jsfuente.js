@@ -670,7 +670,11 @@ function generateRandomMail(){
                     $('#btnGuardar').text($buttonName);
                 }
             }else{
-                $('#bot1-Msg1').click();
+               if(options.type === 'GET' && options.noOne !== undefined){
+
+                } else{
+                    $('#bot1-Msg1').click();
+                }
             }
         }
 

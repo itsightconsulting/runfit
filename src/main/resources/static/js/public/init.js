@@ -2,7 +2,7 @@ var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 1 == 1;
 var flag_form_populate = 1 == 1;
 var initPageActive = 3;
-var hiddenHeaderBar = 0 == 1;
+var hiddenHeaderBar = 1 == 1;
 try {
     //Remarcar página visitada
     const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);

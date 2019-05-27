@@ -2,7 +2,6 @@ package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itsight.domain.jsonb.CuentaPago;
-import com.itsight.domain.jsonb.Servicio;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -59,7 +58,7 @@ public class TrainerFichaDTO implements Serializable {
     @Size(max = 400)
     private String nota;
     @Valid
-    private List<Servicio> servicios;
+    private List<ServicioDTO> servicios;
     @Valid
     private List<CuentaPago> cuentas;
     @NotBlank

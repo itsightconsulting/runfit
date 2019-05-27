@@ -288,6 +288,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             Servicio servicio = new Servicio();
             BeanUtils.copyProperties(trainerFicha.getServicios().get(i), servicio);
             servicio.setTrainer(trainer);
+            servicio.setId(null);
             servicios.add(servicio);
         }
 

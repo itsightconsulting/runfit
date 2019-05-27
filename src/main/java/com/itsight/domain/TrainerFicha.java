@@ -2,18 +2,15 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itsight.domain.jsonb.CuentaPago;
-import com.itsight.domain.jsonb.Servicio;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
