@@ -17,6 +17,6 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Integer>
 
     @Query(value = "select concat_ws(',', td.disciplina_id, nombre)  from trainer_disciplina td " +
             "INNER JOIN disciplina d ON d.disciplina_id=td.disciplina_id " +
-            "where security_user_id = ?1", nativeQuery = true)
+            "where trainer_id = ?1", nativeQuery = true)
     List<String> getDisciplinasByTrainerId(Integer trainerId);
 }

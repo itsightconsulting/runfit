@@ -36,6 +36,12 @@
       .txt-tar{
         margin-bottom: 5px !important;
       }
+
+      .img-asesor-emp{
+          border-radius: 48%;
+          height: 100%;
+          width: 100%;
+      }
   </style>
 </head>
   <body>
@@ -55,33 +61,23 @@
                 <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/></div>
               </div>
               <fieldset class="rating hidden">
-                <input id="star5" type="radio" name="rating" value="5"/>
-                <label class="full" for="star5" title="Awesome - 5 stars"></label>
-                <input id="star4half" type="radio" name="rating" value="4 and a half"/>
-                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                <input id="star4" type="radio" name="rating" value="4"/>
-                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-                <input id="star3half" type="radio" name="rating" value="3 and a half"/>
-                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                <input id="star3" type="radio" name="rating" value="3"/>
-                <label class="full" for="star3" title="Meh - 3 stars"></label>
-                <input id="star2half" type="radio" name="rating" value="2 and a half"/>
-                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                <input id="star2" type="radio" name="rating" value="2"/>
-                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-                <input id="star1half" type="radio" name="rating" value="1 and a half"/>
-                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                <input id="star1" type="radio" name="rating" value="1"/>
-                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-                <input id="starhalf" type="radio" name="rating" value="half"/>
-                <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <div class="rating-holder" style="padding: 0px;padding-left: 50px;">
+                      <div id="Valoracion" class="c-rating c-rating--regular" data-rating-value="">
+                          <button disabled="disabled">1</button>
+                          <button disabled="disabled">2</button>
+                          <button disabled="disabled">3</button>
+                          <button disabled="disabled">4</button>
+                          <button disabled="disabled">5</button>
+                      </div>
+                  </div>
               </fieldset>
-              <p class="valoration hidden">43 <span>(21 valoraciones)</span></p>
+              <p class="valoration hidden" id="RestanteValoracion"></p>
             </div>
             <div class="col-md-7">
               <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
                 <li class="hidden"><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                <li class="hidden"><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
                 <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
               </ul>
               <div class="tab-content">
@@ -232,6 +228,15 @@
                               <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
                           </div>
                           <button id="btnInfoContacto" class="btn btn-default btn-black" type="button">ENVIAR</button>
+                      </form>
+                  </div>
+                  <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
+                      <form>
+                          <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
+                          <div style="text-align: center;">
+                              <ul class="staff" id="Staffs">
+                              </ul>
+                          </div>
                       </form>
                   </div>
                 <div class="tab-pane fade" id="service">
@@ -517,7 +522,7 @@
       }
 
       function mostrarDetalleTarifaSvc(tarifaId){
-          const t = servicios.find((v,ix) => ix === selServicioId).tarifarios.find((t, ix)=>ix === tarifaId);
+          const t = servicios.find(v => v.id === selServicioId).tarifarios.find((t, ix)=>ix === tarifaId);
           document.querySelector('#NombreTarifario').textContent = t.nombre;
           document.querySelector('#FrecuenciaPaquete').textContent = t.frecuencia;
           document.querySelector('#txtCantidadPersonas').value = t.personas;
@@ -527,7 +532,7 @@
       }
 
       function mostrarDetalleServicio(servicioId){
-          const svc = servicios.find((e, ix)=>ix===servicioId);
+          const svc = servicios.find(e=>e.id===servicioId);
           document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
           document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional.replace(/\r?\n/g, '<br />');
           setIncluyeDelServicio(svc.incluye);
@@ -621,7 +626,6 @@
               const e = document.querySelector(`li a[href="${tabHref}"]`);
               if(e != null){
                 e.click();
-                  console.log($(window).scrollTop());
                   setTimeout(() => {
                       $(window).scrollTop(100);
                   }, 501);
@@ -630,15 +634,16 @@
       }
 
       function irARegistro(){
-        const hshId = getHash32Id('rf-public', $perfil.id);
-        const trainerCorreo = btoa($perfil.correo).replace(/\=/g,'');
+        const hshId = $perfil.hshTrainerId;
+        const trainerCorreo = csBtoa($perfil.correo).replace(/\=/g,'');
         const fichaIds = $perfil.fichaClienteIds.split("|");
+        const svcId = csBtoa(selServicioId);
         if(fichaIds.length==1){
             const id = fichaIds[0];
             if(id === "1"){
-                window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo;
+                window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
             }else if(id === "2"){
-                window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo;
+                window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
             }
         }else{
 
@@ -811,12 +816,33 @@
           })
       }
 
+      function checkTabStaff(staffGaleria, id){
+        if(staffGaleria){
+            document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
+            const divStaffs = document.getElementById('Staffs');
+            const s = staffGaleria;
+            s.split("|").forEach(e=>{
+                const imgAndNom = e.split(",");
+                divStaffs.appendChild(htmlStringToElement(
+                                 `<li>
+                                      <div class="avatar-form-min">
+                                          <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${id}/${imgAndNom[0]}"/>
+                                      </div>
+                                      <p>${imgAndNom[1]}</p>
+                                  </li>`
+                ))
+            })
+        }
+      }
+
       function recrearPerfil(t){
+        checkTabStaff(t.staffGaleria, t.id);
         document.querySelector('#NombreFull').textContent = t.nombreCompleto;
         document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#Especialidad').textContent = t.especialidad;
         document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
+        setValoracion(t.canPerValoracion, t.totalValoracion);
 
         let idiomas = t.idiomas.split("|");
         document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${_idiomas.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
@@ -919,27 +945,22 @@
       }
 
       function reconstruirLista(e, stringArr){
-          stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
+          if(stringArr){
+              stringArr.split("|").forEach(v => e.appendChild(htmlStringToElement(`<li><p>${v.trim()}</p></li>`)));
+          }else{
+            //
+          }
       }
 
       function reconstruirServicios(servicios){
           const dvServicios = document.getElementById('NomServicios');
-          dvServicios.innerHTML = servicios.map((e, ix) => `<label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${ix}">${e.nombre}</label>`).join('');
+          dvServicios.innerHTML = servicios.map((e, ix) => `<label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${e.id}">${e.nombre}</label>`).join('');
           const fSs = servicios[0];
           document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          console.log(servicios[0].infoAdicional);
           document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
-          if(servicios[0].condicionesServicioRuWeb){
-              document.getElementById('EnlaceTYC').classList.remove('hidden');
-              const doc = document.createElement('embed');
-              doc.type = "application/pdf";
-              doc.style = "width: 100%; height: 100%";
-              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+servicios[0].condicionesServicioRuWeb;
-              document.getElementById('TYC').innerHTML = "";
-              document.getElementById('TYC').appendChild(doc);
-          }
+          selServicioId = fSs.id;
       }
 
       function reconstruirCuentaBanco(cuentas){
@@ -1012,6 +1033,15 @@
                 mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
             });
         }
+      }
+
+      function setValoracion(canPerValoracion, totalValoracion){
+          const objValoracion = getValoracion(canPerValoracion, totalValoracion);
+          document.querySelector('#Valoracion').setAttribute('data-rating-value', objValoracion.aproximadaValoracion);
+          const res = document.getElementById('RestanteValoracion');
+          res.innerHTML = `
+                ${objValoracion.exactaValoracion.toFixed(1)}<span> (${objValoracion.valoraciones} valoraciones)</span>
+          `;
       }
     </script>
   </body>

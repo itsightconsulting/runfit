@@ -1562,6 +1562,7 @@
         const correoTrainer = document.getElementById('CorreoTrainer');
         obj.trainerId = trainerId.value === "" ? null : trainerId.value;
         obj.correoTrainer = correoTrainer.value === "" ? null : atob(correoTrainer.value);
+        obj.servicioId = Number(atob(getParamFromURL("sid")));
         //Ubigeo
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();

@@ -280,6 +280,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         RefUploadIds refUpload = new RefUploadIds();
         refUpload.setUuidFp(extensiones[0]);//imgPerfil
         refUpload.setNombresImgsGaleria();
+        refUpload.setStaffGaleria();
         refUpload.setNombresCondSvcs();
 
         //Seteando los servicios
@@ -291,7 +292,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             servicio.setId(null);
             servicios.add(servicio);
         }
-
 
         if(extsLen == 2){
             refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
@@ -318,6 +318,12 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 }
             }
         }
+
+        if(tipoTrainerId == 2){
+            refUpload.setStaffGaleria(trainerFicha.getStaffGaleria());
+            obj.setStaffGaleria(refUpload.getStaffGaleria());
+        }
+
         //Servicios latest
         trainer.setLstServicio(servicios);
         trainer.setLstTrainerFicha(lstTf);

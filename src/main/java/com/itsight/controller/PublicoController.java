@@ -170,7 +170,7 @@ public class PublicoController extends BaseController {
     }
 
     @GetMapping("/formulario/trainer/{hashPreTrainerId}")
-    public ModelAndView formularioRegistroTrainer(Model model,
+    public ModelAndView formularioRegistroTrainerParticular(Model model,
                 @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId){
         Integer preTraId = getDecodeHashIdShorter("rf-request", hashPreTrainerId);
 
@@ -202,6 +202,41 @@ public class PublicoController extends BaseController {
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
+    }
+
+    @GetMapping("/formulario/empresa/{hashPreTrainerId}")
+    public ModelAndView formularioRegistroTrainerEmpresa(Model model,
+                                                  @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId){
+        Integer preTraId = getDecodeHashIdShorter("rf-request", hashPreTrainerId);
+
+        if(preTraId == 0){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        PostulanteTrainer post = postulanteTrainerService.findOne(preTraId);
+        if(post == null){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        if(post.isFlagRechazado()|| !post.isFlagAceptado()){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        if(post.isFlagRegistrado()){
+            model.addAttribute("msg", Msg.POSTULANTE_YA_REG.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_P);
+        }
+
+        Date now = new Date();
+        if(now.after(post.getFechaLimiteAccion())){
+            model.addAttribute("msg", Msg.POST_LINK_EXP_PR.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_N);
+        }
+
+        model.addAttribute("disciplinas", disciplinaService.findAll());
+        model.addAttribute("postulante", post);
+        model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
+        return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_EMPRESA);
     }
 
     @GetMapping("/busqueda/trainer/{codTrainer}")

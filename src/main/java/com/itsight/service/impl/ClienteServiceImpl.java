@@ -16,7 +16,6 @@ import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,8 +48,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     private CorreoService correoService;
 
-    @Autowired
-    private ClienteService clienteService;
+    private ServicioService servicioService;
 
     @Value("${domain.name}")
     private String domainName;
@@ -64,7 +62,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             ConfiguracionClienteService configuracionClienteService,
             ConfiguracionGeneralService configuracionGeneralService,
             RedFitnessService redFitnessService,
-            CorreoService correoService) {
+            CorreoService correoService,
+            ServicioService servicioService) {
         super(repository);
         // TODO Auto-generated constructor stub
         this.securityRoleRepository = securityRoleRepository;
@@ -75,6 +74,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         this.configuracionGeneralService = configuracionGeneralService;
         this.redFitnessService = redFitnessService;
         this.correoService = correoService;
+        this.servicioService = servicioService;
     }
 
     @Override
@@ -208,7 +208,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
                     int flagTrainer = cliente.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
                     //Guardando cliente de autenticacion
                     cliente.setSecurityUser(secUser);
-                    clienteService.save(cliente);
+                    repository.save(cliente);
 
                     //Enviando correo al nuevo cliente
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, cliente.getTipoUsuario().getId(), domainName);
@@ -271,6 +271,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         //Registrando en cascada SEC_USER->CLIENTE->CONFIG_CLIENTE (OneToOne relationships)
         configuracionClienteService.save(cliConfg);
 
+        //Relacionando servicio con el nuevo cliente
+        servicioService.addClienteServicio(objCli.getId(), cliente.getServicioId());
+
         //Agregandolo a la red de su entrenador
         if(pickTrainer){
             redFitnessService.save(new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId())));
@@ -281,7 +284,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         Correo correo = correoService.findOne(NUEVO_CLIENTE.get());
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), cliente.getUsername(), cliente.getPassword(), domainName);
-        emailService.enviarCorreoInformativo("Bienvenido a la familia","contoso.peru@gmail.com" /*cliente.getCorreo()*/, cuerpo);
+        emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), cuerpo);
         return ResponseCode.REGISTRO.get();
     }
 

@@ -127,8 +127,8 @@ public class Trainer extends AuditingEntity implements Serializable {
     private List<ContactoTrainer> lstContactoTrainer;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "trainer_disciplina",joinColumns = {
-        @JoinColumn(name = "SecurityUserId")
+    @JoinTable(name = "TrainerDisciplina",joinColumns = {
+        @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
     }, inverseJoinColumns = {
         @JoinColumn(name = "DisciplinaId")
     })

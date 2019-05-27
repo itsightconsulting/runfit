@@ -112,6 +112,17 @@ public class Cliente extends AuditingEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private ConfiguracionCliente confCliente;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "ClienteServicio",
+        joinColumns = {
+            @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId")
+
+        },inverseJoinColumns = {
+            @JoinColumn(name = "ServicioId")
+        }
+    )
+    private List<Servicio> servicios = new ArrayList<>();
+
     @Transient
     @JsonSerialize
     private String nombreCompleto;

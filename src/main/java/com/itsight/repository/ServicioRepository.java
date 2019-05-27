@@ -28,4 +28,8 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer>{
     void updateByIdAndTrainerId(
             @Param("id") Integer id, @Param("nombre") String nombre, @Param("descripcion") String descripcion, @Param("incluye") String incluye, @Param("infoAdicional") String infoAdicional, @Param("tarifarios") String tarifarios, @Param("trainerId") Integer trainerId
     );
+
+    @Modifying
+    @Query(value = "INSERT INTO cliente_servicio VALUES(?1, ?2);", nativeQuery = true)
+    void addClienteServicio(Integer clienteId, Integer servicioId);
 }

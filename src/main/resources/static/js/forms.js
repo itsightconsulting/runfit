@@ -165,7 +165,7 @@ function acumuladorMenos(id){
 }
 
 function getValuesByClass(clase){
-    return Array.from(document.querySelectorAll(`input.${clase}`)).map(v=>v.value).filter(v=>v.trim().length>5).join('|');
+    return Array.from(document.querySelectorAll(`input.${clase}`)).map(v=>v.value).filter(v=>v.trim().length>4).join('|');
 }
 
 function getValuesConcatInpCheckbox(name){
@@ -185,12 +185,44 @@ function getValuesConcatInpCheckbox(name){
     }
 }
 
-
-
 function agregarInputsDinamico(e){
     if(e.parentElement.children.length == 6){
         e.classList.add('hide');
     }
     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Nombre del contacto" class="form-control inp-cont-emer" type="text"/>'));
     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Celular del contacto" class="form-control inp-cont-emer" type="text"/>'));
+}
+
+function getValoracion(cantPerVal, totalVal){
+    const valoraciones = cantPerVal;
+    const acumuladoValoracion = totalVal;
+    let valoracion = valoraciones === 0 ? 0 : (acumuladoValoracion/valoraciones).toFixed(2);
+    valoracion = Number(Number(Number(valoracion)).toFixed(2));
+    const exactaValoracion = valoracion;
+    let dotFloat = Number((valoracion%1).toFixed(2).slice(-2));
+    if(dotFloat<=10){
+        dotFloat=0;
+    }
+    else if(dotFloat<=35){
+        dotFloat=0.25;
+    }
+    else if(dotFloat<=60){
+        dotFloat=0.50;
+    }
+    else if(dotFloat<=85){
+        dotFloat=0.75;
+    }
+    else {
+        dotFloat=1;
+    }
+    const aproximadaValoracion = Math.trunc(valoracion)+dotFloat;
+    return {
+        aproximadaValoracion: aproximadaValoracion,
+        exactaValoracion: exactaValoracion,
+        valoraciones: valoraciones,
+    }
+}
+
+function csBtoa(word){
+    return btoa(word).replace(/\=/g,'');
 }

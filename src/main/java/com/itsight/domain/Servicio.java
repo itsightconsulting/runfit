@@ -1,5 +1,6 @@
 package com.itsight.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itsight.domain.jsonb.Tarifario;
 import com.itsight.domain.pojo.ServicioPOJO;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,4 +97,8 @@ public class Servicio implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
     private Trainer trainer;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
+    private List<Cliente> clientes = new ArrayList<>();
 }

@@ -52,7 +52,6 @@ public class ClienteController {
 
     @PostMapping(value = "/fitness/agregar")
     public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
-        System.out.println(cliente.getCliFit().toString());
         return clienteService.registroFull(cliente);
     }
 }

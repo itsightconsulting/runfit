@@ -120,4 +120,9 @@ public class ServicioServiceImpl extends BaseServiceImpl<ServicioRepository> imp
         String tarifariosString = new ObjectMapper().writeValueAsString(tarifarios);
         repository.updateByIdAndTrainerId(id, nombre, descripcion, incluye, infoAdicional, tarifariosString, trainerId);
     }
+
+    @Override
+    public void addClienteServicio(Integer clienteId, Integer servicioId) {
+        repository.addClienteServicio(clienteId, servicioId);
+    }
 }

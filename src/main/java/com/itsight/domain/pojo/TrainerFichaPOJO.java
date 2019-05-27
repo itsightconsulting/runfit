@@ -38,6 +38,9 @@ public class TrainerFichaPOJO implements Serializable {
     private String mapCoordenadas;
     private Double mapCircleRadio;
     private String redes;
+    private String staffGaleria;
+    private String hshTrainerId;
+
 
     public TrainerFichaPOJO() {
     }
@@ -54,7 +57,7 @@ public class TrainerFichaPOJO implements Serializable {
         this.nomPag = nomPag;
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, Integer sexo, String fichaClienteIds, String especialidad, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String horario, String miniGaleria, String nota, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String cuentas, String mediosPago, String mapCoordenadas, Double mapCircleRadio, String redes) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, Integer sexo, String fichaClienteIds, String especialidad, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String horario, String miniGaleria, String nota, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String cuentas, String mediosPago, String mapCoordenadas, Double mapCircleRadio, String redes, String staffGaleria) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.sexo = sexo;
@@ -83,5 +86,6 @@ public class TrainerFichaPOJO implements Serializable {
         this.mapCoordenadas = mapCoordenadas;
         this.mapCircleRadio = mapCircleRadio;
         this.redes = redes;
+        this.staffGaleria = staffGaleria;
     }
 }

@@ -24,6 +24,8 @@ public class ClienteDTO implements Serializable  {
     private Integer paisId;
     private String ubigeo;
     private String password;
+
+    private Integer servicioId;
     @Valid
     private ClienteFitnessDTO cliFit;
 

@@ -67,6 +67,12 @@
             width: 45%;
         }
 
+        .img-asesor-emp{
+            border-radius: 48%;
+            height: 100%;
+            width: 100%;
+        }
+
     </style>
   </head>
   <body>
@@ -107,7 +113,7 @@
                                       </div>
                                       <div class="form-group">
                                           <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId">
+                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId" multiple="multiple" style=" height:80px !important;">
                                               <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
                                           </select>
                                       </div>
@@ -193,7 +199,8 @@
                                           </div>
                                           <div class="form-group">
                                               <label>CENTRO DE TRABAJO</label>
-                                              <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
+                                              <input class="form-control mg-bt-10 inp-ct" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 4, 'inp-ct')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                           </div>
                                           <div class="form-group">
                                               <label>FORMA DE TRABAJO<span class="obligatorio">*</span></label>
@@ -326,11 +333,41 @@
                                           <ul class="staff">
                                               <li>
                                                   <div class="avatar-form-min">
-                                                      <div class="avatar-form-min-button" for="AsesoresFoto">Agregar asesor</div>
-                                                      <input type="file" id="AsesoresFoto" name="AsesoresFoto" accept="application/pdf">
+                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto1" name="AsesorFoto1">
                                                   </div>
                                               </li>
-                                          </ul>    
+                                              <li>
+                                                  <div class="avatar-form-min">
+                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto2" name="AsesorFoto2">
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="avatar-form-min">
+                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto3" name="AsesorFoto3">
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="avatar-form-min">
+                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto4" name="AsesorFoto4">
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="avatar-form-min">
+                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto5" name="AsesorFoto5">
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="avatar-form-min">
+                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto6" name="AsesorFoto6">
+                                                  </div>
+                                              </li>
+                                          </ul>
                                       </div>
                                   </form>
                               </div>
@@ -682,6 +719,7 @@
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
     <script>
+        const tabs = document.querySelector('ul.nav-tabs');
         const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
         const inpGaleria = document.getElementById('InpGaleria');
@@ -691,6 +729,7 @@
         const btnNuevaInfoPago = document.getElementById('btnNuevaInfoPago');
         const btnEliminarPaquete = document.getElementById('btnEliminarPaquete');
         const tabService = document.getElementById('service');
+        const tabStaff = document.getElementById('staff');
         const inpCondServicio = document.getElementById('inpCondServicio');
         const servicios = [];
         let ccBancarias = [];
@@ -716,6 +755,10 @@
             btnNuevaInfoPago.addEventListener('click', agregarNuevaInfoPago);
             btnEliminarPaquete.addEventListener('click', eliminarPaqueteDeServicio);
             tabService.addEventListener('click', clickListenerTabService);
+            tabStaff.addEventListener('click', clickListenerTabStaff);
+            tabs.addEventListener('click', clickListenerTabs);
+            tabStaff.addEventListener('change', changeListenerTabStaff);
+
             tabService.addEventListener('change', changeListenerTabService);
             inpCondServicio.addEventListener('change', asociarCondSvc);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
@@ -810,6 +853,7 @@
             const hshId = d.res;
             const rdmsUUIDs = getImgUuids(d.rdm);
             let file = inpImgPerfil;
+            let filesStaff = getStaffGaleria();
             if (file.files.length > 0) {
                 file = file.files[0];
                 const data = new FormData();
@@ -819,6 +863,12 @@
                     data.append("files", f);
                 });
                 termConSvc.forEach(v=>{
+                    if(v.file){
+                        data.append("files", v.file);
+                    }
+                })
+
+                filesStaff.forEach(v=>{
                     data.append("files", v.file);
                 })
 
@@ -847,13 +897,21 @@
             }
         }
 
+        function getStaffGaleria(){
+            return Array.from(tabStaff.querySelectorAll('.inp-img-asesor')).filter(e=>e.files.length>0).map(e=>{
+                return {
+                    file: e.files[0],
+                    nombre: e.parentElement.nextElementSibling.textContent.trim()
+                }
+            });
+        }
+
         function init(){
             modalEventos();
             populateBancos();
             activeTooltips();
             if(flag_form_populate){
-                //populateForm();
-
+                populateForm();
             }
 
             actions.querySelector('.docs-buttons').onclick = function (e) {
@@ -960,7 +1018,6 @@
                 if(!exists){
                     termConSvc.push({servicioId: v.id});
                 }
-
             })
             termConSvc.sort((a, b) => a.servicioId < b.servicioId ? -1 : 1);
 
@@ -972,11 +1029,23 @@
                                     const nm = e.file.name;
                                     return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))
                                 }).join("|");
+
+            const extsStaff = Array.from(tabStaff.querySelectorAll('.inp-img-asesor')).filter(e=>e.files.length>0).map(e=>{
+                const nm = e.files[0].name;
+                const trainerNombre = e.parentElement.nextElementSibling.textContent.trim()
+                if(trainerNombre){
+                    return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))+","+trainerNombre
+                }
+                return "";
+            }).join("|");
+
             const exts = {};
             exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
             exts.extsImgsGaleria = extsImgsGaleria !== "" ? "@extsImgsGaleria:"+extsImgsGaleria : "";
             exts.extsCondSvcs = extsCondSvcs !== "" ? "@extsCondSvcs:"+extsCondSvcs : "";
             body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria + exts.extsCondSvcs;
+            body.staffGaleria = extsStaff;
+
             if(document.getElementById('Coordenadas') != null){
                 body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
             }
@@ -985,7 +1054,9 @@
                 body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
             }
 
-            body.sexo = Number($('input[name="Sexo"]:checked').val());
+            body.sexo = 3;
+            body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
+            body.tipoTrainerId = 2;
 
             $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
@@ -999,7 +1070,7 @@
                     bridgeMultipart: true,
                     success: (d)=> {
                         //Subir imgen
-                        if(extsImgsGaleria === "" && extsCondSvcs === ""){
+                        if(extsImgsGaleria === "" && extsCondSvcs === "" && body.staffGaleria === ""){
                             uploadFotoPerfil(d, body);
                         }else{
                             uploadFotosPerfil(d, body)
@@ -1099,6 +1170,58 @@
                 btn.innerText = "Ficha seleccionada: "+fichaName;
                 btn.click();
                 btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
+            }
+        }
+
+        function clickListenerTabStaff(e){
+            const input = e.target;
+            const clases = input.classList;
+            if (clases.contains('img-asesor-emp')){
+                const padre = input.parentElement;
+                const inp = padre.querySelector('input');
+                inp.click();
+            }
+        }
+
+        function clickListenerTabs(e){
+            const input = e.target;
+            const clases = input.classList;
+            if (input.tagName==="SPAN" && input.textContent.trim().toLowerCase()==="staff"){
+                btnGuardar.classList.add('hidden');
+            } else {
+                btnGuardar.classList.remove('hidden');
+            }
+        }
+
+        function changeListenerTabStaff(e){
+            const input = e.target;
+            const clases = input.classList;
+            if (clases.contains('inp-img-asesor')){
+                const padre = input.parentElement;
+                const img = padre.firstElementChild;
+                var file, imgTemp;
+                if ((file = input.files[0])) {
+                    imgTemp = new Image();
+                    imgTemp.onload = function () {
+                        //Previsualizar
+                        readURL($(input)[0], img);
+                    };
+                    imgTemp.onerror = function () {
+                        $(input).val("");
+                        $.smallBox({
+                            content: "<i> No se ha seleccionado una imagen válida!</i>",
+                            color: "#8a6d3b",
+                            iconSmall: "fa fa-warning fa-2x fadeInRight animated",
+                            timeout: 3500,
+                        });
+                    };
+                    imgTemp.src = _URL.createObjectURL(file);
+                }
+                padre.appendChild(img);
+                const p = document.createElement('p');
+                p.textContent = "Añada el nombre aquí";
+                p.setAttribute('contenteditable', 'true');
+                padre.parentElement.appendChild(p);
             }
         }
 
@@ -1540,39 +1663,20 @@
             const t2 = t0.slice(-6).slice(0, 3);
 
             document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
-            document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
-            document.querySelector('input[name="Sexo"]').checked = true;
+            document.querySelector('#Apellidos').value = "noo";
             document.getElementById('Username').value = "Pedro"+t1 + ""+ t2;
             document.getElementById('Password').value = "runfit123";
-            document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
-            //Estudios
-            const inpEst = document.querySelector('.inp-estudio');
-            ["Licenciado en cultura física y deporte",
-            "Diplomado en nutrición para atletas",
-            "Diplomado en rehabilitación enfocada en deportista calificados",
-            "Curso en rescate en el agua",
-            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
             document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
                 '\n' +
                 'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
-            //Experiencia Laboral
-            const inpExp = document.querySelector('.inp-experiencia');
-            ["Entrenador en AquaLab (2013 – hasta la fecha)",
-             "Entrenador freelance (2005 – hasta la fecha)",
-             "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
-            //Experiencia Laboral
+            //Resultados | Logros
             const inpRes = document.querySelector('.inp-resultado');
             ["Juan Pérez, campeón en natación 100 m libres (2017)",
                 "Rocío Flores, campeona sudamericana 4x100 m (2017)",
                 "Michael Barros, campeón en natación 4x200 (2016)",
                 "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
             document.querySelector('#CentroTrabajo').value = 'AQUALAB - Av. Nicolás de Ribera 145, San Isidro';
-            //Especialidades que domino
-            const inpEspDom = document.querySelector('.inp-esp-domino');
-            ["Entrenamiento en grupo",
-                "Entrenamiento uno a uno",
-                "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
 
             document.querySelector('#Telefono').value = `01 777 6666`;
             document.querySelector('#NumeroDocumento').value = `23232323`;
@@ -1625,21 +1729,12 @@
                 }, 500);
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
-
-            /*var tid = setInterval( function () {
-                if ( document.readyState !== 'complete' ) return;
-                else document.getElementById('btnGuardar').click();
-                clearInterval( tid );
-                // do your work
-            }, 100);*/
+            Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
         }
 
         function generateBody(){
             const obj = getFormData($('#frm_registro'));
 
-            if(!obj.horario){
-                delete obj.horario;
-            }
             //Ubigeo
             obj.paisId = 604;
             obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
@@ -1652,11 +1747,9 @@
             obj.password = document.getElementById('Password').value;
             obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
             obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
-            obj.especialidades = getValuesByClass('inp-esp-domino');
-            obj.estudios = getValuesByClass('inp-estudio');
-            obj.experiencias = getValuesByClass('inp-experiencia');
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
+            obj.centroTrabajo = getValuesByClass('inp-ct');
             obj.fichaClienteId = Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
             const rdmNum = Math.floor(Math.random() * 100);
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
@@ -1665,9 +1758,16 @@
             obj.mediosPago = Array.from($('#MediosPagosAgregados a.cc-elegido:not(".hidden")')).map(e=>e.getAttribute('data-id')).join('|');
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
             obj.nota = document.getElementById('NotaFinal').value;
+            obj.horario = getValuesByClass('inp-horario');
             const redes = getRedesSociales();
             if(redes.have){
                 obj.redes = redes.nombres;
+            }
+            if(!obj.horario){
+                delete obj.horario;
+            }
+            if(!obj.centroTrabajo){
+                delete obj.centroTrabajo;
             }
             return obj;
         }

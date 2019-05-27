@@ -13,4 +13,6 @@ public interface ServicioService extends BaseService<Servicio, Integer> {
     List<ServicioPOJO> findAllByTrainerId(Integer trainerId);
 
     void actualizarByIdAndTrainerId(Integer id, String nombre, String descripcion, String incluye, String infoAdicional, List<Tarifario> tarifarios, Integer trainerId) throws JsonProcessingException;
+
+    void addClienteServicio(Integer clienteId, Integer servicioId);
 }

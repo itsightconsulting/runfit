@@ -28,6 +28,8 @@ import java.util.List;
 import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 import static com.itsight.util.Enums.ResponseCode.REGISTRO;
+import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.PARTICULAR;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
@@ -151,6 +153,7 @@ public class TrainerFichaController extends BaseController {
     public @ResponseBody
     ResponseEntity<TrainerFichaPOJO> getTrainerByUsername(@PathVariable(name = "nomPag") String nomPag) {
         TrainerFichaPOJO t = trainerFichaService.findByNomPagPar(nomPag);
+        t.setHshTrainerId(Parseador.getEncodeHash32Id("rf-public", t.getId()));
         if(t != null){
             return new ResponseEntity<>(t, HttpStatus.OK);
         }
@@ -209,10 +212,12 @@ public class TrainerFichaController extends BaseController {
             //y no el que enviaron en la petición post
             trainerFicha.setCorreo(postulante.getCorreo());
             trainerFicha.setPostulanteTrainerId(postTraId);
-            RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, Enums.TipoTrainer.PARTICULAR.get());
+            RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, trainerFicha.getTipoTrainerId() == 1 ? PARTICULAR.get() : EMPRESA.get());
             String gal = refsUpload.getNombresImgsGaleria().equals("") ? "" : "@"+refsUpload.getNombresImgsGaleria();
             String svcsFiles = refsUpload.getNombresCondSvcs().equals("") ? "" : "@"+refsUpload.getNombresCondSvcs();
-            String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp() +  gal + svcsFiles;
+            String staffFiles = refsUpload.getStaffGaleria().equals("") ? "" : "@"+refsUpload.getStaffGaleria();
+
+            String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp() +  gal + svcsFiles + staffFiles;
             return jsonResponse(
                         Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
                         finalUploadNames);

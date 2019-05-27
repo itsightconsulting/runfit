@@ -12,9 +12,7 @@ public class RefUploadIds {
     private String extFp;
     private String nombresImgsGaleria;
     private String nombresCondSvcs;
-
-
-
+    private String staffGaleria;
 
     public RefUploadIds(){}
 
@@ -49,6 +47,27 @@ public class RefUploadIds {
                 sep="|";
             }
             this.nombresImgsGaleria = nombres;
+        }
+    }
+    public void setStaffGaleria() {
+        this.staffGaleria = "";
+    }
+
+    public void setStaffGaleria(String extensionesAndNombres) {
+        if(extensionesAndNombres.contains("")) {
+            String[] extsAndNombres = extensionesAndNombres.split("\\|");
+            String nombres = "";
+            String sep = "";
+            for(int i=0; i<extsAndNombres.length;i++){
+                String[] last = extsAndNombres[i].split(",");
+                if(last.length == 2){
+                    String ext = last[0];
+                    String nom = last[1];
+                    nombres += sep+UUID.randomUUID().toString()+"."+ext + ","+ nom;
+                    sep="|";
+                }
+            }
+            this.staffGaleria = nombres;
         }
     }
 

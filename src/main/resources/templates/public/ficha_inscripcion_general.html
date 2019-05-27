@@ -1088,6 +1088,7 @@
     const correoTrainer = document.getElementById('CorreoTrainer');
     obj.trainerId = trainerId.value === "" ? null : trainerId.value;
     obj.correoTrainer = correoTrainer.value === "" ? null : atob(correoTrainer.value);
+    obj.servicioId = Number(atob(getParamFromURL("sid")));
     //Ubigeo
     obj.paisId = 604;
     obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
@@ -1111,8 +1112,10 @@
     obj.cliFit.desTerPredom = "";
     obj.cliFit.kilometrajePromedioSemana = 0;
     obj.cliFit.mejoras = getValuesCondicionMejora();
+
+
     obj.cliFit.frecuenciaComunicacion = 1;
-    obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
+    obj.cliFit.viaConexion =  1;
     obj.cliFit.fichaId =  2;//General = 2
 
 

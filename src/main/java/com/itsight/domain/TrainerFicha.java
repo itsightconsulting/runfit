@@ -78,7 +78,8 @@ import java.util.UUID;
                                     @ColumnResult(name = "mediosPago", type = String.class),
                                     @ColumnResult(name = "mapCoordenadas", type = String.class),
                                     @ColumnResult(name = "mapCircleRadio", type = Double.class),
-                                    @ColumnResult(name = "redes", type = String.class)
+                                    @ColumnResult(name = "redes", type = String.class),
+                                    @ColumnResult(name = "staffGaleria", type = String.class)
                             }
                     )
             }
@@ -129,7 +130,8 @@ import java.util.UUID;
                               "\tf.medios_pago mediosPago,\n" +
                               "\tf.map_coordenadas mapCoordenadas,\n" +
                               "\tf.map_circle_radio mapCircleRadio, \n" +
-                              "\tf.redes \n" +
+                              "\tf.redes, \n" +
+                              "\tf.staff_galeria staffGaleria \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "WHERE f.nom_pag = ?",
@@ -163,7 +165,8 @@ import java.util.UUID;
                               "\tf.medios_pago mediosPago,\n" +
                               "\tf.map_coordenadas mapCoordenadas,\n" +
                               "\tf.map_circle_radio mapCircleRadio, \n" +
-                              "\tf.redes \n" +
+                              "\tf.redes, \n" +
+                              "\tf.staff_galeria staffGaleria \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "WHERE t.security_user_id = ?",
@@ -188,17 +191,17 @@ public class TrainerFicha implements Serializable {
     private Integer id;
     @Column(nullable = false)
     private Integer sexo;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String especialidad;
     @Column(nullable = false, columnDefinition="TEXT")
     private String acerca;
     @Column(nullable = false)
     private String idiomas;
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(nullable = true, columnDefinition="TEXT")
     private String estudios;
     @Column(nullable = false, columnDefinition="TEXT")
     private String metodoTrabajo;
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(nullable = true, columnDefinition="TEXT")
     private String experiencias;
     @Column(nullable = false, columnDefinition="TEXT")
     private String resultados;
@@ -206,7 +209,7 @@ public class TrainerFicha implements Serializable {
     private String niveles;
     @Column(nullable = false)
     private String centroTrabajo;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String especialidades;
     @Column(nullable = false)
     private String formasTrabajo;
@@ -214,6 +217,8 @@ public class TrainerFicha implements Serializable {
     private String horario;
     @Column(nullable = true, columnDefinition="TEXT")
     private String miniGaleria;
+    @Column(nullable = true, columnDefinition="TEXT")
+    private String staffGaleria;
     @Column(nullable = true, columnDefinition="TEXT")
     private String nota;
     @Type(type = "jsonb")
