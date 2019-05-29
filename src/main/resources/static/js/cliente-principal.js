@@ -404,7 +404,6 @@ function generarSemana(semanaEncontradaSiguiente,auxsemana) {
                 arraySemanaActual.push(objday);
             });
 
-
             $.each(arraySemanaActual, function (i, item) {
 
                 var daystr = item.day.getDay();

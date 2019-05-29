@@ -37,6 +37,11 @@ ul, ol {
   margin: 0;
   padding: 0; }
 
+button {
+    outline: none;
+    border: none;
+}
+
 * {
   font-family: "Montserrat-Medium";
   outline: none !important; }
@@ -545,21 +550,29 @@ a.fav:hover .svg, a.fav.selected .svg {
         content: "";
         display: none; }
 
-.ritmos_pulsos h3 {
+h3.title_graphic {
   color: #fff;
   font-family: GothamHTF-Bold;
-  margin-bottom: 20px; }
-  .ritmos_pulsos h3 .svg {
+  margin-bottom: 20px;
+  font-size: 21px;
+  text-align: left}
+   h3.title_graphic .svg {
     fill: #9d9d9d;
     max-height: 20px;
     max-width: 20px;
     display: inline-block;
-    margin-right: 10px; }
-    .ritmos_pulsos h3 .svg.red {
+    margin-right: 10px;
+       position: relative;
+       top: 4px;}
+    h3.title_graphic i {
+      font-size: 16px;
+      font-style: normal;
+      margin-left: 8px;}
+    h3.title_graphic .svg.red {
       fill: #cf3239;
       margin-left: 10px;
       margin-right: 0; }
-    .ritmos_pulsos h3 .svg.blue {
+     h3.title_graphic .svg.blue {
       fill: #07b7c2;
       margin-left: 10px;
       margin-right: 0; }
@@ -672,12 +685,14 @@ a.fav:hover .svg, a.fav.selected .svg {
   font-family: GothamHTF-Book;
   text-transform: uppercase;
   border-bottom: 1px solid #3d3f41;
-  margin-bottom: 14px; }
+  padding: 14px 0;}
+.datos_semanales li:first-child {
+  padding-top: 0;}
   .datos_semanales li label {
     font-weight: normal; }
     .datos_semanales li label strong {
       font-size: 22px;
-      margin-right: 14px; }
+      margin-right: 10px; }
     .datos_semanales li label .svg {
       width: 20px;
       height: 22px;
@@ -1080,7 +1095,7 @@ section.ritmos_tiempo .box_tiempo {
   .ritmos_pulsos {
     display: inline-block;
     width: 100%; }
-    .ritmos_pulsos h3 {
+     h3.title_graphic {
       font-size: 14px;
       text-align: left; }
     .ritmos_pulsos table {

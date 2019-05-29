@@ -15,14 +15,14 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datetimepicker.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-toggle.min.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}" media="screen"/>
     <style>
-      #indicadorCirculoI{
-        color: indianred !important;
+      #indicadorCirculo1,#indicadorCirculo3{
+        color: #d6ff58 !important;
       }
-      #indicadorCirculoIi{
-        color: darkslateblue !important;
+      #indicadorCirculo2,#indicadorCirculo4{
+        color: #cf3239 !important;
       }
     </style>
   </head>
@@ -104,114 +104,16 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane fade in active" id="diario">
-              <h4 class="text-center">semana 3 <span>- enero</span></h4>
-              <div class="panel-group" id="accordion">
-                <div class="panel panel-default">
-                  <div class="panel-heading"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                      <h3>lunes 15</h3></a>
-                    <div class="icons"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span><a data-toggle="collapse" data-parent="#accordion" href="#collapse1"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                  </div>
-                  <div class="panel-collapse collapse" id="collapse1">
-                    <div class="panel-body">
-                      <ul class="datos">
-                        <li><img class="svg" src="img/iconos/icon_programas.svg">Carrera<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                        <li><img class="svg" src="img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                        <li><img class="svg" src="img/iconos/icon_cronometro.svg">90<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                        <li><img class="svg" src="img/iconos/icon_km.svg">8.6<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                      </ul>
-                      <div class="panel-group">
-                        <div class="panel panel-default">
-                          <div class="panel-heading">
-                            <h3>calentamiento
-                              <div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div>
-                            </h3>
-                            <div class="icons"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span><a data-toggle="collapse" href="#collapse1-a"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                          </div>
-                          <div class="panel-collapse collapse" id="collapse1-a">
-                            <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación</span>
-                              <ul class="principal">
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading">
-                            <h3>parte principal
-                              <div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div>
-                            </h3>
-                            <div class="icons"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span><a data-toggle="collapse" href="#collapse2-a"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                          </div>
-                          <div class="panel-collapse collapse" id="collapse2-a">
-                            <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación</span>
-                              <ul class="principal">
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading">
-                            <h3>estiramientos
-                              <div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div>
-                            </h3>
-                            <div class="icons"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span><a data-toggle="collapse" href="#collapse3-a"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                          </div>
-                          <div class="panel-collapse collapse" id="collapse3-a">
-                            <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación</span>
-                              <ul class="principal">
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar</span></p>
-                                </li>
-                                <li><img class="svg arrow" src="img/iconos/icon_microfono.svg"><img class="svg arrow" src="img/iconos/icon_microfono.svg">
-                                  <p class="title">Zarpaso bajo 49mt<span>Alternar                        </span></p>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                      <h3>martes 16</h3></a>
-                    <div class="icons"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span><a data-toggle="collapse" data-parent="#accordion" href="#collapse2"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                  </div>
-                </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading"><a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                      <h3>miércoles 17</h3></a>
-                    <div class="icons"><img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg"><span><img class="svg" src="img/iconos/icon_tiempo2.svg">20</span><a data-toggle="collapse" data-parent="#accordion" href="#collapse3"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a></div>
-                  </div>
-                </div>
+              <h4 class="text-center" id="weekDay"></h4>
+              <div class="panel-group" id="panel_days">
+                <!--PANEL DAYS-->
               </div>
               <hr>
               <div class="clearfix"></div>
               <div class="col-md-8 text-center">
                 <div class="ritmos_pulsos row">
                   <div class="col-xs-6">
-                    <h3><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
+                    <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
                     <table class="pulsos">
                       <thead>
                         <tr>
@@ -250,7 +152,7 @@
                     </table>
                   </div>
                   <div class="col-xs-6">
-                    <h3><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
+                    <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
                     <table class="ritmos">
                       <thead>
                         <tr>
@@ -289,12 +191,17 @@
                     </table>
                   </div>
                 </div>
-                <h1>Just sample</h1>
-                <div class="col col-md-6 col-xs-6">
-                  <input style="color: indianred; !important;" data-thickness="0.15" data-fgColorMid="#8dd105" data-fgColorEnd="#aadd45" data-width="80%" data-height="150" id="indicadorCirculoI" type="text" value="15" class="dial dayAvance" />
-                </div>
-                <div class="col col-md-6 col-xs-6">
-                  <input style="color: darkslateblue;" data-thickness="0.15" data-fgColorMid="#cf3239" data-fgColorEnd="#aadd45" data-width="80%" data-height="150" id="indicadorCirculoIi" type="text" value="50" class="dial dayAvance" />
+                <hr>
+                <div class="clearfix"></div>
+                <div class="row">
+                  <div class="col col-md-6 col-xs-6">
+                    <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">CUMPLIMIENTO</h3>
+                    <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo1" type="text" value="15" class="dial dayAvance" />
+                  </div>
+                  <div class="col col-md-6 col-xs-6">
+                    <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">KM<i>RESTANTE</i></h3>
+                    <input style="color: darkslateblue;" data-thickness="0.05" data-fgColorMid="#cf3239" data-fgColorEnd="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo2" type="text" value="50" class="dial dayAvance" />
+                  </div>
                 </div>
               </div>
               <div class="col-md-4">
@@ -375,7 +282,7 @@
               </section>
             </div>
             <div class="tab-pane fade" id="semanal">
-              <h2 class="title_carousel no_margin_top">semana3 - <span>enero</span></h2>
+              <h2 class="title_carousel no_margin_top" id="weekMonth">semana3 - <span>enero</span></h2>
               <div class="owl-carousel" id="carousel-semanal">
                 <div class="item selected">
                   <div class="title">lunes 15</div>
@@ -441,7 +348,7 @@
               <div class="slider-container">
                 <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="7">
               </div>
-              <div class="panel-group" id="accordion">
+              <div class="panel-group">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3>parte principal
@@ -486,7 +393,7 @@
               <div class="col-md-8 no_padding">
                 <div class="ritmos_pulsos row">
                   <div class="col-xs-6">
-                    <h3><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
+                    <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
                     <table class="pulsos">
                       <thead>
                         <tr>
@@ -525,7 +432,7 @@
                     </table>
                   </div>
                   <div class="col-xs-6">
-                    <h3><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
+                    <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
                     <table class="ritmos">
                       <thead>
                         <tr>
@@ -646,8 +553,9 @@
                 <div class="col-md-8">
                   <div class="datepicker_inline"></div>
                   <div class="ritmos_pulsos row">
+                    <br>
                     <div class="col-xs-6">
-                      <h3><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
+                      <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">PULSOS<img class="red svg" src="img/iconos/icon_heart.svg"></h3>
                       <table class="pulsos">
                         <thead>
                           <tr>
@@ -686,7 +594,7 @@
                       </table>
                     </div>
                     <div class="col-xs-6">
-                      <h3><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
+                      <h3 class="title_graphic"><img class="svg" src="img/iconos/icon_ayuda.svg">RITMOS<img class="blue svg" src="img/iconos/icon_ritmo-tiempo.svg"></h3>
                       <table class="ritmos">
                         <thead>
                           <tr>
@@ -747,9 +655,15 @@
                       </li>
                       <li>
                         <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>cumplimiento</strong></label>
+                        <div class="text-center">
+                          <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo3" type="text" value="50" class="dial dayAvance" />
+                        </div>
                       </li>
                       <li>
                         <label><img class="svg" src="img/iconos/icon_ayuda.svg"><strong>km</strong>restante</label>
+                        <div class="text-center">
+                          <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#cf3239" data-fgColorEnd="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo4" type="text" value="50" class="dial dayAvance" />
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -815,8 +729,8 @@
     </div>
     <script th:src="@{/js/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
     <!-- CUSTOM NOTIFICATION -->
-    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
     <script th:src="@{/js/init.js}+'?'+${version}"></script>
+    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
     <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
     <script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
     <script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>

@@ -1,0 +1,33 @@
+@font-face {
+    font-family: Montserrat-Medium;
+    src: url(../fonts/Montserrat-Medium.otf); }
+
+@font-face {
+    font-family: Montserrat-Bold;
+    src: url(../fonts/Montserrat-Bold.otf); }
+
+@font-face {
+    font-family: Montserrat-Regular;
+    src: url(../fonts/Montserrat-Regular.otf); }
+
+@font-face {
+    font-family: Montserrat-Light;
+    src: url(../fonts/Montserrat-Light.otf); }
+
+@font-face {
+    font-family: GothamHTF-Bold;
+    src: url(../fonts/GothamHTF-Bold.otf); }
+
+@font-face {
+    font-family: GothamHTF-Book;
+    src: url(../fonts/GothamHTF-Book.otf); }
+
+@font-face {
+    font-family: GothamHTF-Light;
+    src: url(../fonts/GothamHTF-Light.otf); }
+
+body, html {
+    background-color: #2a242c;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden; }

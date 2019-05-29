@@ -32,10 +32,10 @@ public class ObjetivoController {
     }
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}")
-    public @ResponseBody
-    List<Objetivo> listarConFiltro(
+    public @ResponseBody List<Objetivo> listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado) {
+
         return objetivoService.listarPorFiltro(comodin, estado, null);
     }
 

@@ -24,15 +24,13 @@ function imgToSvg () {
 };
 
 function datepicker_init () {
-
     $('.datepicker_inline').datetimepicker({
         locale: 'es',
         inline: true,
         sideBySide: true,
-        format: 'DD/MM/YYYY'
-        //minDate: moment()
+        format: 'DD/MM/YYYY',
+        //defaultDate: date,
     });
-
 }
 
 function openNav() {
@@ -194,6 +192,14 @@ function select_fave () {
   });
 }
 
+function weekMonth() {
+    moment.locale('es-es');
+    var dayCurrent = moment().format('D');
+    var weekOfMonth = moment().isoWeek() - moment().subtract('days', dayCurrent - 1).isoWeek() + 1;
+    var month = moment().format('MMMM');
+        $("#weekDay,#weekMonth").html("semana " + weekOfMonth + " - " + '<span> ' + month + ' </span>');
+}
+
 $(function() {
     imgToSvg();
     datepicker_init();
@@ -204,4 +210,5 @@ $(function() {
     miniPanelActive();
     fancybox();
     select_fave();
+    weekMonth();
 });
