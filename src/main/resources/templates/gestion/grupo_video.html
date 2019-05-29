@@ -237,6 +237,7 @@ you can add as many as you like
     /*<![CDATA[*/
     var $table = $('#tblRegistros');
     var $index = $('#Id');
+    let objEdicion = {};
 
     $(function () {
 
@@ -312,6 +313,8 @@ you can add as many as you like
         if ($("#frm_registro").valid()) {
             var params = getFormData($("#frm_registro"))
             params.flagActivo = $('#FlagActivo').is(':checked');
+            var fileImagenGrupo = $("#UploadImage").get(0);
+            params.extImg = getFileExtension(fileImagenGrupo.files[0].name);
 
             $.ajax({
                 type: 'POST',
@@ -319,20 +322,21 @@ you can add as many as you like
                 url: _ctx + 'gestion/grupo-video/agregar',
                 dataType: "json",
                 data: params,
-                success: function (data, textStatus) {
-                    let res = getResponseCodeWithId(data);
-                    if (textStatus == "success") {
-                        if (ResponseCode.EX_NULL_POINTER == data) {
-                            $.smallBox({color: "alert", content: "<i> La operación ha fallado, comunícarse con el administrador...</i>",});
-                        } else if (res.code == "-2" || res.code == "-1") {//0: Codigo response | 1: Id del registro actualizado
-                            addImage(data.split(',')[1], params.id);
-                        }
+                success: function (res, textStatus) {
+                    if(objEdicion.id){
+                        const res = {};
+                        res.rdm = objEdicion.rutaWeb.split(".")[0];
+                        res.res = objEdicion.id;
+                        addImage(res);
+                    }else{
+                        addImage(res);
                     }
                 },
                 error: function (xhr) {
                     exception(xhr);
                 },
                 complete: function () {
+                    objEdicion = {};
                     limpiarBusqueda();
                 }
             });
@@ -353,6 +357,7 @@ you can add as many as you like
             dataType: "json",
             data: param,
             success: function (data, textStatus) {
+                objEdicion = data;
                 if (textStatus == "success") {
                     $("#Id").val(data.id);
                     $("#Nombre").val(data.nombre);
@@ -361,7 +366,8 @@ you can add as many as you like
                         :
                         $('#FlagActivoOff').prop('checked', true);
                     //Previsualizando la imagen
-                    $('#ImagenGrupo').attr('src', `${_ctx}workout/media/image/grupo-video/gt/1${data.rutaWeb}`);
+                    var rutaWeb = data.id + "/" + data.rutaWeb;
+                    $('#ImagenGrupo').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video'+rutaWeb);
                 }
             },
             error: function (xhr) {
@@ -417,22 +423,24 @@ you can add as many as you like
     }
 
     function visualizar(rutaWeb) {
-        $('#ImagenVisualizacion').attr('src', _ctx + 'workout/media/image/grupo-video/gt/1/' + rutaWeb);
+        $('#ImagenVisualizacion').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video'+rutaWeb);
     }
 
-    function addImage(grupoId, initId) {
+    function addImage(d) {
+        const grupoVideoId = d.res;
+        const rdmUUID = d.rdm;
         var fileImagenGrupo = $("#UploadImage").get(0);
-
         var files = fileImagenGrupo.files;
         if (files[0] != null) {
 
             var data = new FormData();
             data.append("imagen", fileImagenGrupo.files[0]);
-            data.append("grupoId", grupoId);
+            data.append("grupoId", grupoVideoId);
+            data.append("randomUUID", rdmUUID);
 
             $.ajax({
                 type: 'POST',
-                url: _ctx + 'gestion/grupo-video/upload/imagen',
+                url: _ctx + 'gestion/grupo-video/upload/imagen/'+rdmUUID,
                 data: data,
                 contentType: false,
                 processData: false,
@@ -445,12 +453,7 @@ you can add as many as you like
                 },
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
-                        if (data == "-99") {
-                            $.smallBox({content: "La imagen no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
-                        }else if (initId <= 0)
-                            $.smallBox({});
-                        else
-                            $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
+                        $.smallBox({});
                     }
                 },
                 error: function (xhr) {
@@ -515,7 +518,7 @@ you can add as many as you like
     function Opciones(value, row, index) {
         var opciones =
             `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
-		            		 <a href='#' data-toggle="modal" data-target="#myModalImagen" onclick='javascript:visualizar("${row.rutaWeb}");' title='Visualizar imagen'><i class='fa fa-eye fa-2x'></i></a> &nbsp
+		            		 <a href='#' data-toggle="modal" data-target="#myModalImagen" onclick='javascript:visualizar("${row.id+'/'+row.rutaWeb}");' title='Visualizar imagen'><i class='fa fa-eye fa-2x'></i></a> &nbsp
 		            		 <a class='font-sx' href='/workout/media/image/grupo-video/gt/0${row.rutaWeb}' title='Descargar imagen'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
         return opciones;
     }

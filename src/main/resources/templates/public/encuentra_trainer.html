@@ -208,9 +208,17 @@
               }
               e.acerca += "...";
           };
+          const ttId = e.tipoTrainerId;
 
           const objValoracion = getValoracion(e.canPerValoracion, e.totalValoracion);
           const nomLink = e.nomPag;
+          let nombreFinal = "";
+          if(ttId == 1){
+            nombreFinal = e.nombreCompleto;
+          }else{
+            nombreFinal = e.nombreCompleto.includes(' xxx') ? e.nombreCompleto.substring(0, e.nombreCompleto.indexOf(" xxx")) : e.nombreCompleto;
+          }
+
           divTrainers.appendChild(htmlStringToElement(`
           <div class="group-trainer row">
               <div class="col-md-3 pad-0">
@@ -231,7 +239,7 @@
       </div>
       </div>
       <div class="col-md-9">
-              <h4>${e.nombreCompleto}<span class="title">${e.especialidad}</span><span class="location">${_ubigeoPeLi.find(o=>o.ub === e.ubigeo).nom} - Lima</span></h4>
+              <h4>${nombreFinal}<span class="title">${ttId == 1 ? e.especialidad : ''}</span><span class="location">${_ubigeoPeLi.find(o=>o.ub === e.ubigeo).nom} - Lima</span></h4>
       <p>${e.acerca}</p>
       <button class="btn btn-default btn-black" type="button" onclick="verPerfil('${nomLink}')">VER PERFIL</button>
       <button class="btn btn-default btn-white" type="button" onclick="verPerfilDirectServices('${nomLink}')">VER SERVICIOS</button>

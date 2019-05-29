@@ -293,15 +293,15 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void insertAGrupoVideo(){
         categoriaVideoService.insertArtificio();
         if(grupoVideoService.findOne(1) == null) grupoVideoService.save(
-                new GrupoVideo("Fuerza tren inferior",2, true, "/1/633ec781-16c8-43a1-821e-23db3c30e318.png", "C://WorkoutAppRepository/GruposVideo/1/633ec781-16c8-43a1-821e-23db3c30e318.png", UUID.fromString("633ec781-16c8-43a1-821e-23db3c30e318")));
+                new GrupoVideo("Fuerza tren inferior",2, true, "/1/87e1bccc-5d86-4db0-a59a-0610553868a1.png", "", UUID.fromString("87e1bccc-5d86-4db0-a59a-0610553868a1")));
         if(grupoVideoService.findOne(2) == null) grupoVideoService.save(
-                new GrupoVideo("Fuerza tren superior",2, true, "/2/04472cde-a6df-4efa-bfb3-e46f9c8be954.png", "C://WorkoutAppRepository/GruposVideo/2/04472cde-a6df-4efa-bfb3-e46f9c8be954.png", UUID.fromString("04472cde-a6df-4efa-bfb3-e46f9c8be954")));
+                new GrupoVideo("Fuerza tren superior",2, true, "/2/3110f934-4bdf-4b3a-a207-d5334ce31a5d.png", "", UUID.fromString("3110f934-4bdf-4b3a-a207-d5334ce31a5d")));
         if(grupoVideoService.findOne(3) == null) grupoVideoService.save(
-                new GrupoVideo("Técnicos",2, true, "/3/1ee8d403-aec5-4fbf-9b55-49fd964d6824.png", "C://WorkoutAppRepository/GruposVideo/3/1ee8d403-aec5-4fbf-9b55-49fd964d6824.png", UUID.fromString("1ee8d403-aec5-4fbf-9b55-49fd964d6824")));
+                new GrupoVideo("Técnicos",2, true, "/3/ce5a818d-3032-4286-8b25-7bfe0dbde8be.png", "", UUID.fromString("ce5a818d-3032-4286-8b25-7bfe0dbde8be")));
         if(grupoVideoService.findOne(4) == null) grupoVideoService.save(
-                new GrupoVideo("Flexibilidad - Movilidad - Masajes",2, true, "/4/d6d68b6e-9038-4c98-9e4b-abe47b81a137.png", "C://WorkoutAppRepository/GruposVideo/4/d6d68b6e-9038-4c98-9e4b-abe47b81a137.png", UUID.fromString("d6d68b6e-9038-4c98-9e4b-abe47b81a137")));
+                new GrupoVideo("Flexibilidad - Movilidad - Masajes",2, true, "/4/e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f.png", "", UUID.fromString("e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f")));
         if(grupoVideoService.findOne(5) == null) grupoVideoService.save(
-                new GrupoVideo("Propioceptivos",2, true, "/5/fb216603-c9c7-4171-8cad-46bd318a1eba.png", "C://WorkoutAppRepository/GruposVideo/5/fb216603-c9c7-4171-8cad-46bd318a1eba.png", UUID.fromString("fb216603-c9c7-4171-8cad-46bd318a1eba")));
+                new GrupoVideo("Propioceptivos",2, true, "/5/741081a8-0156-4c20-8117-91c086188ef7.png", "", UUID.fromString("741081a8-0156-4c20-8117-91c086188ef7")));
     }
 
     public void insertACategoriaVideo() {
@@ -380,7 +380,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         mapEjercicios.put(10, "Bear crawl o paso del oso");
 
         Integer index = 1;
-        for(SubCategoriaVideo sce: subCategoriaVideoService.findAll()){
+        /*for(SubCategoriaVideo sce: subCategoriaVideoService.findAll()){
             int i = sce.getId();
             Random rd = new Random();
             int iteraciones = rd.nextInt(10)+1;
@@ -388,7 +388,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 int randomInt = rd.nextInt(10)+1;
                 if(videoService.findOne(index++) == null) videoService.save(new Video(mapEjercicios.get(randomInt), "/1/36a25880-ed66-47f1-ac79-8d2ee5fbf418.mp4", "C://WorkoutAppRepository/Videos/1/36a25880-ed66-47f1-ac79-8d2ee5fbf418.mp4","2.19 MB","00:00:14", UUID.fromString("36a25880-ed66-47f1-ac79-8d2ee5fbf418"), i, true));
             }
-        }
+        }*/
     }
 
     public void addingObjectivesTable() {

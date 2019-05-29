@@ -18,6 +18,9 @@ public abstract class BaseServiceImpl<T> {
     @Value("${amazon.aws.s3.prf.img.bucket}")
     protected String aws3bucket;
 
+    @Value("${amazon.aws.s3.md.rutina.media.bucket}")
+    protected String aws3RoutineBucket;
+
     protected T repository;
 
     public BaseServiceImpl(T repository) {

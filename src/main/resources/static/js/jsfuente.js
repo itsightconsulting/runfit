@@ -98,6 +98,11 @@ const TipoRutina = Object.freeze({
     COMPETITIVA:  3,
 });
 
+const TipoTrainer = Object.freeze({
+    PARTICULAR:   1,
+    EMPRESA:   2,
+});
+
 const ResponseCode = Object.freeze({
     REGISTRO: -1,
     ACTUALIZACION: -2,
@@ -707,4 +712,9 @@ function efectoImagenTransicion(){
         }
     }, 100);
     return intervalLoading;
+}
+
+
+function getFileExtension(fileName){
+    return fileName.slice(-(fileName.length-(fileName.lastIndexOf(".")+1)));
 }

@@ -42,6 +42,7 @@
           height: 100%;
           width: 100%;
       }
+
   </style>
 </head>
   <body>
@@ -91,7 +92,7 @@
                           <label>SEXO</label>
                           <p id="Sexo"></p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dvEspecialidad">
                       <label>ESPECIALIDAD</label>
                       <p id="Especialidad"></p>
                     </div>
@@ -111,7 +112,7 @@
                       <label>IDIOMAS QUE DOMINO</label>
                       <p id="Idiomas"></p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dvEstudios">
                       <label>ESTUDIOS Y CERTIFICACIONES</label>
                       <ul id="Estudios" class="list-description">
                       </ul>
@@ -120,70 +121,70 @@
                       <label>MÉTODO DE TRABAJO</label>
                       <p id="MetodoTrabajo"></p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dvExperiencias">
                       <label>EXPERIENCIA LABORAL</label>
                       <ul id="Experiencias" class="list-description">
                       </ul>
-                      <div class="form-group">
-                        <label>RESULTADOS OBTENIDOS COMO PROFESIONAL</label>
-                        <ul id="Resultados" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS</label>
-                        <ul id="Niveles" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <label>CENTRO DE TRABAJO</label>
-                        <p id="CentroTrabajo"></p>
-                      </div>
-                      <div class="form-group hidden" id="lblRangoMapa">
-                          <label>RANGO DE ATENCIÓN PRESENCIAL</label>
-                          <div class="map" id="map"></div>
-                      </div>
-                      <div class="form-group">
-                        <label>ESPECIALIDADES QUE DOMINO</label>
-                        <ul id="Especialidades" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <label>FORMA DE TRABAJO</label>
-                        <ul id="FormasTrabajo" class="list-description">
-                        </ul>
-                      </div>
-                      <div class="form-group" id="dvHorario">
-                          <label>HORARIO LABORAL</label>
-                          <p id="Horario">
-                      </div>
-                      <div class="form-group hidden" id="lblGaleriaFotos">
-                        <label>GALERÍA DE FOTOS</label>
-                        <div class="row">
-                          <div class="col-md-12" id="ImgsGaleria">
-                          </div>
+                    </div>
+                    <div class="form-group">
+                      <label>RESULTADOS OBTENIDOS COMO PROFESIONAL</label>
+                      <ul id="Resultados" class="list-description">
+                      </ul>
+                    </div>
+                    <div class="form-group">
+                      <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS</label>
+                      <ul id="Niveles" class="list-description">
+                      </ul>
+                    </div>
+                    <div class="form-group">
+                      <label>CENTRO DE TRABAJO</label>
+                      <p id="CentroTrabajo"></p>
+                    </div>
+                    <div class="form-group hidden" id="lblRangoMapa">
+                        <label>RANGO DE ATENCIÓN PRESENCIAL</label>
+                        <div class="map" id="map"></div>
+                    </div>
+                    <div class="form-group" id="dvEspecialidades">
+                      <label>ESPECIALIDADES QUE DOMINO</label>
+                      <ul id="Especialidades" class="list-description">
+                      </ul>
+                    </div>
+                    <div class="form-group">
+                      <label>FORMA DE TRABAJO</label>
+                      <ul id="FormasTrabajo" class="list-description">
+                      </ul>
+                    </div>
+                    <div class="form-group" id="dvHorario">
+                        <label>HORARIO LABORAL</label>
+                        <p id="Horario">
+                    </div>
+                    <div class="form-group hidden" id="lblGaleriaFotos">
+                      <label>GALERÍA DE FOTOS</label>
+                      <div class="row">
+                        <div class="col-md-12" id="ImgsGaleria">
                         </div>
                       </div>
-                      <div class="form-group hidden" id="lblRedes">
-                          <label>REDES SOCIALES</label>
-                      </div>
-                      <div class="form-group rs hidden" id="RsFb">
-                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
-                          <div class="col-xs-11 no_padding">
-                              <a href="#" target="_blank">FB</a>
-                          </div>
-                      </div>
-                      <div class="form-group rs hidden" id="RsIn">
-                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
-                          <div class="col-xs-11 no_padding">
-                              <a href="#" target="_blank">INS</a>
-                          </div>
-                      </div>
-                      <div class="form-group rs hidden" id="RsYo">
-                          <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
-                          <div class="col-xs-11 no_padding">
-                              <a href="#" target="_blank">Y2</a>
-                          </div>
-                      </div>
+                    </div>
+                    <div class="form-group hidden" id="lblRedes">
+                        <label>REDES SOCIALES</label>
+                    </div>
+                    <div class="form-group rs hidden" id="RsFb">
+                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
+                        <div class="col-xs-11 no_padding">
+                            <a href="#" target="_blank">FB</a>
+                        </div>
+                    </div>
+                    <div class="form-group rs hidden" id="RsIn">
+                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
+                        <div class="col-xs-11 no_padding">
+                            <a href="#" target="_blank">INS</a>
+                        </div>
+                    </div>
+                    <div class="form-group rs hidden" id="RsYo">
+                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
+                        <div class="col-xs-11 no_padding">
+                            <a href="#" target="_blank">Y2</a>
+                        </div>
                     </div>
                   </form>
                 </div>
@@ -816,7 +817,11 @@
           })
       }
 
-      function checkTabStaff(staffGaleria, id){
+      function checkTabStaff(staffGaleria, id, ttId){
+        if(ttId == 1){
+            return;
+        }
+
         if(staffGaleria){
             document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
             const divStaffs = document.getElementById('Staffs');
@@ -824,107 +829,135 @@
             s.split("|").forEach(e=>{
                 const imgAndNom = e.split(",");
                 divStaffs.appendChild(htmlStringToElement(
-                                 `<li>
-                                      <div class="avatar-form-min">
-                                          <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${id}/${imgAndNom[0]}"/>
-                                      </div>
-                                      <p>${imgAndNom[1]}</p>
-                                  </li>`
+                    `<li>
+                                    <div class="avatar-form-min">
+                                        <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${id}/${imgAndNom[0]}"/>
+                                    </div>
+                                    <p>${imgAndNom[1]}</p>
+                                </li>`
                 ))
             })
         }
       }
 
       function recrearPerfil(t){
-        checkTabStaff(t.staffGaleria, t.id);
-        document.querySelector('#NombreFull').textContent = t.nombreCompleto;
-        document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
-        document.querySelector('#Especialidad').textContent = t.especialidad;
+        const ttId = t.tipoTrainerId;
+        checkTabStaff(t.staffGaleria, t.id, ttId);
+
         document.querySelector('#ImagenPerfil img').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
-        setValoracion(t.canPerValoracion, t.totalValoracion);
-
         let idiomas = t.idiomas.split("|");
         document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${_idiomas.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        let est = document.querySelector('#Estudios');
-        reconstruirLista(est, t.estudios);
+        setValoracion(t.canPerValoracion, t.totalValoracion);
+        document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
         document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
-        let exp = document.querySelector('#Experiencias');
-        reconstruirLista(exp, t.experiencias);
         let res = document.querySelector('#Resultados');
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
         document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        let espc = document.querySelector('#Especialidades');
-        reconstruirLista(espc, t.especialidades);
+        mostrarMediosPago(t.mediosPago, t.cuentas);
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
+
+        if(ttId == TipoTrainer.PARTICULAR){
+            document.querySelector('#NombreFull').textContent = t.nombreCompleto;
+            document.querySelector('#Especialidad').textContent = t.especialidad;
+            let est = document.querySelector('#Estudios');
+            reconstruirLista(est, t.estudios);
+            let exp = document.querySelector('#Experiencias');
+            reconstruirLista(exp, t.experiencias);
+            let espc = document.querySelector('#Especialidades');
+            reconstruirLista(espc, t.especialidades);
+        }else{
+            document.querySelector('#NombreFull').textContent = t.nombreCompleto.substr(0, t.nombreCompleto.indexOf(" xxx"));
+            document.querySelector('#dvEspecialidad').classList.add('hidden');
+            document.querySelector('#dvEstudios').classList.add('hidden');
+            document.querySelector('#dvExperiencias').classList.add('hidden');
+            document.querySelector('#dvEspecialidades').classList.add('hidden');
+            document.querySelector('#txtSexo').classList.add('hidden');
+        }
+
         if(t.horario){
             document.querySelector('#Horario').textContent = t.horario;
         }else{
             document.querySelector('#dvHorario').classList.add('hidden');
         }
-        mostrarMediosPago(t.mediosPago, t.cuentas);
-        const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
 
-        if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
-            document.getElementById('lblGaleriaFotos').classList.remove('hidden');
-            poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
-        }
+        selServicioId = 0;
+        checkMapaAndGaleria(t);
+        checkRedesAndNota(t);
+        populateContactoTabAndObs(t);
+      }
 
-        if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){
-            document.getElementById('lblRangoMapa').classList.remove('hidden');
-            setTimeout(() => {
-                const allCord = t.mapCoordenadas.split(",");
-                const lat = Number(allCord[0].substr(1));
-                const lng = Number(allCord[1].slice(0, -1));
-                new google.maps.Circle({
-                    strokeColor: '#57ff0e',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#8ee2ff',
-                    fillOpacity: 0.35,
-                    map: map,
-                    center: {lat: lat, lng: lng},
-                    radius: Number(t.mapCircleRadio)
-                });
-                map.panTo(new google.maps.LatLng(lat, lng));
-            }, 1000);
-        }
+      function checkMapaAndGaleria(t){
+          const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
+          if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
+              document.getElementById('lblGaleriaFotos').classList.remove('hidden');
+              poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
+          }
 
-        //Redes
-        if(t.redes != undefined && t.redes.length > 4){
-            const existsFb = t.redes.includes('fb:');
-            if(existsFb){
-                const r = document.querySelector('#RsFb');
-                r.classList.remove('hidden');
-                const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
-                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.querySelector('a').href = f;
-                r.querySelector('a').textContent = f;
-            }
-            const existsIn = t.redes.includes('in:');
-            if(existsIn){
-                const r = document.querySelector('#RsIn');
-                r.classList.remove('hidden');
-                const pre = t.redes.slice(t.redes.indexOf("in:")+3);
-                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.querySelector('a').href = f;
-                r.querySelector('a').textContent = f;
-            }
-            const existsYo = t.redes.includes('yo:');
-            if(existsYo){
-                const r = document.querySelector('#RsYo');
-                r.classList.remove('hidden');
-                const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
-                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.querySelector('a').href = f;
-                r.querySelector('a').textContent = f;
-            }
-            document.getElementById('lblRedes').classList.remove('hidden');
-        }
+          if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){
+              document.getElementById('lblRangoMapa').classList.remove('hidden');
+              setTimeout(() => {
+                  const allCord = t.mapCoordenadas.split(",");
+                  const lat = Number(allCord[0].substr(1));
+                  const lng = Number(allCord[1].slice(0, -1));
+                  new google.maps.Circle({
+                      strokeColor: '#57ff0e',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 2,
+                      fillColor: '#8ee2ff',
+                      fillOpacity: 0.35,
+                      map: map,
+                      center: {lat: lat, lng: lng},
+                      radius: Number(t.mapCircleRadio)
+                  });
+                  map.panTo(new google.maps.LatLng(lat, lng));
+              }, 1000);
+          }
+      }
 
+      function checkRedesAndNota(t){
+          if(t.redes != undefined && t.redes.length > 4){
+              const existsFb = t.redes.includes('fb:');
+              if(existsFb){
+                  const r = document.querySelector('#RsFb');
+                  r.classList.remove('hidden');
+                  const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
+                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+                  r.querySelector('a').href = f;
+                  r.querySelector('a').textContent = f;
+              }
+              const existsIn = t.redes.includes('in:');
+              if(existsIn){
+                  const r = document.querySelector('#RsIn');
+                  r.classList.remove('hidden');
+                  const pre = t.redes.slice(t.redes.indexOf("in:")+3);
+                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+                  r.querySelector('a').href = f;
+                  r.querySelector('a').textContent = f;
+              }
+              const existsYo = t.redes.includes('yo:');
+              if(existsYo){
+                  const r = document.querySelector('#RsYo');
+                  r.classList.remove('hidden');
+                  const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
+                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+                  r.querySelector('a').href = f;
+                  r.querySelector('a').textContent = f;
+              }
+              document.getElementById('lblRedes').classList.remove('hidden');
+          }
+
+
+          if(t.nota){
+              document.getElementById('divNotaFinal').classList.remove('hidden');
+              document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+          }
+      }
+
+      function populateContactoTabAndObs(t){
           if(flag_form_populate){
               document.querySelector('#Nombre').value = t.nombreCompleto;
               document.querySelector('#Correo').value = t.correo;
@@ -932,16 +965,11 @@
               document.querySelector('#Mensaje').value = "Aloha";
               document.querySelector('input[name="Sexo"]').checked = true;
           }
+
           const obs = document.getElementById('Obs');
           if(obs != undefined){
               obs.value = "Demostración";
           }
-
-          if(t.nota){
-              document.getElementById('divNotaFinal').classList.remove('hidden');
-              document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
-          }
-          selServicioId = 0;
       }
 
       function reconstruirLista(e, stringArr){

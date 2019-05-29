@@ -868,7 +868,7 @@
                     }
                 })
 
-                filesStaff.forEach(v=>{
+                filesStaff.filter(f=>f.nombre.length>2).forEach(v=>{
                     data.append("files", v.file);
                 })
 
@@ -1032,8 +1032,8 @@
 
             const extsStaff = Array.from(tabStaff.querySelectorAll('.inp-img-asesor')).filter(e=>e.files.length>0).map(e=>{
                 const nm = e.files[0].name;
-                const trainerNombre = e.parentElement.nextElementSibling.textContent.trim()
-                if(trainerNombre){
+                const trainerNombre = e.parentElement.nextElementSibling.textContent.trim();
+                if(trainerNombre && trainerNombre.length>2){
                     return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))+","+trainerNombre
                 }
                 return "";
@@ -1663,8 +1663,8 @@
             const t2 = t0.slice(-6).slice(0, 3);
 
             document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
-            document.querySelector('#Apellidos').value = "noo";
-            document.getElementById('Username').value = "Pedro"+t1 + ""+ t2;
+            document.querySelector('#Apellidos').value = "xxx";
+            document.getElementById('Username').value = "pedro"+t1 + ""+ t2;
             document.getElementById('Password').value = "runfit123";
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
             document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
@@ -1683,7 +1683,7 @@
 
             //Servicios
             document.querySelector('#NombreServicio').value = "Performance PRO";
-            document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. Hacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
+            document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
             document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
                 '\n' +
                 'Para más información sobre los servicios médicos, deberás comunicarte al celular de la clínica\n' +
@@ -1725,8 +1725,8 @@
 
             setTimeout(()=>{
                 document.getElementById('btnElegirFicha').click();
-                setTimeout(()=>{document.querySelector('.div-fichas').click()}, 500)
-                }, 500);
+                setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
+            }, 500);
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
             Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');

@@ -271,6 +271,7 @@
     /*<![CDATA[*/
     var $table = $('#tblRegistros');
     var $index = $('#Id');
+    let objEdicion = {};
 
     $(function () {
 
@@ -400,6 +401,8 @@
         if ($("#frm_registro").valid()) {
             var params = getFormData($('#frm_registro'));
             params.flagActivo = $('#FlagActivo').is(':checked');
+            var video = $("#Video").get(0);
+            params.extImg = getFileExtension(video.files[0].name);
 
             $.ajax({
                 type: 'POST',
@@ -407,18 +410,21 @@
                 url: _ctx + 'gestion/video/agregar',
                 dataType: "json",
                 data: params,
-                success: function (data) {
-                    if (params.id > 0) {
-                        $.smallBox({
-                            content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
-                        });
+                success: function (res) {
+                    if(objEdicion.id){
+                        const res = {};
+                        res.rdm = objEdicion.rutaWeb.split(".")[0];
+                        res.res = objEdicion.id;
+                        subirVideo(res);
+                    } else {
+                        subirVideo(res);
                     }
-                    subirVideo(data, params.id);
                 },
                 error: function (xhr) {
                     exception(xhr);
                 },
                 complete: function () {
+                    objEdicion = {};
                     limpiarBusqueda();
                 }
             });
@@ -524,7 +530,9 @@
         $("#VideoReproduccion").parent().get(0).load();
     }
 
-    function subirVideo(id, initId) {
+    function subirVideo(d) {
+        const videoId = d.res;
+        const rdmUUID = d.rdm;
         var video = $("#Video").get(0);
 
         var files = video.files;
@@ -532,11 +540,12 @@
 
             var data = new FormData();
             data.append("video", video.files[0]);
-            data.append("videoId", id);
+            data.append("videoId", videoId);
+            data.append("randomUUID", rdmUUID);
 
             $.ajax({
                 type: 'POST',
-                url: _ctx + 'gestion/video/upload',
+                url: _ctx + 'gestion/video/upload/'+rdmUUID,
                 data: data,
                 contentType: false,
                 processData: false,
@@ -550,11 +559,7 @@
                 },
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
-                        if (data == "-99") {
-                            $.smallBox({content: "El archivo no ha podido ser guardado debido a que excede los límites permitidos de la aplicación, que son 5MB en caso sea un solo archivo y si son más de 2, como máximo en conjunto no deben exceder a 10MB. Para mayor información comunicarse con el administrador."});
-                        }
-                        if (initId <= 0)
-                            $.smallBox({});
+                        $.smallBox({});
                     }
                 },
                 error: function (xhr) {

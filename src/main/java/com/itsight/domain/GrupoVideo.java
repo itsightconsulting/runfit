@@ -52,6 +52,9 @@ public class GrupoVideo implements Identifiable {
 
     @Column()
     private UUID uuid;
+
+    @Column()
+    private  String extImg;
     
     @Column(nullable = false)
     private boolean flagActivo;

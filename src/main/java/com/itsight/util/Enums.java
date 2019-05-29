@@ -155,6 +155,8 @@ public class Enums {
         ELECCION_INVALIDA("Ha elegido una opción no válida inválida"),
         VALIDACION_FALLIDA("La validación ha fallado"),
         FAIL_SUBIDA_IMG_PERFIL("La imagen de perfil no ha podido ser cargada, intentelo más tarde"),
+        FAIL_SUBIDA_IMG_GENERICA("La imagen no ha podido ser cargada, intentelo más tarde"),
+        SUCCESS_SUBIDA_IMG("El registro y la subida de imagen han sido exitosos"),
         POSTULANTE_MAIL_SC("Postulante no ha confirmado su cuenta de correo electrónico"),
         POSTULANTE_RECH_PV("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación"),
         POSTULANTE_ACEP("Ha <strong>APROBADO</strong> al candidato con éxito"),

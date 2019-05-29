@@ -1,19 +1,32 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
+import com.itsight.domain.GrupoVideo;
 import com.itsight.domain.Video;
+import com.itsight.domain.dto.RefUpload;
 import com.itsight.domain.dto.VideoDTO;
+import com.itsight.domain.pojo.AwsStresPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoRepository;
 import com.itsight.service.VideoService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
+import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_GENERICA;
+import static com.itsight.util.Enums.Msg.SUCCESS_SUBIDA_IMG;
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
+
 @Service
 @Transactional
 public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implements VideoService {
+
+    public static final Logger LOGGER = LogManager.getLogger(TrainerServiceImpl.class);
 
     public VideoServiceImpl(VideoRepository repository) {
         super(repository);
@@ -132,6 +145,19 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     }
 
     @Override
+    public RefUpload registrarConSubida(Video entity) {
+        RefUpload fileUpload = new RefUpload();
+        fileUpload.setExtFile(entity.getExtFile());
+        entity.setUuid(fileUpload.getUuid());
+        entity.setExtFile(fileUpload.getExtFile());
+        entity.setRutaWeb(fileUpload.getUuid()+fileUpload.getExtFile());
+        //Guardamos
+        Video g = repository.save(entity);
+        fileUpload.setId(g.getId());
+        return fileUpload;
+    }
+
+    @Override
     public String actualizar(Video entity, String wildcard) {
         // TODO Auto-generated method stub
         return null;
@@ -157,5 +183,14 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     @Override
     public List<VideoDTO> obtenerTodosConJerarquiaDto() {
         return null;
+    }
+
+    @Override
+    public String subirFile(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
+        boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3RoutineBucket, "video/"+id+"/", uuid, extension), LOGGER);
+        if(success){
+            return SUCCESS_SUBIDA_IMG.get();
+        }
+        throw new CustomValidationException(FAIL_SUBIDA_IMG_GENERICA.get(), EX_VALIDATION_FAILED.get());
     }
 }

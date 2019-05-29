@@ -724,7 +724,7 @@ function instanciarGrupoVideos(effImg){
                         rawHTMLCabecera +=
                             `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="container-fluid padding-0">
-                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="/workout/media/image/grupo-video/gt/1${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>
+                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>
                                     </div>
                                     ${generandoCategoriaVideos(grupoVideo)}
                                  </div>`;

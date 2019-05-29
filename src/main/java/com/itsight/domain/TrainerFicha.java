@@ -40,7 +40,8 @@ import java.util.UUID;
                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                     @ColumnResult(name = "totalValoracion", type = Double.class),
                     @ColumnResult(name = "nomImgPerfil", type = String.class),
-                    @ColumnResult(name = "nomPag", type = String.class)
+                    @ColumnResult(name = "nomPag", type = String.class),
+                    @ColumnResult(name = "tipoTrainerId", type = Integer.class)
                 }
             )
         }
@@ -79,7 +80,8 @@ import java.util.UUID;
                                     @ColumnResult(name = "mapCoordenadas", type = String.class),
                                     @ColumnResult(name = "mapCircleRadio", type = Double.class),
                                     @ColumnResult(name = "redes", type = String.class),
-                                    @ColumnResult(name = "staffGaleria", type = String.class)
+                                    @ColumnResult(name = "staffGaleria", type = String.class),
+                                    @ColumnResult(name = "tipoTrainerId", type = Integer.class)
                             }
                     )
             }
@@ -96,7 +98,8 @@ import java.util.UUID;
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
-                              "\tf.nom_pag nomPag \n" +
+                              "\tf.nom_pag nomPag, \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id \n" +
                               "WHERE t.flag_activo = true ORDER BY 1 DESC",
@@ -104,6 +107,7 @@ import java.util.UUID;
     @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
                       query = "SELECT \n" +
                               "\tf.trainer_id id, \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId, \n" +
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
@@ -131,7 +135,8 @@ import java.util.UUID;
                               "\tf.map_coordenadas mapCoordenadas,\n" +
                               "\tf.map_circle_radio mapCircleRadio, \n" +
                               "\tf.redes, \n" +
-                              "\tf.staff_galeria staffGaleria \n" +
+                              "\tf.staff_galeria staffGaleria, \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "WHERE f.nom_pag = ?",
@@ -166,7 +171,8 @@ import java.util.UUID;
                               "\tf.map_coordenadas mapCoordenadas,\n" +
                               "\tf.map_circle_radio mapCircleRadio, \n" +
                               "\tf.redes, \n" +
-                              "\tf.staff_galeria staffGaleria \n" +
+                              "\tf.staff_galeria staffGaleria, \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "WHERE t.security_user_id = ?",

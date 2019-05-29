@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.*;
@@ -28,6 +29,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/gestion/video")
@@ -84,14 +87,14 @@ public class VideoController {
             @RequestParam String subCategoriaVideoId) {
         video.setSubCatVideo(Integer.parseInt(subCategoriaVideoId));
         if (video.getId() == 0) {
-            videoService.save(video);
-            return String.valueOf(video.getId());
+            RefUpload refUpload = videoService.registrarConSubida(video);
+            return jsonResponse(String.valueOf(refUpload.getId()),
+                    refUpload.getUuid().toString());
         }
         Video qVideo = videoService.findOne(video.getId());
-        video.setRutaWeb(qVideo.getRutaWeb());
         video.setRutaReal(qVideo.getRutaReal());
         videoService.update(video);
-        return String.valueOf(qVideo.getId());
+        return jsonResponse(String.valueOf(qVideo.getId()));
     }
 
     @PutMapping(value = "/desactivar")
@@ -105,53 +108,13 @@ public class VideoController {
         }
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/{rdmUUID}", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(
             @RequestPart(value = "video", required = true) MultipartFile video,
-            @RequestParam(value = "videoId", required = true) Integer videoId, HttpServletRequest request) {
-
-        if (video != null) {
-            guardarFile(video, videoId);
-        }
-        return "1";
-    }
-
-    private void guardarFile(MultipartFile file, int videoId) {
-        if (!file.isEmpty()) {
-            try {
-
-                UUID uuid = UUID.randomUUID();
-                String[] splitNameFile = file.getOriginalFilename().split("\\.");
-                String extension = "." + splitNameFile[splitNameFile.length - 1];
-                String fullPath = "";
-                String rutaBase = mainRoute;
-                fullPath = rutaBase + "/Videos/" + videoId;
-                Utilitarios.createDirectory(fullPath);
-                fullPath += "/" + uuid + extension;
-
-                File nuevoFile = new File(fullPath);
-
-                // Agregando la ruta a la base de datos
-
-                Video qVideo = videoService.findOneWithFT(videoId);//findOneWithFT para este caso aplica a todas las ForeignKeys
-                qVideo.setSubCatVideo(qVideo.getSubCatVideoId());
-                qVideo.setRutaReal(fullPath);
-                qVideo.setRutaWeb("/" + videoId + "/" + uuid + extension);
-                qVideo.setUuid(uuid);
-
-                // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
-                file.transferTo(nuevoFile);
-
-                videoService.update(qVideo);
-                LOGGER.info("> ROUTE: " + fullPath);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            LOGGER.info("> Isn't a file");
-        }
+            @RequestParam(value = "videoId", required = true) Integer videoId,
+            @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
+        return Utilitarios.jsonResponse(videoService.subirFile(video, videoId, uuid, null));
     }
 
     protected BagForest reconstructForest(List<Video> leaves, Integer forestId) {

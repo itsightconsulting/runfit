@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="pad-right-middle" style="width: 100%">
+                                    <div class="pad-right-middle" style="width: 100%" id="dvSexo">
                                         <label>SEXO<span class="obligatorio">*</span></label>
                                         <ul class="checks">
                                             <li>
@@ -125,7 +125,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="dvEspecialidad">
                                     <div class="">
                                         <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
                                         <input class="form-control" name="Especialidad" id="Especialidad" type="text">
@@ -831,6 +831,7 @@
         const d = generateBodyToUpdate();
         d.trainerId = hshId;
         d.servicios = checkServicios();
+        deleteSomePropertiesByTipoTraienerId(d);
         $buttonName = "ACTUALIZAR Y ENVIAR";
         $.ajax({
             type: 'PUT',
@@ -858,6 +859,14 @@
             complete: function () {
             }
         });
+    }
+
+    function deleteSomePropertiesByTipoTraienerId(res){
+        if($perfil.tipoTrainerId === TipoTrainer.EMPRESA){
+            delete res.estudios;
+            delete res.especialidades;
+            delete res.experiencias;
+        }
     }
 
     function checkServicios(){
@@ -948,42 +957,86 @@
     }
 
     function recrearPerfil(t){
-        document.querySelector('#NombreFull').value = t.nombreCompleto;
-        document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
-        document.querySelector('#Especialidad').value = t.especialidad;
-        /*Array.from(document.querySelector('#DisciplinaId').options).forEach(v=>{
-            if(v.text === t.disciplina){
-                document.querySelector('#DisciplinaId').selectedIndex = v.index;
-            }
-        });*/
+        const ttId = t.tipoTrainerId;
+
         document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
-
         let idiomas = t.idiomas.split("|");
         const divIdiomas = document.querySelector('#Idiomas');
         idiomas.forEach(i=> divIdiomas.querySelector(`input[value="${i}"]`).checked = true);
-        const inpEst = document.querySelector('.inp-estudio');
-        t.estudios.split("|").forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
         document.querySelector('#MetodoTrabajo').value = t.metodoTrabajo.replace(/\r?\n/g, '\n');
         document.querySelector('#CentroTrabajo').value = t.centroTrabajo;
-        const inpExp = document.querySelector('.inp-experiencia');
-        t.experiencias.split("|").forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
         const inpRes = document.querySelector('.inp-resultado');
         t.resultados.split("|").forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
-        /*let nvl = document.querySelector('#Niveles');
-        reconstruirLista(nvl, t.niveles);*/
         let niveles = t.niveles.split("|");
         const divNiveles = document.querySelector('#Niveles');
         niveles.forEach(i=> divNiveles.querySelector(`input[value="${i}"]`).checked = true);
-        const inpEspDom = document.querySelector('.inp-esp-domino');
-        t.especialidades.split("|").forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
         let formasTra = t.formasTrabajo.split("|");
         const divFT = document.querySelector('#FormasTrabajo');
         formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
+
+        if(ttId == TipoTrainer.PARTICULAR){
+            document.querySelector('#NombreFull').value = t.nombreCompleto;
+            document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
+            document.querySelector('#Especialidad').value = t.especialidad;
+            const inpEst = document.querySelector('.inp-estudio');
+            t.estudios.split("|").forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+            const inpExp = document.querySelector('.inp-experiencia');
+            t.experiencias.split("|").forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+            const inpEspDom = document.querySelector('.inp-esp-domino');
+            t.especialidades.split("|").forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+        }else {
+            document.querySelector('#NombreFull').value = t.nombreCompleto.substr(0, t.nombreCompleto.indexOf(" xxx"));
+            document.getElementById('dvSexo').classList.add('hidden');
+            document.getElementById('dvEspecialidad').classList.add('hidden');
+            document.getElementById('Estudios').classList.add('hidden');
+            document.getElementById('ExpLaboral').classList.add('hidden');
+            document.getElementById('Especialidades').classList.add('hidden');
+        }
+
         document.querySelector('#Horario').value = t.horario;
+
         mostrarMediosPago(t.mediosPago, t.cuentas);
-        /*reconstruirCuentaBanco(t.cuentas);
-        reconstruirTarifario(JSON.parse(t.servicios)[0].tarifarios);*/
+        checkMapaAndGaleria(t);
+        checkRedesAndNota(t)
+    }
+
+    function checkRedesAndNota(t){
+        console.log(t.redes);
+        if(t.redes != undefined && t.redes.length > 4){
+            const existsFb = t.redes.includes('fb:');
+            if(existsFb){
+                const r = document.querySelector('#RsFb');
+                r.classList.remove('hidden');
+                const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
+                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+                r.value = f;
+            }
+            const existsIn = t.redes.includes('in:');
+            if(existsIn){
+                const r = document.querySelector('#RsIn');
+                r.classList.remove('hidden');
+                const pre = t.redes.slice(t.redes.indexOf("in:")+3);
+                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+                r.value = f;
+            }
+            const existsYo = t.redes.includes('yo:');
+            if(existsYo){
+                const r = document.querySelector('#RsYo');
+                r.classList.remove('hidden');
+                const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
+                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+                r.value = f;
+            }
+        }
+
+        if(t.nota){
+            document.getElementById('divNotaFinal').classList.remove('hidden');
+            document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+        }
+    }
+
+    function checkMapaAndGaleria(t){
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
         if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
             document.getElementById('lblGaleriaFotos').classList.remove('hidden');
@@ -1008,40 +1061,6 @@
                 });
                 map.panTo(new google.maps.LatLng(lat, lng));
             }, 1000);
-        }
-
-        //Redes
-        if(t.redes != undefined && t.redes.length > 4){
-            const existsFb = t.redes.includes('fb:');
-            if(existsFb){
-                const r = document.querySelector('#RsFb');
-                r.classList.remove('hidden');
-                const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
-                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.value = f;
-
-            }
-            const existsIn = t.redes.includes('in:');
-            if(existsIn){
-                const r = document.querySelector('#RsIn');
-                r.classList.remove('hidden');
-                const pre = t.redes.slice(t.redes.indexOf("in:")+3);
-                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.value = f;
-            }
-            const existsYo = t.redes.includes('yo:');
-            if(existsYo){
-                const r = document.querySelector('#RsYo');
-                r.classList.remove('hidden');
-                const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
-                const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                r.value = f;
-            }
-        }
-
-        if(t.nota){
-            document.getElementById('divNotaFinal').classList.remove('hidden');
-            document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
         }
     }
 
@@ -1349,7 +1368,7 @@
         obj.nota = document.getElementById('NotaFinal').value;
         obj.servicios = servicios;
         obj.mediosPago = $perfil.mediosPago;
-        obj.sexo = document.querySelector('input[name="Sexo"]:checked').value;
+        obj.sexo = $perfil.tipoTrainerId == TipoTrainer.PARTICULAR ? document.querySelector('input[name="Sexo"]:checked').value : 3;
         let finalExtension = "";
         let finalImagenRecortada = document.getElementById('FinalImagenRecortada');
         if(finalImagenRecortada.src.startsWith("https")){

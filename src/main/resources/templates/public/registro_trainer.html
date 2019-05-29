@@ -1645,7 +1645,7 @@
 
             setTimeout(()=>{
                 document.getElementById('btnElegirFicha').click();
-                setTimeout(()=>{document.querySelector('.div-fichas').click()}, 500)
+                setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
                 }, 500);
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;

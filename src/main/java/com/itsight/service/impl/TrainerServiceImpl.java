@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import static com.itsight.util.Enums.Mail.PERFIL_TRAINER_APROBADO;
 import static com.itsight.util.Enums.Mail.ULTIMA_ETAPA_POSTULANTE;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
+import static com.itsight.util.Enums.Msg.POSTULANTE_ULTIMA_ETAPA;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
@@ -504,19 +505,19 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public String subirImagen(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
+    public String subirFile(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
         boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuid, extension), LOGGER);
         if(success){
-            return Msg.POSTULANTE_ULTIMA_ETAPA.get();
+            return POSTULANTE_ULTIMA_ETAPA.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
     }
 
     @Override
-    public String subirImagenes(MultipartFile[] files, Integer id, String uuids, String extension) throws CustomValidationException {
+    public String subirFiles(MultipartFile[] files, Integer id, String uuids, String extension) throws CustomValidationException {
         boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3bucket, "trainer/"+id+"/", uuids, extension), LOGGER);
         if(success){
-            return Msg.POSTULANTE_ULTIMA_ETAPA.get();
+            return POSTULANTE_ULTIMA_ETAPA.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
     }

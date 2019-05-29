@@ -58,7 +58,7 @@ public class Video extends AuditingEntity implements Identifiable {
     @Column()
     private String nombre;
 
-    @Column()
+    @Column(updatable = false)
     private String rutaWeb;
 
     @Column()
@@ -70,8 +70,11 @@ public class Video extends AuditingEntity implements Identifiable {
     @Column()
     private String duracion;
 
-    @Column()
+    @Column(updatable = false)
     private UUID uuid;
+
+    @Column(updatable = false)
+    private String extFile;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

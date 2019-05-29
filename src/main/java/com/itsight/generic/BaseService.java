@@ -56,11 +56,11 @@ public interface BaseService<T, V> {
 
     void actualizarFlagActivoById(V id, boolean flagActivo);
 
-    default String subirImagen(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
+    default String subirFile(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
         return null;
     }
 
-    default String subirImagenes(MultipartFile[] files, Integer id, String uuid, String extension) throws CustomValidationException {
+    default String subirFiles(MultipartFile[] files, Integer id, String uuid, String extension) throws CustomValidationException {
         return null;
     }
 

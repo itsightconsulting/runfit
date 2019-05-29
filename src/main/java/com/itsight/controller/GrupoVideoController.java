@@ -3,7 +3,10 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.GrupoVideo;
+import com.itsight.domain.dto.RefUpload;
+import com.itsight.domain.dto.RefUploadIds;
 import com.itsight.service.GrupoVideoService;
+import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,10 +24,11 @@ import java.util.UUID;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
 import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/gestion/grupo-video")
-public class GrupoVideoController {
+public class GrupoVideoController extends BaseController {
 
     @Value("${main.repository}")
     private String mainRoute;
@@ -63,9 +67,11 @@ public class GrupoVideoController {
     public @ResponseBody
     String nuevo(@ModelAttribute GrupoVideo grupoVideo) throws CustomValidationException {
         if (grupoVideo.getId() == 0) {
-            return grupoVideoService.registrar(grupoVideo, null);
+            RefUpload refUpload = grupoVideoService.registrarConSubida(grupoVideo);
+            return jsonResponse(String.valueOf(refUpload.getId()),
+                    refUpload.getUuid().toString());
         }
-        return grupoVideoService.actualizar(grupoVideo, null);
+        return jsonResponse(grupoVideoService.actualizar(grupoVideo, null));
     }
 
     @PutMapping(value = "/desactivar")
@@ -79,15 +85,13 @@ public class GrupoVideoController {
         }
     }
 
-    @RequestMapping(value = "/upload/imagen", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/imagen/{rdmUUID}", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(
             @RequestPart MultipartFile imagen,
-            @RequestParam(value = "grupoId") Integer grupoId) {
-        if (imagen != null) {
-            guardarFile(imagen, grupoId);
-        }
-        return EXITO_GENERICA.get();
+            @RequestParam(value = "grupoId") Integer grupoId,
+            @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
+        return jsonResponse(grupoVideoService.subirFile(imagen, grupoId, uuid, null));
     }
 
     private void guardarFile(MultipartFile file, int grupoId) {
