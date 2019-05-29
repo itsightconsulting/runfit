@@ -251,7 +251,8 @@ public class TrainerFicha implements Serializable {
     private String redes;
     @Column(nullable = true)
     private Boolean flagFichaAceptada;
-
+    @Column(nullable = true)
+    private Integer trEmpId;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

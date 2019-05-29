@@ -78,7 +78,6 @@ public class AdministradorController {
     public @ResponseBody String nuevo(@ModelAttribute Administrador administrador, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId,  @RequestParam String rols) throws CustomValidationException {
         administrador.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (administrador.getId() == 0) {
-            administrador.setTipoUsuario(Integer.parseInt(perfilId));
             return administradorService.registrar(administrador, rols);
         }
         return administradorService.actualizar(administrador, rols);

@@ -184,7 +184,6 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         cliente.setUsername(cliente.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(cliente.getUsername()) == null) {
             try {
-                if(cliente.getTipoUsuario().getId() == 3){//3: Cliente
                     String originalPassword = cliente.getPassword();
                     String[] arrRoles = rols.split(",");
                     List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
@@ -211,11 +210,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
                     repository.save(cliente);
 
                     //Enviando correo al nuevo cliente
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, cliente.getTipoUsuario().getId(), domainName);
+                    StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, Enums.TipoUsuario.CLIENTE.ordinal(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), sb.toString());
                     return ResponseCode.REGISTRO.get()+','+cliente.getId()+','+flagTrainer;
-                }
-                return ResponseCode.EX_VALIDATION_FAILED.get();
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -242,7 +239,6 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         //Agregando roles
 
         objCli.setRoles(Enums.TipoUsuario.CLIENTE.ordinal());
-        objCli.setTipoUsuario(Enums.TipoUsuario.CLIENTE.ordinal());
         objCli.setTipoDocumento(cliente.getTipoDocumentoId());
         objCli.setPais(cliente.getPaisId());
 

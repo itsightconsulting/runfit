@@ -117,7 +117,7 @@ public class TrainerDTO implements Serializable {
 
     @NotNull
     @Positive
-    @Max(value = 2)
+    @Max(value = 3)
     private Integer tipoTrainerId;
 
 }

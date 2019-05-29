@@ -22,7 +22,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @EntityGraph(value = "cliente.all")
     List<Cliente> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, P.id, P.nombre) FROM Trainer T INNER JOIN T.tipoUsuario P INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 1, 'Cliente') FROM Cliente T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "cliente.all")
@@ -39,7 +39,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @Query(value = "SELECT U.correo FROM Cliente U WHERE U.correo = ?1")
     List<Cliente> findAllByCorreo(String correo);
 
-    @Query(value = "SELECT U FROM Cliente U INNER JOIN FETCH U.tipoUsuario P JOIN FETCH U.tipoDocumento D  WHERE U.username = ?1")
+    @Query(value = "SELECT U FROM Cliente U JOIN FETCH U.tipoDocumento D  WHERE U.username = ?1")
     Cliente findByUsername(String username);
 
     @Query(value = "SELECT CONCAT(C.nombres, ' ', C.apellidos) FROM Cliente C WHERE C.id = ?1")

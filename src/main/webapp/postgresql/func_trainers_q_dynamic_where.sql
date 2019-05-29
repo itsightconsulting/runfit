@@ -15,7 +15,8 @@ CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
                   canPerValoracion int,
                   totalValoracion double precision,
                   nomImgPerfil text,
-                  nomPag text) AS
+                  nomPag text,
+                  tipoTrainerId int) AS
 $func$
 select DISTINCT id,
        nombreCompleto,
@@ -25,7 +26,8 @@ select DISTINCT id,
        canPerValoracion,
        totalValoracion,
        nomImgPerfil,
-       nomPag
+       nomPag,
+       tipoTrainerId
 from (select
     ff.trainer_id id,
     concat(jt.nombres, ' ',jt.apellidos) nombreCompleto,
@@ -38,7 +40,8 @@ from (select
     nom_pag nomPag,
     s2.nombre servicio,
     jt.flag_activo fg,
-    ff.sexo
+    ff.sexo,
+    jt.tipo_trainer_id tipoTrainerId
 from trainer_ficha ff
          inner join trainer jt on ff.trainer_id=jt.security_user_id
          inner join servicio s2 on ff.trainer_id = s2.trainer_id

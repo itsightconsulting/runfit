@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+  <head>
+    <title>Inscripción de entrenadores | Fitness | Runfit</title>
+    <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
+    <style>
+        .mg-bt-6{
+            margin-bottom: 6px !important;
+        }
+        .mg-bt-10{
+            margin-bottom: 10px;
+        }
+
+        .fa-15x{
+            font-size: 1.5em;
+        }
+
+        .svc-focus{
+            color: #a8fa00 !important;
+        }
+
+        .servicio:not(.svc-focus):hover  {
+            color: #337ab7 !important;
+            cursor: pointer !important;
+        }
+
+        .div-fichas{
+            cursor: pointer;
+        }
+
+        .mod-term-cond:hover{
+            background: #00C853 !important;
+            color: white;
+        }
+
+        .ficha-pick{
+            border: 4px solid #a8fa00 !important;
+        }
+
+        .tarifa-svc-pick {
+            border-bottom: 5px solid #a8fa00;
+            border-radius: 20%;
+        }
+
+        .fa-plus-cs{
+            cursor:pointer;
+        }
+
+        .img-cc{
+            opacity: 0.3;
+        }
+
+        .div-fichas:hover{
+            color: #a8fa00;
+        }
+
+        .padding-0{
+            padding: 0px;
+        }
+
+        #pac-input{
+            margin: 10px;
+            width: 45%;
+        }
+
+    </style>
+  </head>
+  <body>
+      <nav th:replace="html-commons/p/header :: fg-header"></nav>
+      <div th:replace="html-commons/reu-login :: fg-login"></div>
+      <div id="wrapper">
+          <div class="section banner home">
+              <div class="bg-image"><img class="shadow" th:src="@{/img/public/trainers-shadow.jpg}"></div>
+          </div>
+          <section class="trainers-form">
+              <div class="row">
+                  <div class="container">
+                      <div class="col-md-5">
+                          <div class="avatar-form">
+                              <input type="file" id="InpImgPerfil">
+                              <div class="avatar-form-content img-container">
+                                  <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-7">
+                          <ul class="nav nav-tabs">
+                              <li><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
+                              <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                          </ul>
+                          <div class="tab-content">
+
+                              <div class="tab-pane fade" id="about">
+                                  <form id="frm_registro">
+                                      <div class="form-group">
+                                          <div class="">
+                                              <label>NOMBRE(S)<span class="obligatorio">*</span></label>
+                                              <input class="form-control" name="Nombres" id="Nombres" type="text">
+                                          </div>
+                                          <div class="">
+                                              <label>APELLIDO(S)<span class="obligatorio">*</span></label>
+                                              <input class="form-control" name="Apellidos" id="Apellidos" type="text">
+                                          </div>
+                                          <div class="pad-right-middle" style="width: 100%">
+                                              <label>SEXO<span class="obligatorio">*</span></label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Masculino
+                                                          <input name="Sexo" value="1" type="radio"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Femenino
+                                                          <input name="Sexo" value="2" data-aka="Seleccionar sexo" type="radio"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
+                                          <input class="form-control" name="Especialidad" id="Especialidad" type="text">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
+                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId" multiple="multiple" style=" height:80px !important;">
+                                              <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>ACERCA DE MI<span class="obligatorio">*</span></label>
+                                          <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="pad-right-middle" style="width:100%;">
+                                              <label>IDIOMAS<span class="obligatorio">*</span></label>
+                                              <ul class="checks">
+                                                  <li style="margin-right: 22px;">
+                                                      <div class="chk-content">Español
+                                                          <input name="Idiomas" value="es" data-aka="Seleccionar idiomas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li style="margin-right: 22px;">
+                                                      <div class="chk-content">Inglés
+                                                          <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li style="margin-right: 22px;">
+                                                      <div class="chk-content">Portugués
+                                                          <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li style="margin-right: 22px;">
+                                                      <div class="chk-content">Francés
+                                                          <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li style="margin-right: 22px;">
+                                                      <div class="chk-content">Chino
+                                                          <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                           </div>
+                                          <div class="form-group" id="Estudios">
+                                              <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                              <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
+                                          </div>
+                                          <div class="form-group" id="ExpLaboral">
+                                              <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                          <div class="form-group" id="Logros">
+                                              <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Principiante
+                                                          <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Intermedio
+                                                          <input name="NivelClientes" value="in" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Avanzado
+                                                          <input name="NivelClientes" value="av" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Profesional
+                                                          <input name="NivelClientes" value="pf" type="checkbox"/><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>AL AIRE LIBRE / DOMICILIO</label>
+                                              <p>Dar click en el mapa para poder elegir el rango de desplazamiento. <span class="view-only-desktop">También puedes buscar la dirección y luego elegir el rango.</span></p>
+                                              <input id="pac-input" class="controls form-control view-only-desktop" type="text" placeholder="Buscar dirección o lugar">
+                                              <div class="map" id="map"></div>
+                                          </div>
+                                          <div class="form-group" id="Especialidades">
+                                              <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
+                                              <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>FORMA DE TRABAJO<span class="obligatorio">*</span></label>
+                                              <ul class="checks">
+                                                  <li>
+                                                      <div class="chk-content">Al aire libre
+                                                          <input type="checkbox" name="FormaTrabajo" value="ai"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Personalizado
+                                                          <input type="checkbox" name="FormaTrabajo" value="pe"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">En grupo
+                                                          <input type="checkbox" name="FormaTrabajo" value="eg"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                                  <li>
+                                                      <div class="chk-content">Online
+                                                          <input type="checkbox" name="FormaTrabajo" value="on"><span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                              <div class="tab-pane fade" id="contact">
+                                  <div class="form-group">
+                                      <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>TELEFONO</label>
+                                      <input class="form-control" type="text" id="Telefono" name="Telefono">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>CELULAR<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="Movil" name="Movil">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
+                                      <select class="form-control" id="TipoDocumento" name="TipoDocumento">
+                                          <option value="1">DNI</option>
+                                          <option value="2">CE</option>
+                                      </select>
+                                  </div>
+                                  <div class="form-group">
+                                      <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <div class="col-md-5 col-sm-5">
+                                                  <label>Departamento:</label>
+                                              </div>
+                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                  <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                      <option selected="selected" value="15">Lima</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-12">
+                                              <div class="col-md-5 col-sm-5">
+                                                  <label>Provincia:</label>
+                                              </div>
+                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                  <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                      <option selected="selected" value="01">Lima</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-12">
+                                              <div class="col-md-5 col-sm-5">
+                                                  <label>Distrito:</label>
+                                              </div>
+                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                  <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                      <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="Username" name="Username">
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="password" id="Password" name="Password">
+                                  </div>
+                              </div>
+                              <button data-ficha-id="0" style="margin-bottom: 20px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                              <input type="hidden" id="FichaClienteId"/>
+                              <div class="row collapse" id="FichasDisponibles">
+                                  <div class="col col-md-12 text-center" style="padding-bottom:15px">
+                                      <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                          <h6>Standard</h6>
+                                          <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                      </div>
+                                      <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                          <h6>Running</h6>
+                                          <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                                      </div>
+                                      <hr>
+                                  </div>
+                              </div>
+                          <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
+
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </div>
+      <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+      <!-- MODALS  -->
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond" style=";height: 95%;">
+          <div class="modal-dialog" role="document" style="width: 95%">
+              <div class="modal-content" style="width: 100%">
+                  <div class="modal-body" style="height: 80%; overflow-y:auto">
+                      <div class="col-sm-12 padding-o-top-10">
+                          <div th:replace="public/terminos_condiciones :: fg-term-cond"></div>
+                      </div>
+                  </div>
+                  <a href="javascript:void(0)" onclick="ocultarModalTermCondYAceptar()" data-toggle="hover" rel="tooltip" data-original-title="Aceptar los términos y condiciones">
+                    <div class="modal-footer mod-term-cond" style="background: #a8fa00;text-align: center;">
+                        <i class="fa fa-fw fa-2x fa-check" style="color: white; cursor:pointer;"></i>
+                    </div>
+                  </a>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper">
+          <div class="modal-dialog" role="document" style="width: 70%;height: 90%;">
+              <div class="modal-content" style="width: 100%">
+                  <div class="modal-body" style="height: 90%;padding: 0px">
+                      <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
+                          <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
+                      </div>
+                  </div>
+                  <div class="modal-footer" style="background: #000000;text-align: center;border:none">
+                      <div class="row" id="actions">
+                          <div class="col-md-12 docs-buttons">
+                              <div class="btn-group btn-group-crop">
+                                  <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
+                                            <i class="fa fa-check-circle fa-fw"></i>Confirmar
+                                        </span>
+                                  </button>
+                                  <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                        <span class="docs-tooltip" data-toggle="tooltip" title="">
+                                            <i class="fa fa-refresh fa-fw"></i>Cambiar
+                                        </span>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6 no-padding-991" id="status" style="display: none">
+          <b>Coordenadas:</b> --
+          <br class="cb"/><b>Radio:</b> --
+      </div>
+    <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+    <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
+    <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
+    <script>
+        const inpImgPerfil = document.getElementById('InpImgPerfil');
+        const imgPerfil = document.getElementById('ImagePerfil');
+        const btnGuardar = document.getElementById('btnGuardar')
+        const body = document.querySelector('body');
+        const initTabActive = 1;
+        //Cropper
+        let cropper = {};
+        const actions = document.getElementById('actions');
+
+        (function () {
+            uploadAndShow(inpImgPerfil, imgPerfil);
+            showInitTab(initTabActive);
+            body.addEventListener('click', bodyClickEventListener);
+            btnGuardar.addEventListener('click', sendForm);
+            inpImgPerfil.addEventListener('change', changeImgPerfil);
+            inpImgPerfil.addEventListener('click', clickImgPerfiL);
+            document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
+                $(e).tooltip();
+            })
+            init();
+        })();
+
+        function bodyClickEventListener(e){
+            const input = e.target;
+            const clases = input.classList;
+            if(clases.contains('div-fichas')){
+                const btn = document.getElementById('btnElegirFicha');
+                const fichaName = input.previousElementSibling.textContent.trim();
+                btn.innerText = "Ficha seleccionada: "+fichaName;
+                btn.click();
+                btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
+            }
+        }
+
+        function clickImgPerfiL(e){
+            if(typeof cropper.canvas === 'object'){
+                e.preventDefault();
+                $('#myModalCropper').modal('show');
+            }
+        }
+
+        function changeImgPerfil(){
+            $('#myModalCropper').modal('show');
+        }
+
+        function asociarCondSvc(e){
+        }
+
+        function uploadFotoPerfil(d){
+            //submit the form here
+            const hshId = d.res;
+            const rdmUUID = d.rdm.slice(0,d.rdm.lastIndexOf("."));
+            let file = inpImgPerfil;
+            if (file.files.length > 0) {
+                file = file.files[0];
+                const data = new FormData();
+
+                const blobBin = atob($('#FinalImagenRecortada')[0].src.split(',')[1]);
+                var array = [];
+                for(var i = 0; i < blobBin.length; i++) {
+                    array.push(blobBin.charCodeAt(i));
+                }
+                var ff=new Blob([new Uint8Array(array)], {type: file.type});
+                data.append("file", ff);
+                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+
+                $.ajax({
+                    type: 'PUT',
+                    url: _ctx+'p/trainer/subir/foto/perfil/'+hshId+'/'+rdmUUID,
+                    data : data,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    xhr: function() {
+                        const myXhr = $.ajaxSettings.xhr();
+                        if(myXhr.upload){
+                            myXhr.upload.addEventListener('progress', progress, false);
+                        }
+                        return myXhr;
+                    },
+                    success: function (data) {
+                        reqSuccess(data, 3600000);
+                    },
+                    error: (xhr)=>{
+                        exception(xhr);
+                    },
+                    complete: ()=> {}
+                });
+            }
+        }
+
+        function getImgUuids(rdms){
+            const all = rdms.split("@");
+            let imgPerfil = all[0];
+            imgPerfil = imgPerfil.slice(imgPerfil, imgPerfil.lastIndexOf("."));
+
+            let galeria ="";
+
+            if(all.length == 2){
+                let imgsGaleria = all[1];
+                galeria = imgsGaleria.split("|").filter(v=>v!=="").map(e=>e.slice(0,e.lastIndexOf("."))).join('|');//Solo para este caso se necesita el .filter(v=>!=="")
+            }
+            let flCondSvcs="";
+
+            if(all.length == 3){
+                let imgsGaleria = all[1];
+                galeria = imgsGaleria.split("|").map(e=>e.slice(0,e.lastIndexOf("."))).join('|');
+                let condSvcs = all[2];
+                flCondSvcs = condSvcs.split("|").filter(v=>v!=="").map(e=>e.slice(0,e.lastIndexOf("."))).join('|');
+            }
+            return imgPerfil + "|" + galeria + "|" + flCondSvcs;
+        }
+
+        function uploadFotosPerfil(d){
+            //submit the form here
+            const hshId = d.res;
+            const rdmsUUIDs = getImgUuids(d.rdm);
+            let file = inpImgPerfil;
+            if (file.files.length > 0) {
+                file = file.files[0];
+                const data = new FormData();
+                data.append("files", file);
+                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+                Array.from(inpGaleria.files).forEach(f=>{
+                    data.append("files", f);
+                });
+                termConSvc.forEach(v=>{
+                    if(v.file){
+                        data.append("files", v.file);
+                    }
+                })
+
+                $.ajax({
+                    type: 'PUT',
+                    url: _ctx+'p/trainer/subir/fotos/perfil/'+hshId+'/'+rdmsUUIDs,
+                    data : data,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    xhr: function() {
+                        const myXhr = $.ajaxSettings.xhr();
+                        if(myXhr.upload){
+                            myXhr.upload.addEventListener('progress', progress, false);
+                        }
+                        return myXhr;
+                    },
+                    success: function (data) {
+                        reqSuccess(data, 3600000);
+                    },
+                    error: (xhr)=>{
+                        exception(xhr);
+                    },
+                    complete: ()=> {}
+                });
+            }
+        }
+
+        function init(){
+            modalEventos();
+            activeTooltips();
+            if(flag_form_populate){
+                populateForm();
+            }
+
+            actions.querySelector('.docs-buttons').onclick = function (e) {
+                let target = e.target;
+                let result;
+                let data;
+
+                if (!cropper) {
+                    return;
+                }
+
+                while (target !== this) {
+                    if (target.getAttribute('data-method')) {
+                        break;
+                    }
+
+                    target = target.parentNode;
+                }
+
+                if (target === this || target.disabled || target.className.indexOf('disabled') > -1) {
+                    return;
+                }
+
+                data = {
+                    method: target.getAttribute('data-method'),
+                    target: target.getAttribute('data-target'),
+                    option: target.getAttribute('data-option') || undefined,
+                    secondOption: target.getAttribute('data-second-option') || undefined
+                };
+
+                if (data.method) {
+                    switch (data.method) {
+                        case 'getCroppedCanvas':
+                            try {
+                                data.option = JSON.parse(data.option);
+                            } catch (e) {
+                                console.log(e.message);
+                            }
+                            break;
+                    }
+
+
+                    result = cropper[data.method](data.option, data.secondOption);
+
+                    switch (data.method) {
+                        case 'getCroppedCanvas':
+                            if (result) {
+                                $('#FinalImagenRecortada').attr('src', result.toDataURL(inpImgPerfil.files[0].type));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        function activeTooltips(){
+            const all = document.querySelectorAll('i[rel="tooltip"]');
+            all.forEach(e=>{
+                $(e).tooltip();
+            })
+        }
+
+        function modalEventos(){
+
+            $('#myModalTermCond').on('hidden.bs.modal', ()=> {
+                if(!terminosAceptados) {
+                    document.getElementById('inpTermCond').checked = false;
+                }
+            })
+
+            $('#myModalCropper').on('shown.bs.modal', ()=>{
+                if(typeof cropper.canvas !== 'object'){
+                    const image = document.getElementById('ImagePerfil');
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        crop(event) {},
+                        zoomOnWheel: false,
+                        viewMode: 1,
+                        minContainerHeight: image.height > window.innerHeight * 0.8 ? window.innerHeight * 0.8 : image.height
+                    });
+                }
+            })
+        }
+
+        function sendForm(){
+            const arrURL = window.location.href.split("/");
+            const body = generateBody();
+            const nmImgPerfil = inpImgPerfil.files[0] == undefined ? "" : inpImgPerfil.files[0].name;
+            const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
+
+            const exts = {};
+            exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
+            body.imgExt = exts.extImgPerfil;
+            if(document.getElementById('Coordenadas') != null){
+                body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
+            }
+
+            if(document.getElementById('RadioCirculo') != null){
+                body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
+            }
+
+            body.sexo = Number($('input[name="Sexo"]:checked').val());
+            body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
+            body.tipoTrainerId = 3;
+
+            $buttonName = "Guardar";
+            if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: _ctx + 'gestion/trainer/empresa/agregar/trainer/registro',
+                    dataType: 'json',
+                    data: JSON.stringify(body),
+                    blockLoading: false,
+                    bridgeMultipart: true,
+                    success: (d)=> {
+                        //Subir imgen
+                        uploadFotoPerfil(d, body);
+                    }, error: (xhr) => {
+                        exception(xhr);
+                    }, complete: () => {
+                    }
+                })
+            }else{
+                $.smallBox({color: 'alert',
+                            content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
+                            timeout: 5000});
+            }
+
+        }
+
+        function showInitTab(numTab){
+            const tabIds = ["", "about", "contact", "service"];
+            document.querySelector(`a[href="#${tabIds[numTab]}"]`).parentElement.classList.add('active');
+            document.querySelector(`#${tabIds[numTab]}`).classList.add('in');
+            document.querySelector(`#${tabIds[numTab]}`).classList.add('active');
+        }
+
+        function ocultarModalTermCondYAceptar(){
+            document.getElementById('inpTermCond').checked=true;
+            terminosAceptados = true;
+            $('#myModalTermCond').modal('hide');
+        }
+
+        function populateForm(){
+            //Page 1
+            const t0 = String(new Date().getTime());
+            const t1 = t0.slice(-3);
+            const t2 = t0.slice(-6).slice(0, 3);
+
+            document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('input[name="Sexo"]').checked = true;
+            document.getElementById('Username').value = "Pedro"+t1 + ""+ t2;
+            document.getElementById('Password').value = "runfit123";
+            document.querySelector('#Especialidad').value = `Entrenador para maratones`;
+            document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
+            populateTabContacto(t0, t1, t2);
+            //Estudios
+            const inpEst = document.querySelector('.inp-estudio');
+            ["Licenciado en cultura física y deporte",
+            "Diplomado en nutrición para atletas",
+            "Diplomado en rehabilitación enfocada en deportista calificados",
+            "Curso en rescate en el agua",
+            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+            document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
+                '\n' +
+                'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
+            //Experiencia Laboral
+            const inpExp = document.querySelector('.inp-experiencia');
+            ["Entrenador en AquaLab (2013 – hasta la fecha)",
+             "Entrenador freelance (2005 – hasta la fecha)",
+             "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+            //Experiencia Laboral
+            const inpRes = document.querySelector('.inp-resultado');
+            ["Juan Pérez, campeón en natación 100 m libres (2017)",
+                "Rocío Flores, campeona sudamericana 4x100 m (2017)",
+                "Michael Barros, campeón en natación 4x200 (2016)",
+                "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+            //Especialidades que domino
+            const inpEspDom = document.querySelector('.inp-esp-domino');
+            ["Entrenamiento en grupo",
+                "Entrenamiento uno a uno",
+                "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+
+            document.querySelector('#Telefono').value = `01 777 6666`;
+            document.querySelector('#NumeroDocumento').value = `23232323`;
+
+            document.querySelector('input[name="FormaTrabajo"]').checked = true;
+            Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
+
+            setTimeout(()=>{
+                document.getElementById('btnElegirFicha').click();
+                setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
+            }, 500);
+        }
+
+        function populateTabContacto(t, t1, t2){
+            document.querySelector('#Correo').value = "d"+t+t1+t2+"@gmail.com";
+            document.querySelector('#Movil').value = t;
+        }
+
+        function generateBody(){
+            const obj = getFormData($('#frm_registro'));
+
+            //Ubigeo
+            obj.paisId = 604;
+            obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+            obj.telefono = document.getElementById('Telefono').value;
+            obj.movil = document.getElementById('Movil').value;
+            obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;
+            obj.documento = document.getElementById('NumeroDocumento').value;
+            obj.correo = document.getElementById('Correo').value;
+            obj.username = document.getElementById('Username').value;
+            obj.password = document.getElementById('Password').value;
+            obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
+            obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
+            obj.especialidades = getValuesByClass('inp-esp-domino');
+            obj.estudios = getValuesByClass('inp-estudio');
+            obj.experiencias = getValuesByClass('inp-experiencia');
+            obj.resultados = getValuesByClass('inp-resultado');
+            obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
+            obj.fichaClienteId = Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
+            const rdmNum = Math.floor(Math.random() * 100);
+            const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
+            obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
+            obj.mediosPago = "Temp";
+            obj.centroTrabajo = "Temp Temp Temp";
+            return obj;
+        }
+
+        function elegirOtraImagenCropper(){
+            cropper.destroy();
+            cropper = {};
+            inpImgPerfil.click();
+        }
+
+    </script>
+  </body>
+</html>

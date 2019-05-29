@@ -19,10 +19,7 @@ import java.util.List;
 
 @Entity
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "administrador.tipoUsuario", attributeNodes = {
-                @NamedAttributeNode(value = "tipoUsuario")}),
         @NamedEntityGraph(name = "administrador.all", attributeNodes = {
-                @NamedAttributeNode(value = "tipoUsuario"),
                 @NamedAttributeNode(value = "tipoDocumento")}),
         @NamedEntityGraph(name = "administrador"),
 })
@@ -60,11 +57,6 @@ public class Administrador extends AuditingEntity implements Serializable {
     private Date fechaUltimoAcceso;
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TipoUsuarioId", updatable = false)
-    private TipoUsuario tipoUsuario;
-
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TipoDocumentoId")
     private TipoDocumento tipoDocumento;
 
@@ -97,9 +89,6 @@ public class Administrador extends AuditingEntity implements Serializable {
     }
 
 
-    public void setTipoUsuario(Integer id) {
-        this.tipoUsuario = new TipoUsuario(id);
-    }
     public void setTipoDocumento(Integer id) {
         this.tipoDocumento = new TipoDocumento(id);
     }

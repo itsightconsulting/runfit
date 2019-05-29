@@ -21,10 +21,7 @@ import java.util.List;
 
 @Entity
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "cliente.tipoUsuario", attributeNodes = {
-                @NamedAttributeNode(value = "tipoUsuario")}),
         @NamedEntityGraph(name = "cliente.all", attributeNodes = {
-                @NamedAttributeNode(value = "tipoUsuario"),
                 @NamedAttributeNode(value = "tipoDocumento")}),
         @NamedEntityGraph(name = "cliente")
 })
@@ -67,11 +64,6 @@ public class Cliente extends AuditingEntity implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimoAcceso;
-
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TipoUsuarioId", nullable = false, updatable = false)
-    private TipoUsuario tipoUsuario;
     
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -145,7 +137,7 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.apellidos = apellidos;
     }
     public Cliente(String nombres, String apellidos, String correo, String movil, String username,
-                   String numeroDocumento, Integer tipoDocumentId, Integer tipoUsuarioId, boolean flagActivo) {
+                   String numeroDocumento, Integer tipoDocumentId, boolean flagActivo) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -153,7 +145,6 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.username = username;
         this.numeroDocumento = numeroDocumento;
         this.tipoDocumento = new TipoDocumento(tipoDocumentId);
-        this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
         this.setFlagActivo(flagActivo);
     }
 
@@ -187,10 +178,6 @@ public class Cliente extends AuditingEntity implements Serializable {
         this.pais = new Pais(paisId);
     }
 
-
-    public void setTipoUsuario(Integer tipoUsuarioId) {
-        this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
-    }
     public void setTipoDocumento(Integer tipoDocumentoId) {
         this.tipoDocumento = new TipoDocumento(tipoDocumentoId);
     }

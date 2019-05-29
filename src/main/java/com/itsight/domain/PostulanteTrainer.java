@@ -80,4 +80,7 @@ public class PostulanteTrainer {
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     private Date fechaLimiteAccion;
 
+    @Column(nullable = false)
+    private Integer tipoTrainerId;
+
 }

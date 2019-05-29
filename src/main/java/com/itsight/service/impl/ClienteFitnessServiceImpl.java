@@ -137,7 +137,6 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
         cliente.setPassword(UUID.randomUUID().toString().substring(0,8).toUpperCase());
         String roles = "3";//Representa el rol CLIENTE_RUNNER
         cliente.setTipoDocumento(1);
-        cliente.setTipoUsuario(3);//TipoUsuario 3 == Cliente
 
         clienteService.registrar(cliente, roles);
         clienteFitness1.setCliente(cliente);

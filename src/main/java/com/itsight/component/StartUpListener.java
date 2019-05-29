@@ -8,7 +8,6 @@ import com.itsight.domain.*;
 import com.itsight.domain.jsonb.*;
 import com.itsight.repository.*;
 import com.itsight.service.*;
-import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,7 +201,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 insertAGrupoVideo();
                 insertACategoriaVideo();
                 insertASubCategoriaVideo();
-                insertAVideo();
+                try {
+                    addingVideo();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -916,7 +919,8 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     public void addingTipoTrainers(){
         if(tipoTrainerService.findOne(1) == null) tipoTrainerService.save(new TipoTrainer("Particular"));
-        if(tipoTrainerService.findOne(2) == null) tipoTrainerService.save(new TipoTrainer("Empresa"));
+        if(tipoTrainerService.findOne(2) == null) tipoTrainerService.save(new TipoTrainer("Asociado a empresa"));
+        if(tipoTrainerService.findOne(3) == null) tipoTrainerService.save(new TipoTrainer("Empresa"));
     }
 
     public void addingUbPeru() throws IOException {
@@ -964,6 +968,20 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         for(int i=1; i<lines.length;i++){
             String[] line = lines[i].split(",");
             if (bancoService.findOne(i) == null) bancoService.save(new Banco(line[0].trim()));
+        }
+    }
+
+
+
+    public void addingVideo() throws IOException {
+        InputStream is = new ClassPathResource("static/seeds/video.csv").getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        String content = reader.lines().collect(Collectors.joining("\n"));
+        String[] lines = content.split("\n");
+        reader.close();
+        for(int i=1; i<lines.length;i++){
+            String[] line = lines[i].split(",");
+            if(videoService.findOne(index++) == null) videoService.save(new Video(line[0].trim(), line[1].trim(), line[2].trim(), line[3].trim(),line[4].trim(), UUID.fromString(line[5].trim()), Integer.parseInt(line[6].trim()), Boolean.valueOf(line[7].trim())));
         }
     }
 
@@ -1038,7 +1056,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             //Añadiendole los datos detalle del entrenador(TB: Cliente)
             Trainer trainer = new Trainer(
                 "Alejandro "+ i, "Gonzales Prada", correoUsuario, "543213"+i,
-                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1, Enums.TipoUsuario.ENTRENADOR.ordinal(),true);
+                 "5197672198"+i , correoUsuario, "0102030"+i, true, 1,true);
             List<com.itsight.domain.jsonb.Rol> rolesJsonB = new ArrayList<>();
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(1, role1.getRole()));
             rolesJsonB.add(new com.itsight.domain.jsonb.Rol(2, role2.getRole()));
@@ -1109,7 +1127,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             secCliente.setRoles(lstRolesCli);
             Cliente cli = new Cliente(
                     "Jorge "+ i, "Almendariz Molina", correoUsuario,
-                    "5198765432"+i , correoUsuario, "4444444"+i, 1, Enums.TipoUsuario.CLIENTE.ordinal(),true);
+                    "5198765432"+i , correoUsuario, "4444444"+i, 1,true);
             List<com.itsight.domain.jsonb.Rol> lstRolCli = new ArrayList<>();
             lstRolCli.add(new com.itsight.domain.jsonb.Rol(3, "ROLE_RUNNER"));
             cli.setPais(604);//Perú!

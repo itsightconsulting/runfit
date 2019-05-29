@@ -44,7 +44,6 @@ public class ClienteController {
     public @ResponseBody String nuevo(@ModelAttribute Cliente cliente, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId, @RequestParam String rols) throws CustomValidationException {
         cliente.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (cliente.getId() == 0) {
-            cliente.setTipoUsuario(Integer.parseInt(perfilId));
             return clienteService.registrar(cliente, rols);
         }
         return clienteService.actualizar(cliente, rols);

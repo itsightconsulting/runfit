@@ -15,8 +15,6 @@ import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TrainerRepository;
 import com.itsight.service.*;
-import com.itsight.util.Enums;
-import com.itsight.util.Enums.Msg;
 import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
@@ -38,6 +36,7 @@ import static com.itsight.util.Enums.Mail.ULTIMA_ETAPA_POSTULANTE;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.Msg.POSTULANTE_ULTIMA_ETAPA;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
+import static com.itsight.util.Enums.TipoUsuario.ENTRENADOR;
 
 @Service
 @Transactional
@@ -182,9 +181,9 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 }
 
                 if (!fk.equals("0")) {
-                    lstTrainer = lstTrainer.stream()
+                    /*lstTrainer = lstTrainer.stream()
                             .filter(x -> fk.equals(String.valueOf(x.getTipoUsuario().getId())))
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toList());*/
                 }
             }
         }
@@ -204,7 +203,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setUsername(trainer.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(trainer.getUsername()) == null) {
             try{
-                if(trainer.getTipoUsuario().getId() == 2) {//2: Entrenador
+                //2: Entrenador
                     String originalPassword = trainer.getPassword();
                     String[] arrRoles = rols.split(",");
                     List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
@@ -242,12 +241,10 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                     }
 
                     //Enviando correo al nuevo trainer
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(trainer.getUsername(), originalPassword, trainer.getTipoUsuario().getId(), domainName);
+                    StringBuilder sb = MailContents.contenidoNuevoUsuario(trainer.getUsername(), originalPassword, ENTRENADOR.ordinal(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", trainer.getCorreo(), sb.toString());
                     return trainer.getId().toString();
-                }
-                return ResponseCode.EX_VALIDATION_FAILED.get();
-            }catch (Exception e){
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
@@ -255,14 +252,15 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public RefUploadIds registrarPostulante(TrainerDTO trainerFicha, int tipoTrainerId){
+    public RefUploadIds registrarPostulante(TrainerDTO trainerFicha, int tipoTrainerId, Integer trEmpId){
         TrainerFicha obj = new TrainerFicha();
         BeanUtils.copyProperties(trainerFicha, obj);
-
+        //Seteando el trainer empresa en caso tenga
+        obj.setTrEmpId(trEmpId);//puede ser null
         //No activamos el usuario en su registro ya que aún queda pasar por una última aprobación de toda la información que brindo para su perfil
         Trainer trainer = new Trainer(
                 trainerFicha.getNombres(), trainerFicha.getApellidos(), trainerFicha.getCorreo(), trainerFicha.getTelefono(),
-                trainerFicha.getMovil(), trainerFicha.getUsername().toLowerCase(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), Enums.TipoUsuario.ENTRENADOR.ordinal(),false);
+                trainerFicha.getMovil(), trainerFicha.getUsername().toLowerCase(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), false);
         trainer.setPais(trainerFicha.getPaisId());
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
@@ -286,12 +284,14 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
         //Seteando los servicios
         List<Servicio> servicios = new ArrayList<>();
-        for(int i=0; i<trainerFicha.getServicios().size(); i++){
-            Servicio servicio = new Servicio();
-            BeanUtils.copyProperties(trainerFicha.getServicios().get(i), servicio);
-            servicio.setTrainer(trainer);
-            servicio.setId(null);
-            servicios.add(servicio);
+        if(trainerFicha.getServicios() != null && !trainerFicha.getServicios().isEmpty()){
+            for(int i=0; i<trainerFicha.getServicios().size(); i++){
+                Servicio servicio = new Servicio();
+                BeanUtils.copyProperties(trainerFicha.getServicios().get(i), servicio);
+                servicio.setTrainer(trainer);
+                servicio.setId(null);
+                servicios.add(servicio);
+            }
         }
 
         if(extsLen == 2){
@@ -334,7 +334,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         obj.setExtFp(refUpload.getExtFp());
 
         //Registrando
-        String trainerId = registrar(trainer, String.valueOf(Enums.TipoUsuario.ENTRENADOR.ordinal()));
+        String trainerId = registrar(trainer, String.valueOf(ENTRENADOR.ordinal()));
         //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
         refUpload.setTrainerId(Integer.parseInt(trainerId));

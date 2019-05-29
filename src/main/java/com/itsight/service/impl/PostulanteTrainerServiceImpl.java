@@ -215,9 +215,16 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         //Envio de correo
         String hshId = Parseador.getEncodeHash32Id("rf-request", preTrainer.getId());
         if(decisionId == 1) {
+            Integer tipoTrainerId = preTrainer.getTipoTrainerId();
+            String rutaSegunTipoTrainer;
+            if(tipoTrainerId == Enums.TipoTrainer.PARTICULAR.get()){
+                rutaSegunTipoTrainer = "trainer";
+            }else{
+                rutaSegunTipoTrainer = "empresa";
+            }
             Correo mail = correoService.findOne(4);
             emailService.enviarCorreoInformativo(mail.getAsunto(), receptor,
-                    String.format(mail.getBody(), domainName, hshId));
+                    String.format(mail.getBody(), domainName, rutaSegunTipoTrainer, hshId));
         } else{
             Correo mail = correoService.findOne(5);
             emailService.enviarCorreoInformativo(mail.getAsunto(),

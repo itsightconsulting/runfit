@@ -37,7 +37,7 @@ public class AuthController {
             if(authority.getAuthority().equals("ROLE_TRAINER") || authority.getAuthority().equals("ROLE_ADMIN"))
                 return ViewConstant.MAIN_TRAINER_RED;
             if(authority.getAuthority().equals("ROLE_RUNNER") || authority.getAuthority().equals("ROLE_STORE"))
-                return ViewConstant.CLIENTE_PRINCIPAL;
+                return ViewConstant.CLIENTE_INDEX;
         }
         return ViewConstant.PRINCIPAL;
     }

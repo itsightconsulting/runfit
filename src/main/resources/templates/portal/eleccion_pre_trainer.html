@@ -41,6 +41,10 @@
                     <label for="NombreFull">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
                     <input id="NombreFull" name="NombreFull" class="form-control" type="text" disabled="disabled" th:value="${post.nombreFull}">
                   </div>
+                  <div class="form-group">
+                    <label>TIPO DE PARNER: <span class="obligatorio">*</span></label>
+                      <input class="form-control" type="text" th:value="${post.tipoTrainerId == 1 ? 'Asesor particular':'Asesor empresa'}" name="TipoTrainerId" id="TipoTrainerId" disabled="disabled"/>
+                  </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
@@ -64,10 +68,12 @@
     <script th:inline="javascript">
       const btnAprobar = document.querySelector('#btnAprobar');
       const btnRechazar = document.querySelector('#btnRechazar');
+      const body = document.querySelector('body');
+
       (function () {
         btnAprobar.addEventListener('click', enviarForm);
         btnRechazar.addEventListener('click', enviarForm);
-        if(flag_form_populate){
+        if (flag_form_populate) {
           btnAprobar.click();
         }
       })();

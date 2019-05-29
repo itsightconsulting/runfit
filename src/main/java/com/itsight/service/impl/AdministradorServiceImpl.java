@@ -12,6 +12,7 @@ import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.AdministradorService;
 import com.itsight.service.EmailService;
 import com.itsight.service.RolService;
+import com.itsight.util.Enums;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -24,6 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itsight.util.Enums.ResponseCode;
+import static com.itsight.util.Enums.TipoUsuario.ADMINISTRADOR;
 
 @Service
 @Transactional
@@ -165,7 +167,6 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
         administrador.setUsername(administrador.getUsername().toLowerCase());
         if (securityUserRepository.findByUsername(administrador.getUsername()) == null) {
             try{
-                if(administrador.getTipoUsuario().getId() == 1 ){//1: Administrador
                     String originalPassword = administrador.getPassword();
                     String[] arrRoles = rols.split(",");
                     List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
@@ -192,11 +193,9 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
                     administradorService.save(administrador);
 
                     //Enviando correo al nuevo administrador
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, administrador.getTipoUsuario().getId(), domainName);
+                    StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, ADMINISTRADOR.ordinal(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", administrador.getCorreo(), sb.toString());
                     return ResponseCode.REGISTRO.get()+','+String.valueOf(administrador.getId())+','+flagTrainer;
-                }
-                return ResponseCode.EX_VALIDATION_FAILED.get();
             }catch (Exception e){
                 e.printStackTrace();
             }

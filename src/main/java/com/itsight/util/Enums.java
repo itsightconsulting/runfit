@@ -84,7 +84,8 @@ public class Enums {
 
     public enum TipoTrainer{
         PARTICULAR(1),
-        EMPRESA(2);
+        EMPRESA(2),
+        PARA_EMPRESA(3);
 
         final int id;
 

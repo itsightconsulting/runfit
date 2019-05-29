@@ -9,6 +9,7 @@ import com.itsight.json.JsonDateSimpleSerializer;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -21,10 +22,7 @@ import java.util.List;
 
 @Entity
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "trainer.tipoUsuario", attributeNodes = {
-                @NamedAttributeNode(value = "tipoUsuario")}),
         @NamedEntityGraph(name = "trainer.all", attributeNodes = {
-                @NamedAttributeNode(value = "tipoUsuario"),
                 @NamedAttributeNode(value = "tipoDocumento")}),
         @NamedEntityGraph(name = "trainer"),
 })
@@ -32,7 +30,7 @@ import java.util.List;
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
-//@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 public class Trainer extends AuditingEntity implements Serializable {
 
     @Id
@@ -66,10 +64,6 @@ public class Trainer extends AuditingEntity implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimoAcceso;
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TipoUsuarioId", updatable = false)
-    private TipoUsuario tipoUsuario;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -90,6 +84,8 @@ public class Trainer extends AuditingEntity implements Serializable {
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     @Column(precision = 6, scale = 2, nullable = false)
     private Double totalValoracion;
+
+    private Integer empresaId;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -164,7 +160,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     }
 
     public Trainer(String nombres, String apellidos, String correo, String telefono, String movil, String username,
-                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, int tipoUsuarioId, boolean flagActivo) {
+                   String numeroDocumento, boolean flagRutinarioCe, int tipoDocumentId, boolean flagActivo) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -174,7 +170,6 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.numeroDocumento = numeroDocumento;
         this.flagRutinarioCe = flagRutinarioCe;
         this.tipoDocumento = new TipoDocumento(tipoDocumentId);
-        this.tipoUsuario = new TipoUsuario(tipoUsuarioId);
         this.setFlagActivo(flagActivo);
     }
 
@@ -186,9 +181,6 @@ public class Trainer extends AuditingEntity implements Serializable {
         this.pais = new Pais(paisId);
     }
 
-    public void setTipoUsuario(int id) {
-        this.tipoUsuario = new TipoUsuario(id);
-    }
     public void setTipoDocumento(int id) {
         this.tipoDocumento = new TipoDocumento(id);
     }

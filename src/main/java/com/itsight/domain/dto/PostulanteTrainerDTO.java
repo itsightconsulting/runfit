@@ -4,9 +4,7 @@ import com.itsight.validation.ExtendedEmailValidator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Data
@@ -29,4 +27,8 @@ public class PostulanteTrainerDTO implements Serializable {
     @Size(min = 5, max = 1000)
     @NotBlank
     private String mensaje;
+
+    @Positive
+    @Max(3)
+    private Integer tipoTrainerId;
 }

@@ -49,6 +49,10 @@ public class PostulanteTrainerController {
     {
         if(codPreTrainer.length() == 32){
             PostulanteTrainer post = postulanteTrainerService.findOne(Parseador.getDecodeHash32Id("rf-request", codPreTrainer));
+            if(post == null){
+                return new ModelAndView(ViewConstant.P_ERROR404);
+            }
+
             if(post.isFlagAceptado()){
                 model.addAttribute("msg", Enums.Msg.POSTULANTE_ACEPTADO_ANT.get());
                 return new ModelAndView(ViewConstant.MAIN_INF_P);

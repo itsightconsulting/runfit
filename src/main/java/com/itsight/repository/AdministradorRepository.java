@@ -20,7 +20,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @EntityGraph(value = "administrador.all")
     List<Administrador> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, P.id, P.nombre) FROM Trainer T INNER JOIN T.tipoUsuario P INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 3, 'Administrador') FROM Trainer T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "administrador.all")
@@ -37,7 +37,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @Query(value = "SELECT A.correo FROM Administrador A WHERE A.correo = ?1")
     List<Administrador> findAllByCorreo(String correo);
 
-    @Query(value = "SELECT A FROM Administrador A INNER JOIN FETCH A.tipoUsuario P JOIN FETCH A.tipoDocumento D  WHERE A.username = ?1")
+    @Query(value = "SELECT A FROM Administrador A JOIN FETCH A.tipoDocumento D  WHERE A.username = ?1")
     Administrador findByUsername(String username);
 
 }
