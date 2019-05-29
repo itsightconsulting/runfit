@@ -2756,7 +2756,7 @@ RutinaPS = (function () {
                             margin: 15px;
                             border: 5px solid #e8f2f3;
                             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <source id="VideoReproduccion" src="${_ctx}workout/media/file/video/gt/1${mediaVideo}" type="video/mp4">
+                            <source id="VideoReproduccion" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${mediaVideo}" type="video/mp4">
                         </video>
                 </div>`
         }

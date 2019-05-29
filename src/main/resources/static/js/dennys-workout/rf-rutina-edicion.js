@@ -721,10 +721,11 @@ function instanciarGrupoVideos(effImg){
                     let rawHTMLCabecera = '';
                     rawHTMLCabecera +='<div class="container-fluid padding-0">'
                     data.forEach(grupoVideo => {
+                        const rrWeb = grupoVideo.id+"/"+grupoVideo.rutaWeb;
                         rawHTMLCabecera +=
                             `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="container-fluid padding-0">
-                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>
+                                        <h1 class="text-align-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${rrWeb}">${grupoVideo.nombre}</h1>
                                     </div>
                                     ${generandoCategoriaVideos(grupoVideo)}
                                  </div>`;
@@ -943,7 +944,7 @@ function generandoVideosCuerpo(subCatVideo){
         rawVideosHTML += `<a class="elegir-video padding-7-no-left" href="javascript:void(0);">
                           <i id="livideo${v.id}" title="Agregar a favoritos" class="fa fa-star fa-fw ck-favorito-video padding-top-3" data-selected="0" data-id="${v.id}"></i>
                           <i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i>
-                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="${v.rutaWeb}" data-index="${v.id}">
+                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb}" data-index="${v.id}">
                           </i>${v.nombre}</a>`;
     })
     return rawVideosHTML;
@@ -1227,7 +1228,7 @@ function principalesEventosClickRutina(e) {
         const route = e.target.getAttribute('data-id-uuid');
         const tipoMedia = e.target.getAttribute('data-type');
         if(tipoMedia == TipoElemento.VIDEO){
-            $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+            $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
             $("#VideoReproduccion").parent().get(0).load();
         }else{
             $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
@@ -1896,7 +1897,7 @@ function principalesEventosTabGrupoVideos(e){
         e.preventDefault();
         $('#myModalVideo').modal('show');
         const route = input.getAttribute('data-media');
-        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+        $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
         $("#VideoReproduccion").parent().get(0).load();
     }
     else if(clases.contains('elegir-video')){

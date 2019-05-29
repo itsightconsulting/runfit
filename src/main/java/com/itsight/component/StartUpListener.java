@@ -293,15 +293,15 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void insertAGrupoVideo(){
         categoriaVideoService.insertArtificio();
         if(grupoVideoService.findOne(1) == null) grupoVideoService.save(
-                new GrupoVideo("Fuerza tren inferior",2, true, "/1/87e1bccc-5d86-4db0-a59a-0610553868a1.png", "", UUID.fromString("87e1bccc-5d86-4db0-a59a-0610553868a1")));
+                new GrupoVideo("Fuerza tren inferior",2, true, "87e1bccc-5d86-4db0-a59a-0610553868a1.png", "", UUID.fromString("87e1bccc-5d86-4db0-a59a-0610553868a1")));
         if(grupoVideoService.findOne(2) == null) grupoVideoService.save(
-                new GrupoVideo("Fuerza tren superior",2, true, "/2/3110f934-4bdf-4b3a-a207-d5334ce31a5d.png", "", UUID.fromString("3110f934-4bdf-4b3a-a207-d5334ce31a5d")));
+                new GrupoVideo("Fuerza tren superior",2, true, "3110f934-4bdf-4b3a-a207-d5334ce31a5d.png", "", UUID.fromString("3110f934-4bdf-4b3a-a207-d5334ce31a5d")));
         if(grupoVideoService.findOne(3) == null) grupoVideoService.save(
-                new GrupoVideo("Técnicos",2, true, "/3/ce5a818d-3032-4286-8b25-7bfe0dbde8be.png", "", UUID.fromString("ce5a818d-3032-4286-8b25-7bfe0dbde8be")));
+                new GrupoVideo("Técnicos",2, true, "ce5a818d-3032-4286-8b25-7bfe0dbde8be.png", "", UUID.fromString("ce5a818d-3032-4286-8b25-7bfe0dbde8be")));
         if(grupoVideoService.findOne(4) == null) grupoVideoService.save(
-                new GrupoVideo("Flexibilidad - Movilidad - Masajes",2, true, "/4/e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f.png", "", UUID.fromString("e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f")));
+                new GrupoVideo("Flexibilidad - Movilidad - Masajes",2, true, "e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f.png", "", UUID.fromString("e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f")));
         if(grupoVideoService.findOne(5) == null) grupoVideoService.save(
-                new GrupoVideo("Propioceptivos",2, true, "/5/741081a8-0156-4c20-8117-91c086188ef7.png", "", UUID.fromString("741081a8-0156-4c20-8117-91c086188ef7")));
+                new GrupoVideo("Propioceptivos",2, true, "741081a8-0156-4c20-8117-91c086188ef7.png", "", UUID.fromString("741081a8-0156-4c20-8117-91c086188ef7")));
     }
 
     public void insertACategoriaVideo() {

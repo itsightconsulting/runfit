@@ -367,7 +367,7 @@ you can add as many as you like
                         $('#FlagActivoOff').prop('checked', true);
                     //Previsualizando la imagen
                     var rutaWeb = data.id + "/" + data.rutaWeb;
-                    $('#ImagenGrupo').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video'+rutaWeb);
+                    $('#ImagenGrupo').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/'+rutaWeb);
                 }
             },
             error: function (xhr) {
@@ -423,7 +423,7 @@ you can add as many as you like
     }
 
     function visualizar(rutaWeb) {
-        $('#ImagenVisualizacion').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video'+rutaWeb);
+        $('#ImagenVisualizacion').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/'+rutaWeb);
     }
 
     function addImage(d) {
@@ -519,7 +519,7 @@ you can add as many as you like
         var opciones =
             `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
 		            		 <a href='#' data-toggle="modal" data-target="#myModalImagen" onclick='javascript:visualizar("${row.id+'/'+row.rutaWeb}");' title='Visualizar imagen'><i class='fa fa-eye fa-2x'></i></a> &nbsp
-		            		 <a class='font-sx' href='/workout/media/image/grupo-video/gt/0${row.rutaWeb}' title='Descargar imagen'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
+		            		 <a class='font-sx' href='https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${row.id+'/'+row.rutaWeb}' title='Descargar imagen'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
         return opciones;
     }
 

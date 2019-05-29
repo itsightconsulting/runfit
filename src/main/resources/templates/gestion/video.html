@@ -402,7 +402,7 @@
             var params = getFormData($('#frm_registro'));
             params.flagActivo = $('#FlagActivo').is(':checked');
             var video = $("#Video").get(0);
-            params.extImg = getFileExtension(video.files[0].name);
+            params.extFile = getFileExtension(video.files[0].name);
 
             $.ajax({
                 type: 'POST',
@@ -447,6 +447,7 @@
             data: param,
             success: function (data, textStatus) {
                 if (textStatus == "success") {
+                    objEdicion = data;
                     $("#Id").val(data.id);
                     $("#Nombre").val(data.nombre);
                     $("#Descripcion").val(data.descripcion);
@@ -520,13 +521,13 @@
     }
 
     function reproducirVideo(rutaWeb) {
-        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${rutaWeb}`;
+        $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${rutaWeb}`;
         $("#VideoReproduccion").parent().get(0).load();
     }
 
     function reproducirVideoModal() {
         let route = $('#Archivo').attr('data-route');
-        $('#VideoReproduccion').get(0).src = `${_ctx}workout/media/file/video/gt/1${route}`;
+        $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${route}`;
         $("#VideoReproduccion").parent().get(0).load();
     }
 
@@ -599,8 +600,8 @@
     function Opciones(value, row, index) {
         var opciones =
             `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
-		            		 <a href='#' onclick='javascript:reproducirVideo("${row.rutaWeb}");' data-toggle='modal' data-target='#myModalVideo' title='Reproducir video'><i class='fa fa-play fa-2x'></i></a> &nbsp
-		            		 <a class='font-sx' href='${_ctx}workout/media/file/video/gt/0${row.rutaWeb}' title='Descargar video'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
+		            		 <a href='#' onclick='javascript:reproducirVideo("${row.id+"/"+row.rutaWeb}");' data-toggle='modal' data-target='#myModalVideo' title='Reproducir video'><i class='fa fa-play fa-2x'></i></a> &nbsp
+		            		 <a class='font-sx' href='https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${row.id+"/"+row.rutaWeb}' title='Descargar video'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
         return opciones;
     }
 
