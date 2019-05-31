@@ -1371,7 +1371,7 @@
         getUbigeoPeruLim();
         if(flag_form_populate){
           getCondicionesMejora();
-          setTimeout(()=>populateForm(), 700);
+          setTimeout(()=>populateForm(), 1000);
         }
       }
 
@@ -2035,6 +2035,7 @@
         document.querySelector('#FrecuenciaCardiaca').value = 177;
         document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
         document.querySelector('input[name="CondicionMejora"]').checked = true;
+
 
         //Page 3
         selectedMuscles = JSON.parse('[{"id":"path62","name":"Recto del abdomen"},{"id":"path60","name":"Recto del abdomen"},{"id":"path48","name":"Recto del abdomen"},{"id":"path46","name":"Recto del abdomen"},{"id":"path206","name":"Recto del abdomen"},{"id":"path208","name":"Recto del abdomen"},{"id":"path210","name":"Recto del abdomen"},{"id":"path212","name":"Recto del abdomen"},{"id":"path228","name":"Pectoral mayor"},{"id":"path306","name":"Trapecio inferior"},{"id":"path388","name":"Trapecio inferior"},{"id":"path408","name":"Dorsal ancho"}]');

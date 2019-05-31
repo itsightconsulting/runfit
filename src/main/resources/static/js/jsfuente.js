@@ -101,6 +101,7 @@ const TipoRutina = Object.freeze({
 const TipoTrainer = Object.freeze({
     PARTICULAR:   1,
     EMPRESA:   2,
+    DE_EMPRESA:   3,
 });
 
 const ResponseCode = Object.freeze({

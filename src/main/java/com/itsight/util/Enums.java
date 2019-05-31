@@ -128,7 +128,8 @@ public class Enums {
         ULTIMA_ETAPA_POSTULANTE(8),
         PERFIL_POST_OBS(9),
         PERFIL_TRAINER_APROBADO(10),
-        PERFIL_CHECK_OBS_SUBS(11);
+        PERFIL_CHECK_OBS_SUBS(11),
+        ULTIMA_ETAPA_POSTULANTE_EMP(12);
 
         final int id;
 
@@ -171,7 +172,8 @@ public class Enums {
         PERFIL_APROBADO_ANTERIORMENTE("El perfil del entrenador que quieres visitar ya ha sido aprobado con anterioridad."),
         PERFIL_EN_REVISION("El perfil del entrenador que quieres visitar ya ha sido observado con anterioridad."),
         OBS_PERFIL_TRAINER("Se ha enviado las observaciones al entrenador satisfactoriamente via correo."),
-        OBS_PERFIL_SUBSANADAS("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias");
+        OBS_PERFIL_SUBSANADAS("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"),
+        CHECK_PERFIL_EMPRESA_EN_VISTA_BUSQUEDA("El perfil que ha intentado ver ya no es accesible mediante esta ruta puesto que ya ha sido aprobado. Si desea revisar su perfil encuentrelo en la vista de 'Encuentra tu coach'");
         final String msg;
 
         Msg(String msg){

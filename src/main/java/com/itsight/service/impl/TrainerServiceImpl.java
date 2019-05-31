@@ -15,6 +15,7 @@ import com.itsight.repository.SecurityRoleRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TrainerRepository;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.Enums.ResponseCode;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
@@ -31,8 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.itsight.util.Enums.Mail.PERFIL_TRAINER_APROBADO;
-import static com.itsight.util.Enums.Mail.ULTIMA_ETAPA_POSTULANTE;
+import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.Msg.POSTULANTE_ULTIMA_ETAPA;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
@@ -320,11 +320,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             }
         }
 
-        if(tipoTrainerId == 2){
-            refUpload.setStaffGaleria(trainerFicha.getStaffGaleria());
-            obj.setStaffGaleria(refUpload.getStaffGaleria());
-        }
-
         //Servicios latest
         trainer.setLstServicio(servicios);
         trainer.setLstTrainerFicha(lstTf);
@@ -341,13 +336,22 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         //Registrando las disciplinas
         disciplinaService.guardarMultipleTrainerDisciplina(trainer.getId(), trainerFicha.getDisciplinaIds());
 
-        //Obtener cuerpo del correo
+        //Obtener cuerpo del correo para la plataforma
         Correo correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());
         //Envio de correo
         String hashId = Parseador.getEncodeHash32Id("rf-aprobacion", trainer.getId());
         String cuerpo = String.format(correo.getBody(), domainName, hashId);
         String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
         emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+
+        //Obtener cuerpo del correo para el trainer empresa
+        if(trainerFicha.getTipoTrainerId() == Enums.TipoTrainer.EMPRESA.get()) {
+            correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE_EMP.get());
+            String hshPostTrId = Parseador.getEncodeHash32Id("rf-request", trainerFicha.getPostulanteTrainerId());
+            String hshTrainerId = Parseador.getEncodeHash32Id("rf-load-media", trainer.getId());
+            cuerpo = String.format(correo.getBody(), domainName, hshPostTrId, hshTrainerId);
+            emailService.enviarCorreoInformativo(correo.getAsunto(), trainerFicha.getCorreo(), cuerpo);
+        }
         return refUpload;
     }
 
@@ -520,5 +524,15 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             return POSTULANTE_ULTIMA_ETAPA.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public Integer getTipoTrainerIdById(Integer id) {
+        return repository.getTipoTrainerIdById(id);
+    }
+
+    @Override
+    public String getCorreoById(Integer id) {
+        return repository.getCorreoById(id);
     }
 }

@@ -84,6 +84,7 @@
                               <input type="file" id="InpImgPerfil">
                               <div class="avatar-form-content img-container">
                                   <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                                  <i id="btnVerPerEmpresa" rel="tooltip" title="Si desea volver al perfil de empresa, clickee aquí" style="float:right; color: #17a2b8;font-size: 1.5em;cursor: pointer;" class="fa fa-arrow-circle-left"></i>
                               </div>
                           </div>
                       </div>
@@ -210,12 +211,6 @@
                                                   </li>
                                               </ul>
                                           </div>
-                                          <div class="form-group">
-                                              <label>AL AIRE LIBRE / DOMICILIO</label>
-                                              <p>Dar click en el mapa para poder elegir el rango de desplazamiento. <span class="view-only-desktop">También puedes buscar la dirección y luego elegir el rango.</span></p>
-                                              <input id="pac-input" class="controls form-control view-only-desktop" type="text" placeholder="Buscar dirección o lugar">
-                                              <div class="map" id="map"></div>
-                                          </div>
                                           <div class="form-group" id="Especialidades">
                                               <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
                                               <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
@@ -332,8 +327,9 @@
                                       <hr>
                                   </div>
                               </div>
+                          <input type="hidden" id="HshVerEmpTrainerId" th:value="${hshVerEmpTrainerId}">
+                          <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
                           <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
-
                       </div>
                   </div>
               </div>
@@ -391,13 +387,13 @@
           <br class="cb"/><b>Radio:</b> --
       </div>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-    <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
     <script>
         const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
-        const btnGuardar = document.getElementById('btnGuardar')
+        const btnGuardar = document.getElementById('btnGuardar');
+        const btnVerPerEmpresa = document.getElementById('btnVerPerEmpresa');
         const body = document.querySelector('body');
         const initTabActive = 1;
         //Cropper
@@ -411,6 +407,7 @@
             btnGuardar.addEventListener('click', sendForm);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
+            btnVerPerEmpresa.addEventListener('click', clickRedireccionamientoPerfilEmpresa);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
@@ -434,6 +431,11 @@
                 e.preventDefault();
                 $('#myModalCropper').modal('show');
             }
+        }
+
+        function clickRedireccionamientoPerfilEmpresa(){
+            const arrUrl = window.location.href.split("/");
+            window.location.href = _ctx+"p/trainer/checkout/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2];
         }
 
         function changeImgPerfil(){
@@ -476,6 +478,9 @@
                         return myXhr;
                     },
                     success: function (data) {
+                        //Mensaje diferente por flujo particular
+                        data.res = "El asesor ha sido registrado correctamente y ya debe aperecer en el perfil principal de la empresa en el tab 'STAFF'. \n\n" +
+                            "Si desea agregar otro nuevo asesor simplemente recargue esta página."
                         reqSuccess(data, 3600000);
                     },
                     error: (xhr)=>{
@@ -642,8 +647,8 @@
         }
 
         function sendForm(){
-            const arrURL = window.location.href.split("/");
             const body = generateBody();
+            const hshEmpTrainerId = document.getElementById('HshEmpTrainerId').value;
             const nmImgPerfil = inpImgPerfil.files[0] == undefined ? "" : inpImgPerfil.files[0].name;
             const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
 
@@ -667,7 +672,7 @@
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
-                    url: _ctx + 'gestion/trainer/empresa/agregar/trainer/registro',
+                    url: _ctx + 'p/trainer/empresa/agregar/sub/'+hshEmpTrainerId,
                     dataType: 'json',
                     data: JSON.stringify(body),
                     blockLoading: false,
@@ -685,7 +690,6 @@
                             content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
                             timeout: 5000});
             }
-
         }
 
         function showInitTab(numTab){
@@ -783,8 +787,6 @@
             const rdmNum = Math.floor(Math.random() * 100);
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
-            obj.mediosPago = "Temp";
-            obj.centroTrabajo = "Temp Temp Temp";
             return obj;
         }
 

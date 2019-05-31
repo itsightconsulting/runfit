@@ -57,4 +57,11 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
     void actualizarFichaByTrainerId(
             @Param(value = "sexo") Integer sexo, @Param(value = "acerca") String acerca, @Param(value = "centroTrabajo") String centroTrabajo, @Param(value = "especialidad") String especialidad, @Param(value = "especilidades") String especilidades, @Param(value = "estudios") String estudios, @Param(value = "experiencias") String experiencias, @Param(value = "extFp") String extFp, @Param(value = "formasTrabajo") String formasTrabajo, @Param(value = "horario") String horario, @Param(value = "idiomas") String idiomas, @Param(value = "metodoTrabajo") String metodoTrabajo, @Param(value = "niveles") String niveles, @Param(value = "nota") String nota, @Param(value = "redes") String redes, @Param(value = "resultados") String resultados, @Param(value = "trainerId") Integer trainerId
     );
+
+    @Modifying
+    @Query(value = "UPDATE trainer_ficha SET staff_galeria = COALESCE(staff_galeria,'') || case when COALESCE(NULLIF(staff_galeria,''), '0') = '0' then ?1 else '|' || ?1 end WHERE trainer_id = ?2", nativeQuery = true)
+    void updateStaffGaleriaByTrainerId(String staffGaleria, Integer trainerId);
+
+    @Query(value = "SELECT tr_emp_id FROM trainer_ficha WHERE trainer_id = ?1", nativeQuery = true)
+    Integer getTrEmpIdById(Integer id);
 }

@@ -213,7 +213,7 @@ public class TrainerFicha implements Serializable {
     private String resultados;
     @Column(nullable = false)
     private String niveles;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String centroTrabajo;
     @Column(nullable = true)
     private String especialidades;

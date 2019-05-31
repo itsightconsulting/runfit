@@ -28,8 +28,7 @@ import java.util.List;
 import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 import static com.itsight.util.Enums.ResponseCode.REGISTRO;
-import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
-import static com.itsight.util.Enums.TipoTrainer.PARTICULAR;
+import static com.itsight.util.Enums.TipoTrainer.*;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
@@ -50,6 +49,8 @@ public class TrainerFichaController extends BaseController {
 
     private ServicioService servicioService;
 
+    private UbPeruService ubPeruService;
+
     @Autowired
     public TrainerFichaController(TrainerFichaService trainerFichaService,
                                   PostulanteTrainerService postulanteTrainerService,
@@ -57,7 +58,8 @@ public class TrainerFichaController extends BaseController {
                                   SecurityUserRepository securityUserRepository,
                                   DisciplinaService disciplinaService,
                                   TrainerProcedureInvoker trainerProcedureInvoker,
-                                  ServicioService servicioService) {
+                                  ServicioService servicioService,
+                                  UbPeruService ubPeruService) {
         this.trainerFichaService = trainerFichaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.trainerService = trainerService;
@@ -65,6 +67,7 @@ public class TrainerFichaController extends BaseController {
         this.disciplinaService = disciplinaService;
         this.trainerProcedureInvoker = trainerProcedureInvoker;
         this.servicioService = servicioService;
+        this.ubPeruService = ubPeruService;
     }
 
     @GetMapping("/find/all")
@@ -132,13 +135,45 @@ public class TrainerFichaController extends BaseController {
         }
     }
 
+    @GetMapping("/checkout/{hshPostTrainerId}/{hshTrainerId}")
+    public @ResponseBody ModelAndView getTrainerEmpresa(
+            Model model,
+            @PathVariable(name = "hshPostTrainerId") String hshPostTrainerId,
+            @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
+        Integer trainerId = getDecodeHashIdSecCustom("rf-load-media", hshTrainerId);
+        Boolean isActived = securityUserRepository.findEnabledById(trainerId);
+        if(isActived == null){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+        if(isActived){
+            model.addAttribute("msg", CHECK_PERFIL_EMPRESA_EN_VISTA_BUSQUEDA.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_P);
+        } else {
+            Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
+            if(flag == null){
+                model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
+                model.addAttribute("hshTrainerId", Parseador.getEncodeHash32Id("rf-aprobacion", trainerId));
+                return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER_EMP);
+            }//Si entra acá es porque ya ha sido observado, nunca entrará aca cuando haya sido aprobado debido a la primera
+            //validación antes de esta
+            model.addAttribute("msg", PERFIL_EN_REVISION.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_N);
+        }
+    }
+
     @GetMapping("/get/disciplinas/{trainerId}")
     public @ResponseBody List<String> obtenerDisciplinas(@PathVariable() String trainerId){
         return disciplinaService.obtenerDisciplinasByTrainerId(Integer.parseInt(trainerId));
     }
 
     @GetMapping("/get/servicios/{trainerId}")
-    public @ResponseBody List<ServicioPOJO> obtenerServicios(@PathVariable() String trainerId){
+    public @ResponseBody List<ServicioPOJO> obtenerServicios(
+            @PathVariable() String trainerId,
+            @RequestParam() String tipoTrainerId){
+        if(Integer.parseInt(tipoTrainerId) == PARA_EMPRESA.get()){
+            Integer empTraId = trainerFichaService.getTrEmpIdById(Integer.parseInt(trainerId));
+            return servicioService.findAllByTrainerId(empTraId);
+        }
         return servicioService.findAllByTrainerId(Integer.parseInt(trainerId));
     }
 
@@ -242,5 +277,46 @@ public class TrainerFichaController extends BaseController {
         return jsonResponse(trainerService.subirFiles(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid, extFile));
     }
 
+    @GetMapping("/empresa/agregar/sub/{hshEmpTraId}/{hshPostTrainerId}")
+    public ModelAndView vistaAgregarTrainerAEmpresa(
+            @PathVariable String hshEmpTraId,
+            @PathVariable String hshPostTrainerId,
+            Model model) throws SecCustomValidationException {
+        Integer empTraId = getDecodeHashIdSecCustom("rf-load-media", hshEmpTraId);
+        Integer postId = getDecodeHashIdSecCustom("rf-request", hshPostTrainerId);
+        Integer tipoTrainerId = postulanteTrainerService.getTipoTrainerIdById(postId);
+        if(tipoTrainerId != null && tipoTrainerId == 2){
+            String nuevoHshEmpTraId = Parseador.getEncodeHash32Id("rf-emp-trainer", empTraId);
+            String hshVerEmpTrainerId = Parseador.getEncodeHash32Id("rf-aprobacion", empTraId);
+            model.addAttribute("hshVerEmpTrainerId", hshVerEmpTrainerId);
+            model.addAttribute("hshEmpTrainerId", nuevoHshEmpTraId);
+            model.addAttribute("disciplinas", disciplinaService.findAll());
+            model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
+            return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
+        }
+            return new ModelAndView(ViewConstant.P_ERROR404);
 
+    }
+
+    @PostMapping("/empresa/agregar/sub/{hshEmpTraId}")
+    public @ResponseBody String registroTrainerParaEmpresa(
+            @PathVariable String hshEmpTraId,
+            @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException {
+        Integer empTraId = getDecodeHashId("rf-emp-trainer", hshEmpTraId);
+        trainerFicha.setCorreo(trainerFicha.getCorreo());
+        Integer ttId = trainerService.getTipoTrainerIdById(empTraId);
+        if(ttId != null && ttId == 2){
+            RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, PARA_EMPRESA.get(), empTraId);
+            String imgPerfil = refsUpload.getTrainerId()+ "/" + refsUpload.getUuidFp()+refsUpload.getExtFp();
+            String nomFull =  trainerFicha.getNombres()+" "+trainerFicha.getApellidos();
+            String staffGaleria = imgPerfil  + "," + nomFull + "," + trainerFicha.getNomPag();
+            //Obteniendo el id
+            trainerFichaService.actualizarStaffGaleriaByTrainerId(staffGaleria, empTraId);
+            String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp();
+            return jsonResponse(
+                    Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
+                    finalUploadNames);
+        }
+        throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+    }
 }
