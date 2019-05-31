@@ -33,14 +33,16 @@
           border-radius: 20%;
       }
 
-      .txt-tar{
+      .txt-tar {
         margin-bottom: 5px !important;
       }
 
-      .img-asesor-emp{
-          border-radius: 48%;
+      img.img-asesor-emp {
+          border-radius: 50%;
           height: 100%;
           width: 100%;
+          left: 0px !important;
+          max-width: 141px !important
       }
 
   </style>
@@ -61,7 +63,7 @@
               <div class="avatar-form">
                 <div class="avatar-form-content" id="ImagenPerfil">
                     <img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/>
-                    <i rel="tooltip" onclick="irARegistrosTrainer();" title="Clickea aquí para registrar más entrenadores" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-arrow-circle-right"></i>
+                    <i rel="tooltip" onclick="irARegistrosTrainer();" title="Clickea aquí para registrar un nuevo trainer para la empresa" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-arrow-circle-right"></i>
                     </div>
               </div>
             </div>
@@ -526,6 +528,7 @@
       }
 
       function init(){
+        instanceAllTooltip();
         getTrainer();
         checkFrom();
       }
@@ -668,14 +671,6 @@
                                 </li>`
                 ))
             })
-            divStaffs.appendChild(htmlStringToElement(`
-            <li>
-                <div class="avatar-form-min">
-                    <img onclick="irAformParaNuevoTrainerDeEmp();" class="img-asesor-emp" src="${_ctx}img/add_staff.png"/>
-                </div>
-                <p>Click arriba para añadir otro</p>
-            </li>
-            `));
         }
       }
 
@@ -884,17 +879,6 @@
                 mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
             });
         }
-      }
-
-      function irAformParaNuevoTrainerDeEmp(){
-          const arrUrl = window.location.href.split("/");
-          const hshEmpTrainerId = document.getElementById('HshTrainerId').value;
-          const hshPostTrainerId = arrUrl[arrUrl.length - 2];
-          if(hshPostTrainerId && hshPostTrainerId.length === 32){
-              window.location.href = _ctx+'p/trainer/empresa/agregar/sub/'+hshEmpTrainerId+'/'+hshPostTrainerId;
-          }else{
-              $.smallBox({color: 'alert', content: '<span>Ha ocurrido un error por favor comuníquese con nosotros mediante las opciones brindadas que encontrará en el pie de esta página</span>'});
-          }
       }
 
       function irARegistrosTrainer(){

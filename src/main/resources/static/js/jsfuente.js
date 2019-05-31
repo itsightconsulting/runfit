@@ -725,3 +725,9 @@ function efectoImagenTransicion(){
 function getFileExtension(fileName){
     return fileName.slice(-(fileName.length-(fileName.lastIndexOf(".")+1)));
 }
+
+function instanceAllTooltip(){
+    document.querySelectorAll('i[rel="tooltip"]').forEach(e=>{
+        $(e).tooltip();
+    })
+}

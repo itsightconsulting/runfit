@@ -1,11 +1,14 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.*;
+import com.itsight.domain.jsonb.CuentaPago;
 import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 import static com.itsight.util.Enums.Msg.*;
@@ -301,11 +305,16 @@ public class TrainerFichaController extends BaseController {
     @PostMapping("/empresa/agregar/sub/{hshEmpTraId}")
     public @ResponseBody String registroTrainerParaEmpresa(
             @PathVariable String hshEmpTraId,
-            @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException {
+            @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException, IOException {
         Integer empTraId = getDecodeHashId("rf-emp-trainer", hshEmpTraId);
         trainerFicha.setCorreo(trainerFicha.getCorreo());
         Integer ttId = trainerService.getTipoTrainerIdById(empTraId);
         if(ttId != null && ttId == 2){
+            String[] ccsAndMediosPago = trainerFichaService.obtenerCcsAndMediosPagoById(empTraId).split("@");
+            if(ccsAndMediosPago.length == 2){
+                trainerFicha.setMediosPago(ccsAndMediosPago[1]);
+                trainerFicha.setCuentas(new ObjectMapper().readValue(ccsAndMediosPago[0], new TypeReference<List<CuentaPago>>(){}));
+            }
             RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, PARA_EMPRESA.get(), empTraId);
             String imgPerfil = refsUpload.getTrainerId()+ "/" + refsUpload.getUuidFp()+refsUpload.getExtFp();
             String nomFull =  trainerFicha.getNombres()+" "+trainerFicha.getApellidos();

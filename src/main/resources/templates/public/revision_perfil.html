@@ -624,9 +624,6 @@
         if(btnActualizarPerfil !== null){
             btnActualizarPerfil.addEventListener('click', actualizarPerfil);
         }
-        document.querySelectorAll('i[rel="tooltip"]').forEach(e=>{
-            $(e).tooltip();
-        })
         init();
     })();
 
@@ -733,6 +730,7 @@
     }
 
     function init(){
+        instanceAllTooltip();
         modalEventos();
         getTrainer();
         actions.querySelector('.docs-buttons').onclick = function (e) {

@@ -193,4 +193,9 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     public Integer getTrEmpIdById(Integer id) {
         return repository.getTrEmpIdById(id);
     }
+
+    @Override
+    public String obtenerCcsAndMediosPagoById(Integer trainerId) {
+        return repository.getCcsAndMediosPagoById(trainerId);
+    }
 }

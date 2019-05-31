@@ -37,10 +37,12 @@
         margin-bottom: 5px !important;
       }
 
-      .img-asesor-emp{
-          border-radius: 48%;
+      img.img-asesor-emp{
+          border-radius: 50%;
           height: 100%;
           width: 100%;
+          left: 0px !important;
+          max-width: 141px !important
       }
 
   </style>
@@ -858,9 +860,8 @@
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
         document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        if(ttId !== 3){
-            mostrarMediosPago(t.mediosPago, t.cuentas);
-        }
+        mostrarMediosPago(t.mediosPago, t.cuentas);
+
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){

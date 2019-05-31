@@ -64,4 +64,7 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
 
     @Query(value = "SELECT tr_emp_id FROM trainer_ficha WHERE trainer_id = ?1", nativeQuery = true)
     Integer getTrEmpIdById(Integer id);
+
+    @Query(value = "SELECT concat_ws('@',cuentas, medios_pago) FROM trainer_ficha WHERE trainer_id = ?1", nativeQuery = true)
+    String getCcsAndMediosPagoById(Integer trainerId);
 }

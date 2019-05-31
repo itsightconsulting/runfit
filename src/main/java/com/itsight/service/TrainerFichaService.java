@@ -27,4 +27,6 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
     void actualizarStaffGaleriaByTrainerId(String staffGaleria, Integer id);
 
     Integer getTrEmpIdById(Integer id);
+
+    String obtenerCcsAndMediosPagoById(Integer trainerId);
 }
