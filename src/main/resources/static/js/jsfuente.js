@@ -641,6 +641,9 @@ function generateRandomMail(){
 (function ajaxEvents(){
 
     $(document).ajaxSend(function (e, xhr, options) {
+        if(options.dataType === "xml") {
+            return ;
+        }
         xhr.setRequestHeader(header, token);
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
@@ -664,6 +667,9 @@ function generateRandomMail(){
     });
 
     $(document).ajaxComplete(function (e, xhr, options) {
+        if(options.dataType === "xml") {
+            return ;
+        }
         if (options.processData == false) {//WHEN FILES ARE BEING UPLOADED
             $('#bot1-Msg1').click();
         }else{

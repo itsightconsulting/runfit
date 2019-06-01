@@ -730,6 +730,9 @@ section.ritmos_tiempo .box_tiempo {
     width: 20px;
     height: 26px;
     fill: #fff; }
+  section.ritmos_tiempo .box_tiempo .svg .st0 {
+      fill: #fff;
+  }
   section.ritmos_tiempo .box_tiempo span {
     font-size: 20px;
     display: block;
@@ -755,6 +758,8 @@ section.ritmos_tiempo .box_tiempo {
     width: auto;
     fill: #9d9d9d;
     margin-right: 30px; }
+    .icons .svg .st1 {
+        fill: #9d9d9d;}
     .icons .svg:last-child {
       margin-right: 0; }
   .icons span {
@@ -853,6 +858,8 @@ section.ritmos_tiempo .box_tiempo {
           position: relative;
           top: 5px;
           margin-right: 12px; }
+            .panel-group .panel .panel-body ul.datos li .svg .st0 {
+                fill: #9d9d9d;}
           .panel-group .panel .panel-body ul.datos li .svg.help {
             position: absolute !important;
             right: 0;

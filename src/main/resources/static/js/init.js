@@ -90,6 +90,10 @@ function owlCarouselSemanal() {
               }
           }
       })
+        var ancho = window.innerWidth;
+        if(ancho < 600){
+            $('#carousel-semanal .owl-item.active .item').addClass('selected');
+        }
   });
   
   $('#carousel-semanal .owl-item.active:first-child .item').addClass('selected');
@@ -100,6 +104,7 @@ function owlCarouselSemanal() {
     $('#carousel-semanal .item').removeClass('selected');
     $(this).addClass('selected');
   });
+
 }
 
 function owlCarouselVideoteca() {
@@ -192,23 +197,22 @@ function select_fave () {
   });
 }
 
-function weekMonth() {
+function dayMonth() {
     moment.locale('es-es');
     var dayCurrent = moment().format('D');
     var weekOfMonth = moment().isoWeek() - moment().subtract('days', dayCurrent - 1).isoWeek() + 1;
     var month = moment().format('MMMM');
-        $("#weekDay,#weekMonth").html("semana " + weekOfMonth + " - " + '<span> ' + month + ' </span>');
+    $("#weekDay").html("semana " + weekOfMonth + " - " + '<span> ' + month + ' </span>');
 }
 
 $(function() {
     imgToSvg();
     datepicker_init();
     openNav();
-    owlCarouselSemanal();
     owlCarouselVideoteca();
     //heightCard();
-    miniPanelActive();
+
     fancybox();
     select_fave();
-    weekMonth();
+    dayMonth();
 });
