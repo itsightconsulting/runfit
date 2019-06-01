@@ -92,6 +92,7 @@
                           <ul class="nav nav-tabs">
                               <li><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
                               <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                              <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                           </ul>
                           <div class="tab-content">
 
@@ -327,6 +328,30 @@
                                       <input class="form-control" type="password" id="Password" name="Password">
                                   </div>
                               </div>
+                              <div class="tab-pane fade" id="service">
+                                  <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
+                                  <form>
+                                      <div class="ver-servicios">
+                                          <div id="NomServicios" class="form-group">
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>DESCRIPCIÓN</label>
+                                          <p id="DescripcionServicio"></p>
+                                      </div>
+                                      <div class="form-group" id="MainIncluyeServicios">
+                                          <label>QUE INCLUYE</label>
+                                          <ul id="IncluyeServicio" class="list-counter">
+                                              <li></li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>INFORMACIÓN ADICIONAL</label>
+                                          <p id="InfoAdicional"></p>
+                                      </div>
+                                      <hr>
+                                  </form>
+                              </div>
                           <input type="hidden" id="HshVerEmpTrainerId" th:value="${hshVerEmpTrainerId}">
                           <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
                           <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
@@ -396,6 +421,7 @@
         const btnVerPerEmpresa = document.getElementById('btnVerPerEmpresa');
         const body = document.querySelector('body');
         const initTabActive = 1;
+        let servicios = [];
         //Cropper
         let cropper = {};
         const actions = document.getElementById('actions');
@@ -423,6 +449,16 @@
                 btn.innerText = "Ficha seleccionada: "+fichaName;
                 btn.click();
                 btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
+            } else if(clases.contains('servicio')){
+                const svcFocus = document.querySelector('.svc-focus');
+                svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+                clases.add('svc-focus');
+                const svcId = Number(input.getAttribute('data-id'));
+                mostrarDetalleServicio(svcId);
+            } else if (clases.contains('checkmark')) {
+                const padre = input.parentElement;
+                const inpCheck = padre.querySelector('input[type="checkbox"]');
+                inpCheck.checked = !inpCheck.checked;
             }
         }
 
@@ -442,7 +478,20 @@
             $('#myModalCropper').modal('show');
         }
 
-        function asociarCondSvc(e){
+        function mostrarDetalleServicio(servicioId){
+            const svc = servicios.find(e=>e.id===servicioId);
+            document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
+            document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional.replace(/\r?\n/g, '<br />');
+            setIncluyeDelServicio(svc.incluye);
+        }
+
+        function setIncluyeDelServicio(incluidos){
+            incluidos = incluidos.split("|");
+            const mainIncluidos = document.querySelector('#IncluyeServicio');
+            mainIncluidos.innerHTML = "";
+            incluidos.forEach(e=>{
+                mainIncluidos.appendChild(htmlStringToElement(`<li>${e.replace(/\r?\n/g, '\n')}</li>`));
+            });
         }
 
         function uploadFotoPerfil(d){
@@ -566,6 +615,7 @@
         }
 
         function init(){
+            getServiciosAsync();
             modalEventos();
             activeTooltips();
             if(flag_form_populate){
@@ -674,7 +724,11 @@
             body.sexo = Number($('input[name="Sexo"]:checked').val());
             body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
             body.tipoTrainerId = 3;
-
+            body.svcIds = Array.from(document.querySelectorAll('input[type="checkbox"][name="SvcCheck"]:checked')).map(e=>e.value).join();
+            if(body.svcIds === ""){
+                $.smallBox({color: "alert", content: '<span><i class="fa fa-exclamation-circle fa-fw"></i>Debe asignar por lo menos un servicio al trainer</span>'});
+                return;
+            }
             $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
                 $.ajax({
@@ -691,6 +745,7 @@
                     }, error: (xhr) => {
                         exception(xhr);
                     }, complete: () => {
+                        document.querySelectorAll('input[type="checkbox"][name="SvcCheck"]:checked').forEach(e => e.checked = false);
                     }
                 })
             }else{
@@ -812,6 +867,46 @@
             document.querySelector('#Dis').selectedIndex = 0;
             document.querySelector('#Username').value = "";
             document.querySelector('#Password').value = "";
+        }
+
+        function getServiciosAsync(){
+            const arrUrl = window.location.href.split("/");
+            const hshEmpTraId = arrUrl[arrUrl.length - 2];
+            const mainEndpoint = _ctx+'p/trainer/get/servicios/hsh/'+ hshEmpTraId + '?tipoTrainerId='+TipoTrainer.EMPRESA;
+
+            $.ajax({
+                type: 'GET',
+                url: mainEndpoint,
+                dataType: 'json',
+                noOne: true,
+                success: function (res) {
+                    servicios = res;
+                    reconstruirServicios(servicios);
+                }, error: (xhr) => {
+                    if (xhr.status == 404) {
+                        window.location.href = _ctx + "p/recurso-no-encontrado";
+                    }
+                    exception(xhr);
+                }, complete: () => {
+                }
+            })
+        }
+
+        function reconstruirServicios(servicios){
+            const dvServicios = document.getElementById('NomServicios');
+            dvServicios.innerHTML = servicios.map((e, ix) => `
+                        <div>
+                            <div class="chk-content" style="float:right">
+                              <input name="SvcCheck" value="${e.id}" type="checkbox"><span class="checkmark"></span>
+                            </div>
+                            <label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${e.id}">${e.nombre}</label>
+                        </div>`).join('');
+            const fSs = servicios[0];
+            document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
+            const dvIncServicio = document.getElementById('IncluyeServicio');
+            dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
+            document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
+            selServicioId = fSs.id;
         }
 
     </script>

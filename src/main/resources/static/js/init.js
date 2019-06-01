@@ -4,7 +4,6 @@ function imgToSvg () {
         var imgID = $img.attr('id');
         var imgClass = $img.attr('class');
         var imgURL = $img.attr('src');
-        //imgURL = "http://crossorigin.me/" + imgURL;
 
         jQuery.get(imgURL, function (data) {
             var $svg = jQuery(data).find('svg');

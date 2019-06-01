@@ -4,6 +4,7 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.BandejaTemporal;
 import com.itsight.domain.PostulanteTrainer;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
@@ -40,6 +41,8 @@ public class PublicoController extends BaseController {
 
     private IdiomaRepository idiomaRepository;
 
+    private ClienteService clienteService;
+
     @Autowired
     private BandejaTemporalRepository bandejaTemporalRepository;
 
@@ -49,13 +52,15 @@ public class PublicoController extends BaseController {
                              PostulanteTrainerService postulanteTrainerService,
                              UbPeruService ubPeruService,
                              TrainerFichaService trainerFichaService,
-                             IdiomaRepository idiomaRepository) {
+                             IdiomaRepository idiomaRepository,
+                             ClienteService clienteService) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.ubPeruService = ubPeruService;
         this.trainerFichaService = trainerFichaService;
         this.idiomaRepository = idiomaRepository;
+        this.clienteService = clienteService;
     }
 
     @GetMapping("/inicio")
@@ -261,5 +266,10 @@ public class PublicoController extends BaseController {
     public @ResponseBody
     List<CondicionMejoraDTO> listarCondicionesMejora(){
         return condicionMejoraService.getAll();
+    }
+
+    @PostMapping(value = "/cliente/fitness/agregar")
+    public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
+        return clienteService.registroFull(cliente);
     }
 }

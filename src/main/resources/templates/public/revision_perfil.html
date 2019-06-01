@@ -73,6 +73,15 @@
         #FinalImagenRecortada {
             cursor: pointer;
         }
+
+        img.img-asesor-emp{
+            border-radius: 50%;
+            height: 100%;
+            width: 100%;
+            left: 0px !important;
+            max-width: 141px !important
+        }
+
     </style>
 </head>
 <body>
@@ -97,6 +106,7 @@
                 <div class="col-md-7">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
+                        <li class="hidden"><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
                         <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                     </ul>
                     <div class="tab-content">
@@ -287,6 +297,15 @@
                                             <input class="form-control" id="RsYo" type="text">
                                         </div>
                                     </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
+                            <form>
+                                <h1 class="title-form">ASESORES</h1>
+                                <div>
+                                    <ul class="staff" id="Staffs">
+                                    </ul>
                                 </div>
                             </form>
                         </div>
@@ -956,6 +975,7 @@
 
     function recrearPerfil(t){
         const ttId = t.tipoTrainerId;
+        checkTabStaff(t.staffGaleria, t.id, ttId);
 
         document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
@@ -1000,7 +1020,6 @@
     }
 
     function checkRedesAndNota(t){
-        console.log(t.redes);
         if(t.redes != undefined && t.redes.length > 4){
             const existsFb = t.redes.includes('fb:');
             if(existsFb){
@@ -1031,6 +1050,28 @@
         if(t.nota){
             document.getElementById('divNotaFinal').classList.remove('hidden');
             document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+        }
+    }
+
+    function checkTabStaff(staffGaleria, id, ttId){
+        if(ttId == 1){
+            return;
+        }
+        if(staffGaleria){
+            document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
+            const divStaffs = document.getElementById('Staffs');
+            const s = staffGaleria;
+            s.split("|").forEach(e=>{
+                const imgAndNom = e.split(",");
+                divStaffs.appendChild(htmlStringToElement(
+                    `<li>
+                                    <div class="avatar-form-min">
+                                        <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${imgAndNom[0]}"/>
+                                    </div>
+                                    <a href="${_ctx}p/trainer/${imgAndNom.length === 3 ? imgAndNom[2] : ''}" target="_blank"><p>${imgAndNom[1]}</p></a>
+                                </li>`
+                ))
+            })
         }
     }
 
@@ -1390,9 +1431,10 @@
     function getServiciosAsync(trainerId){
         $.ajax({
             type: 'GET',
-            url: _ctx + 'p/trainer/get/servicios/' + trainerId,
+            url: _ctx + 'p/trainer/get/servicios/' + trainerId +'?tipoTrainerId='+TipoTrainer.PARTICULAR,
             dataType: 'json',
             blockLoading: false,
+            noOne: true,
             success: function (res) {
                 res.forEach(e => {
                     if(e.tarifarios) {
@@ -1402,7 +1444,6 @@
                 serviciosSm = JSON.parse(JSON.stringify(res));
                 servicios = res;
                 reconstruirServicios(servicios);
-                //reconstruirCuentaBanco(t.cuentas);
                 reconstruirTarifario(servicios[0].tarifarios);
                 tabService.querySelector('.servicio').click();
                 $('#Tarifarios .tarifa-svc')[0].click();

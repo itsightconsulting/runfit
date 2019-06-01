@@ -357,7 +357,7 @@
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
                           </div>
-                          <button id="btnElegir" class="btn btn-default btn-black" type="button">INSCRÍBETE</button>
+                          <button id="btnElegir" class="btn btn-default btn-black hidden" type="button">INSCRÍBETE</button>
                       </form>
                   </div>
                 <hr>
@@ -694,6 +694,7 @@
               contentType: "application/x-www-form-urlencoded; charset=UTF-8",
               url: _ctx + 'p/trainer/ultima-aprobacion/'+hshId+'/'+correo,
               dataType: "json",
+              data: {tipoTrainerId: $perfil.tipoTrainerId},
               blockLoading: true,
               success: function (data, textStatus) {
                   if (textStatus == "success") {
@@ -790,6 +791,13 @@
               dataType: 'json',
               noOne: true,
               success: function (res) {
+                  if($perfil.tipoTrainerId === TipoTrainer.DE_EMPRESA){
+                      const mines = $perfil.svcIds.split(",");
+                      res = mines.map(e=>
+                          res.find(s=>s.id===Number(e))
+                      );
+                  }
+
                   res.forEach(e => {
                     if(e.tarifarios) {
                         e.tarifarios = JSON.parse(e.tarifarios);
@@ -865,6 +873,7 @@
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
+            document.getElementById('btnElegir').classList.remove('hidden');
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
             let est = document.querySelector('#Estudios');

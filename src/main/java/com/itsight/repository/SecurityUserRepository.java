@@ -18,7 +18,6 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     @Query(value = "SELECT DISTINCT S FROM SecurityUser S JOIN FETCH S.roles R LEFT JOIN FETCH R.privileges P WHERE S.username = ?1")
     SecurityUser findByUsername(String username);
 
-    /*@Query(value = "SELECT su.security_user_id id, su.username, su.password, su.enabled, string_agg(sr.role, '|') roles, string_agg(COALESCE(sp.privilege, ''), '|') AS PRIVILEGES FROM security_user su INNER JOIN security_role sr ON su.security_user_id=sr.security_user_id LEFT JOIN security_privilege sp ON sr.security_role_id=sp.security_role_id WHERE username = ?1 GROUP BY 1", nativeQuery = true)*/
     @Query(nativeQuery = true)
     SecurityUserDTO findByUsernameNative(@Param("username") String username);
 
@@ -49,4 +48,7 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     @Procedure(name = "fn_validacion_correo")
     Boolean findCorreoExist(@Param("_correo") String correo);
 
+    @Modifying
+    @Query(value = "update security_user set enabled=true where security_user_id in (select trainer_id from trainer_ficha where tr_emp_id = ?1)", nativeQuery = true)
+    void updateMultipleEstadoByTrEmpId(Integer id);
 }

@@ -81,7 +81,8 @@ import java.util.UUID;
                                     @ColumnResult(name = "mapCircleRadio", type = Double.class),
                                     @ColumnResult(name = "redes", type = String.class),
                                     @ColumnResult(name = "staffGaleria", type = String.class),
-                                    @ColumnResult(name = "tipoTrainerId", type = Integer.class)
+                                    @ColumnResult(name = "tipoTrainerId", type = Integer.class),
+                                    @ColumnResult(name = "svcIds", type = String.class)
                             }
                     )
             }
@@ -102,7 +103,7 @@ import java.util.UUID;
                               "\tt.tipo_trainer_id tipoTrainerId \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id \n" +
-                              "WHERE t.flag_activo = true ORDER BY 1 DESC",
+                              "WHERE t.tipo_trainer_id != 3 AND t.flag_activo = true ORDER BY 1 DESC",
                       resultSetMapping = "getAllByDemo"),
     @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
                       query = "SELECT \n" +
@@ -136,7 +137,8 @@ import java.util.UUID;
                               "\tf.map_circle_radio mapCircleRadio, \n" +
                               "\tf.redes, \n" +
                               "\tf.staff_galeria staffGaleria, \n" +
-                              "\tt.tipo_trainer_id tipoTrainerId \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId, \n" +
+                              "\tf.svc_ids svcIds \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "WHERE f.nom_pag = ?",
@@ -172,7 +174,8 @@ import java.util.UUID;
                               "\tf.map_circle_radio mapCircleRadio, \n" +
                               "\tf.redes, \n" +
                               "\tf.staff_galeria staffGaleria, \n" +
-                              "\tt.tipo_trainer_id tipoTrainerId \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId, \n" +
+                              "\tf.svc_ids svcIds \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id\n" +
                               "WHERE t.security_user_id = ?",
@@ -251,8 +254,11 @@ public class TrainerFicha implements Serializable {
     private String redes;
     @Column(nullable = true)
     private Boolean flagFichaAceptada;
+    //Campos de trainer de empresa
     @Column(nullable = true)
     private Integer trEmpId;
+    @Column(nullable = true)
+    private String svcIds;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

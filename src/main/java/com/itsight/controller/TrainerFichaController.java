@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
@@ -171,7 +172,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/get/servicios/{trainerId}")
-    public @ResponseBody List<ServicioPOJO> obtenerServicios(
+    public @ResponseBody List<ServicioPOJO> obtenerServiciosByTrainerId(
             @PathVariable() String trainerId,
             @RequestParam() String tipoTrainerId){
         if(Integer.parseInt(tipoTrainerId) == PARA_EMPRESA.get()){
@@ -179,6 +180,18 @@ public class TrainerFichaController extends BaseController {
             return servicioService.findAllByTrainerId(empTraId);
         }
         return servicioService.findAllByTrainerId(Integer.parseInt(trainerId));
+    }
+
+    @GetMapping("/get/servicios/hsh/{hshTrainerId}")
+    public @ResponseBody List<ServicioPOJO> obtenerServiciosByHshTrainerId(
+            @PathVariable() String hshTrainerId,
+            @RequestParam() String tipoTrainerId) throws CustomValidationException {
+        Integer trainerId = getDecodeHashId("rf-load-media", hshTrainerId);
+        if(Integer.parseInt(tipoTrainerId) == PARA_EMPRESA.get()){
+            Integer empTraId = trainerFichaService.getTrEmpIdById(trainerId);
+            return servicioService.findAllByTrainerId(empTraId);
+        }
+        return servicioService.findAllByTrainerId(trainerId);
     }
 
     @GetMapping("/perfil/observaciones")
@@ -191,11 +204,11 @@ public class TrainerFichaController extends BaseController {
     public @ResponseBody
     ResponseEntity<TrainerFichaPOJO> getTrainerByUsername(@PathVariable(name = "nomPag") String nomPag) {
         TrainerFichaPOJO t = trainerFichaService.findByNomPagPar(nomPag);
-        t.setHshTrainerId(Parseador.getEncodeHash32Id("rf-public", t.getId()));
-        if(t != null){
+        if(t != null) {
+            t.setHshTrainerId(Parseador.getEncodeHash32Id("rf-public", t.getId()));
             return new ResponseEntity<>(t, HttpStatus.OK);
         }
-        return new ResponseEntity<>(t, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/get/sec/{hshTrainerId}")
@@ -212,10 +225,15 @@ public class TrainerFichaController extends BaseController {
     @PostMapping("/ultima-aprobacion/{hshTrainerId}/{correo}")
     public @ResponseBody String ultimaAprobacionTrainer(
             @PathVariable(name = "hshTrainerId") String hshTrainerId,
-            @PathVariable(name = "correo") String correo) throws CustomValidationException {
+            @PathVariable(name = "correo") String correo,
+            @RequestParam(name = "tipoTrainerId") String tipoTrainerId) throws CustomValidationException {
+        Integer ttId = Integer.parseInt(tipoTrainerId);
+        if(ttId<=0 || ttId>=4){
+            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+        }
         if(Validador.validarCorreo(correo)){
             Integer trainerId = getDecodeHashId("rf-aprobacion", hshTrainerId);
-            trainerService.actualizarFlagActivoByIdAndNotificacion(trainerId, true, correo);
+            trainerService.actualizarFlagActivoByIdAndNotificacion(trainerId, true, correo, ttId);
             return jsonResponse(Enums.Msg.APROBACION_FINAL_PERFIL_TRAINER.get());
         }
         throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
@@ -309,7 +327,7 @@ public class TrainerFichaController extends BaseController {
         Integer empTraId = getDecodeHashId("rf-emp-trainer", hshEmpTraId);
         trainerFicha.setCorreo(trainerFicha.getCorreo());
         Integer ttId = trainerService.getTipoTrainerIdById(empTraId);
-        if(ttId != null && ttId == 2){
+        if(ttId != null && ttId == 2) {
             String[] ccsAndMediosPago = trainerFichaService.obtenerCcsAndMediosPagoById(empTraId).split("@");
             if(ccsAndMediosPago.length == 2){
                 trainerFicha.setMediosPago(ccsAndMediosPago[1]);

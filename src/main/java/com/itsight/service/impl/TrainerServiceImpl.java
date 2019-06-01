@@ -36,6 +36,8 @@ import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.Msg.POSTULANTE_ULTIMA_ETAPA;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
+import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.PARA_EMPRESA;
 import static com.itsight.util.Enums.TipoUsuario.ENTRENADOR;
 
 @Service
@@ -335,17 +337,20 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         refUpload.setTrainerId(Integer.parseInt(trainerId));
         //Registrando las disciplinas
         disciplinaService.guardarMultipleTrainerDisciplina(trainer.getId(), trainerFicha.getDisciplinaIds());
-
+        Correo correo;
+        String cuerpo;
         //Obtener cuerpo del correo para la plataforma
-        Correo correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());
-        //Envio de correo
-        String hashId = Parseador.getEncodeHash32Id("rf-aprobacion", trainer.getId());
-        String cuerpo = String.format(correo.getBody(), domainName, hashId);
-        String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
-        emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+        if(trainerFicha.getTipoTrainerId() != PARA_EMPRESA.get()){
+            correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());
+            //Envio de correo
+            String hashId = Parseador.getEncodeHash32Id("rf-aprobacion", trainer.getId());
+            cuerpo = String.format(correo.getBody(), domainName, hashId);
+            String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+            emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+        }
 
         //Obtener cuerpo del correo para el trainer empresa
-        if(trainerFicha.getTipoTrainerId() == Enums.TipoTrainer.EMPRESA.get()) {
+        if(trainerFicha.getTipoTrainerId() == EMPRESA.get()) {
             correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE_EMP.get());
             String hshPostTrId = Parseador.getEncodeHash32Id("rf-request", trainerFicha.getPostulanteTrainerId());
             String hshTrainerId = Parseador.getEncodeHash32Id("rf-load-media", trainer.getId());
@@ -454,9 +459,14 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String destinatario) {
+    public void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String destinatario, Integer ttId) {
         repository.updateFlagActivoById(id, flag);
         securityUserRepository.updateEstadoById(id, flag);
+        if(ttId == EMPRESA.get()){
+            repository.updateMultipleEstadoByTrEmpId(id);
+            securityUserRepository.updateMultipleEstadoByTrEmpId(id);
+        }
+
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(PERFIL_TRAINER_APROBADO.get());
         //Envio de correo

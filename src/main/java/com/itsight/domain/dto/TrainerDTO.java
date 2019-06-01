@@ -117,4 +117,7 @@ public class TrainerDTO implements Serializable {
     @Max(value = 3)
     private Integer tipoTrainerId;
 
+    @Size(max = 100)
+    private String svcIds;
+
 }
