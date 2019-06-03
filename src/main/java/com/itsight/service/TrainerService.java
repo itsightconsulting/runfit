@@ -19,5 +19,9 @@ public interface TrainerService extends BaseService<Trainer, Integer> {
 
     RefUploadIds registrarPostulante(TrainerDTO trainerFicha, int tipoTrainerId, Integer trEmpId);
 
-    void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String correo);
+    void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String correo, Integer ttId);
+
+    Integer getTipoTrainerIdById(Integer id);
+
+    String getCorreoById(Integer id);
 }

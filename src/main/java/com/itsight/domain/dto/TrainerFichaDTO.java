@@ -42,7 +42,6 @@ public class TrainerFichaDTO implements Serializable {
     @NotNull
     private String niveles;
     @Size(min = 10, max = 120)
-    @NotNull
     private String centroTrabajo;
     @Size(min = 10, max = 100)
     private String especialidades;
@@ -57,7 +56,7 @@ public class TrainerFichaDTO implements Serializable {
     private List<ServicioDTO> servicios;
     @Valid
     private List<CuentaPago> cuentas;
-    @NotBlank
+    @Size(max = 20)
     private String mediosPago;
     @Size(max = 3000)
     private String miniGaleria;

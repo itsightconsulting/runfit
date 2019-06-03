@@ -84,6 +84,7 @@
                               <input type="file" id="InpImgPerfil">
                               <div class="avatar-form-content img-container">
                                   <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
+                                  <i id="btnVerPerEmpresa" rel="tooltip" title="Si desea volver al perfil de empresa, clickee aquí" style="float:right; color: #17a2b8;font-size: 1.5em;cursor: pointer;" class="fa fa-arrow-circle-left"></i>
                               </div>
                           </div>
                       </div>
@@ -91,6 +92,7 @@
                           <ul class="nav nav-tabs">
                               <li><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
                               <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
+                              <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                           </ul>
                           <div class="tab-content">
 
@@ -210,12 +212,6 @@
                                                   </li>
                                               </ul>
                                           </div>
-                                          <div class="form-group">
-                                              <label>AL AIRE LIBRE / DOMICILIO</label>
-                                              <p>Dar click en el mapa para poder elegir el rango de desplazamiento. <span class="view-only-desktop">También puedes buscar la dirección y luego elegir el rango.</span></p>
-                                              <input id="pac-input" class="controls form-control view-only-desktop" type="text" placeholder="Buscar dirección o lugar">
-                                              <div class="map" id="map"></div>
-                                          </div>
                                           <div class="form-group" id="Especialidades">
                                               <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
                                               <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
@@ -245,6 +241,21 @@
                                                       </div>
                                                   </li>
                                               </ul>
+                                          </div>
+                                      </div>
+                                      <button data-ficha-id="0" style="margin-bottom: 20px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                                      <input type="hidden" id="FichaClienteId"/>
+                                      <div class="row collapse" id="FichasDisponibles">
+                                          <div class="col col-md-12 text-center" style="padding-bottom:15px">
+                                              <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                                  <h6>Standard</h6>
+                                                  <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                              </div>
+                                              <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                                  <h6>Running</h6>
+                                                  <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                                              </div>
+                                              <hr>
                                           </div>
                                       </div>
                                   </form>
@@ -317,23 +328,33 @@
                                       <input class="form-control" type="password" id="Password" name="Password">
                                   </div>
                               </div>
-                              <button data-ficha-id="0" style="margin-bottom: 20px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
-                              <input type="hidden" id="FichaClienteId"/>
-                              <div class="row collapse" id="FichasDisponibles">
-                                  <div class="col col-md-12 text-center" style="padding-bottom:15px">
-                                      <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                          <h6>Standard</h6>
-                                          <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                              <div class="tab-pane fade" id="service">
+                                  <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
+                                  <form>
+                                      <div class="ver-servicios">
+                                          <div id="NomServicios" class="form-group">
+                                          </div>
                                       </div>
-                                      <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                          <h6>Running</h6>
-                                          <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                                      <div class="form-group">
+                                          <label>DESCRIPCIÓN</label>
+                                          <p id="DescripcionServicio"></p>
+                                      </div>
+                                      <div class="form-group" id="MainIncluyeServicios">
+                                          <label>QUE INCLUYE</label>
+                                          <ul id="IncluyeServicio" class="list-counter">
+                                              <li></li>
+                                          </ul>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>INFORMACIÓN ADICIONAL</label>
+                                          <p id="InfoAdicional"></p>
                                       </div>
                                       <hr>
-                                  </div>
+                                  </form>
                               </div>
+                          <input type="hidden" id="HshVerEmpTrainerId" th:value="${hshVerEmpTrainerId}">
+                          <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
                           <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
-
                       </div>
                   </div>
               </div>
@@ -341,10 +362,10 @@
       </div>
       <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
       <!-- MODALS  -->
-      <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond" style=";height: 95%;">
-          <div class="modal-dialog" role="document" style="width: 95%">
-              <div class="modal-content" style="width: 100%">
-                  <div class="modal-body" style="height: 80%; overflow-y:auto">
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond" style=";height: 100%;">
+          <div class="modal-dialog" role="document" style="width: 95%;height: 82%;">
+              <div class="modal-content" style="width: 100%;height: 100%;">
+                  <div class="modal-body" style="height: 100%;overflow-y:auto;">
                       <div class="col-sm-12 padding-o-top-10">
                           <div th:replace="public/terminos_condiciones :: fg-term-cond"></div>
                       </div>
@@ -391,15 +412,16 @@
           <br class="cb"/><b>Radio:</b> --
       </div>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-    <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
     <script>
         const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
-        const btnGuardar = document.getElementById('btnGuardar')
+        const btnGuardar = document.getElementById('btnGuardar');
+        const btnVerPerEmpresa = document.getElementById('btnVerPerEmpresa');
         const body = document.querySelector('body');
         const initTabActive = 1;
+        let servicios = [];
         //Cropper
         let cropper = {};
         const actions = document.getElementById('actions');
@@ -411,6 +433,7 @@
             btnGuardar.addEventListener('click', sendForm);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
+            btnVerPerEmpresa.addEventListener('click', clickRedireccionamientoPerfilEmpresa);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
@@ -426,6 +449,16 @@
                 btn.innerText = "Ficha seleccionada: "+fichaName;
                 btn.click();
                 btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
+            } else if(clases.contains('servicio')){
+                const svcFocus = document.querySelector('.svc-focus');
+                svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
+                clases.add('svc-focus');
+                const svcId = Number(input.getAttribute('data-id'));
+                mostrarDetalleServicio(svcId);
+            } else if (clases.contains('checkmark')) {
+                const padre = input.parentElement;
+                const inpCheck = padre.querySelector('input[type="checkbox"]');
+                inpCheck.checked = !inpCheck.checked;
             }
         }
 
@@ -436,11 +469,29 @@
             }
         }
 
+        function clickRedireccionamientoPerfilEmpresa(){
+            const arrUrl = window.location.href.split("/");
+            window.location.href = _ctx+"p/trainer/checkout/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2];
+        }
+
         function changeImgPerfil(){
             $('#myModalCropper').modal('show');
         }
 
-        function asociarCondSvc(e){
+        function mostrarDetalleServicio(servicioId){
+            const svc = servicios.find(e=>e.id===servicioId);
+            document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
+            document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional.replace(/\r?\n/g, '<br />');
+            setIncluyeDelServicio(svc.incluye);
+        }
+
+        function setIncluyeDelServicio(incluidos){
+            incluidos = incluidos.split("|");
+            const mainIncluidos = document.querySelector('#IncluyeServicio');
+            mainIncluidos.innerHTML = "";
+            incluidos.forEach(e=>{
+                mainIncluidos.appendChild(htmlStringToElement(`<li>${e.replace(/\r?\n/g, '\n')}</li>`));
+            });
         }
 
         function uploadFotoPerfil(d){
@@ -476,12 +527,23 @@
                         return myXhr;
                     },
                     success: function (data) {
+                        //Mensaje diferente por flujo particular
+                        data.res = "El asesor ha sido registrado correctamente y ya debe aperecer en el perfil principal de la empresa en el tab 'STAFF'. \n\n" +
+                            "Puede seguir agregando tantos entrenadores como desee";
                         reqSuccess(data, 3600000);
                     },
                     error: (xhr)=>{
                         exception(xhr);
                     },
-                    complete: ()=> {}
+                    complete: ()=> {
+                        limpiarMainForm();
+                        clearCamposContacto();
+                        $(btnGuardar).removeAttr('disabled');
+                        $('#FinalImagenRecortada').attr('src', '/img/public/subir_foto.png');
+                        setTimeout(() => {
+                            $("#frm_registro :input").removeAttr("disabled");
+                        }, 1000);
+                    }
                 });
             }
         }
@@ -553,6 +615,7 @@
         }
 
         function init(){
+            getServiciosAsync();
             modalEventos();
             activeTooltips();
             if(flag_form_populate){
@@ -642,8 +705,8 @@
         }
 
         function sendForm(){
-            const arrURL = window.location.href.split("/");
             const body = generateBody();
+            const hshEmpTrainerId = document.getElementById('HshEmpTrainerId').value;
             const nmImgPerfil = inpImgPerfil.files[0] == undefined ? "" : inpImgPerfil.files[0].name;
             const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
 
@@ -661,13 +724,17 @@
             body.sexo = Number($('input[name="Sexo"]:checked').val());
             body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
             body.tipoTrainerId = 3;
-
+            body.svcIds = Array.from(document.querySelectorAll('input[type="checkbox"][name="SvcCheck"]:checked')).map(e=>e.value).join();
+            if(body.svcIds === ""){
+                $.smallBox({color: "alert", content: '<span><i class="fa fa-exclamation-circle fa-fw"></i>Debe asignar por lo menos un servicio al trainer</span>'});
+                return;
+            }
             $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
-                    url: _ctx + 'gestion/trainer/empresa/agregar/trainer/registro',
+                    url: _ctx + 'p/trainer/empresa/agregar/sub/'+hshEmpTrainerId,
                     dataType: 'json',
                     data: JSON.stringify(body),
                     blockLoading: false,
@@ -678,6 +745,7 @@
                     }, error: (xhr) => {
                         exception(xhr);
                     }, complete: () => {
+                        document.querySelectorAll('input[type="checkbox"][name="SvcCheck"]:checked').forEach(e => e.checked = false);
                     }
                 })
             }else{
@@ -685,7 +753,6 @@
                             content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
                             timeout: 5000});
             }
-
         }
 
         function showInitTab(numTab){
@@ -783,8 +850,6 @@
             const rdmNum = Math.floor(Math.random() * 100);
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
-            obj.mediosPago = "Temp";
-            obj.centroTrabajo = "Temp Temp Temp";
             return obj;
         }
 
@@ -792,6 +857,56 @@
             cropper.destroy();
             cropper = {};
             inpImgPerfil.click();
+        }
+
+        function clearCamposContacto(){
+            document.querySelector('#Correo').value = "";
+            document.querySelector('#Telefono').value = "";
+            document.querySelector('#Movil').value = "";
+            document.querySelector('#TipoDocumento').selectedIndex = 0;
+            document.querySelector('#Dis').selectedIndex = 0;
+            document.querySelector('#Username').value = "";
+            document.querySelector('#Password').value = "";
+        }
+
+        function getServiciosAsync(){
+            const arrUrl = window.location.href.split("/");
+            const hshEmpTraId = arrUrl[arrUrl.length - 2];
+            const mainEndpoint = _ctx+'p/trainer/get/servicios/hsh/'+ hshEmpTraId + '?tipoTrainerId='+TipoTrainer.EMPRESA;
+
+            $.ajax({
+                type: 'GET',
+                url: mainEndpoint,
+                dataType: 'json',
+                noOne: true,
+                success: function (res) {
+                    servicios = res;
+                    reconstruirServicios(servicios);
+                }, error: (xhr) => {
+                    if (xhr.status == 404) {
+                        window.location.href = _ctx + "p/recurso-no-encontrado";
+                    }
+                    exception(xhr);
+                }, complete: () => {
+                }
+            })
+        }
+
+        function reconstruirServicios(servicios){
+            const dvServicios = document.getElementById('NomServicios');
+            dvServicios.innerHTML = servicios.map((e, ix) => `
+                        <div>
+                            <div class="chk-content" style="float:right">
+                              <input name="SvcCheck" value="${e.id}" type="checkbox"><span class="checkmark"></span>
+                            </div>
+                            <label class="servicio ${ix===0 ? 'svc-focus':''}" data-id="${e.id}">${e.nombre}</label>
+                        </div>`).join('');
+            const fSs = servicios[0];
+            document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
+            const dvIncServicio = document.getElementById('IncluyeServicio');
+            dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
+            document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
+            selServicioId = fSs.id;
         }
 
     </script>

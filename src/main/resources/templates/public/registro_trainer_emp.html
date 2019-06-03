@@ -67,10 +67,12 @@
             width: 45%;
         }
 
-        .img-asesor-emp{
-            border-radius: 48%;
+        img.img-asesor-emp{
+            border-radius: 50%;
             height: 100%;
             width: 100%;
+            left: 0px !important;
+            max-width: 141px !important
         }
 
     </style>
@@ -333,38 +335,7 @@
                                           <ul class="staff">
                                               <li>
                                                   <div class="avatar-form-min">
-                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
-                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto1" name="AsesorFoto1">
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="avatar-form-min">
-                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
-                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto2" name="AsesorFoto2">
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="avatar-form-min">
-                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
-                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto3" name="AsesorFoto3">
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="avatar-form-min">
-                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
-                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto4" name="AsesorFoto4">
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="avatar-form-min">
-                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
-                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto5" name="AsesorFoto5">
-                                                  </div>
-                                              </li>
-                                              <li>
-                                                  <div class="avatar-form-min">
-                                                      <img class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
-                                                      <input class="hidden inp-img-asesor" type="file" id="AsesorFoto6" name="AsesorFoto6">
+                                                      <img onclick="irAformParaNuevoTrainerDeEmp();" class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
                                                   </div>
                                               </li>
                                           </ul>
@@ -614,6 +585,7 @@
                                       </div>
                                   </div>
                               </div>
+                              <input type="hidden" id="HshEmpTrainerId">
                               <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
                       </div>
                   </div>
@@ -622,10 +594,10 @@
       </div>
       <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
       <!-- MODALS  -->
-      <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond">
-          <div class="modal-dialog" role="document" style="width: 95%">
-              <div class="modal-content" style="width: 100%">
-                  <div class="modal-body" style="height: 80%; overflow-y:auto">
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond" style=";height: 100%;">
+          <div class="modal-dialog" role="document" style="width: 95%;height: 82%;">
+              <div class="modal-content" style="width: 100%;height: 100%;">
+                  <div class="modal-body" style="height: 100%;overflow-y:auto;">
                       <div class="col-sm-12 padding-o-top-10">
                           <div th:replace="public/terminos_condiciones :: fg-term-cond"></div>
                       </div>
@@ -729,7 +701,6 @@
         const btnNuevaInfoPago = document.getElementById('btnNuevaInfoPago');
         const btnEliminarPaquete = document.getElementById('btnEliminarPaquete');
         const tabService = document.getElementById('service');
-        const tabStaff = document.getElementById('staff');
         const inpCondServicio = document.getElementById('inpCondServicio');
         const servicios = [];
         let ccBancarias = [];
@@ -755,9 +726,7 @@
             btnNuevaInfoPago.addEventListener('click', agregarNuevaInfoPago);
             btnEliminarPaquete.addEventListener('click', eliminarPaqueteDeServicio);
             tabService.addEventListener('click', clickListenerTabService);
-            tabStaff.addEventListener('click', clickListenerTabStaff);
             tabs.addEventListener('click', clickListenerTabs);
-            tabStaff.addEventListener('change', changeListenerTabStaff);
 
             tabService.addEventListener('change', changeListenerTabService);
             inpCondServicio.addEventListener('change', asociarCondSvc);
@@ -853,7 +822,6 @@
             const hshId = d.res;
             const rdmsUUIDs = getImgUuids(d.rdm);
             let file = inpImgPerfil;
-            let filesStaff = getStaffGaleria();
             if (file.files.length > 0) {
                 file = file.files[0];
                 const data = new FormData();
@@ -866,10 +834,6 @@
                     if(v.file){
                         data.append("files", v.file);
                     }
-                })
-
-                filesStaff.filter(f=>f.nombre.length>2).forEach(v=>{
-                    data.append("files", v.file);
                 })
 
                 $.ajax({
@@ -895,15 +859,6 @@
                     complete: ()=> {}
                 });
             }
-        }
-
-        function getStaffGaleria(){
-            return Array.from(tabStaff.querySelectorAll('.inp-img-asesor')).filter(e=>e.files.length>0).map(e=>{
-                return {
-                    file: e.files[0],
-                    nombre: e.parentElement.nextElementSibling.textContent.trim()
-                }
-            });
         }
 
         function init(){
@@ -1030,21 +985,11 @@
                                     return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))
                                 }).join("|");
 
-            const extsStaff = Array.from(tabStaff.querySelectorAll('.inp-img-asesor')).filter(e=>e.files.length>0).map(e=>{
-                const nm = e.files[0].name;
-                const trainerNombre = e.parentElement.nextElementSibling.textContent.trim();
-                if(trainerNombre && trainerNombre.length>2){
-                    return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))+","+trainerNombre
-                }
-                return "";
-            }).join("|");
-
             const exts = {};
             exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
             exts.extsImgsGaleria = extsImgsGaleria !== "" ? "@extsImgsGaleria:"+extsImgsGaleria : "";
             exts.extsCondSvcs = extsCondSvcs !== "" ? "@extsCondSvcs:"+extsCondSvcs : "";
             body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria + exts.extsCondSvcs;
-            body.staffGaleria = extsStaff;
 
             if(document.getElementById('Coordenadas') != null){
                 body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
@@ -1070,11 +1015,12 @@
                     bridgeMultipart: true,
                     success: (d)=> {
                         //Subir imgen
-                        if(extsImgsGaleria === "" && extsCondSvcs === "" && body.staffGaleria === ""){
+                        if(extsImgsGaleria === "" && extsCondSvcs === ""){
                             uploadFotoPerfil(d, body);
                         }else{
                             uploadFotosPerfil(d, body)
                         }
+                        document.getElementById('HshEmpTrainerId').value = d.res;
                     }, error: (xhr) => {
                         exception(xhr);
                     }, complete: () => {
@@ -1173,13 +1119,14 @@
             }
         }
 
-        function clickListenerTabStaff(e){
-            const input = e.target;
-            const clases = input.classList;
-            if (clases.contains('img-asesor-emp')){
-                const padre = input.parentElement;
-                const inp = padre.querySelector('input');
-                inp.click();
+        function irAformParaNuevoTrainerDeEmp(){
+            const hshEmpTrainerId = document.getElementById('HshEmpTrainerId').value;
+            const arrUrl = window.location.href.split("/");
+            const hshPostTrainerId = arrUrl[arrUrl.length - 1];
+            if(hshEmpTrainerId){
+                window.location.href = _ctx+'p/trainer/empresa/agregar/sub/'+hshEmpTrainerId+'/'+hshPostTrainerId;
+            }else{
+                $.smallBox({color: 'alert', content: '<span><i class="fa fa-exclamation-circle fa-fw"></i> Debe primero registrarse para poder agregar un asesor</span>'});
             }
         }
 
@@ -1190,38 +1137,6 @@
                 btnGuardar.classList.add('hidden');
             } else {
                 btnGuardar.classList.remove('hidden');
-            }
-        }
-
-        function changeListenerTabStaff(e){
-            const input = e.target;
-            const clases = input.classList;
-            if (clases.contains('inp-img-asesor')){
-                const padre = input.parentElement;
-                const img = padre.firstElementChild;
-                var file, imgTemp;
-                if ((file = input.files[0])) {
-                    imgTemp = new Image();
-                    imgTemp.onload = function () {
-                        //Previsualizar
-                        readURL($(input)[0], img);
-                    };
-                    imgTemp.onerror = function () {
-                        $(input).val("");
-                        $.smallBox({
-                            content: "<i> No se ha seleccionado una imagen válida!</i>",
-                            color: "#8a6d3b",
-                            iconSmall: "fa fa-warning fa-2x fadeInRight animated",
-                            timeout: 3500,
-                        });
-                    };
-                    imgTemp.src = _URL.createObjectURL(file);
-                }
-                padre.appendChild(img);
-                const p = document.createElement('p');
-                p.textContent = "Añada el nombre aquí";
-                p.setAttribute('contenteditable', 'true');
-                padre.parentElement.appendChild(p);
             }
         }
 

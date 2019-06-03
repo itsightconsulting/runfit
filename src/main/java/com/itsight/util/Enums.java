@@ -128,7 +128,8 @@ public class Enums {
         ULTIMA_ETAPA_POSTULANTE(8),
         PERFIL_POST_OBS(9),
         PERFIL_TRAINER_APROBADO(10),
-        PERFIL_CHECK_OBS_SUBS(11);
+        PERFIL_CHECK_OBS_SUBS(11),
+        ULTIMA_ETAPA_POSTULANTE_EMP(12);
 
         final int id;
 
@@ -162,7 +163,7 @@ public class Enums {
         POSTULANTE_RECH_PV("Postulante ha sido rechazado y aún no vence el plazo para una nueva postulación"),
         POSTULANTE_ACEP("Ha <strong>APROBADO</strong> al candidato con éxito"),
         POSTULANTE_RECH("Ha <strong>RECHAZADO</strong> al candidato con éxito"),
-        POSTULANTE_ULTIMA_ETAPA("Registro correcto. Como último paso, pronto revisaremos su perfil para una aprobación final. Usted será notificado a su correo, gracias por su tiempo!"),
+        POSTULANTE_ULTIMA_ETAPA("Registro correcto. Pronto revisaremos su perfil para una aprobación final. Usted será notificado a su correo, gracias por su tiempo."),
         POSTULANTE_YA_REG("Usted ya ha usado este link para registrarse, sino recuerda sus credenciales puede recuperarlas en la opción olvidó contraseña: <a href='/login'>aquí</a>"),
         POST_LINK_EXP_PR("El vínculo ha expirado, para poder registrarse debe comunicarse con la plataforma, en la parte inferior de la página encontrará un apartado con datos de contacto."),
         CONTACTO_TRAINER("El asesor ha sido notificado y pronto se pondrá en contacto. Que tenga usted un buen día!"),
@@ -171,7 +172,8 @@ public class Enums {
         PERFIL_APROBADO_ANTERIORMENTE("El perfil del entrenador que quieres visitar ya ha sido aprobado con anterioridad."),
         PERFIL_EN_REVISION("El perfil del entrenador que quieres visitar ya ha sido observado con anterioridad."),
         OBS_PERFIL_TRAINER("Se ha enviado las observaciones al entrenador satisfactoriamente via correo."),
-        OBS_PERFIL_SUBSANADAS("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias");
+        OBS_PERFIL_SUBSANADAS("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"),
+        CHECK_PERFIL_EMPRESA_EN_VISTA_BUSQUEDA("El perfil que ha intentado ver ya no es accesible mediante esta ruta puesto que ya ha sido aprobado. Si desea revisar su perfil encuentrelo en la vista de 'Encuentra tu coach'");
         final String msg;
 
         Msg(String msg){

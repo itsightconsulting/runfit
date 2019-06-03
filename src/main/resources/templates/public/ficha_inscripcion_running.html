@@ -695,7 +695,7 @@
                         <div class="col-md-12 pad-0 text-center">
                           <svg id="HumanMuscles" xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 325.28 301.86667"   height="301.86667"   width="325.28"   xml:space="preserve" version="1.1"><metadata
                                   id="metadata8"></metadata><defs id="defs6" />
-                            <g transform="matrix(1.3333333,0,0,-1.3333333,0,301.86667)"     id="g10" fill="gray" stroke="none">
+                            <g transform="matrix(1.3333333,0,0,-1.3333333,0,301.86667)" id="g10" fill="gray" stroke="none">
 		                      <g transform="scale(0.1)" id="g12">
 			                    <path id="path14"  class="body-muscle" data-container="body" data-html="true" data-toggle="tooltip" data-placement="top" th:attr="title=${'&lt;h5&gt;Tibial anterior&lt;/h5&gt;'}" d="m 454.57,593.926 c -22.011,-4.629 -10.507,-84.403 12.871,-170.887 23.372,-86.484 50.34,-220.461 67.832,-287.715 l 14.153,2.117 c -31.106,96.223 -42.207,154.18 -40.363,230.52 1.843,76.316 -16.895,233.828 -54.493,225.965" />
                                 <path id="path16"  class="body-muscle" data-container="body" data-html="true" data-toggle="tooltip" data-placement="top" th:attr="title=${'&lt;h5&gt;Peroneo largo&lt;/h5&gt;'}" d="m 443.242,476.133 c -7.449,27.18 -17.234,9.972 -12.121,-41.082 5.149,-51.067 46.926,-164.61 73.742,-305.285 l 11.153,4.492 c -22.188,70.547 -40.555,224.961 -72.774,341.875" />
@@ -1371,7 +1371,7 @@
         getUbigeoPeruLim();
         if(flag_form_populate){
           getCondicionesMejora();
-          setTimeout(()=>populateForm(), 700);
+          setTimeout(()=>populateForm(), 1000);
         }
       }
 
@@ -1542,15 +1542,17 @@
         $.ajax({
           type: 'POST',
           contentType: 'application/json',
-          url: _ctx + 'gestion/cliente/fitness/agregar',
+          url: _ctx + 'p/cliente/fitness/agregar',
           dataType: 'json',
           data: JSON.stringify(body),
           blockLoading: true,
           success: function (res) {
+            if(res == "-1"){
+              $.smallBox({});
+            }
             console.log(res);
           }, error: (xhr) => {
-            console.log(xhr);
-            //exception(xhr);
+            exception(xhr);
           }, complete: () => {
           }
         })
@@ -2035,6 +2037,7 @@
         document.querySelector('#FrecuenciaCardiaca').value = 177;
         document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
         document.querySelector('input[name="CondicionMejora"]').checked = true;
+
 
         //Page 3
         selectedMuscles = JSON.parse('[{"id":"path62","name":"Recto del abdomen"},{"id":"path60","name":"Recto del abdomen"},{"id":"path48","name":"Recto del abdomen"},{"id":"path46","name":"Recto del abdomen"},{"id":"path206","name":"Recto del abdomen"},{"id":"path208","name":"Recto del abdomen"},{"id":"path210","name":"Recto del abdomen"},{"id":"path212","name":"Recto del abdomen"},{"id":"path228","name":"Pectoral mayor"},{"id":"path306","name":"Trapecio inferior"},{"id":"path388","name":"Trapecio inferior"},{"id":"path408","name":"Dorsal ancho"}]');

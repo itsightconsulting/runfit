@@ -33,11 +33,11 @@
           border-radius: 20%;
       }
 
-      .txt-tar{
+      .txt-tar {
         margin-bottom: 5px !important;
       }
 
-      img.img-asesor-emp{
+      img.img-asesor-emp {
           border-radius: 50%;
           height: 100%;
           width: 100%;
@@ -61,25 +61,15 @@
           <div class="container">
             <div class="col-md-5">
               <div class="avatar-form">
-                <div class="avatar-form-content" id="ImagenPerfil"><img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/></div>
+                <div class="avatar-form-content" id="ImagenPerfil">
+                    <img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/>
+                    <i rel="tooltip" onclick="irARegistrosTrainer();" title="Clickea aquí para registrar un nuevo trainer para la empresa" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-arrow-circle-right"></i>
+                    </div>
               </div>
-              <fieldset class="rating hidden">
-                  <div class="rating-holder" style="padding: 0px;padding-left: 50px;">
-                      <div id="Valoracion" class="c-rating c-rating--regular" data-rating-value="">
-                          <button disabled="disabled">1</button>
-                          <button disabled="disabled">2</button>
-                          <button disabled="disabled">3</button>
-                          <button disabled="disabled">4</button>
-                          <button disabled="disabled">5</button>
-                      </div>
-                  </div>
-              </fieldset>
-              <p class="valoration hidden" id="RestanteValoracion"></p>
             </div>
             <div class="col-md-7">
               <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                <li class="hidden"><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
                 <li class="hidden"><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
                 <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
               </ul>
@@ -190,58 +180,15 @@
                     </div>
                   </form>
                 </div>
-                <div class="tab-pane fade" id="contact">
-                      <form id="frm_contacto">
-                          <h1 class="title-form">COMPÁRTENOS TUS DATOS PARA CONTACTARNOS LO ANTES POSIBLE</h1>
-                          <div class="form-group">
-                              <div class="pad-right-middle">
-                                  <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                                  <input id="Nombre" name="Nombre" class="form-control" type="text">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label>¿CUÁL ES TU SEXO?</label>
-                              <ul class="checks">
-                                  <li>
-                                      <div class="chk-content">Hombre
-                                          <input name="Sexo" type="radio" value="1"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                                  <li>
-                                      <div class="chk-content">Mujer
-                                          <input name="Sexo" type="radio" value="2"><span class="checkmark"></span>
-                                      </div>
-                                  </li>
-                              </ul>
-                          </div>
-                          <div class="form-group">
-                              <div class="pad-right-middle">
-                                  <label>CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                                  <input id="Correo" name="Correo" class="form-control" type="text">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="pad-right-middle">
-                                  <label>CELULAR<span class="obligatorio">*</span></label>
-                                  <input id="Movil" name="Movil" class="form-control" type="text">
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label>CUÉNTANOS EN QUÉ TE PODEMOS AYUDAR</label>
-                              <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
-                          </div>
-                          <button id="btnInfoContacto" class="btn btn-default btn-black" type="button">ENVIAR</button>
-                      </form>
-                  </div>
-                  <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
-                      <form>
-                          <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
-                          <div>
-                              <ul class="staff" id="Staffs">
-                              </ul>
-                          </div>
-                      </form>
-                  </div>
+                <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
+                    <form>
+                        <h1 class="title-form">DALE UN VISTAZO A NUESTROS ASESORES</h1>
+                        <div>
+                            <ul class="staff" id="Staffs">
+                            </ul>
+                        </div>
+                    </form>
+                </div>
                 <div class="tab-pane fade" id="service">
                       <h1 class="title-form">DALE UN VISTAZO A NUESTROS SERVICIOS </h1>
                       <form>
@@ -357,21 +304,10 @@
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
                           </div>
-                          <button id="btnElegir" class="btn btn-default btn-black hidden" type="button">INSCRÍBETE</button>
+                          <input type="hidden" id="HshTrainerId" th:value="${hshTrainerId}">
                       </form>
                   </div>
                 <hr>
-                <div th:if="${porAprobar}" class="form-group div-aprobacion">
-                    <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                    <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
-                    <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
-                    <div class="hidden" id="SeccionCorreccion">
-                        <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
-                        <div style="text-align: right">
-                            <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
-                                <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
-                        </div>
-                    </div>
                 </div>
               </div>
             </div>
@@ -459,10 +395,6 @@
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&amp;callback=initMap" type="text/javascript"></script>
     <script th:inline="javascript">
       let $perfil = {};
-      const btnElegir = document.getElementById('btnElegir');
-      const btnInfoContacto = document.getElementById('btnInfoContacto');
-      const btnAprobarTrainer = document.getElementById('btnAprobarTrainer');
-      const btnAbrirCajaNotificacion = document.getElementById('btnAbrirCajaNotificacion');
       const tabService = document.getElementById('service');
       const body = document.querySelector('body');
       let ccBancarias = [];
@@ -471,17 +403,7 @@
 
 
       (function () {
-          btnElegir.addEventListener('click', irARegistro);
-          btnInfoContacto.addEventListener('click', registrarContactoTrainer);
           tabService.addEventListener('click', clickListenerTabService);
-          if(btnAprobarTrainer !== null){
-              btnAprobarTrainer.addEventListener('click', aprobacionFinalTrainer);
-              btnAbrirCajaNotificacion.addEventListener('click', (e)=>{
-                  e.preventDefault();
-                  document.getElementById('SeccionCorreccion').classList.remove('hidden');
-              });
-          }
-
           init();
       })();
 
@@ -606,21 +528,13 @@
       }
 
       function init(){
+        instanceAllTooltip();
         getTrainer();
         checkFrom();
       }
 
       function checkFrom(){
-          if(btnAprobarTrainer === null){
-              document.querySelector('.rating').classList.remove('hidden');
-              document.querySelector('.valoration').classList.remove('hidden');
-              $('.nav-tabs a[href="#contact"]').parent()[0].classList.remove('hidden');
-          }else{
-              document.querySelector('#btnInfoContacto').classList.add('hidden');
-              document.querySelector('#btnElegir').classList.add('hidden');
-              document.querySelector('#txtSexo').classList.remove('hidden');
-              disabledForm('frm_contacto');
-          }
+        disabledForm('frm_contacto');
       }
 
       function checkTab(){
@@ -636,55 +550,6 @@
           }
       }
 
-      function irARegistro(){
-        const hshId = $perfil.hshTrainerId;
-        const trainerCorreo = csBtoa($perfil.correo).replace(/\=/g,'');
-        const fichaIds = $perfil.fichaClienteIds.split("|");
-        const svcId = csBtoa(selServicioId);
-        if(fichaIds.length==1){
-            const id = fichaIds[0];
-            if(id === "1"){
-                window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
-            }else if(id === "2"){
-                window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
-            }
-        }else{
-
-        }
-      }
-
-      function registrarContactoTrainer(){
-          const $frm = document.getElementById('frm_contacto');
-          const params = getFormData($($frm));
-          const inpSexo = document.querySelector('input[name="Sexo"]:checked');
-          params.sexo = inpSexo === null ? '': inpSexo.value;
-          params.correoTrainer = $perfil.correo;
-          const trainerId = $perfil.id;
-          $('#btnInfoContacto').attr('disabled', 'disabled');
-          const ttId = $perfil.tipoTrainerId
-          const url = _ctx + `p/contacto/trainer/registrar/${trainerId}?ttId=${ttId}`;
-          $.ajax({
-              type: 'POST',
-              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: url,
-              dataType: "json",
-              data: params,
-              blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
-                  }
-              },
-              error: function (xhr) {
-                  $('#btnInfoContacto').removeAttr('disabled');
-                  exception(xhr);
-              },
-              complete: function () {
-
-              }
-          });
-      }
-
       function aprobacionFinalTrainer(e){
           e.preventDefault();
           const hshId = document.getElementById('HshTrainerId').value;
@@ -694,7 +559,6 @@
               contentType: "application/x-www-form-urlencoded; charset=UTF-8",
               url: _ctx + 'p/trainer/ultima-aprobacion/'+hshId+'/'+correo,
               dataType: "json",
-              data: {tipoTrainerId: $perfil.tipoTrainerId},
               blockLoading: true,
               success: function (data, textStatus) {
                   if (textStatus == "success") {
@@ -738,18 +602,15 @@
       }
 
       function getTrainer(){
-        const urlArr = window.location.href.split("/");
-        const nomPag = urlArr[urlArr.length-1];
-        let extraPath = urlArr.some(p=>p==="ver" || p==="revision" ) ? 'sec/':'';
+        const hshTrainerId = document.getElementById('HshTrainerId').value;
         $.ajax({
           type: 'GET',
-          url: _ctx + 'p/trainer/get/'+extraPath+nomPag,
+          url: _ctx + 'p/trainer/get/sec/'+hshTrainerId,
           dataType: 'json',
           blockLoading: false,
           success: function (res) {
             $perfil = res;
             recrearPerfil(res);
-            getDisciplinasAsync(res.id);
             getServiciosAsync(res.id, res.tipoTrainerId);
             checkTab();
           }, error: (xhr) => {
@@ -762,26 +623,6 @@
         })
       }
 
-      function getDisciplinasAsync(trainerId){
-          if(btnAprobarTrainer === null) {
-              $.ajax({
-                  type: 'GET',
-                  url: _ctx + 'p/trainer/get/disciplinas/' + trainerId,
-                  dataType: 'json',
-                  noOne: true,
-                  success: function (res) {
-                      setDisciplinas(res);
-                  }, error: (xhr) => {
-                      if (xhr.status == 404) {
-                          window.location.href = _ctx + "p/recurso-no-encontrado";
-                      }
-                      exception(xhr);
-                  }, complete: () => {
-                  }
-              })
-          }
-      }
-
       function getServiciosAsync(trainerId, ttId){
           let mainUrl = _ctx+'p/trainer/get/servicios/'+ trainerId + '?tipoTrainerId='+ttId;
 
@@ -791,13 +632,6 @@
               dataType: 'json',
               noOne: true,
               success: function (res) {
-                  if($perfil.tipoTrainerId === TipoTrainer.DE_EMPRESA){
-                      const mines = $perfil.svcIds.split(",");
-                      res = mines.map(e=>
-                          res.find(s=>s.id===Number(e))
-                      );
-                  }
-
                   res.forEach(e => {
                     if(e.tarifarios) {
                         e.tarifarios = JSON.parse(e.tarifarios);
@@ -815,18 +649,6 @@
                   exception(xhr);
               }, complete: () => {
               }
-          })
-      }
-
-      function setDisciplinas(arr) {
-          const div = document.getElementById('Disciplina');
-          const objArr = Array.from(arr).map(e =>{ return {id: e.split(',')[0], nm: e.split(',')[1]}});
-          objArr.forEach(e=> {
-              div.appendChild(htmlStringToElement(`
-              <li>
-                  <p data-disc-id="${e.id}">${e.nm}</p>
-              </li>
-              `));
           })
       }
 
@@ -860,7 +682,6 @@
         document.querySelector('#Acerca').innerHTML = t.acerca.replace(/\r?\n/g, '<br />');
         let idiomas = t.idiomas.split("|");
         document.querySelector('#Idiomas').appendChild(htmlStringToElement('<ul class="list-description">'+idiomas.map(e=>`<li><p>${_idiomas.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        setValoracion(t.canPerValoracion, t.totalValoracion);
         document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
         document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
@@ -868,12 +689,12 @@
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
         document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        mostrarMediosPago(t.mediosPago, t.cuentas);
-
+        if(ttId !== 3){
+            mostrarMediosPago(t.mediosPago, t.cuentas);
+        }
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
-            document.getElementById('btnElegir').classList.remove('hidden');
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
             let est = document.querySelector('#Estudios');
@@ -900,7 +721,6 @@
         selServicioId = 0;
         checkMapaAndGaleria(t);
         checkRedesAndNota(t);
-        populateContactoTabAndObs(t);
       }
 
       function checkMapaAndGaleria(t){
@@ -967,21 +787,6 @@
           if(t.nota){
               document.getElementById('divNotaFinal').classList.remove('hidden');
               document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
-          }
-      }
-
-      function populateContactoTabAndObs(t){
-          if(flag_form_populate){
-              document.querySelector('#Nombre').value = t.nombreCompleto;
-              document.querySelector('#Correo').value = t.correo;
-              document.querySelector('#Movil').value = "987654321";
-              document.querySelector('#Mensaje').value = "Aloha";
-              document.querySelector('input[name="Sexo"]').checked = true;
-          }
-
-          const obs = document.getElementById('Obs');
-          if(obs != undefined){
-              obs.value = "Demostración";
           }
       }
 
@@ -1076,14 +881,11 @@
         }
       }
 
-      function setValoracion(canPerValoracion, totalValoracion){
-          const objValoracion = getValoracion(canPerValoracion, totalValoracion);
-          document.querySelector('#Valoracion').setAttribute('data-rating-value', objValoracion.aproximadaValoracion);
-          const res = document.getElementById('RestanteValoracion');
-          res.innerHTML = `
-                ${objValoracion.exactaValoracion.toFixed(1)}<span> (${objValoracion.valoraciones} valoraciones)</span>
-          `;
+      function irARegistrosTrainer(){
+        const arrUrl = window.location.href.split("/");
+        window.location.href = _ctx + "p/trainer/empresa/agregar/sub/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2];
       }
+
     </script>
   </body>
 </html>

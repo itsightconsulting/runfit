@@ -4,7 +4,6 @@ function imgToSvg () {
         var imgID = $img.attr('id');
         var imgClass = $img.attr('class');
         var imgURL = $img.attr('src');
-        //imgURL = "http://crossorigin.me/" + imgURL;
 
         jQuery.get(imgURL, function (data) {
             var $svg = jQuery(data).find('svg');
@@ -214,5 +213,10 @@ $(function() {
 
     fancybox();
     select_fave();
+<<<<<<< HEAD
     dayMonth();
 });
+=======
+    weekMonth();
+});
+>>>>>>> 58cea189d4809e88e8b2ebd35200e1c154e53c4e

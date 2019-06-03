@@ -38,6 +38,16 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     @Query(value = "UPDATE Trainer T SET T.flagRutinarioCe =?2 WHERE T.id = ?1")
     void updateFlagRutinarioCeById(Integer id, boolean flagRutinarioCe);
 
+    @Query(value = "SELECT tipo_trainer_id FROM trainer WHERE security_user_id = ?1", nativeQuery = true)
+    Integer getTipoTrainerIdById(Integer id);
+
+    @Query(value = "SELECT correo FROM trainer WHERE security_user_id = ?1", nativeQuery = true)
+    String getCorreoById(Integer id);
+
+    @Modifying
+    @Query(value = "update trainer set flag_activo=true where security_user_id in (select trainer_id from trainer_ficha where tr_emp_id = ?1)", nativeQuery = true)
+    void updateMultipleEstadoByTrEmpId(Integer id);
+
     /*@Query(value = "SELECT NEW Trainer(codigoTrainer, nombres, apellidos, apellidoMaterno) FROM Trainer T WHERE T.tipoUsuario.id = 2")
     List<Trainer> findAllTrainers();
 

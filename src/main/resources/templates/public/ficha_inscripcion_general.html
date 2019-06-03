@@ -1068,15 +1068,17 @@
     $.ajax({
       type: 'POST',
       contentType: 'application/json',
-      url: _ctx + 'gestion/cliente/fitness/agregar',
+      url: _ctx + 'p/cliente/fitness/agregar',
       dataType: 'json',
       data: JSON.stringify(body),
       blockLoading: true,
       success: function (res) {
+        if(res == "-1"){
+          $.smallBox({});
+        }
         console.log(res);
       }, error: (xhr) => {
-        console.log(xhr);
-        //exception(xhr);
+         exception(xhr);
       }, complete: () => {
       }
     })

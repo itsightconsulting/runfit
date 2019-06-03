@@ -69,7 +69,6 @@ public class TrainerDTO implements Serializable {
     @NotNull
     private String niveles;
     @Size(min = 10, max = 120)
-    @NotNull
     private String centroTrabajo;
     @Size(min = 10, max = 100)
     private String especialidades;
@@ -84,14 +83,12 @@ public class TrainerDTO implements Serializable {
     @Size(max = 700)
     private String miniGaleria;
     @Size(max = 400)
-    private String staffGaleria;
-    @Size(max = 400)
     private String nota;
     @Valid
     private List<ServicioDTO> servicios;
     @Valid
     private List<CuentaPago> cuentas;
-    @NotBlank
+    @Size(max = 20)
     private String mediosPago;
     @Size(max = 14)
     private String telefono;
@@ -119,5 +116,8 @@ public class TrainerDTO implements Serializable {
     @Positive
     @Max(value = 3)
     private Integer tipoTrainerId;
+
+    @Size(max = 100)
+    private String svcIds;
 
 }

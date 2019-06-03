@@ -249,4 +249,9 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
         String cuerpo = String.format(correo.getBody(), domainName, hashId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
     }
+
+    @Override
+    public Integer getTipoTrainerIdById(Integer id) {
+        return repository.getTipoTrainerIdById(id);
+    }
 }

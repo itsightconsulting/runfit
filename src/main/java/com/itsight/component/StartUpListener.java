@@ -919,8 +919,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     public void addingTipoTrainers(){
         if(tipoTrainerService.findOne(1) == null) tipoTrainerService.save(new TipoTrainer("Particular"));
-        if(tipoTrainerService.findOne(2) == null) tipoTrainerService.save(new TipoTrainer("Asociado a empresa"));
-        if(tipoTrainerService.findOne(3) == null) tipoTrainerService.save(new TipoTrainer("Empresa"));
+        if(tipoTrainerService.findOne(2) == null) tipoTrainerService.save(new TipoTrainer("Empresa"));
+        if(tipoTrainerService.findOne(3) == null) tipoTrainerService.save(new TipoTrainer("Asociado a empresa"));
+
     }
 
     public void addingUbPeru() throws IOException {

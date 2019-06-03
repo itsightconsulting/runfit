@@ -14,6 +14,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -57,10 +58,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, errors));
     }
-/*@Override
+
+    @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        String error = "handleMissingServletRequestParameter";
+        String error = "Handle missing servlet request parameter";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
-        //return super.handleMissingServletRequestParameter(ex, headers, status, request);
-    }*/
+    }
 }

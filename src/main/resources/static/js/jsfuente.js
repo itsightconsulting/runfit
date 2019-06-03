@@ -101,6 +101,7 @@ const TipoRutina = Object.freeze({
 const TipoTrainer = Object.freeze({
     PARTICULAR:   1,
     EMPRESA:   2,
+    DE_EMPRESA:   3,
 });
 
 const ResponseCode = Object.freeze({
@@ -645,6 +646,9 @@ function generateRandomMail(){
             return ;
         }
         xhr.setRequestHeader(header, token);
+        if(options.dataType === "xml"){
+            return;
+        }
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
         } else{
@@ -667,8 +671,13 @@ function generateRandomMail(){
     });
 
     $(document).ajaxComplete(function (e, xhr, options) {
+<<<<<<< HEAD
         if(options.dataType === "xml") {
             return ;
+=======
+        if(options.dataType === "xml"){
+            return;
+>>>>>>> 58cea189d4809e88e8b2ebd35200e1c154e53c4e
         }
         if (options.processData == false) {//WHEN FILES ARE BEING UPLOADED
             $('#bot1-Msg1').click();
@@ -723,4 +732,10 @@ function efectoImagenTransicion(){
 
 function getFileExtension(fileName){
     return fileName.slice(-(fileName.length-(fileName.lastIndexOf(".")+1)));
+}
+
+function instanceAllTooltip(){
+    document.querySelectorAll('i[rel="tooltip"]').forEach(e=>{
+        $(e).tooltip();
+    })
 }

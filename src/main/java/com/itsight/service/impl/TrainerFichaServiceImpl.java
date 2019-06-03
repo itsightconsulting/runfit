@@ -5,6 +5,7 @@ import com.itsight.domain.Correo;
 import com.itsight.domain.TrainerFicha;
 import com.itsight.domain.dto.PerfilObsDTO;
 import com.itsight.domain.dto.ServicioDTO;
+import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.dto.TrainerFichaDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
@@ -144,34 +145,34 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     }
 
     @Override
-    public TrainerFichaPOJO findByTrainerId(Integer trainerId) {
-        return repository.findByTrainerId(trainerId);
+    public TrainerFichaPOJO findByTrainerId(Integer id) {
+        return repository.findByTrainerId(id);
     }
 
     @Override
-    public String enviarCorreoPerfilObs(PerfilObsDTO perfilObs, Integer trainerId) {
+    public String enviarCorreoPerfilObs(PerfilObsDTO perfilObs, Integer id) {
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(PERFIL_POST_OBS.get());
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), perfilObs.getObs(), domainName, perfilObs.getHshTrainerId());
         emailService.enviarCorreoInformativo(correo.getAsunto(), perfilObs.getCorreo(), cuerpo);
-        repository.updateFlagFichaAceptadaByTrainerId(false, trainerId);
+        repository.updateFlagFichaAceptadaByTrainerId(false, id);
         return OBS_PERFIL_TRAINER.get();
     }
 
     @Override
-    public Boolean getFlagFichaAceptadaByTrainerId(Integer trainerId) {
-        return repository.getFlagFichaAceptadaByTrainerId(trainerId);
+    public Boolean getFlagFichaAceptadaByTrainerId(Integer id) {
+        return repository.getFlagFichaAceptadaByTrainerId(id);
     }
 
     @Override
-    public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer trainerId) throws JsonProcessingException {
-        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), trainerId);
+    public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer id) throws JsonProcessingException {
+        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
         //Actualizando servicios
         if(!trainerFicha.getServicios().isEmpty()){
             for(int i=0; i<trainerFicha.getServicios().size(); i++){
                 ServicioDTO s = trainerFicha.getServicios().get(i);
-                servicioService.actualizarByIdAndTrainerId(s.getId(), s.getNombre(), s.getDescripcion(), s.getIncluye(), s.getInfoAdicional(), s.getTarifarios(), trainerId);
+                servicioService.actualizarByIdAndTrainerId(s.getId(), s.getNombre(), s.getDescripcion(), s.getIncluye(), s.getInfoAdicional(), s.getTarifarios(), id);
             }
         }
         String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
@@ -180,6 +181,21 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), domainName, trainerFicha.getTrainerId());//TrainerId esta como hash
         emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
-        return Parseador.getEncodeHash32Id("rf-load-media", trainerId);
+        return Parseador.getEncodeHash32Id("rf-load-media", id);
+    }
+
+    @Override
+    public void actualizarStaffGaleriaByTrainerId(String staffGaleria, Integer id) {
+        repository.updateStaffGaleriaByTrainerId(staffGaleria, id);
+    }
+
+    @Override
+    public Integer getTrEmpIdById(Integer id) {
+        return repository.getTrEmpIdById(id);
+    }
+
+    @Override
+    public String obtenerCcsAndMediosPagoById(Integer trainerId) {
+        return repository.getCcsAndMediosPagoById(trainerId);
     }
 }

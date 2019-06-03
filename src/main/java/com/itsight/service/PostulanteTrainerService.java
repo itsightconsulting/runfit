@@ -10,4 +10,6 @@ public interface PostulanteTrainerService extends BaseService<PostulanteTrainer,
     void updateFlagRegistradoById(Integer id, boolean flag);
 
     void updateFlagCuentaConfirmada(Integer id, boolean flag, String receptor);
+
+    Integer getTipoTrainerIdById(Integer id);
 }

@@ -16,6 +16,7 @@ public class ViewConstant {
     public static final String MAIN_REGISTRO_TRAINER_EMPRESA= "public/registro_trainer_emp";
     public static final String MAIN_REGISTRO_TRAINER_DE_EMPRESA= "public/registro_trainer_de_emp";
     public static final String MAIN_PERFIL_TRAINER= "public/perfil_trainer";
+    public static final String MAIN_PERFIL_TRAINER_EMP= "public/perfil_trainer_emp";
     public static final String MAIN_REVISION_TRAINER= "public/revision_perfil";
     public static final String MAIN_ASESORES= "public/asesores";
 

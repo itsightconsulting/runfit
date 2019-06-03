@@ -5,7 +5,6 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-
-import java.sql.BatchUpdateException;
 
 import static com.itsight.util.Enums.ResponseCode.*;
 
@@ -121,7 +117,7 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ModelAndView handleErrorByGenericException(Exception ex) {
+    public ModelAndView handleErrorByGenericException(MissingServletRequestParameterException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
