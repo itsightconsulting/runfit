@@ -69,5 +69,8 @@ public class TrainerFichaDTO implements Serializable {
     private Double mapCircleRadio;
     @Size(max = 600)
     private String redes;
+    @Positive
+    @Max(3)
+    private Integer tipoTrainerId;
 
 }

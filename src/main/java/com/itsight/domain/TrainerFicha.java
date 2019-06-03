@@ -237,7 +237,7 @@ public class TrainerFicha implements Serializable {
     @Column(nullable = false)
     private UUID uuidFp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String extFp;
 
     @Column(nullable = true, unique = true, updatable = false)

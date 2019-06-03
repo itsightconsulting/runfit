@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.Msg.POSTULANTE_ULTIMA_ETAPA;
@@ -276,50 +277,29 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         obj.setTrainer(trainer);
         lstTf.add(obj);
         //Autogenerando uuids para imagenes que se registrarán after esta request
-        String[] extensiones = trainerFicha.getImgExt().split("@");
-        int extsLen = extensiones.length;
         RefUploadIds refUpload = new RefUploadIds();
-        refUpload.setUuidFp(extensiones[0]);//imgPerfil
-        refUpload.setNombresImgsGaleria();
-        refUpload.setStaffGaleria();
-        refUpload.setNombresCondSvcs();
+        refUpload.setUuidFp(UUID.randomUUID());//imgPerfil
 
-        //Seteando los servicios
         List<Servicio> servicios = new ArrayList<>();
-        if(trainerFicha.getServicios() != null && !trainerFicha.getServicios().isEmpty()){
-            for(int i=0; i<trainerFicha.getServicios().size(); i++){
-                Servicio servicio = new Servicio();
-                BeanUtils.copyProperties(trainerFicha.getServicios().get(i), servicio);
-                servicio.setTrainer(trainer);
-                servicio.setId(null);
-                servicios.add(servicio);
-            }
-        }
 
-        if(extsLen == 2){
-            refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
+        if(trainerFicha.getCantidadFiles() != null){
+            String[] cants = trainerFicha.getCantidadFiles().split("\\|");
+            int cantGaleria = Integer.parseInt(cants[0]);
+            int cantCondsSvcs = Integer.parseInt(cants[1]);
+            refUpload.setNombresImgsGaleria(cantGaleria);
             obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
-            refUpload.setNombresCondSvcs(extensiones[1]);//filesCondsSvcs|Se prueba si esta en la posición uno ya que puede que no se hayan subido fotos a la galeria pero sin condiciones de servicio
-            String[] noms = refUpload.getNombresCondSvcs().split("\\|");
-            for(int i=0; i<noms.length; i++){
-                if(!noms[i].equals("")){
-                    String[] fnNom = noms[i].split("\\.");
-                    servicios.get(i).setTycUUID(UUID.fromString(fnNom[0]));
-                    servicios.get(i).setTycExt("."+fnNom[1]);
+
+            //Seteando los servicios
+            if(trainerFicha.getServicios() != null && !trainerFicha.getServicios().isEmpty()){
+                for(int i=0; i<trainerFicha.getServicios().size(); i++){
+                    Servicio servicio = new Servicio();
+                    BeanUtils.copyProperties(trainerFicha.getServicios().get(i), servicio);
+                    servicio.setTrainer(trainer);
+                    servicio.setId(null);
+                    servicios.add(servicio);
                 }
             }
-        }else if(extsLen == 3){
-            refUpload.setNombresImgsGaleria(extensiones[1]);//imgsGaleria
-            obj.setMiniGaleria(refUpload.getNombresImgsGaleria());
-            refUpload.setNombresCondSvcs(extensiones[2]);//filesCondsSvcs
-            String[] noms = refUpload.getNombresCondSvcs().split("\\|");
-            for(int i=0; i<noms.length; i++){
-                if(!noms[i].equals("")){
-                    String[] fnNom = noms[i].split("\\.");
-                    servicios.get(i).setTycUUID(UUID.fromString(fnNom[0]));
-                    servicios.get(i).setTycExt("."+fnNom[1]);
-                }
-            }
+            refUpload.setNombresCondSvcs(cantCondsSvcs, servicios, trainerFicha.getIxsCondSvcFile());
         }
 
         //Servicios latest
@@ -328,7 +308,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
         //Img perfil
         obj.setUuidFp(refUpload.getUuidFp());
-        obj.setExtFp(refUpload.getExtFp());
+        obj.setExtFp(JPEG.get());
 
         //Registrando
         String trainerId = registrar(trainer, String.valueOf(ENTRENADOR.ordinal()));

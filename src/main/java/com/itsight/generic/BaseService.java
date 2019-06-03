@@ -13,12 +13,15 @@ import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.pojo.AwsStresPOJO;
+import com.itsight.util.Enums;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
+
+import static com.itsight.util.Enums.FileExt.JPEG;
 
 public interface BaseService<T, V> {
 
@@ -67,12 +70,11 @@ public interface BaseService<T, V> {
     default boolean uploadImageToAws3(MultipartFile file, AwsStresPOJO credentials, final Logger logger) {
         if (!file.isEmpty()) {
 
-            String[] splitNameFile = file.getOriginalFilename().split("\\.");
             String extension;
             if(file.getOriginalFilename().equals("blob")){
                 extension = "." + credentials.getExtension();
             }else{
-                extension = "." + splitNameFile[splitNameFile.length - 1];
+                extension = "." + file.getContentType().split("/")[1];
             }
 
             try {
@@ -138,12 +140,16 @@ public interface BaseService<T, V> {
         for(int i=0; i<files.length;i++){
             MultipartFile file = files[i];
             if (!file.isEmpty()) {
-                String[] splitNameFile = file.getOriginalFilename().split("\\.");
                 String extension;
+
                 if(file.getOriginalFilename().equals("blob")){
                     extension = "." + credentials.getExtension();
                 }else{
-                    extension = "." + splitNameFile[splitNameFile.length - 1];
+                    if(file.getContentType().startsWith("image")){
+                        extension = JPEG.get();
+                    }else{
+                        extension = "."+file.getContentType().split("/")[1];
+                    }
                 }
                 String objectName = uuids[i]+extension;
                 String fullPath = credentials.getPrefix()+objectName;

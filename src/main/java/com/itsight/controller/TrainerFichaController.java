@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 import static com.itsight.util.Enums.ResponseCode.REGISTRO;
@@ -107,6 +108,22 @@ public class TrainerFichaController extends BaseController {
             model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
             return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
         }
+    }
+
+    @GetMapping("/get/revision/s/{nomPag:.+}")
+    public @ResponseBody ModelAndView getTrainerRevisionByUsername(){
+        return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
+    }
+
+    @GetMapping("/get/sec/nm/{nomPag:.+}")
+    public @ResponseBody
+    ResponseEntity<TrainerFichaPOJO> getTrainerRevisionByUsername(@PathVariable(name = "nomPag") String nomPag) {
+        TrainerFichaPOJO t = trainerFichaService.findByNomPagPar(nomPag);
+        if(t != null) {
+            t.setHshTrainerId(Parseador.getEncodeHash32Id("rf-aprobacion", t.getId()));
+            return new ResponseEntity<>(t, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/subsanar/observaciones/perfil")
@@ -269,11 +286,10 @@ public class TrainerFichaController extends BaseController {
             trainerFicha.setCorreo(postulante.getCorreo());
             trainerFicha.setPostulanteTrainerId(postTraId);
             RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, trainerFicha.getTipoTrainerId() == 1 ? PARTICULAR.get() : EMPRESA.get(), null);
-            String gal = refsUpload.getNombresImgsGaleria().equals("") ? "" : "@"+refsUpload.getNombresImgsGaleria();
-            String svcsFiles = refsUpload.getNombresCondSvcs().equals("") ? "" : "@"+refsUpload.getNombresCondSvcs();
-            String staffFiles = refsUpload.getStaffGaleria().equals("") ? "" : "@"+refsUpload.getStaffGaleria();
+            String galFiles = refsUpload.getNombresImgsGaleria() == null ? "": "@"+refsUpload.getNombresImgsGaleria();
+            String svcsFiles = refsUpload.getNombresCondSvcs() == null ? "": "@"+refsUpload.getNombresCondSvcs();
+            String finalUploadNames = refsUpload.getUuidFp() + galFiles + svcsFiles;
 
-            String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp() +  gal + svcsFiles + staffFiles;
             return jsonResponse(
                         Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
                         finalUploadNames);
@@ -284,19 +300,17 @@ public class TrainerFichaController extends BaseController {
     @PutMapping("/subir/foto/perfil/{trainerHshId}/{rdmUUID}")
     public @ResponseBody String subirImagenPerfil(
             @RequestPart(name = "file") MultipartFile imgPerfil,
-            @RequestPart(name = "fileExtension", required = false) String extFile,
             @PathVariable(name = "trainerHshId") String hshTrainerId,
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return jsonResponse(trainerService.subirFile(imgPerfil, getDecodeHashId("rf-load-media", hshTrainerId), uuid, extFile));
+        return jsonResponse(trainerService.subirFile(imgPerfil, getDecodeHashId("rf-load-media", hshTrainerId), uuid, JPEG.get().substring(1)));
     }
 
     @PutMapping("/subir/fotos/perfil/{trainerHshId}/{rdmUUID}")
     public @ResponseBody String subirImagenesPerfil(
             @RequestPart(name = "files") MultipartFile[] imgs,
-            @RequestPart(name = "fileExtension", required = false) String extFile,
             @PathVariable(name = "trainerHshId") String hshTrainerId,
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return jsonResponse(trainerService.subirFiles(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid, extFile));
+        return jsonResponse(trainerService.subirFiles(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid, JPEG.get().substring(1)));
     }
 
     @GetMapping("/empresa/agregar/sub/{hshEmpTraId}/{hshPostTrainerId}")
@@ -334,12 +348,12 @@ public class TrainerFichaController extends BaseController {
                 trainerFicha.setCuentas(new ObjectMapper().readValue(ccsAndMediosPago[0], new TypeReference<List<CuentaPago>>(){}));
             }
             RefUploadIds refsUpload = trainerService.registrarPostulante(trainerFicha, PARA_EMPRESA.get(), empTraId);
-            String imgPerfil = refsUpload.getTrainerId()+ "/" + refsUpload.getUuidFp()+refsUpload.getExtFp();
+            String imgPerfil = refsUpload.getTrainerId()+ "/" + refsUpload.getUuidFp()+JPEG.get();
             String nomFull =  trainerFicha.getNombres()+" "+trainerFicha.getApellidos();
             String staffGaleria = imgPerfil  + "," + nomFull + "," + trainerFicha.getNomPag();
             //Obteniendo el id
             trainerFichaService.actualizarStaffGaleriaByTrainerId(staffGaleria, empTraId);
-            String finalUploadNames = refsUpload.getUuidFp()+refsUpload.getExtFp();
+            String finalUploadNames = refsUpload.getUuidFp().toString();
             return jsonResponse(
                     Parseador.getEncodeHash32Id("rf-load-media", refsUpload.getTrainerId()),
                     finalUploadNames);
