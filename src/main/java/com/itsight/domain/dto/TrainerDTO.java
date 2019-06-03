@@ -80,8 +80,10 @@ public class TrainerDTO implements Serializable {
     @Size(min = 6, max = 40)
     @NotNull
     private String nomPag;
-    @Size(max = 700)
-    private String miniGaleria;
+    @Size(max = 10)
+    private String cantidadFiles;
+    @Size(max = 50)
+    private String ixsCondSvcFile;
     @Size(max = 400)
     private String nota;
     @Valid
@@ -95,9 +97,6 @@ public class TrainerDTO implements Serializable {
     @Size(max = 14)
     @NotBlank
     private String movil;
-    @Size(min = 16, max = 240, message = "Debe subir una foto de perfil")
-    @NotNull(message = "Debe subir una foto de perfil")
-    private String imgExt;
     @Positive(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")
     @NotNull(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")
     @Max(36)

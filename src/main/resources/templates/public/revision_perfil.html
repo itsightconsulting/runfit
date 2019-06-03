@@ -107,7 +107,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
                         <li class="hidden"><a data-toggle="tab" href="#staff"><span>STAFF</span></a></li>
-                        <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
+                        <li class="hidden"><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="about">
@@ -844,11 +844,17 @@
 
     function actualizarPerfil(e){
         e.preventDefault();
-        const hshId = document.getElementById('HshTrainerId').value;
+        const inpHshId = document.getElementById('HshTrainerId');
+        const hshId = inpHshId.value === "" ? $perfil.hshTrainerId : inpHshId.value;
         const d = generateBodyToUpdate();
         d.trainerId = hshId;
         d.servicios = checkServicios();
+        d.tipoTrainerId = $perfil.tipoTrainerId;
         deleteSomePropertiesByTipoTraienerId(d);
+        if(!d.centroTrabajo){
+            delete d.centroTrabajo;
+        }
+
         $buttonName = "ACTUALIZAR Y ENVIAR";
         $.ajax({
             type: 'PUT',
@@ -862,9 +868,8 @@
                 if (textStatus == "success") {
                     if(!document.getElementById('FinalImagenRecortada').src.startsWith("https")){
                         uploadFotoPerfil(data);
-                    }else{
-                        reqSuccess({res:
-                            "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"},
+                    } else{
+                        reqSuccess("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias",
                              3600000);
                     }
                     document.querySelector('.div-actualizacion').classList.add('hidden');
@@ -922,7 +927,7 @@
             }
             var ff=new Blob([new Uint8Array(array)], {type: file.type});
             data.append("file", ff);
-            data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+            data.append("fileExtension", ".jpg");
 
             $.ajax({
                 type: 'PUT',
@@ -951,18 +956,22 @@
 
     function getTrainer(){
         const urlArr = window.location.href.split("/");
-        const nomPag = urlArr[urlArr.length-1];
-        let extraPath = urlArr.some(p=>p==="ver" || p==="revision" ) ? 'sec/':'';
+        const nomPagOrHshId = urlArr[urlArr.length-1];
+        let extraPath = urlArr.some(p=>p==="s") ? 'sec/nm/':'sec/';
         $.ajax({
             type: 'GET',
-            url: _ctx + 'p/trainer/get/'+extraPath+nomPag,
+            url: _ctx + 'p/trainer/get/'+extraPath+nomPagOrHshId,
             dataType: 'json',
             blockLoading: false,
             success: function (res) {
                 $perfil = res;
                 recrearPerfil(res);
-                getServiciosAsync(res.id);
+                if($perfil.tipoTrainerId !== TipoTrainer.DE_EMPRESA){
+                    getServiciosAsync(res.id);
+                    document.querySelector('li a[href="#service"]').parentElement.classList.remove('hidden');
+                }
                 checkTab();
+
             }, error: (xhr) => {
                 if(xhr.status == 404){
                     window.location.href = _ctx+"p/recurso-no-encontrado";
@@ -993,7 +1002,7 @@
         const divFT = document.querySelector('#FormasTrabajo');
         formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
 
-        if(ttId == TipoTrainer.PARTICULAR){
+        if(ttId == TipoTrainer.PARTICULAR || ttId == TipoTrainer.DE_EMPRESA){
             document.querySelector('#NombreFull').value = t.nombreCompleto;
             document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
             document.querySelector('#Especialidad').value = t.especialidad;
@@ -1068,7 +1077,7 @@
                                     <div class="avatar-form-min">
                                         <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${imgAndNom[0]}"/>
                                     </div>
-                                    <a href="${_ctx}p/trainer/${imgAndNom.length === 3 ? imgAndNom[2] : ''}" target="_blank"><p>${imgAndNom[1]}</p></a>
+                                    <a href="${_ctx}p/trainer/get/revision/s/${imgAndNom.length === 3 ? imgAndNom[2] : ''}" target="_blank"><p>${imgAndNom[1]}</p></a>
                                 </li>`
                 ))
             })
@@ -1407,7 +1416,9 @@
         obj.nota = document.getElementById('NotaFinal').value;
         obj.servicios = servicios;
         obj.mediosPago = $perfil.mediosPago;
-        obj.sexo = $perfil.tipoTrainerId == TipoTrainer.PARTICULAR ? document.querySelector('input[name="Sexo"]:checked').value : 3;
+        obj.sexo = $perfil.tipoTrainerId == TipoTrainer.PARTICULAR ||
+                    $perfil.tipoTrainerId == TipoTrainer.DE_EMPRESA
+                    ? document.querySelector('input[name="Sexo"]:checked').value : 3;
         let finalExtension = "";
         let finalImagenRecortada = document.getElementById('FinalImagenRecortada');
         if(finalImagenRecortada.src.startsWith("https")){
@@ -1443,10 +1454,13 @@
                 })
                 serviciosSm = JSON.parse(JSON.stringify(res));
                 servicios = res;
-                reconstruirServicios(servicios);
-                reconstruirTarifario(servicios[0].tarifarios);
-                tabService.querySelector('.servicio').click();
-                $('#Tarifarios .tarifa-svc')[0].click();
+                if(servicios.length>0){
+                    reconstruirServicios(servicios);
+                    reconstruirTarifario(servicios[0].tarifarios);
+                    tabService.querySelector('.servicio').click();
+                    $('#Tarifarios .tarifa-svc')[0].click();
+                }
+
             }, error: (xhr) => {
                 if (xhr.status == 404) {
                     window.location.href = _ctx + "p/recurso-no-encontrado";

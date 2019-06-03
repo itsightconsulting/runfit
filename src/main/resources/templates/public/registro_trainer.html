@@ -763,7 +763,7 @@
         function uploadFotoPerfil(d){
             //submit the form here
             const hshId = d.res;
-            const rdmUUID = d.rdm.slice(0,d.rdm.lastIndexOf("."));
+            const rdmUUID = d.rdm;
             let file = inpImgPerfil;
             if (file.files.length > 0) {
                 file = file.files[0];
@@ -776,7 +776,7 @@
                 }
                 var ff=new Blob([new Uint8Array(array)], {type: file.type});
                 data.append("file", ff);
-                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+                data.append("fileExtension", ".jpg");
 
                 $.ajax({
                     type: 'PUT',
@@ -806,7 +806,6 @@
         function getImgUuids(rdms){
             const all = rdms.split("@");
             let imgPerfil = all[0];
-            imgPerfil = imgPerfil.slice(imgPerfil, imgPerfil.lastIndexOf("."));
 
             let galeria ="";
 
@@ -834,7 +833,7 @@
                 file = file.files[0];
                 const data = new FormData();
                 data.append("files", file);
-                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+                data.append("fileExtension", ".jpg");
                 Array.from(inpGaleria.files).forEach(f=>{
                     data.append("files", f);
                 });
@@ -967,37 +966,27 @@
             const arrURL = window.location.href.split("/");
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
-            const nmImgPerfil = inpImgPerfil.files[0] == undefined ? "" : inpImgPerfil.files[0].name;
-            const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
 
-            const extsImgsGaleria = Array.from(inpGaleria.files)
-                                        .map(e=>{
-                                            const nm = e.name;
-                                            return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))
-                                        }).join("|");
 
+            //TYC FILES
             servicios.forEach(v=>{
-                const exists = termConSvc.some(w=>w.servicioId===v.id)
+                const exists = termConSvc.some(w=>w.servicioId===v.id);
                 if(!exists){
                     termConSvc.push({servicioId: v.id});
                 }
-
             })
-            termConSvc.sort((a, b) => a.servicioId < b.servicioId ? -1 : 1);
 
-            const extsCondSvcs = termConSvc
-                                .map(e=>{
-                                    if(e.file === undefined){
-                                        return "";
-                                    }
-                                    const nm = e.file.name;
-                                    return nm.slice(-(nm.length-(nm.lastIndexOf(".")+1)))
-                                }).join("|");
-            const exts = {};
-            exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
-            exts.extsImgsGaleria = extsImgsGaleria !== "" ? "@extsImgsGaleria:"+extsImgsGaleria : "";
-            exts.extsCondSvcs = extsCondSvcs !== "" ? "@extsCondSvcs:"+extsCondSvcs : "";
-            body.imgExt = exts.extImgPerfil + exts.extsImgsGaleria + exts.extsCondSvcs;
+            const tycFiles = termConSvc.filter(t=>typeof t.file !== 'undefined');
+            if(tycFiles.length>0){
+                termConSvc.sort((a, b) => a.servicioId < b.servicioId ? -1 : 1);
+                const ixsCondSvcFile = termConSvc.map((t, ix) => typeof t.file !== 'undefined' ? ix : "").filter(e => e !== "").join("|");
+                body.ixsCondSvcFile = ixsCondSvcFile
+            }
+            //TYC FILES END
+
+            //Cantidad files de galeria y de t&c's
+            body.cantidadFiles = inpGaleria.files.length+"|"+tycFiles.length;
+
             if(document.getElementById('Coordenadas') != null){
                 body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
             }
@@ -1022,7 +1011,7 @@
                     bridgeMultipart: true,
                     success: (d)=> {
                         //Subir imgen
-                        if(extsImgsGaleria === "" && extsCondSvcs === ""){
+                        if(inpGaleria.files.length + tycFiles.length === 0){
                             uploadFotoPerfil(d, body);
                         }else{
                             uploadFotosPerfil(d, body)

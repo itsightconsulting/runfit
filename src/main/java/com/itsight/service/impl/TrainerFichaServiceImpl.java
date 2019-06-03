@@ -11,6 +11,7 @@ import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.TrainerFichaRepository;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -167,7 +168,7 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     @Override
     public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer id) throws JsonProcessingException {
-        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(), trainerFicha.getImgExt(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
+        repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
         //Actualizando servicios
         if(!trainerFicha.getServicios().isEmpty()){
             for(int i=0; i<trainerFicha.getServicios().size(); i++){
@@ -175,12 +176,15 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
                 servicioService.actualizarByIdAndTrainerId(s.getId(), s.getNombre(), s.getDescripcion(), s.getIncluye(), s.getInfoAdicional(), s.getTarifarios(), id);
             }
         }
-        String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
-        //Obtener cuerpo del correo
-        Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());
-        //Envio de correo
-        String cuerpo = String.format(correo.getBody(), domainName, trainerFicha.getTrainerId());//TrainerId esta como hash
-        emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+
+        if(trainerFicha.getTipoTrainerId() != Enums.TipoTrainer.PARA_EMPRESA.get()){
+            String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+            //Obtener cuerpo del correo
+            Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());
+            //Envio de correo
+            String cuerpo = String.format(correo.getBody(), domainName, trainerFicha.getTrainerId());//TrainerId esta como hash
+            emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+        }
         return Parseador.getEncodeHash32Id("rf-load-media", id);
     }
 

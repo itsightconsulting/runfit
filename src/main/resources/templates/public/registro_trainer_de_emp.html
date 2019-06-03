@@ -497,7 +497,7 @@
         function uploadFotoPerfil(d){
             //submit the form here
             const hshId = d.res;
-            const rdmUUID = d.rdm.slice(0,d.rdm.lastIndexOf("."));
+            const rdmUUID = d.rdm;
             let file = inpImgPerfil;
             if (file.files.length > 0) {
                 file = file.files[0];
@@ -510,7 +510,7 @@
                 }
                 var ff=new Blob([new Uint8Array(array)], {type: file.type});
                 data.append("file", ff);
-                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
+                data.append("fileExtension", ".jpg");
 
                 $.ajax({
                     type: 'PUT',
@@ -707,12 +707,7 @@
         function sendForm(){
             const body = generateBody();
             const hshEmpTrainerId = document.getElementById('HshEmpTrainerId').value;
-            const nmImgPerfil = inpImgPerfil.files[0] == undefined ? "" : inpImgPerfil.files[0].name;
-            const extImgPerfil = nmImgPerfil.slice(-(nmImgPerfil.length-(nmImgPerfil.lastIndexOf(".")+1)));
 
-            const exts = {};
-            exts.extImgPerfil = "extImgPerfil:"+extImgPerfil;
-            body.imgExt = exts.extImgPerfil;
             if(document.getElementById('Coordenadas') != null){
                 body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
             }
@@ -819,6 +814,10 @@
                 document.getElementById('btnElegirFicha').click();
                 setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
             }, 500);
+
+            setTimeout(()=>{
+                document.querySelector('input[name="SvcCheck"]').checked = true;
+            }, 1000)
         }
 
         function populateTabContacto(t, t1, t2){

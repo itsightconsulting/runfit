@@ -198,4 +198,15 @@ public class Enums {
             return msg;
         }
     }
+
+    public enum FileExt{
+        JPEG(".jpg"),
+        PDF(".pdf");
+
+        final String id;
+
+        FileExt(String id){this.id = id;}
+
+        public String get(){return id;}
+    }
 }
