@@ -688,7 +688,11 @@ function instanciarDatosFitnessCliente(){
                     });
                 } else {
                     if(data.id != 0) {
-                        FichaSet.instanciarDatosFicha(data);
+                        if($rutina.tipoRutina !== TipoRutina.GENERAL){
+                            FichaSet.instanciarDatosFicha(data);
+                        }else{
+                            FichaSet.setTotalSemanas();
+                        }
                     }
                 }
             }
@@ -966,7 +970,7 @@ function instanciarMiniPlantillas(){
                         timeout: 4500,
                         color: "alert",
                     });
-                }else{
+                } else {
                     let rawHTML = '';
                     rawHTML = '<div class="container-fluid padding-0">';
                     data.forEach(cat => {
@@ -1007,11 +1011,21 @@ function separandoEspecificacionesSubCategoriaPorNivel(subCat){
         switch (esp.nivel){case 1:n1.push(esp);break;case 2:n2.push(esp);break;default:n3.push(esp);break;}
     });
     generalNiveles.push(n1, n2, n3);
-    return generandoEspecificacionesPorNiveles(generalNiveles);
+    if(subCat.id !== 10){
+        return generandoEspecificacionesPorNiveles(generalNiveles);
+    }
+    return generandoEspecificacionesPorNiveles(generalNiveles, subCat.id);
+
 }
 
-function generandoEspecificacionesPorNiveles(generalEspSubCat){
+function generandoEspecificacionesPorNiveles(generalEspSubCat, subCatId){
     let htmlRaw = '';
+    if(subCatId){
+        console.log(generalEspSubCat);
+        generalEspSubCat = generalEspSubCat.slice(0, 1);
+        generalEspSubCat.forEach(e=>e.forEach((x,i)=>i!==0 ? delete e[i] : ""));
+        generalEspSubCat[0][0].nombre = "Glúteos";
+    }
     generalEspSubCat.forEach((nivel, i)=>{
         let iconoRepetido = obtenerIconoRepetido(i+1,'<i class="text-warning fa fa-star"></i>');
         //lvl-${i} de acuerdo al nivel cambia el color del icono

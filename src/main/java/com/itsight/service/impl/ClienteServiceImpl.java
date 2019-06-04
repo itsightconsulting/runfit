@@ -271,7 +271,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
         //Agregandolo a la red de su entrenador
         if(pickTrainer){
-            redFitnessService.save(new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId())));
+            RedFitness rf = new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId()));
+            rf.setPredeterminadaFichaId(cliente.getPredetFichaId());
+            redFitnessService.save(rf);
             emailService.enviarCorreoInformativo("Nuevo cliente Runfit", cliente.getCorreoTrainer(), "<h1>Tienes un nuevo cliente</h1>");
         }
         //Enviando correo al nuevo cliente

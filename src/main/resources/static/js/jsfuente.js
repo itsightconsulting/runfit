@@ -98,6 +98,11 @@ const TipoRutina = Object.freeze({
     COMPETITIVA:  3,
 });
 
+const TipoFicha = Object.freeze({
+    RUNNING:   1,
+    GENERAL:   2,
+});
+
 const TipoTrainer = Object.freeze({
     PARTICULAR:   1,
     EMPRESA:   2,
@@ -678,7 +683,7 @@ function generateRandomMail(){
                 if(!options.bridgeMultipart){
                     $('#btnGuardar').removeAttr('disabled');
                     $('#btnGuardar').text($buttonName);
-                }else{
+                } else {
                     $('#btnGuardar').text($buttonName);
                 }
             }else{

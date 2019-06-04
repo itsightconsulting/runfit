@@ -26,6 +26,7 @@ public class ClienteDTO implements Serializable  {
     private String password;
 
     private Integer servicioId;
+    private Integer predetFichaId;
     @Valid
     private ClienteFitnessDTO cliFit;
 

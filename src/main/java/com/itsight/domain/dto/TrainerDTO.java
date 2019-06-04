@@ -97,10 +97,9 @@ public class TrainerDTO implements Serializable {
     @Size(max = 14)
     @NotBlank
     private String movil;
-    @Positive(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")
-    @NotNull(message = "Debe seleccionar una ficha en la parte final de la pestaña de servicios")
-    @Max(36)
-    private Integer fichaClienteId;
+    @NotBlank(message = "Debe seleccionar por lo menos una ficha en la parte final de la pestaña de servicios")
+    @Size(max=36, message = "Fichas seleccionadas exceden el tamaño máximo permitido")
+    private String fichaClienteIds;
     @Size(max = 100)
     private String mapCoordenadas;
     @Digits(integer = 5, fraction = 2)

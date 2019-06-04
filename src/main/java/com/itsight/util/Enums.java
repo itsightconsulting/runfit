@@ -67,9 +67,10 @@ public class Enums {
 
     public enum TipoRutina{
         RUNNING(1),
-        TRIATLON(2),
-        CICLISMO(3),
-        OTROS(4);
+        GENERAL(2),
+        TRIATLON(3),
+        CICLISMO(4),
+        OTROS(5);
 
         final int id;
 

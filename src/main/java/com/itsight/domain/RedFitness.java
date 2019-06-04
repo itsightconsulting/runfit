@@ -74,6 +74,8 @@ public class RedFitness implements Serializable {
     @JsonSerialize(using=JsonDateSimpleSerializer.class)
     @JsonDeserialize(using=JsonDateSimpleDeserializer.class)
     private Date fechaFinalPlanificacion;
+    @Column(nullable = false)
+    private Integer predeterminadaFichaId;
 
     public RedFitness(){
     }

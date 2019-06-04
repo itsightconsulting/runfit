@@ -282,13 +282,19 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void insertAEspecificacionSubCategoriaEjercicio(){
+        Integer[] flexSubCatIds = new Integer[]{10,11,12,13,14,15,16,17,18,19,20};
+        List<Integer> lstFlexSubCatIds  = Arrays.asList(flexSubCatIds);
         for(SubCategoriaEjercicio sce:subCategoriaEjercicioService.findAllByOrderById()){
-            for(int i=1; i<4;i++){
-                if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Acondicionamiento", sce.getId(),i, true));
-                if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("General",sce.getId(),i, true));
-                if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Específica",sce.getId(),i, true));
-                if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Precompetitiva",sce.getId(),i, true));
-                if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Competitiva",sce.getId(),i, true));
+            if(lstFlexSubCatIds.contains(sce.getId())){
+                if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("General", sce.getId(),1, true));
+            }else{
+                for(int i=1; i<4;i++){
+                    if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Acondicionamiento", sce.getId(),i, true));
+                    if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("General",sce.getId(),i, true));
+                    if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Específica",sce.getId(),i, true));
+                    if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Precompetitiva",sce.getId(),i, true));
+                    if(especificacionSubCategoriaService.findOne(index++) == null) especificacionSubCategoriaService.save(new EspecificacionSubCategoria("Competitiva",sce.getId(),i, true));
+                }
             }
         }
     }
@@ -381,17 +387,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         mapEjercicios.put(8, "Flexiones de brazos tradicionales");
         mapEjercicios.put(9, "Crab walk");
         mapEjercicios.put(10, "Bear crawl o paso del oso");
-
-        Integer index = 1;
-        /*for(SubCategoriaVideo sce: subCategoriaVideoService.findAll()){
-            int i = sce.getId();
-            Random rd = new Random();
-            int iteraciones = rd.nextInt(10)+1;
-            for(int ii=0; ii<iteraciones;ii++){
-                int randomInt = rd.nextInt(10)+1;
-                if(videoService.findOne(index++) == null) videoService.save(new Video(mapEjercicios.get(randomInt), "/1/36a25880-ed66-47f1-ac79-8d2ee5fbf418.mp4", "C://WorkoutAppRepository/Videos/1/36a25880-ed66-47f1-ac79-8d2ee5fbf418.mp4","2.19 MB","00:00:14", UUID.fromString("36a25880-ed66-47f1-ac79-8d2ee5fbf418"), i, true));
-            }
-        }*/
     }
 
     public void addingObjectivesTable() {
@@ -1075,7 +1070,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             agregandoPorcentajesBaseTrainer(trainer);
             if(i<4)//Para al momento de crear los clientes estos pertenezcan a la red de estos trainers
                 lstTrainerRedFitness.add(new Trainer(trainer.getId()));
-
         }
         return lstTrainerRedFitness;
     }
@@ -1192,8 +1186,14 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setFitElementos(fitElementos);
             cliFit.setCliente(cli);
             clienteFitnessService.save(cliFit);
-            if(i<4)
-                trainers.forEach(t -> redFitnessService.save( new RedFitness(t.getId(), cli.getId(), "")));
+            if(i<4){
+                trainers.forEach(t ->{
+                    RedFitness rf = new RedFitness(t.getId(), cli.getId(), "");
+                    rf.setPredeterminadaFichaId(1);
+                    redFitnessService.save(rf);
+                });
+            }
+
         }
     }
 

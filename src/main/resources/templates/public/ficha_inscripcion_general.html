@@ -220,7 +220,7 @@
                 </li>
                 <li>
                   <div class="form-group more-inputs">
-                    <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
+                    <label>Indícanos por favor tu peso(KG) y talla(CM)<span class="obligatorio">*</span></label>
                     <input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/>
                     <input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/>
                     <input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
@@ -1064,6 +1064,7 @@
 
   function sendForm(){
     const body = generateBody();
+    body.predetFichaId = TipoFicha.GENERAL;
 
     $.ajax({
       type: 'POST',

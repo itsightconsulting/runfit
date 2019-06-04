@@ -32,12 +32,14 @@ public class RedFitCliDTO implements Serializable {
 
     private Integer cliId;
 
+    private Integer predeterminadaFichaId;
+
     private String cliCorreo;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date cliFechaNacimiento;
 
-    public RedFitCliDTO(Integer id, String nota, String msgCliente, int contadorRutinas, int estadoPlan, Date fechaFinalPlanificacion, String cliNombreCompleto, String cliMovil, Date cliFechaUltimoAcceso, Integer cliId, String cliCorreo, Date cliFechaNacimiento) {
+    public RedFitCliDTO(Integer id, String nota, String msgCliente, int contadorRutinas, int estadoPlan, Date fechaFinalPlanificacion, String cliNombreCompleto, String cliMovil, Date cliFechaUltimoAcceso, Integer cliId, String cliCorreo, Date cliFechaNacimiento, Integer predeterminadaFichaId) {
         this.id = id;
         this.nota = nota;
         this.msgCliente = msgCliente;
@@ -50,5 +52,6 @@ public class RedFitCliDTO implements Serializable {
         this.cliId = cliId;
         this.cliCorreo = cliCorreo;
         this.cliFechaNacimiento = cliFechaNacimiento;
+        this.predeterminadaFichaId = predeterminadaFichaId;
     }
 }

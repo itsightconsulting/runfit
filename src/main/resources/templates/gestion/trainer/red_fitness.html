@@ -166,6 +166,39 @@
     </div>
 </div>
 <!-- END MODAL CREAR MINI RUTINA -->
+<!-- MODAL PARA RUTINAS DE TIPO GENERAL -->
+<div class="modal fade" id="myModalRutGen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header txt-color-white bg-color-teal">
+                <button type="button" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong>Generación de rutina</strong></h4>
+
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <div class="row">
+                    <div class="col col-md-12">
+                        <div class="col col-md-6">
+                            <label for="RutFechaInicio">Fecha Inicio:</label>
+                            <input id="RutFechaInicio" type="date" class="form-control">
+                        </div>
+                        <div class="col col-md-6">
+                            <label for="RutFechaFinal">Fecha Inicio:</label>
+                            <input id="RutFechaFinal" type="date" class="form-control">
+                        </div>
+                        <div style="" class="row text-center col-md-12 padding-top-10">Total semanas: <span id="MacroTotalSemanas">0</span></div>
+                    </div>
+                </div>
+                <div id="spRaw4" class="form-group">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="crearNuevaRutinaGeneral()" class="btn btn-primary">CREAR RUTINA</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL PARA RUTINAS DE TIPO GENERAL -->
 <!-- END MODALS -->
 <!-- END MAIN PANEL -->
 <!-- PAGE FOOTER -->
@@ -177,13 +210,19 @@
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 <script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/programa-entrenamiento.js}+'?'+${version}"></script>
+<!--<script th:src="@{/js/programa-entrenamiento.js}+'?'+${version}"></script>-->
 <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/rutina.js}+'?'+${version}"></script>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const fInitRutGen = document.getElementById('RutFechaInicio');
+    const fFinRutGen = document.getElementById('RutFechaFinal');
+
     let $table = $('#tblRegistros');
     let $index = $('#Id');
     let $nota = '';
+    let objForRutina = {};
     const modalPlantillas = document.querySelector('#myModalPlantillas');
 
     $(function () {
@@ -192,9 +231,11 @@
 
         pageSetUp();
         listarRegistros();
+        init();
 
+        fInitRutGen.addEventListener('change', setTotalSemanas);
+        fFinRutGen.addEventListener('change', setTotalSemanas);
         modalPlantillas.addEventListener('click', eventosClickModalPlantillas);
-
         $table[0].addEventListener('focusout', eventosGeneralesFocusOut);
 
         $("#btnNuevo").click(function () {
@@ -210,6 +251,22 @@
         });
 
     });
+
+    function init(){
+        const dt = new Date();
+
+        let dateToString = d => `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
+        $('#RutFechaInicio').val(dateToString(dt));
+        $('#RutFechaFinal').val(dateToString(dt));
+    }
+
+    function setTotalSemanas(){
+        const fechaInicio = parseFromStringToDate(fInitRutGen.value);
+        const fechaFin = parseFromStringToDate(fFinRutGen.value);
+        const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
+        const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
+        document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+    }
 
     function eventosGeneralesFocusOut(e){
 
@@ -241,8 +298,6 @@
                             //Actualizando campo nota popover
                             e.target.parentElement.parentElement.querySelector('.ico-nota').setAttribute('data-content', nota);
                             e.target.parentElement.remove();
-
-
                         }
                     },error: (xhr)=>{
                         exception(xhr);
@@ -267,6 +322,7 @@
                 sidePagination: 'client',
                 pageSize: 10,
                 onLoadSuccess: d => {
+                    console.log(d);
                     //Activando los popover y tooltips
                     d.forEach(r=>{
                         r.estadoPlan == 1 ? ++$countSinPlan : '';
@@ -306,9 +362,19 @@
         }
 
         switch(row.estadoPlan) {
+
             case EstadoPlan.SIN_PLAN:
+                let fnNuevoRutina = "crearNuevaRutina";
+                if(row.predeterminadaFichaId == TipoFicha.GENERAL){
+                    objForRutina.redFitId = row.id;
+                    objForRutina.cliId = row.cliId;
+                    objForRutina.ix = index;
+                    objForRutina.contadorRutinas = row.contadorRutinas;
+                    fnNuevoRutina = "abrirModalRutinaGen";
+                }
                 opciones += `<a data-toggle="modal" data-target="#myModalPlantillas"  onclick='javascript:asignarPlantilla(${row.id}, ${row.cliId},"${row.cliCorreo}",${index});' title='Asignar Rutina'><i class='fa fa-file-text fa-2x'></i></a> &nbsp &nbsp
-                             <a href='#' onclick='javascript:crearNuevaRutina(${row.id},${row.cliId},${index}, ${row.contadorRutinas}, ${"\""+btoa(row.cliFechaNacimiento)+"\""}, ${"\""+btoa(row.cliNombreCompleto)+"\""});' title='Crear Rutina'><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`
+                             <a href='#' onclick='javascript:${fnNuevoRutina}(${row.id},${row.cliId},${index}, ${row.contadorRutinas}, ${"\""+btoa(row.cliFechaNacimiento)+"\""}, ${"\""+btoa(row.cliNombreCompleto)+"\""});' title='Crear Rutina'><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`
+
                 break;
             case EstadoPlan.EN_REVISION:
                 opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
@@ -329,6 +395,78 @@
         }
         opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="La revisión de la rutina aún no ha sido aprobada" rel="tooltip"><i class="fa fa-send-o fa-2x"></i></a> &nbsp &nbsp`;
         return opciones;
+    }
+
+    function abrirModalRutinaGen(){
+        $('#myModalRutGen').modal('show');
+    }
+
+    function crearNuevaRutinaGeneral(){
+        const rutina = getBasicosNueRutGen();
+        rutina.redFitnessId = objForRutina.redFitId;
+        rutina.clienteId = objForRutina.cliId;
+        rutina.control = {};
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: _ctx + "gestion/rutina/nueva/general",
+            dataType: "json",
+            bridgeMultipart: false,
+            data: JSON.stringify(rutina),
+            success: function (data) {
+                const id = data.res;
+                const rn = data.rdm;
+                window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn;//res.id para el caso = redFitnessId;
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function () {}
+        })
+
+    }
+
+    function getBasicosNueRutGen(){
+        const $chelmoMacro = [];
+        const totalSemanas = $('#MacroTotalSemanas').text().trim();
+        //Semanas
+        const fIni = parseFromStringToDate(document.querySelector('#RutFechaInicio').value);
+        let fFin = parseFromStringToDate(document.querySelector('#RutFechaFinal').value);
+        console.log(fIni, fFin);
+        for(let i=0; i<totalSemanas;i++){
+            const refDia = fIni.getDay();
+            let diasParaFull = refDia==0?0:7-refDia;
+            if(i == 0){
+                const objFirtsWeek = {};
+                objFirtsWeek.fechaInicio = moment(fIni).add((i*7), 'd').format('DD/MM/YYYY');
+                objFirtsWeek.fechaFin = moment(fIni).add((i*7)+diasParaFull, 'd').format('DD/MM/YYYY');
+                objFirtsWeek.flagFull = refDia == 1 ? true : false;
+                const literales = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];//Artificio temporal(2 domingos)
+                const dias = [];
+                for(let i=0; i<diasParaFull+1; i++){
+                    const fechaParse = parseFromStringToDate2(moment(fIni).add((i), 'd').format('DD/MM/YYYY'));
+                    dias.push({fecha: moment(fIni).add((i), 'd').format('DD/MM/YYYY'), dia: fechaParse.getDate(), flagDescanso: false, literal: literales[fechaParse.getDay()], diaLiteral: fechaParse.getDate() + " "+ literales[fechaParse.getDay()]});
+                }
+                objFirtsWeek.lstDia = dias;
+                $chelmoMacro.push(new Semana(objFirtsWeek))
+            }else{
+                $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
+            }
+        }
+
+        //Modificando fecha fin de la ultima semana en caso esta no se encuentre mapeada con los 7 días calendarios
+        $chelmoMacro[totalSemanas-1].fechaFin = fFin;
+        //Rutina
+        const r = {};
+        r.fechaInicio = fIni;
+        r.fechaFin = fFin;
+        r.dias = moment(fFin).diff(fIni, 'days') + 1;
+        r.meses = Math.floor(r.dias/30);
+        r.anios = Math.floor(r.meses/12);
+        r.totalSemanas = Number(totalSemanas);
+        r.semanas = $chelmoMacro;
+        return r;
     }
 
     function crearNuevaRutina(id, clienteId, index, contadorRutinas, fechaNac, cliFullNombre){

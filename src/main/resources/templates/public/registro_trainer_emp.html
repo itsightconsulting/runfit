@@ -557,21 +557,6 @@
                                       </div>
                                       <hr>
                                       <input type="file" id="inpCondServicio" class="hide">
-                                      <button data-ficha-id="0" style="margin-bottom: 10px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
-                                      <input type="hidden" id="FichaClienteId"/>
-                                      <div class="row collapse" id="FichasDisponibles">
-                                          <div class="col col-md-12 text-center" style="padding-bottom:15px">
-                                              <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                  <h6>Standard</h6>
-                                                  <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
-                                              </div>
-                                              <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                  <h6>Running</h6>
-                                                  <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
-                                              </div>
-                                              <hr>
-                                          </div>
-                                      </div>
                                       <div class="form-group">
                                           <label>NOTA
                                               <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
@@ -1626,11 +1611,6 @@
 
             document.querySelector('#inpTermCond').checked = true;
 
-            setTimeout(()=>{
-                document.getElementById('btnElegirFicha').click();
-                setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
-            }, 500);
-
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
             Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
         }
@@ -1653,7 +1633,7 @@
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
             obj.centroTrabajo = getValuesByClass('inp-ct');
-            obj.fichaClienteId = Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
+            obj.fichaClienteIds = "0";
             const rdmNum = Math.floor(Math.random() * 100);
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.servicios = servicios;

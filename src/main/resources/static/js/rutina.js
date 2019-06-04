@@ -149,11 +149,13 @@ class Rutina {
         instanciarTooltips();
         RutinaOpc.instanciarCopiarSemanaCompleta();
         RutinaOpc.instanciarFlagActivo();
-        Indicadores.instanciarIndicador0();
-        Indicadores.instanciarIndicadores1();
-        Indicadores.instanciarIndicadores2();
-        Indicadores.instanciarKilometrajes();
-        Indicadores.instanciarPorcentajeAvance();
+        if($rutina.tipoRutina !== TipoRutina.GENERAL){
+            Indicadores.instanciarIndicador0();
+            Indicadores.instanciarIndicadores1();
+            Indicadores.instanciarIndicadores2();
+            Indicadores.instanciarKilometrajes();
+            Indicadores.instanciarPorcentajeAvance();
+        }
     }
 
     agregarNuevaSemana() {

@@ -45,6 +45,10 @@
           max-width: 141px !important
       }
 
+      .MessageBoxButtonSection {
+        height: 40px !important;
+      }
+
   </style>
 </head>
   <body>
@@ -641,6 +645,7 @@
         const trainerCorreo = csBtoa($perfil.correo).replace(/\=/g,'');
         const fichaIds = $perfil.fichaClienteIds.split("|");
         const svcId = csBtoa(selServicioId);
+
         if(fichaIds.length==1){
             const id = fichaIds[0];
             if(id === "1"){
@@ -649,7 +654,19 @@
                 window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
             }
         }else{
+            $.SmartMessageBox({
+                title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Workout Notification</b>",
+                content: "<div style='font-size: 1.3em'>Antes de ir al formulario de registro, deseamos saber,¿El servicio elegido está relacionado con la disciplina de running?</div>",
+                buttons: '[NO][SI]'
+            }, function (ButtonPressed) {
+                if(ButtonPressed == 'SI'){
+                    window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+                }
 
+                if(ButtonPressed == 'NO'){
+                    window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+                }
+            })
         }
       }
 

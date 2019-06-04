@@ -89,6 +89,11 @@ public class Parseador {
 		return rfIdHash.encode(id);
 	}
 
+	public static String getEncodeHash16Id(String schema,  Integer id){
+		Hashids rfIdHash = new Hashids(schema, 16);
+		return rfIdHash.encode(id);
+	}
+
 	public static Integer getDecodeHash32Id(String schema,  String hash){
 		Hashids rfIdHash = new Hashids(schema, 32);
 		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));

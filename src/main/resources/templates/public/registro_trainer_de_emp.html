@@ -255,6 +255,14 @@
                                                   <h6>Running</h6>
                                                   <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
                                               </div>
+                                              <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top: 14px; text-align: left !important; font-size: 0.9em;">
+                                                  <div class="chk-content" onclick="javascript:document.getElementById('InpMultipleFicha').click();" style="font-size: 1em; !important">
+                                                      <a href="javascript:void(0)">
+                                                          Si ofreces servicios tanto de running como de otras disciplinas, debes elegir ambas fichas clickando aquí
+                                                      </a>
+                                                      <input id="InpMultipleFicha" type="checkbox"><span class="checkmark"></span>
+                                                  </div>
+                                              </div>
                                               <hr>
                                           </div>
                                       </div>
@@ -417,6 +425,7 @@
     <script>
         const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
+        const inpMultipleFicha = document.getElementById('InpMultipleFicha');
         const btnGuardar = document.getElementById('btnGuardar');
         const btnVerPerEmpresa = document.getElementById('btnVerPerEmpresa');
         const body = document.querySelector('body');
@@ -433,12 +442,23 @@
             btnGuardar.addEventListener('click', sendForm);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
+            inpMultipleFicha.addEventListener('click', clickMultipleFicha);
             btnVerPerEmpresa.addEventListener('click', clickRedireccionamientoPerfilEmpresa);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
             })
             init();
         })();
+
+        function clickMultipleFicha(e){
+            const input = e.target;
+            if(input.checked){
+                btnElegirFicha.textContent = "FICHAS SELECCIONADAS: GENERAL Y RUNNING";
+            }else{
+                btnElegirFicha.innerHTML = "SELECCIONAR FICHA DE INSCRIPCIÓN<span class=\"obligatorio\">*</span>";
+            }
+            btnElegirFicha.click();
+        }
 
         function bodyClickEventListener(e){
             const input = e.target;
@@ -449,6 +469,7 @@
                 btn.innerText = "Ficha seleccionada: "+fichaName;
                 btn.click();
                 btn.setAttribute("data-ficha-id", fichaName === "Running" ? 1 : 2);
+                inpMultipleFicha.checked = false;
             } else if(clases.contains('servicio')){
                 const svcFocus = document.querySelector('.svc-focus');
                 svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
@@ -845,7 +866,7 @@
             obj.experiencias = getValuesByClass('inp-experiencia');
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
-            obj.fichaClienteId = Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
+            obj.fichaClienteIds = inpMultipleFicha.checked ? "1|2" : Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
             const rdmNum = Math.floor(Math.random() * 100);
             const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
