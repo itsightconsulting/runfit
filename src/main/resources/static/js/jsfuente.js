@@ -676,8 +676,9 @@ function generateRandomMail(){
     });
 
     $(document).ajaxComplete(function (e, xhr, options) {
-        if(options.dataType === "xml") {
-            return;
+            if(options.dataType === "xml") {
+                return;
+            }
             if (options.dataType === "xml") {
                 return;
             }
@@ -703,7 +704,6 @@ function generateRandomMail(){
             if (options.noOne === undefined) {
                 clearInterval($gbInterval);
             }
-        }
     });
 
     $(document).ajaxStart(() => {});
