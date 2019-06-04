@@ -238,17 +238,10 @@ $(function() {
 
     fancybox();
     select_fave();
-<<<<<<< HEAD
     dayMonth();
-});
-=======
-    weekMonth();
     try{
         leftPanelFocus()
     }catch(e){}
 });
-<<<<<<< HEAD
->>>>>>> 58cea189d4809e88e8b2ebd35200e1c154e53c4e
-=======
+    //weekMonth();
 
->>>>>>> 02913f3593c8bdd73f8f72f85710167ce62c4ba7

@@ -3,20 +3,11 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
   <head>
-    <meta charset="utf-8">
-    <meta name="_csrf" th:attr="content=${_csrf.token}"/>
-    <!-- default header name is X-CSRF-TOKEN -->
-    <meta name="_csrf_header" th:attr="content=${_csrf.headerName}"/>
-    <!-- CONTEXT PATH -->
-    <meta name="_ctx" th:content="@{/}"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/public/bootstrap.min.css}+'?'+${version}">
+      <title>Mis clientes</title>
+      <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+      <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datetimepicker.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-toggle.min.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}" media="screen"/>
     <style>
       #indicadorCirculo1,#indicadorCirculo3{
         color: #d6ff58 !important;
@@ -27,67 +18,8 @@
     </style>
   </head>
   <body>
-    <div class="sidebar">
-      <div class="text-center no_mostrar_mobile"><a href="index.html"><img class="logo" src="img/logo.png" alt=""></a></div>
-      <div class="mobile">
-        <div class="only_mobile text-center">
-          <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" src="img/iconos/icon_hamburger.svg"></button><a href="index.html"><img class="logo" src="img/logo.png" alt=""></a>
-        </div>
-        <ul class="menu">
-          <li><a class="notif" href="#"><img class="svg" src="img/iconos/icon_programas.svg">Mis programas</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_temporada.svg">Mi temporada</a></li>
-          <li><a class="notif" href="consejos.html"><img class="svg" src="img/iconos/icon_foco.svg">Mis consejos</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_rutinas.svg">Mis rutinas</a></li>
-          <li><a class="notif" href="videoteca.html"><img class="svg" src="img/iconos/icon_videoteca.svg">Mi videoteca</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_leyenda.svg">Leyenda</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_tienda.svg">Tienda</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_chat.svg">Chat</a></li>
-          <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" src="img/iconos/icon_configuracion.svg">Configuración</a></li>
-        </ul>
-        <div class="config_mobile only_mobile">
-          <ul>
-            <li><a class="closebtn" href="javascript:void(0)"><img class="svg" src="img/iconos/icon_flecha1.svg">CONFIGURACIÓN</a></li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_control_entrenamiento.svg">Control de entrenamiento</a>
-              <label class="switch"><i>diario</i><i>semanal</i>
-                <input type="checkbox"><span class="slider"></span>
-              </label>
-            </li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_suscripcion.svg">Suscripción</a></li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_videoteca.svg">Reproducción de videos</a>
-              <label class="switch"><i>cadena</i><i>contínua</i>
-                <input type="checkbox"><span class="slider"></span>
-              </label>
-            </li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_ficha.svg">Mi ficha de inscripción</a></li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_pago.svg">Mis pagos</a></li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_file2.svg">Términos y condiciones</a></li>
-            <li><a href="#"><img class="svg" src="img/iconos/icon_ayuda.svg">Ayuda</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="slide-menu-style no_mostrar_mobile">
-      <div class="shadow">
-        <ul class="slide-menu">
-          <li><a class="closebtn button-slide-menu" href="javascript:void(0)"><img class="svg" src="img/iconos/icon_flecha1.svg">CONFIGURACIÓN</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_control_entrenamiento.svg">Control de entrenamiento</a>
-            <label class="switch"><i>diario</i><i>semanal</i>
-              <input type="checkbox"><span class="slider"></span>
-            </label>
-          </li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_suscripcion.svg">Suscripción</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_videoteca.svg">Reproducción de videos</a>
-            <label class="switch"><i>cadena</i><i>contínua</i>
-              <input type="checkbox"><span class="slider"></span>
-            </label>
-          </li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_ficha.svg">Mi ficha de inscripción</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_pago.svg">Mis pagos</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_file2.svg">Términos y condiciones</a></li>
-          <li><a href="#"><img class="svg" src="img/iconos/icon_ayuda.svg">Ayuda</a></li>
-        </ul>
-      </div>
-    </div>
+    <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+    <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
     <div id="main-content">
       <div id="wrapper">
         <div class="container">
@@ -562,12 +494,9 @@
         </div>
       </div>
     </div>
-    <script th:src="@{/js/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script><!--[if lte IE 8]><script src="static/js/ie/respond.min.js"></script><![endif]-->
+    <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
     <!-- CUSTOM NOTIFICATION -->
-    <script th:src="@{/js/init.js}+'?'+${version}"></script>
-    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
     <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
-    <script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
     <script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
   </body>
 </html>
