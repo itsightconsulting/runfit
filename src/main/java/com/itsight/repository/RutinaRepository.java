@@ -60,4 +60,7 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
     @Query(value = "SELECT MAX(R.id) FROM Rutina R WHERE R.cliente.id = ?1")
     Integer getMaxRutinaIdByClienteId(Integer clienteId);
+
+    @Query(value = "select concat_ws(',',rutina_id, tipo_rutina) from rutina where cliente_id=?1 and fecha_fin > now() order by 1", nativeQuery = true)
+    List<String> findRutinaIdsByClienteId(int id);
 }

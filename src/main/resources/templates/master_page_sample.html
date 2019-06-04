@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-us"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+</head>
+<style>
+</style>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+<!-- MAIN PANEL -->
+<div id="main-content" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="wrapper">
+        <h1>Hello Chise</h1>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+<!-- OTRAS LIBRERIAS DISTINTAS A LOS BÁSICOS -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+</script>
+</body>
+</html>

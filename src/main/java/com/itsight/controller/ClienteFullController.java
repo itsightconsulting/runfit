@@ -204,4 +204,11 @@ public class ClienteFullController {
         }
         return EXITO_GENERICA.get();
     }
+
+    @GetMapping("/get/rutina/ids")
+    public @ResponseBody List<String> getRutinasActivasById(HttpSession session){
+        int id = (Integer) session.getAttribute("id");
+        return rutinaService.findRutinaIdsByClienteId(id);
+
+    }
 }

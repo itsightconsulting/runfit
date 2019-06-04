@@ -289,4 +289,9 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     public Integer getMaxRutinaIdByClienteId(Integer clienteId) {
         return repository.getMaxRutinaIdByClienteId(clienteId);
     }
+
+    @Override
+    public List<String> findRutinaIdsByClienteId(int id) {
+        return repository.findRutinaIdsByClienteId(id);
+    }
 }

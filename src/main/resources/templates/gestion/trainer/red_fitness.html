@@ -3,9 +3,9 @@
 	  xmlns:th="http://www.thymeleaf.org"
 	  th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-    <title>Runfit</title>
-    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
-    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
 </head>
 <style>
     .elegir-plantilla h6{
@@ -20,22 +20,32 @@
         border-radius: 60% !important;
         padding: 4px;
     }
+
+    .sidebar li.active a{
+        color: #a8fa00;
+
+    }
+    .sidebar li.active svg{
+        fill: #a8fa00;
+    }
+
 </style>
-<body class="desktop-detected pace-done mobile-view-activated smart-style-2 minified">
-
-<!-- HEADER -->
-<div th:replace="html-commons/header :: fg-header"></div>
-<!-- END HEADER -->
-
-<!-- Left panel : Navigation area -->
-<!-- Note: This width of the aside area can be adjusted through LESS variables -->
-<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
-<!-- END NAVIGATION -->
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 
 <!-- MAIN PANEL -->
-<div id="main" role="main">
+<div id="main-content" role="main">
     <!-- MAIN CONTENT -->
-    <div id="content">
+    <div id="wrapper">
+        <div class="container">
+            <header>
+                <div class="text-center">
+                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a class="only_mobile" th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
+                        <h4 class="user" th:inline="text"><img class="svg" th:src="@{img/iconos/icon_perfil.svg}+'?'+${version}">[[${#authentication.name}]]</h4>
+                </div>
+            </header>
+        </div>
         <fieldset>
             <section>
                 <div class="row">
@@ -202,20 +212,17 @@
 <!-- END MODALS -->
 <!-- END MAIN PANEL -->
 <!-- PAGE FOOTER -->
-<div th:replace="html-commons/footer :: fg-footer"></div>
+
 <!-- END PAGE FOOTER -->
 <!-- IMPORTS JAVASCRIPT -->
-<script th:replace="html-commons/js :: fg-js"/>
-
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 <script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
-<!--<script th:src="@{/js/programa-entrenamiento.js}+'?'+${version}"></script>-->
 <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/rutina.js}+'?'+${version}"></script>
 
 <script th:inline="javascript">
-    /*<![CDATA[*/
     const fInitRutGen = document.getElementById('RutFechaInicio');
     const fFinRutGen = document.getElementById('RutFechaFinal');
 
@@ -225,11 +232,9 @@
     let objForRutina = {};
     const modalPlantillas = document.querySelector('#myModalPlantillas');
 
-    $(function () {
-        $countSinPlan = 0;
+    $(function () {        $countSinPlan = 0;
         $countPendientesEnvio = 0;
 
-        pageSetUp();
         listarRegistros();
         init();
 
@@ -394,6 +399,7 @@
                 break;
         }
         opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="La revisión de la rutina aún no ha sido aprobada" rel="tooltip"><i class="fa fa-send-o fa-2x"></i></a> &nbsp &nbsp`;
+        opciones +=`<a href='#' onclick='javascript:crearNuevaRutina(${row.id},${row.cliId},${index}, ${row.contadorRutinas}, ${"\""+btoa(row.cliFechaNacimiento)+"\""}, ${"\""+btoa(row.cliNombreCompleto)+"\""});' title='Crear Rutina'><i class='fa fa-check fa-2x'></i></a>`;
         return opciones;
     }
 
@@ -406,6 +412,7 @@
         rutina.redFitnessId = objForRutina.redFitId;
         rutina.clienteId = objForRutina.cliId;
         rutina.control = {};
+        rutina.control.avanceSemanas = new Array(rutina.totalSemanas).fill("");
 
         $.ajax({
             type: "POST",
@@ -634,8 +641,6 @@
     }
 
     function eventosClickModalPlantillas(e){}//No implemetada
-
-    /*]]>*/
 </script>
 
 </body>
