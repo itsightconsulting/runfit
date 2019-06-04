@@ -268,7 +268,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setUbigeo(trainerFicha.getUbigeo());
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
-        trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteId()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)
+        trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteIds()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)
         //Agregando disciplinas
         trainer.setUsername(trainerFicha.getUsername().toLowerCase());
         trainer.setPassword(trainerFicha.getPassword());
@@ -412,7 +412,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                         }
                     }
                 }
-            }else{//En caso no se elimine ningun roles transfiere todos los roles "antiguos" a una nueva lista
+            } else{//En caso no se elimine ningun roles transfiere todos los roles "antiguos" a una nueva lista
                 //que posiblemente ya tenga algunos elementos en el caso se hayan agregado nuevos roles
                 lstRolesNueva.addAll(trainer.getRoles());
             }

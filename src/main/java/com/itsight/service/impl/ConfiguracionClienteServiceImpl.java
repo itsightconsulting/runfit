@@ -114,4 +114,9 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
     public void actualizarPostIdFavoritos(Integer id, String postsFavsIds) {
         repository.updateFavsPostTrainer(id, postsFavsIds);
     }
+
+    @Override
+    public String obtenerByIdAndClave(int id, String clave) {
+        return repository.findByIdAndClave(id, clave);
+    }
 }

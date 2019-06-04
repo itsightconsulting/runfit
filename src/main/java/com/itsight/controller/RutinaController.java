@@ -368,8 +368,7 @@ public class RutinaController {
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/nueva")
-    public @ResponseBody
-    String nueva(@RequestBody @Valid RutinaDTO rutinaDto,
+    public @ResponseBody String nueva(@RequestBody @Valid RutinaDTO rutinaDto,
                  @RequestParam(name = "key") String redFitnessId,
                  @RequestParam(name = "rn") String runnerId,
                 HttpSession session, BindingResult bindingResult) {
@@ -381,6 +380,19 @@ public class RutinaController {
             if (trainerId.equals(qTrainerId)) {
                 return rutinaService.registrarByCascada(rutinaDto, redFitId, runneId);
             }
+        }
+        return ResponseCode.EX_VALIDATION_FAILED.get();
+    }
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @PostMapping(value = "/nueva/general")
+    public @ResponseBody String nuevaGeneral(
+            @RequestBody @Valid RuTpGeneralDTO rutina,
+            HttpSession session) {
+        Integer trainerId = (Integer) session.getAttribute("id");
+        Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(rutina.getRedFitnessId(), rutina.getClienteId());
+        if (trainerId.equals(qTrainerId)) {
+            return rutinaService.registrarGenByCascada(rutina, rutina.getRedFitnessId(), rutina.getClienteId());
         }
         return ResponseCode.EX_VALIDATION_FAILED.get();
     }

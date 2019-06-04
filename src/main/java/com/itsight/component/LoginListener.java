@@ -2,6 +2,7 @@ package com.itsight.component;
 
 import com.itsight.service.AdministradorService;
 import com.itsight.service.ClienteService;
+import com.itsight.service.ConfiguracionClienteService;
 import com.itsight.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -28,6 +29,9 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     @Autowired
     private AdministradorService administradorService;
 
+    @Autowired
+    private ConfiguracionClienteService configuracionClienteService;
+
 /*    @Autowired
     private SecurityUserRepository securityUserRepository;*/
 
@@ -45,8 +49,14 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                 trainerService.actualizarFechaUltimoAcceso(new Date(), id);
             }else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);
-            }else
+            }else{
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
+                Integer favRutinaId = Integer.parseInt(configuracionClienteService.obtenerByIdAndClave(Integer.parseInt(id), "FAV_RUTINA_ID"));
+                if(favRutinaId != null){
+                    session.setAttribute("fvrtId", favRutinaId);
+                }
+            }
+
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, login.getAuthentication().getCredentials(), SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e){

@@ -19,12 +19,12 @@ public class MiniPlantillaServiceImpl extends BaseServiceImpl<MiniPlantillaRepos
 
     @Override
     public MiniPlantilla save(MiniPlantilla entity) {
-        return null;
+        return repository.save(entity);
     }
 
     @Override
     public MiniPlantilla update(MiniPlantilla entity) {
-        return null;
+        return repository.save(entity);
     }
 
     @Override

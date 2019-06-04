@@ -1,7 +1,7 @@
 package com.itsight.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Rutina;
+import com.itsight.domain.dto.RuTpGeneralDTO;
 import com.itsight.domain.dto.RutinaDTO;
 import com.itsight.generic.BaseService;
 
@@ -35,5 +35,9 @@ public interface RutinaService extends BaseService<Rutina, Integer> {
     void updateFechaCliAccesoById(Integer id, Date fechaMax);
 
     Integer getMaxRutinaIdByClienteId(Integer clienteId);
+
+    String registrarGenByCascada(RuTpGeneralDTO rutina, Integer redFitnessId, Integer clienteId);
+
+    List<String> findRutinaIdsByClienteId(int id);
 }
 

@@ -283,24 +283,25 @@ function guardarRutina(rutina, btn, interval){
     const fechaNac = getParamFromURL('fn');
     const cliFullNombre = getParamFromURL('nm');
     const datosAsURI = '&fn=' + fechaNac + '&nm=' + cliFullNombre;
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: _ctx + "gestion/rutina/nueva?key=" + id + "&rn=" + rn,
-            dataType: "json",
-            data: JSON.stringify(rutina),
-            success: function (data) {
-                window.clearInterval(interval);
-                const resWithErrors = getResponseCodeWithErrors(data);
-                resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
-                data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
-            },
-            error: function (xhr) {
-                $('#bot1-Msg1').click();
-                window.clearInterval(interval);
-                exception(xhr);
-            },
-            complete: function () {}
-        })
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/nueva?key=" + id + "&rn=" + rn,
+        dataType: "json",
+        data: JSON.stringify(rutina),
+        success: function (data) {
+            window.clearInterval(interval);
+            const resWithErrors = getResponseCodeWithErrors(data);
+            resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
+            data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
+        },
+        error: function (xhr) {
+            $('#bot1-Msg1').click();
+            window.clearInterval(interval);
+            exception(xhr);
+        },
+        complete: function () {}
+    })
 
 }

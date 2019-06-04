@@ -22,7 +22,7 @@ public interface MiniPlantillaRepository extends JpaRepository<MiniPlantilla, In
     MiniPlantilla findByTrainerIdAndEspecificacionSubCategoriaId(Integer trainerId, Integer especificacionSubCatId);
 
     @Modifying
-    @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT :espSubCat, security_user_id FROM trainer where tipo_trainer_id=2 order by 1", nativeQuery = true)
+    @Query(value = "INSERT INTO mini_plantilla (especificacion_sub_categoria_id, trainer_id) SELECT :espSubCat, security_user_id FROM trainer where tipo_trainer_id <> 2 order by 1", nativeQuery = true)
     void saveEspecificacionesMiniPlantilla(@Param("espSubCat") Integer espSubCat);
 
     @Query(value = "SELECT count(ids) FROM mini_plantilla, jsonb_array_elements(dia_rutinario_ids) as ids  WHERE especificacion_sub_categoria_id=?2 and trainer_id=?1 order by 1;", nativeQuery = true)

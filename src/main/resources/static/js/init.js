@@ -155,7 +155,6 @@ function owlCarouselVideoteca() {
         });
         $("input").on("change", function(e) {
           e.preventDefault();
-          console.log(inputType.val());
           // console.log(e.item.index);
           // FIGURE OUT HOW TO GET CAROUSEL INDEX
          
@@ -204,6 +203,32 @@ function dayMonth() {
     $("#weekDay").html("semana " + weekOfMonth + " - " + '<span> ' + month + ' </span>');
 }
 
+function leftPanelFocus(){
+    var e=window.location.pathname;
+    e.includes("bienvenido")
+    || (document.querySelector("#SideBar1").querySelector("a[href*='"+e+"']").parentElement.className="active")
+    || (document.querySelector("#SideBar2").querySelector("a[href*='"+e+"']").parentElement.className="active");
+
+}
+
+function cerrarSesion(){
+    $.SmartMessageBox({
+        title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> ¿Está seguro que desea cerrar sesión <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span> ?",
+        buttons: "[No][Si]"
+    }, function(e) {
+        "Si" == e && $.ajax({
+            url: _ctx + "logout",
+            type: "POST",
+            success: function(e) {
+                window.location = _ctx + "login"
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        })
+    })
+}
+
 $(function() {
     imgToSvg();
     datepicker_init();
@@ -218,5 +243,12 @@ $(function() {
 });
 =======
     weekMonth();
+    try{
+        leftPanelFocus()
+    }catch(e){}
 });
+<<<<<<< HEAD
 >>>>>>> 58cea189d4809e88e8b2ebd35200e1c154e53c4e
+=======
+
+>>>>>>> 02913f3593c8bdd73f8f72f85710167ce62c4ba7

@@ -1,0 +1,73 @@
+<div id="SideBar1" class="sidebar"  th:fragment="fg-menu-desk">
+    <div class="text-center no_mostrar_mobile"><a href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a></div>
+    <div class="mobile">
+        <div class="only_mobile text-center">
+            <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
+        </div>
+        <ul class="menu">
+            <th:block sec:authorize="hasRole('RUNNER')">
+                <li><a class="notif" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
+                <li><a class="notif" href="consejos.html"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
+                <li><a class="notif" href="videoteca.html"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Mi videoteca</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
+                <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
+            </th:block>
+            <th:block sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 55.svg}+'?'+${version}">Planes prediseñados</a></li>
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_money.svg}+'?'+${version}">Pagos</a></li>
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 52.svg}+'?'+${version}">Suspendidos</a></li>
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Estadísticas</a></li>
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
+                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Mis contratos</a></li>
+            </th:block>
+            <li><a class="" href="javascript:void(0);" onclick="cerrarSesion();"><img class="svg" th:src="@{/img/iconos/icon_arrow-left.svg}+'?'+${version}">Salir</a></li>
+        </ul>
+        <div class="config_mobile only_mobile">
+            <ul>
+                <li><a class="closebtn" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_flecha1.svg}+'?'+${version}">CONFIGURACIÓN</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_control_entrenamiento.svg}+'?'+${version}">Control de entrenamiento</a>
+                    <label class="switch"><i>diario</i><i>semanal</i>
+                        <input type="checkbox"><span class="slider"></span>
+                    </label>
+                </li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_suscripcion.svg}+'?'+${version}">Suscripción</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Reproducción de videos</a>
+                    <label class="switch"><i>cadena</i><i>contínua</i>
+                        <input type="checkbox"><span class="slider"></span>
+                    </label>
+                </li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
+                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="SideBar2" class="slide-menu-style no_mostrar_mobile" th:fragment="fg-menu-mob">
+    <div class="shadow">
+        <ul class="slide-menu">
+            <li><a class="closebtn button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_flecha1.svg}+'?'+${version}">CONFIGURACIÓN</a></li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_control_entrenamiento.svg}+'?'+${version}">Control de entrenamiento</a>
+                <label class="switch"><i>diario</i><i>semanal</i>
+                    <input type="checkbox"><span class="slider"></span>
+                </label>
+            </li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_suscripcion.svg}+'?'+${version}">Suscripción</a></li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Reproducción de videos</a>
+                <label class="switch"><i>cadena</i><i>contínua</i>
+                    <input type="checkbox"><span class="slider"></span>
+                </label>
+            </li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
+            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
+        </ul>
+    </div>
+</div>

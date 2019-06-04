@@ -1,11 +1,10 @@
 package com.itsight.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.Dia;
 import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Semana;
+import com.itsight.domain.dto.RuTpGeneralDTO;
 import com.itsight.domain.dto.RutinaDTO;
 import com.itsight.domain.dto.SemanaPlantillaDTO;
 import com.itsight.domain.jsonb.RutinaControl;
@@ -15,6 +14,8 @@ import com.itsight.service.RedFitnessService;
 import com.itsight.service.RuConsolidadoService;
 import com.itsight.service.RutinaService;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +29,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.itsight.util.Enums.ResponseCode.REGISTRO;
 import static com.itsight.util.Enums.ResponseCode.SESSION_VALUE_NOT_FOUND;
+import static com.itsight.util.Enums.TipoRutina.GENERAL;
 
 @Service
 @Transactional
@@ -212,10 +215,37 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         }
         repository.updateSemanaIds(nueRutina.getId(), arrSemIds);
         redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutinaDto.getFechaFin(), 1);
-        return Enums.ResponseCode.REGISTRO.get();
+        return REGISTRO.get();
     }
 
-
+    @Override
+    public String registrarGenByCascada(RuTpGeneralDTO rutina, Integer redFitId, Integer runneId) {
+        Rutina nueRutina = new Rutina();
+        //Pasando del Dto al objeto
+        RutinaControl rc = new RutinaControl();
+        BeanUtils.copyProperties(rutina.getControl(), rc);
+        BeanUtils.copyProperties(rutina, nueRutina);
+        nueRutina.setCliente(runneId);
+        nueRutina.setRedFitness(redFitId);
+        nueRutina.setControl(rc);
+        //Instanciando lista de semanas
+        List<Semana> semanas = rutina.getSemanas().stream().map(x->obtenerSemanasRutina(x, nueRutina)).collect(Collectors.toList());
+        //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
+        nueRutina.setLstSemana(semanas);
+        nueRutina.setFlagActivo(false);
+        nueRutina.setTipoRutina(GENERAL.get());
+        repository.save(nueRutina);
+        //AFTER REGISTRO LOS IDS YA SE PUEDEN RECUPERAR
+        int[] arrSemIds = new int[nueRutina.getLstSemana().size()];
+        for(int i=0; i<arrSemIds.length;i++){
+            arrSemIds[i] = nueRutina.getLstSemana().get(i).getId();
+        }
+        repository.updateSemanaIds(nueRutina.getId(), arrSemIds);
+        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutina.getFechaFin(), 1);
+        String hshRedFitId = Parseador.getEncodeHash32Id("rf-rutina", redFitId);
+        String hshRunnerId = Parseador.getEncodeHash16Id("rf-rutina", runneId);
+        return Utilitarios.jsonResponse(hshRedFitId, hshRunnerId);
+    }
 
     private Semana obtenerSemanasRutina(SemanaPlantillaDTO semana, Rutina objR){
         Semana nueSem = new Semana();
@@ -258,5 +288,10 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     @Override
     public Integer getMaxRutinaIdByClienteId(Integer clienteId) {
         return repository.getMaxRutinaIdByClienteId(clienteId);
+    }
+
+    @Override
+    public List<String> findRutinaIdsByClienteId(int id) {
+        return repository.findRutinaIdsByClienteId(id);
     }
 }
