@@ -940,6 +940,16 @@
         }
 
         function sendForm(){
+
+            if(servicios.length === 0){
+                $.smallBox({content: "Debe agregar por lo menos un servicio", color: "alert"});
+                return;
+            }
+
+            if(Array.from($('#MediosPagosAgregados a.cc-elegido:not(".hidden")')).map(e=>e.getAttribute('data-id')).join('|') === ""){
+                $.smallBox({content: "Debe agregar por lo menos un medio de pago desde la pestaña servicios.", color: "alert"});
+                return;
+            }
             const arrURL = window.location.href.split("/");
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
