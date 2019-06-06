@@ -1,33 +1,83 @@
-@font-face {
-    font-family: Montserrat-Medium;
-    src: url(../fonts/Montserrat-Medium.otf); }
-
-@font-face {
-    font-family: Montserrat-Bold;
-    src: url(../fonts/Montserrat-Bold.otf); }
-
-@font-face {
-    font-family: Montserrat-Regular;
-    src: url(../fonts/Montserrat-Regular.otf); }
-
-@font-face {
-    font-family: Montserrat-Light;
-    src: url(../fonts/Montserrat-Light.otf); }
-
-@font-face {
+.nav-pills {
+    background-color: #202127;
+}
+.nav-pills li {
+    margin: 0 !important;
+    text-align: center;
+}
+.nav-pills li a {
+    display: inline-flex;
+    text-transform: uppercase;
     font-family: GothamHTF-Bold;
-    src: url(../fonts/GothamHTF-Bold.otf); }
-
-@font-face {
-    font-family: GothamHTF-Book;
-    src: url(../fonts/GothamHTF-Book.otf); }
-
-@font-face {
+    font-size: 15px;
+    padding: 10px 0;
+    background-color: transparent !important;
+    color: #fff;
+}
+.nav-pills li.active a {
+    background-color: transparent;
+    border-top: 3px solid #a8fa00;
+    border-radius: 0;
+}
+.container-t {
+    padding: 0 30px;
+}
+.options {
+    text-align: right;
+    margin-top: 20px;
+}
+.options .svg{
+    width: auto;
+    height: 17px;
+    fill: #fff;
+    display: inline-block;
+}
+.table#tblRegistros {
+    color: #a9a7ab;
+    margin-top: 30px;
+}
+.table#tblRegistros th {
+    padding: 5px 10px !important;
+    color: #fff;
+}
+.table#tblRegistros th .th-inner {
     font-family: GothamHTF-Light;
-    src: url(../fonts/GothamHTF-Light.otf); }
-
-body, html {
-    background-color: #2a242c;
-    padding: 0;
-    margin: 0;
-    overflow-x: hidden; }
+}
+.table#tblRegistros th .svg {
+    width: auto;
+    height: 26px;
+    fill: #fff;
+}
+.table#tblRegistros th .svg .st4 {
+    stroke: #fff;
+}
+.table-hover > tbody > tr:hover {
+    background-color: transparent;
+}
+.table#tblRegistros.table-bordered {
+    border-color: #525056;
+}
+.table#tblRegistros.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th,
+.table#tblRegistros.table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th,
+.table#tblRegistros.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid #525056;
+}
+.table#tblRegistros tbody td {
+    font-family: GothamHTF-Bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 20px 5px;
+    position: relative;
+}
+.table#tblRegistros tbody tr td:first-child:before {
+    content: "";
+    background: url("../img/trash.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: -22px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    cursor: pointer;
+}

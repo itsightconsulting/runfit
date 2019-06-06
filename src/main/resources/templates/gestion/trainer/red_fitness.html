@@ -6,6 +6,7 @@
     <title>Mis clientes</title>
     <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/trainer.css}+'?'+${version}">
 </head>
 <style>
     .elegir-plantilla h6{
@@ -38,120 +39,176 @@
 <div id="main-content" role="main">
     <!-- MAIN CONTENT -->
     <div id="wrapper">
-        <div class="container">
-            <header>
-                <div class="text-center">
-                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a class="only_mobile" th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
-                        <h4 class="user" th:inline="text"><img class="svg" th:src="@{img/iconos/icon_perfil.svg}+'?'+${version}">[[${#authentication.name}]]</h4>
+        <header>
+            <!--<div class="text-center">
+                <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a class="only_mobile" th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
+                <h4 class="user" th:inline="text"><img class="svg" th:src="@{img/iconos/icon_perfil.svg}+'?'+${version}">[[${#authentication.name}]]</h4>
+            </div>-->
+            <ul class="nav nav-pills">
+                <li class="active col-md-2"><a href="#">listado</a></li>
+                <li class="col-md-2"><a href="#">g. videos</a></li>
+                <li class="col-md-3"><a href="#">rutinario</a></li>
+                <li class="col-md-2"><a href="#">g. audios</a></li>
+                <li class="col-md-3"><a href="#">planes prediseñados</a></li>
+            </ul>
+        </header>
+        <div class="container-t">
+            <div class="options">
+                <img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">
+                <img class="svg" th:src="@{/img/iconos/icon_candado.svg}+'?'+${version}">
+            </div>
+            <div class="input-group">
+                <input class="form-control" type="text">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit">BUSCAR</button>
                 </div>
-            </header>
-        </div>
-        <fieldset>
-            <section>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="row">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                                <h1 class="page-title txt-color-blueDark">
-                                    <i class="fa fa-group fa-fw"></i>
-                                    Gestión
-                                    <span>>
-											<b>Red Fitness</b>
-										</span>
-                                </h1>
-                            </div>
-                            <div class="col-sm-9 col-md-9 col-lg-9">
-                                <div class="container-fluid text-align-right">
-                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                        <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-redLight"><i class="fa fa-phone fa-15x txt-color-white"></i></a>
-                                        <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-orange"><i class="fa fa-cloud-download fa-15x txt-color-white"></i></a>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                        <a href="javascript:void(0);" class="btn btn-success text-align-center" style="width: 100%">
-                                            <i class="fa fa-money fa-fw txt-color-green"></i> Pagos
-                                        </a>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                        <a href="javascript:void(0);" class="btn btn-primary text-align-center" style="width: 100%">
-                                            <i class="fa fa-database fa-fw txt-color-redLight"></i> Base de Datos
-                                        </a>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                        <a href="javascript:void(0);" class="btn btn-default" style="width: 100%">
-                                            <i class="fa fa-bar-chart-o fa-fw txt-color-darken"></i> Estadísticas
-                                        </a>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                        <a href="javascript:void(0);" class="btn btn-danger" style="width: 100%">
-                                            <i class="fa fa-male fa-fw txt-color-white"></i>Consejos
-                                        </a>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2  col-xs-12 padding-5">
-                                        <a href="javascript:void(0);" class="btn btn-primary" style="width: 100%">
-                                            <i class="fa fa-calendar fa-fw txt-color-lighten"></i>Mis Rutinas
-                                        </a>
+            </div>
+            <fieldset>
+                <section>
+                    <!--<div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <h1 class="page-title txt-color-blueDark">
+                                        <i class="fa fa-group fa-fw"></i>
+                                        Gestión
+                                        <span>>
+                                                <b>Red Fitness</b>
+                                            </span>
+                                    </h1>
+                                </div>
+                                <div class="col-sm-9 col-md-9 col-lg-9">
+                                    <div class="container-fluid text-align-right">
+                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                            <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-redLight"><i class="fa fa-phone fa-15x txt-color-white"></i></a>
+                                            <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-orange"><i class="fa fa-cloud-download fa-15x txt-color-white"></i></a>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                            <a href="javascript:void(0);" class="btn btn-success text-align-center" style="width: 100%">
+                                                <i class="fa fa-money fa-fw txt-color-green"></i> Pagos
+                                            </a>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                            <a href="javascript:void(0);" class="btn btn-primary text-align-center" style="width: 100%">
+                                                <i class="fa fa-database fa-fw txt-color-redLight"></i> Base de Datos
+                                            </a>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                            <a href="javascript:void(0);" class="btn btn-default" style="width: 100%">
+                                                <i class="fa fa-bar-chart-o fa-fw txt-color-darken"></i> Estadísticas
+                                            </a>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
+                                            <a href="javascript:void(0);" class="btn btn-danger" style="width: 100%">
+                                                <i class="fa fa-male fa-fw txt-color-white"></i>Consejos
+                                            </a>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2  col-xs-12 padding-5">
+                                            <a href="javascript:void(0);" class="btn btn-primary" style="width: 100%">
+                                                <i class="fa fa-calendar fa-fw txt-color-lighten"></i>Mis Rutinas
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row" id="view_list">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <form id="frm_busqueda">
-                            <div class="form-horizontal">
-                                <div class="row margin-bottom-10">
-                                    <div class="col col-md-6 col-sm-12 col-xs-12">
-                                        <div class="col-md-3 col-xs-12">
-                                        <label class="col-md-1 control-label-right"><b>Estado:</b></label>
+                    </div>-->
+                    <div class="row" id="view_list">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <form id="frm_busqueda">
+                                <div class="form-horizontal">
+                                    <div class="row margin-bottom-10">
+                                        <div class="col col-md-6 col-sm-12 col-xs-12">
+                                            <div class="col-md-3 col-xs-12">
+                                            <label class="col-md-1 control-label-right"><b>Estado:</b></label>
+                                            </div>
+                                            <div class="col-md-5 col-xs-10">
+                                                <select name="Estado" id="Estado" class="form-control input-sm ignore">
+                                                    <option value="-1"> -- Todos --</option>
+                                                    <option value="true">Activo</option>
+                                                    <option value="false">Inactivo</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-xs-2">
+                                                <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
+                                                        class="fa fa-search"></i></a>
+                                            </div>
                                         </div>
-                                        <div class="col-md-5 col-xs-10">
-                                            <select name="Estado" id="Estado" class="form-control input-sm ignore">
-                                                <option value="-1"> -- Todos --</option>
-                                                <option value="true">Activo</option>
-                                                <option value="false">Inactivo</option>
-                                            </select>
+                                        <div class="col col-md-6 col-sm-12 col-xs-12 text-align-right">
+                                            <h6><span class="padding-7">Pendientes Por Plan: <span class="txt-color-white bg-color-orange br-sp total-pp">0</span></span><span class="padding-7">Pendientes por enviar: <span class="txt-color-white bg-color-orange br-sp total-pe">0</span></span></h6>
                                         </div>
-                                        <div class="col-md-3 col-xs-2">
-                                            <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
-                                                    class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="col col-md-6 col-sm-12 col-xs-12 text-align-right">
-                                        <h6><span class="padding-7">Pendientes Por Plan: <span class="txt-color-white bg-color-orange br-sp total-pp">0</span></span><span class="padding-7">Pendientes por enviar: <span class="txt-color-white bg-color-orange br-sp total-pe">0</span></span></h6>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                        <!--<div class="col-sm-12 col-md-12 col-lg-12">
+                            <table id="tblRegistros" data-mobile-responsive="true">
+                                <thead>
+                                <tr>
+
+                                    <th data-formatter="Opciones" data-halign="center" data-valign="middle"
+                                        data-align="center" data-width="175">Acciones
+                                    </th>
+                                    <th data-formatter="estadoPlan" data-halign="center" data-valign="middle"
+                                             data-align="center" data-width="70">Plan Status
+                                    </th>
+                                    <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="80">Fecha Fin Planificación
+                                    </th>
+                                    <th data-field="cliNombreCompleto" data-class="nombre-cliente" data-formatter="linkFormatter" data-halign="left" data-valign="middle" data-align="left">Nombre
+                                    </th>
+                                    <th data-field="cliMovil" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="115">Móvil
+                                    </th>
+                                    <th data-field="cliFechaUltimoAcceso" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="140">Último Acceso
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>-->
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <table id="tblRegistros" data-mobile-responsive="true" class="table table-bordered table-condensed">
+                                <thead>
+                                <tr>
+                                    <th data-formatter="nota" data-halign="center" data-valign="middle"
+                                        data-align="center" data-width="5%">Notas
+                                    </th>
+                                    <th data-formatter="fechaInicio" data-halign="center" data-valign="middle"
+                                        data-align="center" data-width="10%"><img class="svg" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
+                                    </th>
+                                    <th data-formatter="fechaFin" data-halign="center" data-valign="middle"
+                                        data-align="center" data-width="10%"><img class="svg" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
+                                    </th>
+                                    <th data-field="cliNombreCompleto" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="25%">Nombre y apellidos
+                                    </th>
+                                    <th data-field="NP" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="5%">N.P
+                                    </th>
+                                    <th data-field="Plantillas" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="5%">Plantillas
+                                    </th>
+                                    <th data-field="meses" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="10%">Meses
+                                    </th>
+                                    <th data-field="temporada" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="10%">Temporada
+                                    </th>
+                                    <th data-field="enviar" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="10%">Enviar
+                                    </th>
+                                    <th data-field="cliMovil" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="10%">Teléfono
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <table id="tblRegistros" data-mobile-responsive="true" class="table-no-bordered">
-                            <thead>
-                            <tr>
-                                <th data-formatter="Opciones" data-halign="center" data-valign="middle"
-                                    data-align="center" data-width="175">Acciones
-                                </th>
-                                <th data-formatter="estadoPlan" data-halign="center" data-valign="middle"
-                                         data-align="center" data-width="70">Plan Status
-                                </th>
-                                <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle" data-align="center"
-                                    data-width="80">Fecha Fin Planificación
-                                </th>
-                                <th data-field="cliNombreCompleto" data-class="nombre-cliente" data-formatter="linkFormatter" data-halign="left" data-valign="middle" data-align="left">Nombre
-                                </th>
-                                <th data-field="cliMovil" data-halign="center" data-valign="middle" data-align="center"
-                                    data-width="115">Móvil
-                                </th>
-                                <th data-field="cliFechaUltimoAcceso" data-halign="center" data-valign="middle" data-align="center"
-                                    data-width="140">Último Acceso
-                                </th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </fieldset>
+                </section>
+            </fieldset>
+        </div>
     </div>
     <!-- END MAIN CONTENT -->
 </div>
@@ -337,6 +394,7 @@
                     $('[rel="tooltip"]').tooltip();
                     $('.total-pe').text($countPendientesEnvio);
                     $('.total-pp').text($countSinPlan);
+                    imgToSvg();
                 },
                 onLoadError: function (xhr) {
                     exception(xhr);
