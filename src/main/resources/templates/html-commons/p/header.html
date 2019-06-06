@@ -10,7 +10,16 @@
         <ul class="nav navbar-nav navbar-right view-only-desktop">
             <li><a th:href="@{/p/quienes-somos}" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
             <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
-            <li><a th:href="@{/p/asesores}" data-menu="asesores"><span>ASESORES</span></a></li>
+            <li class="dropdown" data-menu="asesores"><a th:href="@{/p/asesores}" data-menu="asesores" data-toggle="dropdown"><span>ASESORES</span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/p/contigo}">Explorar características</a>
+                        <p>Vea cómo la aplicación <strong>Runfit </strong>te ayudará a entrenar de manera más efectiva.</p>
+                    </li>
+                    <li><a th:href="@{/p/asesores}">Emprende con nosotros</a>
+                        <p>Si deseas formar parte de nuestra familia de asesores conéctate con nosotros.</p>
+                    </li>
+                </ul>
+            </li>
             <li><a th:href="@{/p/postulacion/trainer}" data-menu="emprende"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul>
     </div>
@@ -36,11 +45,11 @@
             <div class="container position-relative">
                 <div class="arrow-up"></div>
                 <ul class="asesores-menu">
-                    <li><a href="#">Explorar características</a>
+                    <li><a th:href="@{/p/contigo}">Explorar características</a>
                         <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
                     </li>
-                    <li><a href="#">Emprende con nosotros</a>
-                        <p>Vea cómo la aplicación Runfit te ayudará a entrenar de manera más efectiva.</p>
+                    <li><a th:href="@{/p/asesores}">Emprende con nosotros</a>
+                        <p>Si deseas formar parte de nuestra familia de asesores conéctate con nosotros.</p>
                     </li>
                 </ul>
             </div>
