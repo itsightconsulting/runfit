@@ -736,3 +736,21 @@ function instanceAllTooltip(){
         $(e).tooltip();
     })
 }
+
+function cerrarSesion(){
+    $.SmartMessageBox({
+        title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> ¿Está seguro que desea cerrar sesión <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span> ?",
+        buttons: "[No][Si]"
+    }, function(e) {
+        "Si" == e && $.ajax({
+            url: _ctx + "logout",
+            type: "POST",
+            success: function(e) {
+                window.location = _ctx + "login"
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        })
+    })
+}

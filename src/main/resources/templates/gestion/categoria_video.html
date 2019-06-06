@@ -309,7 +309,8 @@ you can add as many as you like
                 url: _ctx + 'gestion/categoria-video/agregar',
                 dataType: "json",
                 data: params,
-                success: function (data, textStatus) {
+                success: function (res, textStatus) {
+                    data = res.res;
                     if (textStatus == "success") {
                         if (data == "-9") {
                             $.smallBox({
