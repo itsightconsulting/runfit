@@ -1474,6 +1474,79 @@ you can add as many as you like
     const totalsegundos = 3600;
     /*<![CDATA[*/
     pageSetUp();
+    /*let recorder;
+    var player = document.getElementById('player');
+    function createAudioElement(blobUrl) {
+        const downloadEl = document.createElement('a');
+        downloadEl.style = 'display: block';
+        downloadEl.innerHTML = 'download';
+        downloadEl.download = 'audio.webm';
+        downloadEl.href = blobUrl;
+        const audioEl = document.createElement('audio');
+        audioEl.controls = true;
+        const sourceEl = document.createElement('source');
+        sourceEl.src = blobUrl;
+        sourceEl.type = 'audio/webm';
+        audioEl.appendChild(sourceEl);
+        document.querySelector('#Demo').appendChild(audioEl);
+        document.querySelector('#Demo').appendChild(downloadEl);
+    }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        // store streaming data chunks in array
+        const chunks = [];
+        // create media recorder instance to initialize recording
+        recorder = new MediaRecorder(stream);
+        // function to be called when data is received
+        recorder.ondataavailable = e => {
+            // add stream data to chunks
+            chunks.push(e.data);
+            // if recorder is 'inactive' then recording has finished
+            if (recorder.state == 'inactive') {
+                // convert stream data chunks to a 'webm' audio format as a blob
+                const blob = new Blob(chunks, {type: 'audio/webm'});
+                // convert blob to URL so it can be assigned to a audio src attribute
+                //demoUpload(blob);
+                createAudioElement(URL.createObjectURL(blob));
+            }
+        };
+        // start recording with 1 second time between receiving 'ondataavailable' events
+        recorder.start(1000);
+        // setTimeout to stop recording after 4 seconds
+        setTimeout(() => {
+            // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
+            recorder.stop();
+        }, 10000);
+    }).catch(console.error);
+
+
+    function demoUpload(blob){
+        const data = new FormData();
+        data.append("file", blob);
+        data.append("fileExtension", ".webm");
+
+        $.ajax({
+            type: 'PUT',
+            url: _ctx+'p/trainer/subir/foto/perfil/v7WaAeDZmGYk14jedQbPd6yRonlzg2X0/5560c311-78c1-46f5-9975-50335953f5f9',
+            data : data,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            xhr: function() {
+                const myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){
+                    myXhr.upload.addEventListener('progress', progress, false);
+                }
+                return myXhr;
+            },
+            success: function (data) {
+                reqSuccess(data, 3600000);
+            },
+            error: (xhr)=>{
+                exception(xhr);
+            },
+            complete: ()=> {}
+        });
+    }*/
     /*]]>*/
 </script>
 </body>

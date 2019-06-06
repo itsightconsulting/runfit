@@ -73,10 +73,16 @@ public class ClienteFullController {
     }
 
     @GetMapping(value = "/get/ultima-rutina")
-    public @ResponseBody Rutina obtenerInfoUltimaRutinaGenerada(HttpSession session) {
+    public @ResponseBody Rutina obtenerInfoUltimaRutinaGeneradaORutinaFavorita(HttpSession session) {
         int userId = (int) session.getAttribute("id");
-        Integer lastRutinaId = rutinaService.getMaxRutinaIdByClienteId(userId);
-        return rutinaService.findOne(lastRutinaId);
+        Integer fvrtId = (Integer) session.getAttribute("fvrtId");
+        Integer rutinaId;
+        if(fvrtId != null){
+            rutinaId = fvrtId;
+        }else{
+            rutinaId = rutinaService.getMaxRutinaIdByClienteId(userId);
+        }
+        return rutinaService.findOne(rutinaId);
     }
 
     @GetMapping(value = "/get/rutinas")
