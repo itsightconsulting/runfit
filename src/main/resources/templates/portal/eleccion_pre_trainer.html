@@ -99,7 +99,9 @@
           success: function (data, textStatus) {
             if (textStatus == "success") {
               reqSuccess(data);
-              window.location.href = _ctx + "p/bandeja";
+              if(flag_form_populate){
+                window.location.href = _ctx + "p/bandeja";
+              }
             }
           },
           error: function (xhr) {
