@@ -202,7 +202,8 @@ public class Enums {
 
     public enum FileExt{
         JPEG(".jpg"),
-        PDF(".pdf");
+        PDF(".pdf"),
+        WEBM(".webm");
 
         final String id;
 

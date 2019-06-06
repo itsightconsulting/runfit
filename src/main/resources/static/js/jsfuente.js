@@ -647,12 +647,9 @@ function generateRandomMail(){
 (function ajaxEvents(){
 
     $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
         if(options.dataType === "xml") {
             return ;
-        }
-        xhr.setRequestHeader(header, token);
-        if(options.dataType === "xml"){
-            return;
         }
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
@@ -677,9 +674,6 @@ function generateRandomMail(){
 
     $(document).ajaxComplete(function (e, xhr, options) {
             if(options.dataType === "xml") {
-                return;
-            }
-            if (options.dataType === "xml") {
                 return;
             }
             if (options.processData == false) {//WHEN FILES ARE BEING UPLOADED
@@ -740,5 +734,23 @@ function getFileExtension(fileName){
 function instanceAllTooltip(){
     document.querySelectorAll('i[rel="tooltip"]').forEach(e=>{
         $(e).tooltip();
+    })
+}
+
+function cerrarSesion(){
+    $.SmartMessageBox({
+        title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> ¿Está seguro que desea cerrar sesión <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span> ?",
+        buttons: "[No][Si]"
+    }, function(e) {
+        "Si" == e && $.ajax({
+            url: _ctx + "logout",
+            type: "POST",
+            success: function(e) {
+                window.location = _ctx + "login"
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        })
     })
 }

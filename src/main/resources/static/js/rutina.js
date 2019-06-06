@@ -2893,8 +2893,10 @@ Indicadores = (function(){
         actualizarKilometrajes: ()=>{
             const k = RutinaGet.getKilometrajes();
             const kHTML = document.querySelector('#tabRutina #OpsLaterales #Kilometrajes');
-            kHTML.querySelector('.kcal').textContent = k.kcal+" kcal";
-            kHTML.querySelector('.km-planificado').textContent = k.kmPlanificado+" K.M.";
+            if(kHTML.querySelector('.kcal') != null){
+                kHTML.querySelector('.kcal').textContent = k.kcal+" kcal";
+                kHTML.querySelector('.km-planificado').textContent = k.kmPlanificado+" K.M.";
+            }
         },
         actualizarKilometrajesLessDiaIndex: (diaIndex)=>{
             const k = RutinaGet.getKilometrajesLessDiaIndex(diaIndex);

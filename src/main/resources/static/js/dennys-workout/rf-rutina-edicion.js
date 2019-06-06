@@ -3068,7 +3068,12 @@ function obtenerRutinaConsolidadoBD(effImg){
         success: function (d) {
             window.setInterval(effImg);
             notificacionesRutinaSegunResponseCode(d.responseCode);
-            FichaSet.instanciarConsolidado(d.data);
+            if(d.data !== null){
+                FichaSet.instanciarConsolidado(d.data);
+            } else {
+                $.smallBox({color: "alert", content: "Este tipo de rutina no tiene ficha técnica"});
+                document.querySelector('a[href="#tabRutina"]').click();
+            }
         },
         error: function (xhr) {
             exception(xhr);

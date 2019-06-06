@@ -73,8 +73,8 @@ public interface BaseService<T, V> {
             String extension;
             if(file.getOriginalFilename().equals("blob")){
                 extension = "." + credentials.getExtension();
-            }else{
-                extension = "." + file.getContentType().split("/")[1];
+            } else {
+                extension = "."+file.getContentType().split("/")[1];
             }
 
             try {

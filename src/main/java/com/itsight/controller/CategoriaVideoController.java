@@ -6,6 +6,8 @@ import com.itsight.domain.CategoriaVideo;
 import com.itsight.domain.GrupoVideo;
 import com.itsight.service.CategoriaVideoService;
 import com.itsight.service.GrupoVideoService;
+import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -59,9 +61,9 @@ public class CategoriaVideoController {
 
         categoriaVideo.setGrupoVideo(new GrupoVideo(grupoVideoId));
         if (categoriaVideo.getId() == 0) {
-            return categoriaVideoService.registrar(categoriaVideo, null);
+            return Utilitarios.jsonResponse(categoriaVideoService.registrar(categoriaVideo, null));
         }
-        return categoriaVideoService.actualizar(categoriaVideo, null);
+        return Utilitarios.jsonResponse(categoriaVideoService.actualizar(categoriaVideo, null));
     }
 
     @PutMapping(value = "/desactivar")

@@ -47,9 +47,9 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             session.setAttribute("id", Integer.parseInt(id));
             if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TRAINER"))){
                 trainerService.actualizarFechaUltimoAcceso(new Date(), id);
-            }else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+            } else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);
-            }else{
+            } else{
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
                 Integer favRutinaId = Integer.parseInt(configuracionClienteService.obtenerByIdAndClave(Integer.parseInt(id), "FAV_RUTINA_ID"));
                 if(favRutinaId != null){

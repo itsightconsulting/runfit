@@ -384,7 +384,6 @@
                 sidePagination: 'client',
                 pageSize: 10,
                 onLoadSuccess: d => {
-                    console.log(d);
                     //Activando los popover y tooltips
                     d.forEach(r=>{
                         r.estadoPlan == 1 ? ++$countSinPlan : '';
@@ -515,7 +514,7 @@
                 }
                 objFirtsWeek.lstDia = dias;
                 $chelmoMacro.push(new Semana(objFirtsWeek))
-            }else{
+            } else{
                 $chelmoMacro.push(new Semana(undefined, parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($chelmoMacro[i-1].fechaFin).add(7, 'd').format('YYYY-MM-DD'))));
             }
         }

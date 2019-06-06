@@ -1038,7 +1038,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             SecurityUser secTrainer = new SecurityUser();
             String correoUsuario = String.format("trainer%s@runfit.pe", i);
             secTrainer.setUsername(correoUsuario);
-            secTrainer.setPassword(new BCryptPasswordEncoder().encode("runfit"));
+            secTrainer.setPassword(new BCryptPasswordEncoder().encode("runfit123"));
             secTrainer.setEnabled(true);
             SecurityRole role1 = new SecurityRole("ROLE_ADMIN");
             SecurityRole role2 = new SecurityRole("ROLE_TRAINER");
@@ -1113,7 +1113,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             SecurityUser secCliente = new SecurityUser();
             String correoUsuario = String.format("runner%s@runfit.pe", i);
             secCliente.setUsername(correoUsuario);
-            secCliente.setPassword(new BCryptPasswordEncoder().encode("runfit"));
+            secCliente.setPassword(new BCryptPasswordEncoder().encode("runfit123"));
             secCliente.setEnabled(true);
 
             Set<SecurityRole> lstRolesCli = new HashSet<>();
@@ -1193,7 +1193,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                     redFitnessService.save(rf);
                 });
             }
-
         }
     }
 

@@ -122,6 +122,10 @@ public class Trainer extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<ContactoTrainer> lstContactoTrainer;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
+    private List<AudioTrainer> lstAudioTrainer;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "TrainerDisciplina",joinColumns = {
         @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")

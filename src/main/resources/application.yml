@@ -1,9 +1,9 @@
 spring:
   profiles:
-    active: development
+    active: herokudev
   jpa:
     hibernate:
-        ddl-auto: create
+        ddl-auto: none
         naming:
           implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     properties:
