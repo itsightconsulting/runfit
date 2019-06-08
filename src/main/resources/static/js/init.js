@@ -2,6 +2,7 @@ function imgToSvg () {
     jQuery('img.svg').each(function () {
         var $img = jQuery(this);
         var imgID = $img.attr('id');
+        var imgOnClick = $img.attr('onclick');
         var imgClass = $img.attr('class');
         var imgURL = $img.attr('src');
 
@@ -12,6 +13,9 @@ function imgToSvg () {
             }
             if (typeof imgClass !== 'undefined') {
                 $svg = $svg.attr('class', imgClass + ' replaced-svg');
+            }
+            if (typeof imgOnClick !== 'undefined') {
+                $svg = $svg.attr('onclick', imgOnClick);
             }
             $svg = $svg.removeAttr('xmlns:a');
             if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {

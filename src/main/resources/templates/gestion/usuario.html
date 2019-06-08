@@ -558,7 +558,7 @@
                 params.id = id;
                 params.flagActivo = actualStatus == "Activo" ? false : true;
                 params.username = username;
-                params.tipoUsuario = tipoUsu;
+                params.tipoUsuario = tipoUsu === "Administrador" ? 1 : tipoUsu === "Trainer" ? 2 : 3;
 
                 $.ajax({
                     type: 'PUT',

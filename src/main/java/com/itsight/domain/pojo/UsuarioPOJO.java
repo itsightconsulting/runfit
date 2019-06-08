@@ -28,13 +28,11 @@ public class UsuarioPOJO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaUltimoAcceso;
 
-    private int tipoUsuarioId;
-
     private String tipoUsuario;
 
     public UsuarioPOJO(){}
 
-    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, int tipoUsuarioId, String tipoUsuario) {
+    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, String tipoUsuario) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.nombreCompleto = nombreCompleto;
@@ -42,7 +40,6 @@ public class UsuarioPOJO implements Serializable {
         this.correo = correo;
         this.username = username;
         this.fechaUltimoAcceso = fechaUltimoAcceso;
-        this.tipoUsuarioId = tipoUsuarioId;
         this.tipoUsuario = tipoUsuario;
     }
 }

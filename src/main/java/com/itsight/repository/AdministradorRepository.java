@@ -20,7 +20,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @EntityGraph(value = "administrador.all")
     List<Administrador> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 3, 'Administrador') FROM Trainer T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 'Administrador') FROM Trainer T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "administrador.all")

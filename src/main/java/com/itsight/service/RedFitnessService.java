@@ -9,13 +9,17 @@ import java.util.List;
 
 public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
-    List<RedFitCliDTO> listarSegunRedTrainer(Integer trainerId);
+    List<RedFitCliDTO> listarSegunRedTrainerAndCliNom(Integer trainerId, String nombres);
 
     void actualizarNotaACliente(Integer id, String nota);
 
-    void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(Integer id, int planStatus, Date ultimoDiaPlanificacion, int contadorRutinas);
+    void updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(Integer id, int planStatus, Date fechaInicialPlanificacion, Date ultimoDiaPlanificacion, int contadorRutinas);
 
     Integer findTrainerIdByIdAndRunnerId(Integer id, Integer runneId);
 
     List<Integer> findTrainerIdByUsuarioId(Integer id);
+
+    String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String asunto, String cuerpo);
+
+    String enviarNotificacionGeneral(Integer trainerId, String asunto, String cuerpo);
 }

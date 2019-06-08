@@ -79,6 +79,12 @@ const TipoElemento = Object.freeze({
     TEXTO: 3
 });
 
+const TipoNotificacion = Object.freeze({
+    PERSONAL:   1,
+    GENERAL:  2
+});
+
+
 const EstadoPlan = Object.freeze({
     SIN_PLAN:   1,
     EN_REVISION:   2,

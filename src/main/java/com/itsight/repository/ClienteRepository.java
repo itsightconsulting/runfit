@@ -22,7 +22,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     @EntityGraph(value = "cliente.all")
     List<Cliente> findAllByFlagActivoOrderByIdDesc(Boolean flagActivo);
 
-    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 1, 'Cliente') FROM Cliente T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
+    @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 'Cliente') FROM Cliente T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
     @EntityGraph(value = "cliente.all")

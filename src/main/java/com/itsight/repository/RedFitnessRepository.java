@@ -17,16 +17,16 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @EntityGraph(value = "redFitness.cliente")
     RedFitness findOneById(Integer id);
 
-    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id, R.nota, R.msgCliente, R.contadorRutinas, R.estadoPlan, R.fechaFinalPlanificacion, CONCAT(C.apellidos,' ', C.nombres), C.movil, C.fechaUltimoAcceso, C.id, C.correo, C.fechaNacimiento, R.predeterminadaFichaId) FROM RedFitness R JOIN R.cliente C WHERE R.trainer.id = ?1")
-    List<RedFitCliDTO> findAllByTrainerId(Integer trainerId);
+    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id, R.nota, R.msgCliente, R.contadorRutinas, R.estadoPlan, R.fechaInicialPlanificacion, R.fechaFinalPlanificacion, CONCAT(C.apellidos,' ', C.nombres), C.movil, C.fechaUltimoAcceso, C.id, C.correo, C.fechaNacimiento, R.predeterminadaFichaId) FROM RedFitness R JOIN R.cliente C WHERE R.trainer.id = ?1 AND LOWER(CONCAT(C.nombres,' ',C.apellidos)) LIKE LOWER(CONCAT('%',?2,'%'))")
+    List<RedFitCliDTO> findAllByTrainerIdAndNombreCliente(Integer trainerId, String nombres);
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.nota = ?2 WHERE R.id = ?1")
     void actualizarNotaACliente(Integer id, String nota);
 
     @Modifying
-    @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaFinalPlanificacion = ?3, R.contadorRutinas = R.contadorRutinas + ?4 WHERE R.id = ?1")
-    void updatePlanStatusAndUltimoDiaPlanificacion(Integer id, int planStatus, Date diaFinalPlanificacion, int contadorRutinas);
+    @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaInicialPlanificacion= ?3, R.fechaFinalPlanificacion = ?4, R.contadorRutinas = R.contadorRutinas + ?5 WHERE R.id = ?1")
+    void updatePlanStatusAndUltimoDiaPlanificacion(Integer id, int planStatus, Date fechaInicialPlanificacion, Date diaFinalPlanificacion, int contadorRutinas);
 
     @Query("SELECT R.contadorRutinas FROM RedFitness R where R.id = ?1")
     int getById(Integer id);
@@ -40,4 +40,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
 
     @Query("SELECT M.trainer.id FROM RedFitness M where M.cliente.id = ?1 and M.estadoPlan <> 5")
     List<Integer> findTrainerIdByUsuarioId(Integer id);
+
+    @Query(value= "select string_agg(c.correo, ',') from red_fitness rf INNER JOIN cliente c ON rf.cliente_id=c.security_user_id where trainer_id=?1", nativeQuery = true)
+    String getAllRunnerMailsByTrainerId(Integer id);
 }

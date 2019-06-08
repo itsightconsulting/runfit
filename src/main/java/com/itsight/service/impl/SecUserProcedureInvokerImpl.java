@@ -24,7 +24,6 @@ public class SecUserProcedureInvokerImpl implements SecUserProcedureInvoker {
 
     @Override
     public List<UsuarioPOJO> findAllByNombreAndFlagActivoDynamic(String nombreCompleto, String flagActivo) {
-
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_users_q_dynamic_where", "allUsers");
         storedProcedureQuery.registerStoredProcedureParameter(0, String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(1, Boolean.class, ParameterMode.IN);

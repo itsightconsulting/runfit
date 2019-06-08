@@ -34,7 +34,6 @@ import java.util.Set;
                                 @ColumnResult(name = "correo"),
                                 @ColumnResult(name = "username"),
                                 @ColumnResult(name = "fechaUltimoAcceso"),
-                                @ColumnResult(name = "tipoUsuarioId"),
                                 @ColumnResult(name = "tipoUsuario")
                         }
                 )

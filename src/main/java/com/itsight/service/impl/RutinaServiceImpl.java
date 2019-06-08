@@ -214,7 +214,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
             arrSemIds[i] = nueRutina.getLstSemana().get(i).getId();
         }
         repository.updateSemanaIds(nueRutina.getId(), arrSemIds);
-        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutinaDto.getFechaFin(), 1);
+        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutinaDto.getFechaInicio(), rutinaDto.getFechaFin(), 1);
         return REGISTRO.get();
     }
 
@@ -241,7 +241,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
             arrSemIds[i] = nueRutina.getLstSemana().get(i).getId();
         }
         repository.updateSemanaIds(nueRutina.getId(), arrSemIds);
-        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutina.getFechaFin(), 1);
+        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitId, 2, rutina.getFechaInicio(), rutina.getFechaFin(), 1);
         String hshRedFitId = Parseador.getEncodeHash32Id("rf-rutina", redFitId);
         String hshRunnerId = Parseador.getEncodeHash16Id("rf-rutina", runneId);
         return Utilitarios.jsonResponse(hshRedFitId, hshRunnerId);

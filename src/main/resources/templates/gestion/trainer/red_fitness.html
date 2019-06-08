@@ -9,25 +9,33 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/trainer.css}+'?'+${version}">
 </head>
 <style>
-    .elegir-plantilla h6{
+    .elegir-plantilla h6 {
         font-size: 11px;
     }
 
-    .elegir-plantilla:hover{
+    .elegir-plantilla:hover {
         background: #feff8c !important;
     }
 
-    .br-sp{
+    .br-sp {
         border-radius: 60% !important;
         padding: 4px;
     }
 
-    .sidebar li.active a{
+    .sidebar li.active a {
         color: #a8fa00;
 
     }
-    .sidebar li.active svg{
+    .sidebar li.active svg {
         fill: #a8fa00;
+    }
+
+    #tblRegistros svg:hover {
+        cursor: pointer;
+    }
+
+    tbody svg {
+        fill: #daffc6 !important;
     }
 
 </style>
@@ -40,169 +48,65 @@
     <!-- MAIN CONTENT -->
     <div id="wrapper">
         <header>
-            <!--<div class="text-center">
-                <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a class="only_mobile" th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
-                <h4 class="user" th:inline="text"><img class="svg" th:src="@{img/iconos/icon_perfil.svg}+'?'+${version}">[[${#authentication.name}]]</h4>
-            </div>-->
             <ul class="nav nav-pills">
-                <li class="active col-md-2"><a href="#">listado</a></li>
-                <li class="col-md-2"><a href="#">g. videos</a></li>
-                <li class="col-md-3"><a href="#">rutinario</a></li>
-                <li class="col-md-2"><a href="#">g. audios</a></li>
-                <li class="col-md-3"><a href="#">planes prediseñados</a></li>
+                <li class="active col-md-2"><a href="#">LISTADO</a></li>
+                <li class="col-md-2"><a href="#">G. VIDEOS</a></li>
+                <li class="col-md-3"><a href="#">RUTINARIO</a></li>
+                <li class="col-md-2"><a href="#">G. AUDIOS</a></li>
+                <li class="col-md-3"><a href="#">PLANES PREDISEÑADOS</a></li>
             </ul>
         </header>
         <div class="container-t">
             <div class="options">
-                <img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">
+                <img class="svg" onclick="preNotificacionGeneral()" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">
                 <img class="svg" th:src="@{/img/iconos/icon_candado.svg}+'?'+${version}">
             </div>
-            <div class="input-group">
-                <input class="form-control" type="text">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit">BUSCAR</button>
-                </div>
+            <div class="" style="padding-bottom: 20px">
+                <form id="frm_busqueda">
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="Nombres" name="Nombres">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit" id="btnFiltrar">BUSCAR</button>
+                        </div>
+                    </div>
+                </form>
             </div>
             <fieldset>
                 <section>
-                    <!--<div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="row">
-                                <div class="col-sm-3 col-md-3 col-lg-3">
-                                    <h1 class="page-title txt-color-blueDark">
-                                        <i class="fa fa-group fa-fw"></i>
-                                        Gestión
-                                        <span>>
-                                                <b>Red Fitness</b>
-                                            </span>
-                                    </h1>
-                                </div>
-                                <div class="col-sm-9 col-md-9 col-lg-9">
-                                    <div class="container-fluid text-align-right">
-                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                            <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-redLight"><i class="fa fa-phone fa-15x txt-color-white"></i></a>
-                                            <a href="javascript:void(0);" class="padding-10 btn btn-circle bg-color-orange"><i class="fa fa-cloud-download fa-15x txt-color-white"></i></a>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                            <a href="javascript:void(0);" class="btn btn-success text-align-center" style="width: 100%">
-                                                <i class="fa fa-money fa-fw txt-color-green"></i> Pagos
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                            <a href="javascript:void(0);" class="btn btn-primary text-align-center" style="width: 100%">
-                                                <i class="fa fa-database fa-fw txt-color-redLight"></i> Base de Datos
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                            <a href="javascript:void(0);" class="btn btn-default" style="width: 100%">
-                                                <i class="fa fa-bar-chart-o fa-fw txt-color-darken"></i> Estadísticas
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 padding-5">
-                                            <a href="javascript:void(0);" class="btn btn-danger" style="width: 100%">
-                                                <i class="fa fa-male fa-fw txt-color-white"></i>Consejos
-                                            </a>
-                                        </div>
-                                        <div class="col-md-2 col-sm-2  col-xs-12 padding-5">
-                                            <a href="javascript:void(0);" class="btn btn-primary" style="width: 100%">
-                                                <i class="fa fa-calendar fa-fw txt-color-lighten"></i>Mis Rutinas
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                     <div class="row" id="view_list">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <form id="frm_busqueda">
-                                <div class="form-horizontal">
-                                    <div class="row margin-bottom-10">
-                                        <div class="col col-md-6 col-sm-12 col-xs-12">
-                                            <div class="col-md-3 col-xs-12">
-                                            <label class="col-md-1 control-label-right"><b>Estado:</b></label>
-                                            </div>
-                                            <div class="col-md-5 col-xs-10">
-                                                <select name="Estado" id="Estado" class="form-control input-sm ignore">
-                                                    <option value="-1"> -- Todos --</option>
-                                                    <option value="true">Activo</option>
-                                                    <option value="false">Inactivo</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 col-xs-2">
-                                                <a id="btnFiltrar" href="#" class="btn btn-primary" title="Buscar"><i
-                                                        class="fa fa-search"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-6 col-sm-12 col-xs-12 text-align-right">
-                                            <h6><span class="padding-7">Pendientes Por Plan: <span class="txt-color-white bg-color-orange br-sp total-pp">0</span></span><span class="padding-7">Pendientes por enviar: <span class="txt-color-white bg-color-orange br-sp total-pe">0</span></span></h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <!--<div class="col-sm-12 col-md-12 col-lg-12">
-                            <table id="tblRegistros" data-mobile-responsive="true">
-                                <thead>
-                                <tr>
-
-                                    <th data-formatter="Opciones" data-halign="center" data-valign="middle"
-                                        data-align="center" data-width="175">Acciones
-                                    </th>
-                                    <th data-formatter="estadoPlan" data-halign="center" data-valign="middle"
-                                             data-align="center" data-width="70">Plan Status
-                                    </th>
-                                    <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle" data-align="center"
-                                        data-width="80">Fecha Fin Planificación
-                                    </th>
-                                    <th data-field="cliNombreCompleto" data-class="nombre-cliente" data-formatter="linkFormatter" data-halign="left" data-valign="middle" data-align="left">Nombre
-                                    </th>
-                                    <th data-field="cliMovil" data-halign="center" data-valign="middle" data-align="center"
-                                        data-width="115">Móvil
-                                    </th>
-                                    <th data-field="cliFechaUltimoAcceso" data-halign="center" data-valign="middle" data-align="center"
-                                        data-width="140">Último Acceso
-                                    </th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>-->
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <table id="tblRegistros" data-mobile-responsive="true" class="table table-bordered table-condensed">
                                 <thead>
                                 <tr>
-                                    <th data-formatter="nota" data-halign="center" data-valign="middle"
+                                    <th data-formatter="fttNota" data-halign="center" data-valign="middle"
                                         data-align="center" data-width="5%">Notas
                                     </th>
-                                    <th data-formatter="fechaInicio" data-halign="center" data-valign="middle"
+                                    <th data-formatter="formatterFechaInicialPlanificacion" data-field="fechaInicialPlanificacion" data-halign="center" data-valign="middle"
                                         data-align="center" data-width="10%"><img class="svg" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
                                     </th>
-                                    <th data-formatter="fechaFin" data-halign="center" data-valign="middle"
+                                    <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle"
                                         data-align="center" data-width="10%"><img class="svg" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
                                     </th>
-                                    <th data-field="cliNombreCompleto" data-halign="center" data-valign="middle" data-align="center"
+                                    <th data-formatter="linkFormatter" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="25%">Nombre y apellidos
                                     </th>
-                                    <th data-field="NP" data-halign="center" data-valign="middle" data-align="center"
+                                    <th data-formatter="fttNp" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="5%">N.P
                                     </th>
-                                    <th data-field="Plantillas" data-halign="center" data-valign="middle" data-align="center"
+                                    <th data-formatter="fttPlantillas" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="5%">Plantillas
                                     </th>
-                                    <th data-field="meses" data-halign="center" data-valign="middle" data-align="center"
+                                    <th data-formatter="fttMeses" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="10%">Meses
                                     </th>
-                                    <th data-field="temporada" data-halign="center" data-valign="middle" data-align="center"
+                                    <th data-formatter="fttTemporada" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="10%">Temporada
                                     </th>
-                                    <th data-field="enviar" data-halign="center" data-valign="middle" data-align="center"
-                                        data-width="10%">Enviar
+                                    <th data-formatter="fttEnviarCorreo" data-halign="center" data-valign="middle" data-align="center"
+                                        data-width="10%">Enviar Correo
                                     </th>
                                     <th data-field="cliMovil" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="10%">Teléfono
-                                    </th>
-                                    <th data-formatter="Opciones" data-halign="center" data-valign="middle"
-                                        data-align="center" data-width="175">Acciones
                                     </th>
                                 </tr>
                                 </thead>
@@ -216,6 +120,24 @@
     <!-- END MAIN CONTENT -->
 </div>
 <!-- MODALS -->
+<div class="modal fade" id="mdlNota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background: black">
+                <button type="button btn-white" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong>Añada la nota</strong></h4>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <div class="">
+                    <textarea name="NotaCliente" id="NotaCliente" cols="30" rows="3" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-md" onclick="actualizarNota()">GUARDAR CAMBIOS</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- MODAL MOSTRAR RUTINAS PLANTILLA -->
 <div class="modal fade" id="myModalPlantillas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
@@ -268,6 +190,32 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="mdlCorreoPersonal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background: black">
+                <button type="button btn-white" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong>NOTIFICAR</strong></h4>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <div class="form-group">
+                    <label class="">ASUNTO:</label>
+                    <input name="CPAsunto" id="CPAsunto"class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="">MENSAJE:</label>
+                    <textarea name="CPCuerpo" id="CPCuerpo" cols="30" rows="8" class="form-control"></textarea>
+                </div>
+                <input type="number" id="InpTipoNotificacion" class="hidden">
+                <input type="text" id="InpCliId" class="hidden">
+                <input type="text" id="InpCliCorreo" class="hidden">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-md" onclick="enviarNotificacion()">ENVIAR NOTIFICACIÓN</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- END MODAL PARA RUTINAS DE TIPO GENERAL -->
 <!-- END MODALS -->
 <!-- END MAIN PANEL -->
@@ -285,22 +233,26 @@
 <script th:inline="javascript">
     const fInitRutGen = document.getElementById('RutFechaInicio');
     const fFinRutGen = document.getElementById('RutFechaFinal');
+    const tblRegistros = document.getElementById('tblRegistros');
+    const mdlNota = document.getElementById('mdlNota');
+    let $mnEle;
 
     let $table = $('#tblRegistros');
     let $index = $('#Id');
     let $nota = '';
     let objForRutina = {};
     const modalPlantillas = document.querySelector('#myModalPlantillas');
+    $countSinPlan = 0;
+    $countPendientesEnvio = 0;
 
-    $(function () {        $countSinPlan = 0;
-        $countPendientesEnvio = 0;
-
+    $(function () {
         listarRegistros();
         init();
 
         fInitRutGen.addEventListener('change', setTotalSemanas);
         fFinRutGen.addEventListener('change', setTotalSemanas);
         modalPlantillas.addEventListener('click', eventosClickModalPlantillas);
+        tblRegistros.addEventListener('click', clickListenerTbl);
         $table[0].addEventListener('focusout', eventosGeneralesFocusOut);
 
         $("#btnNuevo").click(function () {
@@ -316,6 +268,85 @@
         });
 
     });
+
+    function preNotificacionPersonal(cliId, cliCorreo){
+        $('#mdlCorreoPersonal').modal('show');
+        $('#InpCliId').val(cliId);
+        $('#InpCliCorreo').val(cliCorreo);
+        document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.PERSONAL;
+    }
+
+    function preNotificacionGeneral(){
+        $('#mdlCorreoPersonal').modal('show');
+        document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.GENERAL;
+    }
+
+    function enviarNotificacion(){
+        const tipoNotificacion = Number(document.querySelector('#InpTipoNotificacion').value);
+        const data = {};
+        let urlDiff = '';
+        if(tipoNotificacion === TipoNotificacion.PERSONAL){
+            data.cliId = $('#InpCliId').val();
+            data.cliCorreo = $('#InpCliCorreo').val();
+            data.asunto = $('#CPAsunto').val();
+            data.cuerpo = $('#CPCuerpo').val();
+            urlDiff = 'personal';
+        }
+
+        if(tipoNotificacion === TipoNotificacion.GENERAL){
+            data.asunto = $('#CPAsunto').val();
+            data.cuerpo = $('#CPCuerpo').val().replace(/\r?\n/g, '<br />');
+            urlDiff = 'general';
+        }
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx+'gestion/trainer/red/enviar/correo/'+urlDiff,
+            data: data,
+            blockLoading: true,
+            dataType: 'json',
+            success: (res)=>{
+                reqSuccess(res);
+            },
+            error: (err)=>{
+                exception(err);
+            },
+            complete: ()=>{
+                $('#mdlCorreoPersonal').modal('hide');
+            }
+        })
+    }
+
+    function clickListenerTbl(e){
+        const input = e.target;
+        const clases = input.classList;
+
+        if(input.tagName.toUpperCase() === "PATH"){
+            let nueIn = searchSvg(input);
+            if(nueIn.classList.contains('ico-nota')){
+                $(mdlNota).modal('show');
+                const nota = mdlNota.querySelector('textarea');
+                nota.value = nueIn.getAttribute('data-content');
+                nota.setAttribute('data-redfit-id', nueIn.getAttribute('data-redfit-id'));
+            }
+        }
+        if(clases.contains('ico-nota')){
+            $mnEle = input;
+            $(mdlNota).modal('show');
+            const nota = mdlNota.querySelector('textarea');
+            nota.value = input.getAttribute('data-content');
+            nota.setAttribute('data-redfit-id', input.getAttribute('data-redfit-id'));
+        }
+    }
+    
+    function searchSvg(path){
+        let svg = path;
+        while(svg.tagName.toUpperCase() !== "SVG"){
+            svg = svg.parentElement;
+        }
+        return svg;
+    }
 
     function init(){
         const dt = new Date();
@@ -372,20 +403,48 @@
             }else{
                 e.target.parentElement.remove();
             }
-
         }
+    }
+
+    function actualizarNota(){
+        const eleNota = mdlNota.querySelector('textarea');
+        const nota = eleNota.value;
+        const id = Number(eleNota.getAttribute('data-redfit-id'));
+        let params = {
+            id: id,
+            nota: nota
+        };
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx+'gestion/trainer/red/anadir-nota',
+            data: params,
+            dataType: 'json',
+            success: (d)=>{
+                $.smallBox({content: 'Actualización exitosa'});
+            },error: (xhr)=>{
+                exception(xhr);
+            }
+            ,complete: ()=>{
+                listarRegistros();
+                $(mdlNota).modal('hide');
+            }
+        })
     }
 
     function listarRegistros() {
 
         if ($("#frm_busqueda").valid()) {
-
+            const data = getFormData($("#frm_busqueda"));
             $table.bootstrapTable('destroy');
             $table.bootstrapTable({
                 url: _ctx + 'gestion/trainer/red/obtenerListado',
                 pagination: true,
                 sidePagination: 'client',
                 pageSize: 10,
+                queryParams: ()=> {
+                    return data;
+                },
                 onLoadSuccess: d => {
                     //Activando los popover y tooltips
                     d.forEach(r=>{
@@ -396,7 +455,7 @@
                     $('[rel="tooltip"]').tooltip();
                     $('.total-pe').text($countPendientesEnvio);
                     $('.total-pp').text($countSinPlan);
-                    imgToSvg();
+                    instanceSvgAndPopovers();
                 },
                 onLoadError: function (xhr) {
                     exception(xhr);
@@ -411,20 +470,99 @@
 
     function linkFormatter(value, row) {
         if(row.contadorRutinas == 0){
-            return String('<a class="" href="#" onclick="javascript:noCuentaConPrograma()" title="El atleta aún no cuenta con ninguna rutina asignada">' + row.cliNombreCompleto + '</a>', value);
+            return String('<a style="text-decoration: none;" href="#" onclick="javascript:noCuentaConPrograma()" title="El atleta aún no cuenta con ninguna rutina asignada" rel="tooltip">' + row.cliNombreCompleto + '</a>', value);
         }else{
-            return String('<a class="" href="#" onclick="javascript:verUltimoPrograma(' + row.id +','+ row.cliId +',\''+ btoa(row.cliFechaNacimiento) +'\',\''+ btoa(row.cliNombreCompleto) + '\')" title="Ir al último programa">' + row.cliNombreCompleto + '</a>', value);
+            return String('<a style="text-decoration: none;" href="#" onclick="javascript:verUltimoPrograma(' + row.id +','+ row.cliId +',\''+ btoa(row.cliFechaNacimiento) +'\',\''+ btoa(row.cliNombreCompleto) + '\')" title="↗️ Ir al último programa" rel="tooltip">' + row.cliNombreCompleto + '</a>', value);
         }
+    }
+
+    function fttNota(v, row, ix){
+        let opciones = '';
+        let nota = row.nota == null?"":row.nota;
+        if(nota == ""){
+            opciones = `<img data-redfit-id="${row.id}" style="fill:#9d9d9d !important;" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+        }else{
+            opciones = `<img data-redfit-id="${row.id}" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_leyenda.svg"/>`;
+        }
+        return opciones;
+    }
+
+    function fttNp(v, row, ix, pos){
+        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+    }
+
+    function fttPlantillas(v, row, ix){
+        var opciones = "";
+        switch(row.estadoPlan) {
+            case EstadoPlan.SIN_PLAN:
+                let fnNuevoRutina = "crearNuevaRutina";
+                if(row.predeterminadaFichaId == TipoFicha.GENERAL){
+                    objForRutina.redFitId = row.id;
+                    objForRutina.cliId = row.cliId;
+                    objForRutina.ix = ix;
+                    objForRutina.contadorRutinas = row.contadorRutinas;
+                    fnNuevoRutina = "abrirModalRutinaGen";
+                }
+                opciones += `<img class="svg"
+                                title="Crear rutina" rel="tooltip"
+                                onclick='javascript:${fnNuevoRutina}(${row.id},${row.cliId},${ix}, ${row.contadorRutinas}, ${"\"" + btoa(row.cliFechaNacimiento) + "\""}, ${"\"" + btoa(row.cliNombreCompleto) + "\""});'
+                                src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg"/>`
+                break;
+            case EstadoPlan.EN_REVISION:
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                break;
+            case EstadoPlan.POR_ENVIAR:
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                break;
+            case EstadoPlan.INICIADO:
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                break;
+            default://EstadoPlan.CULMINADO
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                break;
+        }
+        return opciones;
+    }
+    function fttMeses(v, row, ix){
+        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_archivo.svg"/>`;
+    }
+    function fttTemporada(v, row, ix){
+        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+    }
+    function fttEnviarCorreo(v, row, ix){
+        return `<img class="svg" onclick="preNotificacionPersonal(${row.cliId}, '${row.cliCorreo}')" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_mail.svg"/>`;
+    }
+
+    function instanceSvgAndPopovers(){
+        $('tbody img.svg').each(function () {
+            var $img = jQuery(this);
+            var imgURL = $img.attr('src');
+            var element = $img[0];
+
+            $.get(imgURL, function (data) {
+                var $svg = $(data).find('svg');
+                $img[0].getAttributeNames().forEach(e=>{
+                    $svg = $svg.attr(e, element.getAttribute(e));
+                })
+                $svg = $svg.removeAttr('xmlns:a');
+                if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+                    $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
+                }
+                $img.replaceWith($svg);
+                if($svg[0].hasAttribute('rel')){
+                    $($svg[0]).tooltip();
+                }
+                if($svg[0].classList.contains('ico-nota')){
+                    $($svg[0]).popover();
+                }
+
+            }, 'xml');
+
+        });
     }
 
     function Opciones(value, row, index) {
         let opciones = '';
-        let nota = row.nota == null?"":row.nota;
-        if(nota == ""){
-            opciones = `<a href='#' onclick='preAgregarNota(${row.id}, ${index}, this);' class="ico-nota" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover"><i class='fa fa-sticky-note fa-2x txt-color-grayDark'></i></a> &nbsp &nbsp`;
-        }else{
-            opciones = `<a href='#' onclick='preAgregarNota(${row.id}, ${index}, this);' class="ico-nota" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover"><i class='fa fa-sticky-note fa-2x txt-color-yellow'></i></a> &nbsp &nbsp`;
-        }
 
         switch(row.estadoPlan) {
 
@@ -453,7 +591,7 @@
                 opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
                             <a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`;
                 break;
-            default://EstadoPlan.COLMINADO
+            default://EstadoPlan.CULMINADO
                 opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class="fa fa-file-text fa-2x"></i></a> &nbsp &nbsp
                             <a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="Ya se ha asignado una rutina al cliente" rel="tooltip"><i class='fa fa-plus fa-2x'></i></a> &nbsp &nbsp`;
                 break;
@@ -500,7 +638,6 @@
         //Semanas
         const fIni = parseFromStringToDate(document.querySelector('#RutFechaInicio').value);
         let fFin = parseFromStringToDate(document.querySelector('#RutFechaFinal').value);
-        console.log(fIni, fFin);
         for(let i=0; i<totalSemanas;i++){
             const refDia = fIni.getDay();
             let diasParaFull = refDia==0?0:7-refDia;
@@ -582,6 +719,13 @@
         return icon;
     }
 
+    function formatterFechaInicialPlanificacion(value){
+        if(value != undefined){
+            return value;
+        }
+        return "-";
+    }
+
     function formatterFechaFinalPlanificacion(value){
         if(value != undefined){
             let fecha = parseFromStringToDate2(value);
@@ -643,7 +787,7 @@
             error: function(xhr){
             },
             complete: function(){
-                document.querySelector('#spRaw3').innerHTML = '';
+
             }
         })
     }
@@ -685,19 +829,6 @@
             complete: function(){
             }
         })
-    }
-
-    function preAgregarNota(clienteId, ix, e){
-        let nota = e.getAttribute('data-content');
-        var d1 = document.createElement('div');
-        d1.className = 'row';
-        d1.innerHTML = `<textarea class="nota-cliente" data-index="${ix}" data-id="${clienteId}" type="text" class="form-control" rows="3">${nota}</textarea>`;
-        d1.style.margin = '4px 0 0';
-        //Agregando el textarea para modificar la nota
-        $table[0].querySelector('tbody').children[ix].children[0].appendChild(d1);
-        $nota = nota.trim();
-        //Pasando el foco al textarea creado
-        $table[0].querySelector('tbody').children[ix].children[0].lastElementChild.children[0].focus()
     }
 
     function eventosClickModalPlantillas(e){}//No implemetada

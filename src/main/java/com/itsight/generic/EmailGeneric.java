@@ -96,6 +96,18 @@ public abstract class EmailGeneric {
         return preparator;
     }
 
+    public MimeMessagePreparator mimeMessagePreparatorForRecepientsBbc(String asunto, String receptors, String contenido) {
+
+        MimeMessagePreparator preparator = mimeMessage -> {
+            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setSubject(asunto);
+            mimeMessage.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(receptors));
+            mimeMessage.setContent(contenido
+                    , "text/html; charset=utf-8");
+        };
+        return preparator;
+    }
+
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido, String copiado) {
 
         MimeMessagePreparator preparator = mimeMessage -> {

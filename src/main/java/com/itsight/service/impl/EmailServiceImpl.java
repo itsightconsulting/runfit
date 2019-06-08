@@ -83,4 +83,29 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
             LOGGER.error(ex.getMessage());
         }
     }
+
+    @Override
+    public void enviarCorreoInformativoVariosBbc(String asunto, String receptores, String contenido) {
+        MimeMessagePreparator preparator;
+        try {
+            boolean isProdOrHku = profile.equals("production") || profile.equals("herokudev");
+            if(isProdOrHku) {
+                //Receptor
+                if(profile.equals("herokudev")){
+                    receptores = "monica.diaz@itsight.pe";
+                    preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
+                }else{
+                    preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
+                }
+                emailSender.send(preparator);
+            } else {
+                Integer ixUrl = contenido.indexOf("href=");
+                String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
+                bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
+            }
+        } catch (MailException ex) {
+            //Importante el log.error ya que este dispara el envío del error al correo configurado en el SMTP del log4j2.xml
+            LOGGER.error(ex.getMessage());
+        }
+    }
 }
