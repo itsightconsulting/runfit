@@ -2,6 +2,8 @@ package com.itsight.controller;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.PasswordDTO;
+import com.itsight.domain.dto.QueryParamsDTO;
+import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
@@ -70,10 +72,12 @@ public class SecurityUserController {
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}")
     public @ResponseBody
-    List<UsuarioPOJO> listarConFiltro(
+    ResPaginationDTO listarConFiltro(
             @PathVariable("comodin") String comodin,
-            @PathVariable("estado") String estado) {
-        return secUserProcedureInvoker.findAllByNombreAndFlagActivoDynamic(comodin, estado);
+            @PathVariable("estado") String estado,
+            @ModelAttribute QueryParamsDTO queryParams) {
+            List<UsuarioPOJO> users = secUserProcedureInvoker.findAllByNombreAndFlagActivoDynamic(comodin, estado, queryParams);
+        return new ResPaginationDTO(users, users.isEmpty() ? 0 : users.get(0).getRows());
     }
 
     @PutMapping(value = "/desactivar")

@@ -142,8 +142,8 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <section class="col col-6">
-                                                    <label class="label">Apellido Paterno: </label>
+                                                <section class="col col-md-12">
+                                                    <label class="label">Apellidos: </label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="Apellidos" name="Apellidos" type="text"
                                                                placeholder="Apellidos" class="" maxlength="24"
@@ -426,7 +426,7 @@
             $table.bootstrapTable({
                 url: _ctx + 'gestion/'+entidad+'/obtenerListado/' + comodin + '/' + estado + '/' + perfil,
                 pagination: true,
-                sidePagination: 'client',
+                sidePagination: 'server',
                 pageSize: 10,
                 onLoadSuccess: d => {
                 },
@@ -461,7 +461,7 @@
                         type: 'POST',
                         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                         url: _ctx + 'gestion/'+tipoUsuarioUrl+'/agregar',
-                        dataType: "json",
+                        dataType: "text",
                         data: params,
                         success: function (data, textStatus) {
                             if (textStatus == "success") {
@@ -471,13 +471,7 @@
                                     $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
                                     irListado($index);
                                     listarRegistros();
-                                } else if(data.split(',')[0] == "-1"){//0: Codigo response | 1: Id del nuevo registro
-                                    //if(data.split(',')[2] == 1){//Split[2]: registramos el rutinarioCe al cliente
-                                    //registroRutinarioCe(data.split(',')[1]);
-                                    //$.smallBox({});
-                                    //}else{//data.split(',')[2] == 0
-                                    //$.smallBox({});
-                                    //}
+                                } else if(data.split(',')[0] == "-1"){
                                     $.smallBox({});
                                     irListado($index);
                                     listarRegistros();
@@ -738,11 +732,11 @@
     }
 
     function Opciones(value, row, index) {
-        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuarioId;
+        const tipoUsuario = row.tipoUsuario;
         var desactivar = '';
 
         if (row.id > 0) {
-            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}",${tipoUsuario});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
+            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}","${tipoUsuario}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
 									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id}, "${row.username}",${tipoUsuario});' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
         }
         return desactivar;

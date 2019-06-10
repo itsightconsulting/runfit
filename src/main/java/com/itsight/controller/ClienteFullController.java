@@ -82,7 +82,10 @@ public class ClienteFullController {
         }else{
             rutinaId = rutinaService.getMaxRutinaIdByClienteId(userId);
         }
-        return rutinaService.findOne(rutinaId);
+        if(rutinaId != null){
+            return rutinaService.findOne(rutinaId);
+        }
+        return new Rutina();
     }
 
     @GetMapping(value = "/get/rutinas")

@@ -2,6 +2,7 @@ package com.itsight.service.impl;
 
 import com.itsight.domain.*;
 import com.itsight.domain.dto.ClienteDTO;
+import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
@@ -174,8 +175,8 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk) {
-        return repository.findByNombreCompleto(comodin);
+    public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, QueryParamsDTO queryParams) {
+        return repository.findByNombreCompleto(comodin.equals("0") ? "": comodin);
     }
 
     @Override

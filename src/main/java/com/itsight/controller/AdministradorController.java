@@ -3,11 +3,11 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Administrador;
+import com.itsight.domain.dto.QueryParamsDTO;
+import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
-import com.itsight.service.AdministradorService;
-import com.itsight.service.RolService;
-import com.itsight.service.TipoDocumentoService;
-import com.itsight.service.TipoUsuarioService;
+import com.itsight.service.*;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,15 +30,19 @@ public class AdministradorController {
 
     private RolService rolService;
 
+    private SecUserProcedureInvoker secUserProcedureInvoker;
+
     @Autowired
     public AdministradorController(AdministradorService administradorService,
                                    TipoUsuarioService perfilService,
                                    RolService rolService,
-                                   TipoDocumentoService tipoDocumentoService) {
+                                   TipoDocumentoService tipoDocumentoService,
+                                   SecUserProcedureInvoker secUserProcedureInvoker) {
         this.administradorService = administradorService;
         this.perfilService = perfilService;
         this.tipoDocumentoService = tipoDocumentoService;
         this.rolService = rolService;
+        this.secUserProcedureInvoker = secUserProcedureInvoker;
     }
 
     @GetMapping(value = "")
@@ -60,11 +64,12 @@ public class AdministradorController {
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<UsuarioPOJO> listarConFiltro(
+    ResPaginationDTO listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
-            @PathVariable("perfil") String perfil) {
-        return administradorService.listarPorFiltroDto(comodin, estado, perfil);
+            @ModelAttribute QueryParamsDTO queryParams) {
+        List<UsuarioPOJO> users = secUserProcedureInvoker.findAllByNombreAndFlagActivoDynamicSpecific(comodin, estado, queryParams, Enums.TipoUsuario.ADMINISTRADOR.ordinal());
+        return new ResPaginationDTO(users, users.isEmpty() ? 0 : users.get(0).getRows());
     }
 
     @GetMapping(value = "/obtenerAdministradorSession")

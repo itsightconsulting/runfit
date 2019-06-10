@@ -6,6 +6,7 @@ import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
@@ -30,6 +31,8 @@ public class UsuarioPOJO implements Serializable {
 
     private String tipoUsuario;
 
+    private int rows;
+
     public UsuarioPOJO(){}
 
     public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, String tipoUsuario) {
@@ -41,5 +44,17 @@ public class UsuarioPOJO implements Serializable {
         this.username = username;
         this.fechaUltimoAcceso = fechaUltimoAcceso;
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, String tipoUsuario, int rows) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.nombreCompleto = nombreCompleto;
+        this.flagActivo = flagActivo;
+        this.correo = correo;
+        this.username = username;
+        this.fechaUltimoAcceso = fechaUltimoAcceso;
+        this.tipoUsuario = tipoUsuario;
+        this.rows = rows;
     }
 }

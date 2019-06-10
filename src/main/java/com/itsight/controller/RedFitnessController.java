@@ -1,7 +1,7 @@
 package com.itsight.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.RedFitness;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
@@ -13,8 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
 
 @Controller
 @RequestMapping("/gestion/trainer/red")
@@ -55,7 +53,7 @@ public class RedFitnessController {
             @RequestParam String cliCorreo,
             @RequestParam String asunto,
             @RequestParam String cuerpo,
-            HttpSession session) {
+            HttpSession session) throws JsonProcessingException {
         Integer trainerId = (Integer) session.getAttribute("id");
         return Utilitarios.jsonResponse(redFitnessService.enviarNotificacionPersonal(Integer.parseInt(cliId), cliCorreo, trainerId, asunto, cuerpo));
     }

@@ -1,6 +1,7 @@
 package com.itsight.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -80,6 +81,9 @@ public class RedFitness implements Serializable {
     private Date fechaFinalPlanificacion;
     @Column(nullable = false)
     private Integer predeterminadaFichaId;
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "redFitness", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Chat chat;
 
     public RedFitness(){
     }

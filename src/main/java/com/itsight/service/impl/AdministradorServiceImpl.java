@@ -39,9 +39,6 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
 
     private EmailService emailService;
 
-    @Autowired
-    private AdministradorService administradorService;
-
     @Value("${domain.name}")
     private String domainName;
 
@@ -158,7 +155,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
 
     @Override
     public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk) {
-        return repository.findByNombreCompleto(comodin);
+        return repository.findByNombreCompleto(comodin.equals("0") ? "": comodin);
     }
 
     @Override
@@ -185,12 +182,13 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
                     }
                     //Adding to User
                     secUser.setRoles(listSr);
-                    //secUser.addAdministrador(administrador);
+                    secUser.setAdministrador(administrador);
                     //Validamos si presenta un rol de entrenador
                     int flagTrainer = administrador.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
                     //Guardando administrador de autenticacion
+                    administrador.setId(null);
                     administrador.setSecurityUser(secUser);
-                    administradorService.save(administrador);
+                    save(administrador);
 
                     //Enviando correo al nuevo administrador
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, ADMINISTRADOR.ordinal(), domainName);

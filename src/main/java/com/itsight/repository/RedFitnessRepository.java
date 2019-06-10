@@ -43,4 +43,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
 
     @Query(value= "select string_agg(c.correo, ',') from red_fitness rf INNER JOIN cliente c ON rf.cliente_id=c.security_user_id where trainer_id=?1", nativeQuery = true)
     String getAllRunnerMailsByTrainerId(Integer id);
+
+    @Query("SELECT R.id FROM RedFitness R WHERE R.cliente.id = ?1 AND R.trainer.id = ?2")
+    Integer findIdByRunnerIdAndTrainerId(int runneId, Integer trainerId);
 }

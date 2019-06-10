@@ -38,6 +38,21 @@
         fill: #daffc6 !important;
     }
 
+    .chat-lf{
+        background: #f2f3f5;
+        padding: 15px;
+        margin-bottom: 10px;
+        width: 80%;
+    }
+
+    .chat-rg{
+        background: rgba(230,242,245,.5);
+        padding: 15px;
+        margin-bottom: 10px;
+        width: 80%;
+        margin-left: 20%;
+    }
+
 </style>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
@@ -216,6 +231,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="mdlChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background: black">
+                <button type="button btn-white" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong id="CliNom">CHAT</strong></h4>
+            </div>
+            <div class="modal-body" style="max-height: 450px; overflow-y: auto;">
+                <div class="col col-md-12" id="ChatBody">
+
+                </div>
+                <input id="RfId" name="RfId" type="hidden">
+            </div>
+            <div class="modal-footer">
+                <textarea name="ChatSms" id="ChatSms" cols="8" rows="2" class="form-control"></textarea><br>
+                <button class="btn btn-md" onclick="enviarChatMensaje()"><i class="fa fa-paper-plane fa-fw"></i>ENVIAR</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- END MODAL PARA RUTINAS DE TIPO GENERAL -->
 <!-- END MODALS -->
 <!-- END MAIN PANEL -->
@@ -235,6 +270,7 @@
     const fFinRutGen = document.getElementById('RutFechaFinal');
     const tblRegistros = document.getElementById('tblRegistros');
     const mdlNota = document.getElementById('mdlNota');
+    let users = [];
     let $mnEle;
 
     let $table = $('#tblRegistros');
@@ -269,11 +305,58 @@
 
     });
 
-    function preNotificacionPersonal(cliId, cliCorreo){
-        $('#mdlCorreoPersonal').modal('show');
-        $('#InpCliId').val(cliId);
-        $('#InpCliCorreo').val(cliCorreo);
-        document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.PERSONAL;
+    function preNotificacionPersonal(rfId, cliId, cliCorreo){
+
+        $.ajax({
+            type: 'GET',
+            url: _ctx+'gestion/chat/get/'+rfId,
+            blockLoading: true,
+            dataType: 'json',
+            success: (res)=>{
+                reconstruirChat(res);
+                $('#RfId').val(rfId);
+                $('#CliNom').text(users.find(c => c.id == rfId).cliNombreCompleto);
+            },
+            error: ()=>{
+                $('#mdlCorreoPersonal').modal('show');
+                $('#InpCliId').val(cliId);
+                $('#InpCliCorreo').val(cliCorreo);
+                document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.PERSONAL;
+            },
+            complete: ()=>{
+
+            }
+        })
+    }
+
+    function enviarChatMensaje(){
+        const rfId = Number($('#RfId').val());
+        const msj = $('#ChatSms').val().replace(/\r?\n/g, '<br />');
+        const dvChat = document.querySelector('#ChatBody');
+        $.ajax({
+            type: 'PUT',
+            url: _ctx+'gestion/chat/update/'+rfId,
+            blockLoading: false,
+            dataType: 'json',
+            data: {msg: msj},
+            success: ()=>{
+                dvChat.appendChild(htmlStringToElement(`<div class="chat-rg">${msj}</div>`));
+                $('#ChatSms').val('');
+            },
+            error: (err)=>{
+                exception(err)
+            },
+            complete: ()=>{ }
+        })
+    }
+
+    function reconstruirChat(chat){
+        const dvChat = document.querySelector('#ChatBody');
+        dvChat.innerHTML = "";
+        chat.mensajes.forEach(c=>{
+            dvChat.appendChild(htmlStringToElement(`<div class="chat-${c.esSalida ? 'lf':'rg'}">${c.msg}</div>`));
+        });
+        $('#mdlChat').modal('show');
     }
 
     function preNotificacionGeneral(){
@@ -354,6 +437,15 @@
         let dateToString = d => `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
         $('#RutFechaInicio').val(dateToString(dt));
         $('#RutFechaFinal').val(dateToString(dt));
+        modalEventos();
+    }
+
+    function modalEventos(){
+        $('#mdlChat').on('show.bs.modal', ()=> {
+            setTimeout(() => {
+                $('#ChatBody')[0].parentElement.scrollTop = document.body.scrollHeight;
+            }, 250);
+        })
     }
 
     function setTotalSemanas(){
@@ -446,6 +538,7 @@
                     return data;
                 },
                 onLoadSuccess: d => {
+                    users = d;
                     //Activando los popover y tooltips
                     d.forEach(r=>{
                         r.estadoPlan == 1 ? ++$countSinPlan : '';
@@ -530,7 +623,7 @@
         return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
     }
     function fttEnviarCorreo(v, row, ix){
-        return `<img class="svg" onclick="preNotificacionPersonal(${row.cliId}, '${row.cliCorreo}')" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_mail.svg"/>`;
+        return `<img class="svg" onclick="preNotificacionPersonal(${row.id}, ${row.cliId}, '${row.cliCorreo}')" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_mail.svg"/>`;
     }
 
     function instanceSvgAndPopovers(){
