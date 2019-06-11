@@ -48,4 +48,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
 
     @Query(value = "SELECT username FROM cliente WHERE security_user_id = ?1", nativeQuery = true)
     String getUsernameById(int id);
+
+    @Query(nativeQuery = true)
+    UsuGenDTO getForCookieById(Integer id);
 }

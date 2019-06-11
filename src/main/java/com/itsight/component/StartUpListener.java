@@ -101,9 +101,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     private TipoDocumentoService tipoDocumentoService;
 
     @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
     private RedFitnessService redFitnessService;
 
     @Autowired

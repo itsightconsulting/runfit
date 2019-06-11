@@ -22,6 +22,19 @@ import java.util.Set;
 })
 @Entity
 @SqlResultSetMappings({
+    @SqlResultSetMapping(name = "findForCookieById",
+        classes = {
+            @ConstructorResult(
+                targetClass = UsuGenDTO.class,
+                columns = {
+                        @ColumnResult(name = "nombres"),
+                        @ColumnResult(name = "apellidos"),
+                        @ColumnResult(name = "uuidFp"),
+                        @ColumnResult(name = "extFp")
+                }
+            )
+        }
+    ),
     @SqlResultSetMapping(
         name="allUsers",
         classes = {
@@ -79,7 +92,6 @@ import java.util.Set;
             }
     )
 })
-
 @NamedNativeQueries({
     @NamedNativeQuery(query = "SELECT su.security_user_id id, su.username, su.password, su.enabled, string_agg(sr.role, '|') roles, string_agg(COALESCE(sp.privilege, ''), '|') AS privileges FROM security_user su INNER JOIN security_role sr ON su.security_user_id=sr.security_user_id LEFT JOIN security_privilege sp ON sr.security_role_id=sp.security_role_id WHERE username = :username GROUP BY 1",
                       name = "SecurityUser.findByUsernameNative",

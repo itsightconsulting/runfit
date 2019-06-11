@@ -3,6 +3,7 @@ package com.itsight.util;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.Cookie;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -254,6 +255,15 @@ public class Utilitarios {
                 msg = FICHA_GENERAL.get();break;
         }
         return msg;
+    }
+
+    public static Cookie createCookie(String cookieName, String cookieValue) {
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
+        cookie.setHttpOnly(false);//Not access available by js
+        cookie.setSecure(false);//Only accessed with https
+        return cookie;
     }
 }
 

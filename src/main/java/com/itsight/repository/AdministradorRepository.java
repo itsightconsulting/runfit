@@ -44,4 +44,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
 
     @Query(value = "SELECT username FROM administrador WHERE security_user_id = ?1", nativeQuery = true)
     String getUsernameById(int id);
+
+    @Query(nativeQuery = true)
+    UsuGenDTO getForCookieById(Integer id);
 }

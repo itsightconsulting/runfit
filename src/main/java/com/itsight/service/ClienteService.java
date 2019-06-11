@@ -16,7 +16,7 @@ public interface ClienteService extends BaseService<Cliente, Integer> {
 
     String findPasswordById(Integer id);
 
-    void actualizarFechaUltimoAcceso(Date date, String id);
+    void actualizarFechaUltimoAcceso(Date date, Integer id);
 
     String validarCorreo(String correo);
 
@@ -33,4 +33,6 @@ public interface ClienteService extends BaseService<Cliente, Integer> {
     UsuGenDTO obtenerById(int id);
 
     String getUsernameById(int id);
+
+    UsuGenDTO getForCookieById(Integer id);
 }

@@ -35,7 +35,10 @@ import java.util.List;
 @NamedNativeQueries({
         @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM trainer U WHERE U.security_user_id = ?1",
                 name = "Trainer.getById",
-                resultSetMapping = "findById")
+                resultSetMapping = "findById"),
+        @NamedNativeQuery(query = "select nombres, apellidos, cast(tf.uuid_fp as text) uuidFp, tf.ext_fp extFp from trainer t inner join trainer_ficha tf on t.security_user_id = tf.trainer_id where t.security_user_id = ?1",
+                name = "Trainer.getForCookieById",
+                resultSetMapping = "findForCookieById")
 })
 @EqualsAndHashCode(callSuper = false)
 public class Trainer extends AuditingEntity implements Serializable {

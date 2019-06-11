@@ -52,6 +52,9 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     @Query(value = "SELECT username FROM trainer WHERE security_user_id = ?1", nativeQuery = true)
     String getUsernameById(int id);
 
+    @Query(nativeQuery = true)
+    UsuGenDTO getForCookieById(Integer id);
+
     /*@Query(value = "SELECT NEW Trainer(codigoTrainer, nombres, apellidos, apellidoMaterno) FROM Trainer T WHERE T.tipoUsuario.id = 2")
     List<Trainer> findAllTrainers();
 

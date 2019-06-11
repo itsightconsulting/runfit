@@ -35,6 +35,9 @@ import java.util.List;
                 name = "Administrador.getById",
                 resultSetMapping = "findById")
 })
+@NamedNativeQuery(query = "select nombres, apellidos, CAST('' as text) uuidFp, CAST('' as text) extFp from administrador a where a.security_user_id = ?1",
+        name = "Administrador.getForCookieById",
+        resultSetMapping = "findForCookieById")
 @EqualsAndHashCode(callSuper = false)
 public class Administrador extends AuditingEntity implements Serializable {
 

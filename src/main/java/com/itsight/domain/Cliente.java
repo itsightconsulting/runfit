@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NamedEntityGraphs({
@@ -33,7 +34,10 @@ import java.util.List;
 @NamedNativeQueries({
         @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM cliente U WHERE U.security_user_id = ?1",
                 name = "Cliente.getById",
-                resultSetMapping = "findById")
+                resultSetMapping = "findById"),
+        @NamedNativeQuery(query = "select nombres, apellidos, coalesce(cast(uuid_fp as text), '') uuidFp, ext_fp extFp from cliente c where c.security_user_id = ?1",
+                name = "Cliente.getForCookieById",
+                resultSetMapping = "findForCookieById")
 })
 @EqualsAndHashCode(callSuper = false)
 public class Cliente extends AuditingEntity implements Serializable {
@@ -86,6 +90,12 @@ public class Cliente extends AuditingEntity implements Serializable {
 
     @Column
     private String ubigeo;
+
+    @Column()
+    private UUID uuidFp;
+
+    @Column()
+    private String extFp;
 
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)

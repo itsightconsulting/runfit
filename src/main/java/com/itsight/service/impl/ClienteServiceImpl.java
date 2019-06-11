@@ -382,9 +382,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public void actualizarFechaUltimoAcceso(Date date, String id) {
+    public void actualizarFechaUltimoAcceso(Date date, Integer id) {
         // TODO Auto-generated method stub
-        repository.updateFechaUltimoAcceso(date, Integer.parseInt(id));
+        repository.updateFechaUltimoAcceso(date, id);
     }
 
     @Override
@@ -415,5 +415,10 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public String getUsernameById(int id) {
         return repository.getUsernameById(id);
+    }
+
+    @Override
+    public UsuGenDTO getForCookieById(Integer id) {
+        return repository.getForCookieById(id);
     }
 }

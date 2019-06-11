@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface TrainerService extends BaseService<Trainer, Integer> {
 
-    void actualizarFechaUltimoAcceso(Date date, String id);
+    void actualizarFechaUltimoAcceso(Date date, Integer id);
 
     String cargarRutinarioCe(Integer trainerId);
 
@@ -29,4 +29,6 @@ public interface TrainerService extends BaseService<Trainer, Integer> {
     UsuGenDTO obtenerById(int id);
 
     String getUsernameById(int id);
+
+    UsuGenDTO getForCookieById(Integer id);
 }

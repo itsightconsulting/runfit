@@ -455,9 +455,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     }
 
     @Override
-    public void actualizarFechaUltimoAcceso(Date fechaUltimoAcceso, String id) {
-        repository.updateFechaUltimoAcceso(fechaUltimoAcceso, Integer.parseInt(id));
-
+    public void actualizarFechaUltimoAcceso(Date fechaUltimoAcceso, Integer id) {
+        repository.updateFechaUltimoAcceso(fechaUltimoAcceso, id);
     }
 
     public void agregandoPorcentajesK(Trainer trainer){
@@ -534,5 +533,10 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public String getUsernameById(int id) {
         return repository.getUsernameById(id);
+    }
+
+    @Override
+    public UsuGenDTO getForCookieById(Integer id) {
+        return repository.getForCookieById(id);
     }
 }

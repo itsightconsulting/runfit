@@ -15,7 +15,7 @@ public interface AdministradorService extends BaseService<Administrador, Integer
 
     String findPasswordById(Integer id);
 
-    void actualizarFechaUltimoAcceso(Date date, String id);
+    void actualizarFechaUltimoAcceso(Date date, Integer id);
 
     String validarCorreo(String correo);
 
@@ -28,4 +28,6 @@ public interface AdministradorService extends BaseService<Administrador, Integer
     UsuGenDTO obtenerById(Integer id);
 
     String getUsernameById(int id);
+
+    UsuGenDTO getForCookieById(Integer id);
 }
