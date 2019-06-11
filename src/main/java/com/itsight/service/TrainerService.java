@@ -3,6 +3,7 @@ package com.itsight.service;
 import com.itsight.domain.Trainer;
 import com.itsight.domain.dto.RefUploadIds;
 import com.itsight.domain.dto.TrainerDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseService;
 
@@ -24,4 +25,8 @@ public interface TrainerService extends BaseService<Trainer, Integer> {
     Integer getTipoTrainerIdById(Integer id);
 
     String getCorreoById(Integer id);
+
+    UsuGenDTO obtenerById(int id);
+
+    String getUsernameById(int id);
 }

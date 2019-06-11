@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
-    List<RedFitCliDTO> listarSegunRedTrainerAndCliNom(Integer trainerId, String nombres);
+    /*List<RedFitCliDTO> listarSegunRedTrainerAndCliNom(Integer trainerId, String nombres);*/
 
     void actualizarNotaACliente(Integer id, String nota);
 
@@ -20,7 +20,9 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
     List<Integer> findTrainerIdByUsuarioId(Integer id);
 
-    String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String asunto, String cuerpo) throws JsonProcessingException;
+    String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String cuerpo) throws JsonProcessingException;
 
     String enviarNotificacionGeneral(Integer trainerId, String asunto, String cuerpo);
+
+    void actualizarFlagActivoByIdAndTrainerId(int id, Integer trainerId, boolean flag);
 }

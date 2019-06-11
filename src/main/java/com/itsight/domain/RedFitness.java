@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.itsight.util.Enums.EstadoPlan;
@@ -30,6 +31,32 @@ import java.util.Date;
 @Data
 @TypeDefs({
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class),
+})
+@SqlResultSetMappings({
+    @SqlResultSetMapping(name = "allRedFitnessByTrainerId",
+                        classes = {
+                            @ConstructorResult(
+                                targetClass = RedFitCliDTO.class,
+                                columns = {
+                                        @ColumnResult(name = "id"),
+                                        @ColumnResult(name = "nota"),
+                                        @ColumnResult(name = "msgCliente"),
+                                        @ColumnResult(name = "contadorRutinas"),
+                                        @ColumnResult(name = "estadoPlan"),
+                                        @ColumnResult(name = "fechaInicialPlanificacion"),
+                                        @ColumnResult(name = "fechaFinalPlanificacion"),
+                                        @ColumnResult(name = "cliNombreCompleto"),
+                                        @ColumnResult(name = "cliMovil"),
+                                        @ColumnResult(name = "cliFechaUltimoAcceso"),
+                                        @ColumnResult(name = "cliFechaNacimiento"),
+                                        @ColumnResult(name = "cliId"),
+                                        @ColumnResult(name = "cliCorreo"),
+                                        @ColumnResult(name = "predeterminadaFichaId"),
+                                        @ColumnResult(name = "rows")
+                                }
+                            )
+
+                        })
 })
 public class RedFitness implements Serializable {
 
@@ -81,6 +108,8 @@ public class RedFitness implements Serializable {
     private Date fechaFinalPlanificacion;
     @Column(nullable = false)
     private Integer predeterminadaFichaId;
+    @Column(nullable = false)
+    private boolean flagActivo;
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "redFitness", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Chat chat;

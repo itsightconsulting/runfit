@@ -3,6 +3,7 @@ package com.itsight.service.impl;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
@@ -99,7 +100,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public Cliente findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.getById(id);
+        return null;
     }
 
     @Override
@@ -274,6 +275,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         if(pickTrainer){
             RedFitness rf = new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId()));
             rf.setPredeterminadaFichaId(cliente.getPredetFichaId());
+            rf.setFlagActivo(true);
             redFitnessService.save(rf);
             emailService.enviarCorreoInformativo("Nuevo cliente Runfit", cliente.getCorreoTrainer(), "<h1>Tienes un nuevo cliente</h1>");
         }
@@ -290,7 +292,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     public String actualizar(Cliente cliente, String rols) {
         // TODO Auto-generated method stub
         try {
-            Cliente qCliente = repository.getById(cliente.getId());
+            Cliente qCliente = repository.findById(cliente.getId()).orElse(null);
             cliente.setFechaUltimoAcceso(qCliente.getFechaUltimoAcceso());
             cliente.setCreador(qCliente.getCreador());
             cliente.setRowVersion(qCliente.getRowVersion());
@@ -403,5 +405,15 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     @Override
     public String findNombreCompletoById(Integer id) {
         return repository.findNombreCompletoById(id);
+    }
+
+    @Override
+    public UsuGenDTO obtenerById(int id) {
+        return repository.getById(id);
+    }
+
+    @Override
+    public String getUsernameById(int id) {
+        return repository.getUsernameById(id);
     }
 }

@@ -3,6 +3,7 @@ package com.itsight.service;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseService;
 
@@ -28,4 +29,8 @@ public interface ClienteService extends BaseService<Cliente, Integer> {
     String registroFull(ClienteDTO cliente);
 
     List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, QueryParamsDTO queryParams);
+
+    UsuGenDTO obtenerById(int id);
+
+    String getUsernameById(int id);
 }

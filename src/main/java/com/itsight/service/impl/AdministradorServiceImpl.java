@@ -3,6 +3,7 @@ package com.itsight.service.impl;
 import com.itsight.domain.Administrador;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
@@ -77,7 +78,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public Administrador findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.getById(id);
+        return null;
     }
 
     @Override
@@ -315,4 +316,13 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
         return repository.findByUsername(username);
     }
 
+    @Override
+    public UsuGenDTO obtenerById(Integer id) {
+        return repository.getById(id);
+    }
+
+    @Override
+    public String getUsernameById(int id) {
+        return repository.getUsernameById(id);
+    }
 }

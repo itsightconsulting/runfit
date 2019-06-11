@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Administrador;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,8 +24,8 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @Query("SELECT NEW com.itsight.domain.pojo.UsuarioPOJO(T.id, T.fechaCreacion, CONCAT(T.apellidos,' ',T.nombres), T.flagActivo, T.correo, T.username, T.fechaUltimoAcceso, 'Administrador') FROM Administrador T INNER JOIN T.tipoDocumento D WHERE LOWER(CONCAT(T.apellidos,' ',T.nombres)) LIKE LOWER(CONCAT('%',?1,'%'))")
     List<UsuarioPOJO> findByNombreCompleto(String nombreCompleto);
 
-    @EntityGraph(value = "administrador.all")
-    Administrador getById(Integer id);
+    @Query(nativeQuery = true)
+    UsuGenDTO getById(Integer id);
 
     @Modifying
     @Query(value = "UPDATE Administrador A SET A.flagActivo =?2 WHERE A.id = ?1")
@@ -40,4 +41,7 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     @Query(value = "SELECT A FROM Administrador A JOIN FETCH A.tipoDocumento D  WHERE A.username = ?1")
     Administrador findByUsername(String username);
 
+
+    @Query(value = "SELECT username FROM administrador WHERE security_user_id = ?1", nativeQuery = true)
+    String getUsernameById(int id);
 }

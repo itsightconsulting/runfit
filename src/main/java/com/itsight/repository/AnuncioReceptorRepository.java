@@ -13,7 +13,7 @@ import java.util.List;
 public interface AnuncioReceptorRepository extends JpaRepository<AnuncioReceptor, Integer> {
 
     @Modifying
-    @Query(value = "insert into anuncio_receptor(flag_leido, anuncio_trainer_id, cliente_id) select false, ?1, cliente_id from red_fitness where trainer_id= ?2", nativeQuery = true)
+    @Query(value = "insert into anuncio_receptor(flag_leido, anuncio_trainer_id, cliente_id) select false, ?1, cliente_id from red_fitness where trainer_id= ?2 and flag_activo=true", nativeQuery = true)
     void saveMultiple(Integer anuncioTrainerId, Integer trainerId);
 
     @Query(value = "select new com.itsight.domain.pojo.AnuncioPOJO(A.id, A.nombre, A.titulo, A.mensaje, A.imgTrainer, A.fechaCreacion, R.flagLeido) from AnuncioTrainer A inner join AnuncioReceptor R on A.id=R.anuncioTrainer.id where R.cliente.id = ?1 order by 1 desc")

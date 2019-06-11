@@ -82,6 +82,8 @@ public class RutinaHshController {
     public ModelAndView preAsignarRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, HttpSession session){
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+        System.out.println(redFitId);
+        System.out.println(runneId);
         if(redFitId > 0 && runneId > 0){
             Integer trainerId = (Integer) session.getAttribute("id");
             Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);

@@ -142,15 +142,17 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <section class="col col-md-12">
-                                                    <label class="label">Apellidos: </label>
-                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
-                                                        <input id="Apellidos" name="Apellidos" type="text"
-                                                               placeholder="Apellidos" class="" maxlength="24"
-                                                               autocomplete="off"/>
-                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                    </label>
-                                                </section>
+                                                <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <section class="">
+                                                        <label class="label">Apellidos: </label>
+                                                        <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                            <input id="Apellidos" name="Apellidos" type="text"
+                                                                   placeholder="Apellidos" class="" maxlength="24"
+                                                                   autocomplete="off"/>
+                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                        </label>
+                                                    </section>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <section class="col col-2">
@@ -500,7 +502,7 @@
 
         var params = new Object();
         params.id = id;
-        params.tipoUsuario = tp;
+        params.tipoUsuario = tp === "Cliente" ? 3 : tp === "Trainer" ? 2 : 1;
 
         $.ajax({
             type: 'GET',
@@ -511,19 +513,24 @@
             success: function (data, textStatus) {
                 if (textStatus == "success") {
                     $("#Id").val(data.id);
-                    $("#PerfilId").val(data.tipoUsuario.id);
-                    $("#TipoDocumentoId").val(data.tipoDocumento.id);
+                    Array.from(document.querySelector('#PerfilId').options).forEach(e=>{
+                        if(e.textContent === tp){
+                            e.selected = "selected";
+                        }
+                    });
+
+                    $("#TipoDocumentoId").val(data.tipoDocumento);
                     $("#Correo").val(data.correo);
-                    $("#Movil").val(data.movil.split(" ")[1]);
-                    $("#CodPais").val(data.movil.split(" ")[0]);
+                    $("#Movil").val(data.movil);
+                    //$("#CodPais").val(data.movil.split(" ")[0]);
                     $("#Username").val(data.username);
                     $("#Apellidos").val(data.apellidos);
                     $("#NumeroDocumento").val(data.numeroDocumento);
                     $("#Telefono").val(data.telefono);
                     $("#Nombres").val(data.nombres);
-                    data.roles.forEach(v=>{
+                    /*data.roles.forEach(v=>{
                         Array.from($('.checkbox input[type="checkbox"]'))[v.id-1].click();//se le resta menos uno para igualarlo ya que el array comienza desde 0
-                    })
+                    })*/
                     data.flagActivo === true ?
                         $('#FlagActivo').prop('checked', true)
                         :
@@ -677,6 +684,7 @@
     }
 
     function cambiarContrasena(id, username, tipoUsuario) {
+        tipoUsuario = tipoUsuario == "Cliente" ? 3 : tipoUsuario == "Trainer" ? 2 : 1;
         $('#DatosCambioPass').val(id + '|' + username + '|' + tipoUsuario);
     }
 
@@ -727,8 +735,8 @@
     }
 
     function linkFormatter(value, row) {
-        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuarioId;
-        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +","+tipoUsuario+')" title="Editar">' + row.nombreCompleto + '</a>', value);
+        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuario;
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +",'"+tipoUsuario+'\')" title="Editar">' + row.nombreCompleto + '</a>', value);
     }
 
     function Opciones(value, row, index) {
@@ -737,7 +745,7 @@
 
         if (row.id > 0) {
             desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}","${tipoUsuario}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
-									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id}, "${row.username}",${tipoUsuario});' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
+									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id}, "${row.username}","${tipoUsuario}");' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
         }
         return desactivar;
     }

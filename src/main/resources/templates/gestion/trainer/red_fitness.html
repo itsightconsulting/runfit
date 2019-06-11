@@ -53,6 +53,14 @@
         margin-left: 20%;
     }
 
+    .div-fichas{
+        cursor: pointer;
+    }
+
+    .ico-upd-flag{
+        cursor: pointer;
+    }
+
 </style>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
@@ -73,8 +81,8 @@
         </header>
         <div class="container-t">
             <div class="options">
-                <img class="svg" onclick="preNotificacionGeneral()" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">
-                <img class="svg" th:src="@{/img/iconos/icon_candado.svg}+'?'+${version}">
+                <img rel="tooltip" data-placement="bottom" title="Enviar notificación general" class="svg svg-opcs" onclick="preNotificacionGeneral()" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">
+                <img rel="tooltip" data-placement="bottom" title="Exportar la base de datos de atletas a Excel" class="svg svg-opcs" onclick="exportarListadoAExcel()" th:src="@{/img/iconos/icon_candado.svg}+'?'+${version}">
             </div>
             <div class="" style="padding-bottom: 20px">
                 <form id="frm_busqueda">
@@ -93,6 +101,9 @@
                             <table id="tblRegistros" data-mobile-responsive="true" class="table table-bordered table-condensed">
                                 <thead>
                                 <tr>
+                                    <th data-formatter="fttDesactivar" data-field="id" data-halign="center" data-valign="middle"
+                                        data-align="center" data-width="5%">Desactivar
+                                    </th>
                                     <th data-formatter="fttNota" data-halign="center" data-valign="middle"
                                         data-align="center" data-width="5%">Notas
                                     </th>
@@ -200,12 +211,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="crearNuevaRutinaGeneral()" class="btn btn-primary">CREAR RUTINA</button>
+                <button onclick="crearPrimeraRutinaGeneral()" class="btn btn-primary">CREAR RUTINA</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="mdlCorreoPersonal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlCorreoGeneral" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background: black">
@@ -231,6 +242,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="mdlPrimerChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background: black">
+                <button type="button btn-white" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong>MENSAJE PRIVADO</strong></h4>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <div class="form-group">
+                    <textarea name="ChatPrimerMensaje" id="ChatPrimerMensaje" cols="30" rows="2" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-md" onclick="enviarNotificacion()"><i class="fa fa-paper-plane fa-fw"></i>ENVIAR</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="mdlChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -247,6 +276,36 @@
             <div class="modal-footer">
                 <textarea name="ChatSms" id="ChatSms" cols="8" rows="2" class="form-control"></textarea><br>
                 <button class="btn btn-md" onclick="enviarChatMensaje()"><i class="fa fa-paper-plane fa-fw"></i>ENVIAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mdlNuevaRutina" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background: black">
+                <button type="button btn-white" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title text-align-center"><strong>ELEGIR TIPO DE RUTINA</strong></h4>
+            </div>
+            <div class="modal-body" style="max-height: 450px; overflow-y: auto;">
+                <div class="col col-md-12 text-center" id="NuevaRutianStep1">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <h6>Standard</h6>
+                        <img class="div-fichas" onclick="elegirFicha(2)" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <h6>Running</h6>
+                        <img class="div-fichas" onclick="elegirFicha(1)" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                    </div>
+                </div>
+                <div class="col col-md-12 text-center hidden" id="NuevaRutianStep2">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <button class="btn btn-white" onclick="crearRutina()">Nueva rutina</button>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                        <button class="btn btn-white" onclick="alert('La función de rutinas prediseñadas aún esta en progreso')">Rutina a partir de una plantilla</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -270,6 +329,9 @@
     const fFinRutGen = document.getElementById('RutFechaFinal');
     const tblRegistros = document.getElementById('tblRegistros');
     const mdlNota = document.getElementById('mdlNota');
+    const body = document.querySelector('body');
+    let redFitId = 0;
+    let feNuevaRutina = 0;
     let users = [];
     let $mnEle;
 
@@ -290,6 +352,11 @@
         modalPlantillas.addEventListener('click', eventosClickModalPlantillas);
         tblRegistros.addEventListener('click', clickListenerTbl);
         $table[0].addEventListener('focusout', eventosGeneralesFocusOut);
+        body.addEventListener('click',(e)=>{
+            if(e.target.classList.contains('botTempo')){
+                e.target.setAttribute('disabled', 'disabled');
+            }
+        })
 
         $("#btnNuevo").click(function () {
             irRegistro();
@@ -318,7 +385,7 @@
                 $('#CliNom').text(users.find(c => c.id == rfId).cliNombreCompleto);
             },
             error: ()=>{
-                $('#mdlCorreoPersonal').modal('show');
+                $('#mdlPrimerChat').modal('show');
                 $('#InpCliId').val(cliId);
                 $('#InpCliCorreo').val(cliCorreo);
                 document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.PERSONAL;
@@ -360,7 +427,7 @@
     }
 
     function preNotificacionGeneral(){
-        $('#mdlCorreoPersonal').modal('show');
+        $('#mdlCorreoGeneral').modal('show');
         document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.GENERAL;
     }
 
@@ -371,15 +438,19 @@
         if(tipoNotificacion === TipoNotificacion.PERSONAL){
             data.cliId = $('#InpCliId').val();
             data.cliCorreo = $('#InpCliCorreo').val();
-            data.asunto = $('#CPAsunto').val();
-            data.cuerpo = $('#CPCuerpo').val();
+            data.cuerpo = $('#ChatPrimerMensaje').val().trim();
             urlDiff = 'personal';
         }
 
         if(tipoNotificacion === TipoNotificacion.GENERAL){
             data.asunto = $('#CPAsunto').val();
-            data.cuerpo = $('#CPCuerpo').val().replace(/\r?\n/g, '<br />');
+            data.cuerpo = $('#CPCuerpo').val().replace(/\r?\n/g, '<br />').trim();
             urlDiff = 'general';
+        }
+
+        if(!data.cuerpo){
+            $.smallBox({color: 'alert', content: '<i>No puede enviar un mensaje vacío</i>'})
+            return;
         }
 
         $.ajax({
@@ -396,7 +467,11 @@
                 exception(err);
             },
             complete: ()=>{
-                $('#mdlCorreoPersonal').modal('hide');
+                if(tipoNotificacion === TipoNotificacion.PERSONAL){
+                    $('#mdlPrimerChat').modal('hide');
+                } else {
+                    $('#mdlCorreoGeneral').modal('hide');
+                }
             }
         })
     }
@@ -420,6 +495,10 @@
             const nota = mdlNota.querySelector('textarea');
             nota.value = input.getAttribute('data-content');
             nota.setAttribute('data-redfit-id', input.getAttribute('data-redfit-id'));
+        }
+
+        if(clases.contains('rt-cli-ant')){
+
         }
     }
     
@@ -446,6 +525,12 @@
                 $('#ChatBody')[0].parentElement.scrollTop = document.body.scrollHeight;
             }, 250);
         })
+
+        $('#mdlNuevaRutina').on('show.bs.modal', ()=> {
+            $('#NuevaRutianStep1').removeClass('hidden');
+            $('#NuevaRutianStep2').addClass('hidden');
+        })
+
     }
 
     function setTotalSemanas(){
@@ -532,15 +617,16 @@
             $table.bootstrapTable({
                 url: _ctx + 'gestion/trainer/red/obtenerListado',
                 pagination: true,
-                sidePagination: 'client',
+                sidePagination: 'server',
                 pageSize: 10,
-                queryParams: ()=> {
-                    return data;
+                queryParams: (res)=> {
+                    res.nombres = data.nombres;
+                    return res;
                 },
                 onLoadSuccess: d => {
-                    users = d;
+                    users = d.rows;
                     //Activando los popover y tooltips
-                    d.forEach(r=>{
+                    users.forEach(r=>{
                         r.estadoPlan == 1 ? ++$countSinPlan : '';
                         r.estadoPlan == 2 ? ++$countPendientesEnvio : '';
                     })
@@ -557,6 +643,37 @@
         }
     }
 
+    function actualizarFlag(rfId){
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            content: "" +
+                "<br/><h6>Confirmar baja de atleta:</h6>",
+            buttons: '[NO][SI]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "SI") {
+                setTimeout(() => {
+                    $.ajax({
+                        type: 'PUT',
+                        url: _ctx + 'gestion/trainer/red/actualizar/flag',
+                        blockLoading: false,
+                        dataType: 'json',
+                        data: {id: rfId},
+                        success: () => {
+                            $.smallBox({content: 'Actualización satisfactoria'});
+                        },
+                        error: (err) => {
+                            exception(err);
+                        },
+                        complete: () => {
+                            listarRegistros();
+                        }
+                    })
+                }, 300);
+            }
+        });
+
+    }
+
     function noCuentaConPrograma(){
         $.smallBox({color: "info", content: "<i>El atleta aún no cuenta con ninguna rutina asignada...</i>"})
     }
@@ -567,6 +684,10 @@
         }else{
             return String('<a style="text-decoration: none;" href="#" onclick="javascript:verUltimoPrograma(' + row.id +','+ row.cliId +',\''+ btoa(row.cliFechaNacimiento) +'\',\''+ btoa(row.cliNombreCompleto) + '\')" title="↗️ Ir al último programa" rel="tooltip">' + row.cliNombreCompleto + '</a>', value);
         }
+    }
+
+    function fttDesactivar(value, row){
+        return `<img class="ico-upd-flag" rel="tooltip" title="Remover atleta del listado" onclick="actualizarFlag(${Number(value)})" src="${_ctx}img/trash.png"/>`;
     }
 
     function fttNota(v, row, ix){
@@ -581,14 +702,23 @@
     }
 
     function fttNp(v, row, ix, pos){
-        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+        if(row.contadorRutinas >0){
+            return `<img class="svg rt-cli-ant" onclick="abrirOpcionesNuevaRutina(${row.id})" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+        }else{
+            return `<img class="svg rt-cli-ant" rel="tooltip" title="Este cliente no cuenta con rutinas anteriores, debe generarle una con la opción de al lado" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+        }
+    }
+
+    function abrirOpcionesNuevaRutina(rfId){
+        redFitId = rfId;
+        $('#mdlNuevaRutina').modal('show');
     }
 
     function fttPlantillas(v, row, ix){
         var opciones = "";
         switch(row.estadoPlan) {
             case EstadoPlan.SIN_PLAN:
-                let fnNuevoRutina = "crearNuevaRutina";
+                let fnNuevoRutina = "crearPrimeraRutina";
                 if(row.predeterminadaFichaId == TipoFicha.GENERAL){
                     objForRutina.redFitId = row.id;
                     objForRutina.cliId = row.cliId;
@@ -598,7 +728,7 @@
                 }
                 opciones += `<img class="svg"
                                 title="Crear rutina" rel="tooltip"
-                                onclick='javascript:${fnNuevoRutina}(${row.id},${row.cliId},${ix}, ${row.contadorRutinas}, ${"\"" + btoa(row.cliFechaNacimiento) + "\""}, ${"\"" + btoa(row.cliNombreCompleto) + "\""});'
+                                onclick='javascript:${fnNuevoRutina}(${row.id},${row.cliId}, ${row.contadorRutinas}, ${"\"" + btoa(row.cliFechaNacimiento) + "\""}, ${"\"" + btoa(row.cliNombreCompleto) + "\""});'
                                 src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg"/>`
                 break;
             case EstadoPlan.EN_REVISION:
@@ -654,13 +784,19 @@
         });
     }
 
+    function elegirFicha(tipoFicha){
+        feNuevaRutina = tipoFicha;
+        $('#NuevaRutianStep2').removeClass('hidden');
+        $('#NuevaRutianStep1').addClass('hidden');
+    }
+
     function Opciones(value, row, index) {
         let opciones = '';
 
         switch(row.estadoPlan) {
 
             case EstadoPlan.SIN_PLAN:
-                let fnNuevoRutina = "crearNuevaRutina";
+                let fnNuevoRutina = "crearPrimeraRutina";
                 if(row.predeterminadaFichaId == TipoFicha.GENERAL){
                     objForRutina.redFitId = row.id;
                     objForRutina.cliId = row.cliId;
@@ -690,7 +826,7 @@
                 break;
         }
         opciones +=`<a href='javascript:void(0);' class="txt-color-grayDark" data-placement="top" data-original-title="La revisión de la rutina aún no ha sido aprobada" rel="tooltip"><i class="fa fa-send-o fa-2x"></i></a> &nbsp &nbsp`;
-        opciones +=`<a href='#' onclick='javascript:crearNuevaRutina(${row.id},${row.cliId},${index}, ${row.contadorRutinas}, ${"\""+btoa(row.cliFechaNacimiento)+"\""}, ${"\""+btoa(row.cliNombreCompleto)+"\""});' title='Crear Rutina'><i class='fa fa-check fa-2x'></i></a>`;
+        opciones +=`<a href='#' onclick='javascript:crearPrimeraRutina(${row.id},${row.cliId}, ${row.contadorRutinas}, ${"\""+btoa(row.cliFechaNacimiento)+"\""}, ${"\""+btoa(row.cliNombreCompleto)+"\""});' title='Crear Rutina'><i class='fa fa-check fa-2x'></i></a>`;
         return opciones;
     }
 
@@ -698,9 +834,9 @@
         $('#myModalRutGen').modal('show');
     }
 
-    function crearNuevaRutinaGeneral(){
+    function crearPrimeraRutinaGeneral(){
         const rutina = getBasicosNueRutGen();
-        rutina.redFitnessId = objForRutina.redFitId;
+        rutina.redFitnessId = typeof objForRutina.redFitId === 'undefined' ? objForRutina.id : objForRutina.redFitId;
         rutina.clienteId = objForRutina.cliId;
         rutina.control = {};
         rutina.control.avanceSemanas = new Array(rutina.totalSemanas).fill("");
@@ -731,6 +867,12 @@
         //Semanas
         const fIni = parseFromStringToDate(document.querySelector('#RutFechaInicio').value);
         let fFin = parseFromStringToDate(document.querySelector('#RutFechaFinal').value);
+        if(fIni.getTime() >= fFin.getTime()){
+            $.smallBox({
+                color: "alert",
+                content: "<i>La fecha de inicio no puede ser mayor o igual a la del final</i>"});
+            return;
+        }
         for(let i=0; i<totalSemanas;i++){
             const refDia = fIni.getDay();
             let diasParaFull = refDia==0?0:7-refDia;
@@ -766,7 +908,7 @@
         return r;
     }
 
-    function crearNuevaRutina(id, clienteId, index, contadorRutinas, fechaNac, cliFullNombre){
+    function crearPrimeraRutina(id, clienteId, contadorRutinas, fechaNac, cliFullNombre){
         const datosAsURI = '&fn=' + fechaNac + '&nm=' + cliFullNombre;
         id = getHash32Id('rf-rutina', id);
         clienteId = getHash16Id('rf-rutina', clienteId);
@@ -925,6 +1067,202 @@
     }
 
     function eventosClickModalPlantillas(e){}//No implemetada
+
+    function crearRutina(){
+        if(feNuevaRutina == TipoFicha.RUNNING){
+            const obj = users.find(u=>u.id==redFitId);
+            crearPrimeraRutina(obj.id, obj.cliId, obj.contadorRutinas, btoa(obj.cliFechaNacimiento), btoa(obj.cliNombreCompleto));
+        } else{
+            $('#mdlNuevaRutina').modal('hide');
+            $('#myModalRutGen').modal('show');
+            objForRutina = users.find(u=>u.id==redFitId);
+        }
+    }
+
+    let myExcelXML = (function() {
+        let Workbook, WorkbookStart = '<?xml version="1.0"?><ss:Workbook  xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">';
+        const WorkbookEnd = '</ss:Workbook>';
+        let fs, SheetName = new Date().getTime(),
+            styleID = 1, columnWidth = 80,
+            fileName = "Listado_Atletas_"+new Date(), uri, link;
+
+        class myExcelXML {
+            constructor(o) {
+                let respArray = o;
+                let finalDataArray = [];
+
+                for (let i = 0; i < respArray.length; i++) {
+                    finalDataArray.push(flatten(respArray[i]));
+                }
+
+                let s = JSON.stringify(finalDataArray);
+                fs = s.replace(/&/gi, '&amp;');
+            }
+
+            downLoad() {
+                const Worksheet = myXMLWorkSheet(SheetName, fs);
+
+                WorkbookStart += myXMLStyles(styleID);
+
+                Workbook = WorkbookStart + Worksheet + WorkbookEnd;
+
+                uri = 'data:text/xls;charset=utf-8,' + encodeURIComponent(Workbook);
+                link = document.createElement("a");
+                link.href = uri;
+                link.style = "visibility:hidden";
+                link.download = fileName + ".xls";
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            get fileName() {
+                return fileName;
+            }
+
+            set fileName(n) {
+                fileName = n;
+            }
+
+            get SheetName() {
+                return SheetName;
+            }
+
+            set SheetName(n) {
+                SheetName = n;
+            }
+
+            get styleID() {
+                return styleID;
+            }
+
+            set styleID(n) {
+                styleID = n;
+            }
+        }
+
+        const myXMLStyles = function(id) {
+            let Styles = '<ss:Styles><ss:Style ss:ID="' + id + '"><ss:Font ss:Bold="1"/></ss:Style></ss:Styles>';
+
+            return Styles;
+        }
+
+        const myXMLWorkSheet = function(name, o) {
+            const Table = myXMLTable(o);
+            let WorksheetStart = '<ss:Worksheet ss:Name="' + name + '">';
+            const WorksheetEnd = '</ss:Worksheet>';
+
+            return WorksheetStart + Table + WorksheetEnd;
+        }
+
+        const myXMLTable = function(o) {
+            let TableStart = '<ss:Table>';
+            const TableEnd = '</ss:Table>';
+
+            const tableData = JSON.parse(o);
+
+            if (tableData.length > 0) {
+                const columnHeader = Object.keys(tableData[0]);
+                let rowData;
+                for (let i = 0; i < columnHeader.length; i++) {
+                    TableStart += myXMLColumn(columnWidth);
+
+                }
+                for (let j = 0; j < tableData.length; j++) {
+                    rowData += myXMLRow(tableData[j], columnHeader);
+                }
+                TableStart += myXMLHead(1, columnHeader);
+                TableStart += rowData;
+            }
+
+            return TableStart + TableEnd;
+        }
+
+        const myXMLColumn = function(w) {
+            return '<ss:Column ss:AutoFitWidth="0" ss:Width="' + w + '"/>';
+        }
+
+
+        const myXMLHead = function(id, h) {
+            let HeadStart = '<ss:Row ss:StyleID="' + id + '">';
+            const HeadEnd = '</ss:Row>';
+
+            for (let i = 0; i < h.length; i++) {
+                const Cell = myXMLCell(h[i].toUpperCase());
+                HeadStart += Cell;
+            }
+
+            return HeadStart + HeadEnd;
+        }
+
+        const myXMLRow = function(r, h) {
+            let RowStart = '<ss:Row>';
+            const RowEnd = '</ss:Row>';
+            for (let i = 0; i < h.length; i++) {
+                const Cell = myXMLCell(r[h[i]]);
+                RowStart += Cell;
+            }
+
+            return RowStart + RowEnd;
+        }
+
+        const myXMLCell = function(n) {
+            let CellStart = '<ss:Cell>';
+            const CellEnd = '</ss:Cell>';
+
+            const Data = myXMLData(n);
+            CellStart += Data;
+
+            return CellStart + CellEnd;
+        }
+
+        const myXMLData = function(d) {
+            let DataStart = '<ss:Data ss:Type="String">';
+            const DataEnd = '</ss:Data>';
+
+            return DataStart + d + DataEnd;
+        }
+
+        const flatten = function(obj) {
+            var obj1 = JSON.parse(JSON.stringify(obj));
+            const obj2 = JSON.parse(JSON.stringify(obj));
+            if (typeof obj === 'object') {
+                for (var k1 in obj2) {
+                    if (obj2.hasOwnProperty(k1)) {
+                        if (typeof obj2[k1] === 'object' && obj2[k1] !== null) {
+                            delete obj1[k1]
+                            for (var k2 in obj2[k1]) {
+                                if (obj2[k1].hasOwnProperty(k2)) {
+                                    obj1[k1 + '-' + k2] = obj2[k1][k2];
+                                }
+                            }
+                        }
+                    }
+                }
+                var hasObject = false;
+                for (var key in obj1) {
+                    if (obj1.hasOwnProperty(key)) {
+                        if (typeof obj1[key] === 'object' && obj1[key] !== null) {
+                            hasObject = true;
+                        }
+                    }
+                }
+                if (hasObject) {
+                    return flatten(obj1);
+                } else {
+                    return obj1;
+                }
+            } else {
+                return obj1;
+            }
+        }
+        return myExcelXML;
+    })();
+
+    function exportarListadoAExcel(){
+        new myExcelXML(users).downLoad();
+    }
 </script>
 
 </body>

@@ -17,8 +17,8 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @EntityGraph(value = "redFitness.cliente")
     RedFitness findOneById(Integer id);
 
-    @Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id, R.nota, R.msgCliente, R.contadorRutinas, R.estadoPlan, R.fechaInicialPlanificacion, R.fechaFinalPlanificacion, CONCAT(C.apellidos,' ', C.nombres), C.movil, C.fechaUltimoAcceso, C.id, C.correo, C.fechaNacimiento, R.predeterminadaFichaId) FROM RedFitness R JOIN R.cliente C WHERE R.trainer.id = ?1 AND LOWER(CONCAT(C.nombres,' ',C.apellidos)) LIKE LOWER(CONCAT('%',?2,'%'))")
-    List<RedFitCliDTO> findAllByTrainerIdAndNombreCliente(Integer trainerId, String nombres);
+    /*@Query("SELECT NEW com.itsight.domain.dto.RedFitCliDTO(R.id, R.nota, R.msgCliente, R.contadorRutinas, R.estadoPlan, R.fechaInicialPlanificacion, R.fechaFinalPlanificacion, CONCAT(C.apellidos,' ', C.nombres), C.movil, C.fechaUltimoAcceso, C.id, C.correo, C.fechaNacimiento, R.predeterminadaFichaId) FROM RedFitness R JOIN R.cliente C WHERE R.trainer.id = ?1 AND LOWER(CONCAT(C.nombres,' ',C.apellidos)) LIKE LOWER(CONCAT('%',?2,'%'))")
+    List<RedFitCliDTO> findAllByTrainerIdAndNombreCliente(Integer trainerId, String nombres);*/
 
     @Modifying
     @Query("UPDATE RedFitness R SET R.nota = ?2 WHERE R.id = ?1")
@@ -41,9 +41,17 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @Query("SELECT M.trainer.id FROM RedFitness M where M.cliente.id = ?1 and M.estadoPlan <> 5")
     List<Integer> findTrainerIdByUsuarioId(Integer id);
 
-    @Query(value= "select string_agg(c.correo, ',') from red_fitness rf INNER JOIN cliente c ON rf.cliente_id=c.security_user_id where trainer_id=?1", nativeQuery = true)
+    @Query(value= "select string_agg(c.correo, ',') from red_fitness rf INNER JOIN cliente c ON rf.cliente_id=c.security_user_id where trainer_id=?1 and rf.flag_activo=true", nativeQuery = true)
     String getAllRunnerMailsByTrainerId(Integer id);
 
     @Query("SELECT R.id FROM RedFitness R WHERE R.cliente.id = ?1 AND R.trainer.id = ?2")
     Integer findIdByRunnerIdAndTrainerId(int runneId, Integer trainerId);
+
+    @Modifying
+    @Query("UPDATE RedFitness R SET R.flagActivo = ?2 WHERE R.id = ?1")
+    void updateFlagActivoById(Integer id, boolean flag);
+
+    @Modifying
+    @Query("UPDATE RedFitness R SET R.flagActivo = ?3 WHERE R.id = ?1 AND R.trainer.id = ?2")
+    void updateFlagActivoByIdAndTrainerId(int id, Integer trainerId, boolean flagActivo);
 }

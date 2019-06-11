@@ -137,13 +137,13 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
 
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
-
+        repository.updateFlagActivoById(id, flagActivo);
     }
 
-    @Override
+    /*@Override
     public List<RedFitCliDTO> listarSegunRedTrainerAndCliNom(Integer trainerId, String nombres) {
         return repository.findAllByTrainerIdAndNombreCliente(trainerId, nombres);
-    }
+    }*/
 
     @Override
     public void actualizarNotaACliente(Integer id, String nota) {
@@ -166,7 +166,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String asunto, String cuerpo) throws JsonProcessingException {
+    public String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String cuerpo) throws JsonProcessingException {
         Date now = new Date();
         Mensaje mensaje = new Mensaje();
         mensaje.setFecha(now);
@@ -182,7 +182,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
                 ultimo,
                 msgs,
                 now);
-        emailService.enviarCorreoInformativo(asunto, runneCorreo, cuerpo);
+        emailService.enviarCorreoInformativo("Runfit Notificaciones", runneCorreo, cuerpo);
         return NOTIFICACION_RED_FIT_PERSONAL.get();
     }
 
@@ -201,5 +201,10 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
         anuncioReceptorService.guardarMultiple(anuncio.getId(), trainerId);
         emailService.enviarCorreoInformativoVariosBbc(asunto, repository.getAllRunnerMailsByTrainerId(trainerId), cuerpo);
         return NOTIFICACION_RED_FIT_GENERAL.get();
+    }
+
+    @Override
+    public void actualizarFlagActivoByIdAndTrainerId(int id, Integer trainerId, boolean flag) {
+        repository.updateFlagActivoByIdAndTrainerId(id, trainerId, flag);
     }
 }

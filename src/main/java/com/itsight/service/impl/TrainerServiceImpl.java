@@ -4,6 +4,7 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.RefUploadIds;
 import com.itsight.domain.dto.TrainerDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.PorcKiloTipo;
 import com.itsight.domain.jsonb.PorcKiloTipoSema;
 import com.itsight.domain.jsonb.Rol;
@@ -111,7 +112,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     @Override
     public Trainer findOneWithFT(Integer id) {
-        return repository.getById(id);
+        return null;
     }
 
     @Override
@@ -344,7 +345,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     public String actualizar(Trainer trainer, String rols) {
         // TODO Auto-generated method stub
         try {
-            Trainer qTrainer = repository.getById(trainer.getId());
+            Trainer qTrainer = repository.findById(trainer.getId()).orElse(null);
             trainer.setFechaUltimoAcceso(qTrainer.getFechaUltimoAcceso());
             trainer.setCreador(qTrainer.getCreador());
             trainer.setRowVersion(qTrainer.getRowVersion());
@@ -435,7 +436,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
         repository.updateFlagActivoById(id, flagActivo);
-        securityUserRepository.updateEstadoById(id, flagActivo);
     }
 
     @Override
@@ -524,5 +524,15 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public String getCorreoById(Integer id) {
         return repository.getCorreoById(id);
+    }
+
+    @Override
+    public UsuGenDTO obtenerById(int id) {
+        return repository.getById(id);
+    }
+
+    @Override
+    public String getUsernameById(int id) {
+        return repository.getUsernameById(id);
     }
 }
