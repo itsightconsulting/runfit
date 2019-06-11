@@ -132,3 +132,55 @@
 .svg-opcs{
     cursor: pointer;
 }
+
+.elegir-plantilla h6 {
+    font-size: 11px;
+}
+
+.elegir-plantilla:hover {
+    background: #feff8c !important;
+}
+
+.br-sp {
+    border-radius: 60% !important;
+    padding: 4px;
+}
+
+.sidebar li.active a {
+    color: #a8fa00;
+
+}
+.sidebar li.active svg {
+    fill: #a8fa00;
+}
+
+#tblRegistros svg:hover {
+    cursor: pointer;
+}
+
+tbody svg {
+    fill: #daffc6 !important;
+}
+
+.chat-lf{
+    background: #f2f3f5;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 80%;
+}
+
+.chat-rg{
+    background: rgba(230,242,245,.5);
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 80%;
+    margin-left: 20%;
+}
+
+.div-fichas{
+    cursor: pointer;
+}
+
+.ico-upd-flag{
+    cursor: pointer;
+}
