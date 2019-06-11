@@ -2,13 +2,14 @@
     background-color: #202127;
 }
 .nav-pills li {
-    margin: 0 !important;
-    text-align: center;
+
 }
 .nav-pills li a {
     display: inline-flex;
     text-transform: uppercase;
     font-family: GothamHTF-Bold;
+    margin: 0 !important;
+    text-align: center;
     font-size: 15px;
     padding: 10px 0;
     background-color: transparent !important;
