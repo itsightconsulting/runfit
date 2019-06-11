@@ -4,8 +4,11 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Post;
 import com.itsight.domain.Trainer;
+import com.itsight.domain.dto.QueryParamsDTO;
+import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,8 @@ public class TrainerController extends BaseController{
 
     private UbPeruService ubPeruService;
 
+    private SecUserProcedureInvoker secUserProcedureInvoker;
+
     @Autowired
     public TrainerController(TrainerService trainerService,
                              TipoUsuarioService perfilService,
@@ -42,7 +47,8 @@ public class TrainerController extends BaseController{
                              TipoDocumentoService tipoDocumentoService,
                              PostService postService,
                              DisciplinaService disciplinaService,
-                             UbPeruService ubPeruService) {
+                             UbPeruService ubPeruService,
+                             SecUserProcedureInvoker secUserProcedureInvoker) {
         this.trainerService = trainerService;
         this.perfilService = perfilService;
         this.tipoDocumentoService = tipoDocumentoService;
@@ -50,6 +56,7 @@ public class TrainerController extends BaseController{
         this.postService = postService;
         this.disciplinaService = disciplinaService;
         this.ubPeruService = ubPeruService;
+        this.secUserProcedureInvoker = secUserProcedureInvoker;
     }
 
     @GetMapping(value = "")
@@ -74,11 +81,12 @@ public class TrainerController extends BaseController{
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<UsuarioPOJO> listarConFiltro(
+    ResPaginationDTO listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
-            @PathVariable("perfil") String perfil) {
-        return trainerService.listarPorFiltroDto(comodin, estado, perfil);
+            @ModelAttribute QueryParamsDTO queryParams) {
+        List<UsuarioPOJO> users = secUserProcedureInvoker.findAllByNombreAndFlagActivoDynamicSpecific(comodin, estado, queryParams, Enums.TipoUsuario.ENTRENADOR.ordinal());
+        return new ResPaginationDTO(users, users.isEmpty() ? 0 : users.get(0).getRows());
     }
 
     @GetMapping("/empresa/agregar/trainer")

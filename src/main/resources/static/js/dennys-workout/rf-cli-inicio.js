@@ -256,6 +256,11 @@ function getDatosDeLaUltimaRutina(){
         url: _ctx + 'cliente/get/ultima-rutina',
         dataType: "json",
         success: function (data, textStatus) {
+            if(data.totalSemanas === 0){
+                $.smallBox({content: "<span><i class='fa fa-exclamation-circle fa-fw'></i> ¡Usted aún no cuenta con alguna rutina asignada!</span>",
+                                timeout: 10000});
+                return;
+            }
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({

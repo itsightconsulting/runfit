@@ -3,6 +3,7 @@ package com.itsight.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itsight.domain.dto.SecurityUserDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,8 +35,8 @@ import java.util.Set;
                                 @ColumnResult(name = "correo"),
                                 @ColumnResult(name = "username"),
                                 @ColumnResult(name = "fechaUltimoAcceso"),
-                                @ColumnResult(name = "tipoUsuarioId"),
-                                @ColumnResult(name = "tipoUsuario")
+                                @ColumnResult(name = "tipoUsuario"),
+                                @ColumnResult(name = "rows")
                         }
                 )
         }
@@ -56,6 +57,27 @@ import java.util.Set;
                     )
             }
     ),
+    @SqlResultSetMapping(
+            name="findById",
+            classes = {
+                    @ConstructorResult(
+                            targetClass = UsuGenDTO.class,
+                            columns = {
+                                    @ColumnResult(name = "id"),
+                                    @ColumnResult(name = "nombres"),
+                                    @ColumnResult(name = "apellidos"),
+                                    @ColumnResult(name = "tipoDocumento"),
+                                    @ColumnResult(name = "numeroDocumento"),
+                                    @ColumnResult(name = "correo"),
+                                    @ColumnResult(name = "telefono"),
+                                    @ColumnResult(name = "movil"),
+                                    @ColumnResult(name = "username"),
+                                    @ColumnResult(name = "ubigeo"),
+                                    @ColumnResult(name = "flagActivo"),
+                            }
+                    )
+            }
+    )
 })
 
 @NamedNativeQueries({

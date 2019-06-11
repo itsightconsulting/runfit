@@ -6,6 +6,7 @@ import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
@@ -28,13 +29,13 @@ public class UsuarioPOJO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaUltimoAcceso;
 
-    private int tipoUsuarioId;
-
     private String tipoUsuario;
+
+    private int rows;
 
     public UsuarioPOJO(){}
 
-    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, int tipoUsuarioId, String tipoUsuario) {
+    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, String tipoUsuario) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.nombreCompleto = nombreCompleto;
@@ -42,7 +43,18 @@ public class UsuarioPOJO implements Serializable {
         this.correo = correo;
         this.username = username;
         this.fechaUltimoAcceso = fechaUltimoAcceso;
-        this.tipoUsuarioId = tipoUsuarioId;
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public UsuarioPOJO(int id, Date fechaCreacion, String nombreCompleto, boolean flagActivo, String correo, String username, Date fechaUltimoAcceso, String tipoUsuario, int rows) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.nombreCompleto = nombreCompleto;
+        this.flagActivo = flagActivo;
+        this.correo = correo;
+        this.username = username;
+        this.fechaUltimoAcceso = fechaUltimoAcceso;
+        this.tipoUsuario = tipoUsuario;
+        this.rows = rows;
     }
 }

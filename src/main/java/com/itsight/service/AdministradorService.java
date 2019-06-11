@@ -1,6 +1,8 @@
 package com.itsight.service;
 
 import com.itsight.domain.Administrador;
+import com.itsight.domain.dto.PasswordDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseService;
 
@@ -23,4 +25,7 @@ public interface AdministradorService extends BaseService<Administrador, Integer
 
     List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk);
 
+    UsuGenDTO obtenerById(Integer id);
+
+    String getUsernameById(int id);
 }

@@ -2,8 +2,12 @@ function imgToSvg () {
     jQuery('img.svg').each(function () {
         var $img = jQuery(this);
         var imgID = $img.attr('id');
+        var imgOnClick = $img.attr('onclick');
         var imgClass = $img.attr('class');
         var imgURL = $img.attr('src');
+        var rel = $img.attr('rel');
+        var title = $img.attr('title');
+        var dtPlace = $img.attr('data-placement');
 
         jQuery.get(imgURL, function (data) {
             var $svg = jQuery(data).find('svg');
@@ -12,6 +16,21 @@ function imgToSvg () {
             }
             if (typeof imgClass !== 'undefined') {
                 $svg = $svg.attr('class', imgClass + ' replaced-svg');
+            }
+            if (typeof imgOnClick !== 'undefined') {
+                $svg = $svg.attr('onclick', imgOnClick);
+            }
+            if (typeof imgOnClick !== 'undefined') {
+                $svg = $svg.attr('onclick', imgOnClick);
+            }
+            if (typeof rel !== 'undefined') {
+                $svg = $svg.attr('rel', rel);
+            }
+            if (typeof title !== 'undefined') {
+                $svg = $svg.attr('title', title);
+            }
+            if (typeof dtPlace !== 'undefined') {
+                $svg = $svg.attr('data-placement', dtPlace);
             }
             $svg = $svg.removeAttr('xmlns:a');
             if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {

@@ -3,7 +3,10 @@ package com.itsight.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.dto.SecurityUserDTO;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -27,6 +30,11 @@ import java.util.List;
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
+@NamedNativeQueries({
+        @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM administrador U WHERE U.security_user_id = ?1",
+                name = "Administrador.getById",
+                resultSetMapping = "findById")
+})
 @EqualsAndHashCode(callSuper = false)
 public class Administrador extends AuditingEntity implements Serializable {
 
@@ -49,6 +57,8 @@ public class Administrador extends AuditingEntity implements Serializable {
     private Date fechaNacimiento;
     @Column(nullable = false, updatable = false)
     private String username;
+    @Column
+    private String ubigeo;
     @Type(type = "jsonb")
     @Column(nullable = false, columnDefinition = "jsonb")
     private List<Rol> roles;

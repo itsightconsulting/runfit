@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.json.JsonDateSimpleSerializer;
+import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -29,6 +31,11 @@ import java.util.List;
 @Data
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
+@NamedNativeQueries({
+        @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM trainer U WHERE U.security_user_id = ?1",
+                name = "Trainer.getById",
+                resultSetMapping = "findById")
 })
 @EqualsAndHashCode(callSuper = false)
 public class Trainer extends AuditingEntity implements Serializable {
@@ -81,7 +88,7 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Column(nullable = false)
     private Integer canPerValoracion;
 
-    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
+    @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
     @Column(precision = 6, scale = 2, nullable = false)
     private Double totalValoracion;
 
@@ -117,6 +124,10 @@ public class Trainer extends AuditingEntity implements Serializable {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Servicio> lstServicio;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<AnuncioTrainer> lstAnuncioTrainer;
 
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")

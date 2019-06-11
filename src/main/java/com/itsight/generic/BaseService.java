@@ -11,6 +11,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.pojo.AwsStresPOJO;
 import com.itsight.util.Enums;

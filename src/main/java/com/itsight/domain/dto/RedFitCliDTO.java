@@ -21,6 +21,9 @@ public class RedFitCliDTO implements Serializable {
     private int estadoPlan;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    private Date fechaInicialPlanificacion;
+
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaFinalPlanificacion;
 
     private String cliNombreCompleto;
@@ -39,19 +42,23 @@ public class RedFitCliDTO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date cliFechaNacimiento;
 
-    public RedFitCliDTO(Integer id, String nota, String msgCliente, int contadorRutinas, int estadoPlan, Date fechaFinalPlanificacion, String cliNombreCompleto, String cliMovil, Date cliFechaUltimoAcceso, Integer cliId, String cliCorreo, Date cliFechaNacimiento, Integer predeterminadaFichaId) {
+    private int rows;
+
+    public RedFitCliDTO(Integer id, String nota, String msgCliente, int contadorRutinas, int estadoPlan, Date fechaInicialPlanificacion, Date fechaFinalPlanificacion, String cliNombreCompleto, String cliMovil, Date cliFechaUltimoAcceso, Date cliFechaNacimiento ,Integer cliId, String cliCorreo, Integer predeterminadaFichaId, int rows) {
         this.id = id;
         this.nota = nota;
         this.msgCliente = msgCliente;
         this.contadorRutinas = contadorRutinas;
         this.estadoPlan = estadoPlan;
+        this.fechaInicialPlanificacion = fechaInicialPlanificacion;
         this.fechaFinalPlanificacion = fechaFinalPlanificacion;
         this.cliNombreCompleto = cliNombreCompleto;
         this.cliMovil = cliMovil;
         this.cliFechaUltimoAcceso = cliFechaUltimoAcceso;
+        this.cliFechaNacimiento = cliFechaNacimiento;
         this.cliId = cliId;
         this.cliCorreo = cliCorreo;
-        this.cliFechaNacimiento = cliFechaNacimiento;
         this.predeterminadaFichaId = predeterminadaFichaId;
+        this.rows = rows;
     }
 }

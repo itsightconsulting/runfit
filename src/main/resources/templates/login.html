@@ -51,6 +51,9 @@
                 <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
                         class="fa fa-fw fa-warning"></i> Inválido username, password o cuenta inactiva
                 </div>
+                <div th:if="${error =='disabled'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+                        class="fa fa-fw fa-warning"></i> Cuenta inactiva
+                </div>
                 <div th:if="${error =='expired'}" class="alert alert-danger" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
                         class="fa fa-fw fa-warning"></i> Inválido cliente o password
                 </div>

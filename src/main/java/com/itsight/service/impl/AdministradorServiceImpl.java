@@ -3,6 +3,7 @@ package com.itsight.service.impl;
 import com.itsight.domain.Administrador;
 import com.itsight.domain.SecurityRole;
 import com.itsight.domain.SecurityUser;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.generic.BaseServiceImpl;
@@ -38,9 +39,6 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     private RolService rolService;
 
     private EmailService emailService;
-
-    @Autowired
-    private AdministradorService administradorService;
 
     @Value("${domain.name}")
     private String domainName;
@@ -80,7 +78,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     @Override
     public Administrador findOneWithFT(Integer id) {
         // TODO Auto-generated method stub
-        return repository.getById(id);
+        return null;
     }
 
     @Override
@@ -158,7 +156,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
 
     @Override
     public List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, String fk) {
-        return repository.findByNombreCompleto(comodin);
+        return repository.findByNombreCompleto(comodin.equals("0") ? "": comodin);
     }
 
     @Override
@@ -185,12 +183,13 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
                     }
                     //Adding to User
                     secUser.setRoles(listSr);
-                    //secUser.addAdministrador(administrador);
+                    secUser.setAdministrador(administrador);
                     //Validamos si presenta un rol de entrenador
                     int flagTrainer = administrador.getRoles().stream().filter(r -> r.getId() == 2).findFirst().isPresent()?1:0;
                     //Guardando administrador de autenticacion
+                    administrador.setId(null);
                     administrador.setSecurityUser(secUser);
-                    administradorService.save(administrador);
+                    save(administrador);
 
                     //Enviando correo al nuevo administrador
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, ADMINISTRADOR.ordinal(), domainName);
@@ -317,4 +316,13 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
         return repository.findByUsername(username);
     }
 
+    @Override
+    public UsuGenDTO obtenerById(Integer id) {
+        return repository.getById(id);
+    }
+
+    @Override
+    public String getUsernameById(int id) {
+        return repository.getUsernameById(id);
+    }
 }

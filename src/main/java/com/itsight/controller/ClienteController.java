@@ -2,9 +2,14 @@ package com.itsight.controller;
 
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Cliente;
+import com.itsight.domain.TipoUsuario;
 import com.itsight.domain.dto.ClienteDTO;
+import com.itsight.domain.dto.QueryParamsDTO;
+import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.ClienteService;
+import com.itsight.service.SecUserProcedureInvoker;
+import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,18 +24,23 @@ public class ClienteController {
 
     private ClienteService clienteService;
 
+    private SecUserProcedureInvoker secUserProcedureInvoker;
+
     @Autowired
-    public ClienteController(ClienteService clienteService) {
+    public ClienteController(ClienteService clienteService,
+                             SecUserProcedureInvoker secUserProcedureInvoker) {
         this.clienteService = clienteService;
+        this.secUserProcedureInvoker = secUserProcedureInvoker;
     }
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
-    List<UsuarioPOJO> listarConFiltro(
+    ResPaginationDTO listarConFiltro(
             @PathVariable("comodin") String comodin,
             @PathVariable("estado") String estado,
-            @PathVariable("perfil") String perfil) {
-        return clienteService.listarPorFiltroDto(comodin, estado, perfil);
+            @ModelAttribute QueryParamsDTO queryParams) {
+        List<UsuarioPOJO> users = secUserProcedureInvoker.findAllByNombreAndFlagActivoDynamicSpecific(comodin, estado, queryParams, Enums.TipoUsuario.CLIENTE.ordinal());
+        return new ResPaginationDTO(users, users.isEmpty() ? 0 : users.get(0).getRows());
     }
 
     @GetMapping(value = "/obtenerUsuarioSession")

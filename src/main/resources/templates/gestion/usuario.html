@@ -8,7 +8,7 @@
     <th:block th:insert="html-commons/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
 </head>
-<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+<body class="desktop-detected pace-done mobile-view-activated smart-style-1">
 
 <!-- HEADER -->
 <div th:replace="html-commons/header :: fg-header"></div>
@@ -142,15 +142,17 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <section class="col col-6">
-                                                    <label class="label">Apellido Paterno: </label>
-                                                    <label class="input"><i class="icon-append fa fa-asterisk"></i>
-                                                        <input id="Apellidos" name="Apellidos" type="text"
-                                                               placeholder="Apellidos" class="" maxlength="24"
-                                                               autocomplete="off"/>
-                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                    </label>
-                                                </section>
+                                                <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <section class="">
+                                                        <label class="label">Apellidos: </label>
+                                                        <label class="input"><i class="icon-append fa fa-asterisk"></i>
+                                                            <input id="Apellidos" name="Apellidos" type="text"
+                                                                   placeholder="Apellidos" class="" maxlength="24"
+                                                                   autocomplete="off"/>
+                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
+                                                        </label>
+                                                    </section>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <section class="col col-2">
@@ -426,7 +428,7 @@
             $table.bootstrapTable({
                 url: _ctx + 'gestion/'+entidad+'/obtenerListado/' + comodin + '/' + estado + '/' + perfil,
                 pagination: true,
-                sidePagination: 'client',
+                sidePagination: 'server',
                 pageSize: 10,
                 onLoadSuccess: d => {
                 },
@@ -461,7 +463,7 @@
                         type: 'POST',
                         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                         url: _ctx + 'gestion/'+tipoUsuarioUrl+'/agregar',
-                        dataType: "json",
+                        dataType: "text",
                         data: params,
                         success: function (data, textStatus) {
                             if (textStatus == "success") {
@@ -471,13 +473,7 @@
                                     $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
                                     irListado($index);
                                     listarRegistros();
-                                } else if(data.split(',')[0] == "-1"){//0: Codigo response | 1: Id del nuevo registro
-                                    //if(data.split(',')[2] == 1){//Split[2]: registramos el rutinarioCe al cliente
-                                    //registroRutinarioCe(data.split(',')[1]);
-                                    //$.smallBox({});
-                                    //}else{//data.split(',')[2] == 0
-                                    //$.smallBox({});
-                                    //}
+                                } else if(data.split(',')[0] == "-1"){
                                     $.smallBox({});
                                     irListado($index);
                                     listarRegistros();
@@ -506,7 +502,7 @@
 
         var params = new Object();
         params.id = id;
-        params.tipoUsuario = tp;
+        params.tipoUsuario = tp === "Cliente" ? 3 : tp === "Trainer" ? 2 : 1;
 
         $.ajax({
             type: 'GET',
@@ -517,19 +513,24 @@
             success: function (data, textStatus) {
                 if (textStatus == "success") {
                     $("#Id").val(data.id);
-                    $("#PerfilId").val(data.tipoUsuario.id);
-                    $("#TipoDocumentoId").val(data.tipoDocumento.id);
+                    Array.from(document.querySelector('#PerfilId').options).forEach(e=>{
+                        if(e.textContent === tp){
+                            e.selected = "selected";
+                        }
+                    });
+
+                    $("#TipoDocumentoId").val(data.tipoDocumento);
                     $("#Correo").val(data.correo);
-                    $("#Movil").val(data.movil.split(" ")[1]);
-                    $("#CodPais").val(data.movil.split(" ")[0]);
+                    $("#Movil").val(data.movil);
+                    //$("#CodPais").val(data.movil.split(" ")[0]);
                     $("#Username").val(data.username);
                     $("#Apellidos").val(data.apellidos);
                     $("#NumeroDocumento").val(data.numeroDocumento);
                     $("#Telefono").val(data.telefono);
                     $("#Nombres").val(data.nombres);
-                    data.roles.forEach(v=>{
+                    /*data.roles.forEach(v=>{
                         Array.from($('.checkbox input[type="checkbox"]'))[v.id-1].click();//se le resta menos uno para igualarlo ya que el array comienza desde 0
-                    })
+                    })*/
                     data.flagActivo === true ?
                         $('#FlagActivo').prop('checked', true)
                         :
@@ -558,7 +559,7 @@
                 params.id = id;
                 params.flagActivo = actualStatus == "Activo" ? false : true;
                 params.username = username;
-                params.tipoUsuario = tipoUsu;
+                params.tipoUsuario = tipoUsu === "Administrador" ? 1 : tipoUsu === "Trainer" ? 2 : 3;
 
                 $.ajax({
                     type: 'PUT',
@@ -683,6 +684,7 @@
     }
 
     function cambiarContrasena(id, username, tipoUsuario) {
+        tipoUsuario = tipoUsuario == "Cliente" ? 3 : tipoUsuario == "Trainer" ? 2 : 1;
         $('#DatosCambioPass').val(id + '|' + username + '|' + tipoUsuario);
     }
 
@@ -733,17 +735,17 @@
     }
 
     function linkFormatter(value, row) {
-        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuarioId;
-        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +","+tipoUsuario+')" title="Editar">' + row.nombreCompleto + '</a>', value);
+        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuario;
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +",'"+tipoUsuario+'\')" title="Editar">' + row.nombreCompleto + '</a>', value);
     }
 
     function Opciones(value, row, index) {
-        const tipoUsuario = typeof row.tipoUsuario === 'object' ? row.tipoUsuario.id : row.tipoUsuarioId;
+        const tipoUsuario = row.tipoUsuario;
         var desactivar = '';
 
         if (row.id > 0) {
-            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}",${tipoUsuario});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
-									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id}, "${row.username}",${tipoUsuario});' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
+            desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}","${tipoUsuario}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
+									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id}, "${row.username}","${tipoUsuario}");' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>`;
         }
         return desactivar;
     }

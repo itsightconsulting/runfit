@@ -4,6 +4,7 @@ import com.itsight.domain.dto.SecurityUserDTO;
 import com.itsight.repository.SecurityUserRepository;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -30,7 +31,7 @@ public class SecurityServiceImpl implements UserDetailsService {
         // TODO Auto-generated method stub
         try {
             SecurityUserDTO user = securityUserRepository.findByUsernameNative(username.toLowerCase());
-            if (user != null && user.isEnabled()) {
+            if (user != null) {
                 return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
             }
         } catch (Exception e) {
@@ -42,6 +43,9 @@ public class SecurityServiceImpl implements UserDetailsService {
     }
 
     private User buildUser(SecurityUserDTO securityUser, Set<GrantedAuthority> lstRole) {
+        if(!securityUser.isEnabled()){
+            throw new DisabledException("Usuario inactivo");
+        }
         return
                 new User(securityUser.getUsername() + "|"+securityUser.getId(),//Artificio
                         securityUser.getPassword(),

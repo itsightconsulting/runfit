@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -29,6 +30,11 @@ import java.util.List;
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
+@NamedNativeQueries({
+        @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM cliente U WHERE U.security_user_id = ?1",
+                name = "Cliente.getById",
+                resultSetMapping = "findById")
+})
 @EqualsAndHashCode(callSuper = false)
 public class Cliente extends AuditingEntity implements Serializable {
 
@@ -46,6 +52,9 @@ public class Cliente extends AuditingEntity implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String correo;
+
+    @Column(length = 16)
+    private String telefono;
 
     @Column(nullable = false, length = 16)
     private String movil;
@@ -103,6 +112,10 @@ public class Cliente extends AuditingEntity implements Serializable {
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private ConfiguracionCliente confCliente;
+
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente")
+    private AnuncioReceptor lstAnuncioReceptor;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "ClienteServicio",

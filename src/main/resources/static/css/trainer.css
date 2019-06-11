@@ -70,15 +70,118 @@
     padding: 20px 5px;
     position: relative;
 }
-.table#tblRegistros tbody tr td:first-child:before {
-    content: "";
-    background: url("../img/trash.png") no-repeat;
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    left: -22px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+
+.mg-bt-6{
+    margin-bottom: 6px !important;
+}
+.mg-bt-10{
+    margin-bottom: 10px;
+}
+
+.fa-15x{
+    font-size: 1.5em;
+}
+
+.svc-focus{
+    color: #a8fa00 !important;
+}
+
+.servicio:not(.svc-focus):hover  {
+    color: #337ab7 !important;
+    cursor: pointer !important;
+}
+
+.div-fichas{
+    cursor: pointer;
+}
+
+.mod-term-cond:hover{
+    background: #00C853 !important;
+    color: white;
+}
+
+.ficha-pick{
+    border: 4px solid #a8fa00 !important;
+}
+
+.tarifa-svc-pick {
+    border-bottom: 5px solid #a8fa00;
+    border-radius: 20%;
+}
+
+.fa-plus-cs{
+    cursor:pointer;
+}
+
+.img-cc{
+    opacity: 0.3;
+}
+
+.div-fichas:hover{
+    color: #a8fa00;
+}
+
+.padding-0{
+    padding: 0px;
+}
+
+#pac-input{
+    margin: 10px;
+    width: 45%;
+}
+
+.svg-opcs{
+    cursor: pointer;
+}
+
+.elegir-plantilla h6 {
+    font-size: 11px;
+}
+
+.elegir-plantilla:hover {
+    background: #feff8c !important;
+}
+
+.br-sp {
+    border-radius: 60% !important;
+    padding: 4px;
+}
+
+.sidebar li.active a {
+    color: #a8fa00;
+
+}
+.sidebar li.active svg {
+    fill: #a8fa00;
+}
+
+#tblRegistros svg:hover {
+    cursor: pointer;
+}
+
+tbody svg {
+    fill: #daffc6 !important;
+}
+
+.chat-lf{
+    background: #f2f3f5;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 80%;
+}
+
+.chat-rg{
+    background: rgba(230,242,245,.5);
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 80%;
+    margin-left: 20%;
+}
+
+.div-fichas{
+    cursor: pointer;
+}
+
+.ico-upd-flag{
     cursor: pointer;
 }
