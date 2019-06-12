@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.itsight.util.Enums.CfsCliente.CONTROL_ENTRENAMIENTO;
+import static com.itsight.util.Enums.CfsCliente.CONTROL_REP_VIDEO;
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
@@ -219,5 +221,19 @@ public class ClienteFullController {
         int id = (Integer) session.getAttribute("id");
         return rutinaService.findRutinaIdsByClienteId(id);
 
+    }
+
+    @PutMapping("/configuracion/actualizar/ctrl-rep-video")
+    public @ResponseBody String actualizarConfiguracionControlRepVideo(@RequestParam String valor, HttpSession session){
+        int id = (Integer) session.getAttribute("id");
+        configuracionClienteService.actualizarById(id, CONTROL_REP_VIDEO.name(), valor);
+        return EXITO_GENERICA.get();
+    }
+
+    @PutMapping("/configuracion/actualizar/ctrl-entrenamiento")
+    public @ResponseBody String actualizarConfiguracionControlEntrenamiento(@RequestParam String valor, HttpSession session){
+        int id = (Integer) session.getAttribute("id");
+        configuracionClienteService.actualizarById(id, CONTROL_ENTRENAMIENTO.name(), valor);
+        return EXITO_GENERICA.get();
     }
 }

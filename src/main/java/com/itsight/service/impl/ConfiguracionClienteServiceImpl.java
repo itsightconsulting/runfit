@@ -119,4 +119,9 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
     public String obtenerByIdAndClave(int id, String clave) {
         return repository.findByIdAndClave(id, clave);
     }
+
+    @Override
+    public void actualizarById(Integer id, String clave, String valor) {
+        repository.updateById(id, clave, valor);
+    }
 }

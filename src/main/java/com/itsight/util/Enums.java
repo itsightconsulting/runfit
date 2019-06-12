@@ -213,4 +213,12 @@ public class Enums {
 
         public String get(){return id;}
     }
+
+    public enum CfsCliente{
+        CONTROL_REP_VIDEO, FAV_RUTINA_ID, FAV_TRAINER_ID,FAVS_POST_TRAINER, CONTROL_ENTRENAMIENTO;
+    }
+
+    public enum Galletas{
+        GLL_NOMBRE_COMPLETO, GLL_IMG_PERFIL, GLL_CONTROL_ENTRENAMIENTO, GLL_CONTROL_REP_VIDEO;
+    }
 }

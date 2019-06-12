@@ -33,19 +33,19 @@
                 <li><a class="closebtn" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_flecha1.svg}+'?'+${version}">CONFIGURACIÓN</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_control_entrenamiento.svg}+'?'+${version}">Control de entrenamiento</a>
                     <label class="switch"><i>diario</i><i>semanal</i>
-                        <input type="checkbox"><span class="slider"></span>
+                        <input type="checkbox" id="OptConfCliCtrlEntrenamientoMob" data-type="2"><span class="slider"></span>
                     </label>
                 </li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_suscripcion.svg}+'?'+${version}">Suscripción</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Reproducción de videos</a>
                     <label class="switch"><i>cadena</i><i>contínua</i>
-                        <input type="checkbox"><span class="slider"></span>
+                        <input type="checkbox" id="OptConfCliCtrlRepVideoMob" data-type="1"><span class="slider"></span>
                     </label>
                 </li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
-                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
-                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
+                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
+                <li><a th:href="@{/p/preguntas-frecuentes}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
             </ul>
         </div>
     </div>
@@ -56,19 +56,19 @@
             <li><a class="closebtn button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_flecha1.svg}+'?'+${version}">CONFIGURACIÓN</a></li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_control_entrenamiento.svg}+'?'+${version}">Control de entrenamiento</a>
                 <label class="switch"><i>diario</i><i>semanal</i>
-                    <input type="checkbox"><span class="slider"></span>
+                    <input type="checkbox" id="OptConfCliCtrlEntrenamiento" data-type="2"><span class="slider"></span>
                 </label>
             </li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_suscripcion.svg}+'?'+${version}">Suscripción</a></li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Reproducción de videos</a>
                 <label class="switch"><i>cadena</i><i>contínua</i>
-                    <input type="checkbox"><span class="slider"></span>
+                    <input type="checkbox" id="OptConfCliCtrlRepVideo" data-type="1"><span class="slider"></span>
                 </label>
             </li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
-            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
-            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
+            <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
+            <li><a th:href="@{/p/preguntas-frecuentes}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
         </ul>
     </div>
 </div>

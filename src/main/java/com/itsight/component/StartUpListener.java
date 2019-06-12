@@ -596,11 +596,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     }
 
     public void addingConfiguracionGeneralToTable(){
-        if(configuracionGeneralService.findOne(1) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_AUDIO", "",true, 3));
-        if(configuracionGeneralService.findOne(2) == null) configuracionGeneralService.save(new ConfiguracionGeneral("AUTO_REP_VIDEO", "",true, 3));
+        if(configuracionGeneralService.findOne(2) == null) configuracionGeneralService.save(new ConfiguracionGeneral("CONTROL_REP_VIDEO", "REPETICION",true, 3));
         if(configuracionGeneralService.findOne(3) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_RUTINA_ID", "", true, 3));
         if(configuracionGeneralService.findOne(4) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_TRAINER_ID", "",true, 3));
         if(configuracionGeneralService.findOne(5) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAVS_POST_TRAINER", "",true, 3));
+        if(configuracionGeneralService.findOne(5) == null) configuracionGeneralService.save(new ConfiguracionGeneral("CONTROL_ENTRENAMIENTO", "DIARIA",true, 3));
     }
 
     public void addingKilometrajeBase(){

@@ -21,4 +21,12 @@ public interface ConfiguracionClienteRepository extends JpaRepository<Configurac
             "from (SELECT jsonb_array_elements(parametros) params from configuracion_cliente where cliente_id=?1) as t " +
             "where cast(params as jsonb)->>'nombre' = ?2", nativeQuery = true)
     String findByIdAndClave(int id, String clave);
+
+    @Modifying
+    @Query(value = "UPDATE configuracion_cliente SET parametros = jsonb_set(parametros, " +
+            "(select cast(concat('{',ix-1,',\"valor\"}') as text[]) from ( " +
+            "select row_number() over() ix, * from (select jsonb_array_elements(parametros)->>'nombre' nom from configuracion_cliente where cliente_id = ?1) as t) as r " +
+            "where lower(nom) = lower(?2))" +
+            ",to_jsonb(CAST(?3 as text))) WHERE cliente_id = ?1", nativeQuery = true)
+    void updateById(Integer id, String clave, String valor);
 }
