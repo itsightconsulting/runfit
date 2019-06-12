@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -206,13 +210,21 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 }
             }
         }
-
-
-
         addingApplicationParameters();
         addingToContextSession();
         addingInitUsers();
         creatingFileDirectories();
+        RestTemplate template = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> requestEntity =
+                new HttpEntity<>("demo", headers);
+        String demo = template.exchange("http://chelmo.herokuapp.com/p/encryptar", HttpMethod.POST, requestEntity,
+                String.class).getBody();
+
+        System.out.println(demo);
     }
 
     public void insertACategoriaEjercicio() {

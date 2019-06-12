@@ -17,6 +17,7 @@ import com.itsight.util.Enums.Msg;
 import com.itsight.util.RSA_Encryption;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -271,12 +272,12 @@ public class PublicoController extends BaseController {
     }
 
     @PostMapping(value = "/encryptar")
-    public @ResponseBody String encryptar(@RequestBody String valor){
+    public @ResponseBody String encryptar(@RequestBody Parametro p){
         String encryptRSA;
         try {
             RSA_Encryption rsa = new RSA_Encryption();
-            encryptRSA = rsa.encrypted_(valor);
-            return encryptRSA;
+            encryptRSA = rsa.encrypted_(p.getValor());
+            return jsonResponse(encryptRSA);
         } catch (Exception e2) {
             e2.printStackTrace();
             // TODO: handle exception
@@ -285,12 +286,12 @@ public class PublicoController extends BaseController {
     }
 
     @PostMapping(value = "/desencryptar")
-    public @ResponseBody String desencryptar(@RequestBody String valor){
+    public @ResponseBody String desencryptar(@RequestBody Parametro p){
         try {
             String decrypted;
             RSA_Encryption rsa = new RSA_Encryption();
-            decrypted = rsa.decrypted_(valor);
-            return decrypted;
+            decrypted = rsa.decrypted_(p.getValor());
+            return jsonResponse(decrypted);
         } catch (Exception e2) {
             e2.printStackTrace();
             // TODO: handle exception
