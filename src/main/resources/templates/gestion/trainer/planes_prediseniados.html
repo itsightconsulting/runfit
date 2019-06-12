@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-us" style="background-color: #fff;"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+</head>
+<style>
+</style>
+<body style="background-color: #fff;">
+<div id="wrapper">
+    <header>
+        <ul class="nav nav-pills">
+            <li class="col-md-3 icons"><a href="#"><img class="svg" src="img/iconos-trainers/icon_guardar.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_abc.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_arrow-left.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_arrow-right.svg"></a></li>
+            <li class="active col-md-1"><a href="#">listado</a></li>
+            <li class="col-md-2"><a href="#">g. videos</a></li>
+            <li class="col-md-2"><a href="#">rutinario</a></li>
+            <li class="col-md-2"><a href="#">g. audios</a></li>
+            <li class="col-md-2"><a href="#">planes prediseñados</a></li>
+        </ul>
+    </header>
+    <div class="container-t"><img class="logoBlack" src="img/logo_black.png">
+        <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
+        <ul class="checks text-center">
+            <li>
+                <label class="chk-content">PLANTILLA ESTÁNDAR
+                    <input type="checkbox"><span class="checkmark"></span>
+                </label>
+            </li>
+            <li>
+                <label class="chk-content">PLANTILLA RUNNING
+                    <input type="checkbox"><span class="checkmark"></span>
+                </label>
+            </li>
+        </ul>
+        <div class="owl-carousel owl-theme" id="planesCarousel">
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" src="img/iconos-trainers/icon_star.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_edit.svg"></a><strong>42</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" src="img/iconos-trainers/icon_tablero.svg"><a href="planElegido.html"><img class="svg" src="img/iconos-trainers/icon_add.svg">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" src="img/iconos-trainers/icon_star.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_edit.svg"></a><span> rutina para dolor de tobillo</span></div>
+                <div class="item-body"><img class="svg" src="img/iconos-trainers/icon_tablero.svg"><a href="#"><img class="svg" src="img/iconos-trainers/icon_add.svg">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" src="img/iconos-trainers/icon_star.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_edit.svg"></a><strong>15</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" src="img/iconos-trainers/icon_tablero.svg"><a href="#"><img class="svg" src="img/iconos-trainers/icon_add.svg">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" src="img/iconos-trainers/icon_star.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_edit.svg"></a><strong>10</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" src="img/iconos-trainers/icon_tablero.svg"><a href="#"><img class="svg" src="img/iconos-trainers/icon_add.svg">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" src="img/iconos-trainers/icon_star.svg"></a><a href="#"><img class="svg" src="img/iconos-trainers/icon_edit.svg"></a><strong>5</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" src="img/iconos-trainers/icon_tablero.svg"><a href="#"><img class="svg" src="img/iconos-trainers/icon_add.svg">Agregar</a></div>
+            </div>
+        </div>
+        <div class="slider-container">
+            <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="5">
+        </div>
+    </div>
+</div>
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+</body>
+</html>
+

@@ -4,9 +4,8 @@
 	  th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
     <title>Mis clientes</title>
-    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
-    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/trainer.css}+'?'+${version}">
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
 </head>
 <style>
 </style>
@@ -20,11 +19,11 @@
     <div id="wrapper">
         <header>
             <ul class="nav nav-pills">
-                <li class="active col-md-2"><a href="#">LISTADO</a></li>
-                <li class="col-md-2"><a href="#">G. VIDEOS</a></li>
-                <li class="col-md-3"><a href="#">RUTINARIO</a></li>
-                <li class="col-md-2"><a href="#">G. AUDIOS</a></li>
-                <li class="col-md-3"><a href="#">PLANES PREDISEÑADOS</a></li>
+                <li class="active col-md-2"><a href="#">listado</a></li>
+                <li class="col-md-2"><a href="#">g. videos</a></li>
+                <li class="col-md-3"><a href="#">rutinario</a></li>
+                <li class="col-md-2"><a href="#">g. audios</a></li>
+                <li class="col-md-3"><a href="#">planes prediseñados</a></li>
             </ul>
         </header>
         <div class="container-t">
@@ -50,7 +49,7 @@
                                 <thead>
                                 <tr>
                                     <th data-formatter="fttDesactivar" data-field="id" data-halign="center" data-valign="middle"
-                                        data-align="center" data-width="5%">Desactivar
+                                        data-align="center" data-width="5%" class="trash">
                                     </th>
                                     <th data-formatter="fttNota" data-halign="center" data-valign="middle"
                                         data-align="center" data-width="5%">Notas
@@ -265,7 +264,7 @@
 
 <!-- END PAGE FOOTER -->
 <!-- IMPORTS JAVASCRIPT -->
-<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 <script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
@@ -961,7 +960,7 @@
                                                 </a>
                                             </div>
                                         </div>`
-                    })
+                    });
 
                     plantillas.innerHTML = htmlRaw;
                 }else{
@@ -991,11 +990,11 @@
             dataType: 'json',
             data: params,
             success: function(){
-                $.smallBox({content: '<i>Se le ha asignado exitosamente la rutina al cliente...</i>'})
+                $.smallBox({content: '<i>Se le ha asignado exitosamente la rutina al cliente...</i>'});
                 actualStatus == "Activo" ?
                     document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-success">Activo</span>'
                     :
-                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>';
                 //Removiendo la accion al boton de asignar
                 document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].removeAttribute('onclick');
                 document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\']').lastChild.children[0].removeAttribute('data-toggle');
@@ -1095,7 +1094,7 @@
             let Styles = '<ss:Styles><ss:Style ss:ID="' + id + '"><ss:Font ss:Bold="1"/></ss:Style></ss:Styles>';
 
             return Styles;
-        }
+        };
 
         const myXMLWorkSheet = function(name, o) {
             const Table = myXMLTable(o);
@@ -1103,7 +1102,7 @@
             const WorksheetEnd = '</ss:Worksheet>';
 
             return WorksheetStart + Table + WorksheetEnd;
-        }
+        };
 
         const myXMLTable = function(o) {
             let TableStart = '<ss:Table>';
@@ -1126,11 +1125,11 @@
             }
 
             return TableStart + TableEnd;
-        }
+        };
 
         const myXMLColumn = function(w) {
             return '<ss:Column ss:AutoFitWidth="0" ss:Width="' + w + '"/>';
-        }
+        };
 
 
         const myXMLHead = function(id, h) {
@@ -1143,7 +1142,7 @@
             }
 
             return HeadStart + HeadEnd;
-        }
+        };
 
         const myXMLRow = function(r, h) {
             let RowStart = '<ss:Row>';
@@ -1154,7 +1153,7 @@
             }
 
             return RowStart + RowEnd;
-        }
+        };
 
         const myXMLCell = function(n) {
             let CellStart = '<ss:Cell>';
@@ -1164,14 +1163,14 @@
             CellStart += Data;
 
             return CellStart + CellEnd;
-        }
+        };
 
         const myXMLData = function(d) {
             let DataStart = '<ss:Data ss:Type="String">';
             const DataEnd = '</ss:Data>';
 
             return DataStart + d + DataEnd;
-        }
+        };
 
         const flatten = function(obj) {
             var obj1 = JSON.parse(JSON.stringify(obj));
@@ -1180,7 +1179,7 @@
                 for (var k1 in obj2) {
                     if (obj2.hasOwnProperty(k1)) {
                         if (typeof obj2[k1] === 'object' && obj2[k1] !== null) {
-                            delete obj1[k1]
+                            delete obj1[k1];
                             for (var k2 in obj2[k1]) {
                                 if (obj2[k1].hasOwnProperty(k2)) {
                                     obj1[k1 + '-' + k2] = obj2[k1][k2];
@@ -1205,7 +1204,7 @@
             } else {
                 return obj1;
             }
-        }
+        };
         return myExcelXML;
     })();
 

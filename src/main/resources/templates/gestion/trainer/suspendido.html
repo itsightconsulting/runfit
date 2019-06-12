@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+</head>
+<style>
+</style>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+<div id="main-content">
+    <div id="wrapper">
+        <header>
+            <ul class="nav nav-pills">
+                <li class="active col-md-2"><a href="#">listado</a></li>
+                <li class="col-md-2"><a href="#">g. videos</a></li>
+                <li class="col-md-3"><a href="#">rutinario</a></li>
+                <li class="col-md-2"><a href="#">g. audios</a></li>
+                <li class="col-md-3"><a href="#">planes prediseñados</a></li>
+            </ul>
+            <section id="suspendidos">
+                <div class="container-t">
+                    <h2 class="title_carousel">suspendidos - <span>enero</span></h2>
+                    <div class="owl-carousel owl-theme" id="carouselSuspendidos">
+                        <div class="item row">
+                            <div class="col-md-5">
+                                <div class="panel-group">
+                                    <div class="panel panel-default">
+                                        <h4>calendario anual</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><img class="svg" src="img/iconos-trainers/icon_calendar2.svg">2019<a data-toggle="collapse" href="#collapse1"><img class="arrow svg" src="img/iconos-trainers/icon_flecha2.svg"></a></h3>
+                                        </div>
+                                        <div class="panel-collapse collapse" id="collapse1">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 1</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 2</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 3</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 4</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 5</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes"> Mes 6</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes"> Mes 7</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes"> Mes 8</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><img class="svg" src="img/iconos-trainers/icon_calendar2.svg">2020<a data-toggle="collapse" href="#collapse2"><img class="arrow svg" src="img/iconos-trainers/icon_flecha2.svg"></a></h3>
+                                        </div>
+                                        <div class="panel-collapse collapse" id="collapse2">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 1</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 2</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 3</div>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <div class="mes">Mes 4</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="EJEMPLO 01 / 2019">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">BUSCAR</button>
+                                    </div>
+                                </div>
+                                <h3 class="date">enero 2019</h3>
+                                <ul class="users">
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-sm-8"><img class="user" src="img/user.png">
+                                                <h4>yasmine andía h.<span>01 / 12 / 2019</span></h4>
+                                            </div>
+                                            <div class="col-sm-4"><a class="btn_Activar" href="#">activar</a><a href="#">ver perfil</a></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-sm-8"><img class="user" src="img/user.png">
+                                                <h4>yasmine andía h.<span>01 / 12 / 2019</span></h4>
+                                            </div>
+                                            <div class="col-sm-4"><a class="btn_Activar" href="#">activar</a><a href="#">ver perfil</a></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-sm-8"><img class="user" src="img/user.png">
+                                                <h4>yasmine andía h.<span>01 / 12 / 2019</span></h4>
+                                            </div>
+                                            <div class="col-sm-4"><a class="btn_Activar" href="#">activar</a><a href="#">ver perfil</a></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">2</div>
+                        <div class="item">3</div>
+                    </div>
+                </div>
+            </section>
+        </header>
+    </div>
+</div>
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+</body>
+</html>

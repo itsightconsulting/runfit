@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-us" style="background-color: #fff;"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+</head>
+<body style="background-color: #fff;">
+<div id="wrapper">
+    <header>
+        <ul class="nav nav-pills">
+            <li class="col-md-3 icons"><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
+            <li class="active col-md-1"><a href="#">listado</a></li>
+            <li class="col-md-2"><a href="#">g. videos</a></li>
+            <li class="col-md-2"><a href="#">rutinario</a></li>
+            <li class="col-md-2"><a href="#">g. audios</a></li>
+            <li class="col-md-2"><a href="#">planes prediseñados</a></li>
+        </ul>
+    </header>
+    <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
+        <h1 class="title_big">5<span>- km</span></h1>
+        <ul class="checks text-center">
+            <li>
+                <label class="chk-content">PLANTILLA ESTÁNDAR
+                    <input type="checkbox"><span class="checkmark"></span>
+                </label>
+            </li>
+            <li>
+                <label class="chk-content">PLANTILLA RUNNING
+                    <input type="checkbox"><span class="checkmark"></span>
+                </label>
+            </li>
+        </ul>
+        <div class="owl-carousel owl-theme" id="planElegido">
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" th:src="@{/img/iconos-trainers/icon_star.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a><span>básicos</span></div>
+                <div class="item-body"><img class="svg" th:src="@{/img/iconos-trainers/icon_plan.svg}"><a><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" th:src="@{/img/iconos-trainers/icon_star.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a><span>intermedio</span></div>
+                <div class="item-body"><img class="svg" th:src="@{/img/iconos-trainers/icon_plan.svg}"><a><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" th:src="@{/img/iconos-trainers/icon_star.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a><span>avanzados</span></div>
+                <div class="item-body"><img class="svg" th:src="@{/img/iconos-trainers/icon_plan.svg}"><a><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" th:src="@{/img/iconos-trainers/icon_star.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a><strong>15</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" th:src="@{/img/iconos-trainers/icon_plan.svg}"><a><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" th:src="@{/img/iconos-trainers/icon_star.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a><strong>5</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" th:src="@{/img/iconos-trainers/icon_plan.svg}"><a><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</a></div>
+            </div>
+            <div class="item">
+                <div class="item-header"><a class="star"><img class="svg" th:src="@{/img/iconos-trainers/icon_star.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a><strong>5</strong><span>km</span></div>
+                <div class="item-body"><img class="svg" th:src="@{/img/iconos-trainers/icon_plan.svg}"><a><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow-gris">
+        <div class="container-t">
+            <div class="slider-container">
+                <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="5">
+            </div>
+        </div>
+    </div>
+    <section id="info">
+        <div class="container-t">
+            <div class="text-center">
+                <div class="form-group pull-left">
+                    <div class="search">
+                        <div class="input-group">
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+                </div><a class="scroll" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-top.svg}"></a>
+                <div class="form-group pull-right">
+                    <select class="form-control">
+                        <option>1 - plan de 1 semanas</option>
+                    </select>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <h1 class="title_big">15<span>km - </span><i>intermedios</i></h1>
+            <ul class="list_plan">
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+                <li class="col-md-4"><img class="plantilla svg" th:src="@{/img/iconos-trainers/icon_leyenda.svg}">PLAN DE 4 SEMANAs<a class="edit" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_edit.svg}"></a></li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+</div>
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<script th:inline="javascript">
+    $(function() {
+        $(".item-body a").click(function () {
+            $("section#info").slideDown(200);
+            $( 'html, body' ).stop().animate({
+                scrollTop: $("section#info").offset().top
+            });
+            return false;
+        });
+        $(".scroll").click(function() {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
