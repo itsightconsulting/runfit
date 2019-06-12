@@ -10,4 +10,7 @@ public interface ConfiguracionClienteService extends BaseService<ConfiguracionCl
     void actualizarPostIdFavoritos(Integer id, String postsFavsIds);
 
     String obtenerByIdAndClave(int id, String clave);
+
+    void actualizarById(Integer id, String clave, String valor);
+
 }

@@ -104,6 +104,11 @@ const TipoRutina = Object.freeze({
     COMPETITIVA:  3,
 });
 
+const TipoConfiguracion = Object.freeze({
+    CTRL_REP_VIDEO:   1,
+    CTRL_ENTRENAMIENTO:   2,
+});
+
 const TipoFicha = Object.freeze({
     RUNNING:   1,
     GENERAL:   2,
@@ -782,4 +787,88 @@ function b64DecodeUnicode(str) {
     return decodeURIComponent(atob(str).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
+}
+
+
+(function setUserFullNameToPage(){
+    const user = document.querySelector('.user-full-name');
+    if(user){
+        user.outerHTML = getFullNameFromUser();
+    }
+})();
+function getFullNameFromUser(){
+    return b64DecodeUnicode(getCookie("GLL_NOMBRE_COMPLETO")).trim();
+}
+
+function getImgUrlFromUser(){
+    return getCookie("GLL_IMG_PERFIL").trim();
+}
+
+const optCliEnt = document.querySelector('#OptConfCliCtrlEntrenamiento');
+const optCliCrlRepVideo = document.querySelector('#OptConfCliCtrlRepVideo');
+const optCliEntMob = document.querySelector('#OptConfCliCtrlEntrenamientoMob');
+const optCliCrlRepVideoMob = document.querySelector('#OptConfCliCtrlRepVideoMob');
+
+
+if(optCliEnt){
+    optCliEnt.addEventListener('click', actualizarConfiguracionCliente);
+    if(getCookie("GLL_CONTROL_ENTRENAMIENTO") === "SEMANAL"){
+        optCliEnt.checked = true;
+    }
+}
+
+if(optCliCrlRepVideo){
+    optCliCrlRepVideo.addEventListener('click', actualizarConfiguracionCliente);
+    if(getCookie("GLL_CONTROL_REP_VIDEO") === "CONTINUA"){
+        optCliCrlRepVideo.checked = true;
+    }
+}
+
+if(optCliEntMob){
+    optCliEntMob.addEventListener('click', actualizarConfiguracionCliente);
+    if(getCookie("GLL_CONTROL_ENTRENAMIENTO") === "SEMANAL"){
+        optCliEntMob.checked = true;
+    }
+}
+
+if(optCliCrlRepVideoMob){
+    optCliCrlRepVideoMob.addEventListener('click', actualizarConfiguracionCliente);
+    if(getCookie("GLL_CONTROL_REP_VIDEO") === "CONTINUA"){
+        optCliCrlRepVideoMob.checked = true;
+    }
+}
+
+function actualizarConfiguracionCliente(e){
+    const input = e.target;
+    const tipoConfiguracion = Number(input.getAttribute('data-type'));
+    let varianteURI = "";
+    let valor = "";
+    if(tipoConfiguracion === TipoConfiguracion.CTRL_REP_VIDEO){
+        varianteURI = "ctrl-rep-video";
+        valor = getCookie("GLL_CONTROL_REP_VIDEO");
+        valor = valor === "REPETICION" ? "CONTINUA" : "REPETICION";
+    } else {
+        varianteURI = "ctrl-entrenamiento";
+        valor = getCookie("GLL_CONTROL_ENTRENAMIENTO");
+        valor = valor === "DIARIA" ? "SEMANAL" : "DIARIA";
+    }
+
+    $.ajax({
+        type: 'PUT',
+        url: _ctx + 'cliente/configuracion/actualizar/'+varianteURI,
+        data: {valor: valor},
+        dataType: "json",
+        success: function () {
+            if(tipoConfiguracion === TipoConfiguracion.CTRL_REP_VIDEO){
+                document.cookie = "GLL_CONTROL_REP_VIDEO="+valor;
+            } else {
+                document.cookie = "GLL_CONTROL_ENTRENAMIENTO="+valor;
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+            input.checked = !input.checked;
+        },
+        complete: function () {}
+    });
 }

@@ -5,6 +5,7 @@ import com.itsight.service.AdministradorService;
 import com.itsight.service.ClienteService;
 import com.itsight.service.ConfiguracionClienteService;
 import com.itsight.service.TrainerService;
+import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -23,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import java.util.Base64;
 import java.util.Date;
 
+import static com.itsight.util.Enums.CfsCliente.*;
+import static com.itsight.util.Enums.Galletas.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
@@ -52,6 +55,10 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     public void onApplicationEvent(InteractiveAuthenticationSuccessEvent login) {
         // TODO Auto-generated method stub
         try {
+
+            //For cookies
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+
             String[] usernameAndId = StringUtils.split(login.getAuthentication().getName(), "|");
 
             String username = usernameAndId[0];
@@ -68,7 +75,11 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             } else {
                 usu = clienteService.getForCookieById(id);
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
-                String favRutId = configuracionClienteService.obtenerByIdAndClave(id, "FAV_RUTINA_ID");
+
+                String favRutId = configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name());
+                response.addCookie(Utilitarios.createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_ENTRENAMIENTO.name())));
+                response.addCookie(Utilitarios.createCookie(GLL_CONTROL_REP_VIDEO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_REP_VIDEO.name())));
+
                 Integer favRutinaId = favRutId.equals("") ? null : Integer.parseInt(favRutId);
                 if(favRutinaId != null){
                     session.setAttribute("fvrtId", favRutinaId);
@@ -80,11 +91,10 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             //Generando cookies
-            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
             String fullName = usu.getNombres() + " " + usu.getApellidos();
-            response.addCookie(Utilitarios.createCookie("GLL_NOMBRE_COMPLETO", new String(Base64.getEncoder().encode(fullName.getBytes()))));
+            response.addCookie(Utilitarios.createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
             if(usu.getUuidFp().equals("")){
-                response.addCookie(Utilitarios.createCookie("GLL_IMG_PERFIL", usu.getUuidFp() + usu.getExtFp()));
+                response.addCookie(Utilitarios.createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
             }
         } catch (Exception e){
             e.printStackTrace();

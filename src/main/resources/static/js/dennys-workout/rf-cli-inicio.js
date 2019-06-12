@@ -187,14 +187,16 @@ function vistaMes(data) {
 
     });
     $(document).ready(function () {
-        var json = jQuery.parseJSON(data[0].metricas);
-        var tr;
-        for (var i = 0; i < json.length; i++) {
-            tr = $('<tr/>');
-            tr.append("<td>" + json[i].nombre + "</td>");
-            tr.append("<td>" + json[i].min + "</td>");
-            tr.append("<td>" + json[i].max + "</td>");
-            $('table.pulsos,table.ritmos').append(tr);
+        if(data[0]){
+            var json = jQuery.parseJSON(data[0].metricas);
+            var tr;
+            for (var i = 0; i < json.length; i++) {
+                tr = $('<tr/>');
+                tr.append("<td>" + json[i].nombre + "</td>");
+                tr.append("<td>" + json[i].min + "</td>");
+                tr.append("<td>" + json[i].max + "</td>");
+                $('table.pulsos,table.ritmos').append(tr);
+            }
         }
     });
     owlCarouselSemanal();
