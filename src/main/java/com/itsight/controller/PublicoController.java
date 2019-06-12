@@ -7,6 +7,7 @@ import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
+import com.itsight.domain.jsonb.Parametro;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.repository.IdiomaRepository;
@@ -269,13 +270,12 @@ public class PublicoController extends BaseController {
         return clienteService.registroFull(cliente);
     }
 
-    @GetMapping(value = "/encryptar/{data}")
-    public @ResponseBody String encryptar(@PathVariable String data){
-        String encryptRSA = "";
+    @PostMapping(value = "/encryptar")
+    public @ResponseBody String encryptar(@RequestBody String valor){
+        String encryptRSA;
         try {
             RSA_Encryption rsa = new RSA_Encryption();
-
-            encryptRSA = rsa.encrypted_(data);
+            encryptRSA = rsa.encrypted_(valor);
             return encryptRSA;
         } catch (Exception e2) {
             e2.printStackTrace();
@@ -284,17 +284,12 @@ public class PublicoController extends BaseController {
         return Enums.ResponseCode.EX_GENERIC.get();
     }
 
-    @GetMapping(value = "/desencryptar")
-    public @ResponseBody String desencryptar(@RequestParam String data){
+    @PostMapping(value = "/desencryptar")
+    public @ResponseBody String desencryptar(@RequestBody String valor){
         try {
             String decrypted;
-
             RSA_Encryption rsa = new RSA_Encryption();
-
-
-            decrypted = rsa.decrypted_(data);
-
-
+            decrypted = rsa.decrypted_(valor);
             return decrypted;
         } catch (Exception e2) {
             e2.printStackTrace();
