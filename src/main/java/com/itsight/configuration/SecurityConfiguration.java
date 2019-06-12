@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // TODO Auto-generated method stub
         http.authorizeRequests().antMatchers("/rest/**", "/p/**").permitAll();
         //http.addFilterAfter(new AjaxAuthenticationFilter(), BasicAuthenticationFilter.class);
+        http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 .antMatchers("/gestion/cliente-fitness").permitAll()

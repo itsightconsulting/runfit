@@ -151,7 +151,41 @@
         });
         btnBuscar.addEventListener('click', busquedaDinamica);
         init();
+        const gson = {"auditoria":{"soDispositivo":"ANDROID","modeloDispositivo":"GalaxyS6","usuarioCreacion":"74641991","fechaCreacion":"2019-06-12T09:59:02Z"},"token":{"direccionEnvio":"51933288949","tipoEnvio":"SMS","codigoToken":"5584"},"transaccion":{"codigoTransaccion":"400","estadoTransaccion":"F","mensajeTransaccion":"Finalizado","monto":12,"operacion":{"codigoTipoOperacion":"TRP","codigoProducto":"Transferencia","canal":"Mayorista","numeroOperacionCanal":"0"},"pago":{"codigoPasarela":"","codigoFormaPago":5,"monto":12,"codigoMoneda":"1","estadoPago":"FINALIZADO","fechaPago":"2019-06-12T09:59:02Z"},"facturacion":{"idEbs":"","numeroComprobantePago":"","estadoComprobantePago":""},"operador":{"tipo":"SOCIOENTELPAY","clase":"LIDER","clasificacion":"ORO","canal":"MAYORISTA"},"persona":[{"nombres":"Daniel Jesus Cristobal Rojas","apellidoPaterno":"Cristobal","apellidoMaterno":"Rojas","razonSocial":"MULTIRECARGAS","tipoPersona":"PJ","tipoDocumento":"RUC","numeroDocumento":"20600221788","numeroTelefono":"51933288949","email":"jesusdrc16@gmail.com","rol":"USUARIO","direccion":[{"tipo":"FACT","direccion":"mz e lote 6","departamento":"150000","provincia":"150100","distrito":"150101","codigoPais":"PE","codigoPostal":"150101"}]},{"nombres":"Daniel Jesus","apellidoPaterno":"Cristobal","apellidoMaterno":"Rojas","tipoPersona":"PN","tipoDocumento":"DNI","numeroDocumento":"74641991","numeroTelefono":"51933288949","email":"jesusdrc16@gmail.com","rol":"LIDER","direccion":[]},{"numeroDocumento":"20600221788","numeroTelefono":"51916455051","rol":"BENEFICIARIO","direccion":[]},{"tipoDocumento":"RUC","numeroDocumento":"20600221788","rol":"SOCIO","direccion":[]}]}};
+        $.ajax({
+          type: 'POST',
+          url: _ctx + 'p/encryptar',
+          contentType: 'application/json',
+          dataType: 'json',
+          data: JSON.stringify({nombre: "demo", valor: JSON.stringify(gson)}),
+          blockLoading: false,
+          noOne: true,
+          success: function (res) {
+            shielmo(res.res);
+          }, error: (xhr) => {
+            exception(xhr);
+          }, complete: () => {}
+        })
       })();
+
+      function shielmo(valor){
+        $.ajax({
+          type: 'POST',
+          url: _ctx + 'p/desencryptar',
+          contentType: 'application/json',
+          dataType: 'text',
+          data: JSON.stringify({nombre: "demo", valor: valor}),
+          blockLoading: false,
+          noOne: true,
+          success: function (res) {
+            console.log(res);
+          }, error: (xhr) => {
+            exception(xhr);
+          }, complete: () => {
+
+          }
+        })
+      }
 
       function init(){
         onlyBusquedaDinamica();

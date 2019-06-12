@@ -271,12 +271,12 @@ public class PublicoController extends BaseController {
         return clienteService.registroFull(cliente);
     }
 
-    @PostMapping(value = "/encryptar")
-    public @ResponseBody String encryptar(@RequestBody Parametro p){
+    @PostMapping(value = "/encryptar", consumes = "application/json")
+    public String encryptar(@RequestBody String p){
         String encryptRSA;
         try {
             RSA_Encryption rsa = new RSA_Encryption();
-            encryptRSA = rsa.encrypted_(p.getValor());
+            encryptRSA = rsa.encrypted_(p);
             return jsonResponse(encryptRSA);
         } catch (Exception e2) {
             e2.printStackTrace();
@@ -285,12 +285,12 @@ public class PublicoController extends BaseController {
         return Enums.ResponseCode.EX_GENERIC.get();
     }
 
-    @PostMapping(value = "/desencryptar")
-    public @ResponseBody String desencryptar(@RequestBody Parametro p){
+    @PostMapping(value = "/desencryptar", consumes = "application/json")
+    public @ResponseBody String desencryptar(@RequestBody String p){
         try {
             String decrypted;
             RSA_Encryption rsa = new RSA_Encryption();
-            decrypted = rsa.decrypted_(p.getValor());
+            decrypted = rsa.decrypted_(p);
             return jsonResponse(decrypted);
         } catch (Exception e2) {
             e2.printStackTrace();
