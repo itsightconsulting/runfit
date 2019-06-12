@@ -284,8 +284,8 @@ public class PublicoController extends BaseController {
         return Enums.ResponseCode.EX_GENERIC.get();
     }
 
-    @GetMapping(value = "/desencryptar/{data}")
-    public @ResponseBody String desencryptar(@PathVariable String data){
+    @GetMapping(value = "/desencryptar")
+    public @ResponseBody String desencryptar(@RequestParam String data){
         try {
             String decrypted;
 
