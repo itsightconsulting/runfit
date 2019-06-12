@@ -86,8 +86,8 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     }
 
     @Override
-    public List<TrainerFichaPOJO> findAllWithFgEnt() {
-        return repository.findAllWithFgEnt();
+    public List<TrainerFichaPOJO> findAllWithFgEnt(Integer limit, Integer offset) {
+        return repository.findAllWithFgEnt(limit, offset);
     }
 
     @Override

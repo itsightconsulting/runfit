@@ -11,7 +11,9 @@ import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.repository.IdiomaRepository;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
 import com.itsight.util.Enums.Msg;
+import com.itsight.util.RSA_Encryption;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,7 @@ import java.util.List;
 
 import static com.itsight.util.Utilitarios.jsonResponse;
 
-@Controller
+@RestController
 @RequestMapping("/p")
 public class PublicoController extends BaseController {
 
@@ -251,12 +253,6 @@ public class PublicoController extends BaseController {
 
     //END TRAINER PROCESS
 
-    //TestQueries
-    @GetMapping("/get/all/trainer-ficha")
-    public @ResponseBody List<TrainerFichaPOJO> findAllTrainerResponseBody(){
-        return trainerFichaService.findAllWithFgEnt();
-    }
-
     @GetMapping("/bandeja")
     public @ResponseBody List<BandejaTemporal> getBandejaGeneral(){
         return bandejaTemporalRepository.findAllByOrderByIdDesc();
@@ -271,5 +267,39 @@ public class PublicoController extends BaseController {
     @PostMapping(value = "/cliente/fitness/agregar")
     public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
         return clienteService.registroFull(cliente);
+    }
+
+    @GetMapping(value = "/encryptar/{data}")
+    public @ResponseBody String encryptar(@PathVariable String data){
+        String encryptRSA = "";
+        try {
+            RSA_Encryption rsa = new RSA_Encryption();
+
+            encryptRSA = rsa.encrypted_(data);
+            return encryptRSA;
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            // TODO: handle exception
+        }
+        return Enums.ResponseCode.EX_GENERIC.get();
+    }
+
+    @GetMapping(value = "/desencryptar/{data}")
+    public @ResponseBody String desencryptar(@PathVariable String data){
+        try {
+            String decrypted;
+
+            RSA_Encryption rsa = new RSA_Encryption();
+
+
+            decrypted = rsa.decrypted_(data);
+
+
+            return decrypted;
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            // TODO: handle exception
+        }
+        return Enums.ResponseCode.EX_GENERIC.get();
     }
 }

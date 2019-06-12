@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> {
 
-    List<TrainerFichaPOJO> findAllWithFgEnt();
+    List<TrainerFichaPOJO> findAllWithFgEnt(Integer limit, Integer offset);
 
     TrainerFichaPOJO findByNomPagPar(String nomPag);
 

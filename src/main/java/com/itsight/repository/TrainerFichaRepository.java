@@ -15,7 +15,7 @@ import java.util.List;
 public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Integer> {
 
     @Query(nativeQuery = true)
-    List<TrainerFichaPOJO> findAllWithFgEnt();
+    List<TrainerFichaPOJO> findAllWithFgEnt(Integer limit, Integer offset);
 
     @EntityGraph(value = "trainerFicha.trainer")
     TrainerFicha findByNomPag(String nomPag);

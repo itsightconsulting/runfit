@@ -41,7 +41,8 @@ import java.util.UUID;
                     @ColumnResult(name = "totalValoracion", type = Double.class),
                     @ColumnResult(name = "nomImgPerfil", type = String.class),
                     @ColumnResult(name = "nomPag", type = String.class),
-                    @ColumnResult(name = "tipoTrainerId", type = Integer.class)
+                    @ColumnResult(name = "tipoTrainerId", type = Integer.class),
+                    @ColumnResult(name = "rowz")
                 }
             )
         }
@@ -100,10 +101,13 @@ import java.util.UUID;
                               "\tt.total_valoracion totalValoracion,\n" +
                               "\tCONCAT(f.uuid_fp, f.ext_fp) nomImgPerfil,\n" +
                               "\tf.nom_pag nomPag, \n" +
-                              "\tt.tipo_trainer_id tipoTrainerId \n" +
+                              "\tt.tipo_trainer_id tipoTrainerId, \n" +
+                              "cast(count(*) over() as int) rowz \n" +
                               "FROM trainer t \n" +
                               "INNER JOIN trainer_ficha f ON t.security_user_id=f.trainer_id \n" +
-                              "WHERE t.tipo_trainer_id != 3 AND t.flag_activo = true ORDER BY 1 DESC",
+                              "WHERE t.tipo_trainer_id != 3 AND t.flag_activo = true ORDER BY 1 DESC \n" +
+                              "LIMIT ?1 \n" +
+                              "OFFSET ?2",
                       resultSetMapping = "getAllByDemo"),
     @NamedNativeQuery(name = "TrainerFicha.findByNomPagPar",
                       query = "SELECT \n" +

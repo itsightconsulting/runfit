@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.TrainerQueryDTO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
@@ -35,6 +36,8 @@ public class TrainerProcedureInvokerImpl implements TrainerProcedureInvoker {
         storedProcedureQuery.registerStoredProcedureParameter(5, Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(6, String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter(7, String.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(8, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(9, Integer.class, ParameterMode.IN);
         storedProcedureQuery.setParameter(0, query.getIdiomas());
         storedProcedureQuery.setParameter(1, query.getNiveles());
         storedProcedureQuery.setParameter(2, query.getFormasTrabajo());
@@ -43,6 +46,8 @@ public class TrainerProcedureInvokerImpl implements TrainerProcedureInvoker {
         storedProcedureQuery.setParameter(5, query.getSexo());
         storedProcedureQuery.setParameter(6, query.getUbigeo());
         storedProcedureQuery.setParameter(7, query.getServicio());
+        storedProcedureQuery.setParameter(8, query.getLimit());
+        storedProcedureQuery.setParameter(9, query.getOffset());
         return storedProcedureQuery.getResultList();
     }
 }

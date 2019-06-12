@@ -117,7 +117,9 @@
             <div class="col-md-6 text-right">
               <button class="btn btn-default btn-black" type="button" id="btnBuscar">BUSCAR</button>
             </div>
-          </div>
+            <div class="col-md-12 dv-rows hidden" style="font-size: 1.6em;padding: 10px;color: #303030;">
+              <i class="fa fa-check fa-fw"></i> Se han encontrado <span id="Rows"></span> coincidencias</div>
+            </div>
           <div id="Trainers">
 
           </div>
@@ -130,33 +132,41 @@
     <script th:inline="javascript">
       const btnLimpiar = document.getElementById('btnLimpiar');
       const btnBuscar = document.getElementById('btnBuscar');
+      const initLimit = 10;
+      const initOffset = 0;
+      let totalRows = 0;
+      let queryParams = resetPagination();
+      function resetPagination(){
+        return {
+          limit: initLimit,
+          offset: initOffset
+        };
+      }
 
       (function(){
-        btnLimpiar.addEventListener('click', limpiarMainForm);
+        btnLimpiar.addEventListener('click', ()=>{
+            //All reset
+            limpiarMainForm();
+            busquedaDinamica();
+        });
         btnBuscar.addEventListener('click', busquedaDinamica);
         init();
       })();
 
       function init(){
-        listarTrainers();
-      }
-
-      function listarTrainers(){
-        $.ajax({
-          type: 'GET',
-          url: _ctx + 'p/trainer/find/all',
-          dataType: 'json',
-          blockLoading: false,
-          success: function (res) {
-            recrearListado(res);
-          }, error: (xhr) => {
-            console.log(xhr);
-          }, complete: () => {
-          }
-        })
+        onlyBusquedaDinamica();
+        scrollEventBusquedaAutomatica();
       }
 
       function busquedaDinamica(){
+        //Clean resulset
+        document.querySelector('#Trainers').innerHTML = "";
+        totalRows = 0;
+        queryParams = resetPagination();
+        onlyBusquedaDinamica();
+      }
+
+      function onlyBusquedaDinamica(){
         const d = getFormData($('#frm_registro'));
         d.niveles = Array.from(document.getElementById('Niveles').querySelectorAll("option:checked"),e=>e.value).join('|');
         d.idiomas = Array.from(document.getElementById('Idiomas').querySelectorAll("option:checked"),e=>e.value).join('|');
@@ -170,15 +180,18 @@
         if(d.hasOwnProperty("ubigeo")){
           d.ubigeo = "1501"+d.ubigeo;//Prefix Lima Perú
         }
-        console.log(d);
+
+        d.limit = queryParams.limit;
+        d.offset = queryParams.offset;
+
         $.ajax({
           type: 'GET',
           url: _ctx + 'p/trainer/find/dinamico',
           dataType: 'json',
           data: d,
-          blockLoading: true,
+          blockLoading: false,
+          noOne: true,
           success: function (res) {
-            document.getElementById('Trainers').innerHTML = "";
             if(res.length === 0){
               const noOne = document.createElement('div');
               noOne.className = "";
@@ -187,12 +200,17 @@
               noOne.style.padding = "15px 0px";
               noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se ha encontrado ninguna coincidencia. Pruebe nuevamente con otra búsqueda";
               document.getElementById('Trainers').appendChild(noOne);
+              document.querySelector('.dv-rows').classList.add('hidden');
             }else{
               recrearListado(res);
+              totalRows = res[0].rows;
+              document.querySelector('#Rows').textContent = totalRows;
+              document.querySelector('.dv-rows').classList.remove('hidden');
             }
           }, error: (xhr) => {
-              exception(xhr);
+            exception(xhr);
           }, complete: () => {
+
           }
         })
       }
@@ -256,6 +274,19 @@
       function verPerfilDirectServices(nomLink){
         window.location.href = _ctx + 'p/trainer/'+nomLink+"#service";
 
+      }
+
+      function scrollEventBusquedaAutomatica(){
+        const footHeight = document.querySelector('.footer').clientHeight + 300;
+        $(window).scroll(function() {
+
+          if($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
+            if(totalRows> queryParams.offset + queryParams.limit){
+                queryParams.offset = queryParams.offset + queryParams.limit;
+                onlyBusquedaDinamica();
+            }
+          }
+        });
       }
     </script>
   </body>

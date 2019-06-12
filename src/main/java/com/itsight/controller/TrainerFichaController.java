@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.management.Query;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -77,8 +78,8 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/find/all")
-    public @ResponseBody List<TrainerFichaPOJO> listarTodos(){
-        return trainerFichaService.findAllWithFgEnt();
+    public @ResponseBody List<TrainerFichaPOJO> listarTodos(@ModelAttribute QueryParamsDTO params){
+        return trainerFichaService.findAllWithFgEnt(params.getLimit(), params.getOffset());
     }
 
     @GetMapping("/find/dinamico")

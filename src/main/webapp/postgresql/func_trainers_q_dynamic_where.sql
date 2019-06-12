@@ -1,3 +1,4 @@
+DROP FUNCTION func_trainers_q_dynamic_where(text,text,text,text,text,integer,text,text);
 CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
     _idiomas	text  = NULL,
     _niveles	text = NULL,
@@ -6,7 +7,9 @@ CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
     _acerca	    text = NULL,
     _sexo       int = NULL,
     _ubigeo 	text = NULL,
-    _servicio     text = NULL)
+    _servicio     text = NULL,
+    _limit      int = NULL,
+    _offset     int = 0)
     RETURNS TABLE(id int,
                   nombreCompleto text,
                   especialidad text,
@@ -16,7 +19,8 @@ CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
                   totalValoracion double precision,
                   nomImgPerfil text,
                   nomPag text,
-                  tipoTrainerId int) AS
+                  tipoTrainerId int,
+                  rowz int) AS
 $func$
 select DISTINCT id,
        nombreCompleto,
@@ -27,7 +31,8 @@ select DISTINCT id,
        totalValoracion,
        nomImgPerfil,
        nomPag,
-       tipoTrainerId
+       tipoTrainerId,
+       CAST(count(*) over() as int) rowz
 from (select
     ff.trainer_id id,
     concat(jt.nombres, ' ',jt.apellidos) nombreCompleto,
@@ -70,10 +75,12 @@ where
          ORDER BY 1
         )) as y
     WHERE
-    ($4 IS NULL OR LOWER(concat(y.nombreCompleto)) LIKE LOWER(CONCAT('%',$4,'%'))) AND
-    ($5 IS NULL OR LOWER(y.acerca) LIKE LOWER(CONCAT('%',$5,'%'))) AND
+    ($4 IS NULL OR public.f_unaccent(LOWER(concat(y.nombreCompleto))) LIKE public.f_unaccent(LOWER(CONCAT('%',$4,'%')))) AND
+    ($5 IS NULL OR public.f_unaccent(LOWER(y.acerca)) LIKE public.f_unaccent(LOWER(CONCAT('%',$5,'%')))) AND
     ($6 IS NULL OR y.sexo = $6) AND
     ($7 IS NULL OR y.ubigeo = $7) AND
-    ($8 IS NULL OR LOWER(y.servicio) LIKE CONCAT('%', $8,'%')) AND
+    ($8 IS NULL OR public.f_unaccent(LOWER(y.servicio)) LIKE public.f_unaccent(LOWER(CONCAT('%', $8,'%')))) AND
      y.fg = true
+    LIMIT $9
+    OFFSET $10
 $func$ LANGUAGE sql;

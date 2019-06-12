@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -29,5 +30,10 @@ public class TrainerQueryDTO implements Serializable {
     private String ubigeo;
     @Size(min = 2, max = 30)
     private String servicio;
+    @Positive
+    @Max(100)
+    private Integer limit;
+    @PositiveOrZero
+    private Integer offset;
 
 }
