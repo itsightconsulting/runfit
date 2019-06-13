@@ -1,6 +1,9 @@
 package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -35,5 +38,8 @@ public class TrainerQueryDTO implements Serializable {
     private Integer limit;
     @PositiveOrZero
     private Integer offset;
+    @Positive
+    @Max(5)
+    private Double valoracion;
 
 }

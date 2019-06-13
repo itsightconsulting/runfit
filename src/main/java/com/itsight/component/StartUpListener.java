@@ -17,6 +17,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedReader;
@@ -205,8 +206,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 }
             }
         }
-
-
 
         addingApplicationParameters();
         addingToContextSession();

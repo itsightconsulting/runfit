@@ -29,7 +29,7 @@ import java.util.List;
 
 import static com.itsight.util.Utilitarios.jsonResponse;
 
-@RestController
+@Controller
 @RequestMapping("/p")
 public class PublicoController extends BaseController {
 
@@ -271,7 +271,7 @@ public class PublicoController extends BaseController {
         return clienteService.registroFull(cliente);
     }
 
-    @PostMapping(value = "/encryptar", consumes = "application/json")
+    @PostMapping(value = "/encryptar")
     public String encryptar(@RequestBody String p){
         String encryptRSA;
         try {

@@ -1,13 +1,14 @@
-DROP FUNCTION func_trainers_q_dynamic_where(text,text,text,text,text,integer,text,text);
+
+
 CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
-    _idiomas	text  = NULL,
-    _niveles	text = NULL,
+    _idiomas	text  = NULL,    _niveles	text = NULL,
     _formasTra	text = NULL,
     _nombre	    text  = NULL,
     _acerca	    text = NULL,
     _sexo       int = NULL,
     _ubigeo 	text = NULL,
-    _servicio     text = NULL,
+    _servicio   text = NULL,
+    _valoracion double precision = NULL,
     _limit      int = NULL,
     _offset     int = 0)
     RETURNS TABLE(id int,
@@ -80,7 +81,8 @@ where
     ($6 IS NULL OR y.sexo = $6) AND
     ($7 IS NULL OR y.ubigeo = $7) AND
     ($8 IS NULL OR public.f_unaccent(LOWER(y.servicio)) LIKE public.f_unaccent(LOWER(CONCAT('%', $8,'%')))) AND
+    ($9 IS NULL OR (totalValoracion/canPerValoracion) >= $9) AND
      y.fg = true
-    LIMIT $9
-    OFFSET $10
+    LIMIT $10
+    OFFSET $11
 $func$ LANGUAGE sql;
