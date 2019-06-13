@@ -6,6 +6,18 @@
   <title>Encuentra al trainer indicado para ti | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+  <style>
+      button.multiselect{
+          background-color: #3a3a3a !important;
+          margin-bottom: 0px !important;
+      }
+
+      button.multiselect + ul{
+          width: 100% !important;
+          padding-top: 0px;
+          margin-top: 0px;
+      }
+  </style>
   </head>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -86,12 +98,40 @@
                   <option value="2">Femenino</option>
                 </select>
               </div>
+                <div class="form-group">
+                    <label>VALORACIÓN MAYOR A</label>
+                    <fieldset class="rating" style="top: 0px !important;">
+                        <input id="star5" type="radio" name="Valoracion" value="5">
+                        <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                        <input id="star4half" type="radio" name="Valoracion" value="4.5">
+                        <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                        <input id="star4" type="radio" name="Valoracion" value="4">
+                        <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                        <input id="star3half" type="radio" name="Valoracion" value="3.5">
+                        <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                        <input id="star3" type="radio" name="Valoracion" value="3">
+                        <label class="full" for="star3" title="Meh - 3 stars"></label>
+                        <input id="star2half" type="radio" name="Valoracion" value="2.5">
+                        <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                        <input id="star2" type="radio" name="Valoracion" value="2">
+                        <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                        <input id="star1half" type="radio" name="Valoracion" value="1.5">
+                        <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                        <input id="star1" type="radio" name="Valoracion" value="1">
+                        <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                        <input id="starhalf" type="radio" name="Valoracion" value="0.5">
+                        <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                    </fieldset>
+                </div>
+                <!--<div class="rango bg-slide">
+                    <input id="Valoracion" name="Valoracion" type="range" value="0" min="0" max="10" data-aka="Seleccione que tan en forma se encuentra">
+                    <img class="desc-range" src="https://www.flaticon.com/premium-icon/icons/svg/804/804009.svg">
+                </div>-->
             </div>
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>IDIOMAS QUE DOMINA EL ASESOR</label>
-                <select class="form-control" id="Idiomas" name="Idiomas" multiple="multiple" style="height: 100px">
-                  <option value="">Seleccione</option>
+                <select class="form-control hidden" id="Idiomas" name="Idiomas" multiple="multiple" style="height: 100px">
                   <option th:each="ln : ${idiomas}" th:value="${ln.iso}" th:text="${ln.nombre}"></option>
                 </select>
               </div>
@@ -99,8 +139,7 @@
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>NIVEL DE RENDIMIENTO</label>
-                <select class="form-control" id="Niveles" name="Niveles" multiple="multiple" style="height: 100px">
-                  <option value="">Seleccione</option>
+                <select class="form-control hidden" id="Niveles" name="Niveles" multiple="multiple" style="height: 100px">
                   <option value="pr">Principiante</option>
                   <option value="in">Intermedio</option>
                   <option value="av">Avanzado</option>
@@ -129,6 +168,7 @@
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+    <script src="http://davidstutz.de/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
     <script th:inline="javascript">
       const btnLimpiar = document.getElementById('btnLimpiar');
       const btnBuscar = document.getElementById('btnBuscar');
@@ -148,6 +188,10 @@
             //All reset
             limpiarMainForm();
             busquedaDinamica();
+            document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
+                $(e).multiselect('refresh');
+            });
+
         });
         btnBuscar.addEventListener('click', busquedaDinamica);
         init();
@@ -156,6 +200,13 @@
       function init(){
         onlyBusquedaDinamica();
         scrollEventBusquedaAutomatica();
+        doMultiselectCheckBox();
+      }
+
+      function doMultiselectCheckBox(){
+          document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
+              $(e).multiselect();
+          })
       }
 
       function busquedaDinamica(){
@@ -183,8 +234,6 @@
 
         d.limit = queryParams.limit;
         d.offset = queryParams.offset;
-
-        d.valoracion = 1.1;
 
         $.ajax({
           type: 'GET',

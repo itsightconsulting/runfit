@@ -38,7 +38,7 @@ public class TrainerQueryDTO implements Serializable {
     private Integer limit;
     @PositiveOrZero
     private Integer offset;
-    @Positive
+    @PositiveOrZero
     @Max(5)
     private Double valoracion;
 

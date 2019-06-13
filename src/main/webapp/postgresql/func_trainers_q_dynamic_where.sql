@@ -1,5 +1,3 @@
-
-
 CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
     _idiomas	text  = NULL,    _niveles	text = NULL,
     _formasTra	text = NULL,
@@ -81,8 +79,8 @@ where
     ($6 IS NULL OR y.sexo = $6) AND
     ($7 IS NULL OR y.ubigeo = $7) AND
     ($8 IS NULL OR public.f_unaccent(LOWER(y.servicio)) LIKE public.f_unaccent(LOWER(CONCAT('%', $8,'%')))) AND
-    ($9 IS NULL OR (totalValoracion/canPerValoracion) >= $9) AND
-     y.fg = true
+    ($9 IS NULL OR coalesce(totalValoracion/NULLIF(canPerValoracion,0), 0) >= $9) AND
+    y.fg = true
     LIMIT $10
     OFFSET $11
 $func$ LANGUAGE sql;
