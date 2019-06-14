@@ -8,61 +8,12 @@
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
   <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
 </head>
-<style>
-
-  #HumanMuscles{
-    max-width: 100%;
-    width: 100%;
-    padding: 12px;
-  }
-
-  .li-bef-imp:before{
-    display: none !important;
-  }
-
-  input.state-success, select.state-success, textarea.state-success{
-    border: 1px solid #a8fa00 !important;
-  }
-
-  input.state-error, select.state-error, textarea.state-error{
-    border: 1px solid #b7010d !important;
-  }
-
-  .body-muscle:hover{
-    cursor: pointer;
-    /*fill: #a8fa00;
-    stroke-dashoffset: 0;
-    stroke-dasharray: 700;
-    stroke-width: 10;*/
-  }
-
-  .muscle-selected {
-    fill: #a8fa00;
-    stroke-dashoffset: 0;
-    stroke-dasharray: 700;
-    stroke-width: 10;
-  }
-
-  .body-muscle {
-    stroke-dasharray: 700;
-    stroke-dashoffset: 700;
-    stroke-linecap: butt;
-    -webkit-transition: all 1s ease-out;
-    -moz-transition: all 1s ease-out;
-    -ms-transition: all 1s ease-out;
-    -o-transition: all 1s ease-out;
-    transition: all 1s ease-out;
-  }
-
-  .body-muscle-na{}
-
-</style>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
 <div th:replace="html-commons/reu-login :: fg-login"></div>
 <div id="wrapper">
   <div class="section banner home">
-    <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
+    <div class="bg-image-x"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
   </div>
   <section class="steps">
     <div class="container">

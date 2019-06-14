@@ -6,18 +6,13 @@
   <title>Trainers | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-  <style>
-    img.shadow{
-      width: 100% !important;
-    }
-  </style>
 </head>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
 <div th:replace="html-commons/reu-login :: fg-login"></div>
 <div id="wrapper">
   <div class="section banner home">
-    <div class="bg-image-x"><img class="shadow" th:src="@{/img/public/trainers-shadow.jpg}"></div>
+    <div class="bg-image-x"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}"></div>
   </div>
   <section class="faq tyc">
     <div class="container text-center">

@@ -7,89 +7,13 @@
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
-    <style>
-        .mg-bt-6{
-            margin-bottom: 6px !important;
-        }
-        .mg-bt-10{
-            margin-bottom: 10px;
-        }
-
-        .fa-15x{
-            font-size: 1.5em;
-        }
-
-        .svc-focus{
-            color: #a8fa00 !important;
-        }
-
-        .servicio:not(.svc-focus):hover  {
-            color: #337ab7 !important;
-            cursor: pointer !important;
-        }
-
-        .div-fichas{
-            cursor: pointer;
-        }
-
-        .mod-term-cond:hover{
-            background: #00C853 !important;
-            color: white;
-        }
-
-        .ficha-pick{
-            border: 4px solid #a8fa00 !important;
-        }
-
-        .tarifa-svc-pick {
-            border-bottom: 5px solid #a8fa00;
-            border-radius: 20%;
-        }
-
-        .fa-plus-cs{
-            cursor:pointer;
-        }
-
-        .img-cc{
-            opacity: 0.3;
-        }
-
-        .div-fichas:hover{
-            color: #a8fa00;
-        }
-
-        .padding-0{
-            padding: 0px;
-        }
-
-        .glyphicon-chevron-left:before{
-            content: none !important;
-        }
-
-        .glyphicon-chevron-right:before{
-            content: none !important;
-        }
-
-        #FinalImagenRecortada {
-            cursor: pointer;
-        }
-
-        img.img-asesor-emp{
-            border-radius: 50%;
-            height: 100%;
-            width: 100%;
-            left: 0px !important;
-            max-width: 141px !important
-        }
-
-    </style>
 </head>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
 <div th:replace="html-commons/reu-login :: fg-login"></div>
 <div id="wrapper">
     <div class="section banner home">
-        <div class="bg-image"><img class="shadow" th:src="@{/img/public/trainers-shadow.jpg}"></div>
+        <div class="bg-image-x"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}"></div>
     </div>
     <section class="trainers-form">
         <div class="row">

@@ -6,25 +6,13 @@
   <title>Encuentra al trainer indicado para ti | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-  <style>
-      button.multiselect{
-          background-color: #3a3a3a !important;
-          margin-bottom: 0px !important;
-      }
-
-      button.multiselect + ul{
-          width: 100% !important;
-          padding-top: 0px;
-          margin-top: 0px;
-      }
-  </style>
   </head>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
     <div th:replace="html-commons/reu-login :: fg-login"></div>
     <div id="wrapper" class="wrapper">
       <div class="section banner home">
-        <div class="bg-image"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
+        <div class="bg-image-x"><img class="banner-home" th:src="@{/img/public/trainers-shadow.jpg}+'?'+${version}"/></div>
       </div>
       <section class="encuentra-tu-coach">
         <form id="frm_registro">

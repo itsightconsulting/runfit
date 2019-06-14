@@ -7,11 +7,6 @@
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
-    <style>
-      input.state-error, select.state-error, textarea.state-error{
-        border: 1px solid #b7010d !important;
-      }
-    </style>
   </head>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
