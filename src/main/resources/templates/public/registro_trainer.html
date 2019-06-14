@@ -1786,13 +1786,12 @@
                 rules: {
                     Nombres: {
                         required: true,
-                        rangelength: function(e){
-                            return [10, 60]
-                        }
+                        rangelength: [3, 30]
+
                     },
                     Apellidos: {
                         required: true,
-                        maxlength: function(e){return Number(e.getAttribute('maxlength'))}
+                        rangelength: [3, 30]
                     },
                     Sexo:{
                         required: true
