@@ -1475,7 +1475,6 @@
           const id = input.id;
 
           const isCompMuscle = checkComposedMuscle(composedMuscles, id);
-          console.log(isCompMuscle);
           if(!isCompMuscle.check){
             if(!clases.contains('muscle-selected')){
               const muscleName = input.getAttribute('data-original-title').slice(4).slice(0, -5);

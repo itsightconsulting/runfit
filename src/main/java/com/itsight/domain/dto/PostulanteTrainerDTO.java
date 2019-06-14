@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PostulanteTrainerDTO implements Serializable {
 
-    @Size(max = 100)
+    @Size(max = 60)
     @NotBlank
     private String nombreFull;
 
@@ -20,7 +20,7 @@ public class PostulanteTrainerDTO implements Serializable {
     @NotBlank
     private String correo;
 
-    @Size(max = 16)
+    @Size(max = 13)
     @NotBlank
     private String movil;
 

@@ -327,6 +327,10 @@
                                       <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
                                       <input class="form-control" type="password" id="Password" name="Password">
                                   </div>
+                                  <div class="form-group">
+                                      <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span></label>
+                                      <input class="form-control" type="text" id="NomPag" name="NomPag" maxlength="40">
+                                  </div>
                               </div>
                               <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
                                   <form>
@@ -1649,7 +1653,11 @@
             obj.servicios = servicios;
             obj.cuentas = ccBancarias;
             obj.mediosPago = Array.from($('#MediosPagosAgregados a.cc-elegido:not(".hidden")')).map(e=>e.getAttribute('data-id')).join('|');
-            obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
+            if(flag_form_populate){
+                obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
+            }else{
+                obj.nomPag = document.getElementById('NomPag').value;
+            }
             obj.nota = document.getElementById('NotaFinal').value;
             obj.horario = getValuesByClass('inp-horario');
             const redes = getRedesSociales();

@@ -252,6 +252,9 @@ function exception(xhr, errorName) {
                             const field = capitalizeFirstLetter(v.object);
                             const ele = document.getElementById(field);
                             ele != undefined ? ele.classList.toggle('state-error') : "";
+                            if(v.message.includes("estar entre")){
+                                v.message += " caracteres";
+                            }
                             errors.push(`${field}: ${capitalizeFirstLetter(v.message)}`);
 
                         });

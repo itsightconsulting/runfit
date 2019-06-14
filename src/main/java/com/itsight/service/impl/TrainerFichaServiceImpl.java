@@ -202,4 +202,9 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     public String obtenerCcsAndMediosPagoById(Integer trainerId) {
         return repository.getCcsAndMediosPagoById(trainerId);
     }
+
+    @Override
+    public Boolean checkNomPagExiste(String nomPag) {
+        return repository.findNomPagExist(nomPag);
+    }
 }

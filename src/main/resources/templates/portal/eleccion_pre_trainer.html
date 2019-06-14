@@ -34,7 +34,7 @@
                     <input name="Correo" id="Correo" class="form-control" type="text" disabled="disabled" th:value="${post.correo}">
                   </div>
                   <div class="form-group">
-                    <label for="Movil">TELÉFONO<span class="obligatorio">*</span></label>
+                    <label for="Movil">MÓVIL<span class="obligatorio">*</span></label>
                     <input id="Movil" name="Movil" class="form-control" type="text" disabled="disabled" th:value="${post.movil}">
                   </div>
                   <div class="form-group">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="Mensaje">DEJANOS UN MENSAJE Y COMÉNTANOS SOBRE TUS INTERESES</label>
+                    <label for="Mensaje">DEJANOS UN MENSAJE Y COMÉNTANOS SOBRE TUS INTERESES<span class="obligatorio">*</span></label>
                     <textarea id="Mensaje" name="Mensaje" class="form-control" disabled="disabled" th:utext="${post.mensaje}"></textarea>
                   </div>
                 </div>
