@@ -29,4 +29,6 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
     Integer getTrEmpIdById(Integer id);
 
     String obtenerCcsAndMediosPagoById(Integer trainerId);
+
+    Boolean checkNomPagExiste(String nomPag);
 }

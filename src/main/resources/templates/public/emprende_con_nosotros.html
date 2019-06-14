@@ -37,15 +37,15 @@
                 <div class="col-md-8">
                   <div class="form-group">
                     <label for="Correo">CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                    <input name="Correo" id="Correo" class="form-control" type="text">
+                    <input name="Correo" id="Correo" class="form-control" type="text" maxlength="40">
                   </div>
                   <div class="form-group">
                     <label for="Movil">MÓVIL<span class="obligatorio">*</span></label>
-                    <input id="Movil" name="Movil" class="form-control" type="text">
+                    <input id="Movil" name="Movil" class="form-control" type="text" maxlength="13">
                   </div>
                   <div class="form-group">
                     <label for="NombreFull">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                    <input id="NombreFull" name="NombreFull" class="form-control" type="text">
+                    <input id="NombreFull" name="NombreFull" class="form-control" type="text" maxlength="60">
                   </div>
                   <div class="form-group">
                     <label>ELIGE EL TIPO DE PARTNER QUE QUIERES SER: <span class="obligatorio">*</span></label>
@@ -65,8 +65,8 @@
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="Mensaje">DEJANOS UN MENSAJE Y COMÉNTANOS SOBRE TUS INTERESES</label>
-                    <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
+                    <label for="Mensaje">DEJANOS UN MENSAJE Y COMÉNTANOS SOBRE TUS INTERESES<span class="obligatorio">*</span></label>
+                    <textarea id="Mensaje" name="Mensaje" class="form-control" maxlength="1000"></textarea>
                   </div>
                 </div>
                 <div class="text-right">
@@ -82,7 +82,9 @@
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
       const btnGuardar = document.querySelector('#btnGuardar');
-      (function (){
+      const body = document.querySelector('body');
+      const frm = $('#frm_registro')[0];
+      (function () {
         init();
       })();
 
@@ -92,10 +94,19 @@
         if(flag_form_populate){
           populateForm();
         }
+        body.addEventListener('click', bodyClickEventListener);
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+      }
+
+      function bodyClickEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+        checkBoxAndRadioValidationEventListener(e, input, clases);
       }
 
       function enviarForm(e){
-        if($('#frm_registro').valid()){
+        trimAllInputs(frm);
+        if($(frm).valid()){
           $buttonName = e.target.textContent;
           sendForm();
         }
@@ -129,6 +140,12 @@
       }
 
       function constraintsValidation() {
+
+        $.validator.addMethod("notstartswith",
+                function(value, element, param) {
+                  return !value.startsWith(param);
+                }, "Por favor el valor no puede empezar con '{0}'.");
+
         $('#frm_registro').validate({
           errorClass: errorClass,
           errorElement: errorElement,
@@ -162,34 +179,28 @@
           rules: {
             NombreFull: {
               required: true,
+              rangelength: [2, 60]
             },
             Correo: {
               required: true,
               emailAddress: true,
+              rangelength: [7, 40]
             },
             Movil: {
               required: true,
+              number: true,
+              notstartswith: "0",
+              rangelength: [7, 13]
             },
             Mensaje: {
+              required: true,
+              rangelength: [5, 1000]
+            },
+            TipoTrainerId: {
               required: true
             }
           },
-          messages: {
-            NombreFull: {
-              required: "El campo es obligatorio"
-            },
-            Correo: {
-              required: "El campo es obligatorio",
-              emailAddress: "Correo tiene un formato inválido"
-            },
-            Movil: {
-              required: "El campo es obligatorio"
-            },
-            Mensaje: {
-              required: "El campo es obligatorio"
-            }
-
-          }
+          messages:{}
         });
       }
 

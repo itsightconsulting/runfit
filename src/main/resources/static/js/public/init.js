@@ -1,7 +1,7 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
-var skip_validation = 1 == 1;
-var flag_form_populate = 1 == 1;
-var initPageActive = 3;
+var skip_validation = 0 == 1;
+var flag_form_populate = 0 == 1;
+var initPageActive = 1;
 var hiddenHeaderBar = 0 == 1;
 try {
     //Remarcar página visitada
@@ -209,7 +209,12 @@ function tabColaboradores() {
         })
         $('.' + data + '-tab').fadeIn();
         $(this).find('img').attr('src', _ctx+'img/public/' + data + '.png')
-    })
+    });
+
+    $(".atleta-nom").click(function() {
+        var nm = $(this).attr('data-info');
+        $(`.deportistas .item[data-info="${nm}"]`).click();
+    });
 }
 
 function next_step(sheetNumber, toSheetNumber) {
@@ -278,9 +283,13 @@ function validationByNumSheet(numSheet, sheetNumberTo){
     }
 
     if(numSheet == "1" && sheetNumberTo === 2){
-        getCondicionesMejora();
-    }
+        try {
+            getCondicionesMejora();
+        }catch (e) {
 
+        }
+
+    }
     alls.forEach(v=>{
         const isValid = $("#frm_registro").validate().element(v);
         if(!isValid){
@@ -292,7 +301,7 @@ function validationByNumSheet(numSheet, sheetNumberTo){
 }
 
 function getAllInputsByNumberSheet(numSheet){
-    const sheetContainer = document.querySelector(`div.row.inpts-${numSheet}`);
+    const sheetContainer = document.querySelector(`div.inpts-${numSheet}`);
     const inputs = Array.from(sheetContainer.querySelectorAll(`input.form-control`));
     const rgsInputs = Array.from(sheetContainer.querySelectorAll(`input[type="range"]`));
     const txtAreas = Array.from(sheetContainer.querySelectorAll(`textarea.form-control`));
@@ -305,7 +314,7 @@ function getAllInputsByNumberSheet(numSheet){
     const chkbuttons = Array.from(sheetContainer.querySelectorAll(`input[type="checkbox"]`));
     const fChkbuttons = Array.from(
         new Set(chkbuttons.map(v=>v.name))
-    ).map(v=>document.querySelector(`input[name="${v}"]`));
+    ).map(v=>document.querySelector(`input[name="${v}"]`)).filter(e=>e!=null);
     const alls = inputs.concat(selects).concat(fRdsButtons).concat(fChkbuttons).concat(txtAreas).concat(rgsInputs);
     return alls;
 }
@@ -317,12 +326,37 @@ function next_step_cs(i){
     if(skip_validation || checkList.isValid){
         const all = document.querySelectorAll('.fade-ficha');
         const sels = document.querySelectorAll('.step');
+        console.log(all, sels);
         all.forEach((v,ii)=>{
             v.classList.remove('active');
             sels[ii].classList.remove('active')
         });
         all[i-1].classList.add('active');
         sels[i-1].classList.add('active');
+    }
+    else {
+        smallBoxAlertValidation(checkList.inputs);
+    }
+    time_line();
+}
+
+function next_step_cs_rt(i){
+    trimAllInputs(frm);
+    const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
+    const sheetNumberTo = i;
+    const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet, sheetNumberTo);
+    if(skip_validation || checkList.isValid){
+        const all = document.querySelectorAll('.tab-pane');
+        const sels = document.querySelectorAll('.step');
+        console.log(all);
+        all.forEach((v,ii)=>{
+            v.classList.remove('active');
+            v.classList.remove('in');
+            sels[ii].parentElement.classList.remove('active');
+        });
+        all[i-1].classList.add('active');
+        all[i-1].classList.add('in');
+        sels[i-1].parentElement.classList.add('active');
     }
     else {
         smallBoxAlertValidation(checkList.inputs);
@@ -385,6 +419,11 @@ function submitReuseLogin(){
         btnLogin.setAttribute('disabled','disabled');
         frmLogin.submit();
     }
+}
+
+function trimAllInputs(frm){
+    frm.querySelectorAll('input').forEach(e=>e.value = e.value.trim());
+    frm.querySelectorAll('textarea').forEach(e=>e.value = e.value.trim());
 }
 
 function hideNavBar(){

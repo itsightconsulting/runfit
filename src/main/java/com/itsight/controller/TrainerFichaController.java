@@ -361,4 +361,9 @@ public class TrainerFichaController extends BaseController {
         }
         throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
     }
+
+    @GetMapping(value = "/validacion/nom-pag")
+    public @ResponseBody Boolean validarCorreoUnico(@RequestParam String nomPag){
+        return trainerFichaService.checkNomPagExiste(nomPag);
+    }
 }

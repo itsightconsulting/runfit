@@ -168,7 +168,7 @@
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-    <script src="http://davidstutz.de/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+    <script th:src="@{/js/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js}+'?'+${version}"></script>
     <script th:inline="javascript">
       const btnLimpiar = document.getElementById('btnLimpiar');
       const btnBuscar = document.getElementById('btnBuscar');
@@ -201,12 +201,6 @@
         onlyBusquedaDinamica();
         scrollEventBusquedaAutomatica();
         doMultiselectCheckBox();
-      }
-
-      function doMultiselectCheckBox(){
-          document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
-              $(e).multiselect();
-          })
       }
 
       function busquedaDinamica(){

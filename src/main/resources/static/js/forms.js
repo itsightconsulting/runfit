@@ -140,6 +140,14 @@ function agregarInputDinamico(e, max, clase){
     return e.previousElementSibling;
 }
 
+function agregarInputDinamico(e, max, clase, maxlength){
+    if(e.parentElement.children.length === max){
+        e.classList.add('hide');
+    }
+    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<input class="form-control mg-bt-10 ${clase}" type="text" maxlength="${maxlength}"/>`));
+    return e.previousElementSibling;
+}
+
 function agregarTextareaDinamico(e, max, clase){
     if(e.parentElement.children.length === max+1){
         e.classList.add('hide');
@@ -225,4 +233,47 @@ function getValoracion(cantPerVal, totalVal){
 
 function csBtoa(word){
     return btoa(word).replace(/\=/g,'');
+}
+
+function checkBoxAndRadioValidationEventListener(e, input, clases){
+    if(clases.contains('chk-content')){
+        e.stopPropagation();
+        if(input.hasChildNodes()){
+            if(input.firstElementChild.tagName === "INPUT"){
+                const valMsg = input.parentElement.parentElement.nextElementSibling;
+                if(valMsg && valMsg.tagName ==="EM"){
+                    valMsg.remove();
+                }
+            }
+        }
+    }
+    else if(clases.contains('checkmark')){
+        e.stopPropagation();
+        if(!input.hasChildNodes()){
+            if(input.previousElementSibling.tagName==="INPUT"){
+                const valMsg = input.parentElement.parentElement.parentElement.nextElementSibling;
+                if(valMsg && valMsg.tagName ==="EM"){
+                    valMsg.remove();
+                }
+            }
+        }
+    }
+}
+
+function doMultiselectCheckBox(){
+    document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
+        $(e).multiselect();
+    })
+}
+
+function bodyFocusOutEventListener(e){
+    const input = e.target;
+    if(input.tagName === "INPUT"){
+        if(input.type==="text" || input.type==="number"){
+            input.value = input.value.trim();
+        }
+    }
+    if(input.tagName === "TEXTAREA"){
+        input.value = input.value.trim();
+    }
 }

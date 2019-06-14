@@ -15,17 +15,17 @@ import java.util.List;
 public class TrainerDTO implements Serializable {
 
     private int postulanteTrainerId;
-    @Size(min=3, max = 50)
+    @Size(min=2, max = 30)
     @NotNull
     private String apellidos;
-    @Size(min=3, max = 50)
+    @Size(min=2, max = 30)
     @NotNull
     private String nombres;
     @Size(min = 7, max = 40)
     @NotNull
     @ExtendedEmailValidator
     private String correo;
-    @Size(min=5, max = 40)
+    @Size(min=7, max = 30)
     @NotNull
     private String username;
     @Size(min=8, max = 30)
@@ -35,12 +35,12 @@ public class TrainerDTO implements Serializable {
     @Min(1)
     @Max(3)
     private Integer sexo;
-    @Size(max = 200)
+    @Size(min=5, max = 80)
     private String especialidad;
     @Positive
     @NotNull
     private Integer tipoDocumentoId;
-    @Size(max = 16)
+    @Size(min=8, max = 13)
     @NotBlank
     private String documento;
     @Positive
@@ -52,27 +52,27 @@ public class TrainerDTO implements Serializable {
     @Size(min = 80, max = 2000)
     @NotNull
     private String acerca;
-    @Size(min = 2, max = 100)
+    @Size(min = 2, max = 30)
     @NotNull
     private String idiomas;
-    @Size(min = 8, max = 500)
+    @Size(min = 8, max = 1820)
     private String estudios;
     @Size(min = 5, max = 1000)
     @NotNull
     private String metodoTrabajo;
-    @Size(min = 20, max = 500)
+    @Size(min = 20, max = 1820)
     private String experiencias;
-    @Size(min = 10, max = 500)
+    @Size(min = 10, max = 1820)
     @NotNull
     private String resultados;
-    @Size(min = 2, max = 80)
+    @Size(min = 2, max = 20)
     @NotNull
     private String niveles;
-    @Size(min = 10, max = 120)
+    @Size(min = 10, max = 90)
     private String centroTrabajo;
-    @Size(min = 10, max = 100)
+    @Size(min = 10, max = 1620)
     private String especialidades;
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 20)
     @NotNull
     private String formasTrabajo;
     @Size(min = 8, max = 150)
@@ -94,7 +94,7 @@ public class TrainerDTO implements Serializable {
     private String mediosPago;
     @Size(max = 14)
     private String telefono;
-    @Size(max = 14)
+    @Size(min=7, max = 14)
     @NotBlank
     private String movil;
     @NotBlank(message = "Debe seleccionar por lo menos una ficha en la parte final de la pestaña de servicios")

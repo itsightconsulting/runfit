@@ -185,6 +185,14 @@ import java.util.UUID;
                               "WHERE t.security_user_id = ?",
                       resultSetMapping = "getByNomPagParOrTrainerId")
 })
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "fn_validacion_nom_pag",
+                procedureName = "check_nom_pag_existe",
+                parameters = {
+                        @StoredProcedureParameter(name = "_nom_pag", mode = ParameterMode.IN, type = String.class),
+                        @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
+                })
+})
 @Entity
 @Data
 public class TrainerFicha implements Serializable {

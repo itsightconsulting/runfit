@@ -9,13 +9,22 @@
         </div>
         <ul class="nav navbar-nav navbar-right view-only-desktop">
             <li><a th:href="@{/p/quienes-somos}" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
-            <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
-            <li class="dropdown" data-menu="asesores"><a th:href="@{/p/asesores}" data-menu="asesores" data-toggle="dropdown"><span>ASESORES</span></a>
+            <li class="dropdown" data-menu="atletas"><a th:href="@{/p/contigo}" data-menu="atletas" data-toggle="dropdown"> <span>ATLETAS</span></a>
                 <ul class="dropdown-menu">
                     <li><a th:href="@{/p/contigo}">Explorar características</a>
+                        <p>Te mostramos el camino que te llevará <strong>a alcanzar tus objetivos.</strong></p>
+                    </li>
+                    <li><a th:href="@{/p/busqueda/trainers}">Encuentra a tu coach</a>
+                        <p>Elige según tus necesidades al coach perfecto para ti en nuestro directorio especializado.</p>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown" data-menu="asesores"><a th:href="@{/p/asesores}" data-menu="asesores" data-toggle="dropdown"><span>ASESORES</span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/p/asesores}">Explorar características</a>
                         <p>Vea cómo la aplicación <strong>Runfit </strong>te ayudará a entrenar de manera más efectiva.</p>
                     </li>
-                    <li><a th:href="@{/p/asesores}">Emprende con nosotros</a>
+                    <li><a th:href="@{/p/postulacion/trainer}">Emprende con nosotros</a>
                         <p>Si deseas formar parte de nuestra familia de asesores conéctate con nosotros.</p>
                     </li>
                 </ul>

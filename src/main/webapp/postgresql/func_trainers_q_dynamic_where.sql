@@ -1,5 +1,6 @@
 CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
-    _idiomas	text  = NULL,    _niveles	text = NULL,
+    _idiomas	text  = NULL,
+    _niveles	text = NULL,
     _formasTra	text = NULL,
     _nombre	    text  = NULL,
     _acerca	    text = NULL,
