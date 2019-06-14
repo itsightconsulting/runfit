@@ -7,7 +7,11 @@ try {
     //Remarcar página visitada
     const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);
     if(pubMenu != undefined){
-        pubMenu.parentElement.classList.add('active');
+        const menu = pubMenu.parentElement;
+        if(menu.parentElement.classList.contains('dropdown-menu')){
+        }else{
+            menu.classList.add('active');
+        }
     }
     document.querySelector('.step-0'+initPageActive).classList.toggle('active');
     document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
@@ -401,7 +405,6 @@ $(function() {
     $(window).scroll(function() {
         changecolor()
     });
-    // initMap();
     FullHeightBanner();
     openMenuMobile();
     tabColaboradores();
