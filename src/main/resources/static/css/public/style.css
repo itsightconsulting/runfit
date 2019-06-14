@@ -1492,15 +1492,13 @@ h1 {
   width: 100%
 }
 
-.banner.home img {
-  width: 100%
-}
-
 .banner.home img.banner-home {
   width: 100%;
-  height: auto;
+  height: 100%;
   position: relative;
-  z-index: 1
+  z-index: 1;
+  object-fit: cover;
+  object-position: bottom;
 }
 
 .banner.home img.detail {
@@ -1513,8 +1511,8 @@ h1 {
 .banner .title-page h1 {
   font-family: Gotham-HTF-Black-Italic, 'system-ui';
   position: absolute;
-  z-index: 2;
-  top: 280px;
+  z-index: 3;
+  top: 25%;
   font-size: 72.25px;
   color: #fff;
   padding-left: 55px

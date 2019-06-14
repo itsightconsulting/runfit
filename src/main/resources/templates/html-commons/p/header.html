@@ -1,14 +1,14 @@
 <nav th:fragment="fg-header" class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="text-right view-only-desktop">
-            <p class="login_link" onclick="javascript:document.querySelector('.login').classList.add('active')">Iniciar sesión</p>
+            <p class="login_link" onclick="javascript:document.querySelector('.login').classList.add('active')">INICIAR SESIÓN</p>
         </div>
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/p/inicio}"><img class="logo-header" th:src="@{/img/public/logo.png}+'?'+${version}"/></a>
             <span class="fa fa-bars view-only-mobile hamburguer"></span>
         </div>
         <ul class="nav navbar-nav navbar-right view-only-desktop">
-            <li><a th:href="@{/p/quienes-somos}" data-menu="aboutus"> <span>QUIENES SOMOS</span></a></li>
+            <li><a th:href="@{/p/quienes-somos}" data-menu="aboutus"> <span>QUIÉNES SOMOS</span></a></li>
             <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
             <li class="dropdown" data-menu="asesores"><a th:href="@{/p/asesores}" data-menu="asesores" data-toggle="dropdown"><span>ASESORES</span></a>
                 <ul class="dropdown-menu">
@@ -34,7 +34,7 @@
             <p class="email" th:if="${#authentication != null}" th:text="${#authentication.name}"></p>
         </div>
         <ul class="options">
-            <li><a th:href="@{/p/quienes-somos}"> <span>QUIENES SOMOS</span></a></li>
+            <li><a th:href="@{/p/quienes-somos}"> <span>QUIÉNES SOMOS</span></a></li>
             <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
             <li><a th:href="@{/p/busqueda/trainers}"><span>ASESORES</span></a></li>
             <li><a th:href="@{/p/postulacion/trainer}"> <span>EMPRENDE CON NOSOTROS</span></a></li>

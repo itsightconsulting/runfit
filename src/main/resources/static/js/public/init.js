@@ -368,6 +368,7 @@ $(function() {
         changecolor()
     });
     // initMap();
+    FullHeightBanner();
     openMenuMobile();
     tabColaboradores();
     time_line();
@@ -429,6 +430,14 @@ function validLoginForm(){
             }
         });
 }
+
+function FullHeightBanner() {
+    var altura = window.innerHeight;
+    var ancho = window.innerWidth;
+    if(ancho > 800) {
+        $(".banner .bg-image").height(altura);
+    }
+};
 
 (function(){
     validLoginForm();
