@@ -427,7 +427,11 @@ function submitReuseLogin(){
 }
 
 function trimAllInputs(frm){
-    frm.querySelectorAll('input').forEach(e=>e.value = e.value.trim());
+    frm.querySelectorAll('input').forEach(e=>{
+        if(e.type !== 'file'){
+            e.value = e.value.trim();
+        }
+    });
     frm.querySelectorAll('textarea').forEach(e=>e.value = e.value.trim());
 }
 

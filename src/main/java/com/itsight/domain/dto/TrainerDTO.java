@@ -15,10 +15,10 @@ import java.util.List;
 public class TrainerDTO implements Serializable {
 
     private int postulanteTrainerId;
-    @Size(min=2, max = 30)
+    @Size(min=3, max = 30)
     @NotNull
     private String apellidos;
-    @Size(min=2, max = 30)
+    @Size(min=3, max = 30)
     @NotNull
     private String nombres;
     @Size(min = 7, max = 40)
