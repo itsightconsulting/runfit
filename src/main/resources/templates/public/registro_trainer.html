@@ -63,17 +63,20 @@
                                           </div>
                                           <div class="form-group">
                                               <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
-                                              <input class="form-control" name="Especialidad" id="Especialidad" maxlength="80" type="text">
+                                              <input class="form-control" name="Especialidad" id="Especialidad" data-aka="Especialidad" maxlength="80" type="text">
                                           </div>
                                           <div class="form-group">
                                               <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                              <select class="form-control hidden" id="DisciplinaId" name="DisciplinaId" multiple="multiple" style=" height:80px !important;">
+                                              <select class="form-control hidden" id="DisciplinaId" name="DisciplinaId"
+                                                data-aka="Deporte o actividades"
+                                                 multiple="multiple" style=" height:80px !important;">
                                                   <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
                                               </select>
                                           </div>
                                           <div class="form-group">
                                               <label>ACERCA DE MI<span class="obligatorio">*</span></label>
-                                              <textarea class="form-control" id="Acerca" name="Acerca" maxlength="2000"></textarea>
+                                              <textarea class="form-control" id="Acerca" name="Acerca" maxlength="2000"
+                                              data-aka="Acerca de mí"></textarea>
                                           </div>
                                           <div class="form-group">
                                               <div class="pad-right-middle" style="width:100%;">
@@ -292,8 +295,13 @@
                                           <input class="form-control" type="password" id="Password" name="Password">
                                       </div>
                                       <div class="form-group">
-                                          <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="NomPag" name="NomPag" maxlength="40">
+                                          <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
+                                              <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
+                                          </label>
+                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="Nombre de página" maxlength="40">
+                                      </div>
+                                      <div class="" style="padding-bottom: 10px; font-weight: 100;">
+                                          <label id="NomPagFull"></label>
                                       </div>
                                   </div>
                                   <div class="tab-pane fade inpts-3" id="service">
@@ -667,6 +675,7 @@
         const tabService = document.getElementById('service');
         const inpCondServicio = document.getElementById('inpCondServicio');
         const frm = document.getElementById('frm_registro');
+        const inpNomPag = document.getElementById('NomPag');
         const servicios = [];
         let ccBancarias = [];
         const metodosPago = [];
@@ -702,8 +711,40 @@
             document.querySelectorAll('a[rel="tooltip"]').forEach(e => {
                 $(e).tooltip();
             });
+            inpNomPag.addEventListener('keyup', (e)=>{
+                document.getElementById('NomPagFull').textContent =
+                        window.location.protocol+"//"+ window.location.host +"/p/trainer/" +e.target.value.trim();
+            });
+            inpNomPag.addEventListener('focusout', checkSiNomPagExiste);
             init();
         })();
+
+        function checkSiNomPagExiste(e){
+            const input = e.target;
+            setTimeout(() => {
+                if($(input).valid()){
+                    $.ajax({
+                        type: 'GET',
+                        url: _ctx+'p/trainer/validacion/nom-pag?nomPag='+input.value,
+                        blockLoading: false,
+                        noOne: true,
+                        dataType: 'json',
+                        success: function (res) {
+                            if(res){
+                                input.classList.remove('state-success');
+                                input.classList.remove('valid');
+                                input.classList.add('state-error');
+                                $.smallBox({color: 'alert', content: '<i>El nombre de página elegido ya esta en uso</i>'});
+                            }
+                        },
+                        error: (xhr)=>{
+                            exception(xhr);
+                        },
+                        complete: ()=> {}
+                    });
+                }
+            }, 100);
+        }
 
         function bodyClickEventListener(e){
             const input = e.target;
@@ -1762,9 +1803,18 @@
                     DisciplinaId:{
                         required: true
                     },
+                    Acerca:{
+                        required: true,
+                        rangelength: [80, 2000]
+                    },
                     NumeroDocumento: {
                         required: true
                     },
+                    NomPag: {
+                        required: true,
+                        pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
+                        rangelength: [4, 40]
+                    }
                 },
                 messages: {}
             });

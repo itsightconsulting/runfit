@@ -77,8 +77,9 @@ public class TrainerDTO implements Serializable {
     private String formasTrabajo;
     @Size(min = 8, max = 150)
     private String horario;
-    @Size(min = 6, max = 40)
+    @Size(min = 4, max = 40)
     @NotNull
+    @Pattern(regexp = "^[a-z]{4,}[0-9\\w.\\w-]*$")
     private String nomPag;
     @Size(max = 10)
     private String cantidadFiles;
