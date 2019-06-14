@@ -3,7 +3,7 @@ spring:
     active: herokudev
   jpa:
     hibernate:
-        ddl-auto: create
+        ddl-auto: none
         naming:
           implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     properties:
@@ -35,7 +35,7 @@ spring:
   mail:
     host: smtp.gmail.com
     username: contoso.peru@gmail.com
-    password: p1ls3n@147
+    password: p1ls3n@1477
     port: 587
     properties:
       mail:
