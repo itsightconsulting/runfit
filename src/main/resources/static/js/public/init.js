@@ -91,7 +91,7 @@ function activeItems() {
 function carousel() {
 
     $('.owl-carousel').owlCarousel({
-        loop: true,
+        loop: false,
         margin: 15,
         nav: true,
         rtl: true,
@@ -129,7 +129,8 @@ function initMap() {
     if(mapa != null) {
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -12.046374, lng: -77.042793 },
-            zoom: 12
+            zoom: 12,
+            gestureHandling: 'greedy'
         });
     }
 

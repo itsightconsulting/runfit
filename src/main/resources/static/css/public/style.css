@@ -33,6 +33,11 @@
   src: url(../../fonts/Montserrat-Regular.otf)
 }
 
+@font-face {
+    font-family: Montserrat-SemiBold;
+    src: url(../../fonts/Montserrat-SemiBold.otf)
+}
+
 .navbar {
   transition: all .5s;
   height: 103px
@@ -253,6 +258,10 @@ footer {
   box-sizing: border-box
 }
 
+footer .col-md-4 {
+    padding-left: 75px;
+}
+
 footer .title_footer {
   color: #fff;
   margin: 20px 0;
@@ -302,6 +311,9 @@ footer li a span.fa{
   footer .text-right {
     text-align: left
   }
+    footer .col-md-4 {
+        padding-left: 15px;
+    }
 }
 
 .tienda_coach {
@@ -820,7 +832,8 @@ h1 {
   text-transform: uppercase;
   font-family: Gotham-HTF-Bold, 'system-ui';
   color: #686868;
-  display: block
+  display: block;
+    padding-right: 40px;
 }
 
 .trainers-form .form-group input,
@@ -830,6 +843,14 @@ h1 {
   border: 0;
   height: 40px;
   box-shadow: 0 0 0
+}
+
+.trainers-form .form-group .add {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #a8fa00;
 }
 
 .trainers-form .form-group input.price,
@@ -1001,7 +1022,9 @@ h1 {
 
 .emprende-form h3 {
   font-family: Gotham-HTF-Black-Italic;
-  margin-bottom: 30px
+  margin-bottom: 30px;
+    margin: 0;
+    border: none;
 }
 
 .emprende-form h3 span {
@@ -1694,7 +1717,10 @@ h1 {
 }
 
 .owl-carousel .item img {
-  width: 135px
+  width: 135px;
+    height: 130px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .owl-carousel .owl-nav {
@@ -3058,7 +3084,7 @@ button.btn:hover {
 }
 
 hr {
-  border: 1px solid #d3d3d3
+  border-top: 1px solid #d3d3d3
 }
 
 .view-only-desktop {
