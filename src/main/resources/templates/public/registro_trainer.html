@@ -111,7 +111,7 @@
                                                </div>
                                               <div class="form-group" id="Estudios">
                                                   <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-estudio" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte" maxlength="90"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-estudio', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group">
@@ -120,12 +120,12 @@
                                               </div>
                                               <div class="form-group" id="ExpLaboral">
                                                   <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-experiencia" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)" maxlength="90"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-experiencia', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group" id="Logros">
                                                   <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-resultado" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)" maxlength="90"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-resultado', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group" id="dvHorario">
@@ -133,7 +133,7 @@
                                                   <input class="form-control" id="Horario" name="Horario" type="text" maxlength="150">
                                               </div>
                                               <div class="form-group">
-                                                  <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
+                                                  <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS<span class="obligatorio">*</span></label>
                                                   <ul class="checks">
                                                       <li>
                                                           <div class="chk-content">Principiante
@@ -169,7 +169,7 @@
                                               </div>
                                               <div class="form-group" id="Especialidades">
                                                   <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno" maxlength="80"/>
+                                                  <input class="form-control mg-bt-10 inp-esp-domino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno" maxlength="80"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-esp-domino', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group">
@@ -222,7 +222,7 @@
                                               <div class="form-group rs">
                                                   <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                                   <div class="col-xs-11 no_padding">
-                                                      <input value="&nbsp;" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
+                                                      <input value="" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
                                                   </div>
                                               </div>
                                           </div>
@@ -238,11 +238,11 @@
                                       </div>
                                       <div class="form-group">
                                           <label>MÓVIL<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil" maxlength="14">
+                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil" maxlength="13">
                                       </div>
                                       <div class="form-group">
                                           <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                          <select class="form-control" id="TipoDocumento" name="TipoDocumento">
+                                          <select class="form-control hidden" id="TipoDocumento" name="TipoDocumento">
                                               <option value="1">DNI</option>
                                               <option value="2">CE</option>
                                           </select>
@@ -256,30 +256,30 @@
                                           <div class="row">
                                               <div class="col-md-12">
                                                   <div class="col-md-5 col-sm-5">
-                                                      <label>Departamento:</label>
+                                                      <label>DEPARTAMENTO:</label>
                                                   </div>
                                                   <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                      <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
                                                           <option selected="selected" value="15">Lima</option>
                                                       </select>
                                                   </div>
                                               </div>
                                               <div class="col-md-12">
                                                   <div class="col-md-5 col-sm-5">
-                                                      <label>Provincia:</label>
+                                                      <label>PROVINCIA:</label>
                                                   </div>
                                                   <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                      <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                                                           <option selected="selected" value="01">Lima</option>
                                                       </select>
                                                   </div>
                                               </div>
                                               <div class="col-md-12">
                                                   <div class="col-md-5 col-sm-5">
-                                                      <label>Distrito:</label>
+                                                      <label>DISTRITO:</label>
                                                   </div>
                                                   <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                      <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                                                           <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
                                                       </select>
                                                   </div>
@@ -344,7 +344,7 @@
 
                                               <div class="form-group">
                                                   <label for="FrecuenciaPaquete">Frecuencia</label>
-                                                  <select class="form-control" id="FrecuenciaPaquete">
+                                                  <select class="form-control hidden" id="FrecuenciaPaquete">
                                                       <option value="Diaria">Diaria</option>
                                                       <option value="Interdiaria">Interdiaria</option>
                                                       <option value="Semanal">Semanal</option>
@@ -730,6 +730,17 @@
             const input = e.target;
             const clases = input.classList;
             checkBoxAndRadioValidationEventListener(e, input, clases);
+
+            /*if(input.hasChildNodes()){
+
+                if(input.firstElementChild.tagName === "SELECT"){
+
+                    const valMsg = input.parentElement.parentElement.nextElementSibling;
+                    if(valMsg && valMsg.tagName ==="EM"){
+                        valMsg.remove();
+                    }
+                }
+            }*/
         }
 
         function clickMultipleFicha(e){
@@ -1563,10 +1574,10 @@
             const t1 = t0.slice(-3);
             const t2 = t0.slice(-6).slice(0, 3);
 
-            document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
-            document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('#Nombres').value = "Pedro";
+            document.querySelector('#Apellidos').value = "Oscate";
             document.querySelector('input[name="Sexo"]').checked = true;
-            document.getElementById('Username').value = "Pedro"+t1 + ""+ t2;
+            document.getElementById('Username').value = "pedro"+t1 + ""+ t2;
             document.getElementById('Password').value = "runfit123";
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
@@ -1602,8 +1613,9 @@
                 "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
             inpEspDom.value = "Entrenamiento en grupo";
 
-            document.querySelector('#Telefono').value = `01 777 6666`;
+            document.querySelector('#Telefono').value = `017776666`;
             document.querySelector('#NumeroDocumento').value = `23232323`;
+            document.querySelector('#NomPag').value = `pedro`+t1+t2;
 
             //Servicios
             document.querySelector('#NombreServicio').value = "Performance PRO";
@@ -1767,12 +1779,14 @@
                 rules: {
                     Nombres: {
                         required: true,
-                        rangelength: [3, 30]
+                        rangelength: [3, 30],
+                        lettersonly: true
 
                     },
                     Apellidos: {
                         required: true,
-                        rangelength: [3, 30]
+                        rangelength: [3, 30],
+                        lettersonly: true
                     },
                     Sexo:{
                         required: true
@@ -1833,19 +1847,25 @@
                         url: true,
                     },
                     Telefono:{
+                        number: true,
                         rangelength: [7, 11]
                     },
                     Movil:{
                         required: true,
-                        rangelength: [7, 14]
+                        number: true,
+                        notstartswith: "0",
+                        rangelength: [7, 13]
                     },
                     NumeroDocumento: {
                         required: true,
-                        rangelength: [8, 13]
+                        number: true,
+                        rangelength: [8, 13],
                     },
                     Username:{
                         required: true,
-                        rangelength: [7, 30]
+                        pattern: "[a-z]{3,}[0-9]*$",
+                        rangelength: [7, 30],
+                        alphanumeric: true
                     },
                     Password:{
                         required: true,
@@ -1860,7 +1880,11 @@
                         rangelength: [4, 40]
                     }
                 },
-                messages: {}
+                messages: {
+                    Username: {
+                        pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
+                    }
+                }
             });
         }
 

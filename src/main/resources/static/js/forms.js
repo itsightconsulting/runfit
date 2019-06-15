@@ -239,30 +239,48 @@ function checkBoxAndRadioValidationEventListener(e, input, clases){
     if(clases.contains('chk-content')){
         e.stopPropagation();
         if(input.hasChildNodes()){
-            if(input.firstElementChild.tagName === "INPUT"){
-                const valMsg = input.parentElement.parentElement.nextElementSibling;
-                if(valMsg && valMsg.tagName ==="EM"){
-                    valMsg.remove();
-                }
+            const truly = input.firstElementChild;
+            if(truly.tagName === "INPUT"){
+                $(truly).valid();
             }
         }
     }
     else if(clases.contains('checkmark')){
         e.stopPropagation();
         if(!input.hasChildNodes()){
-            if(input.previousElementSibling.tagName==="INPUT"){
-                const valMsg = input.parentElement.parentElement.parentElement.nextElementSibling;
-                if(valMsg && valMsg.tagName ==="EM"){
-                    valMsg.remove();
-                }
+            const truly = input.previousElementSibling;
+            if(truly.tagName==="INPUT"){
+                $(truly).valid();
             }
         }
+
     }
 }
 
 function doMultiselectCheckBox(){
     document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
-        $(e).multiselect();
+        $(e).multiselect({
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 300,
+            onChange: (e, optIsSelected)=>{
+                const option = e[0];
+                const select = option.parentElement;
+                $(select).valid();
+        }});
+    })
+
+    document.querySelectorAll('select:not([multiple])').forEach(e=>{
+        $(e).multiselect({
+            multiple: false,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 300,
+            onChange: (e, optIsSelected)=>{
+                const option = e[0];
+                const select = option.parentElement;
+                $(select).valid();
+            }});
     })
 }
 

@@ -95,7 +95,7 @@ public class TrainerDTO implements Serializable {
     private String mediosPago;
     @Size(min=7, max = 11)
     private String telefono;
-    @Size(min=7, max = 14)
+    @Size(min=7, max = 13)
     @NotBlank
     private String movil;
     @NotBlank(message = "Debe seleccionar por lo menos una ficha en la parte final de la pestaña de servicios")

@@ -1,6 +1,6 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 0 == 1;
+var flag_form_populate = 1 == 1;
 var initPageActive = 1;
 var hiddenHeaderBar = 0 == 1;
 try {
@@ -317,7 +317,7 @@ function getAllInputsByNumberSheet(numSheet){
     const rdsButtons = Array.from(sheetContainer.querySelectorAll(`input[type="radio"]`));
     const fRdsButtons = Array.from(
         new Set(rdsButtons.map(v=>v.name))
-    ).map(v=>document.querySelector(`input[name="${v}"]`));
+    ).map(v=>document.querySelector(`input[name="${v}"]`)).filter(e=>e!=null);
 
     const chkbuttons = Array.from(sheetContainer.querySelectorAll(`input[type="checkbox"]`));
     const fChkbuttons = Array.from(

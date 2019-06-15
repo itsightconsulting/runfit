@@ -3503,5 +3503,35 @@ select.hidden + em{
   cursor: pointer;
 }
 
+input[type="radio"] ~ em{
+  display: none !important;
+}
+input[type="checkbox"] ~ em{
+  display: none !important;
+}
+
+label.checkbox{
+  padding-left: 10px;
+}
+
+label.checkbox>input{
+  bottom: -11px;
+}
+
+label.radio{
+  padding-left: 10px;
+}
+
+label.radio>input{
+  bottom: -11px;
+}
+
+span.input-group-btn{
+  display: block !important;
+  height: 0px;
+}
+.form-control .multiselect-search{
+  display: inline-block !important;
+}
 
 

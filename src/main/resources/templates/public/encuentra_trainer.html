@@ -34,8 +34,8 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>UBICACIÓN</label>
-                <select class="form-control" id="Ubigeo" name="Ubigeo">
-                  <option value="">Seleccione</option>
+                <select class="form-control hidden" id="Ubigeo" name="Ubigeo">
+                  <option value="">TODOS</option>
                   <option th:each="dis : ${peLiDistritos.lstDis}" th:value="${dis.cod}" th:text="${dis.ubNombre}"></option>
                 </select>
               </div>
@@ -80,8 +80,8 @@
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>SEXO</label>
-                <select class="form-control" id="Sexo" name="Sexo">
-                  <option value="">Seleccione</option>
+                <select class="form-control hidden" id="Sexo" name="Sexo">
+                  <option value="">Todos</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
                 </select>
@@ -112,7 +112,7 @@
                     </fieldset>
                 </div>
                 <!--<div class="rango bg-slide">
-                    <input id="Valoracion" name="Valoracion" type="range" value="0" min="0" max="10" data-aka="Seleccione que tan en forma se encuentra">
+                    <input id="Valoracion" name="Valoracion" type="range" value="0" min="0" max="10" data-aka="Seleccionar que tan en forma se encuentra">
                     <img class="desc-range" src="https://www.flaticon.com/premium-icon/icons/svg/804/804009.svg">
                 </div>-->
             </div>
@@ -176,10 +176,9 @@
             //All reset
             limpiarMainForm();
             busquedaDinamica();
-            document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
+            document.querySelectorAll('select').forEach(e=>{
                 $(e).multiselect('refresh');
             });
-
         });
         btnBuscar.addEventListener('click', busquedaDinamica);
         init();
