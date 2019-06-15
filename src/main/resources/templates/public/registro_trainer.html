@@ -84,7 +84,7 @@
                                                   <ul class="checks">
                                                       <li style="margin-right: 22px;">
                                                           <div class="chk-content">Español
-                                                              <input name="Idiomas" value="es" data-aka="Seleccionar idiomas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                              <input name="Idiomas" value="es" data-aka="IDIOMAS*" type="checkbox" checked="checked"/><span class="checkmark"></span>
                                                           </div>
                                                       </li>
                                                       <li style="margin-right: 22px;">
@@ -111,7 +111,7 @@
                                                </div>
                                               <div class="form-group" id="Estudios">
                                                   <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-estudio" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte" maxlength="90"/>
                                                   <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 20, 'inp-estudio', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                               </div>
                                               <div class="form-group">
@@ -120,12 +120,12 @@
                                               </div>
                                               <div class="form-group" id="ExpLaboral">
                                                   <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-experiencia" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)" maxlength="90"/>
                                                   <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 20, 'inp-experiencia', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                               </div>
                                               <div class="form-group" id="Logros">
                                                   <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-resultado" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)" maxlength="90"/>
                                                   <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 20, 'inp-resultado', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                               </div>
                                               <div class="form-group" id="dvHorario">
@@ -169,7 +169,7 @@
                                               </div>
                                               <div class="form-group" id="Especialidades">
                                                   <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno" maxlength="80"/>
+                                                  <input class="form-control mg-bt-10 inp-esp-domino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno" maxlength="80"/>
                                                   <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 20, 'inp-esp-domino', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
                                               </div>
                                               <div class="form-group">
@@ -177,7 +177,7 @@
                                                   <ul class="checks">
                                                       <li>
                                                           <div class="chk-content">Al aire libre
-                                                              <input type="checkbox" name="FormaTrabajo" value="ai"><span class="checkmark"></span>
+                                                              <input type="checkbox" name="FormaTrabajo" value="ai" data-aka="FORMA DE TRABAJO*"><span class="checkmark"></span>
                                                           </div>
                                                       </li>
                                                       <li>
@@ -200,7 +200,7 @@
                                               <div class="form-group">
                                                   <label>GALERÍA DE FOTOS</label><br>
                                                   <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
-                                                  <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...<span class="obligatorio">*</span></label>
+                                                  <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...</label>
                                               </div>
                                               <div class="row" style="padding-bottom: 20px">
                                                   <div class="col-md-12" id="ImgsGaleria">
@@ -210,19 +210,19 @@
                                                   <label>REDES SOCIALES</label>
                                                   <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
                                                   <div class="col-xs-11 no_padding">
-                                                      <input class="form-control" id="RsFb" type="text">
+                                                      <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text">
                                                   </div>
                                               </div>
                                               <div class="form-group rs">
                                                   <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                                                   <div class="col-xs-11 no_padding">
-                                                      <input class="form-control" id="RsIn" type="text">
+                                                      <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text">
                                                   </div>
                                               </div>
                                               <div class="form-group rs">
                                                   <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                                   <div class="col-xs-11 no_padding">
-                                                      <input class="form-control" id="RsYo" type="text">
+                                                      <input value="&nbsp;" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
                                                   </div>
                                               </div>
                                           </div>
@@ -233,12 +233,12 @@
                                           <input th:value="${postulante.correo}" class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
                                       </div>
                                       <div class="form-group">
-                                          <label>TELEFONO</label>
-                                          <input class="form-control" type="text" id="Telefono" name="Telefono">
+                                          <label>TELÉFONO</label>
+                                          <input class="form-control" type="text" id="Telefono" name="Telefono" maxlength="11">
                                       </div>
                                       <div class="form-group">
-                                          <label>CELULAR<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil">
+                                          <label>MÓVIL<span class="obligatorio">*</span></label>
+                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil" maxlength="14">
                                       </div>
                                       <div class="form-group">
                                           <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
@@ -1599,7 +1599,8 @@
             "Diplomado en nutrición para atletas",
             "Diplomado en rehabilitación enfocada en deportista calificados",
             "Curso en rescate en el agua",
-            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 20, 'inp-estudio', 90).value = e);
+            inpEst.value = "Licenciado en cultura física y deporte";
             document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
                 '\n' +
                 'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
@@ -1608,18 +1609,21 @@
             ["Entrenador en AquaLab (2013 – hasta la fecha)",
              "Entrenador freelance (2005 – hasta la fecha)",
              "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+            inpExp.value = "Entrenador en AquaLab (2013 – hasta la fecha)";
             //Experiencia Laboral
             const inpRes = document.querySelector('.inp-resultado');
             ["Juan Pérez, campeón en natación 100 m libres (2017)",
                 "Rocío Flores, campeona sudamericana 4x100 m (2017)",
                 "Michael Barros, campeón en natación 4x200 (2016)",
                 "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+            inpRes.value = "Juan Pérez, campeón en natación 100 m libres (2017)";
             document.querySelector('#CentroTrabajo').value = 'AQUALAB - Av. Nicolás de Ribera 145, San Isidro';
             //Especialidades que domino
             const inpEspDom = document.querySelector('.inp-esp-domino');
             ["Entrenamiento en grupo",
                 "Entrenamiento uno a uno",
                 "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+            inpEspDom.value = "Entrenamiento en grupo";
 
             document.querySelector('#Telefono').value = `01 777 6666`;
             document.querySelector('#NumeroDocumento').value = `23232323`;
@@ -1797,7 +1801,8 @@
                         required: true
                     },
                     Especialidad:{
-                        required: true
+                        required: true,
+                        rangelength: [5, 80]
                     },
                     DisciplinaId:{
                         required: true
@@ -1806,8 +1811,71 @@
                         required: true,
                         rangelength: [80, 2000]
                     },
-                    NumeroDocumento: {
+                    Idiomas:{
                         required: true
+                    },
+                    EstudiosCertificaciones:{
+                        required: true,
+                        rangelength: [8, 90]
+                    },
+                    MetodoTrabajo:{
+                        required: true,
+                        rangelength: [5, 1000]
+                    },
+                    Experiencias: {
+                        required: true,
+                        rangelength: [20, 90]
+                    },
+                    Resultados: {
+                        required: true,
+                        rangelength: [20, 90]
+                    },
+                    Horario: {
+                        rangelength: [8, 150]
+                    },
+                    NivelClientes:{
+                        required: true
+                    },
+                    CentroTrabajo: {
+                        rangelength: [10, 90]
+                    },
+                    EspecDomino: {
+                        required: true,
+                        rangelength: [10, 90]
+                    },
+                    FormaTrabajo:{
+                        required: true
+                    },
+                    RsFb:{
+                        url: true,
+                    },
+                    RsIn:{
+                        url: true,
+                    },
+                    RsYo:{
+                        url: true,
+                    },
+                    Telefono:{
+                        rangelength: [7, 11]
+                    },
+                    Movil:{
+                        required: true,
+                        rangelength: [7, 14]
+                    },
+                    NumeroDocumento: {
+                        required: true,
+                        rangelength: [8, 13]
+                    },
+                    Username:{
+                        required: true,
+                        rangelength: [7, 30]
+                    },
+                    Password:{
+                        required: true,
+                        rangelength: [8, 30]
+                    },
+                    NombreServicio:{
+                        rangelength: [2, 50]
                     },
                     NomPag: {
                         required: true,

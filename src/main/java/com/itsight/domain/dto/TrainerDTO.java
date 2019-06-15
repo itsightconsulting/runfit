@@ -62,7 +62,7 @@ public class TrainerDTO implements Serializable {
     private String metodoTrabajo;
     @Size(min = 20, max = 1820)
     private String experiencias;
-    @Size(min = 10, max = 1820)
+    @Size(min = 20, max = 1820)
     @NotNull
     private String resultados;
     @Size(min = 2, max = 20)
@@ -93,7 +93,7 @@ public class TrainerDTO implements Serializable {
     private List<CuentaPago> cuentas;
     @Size(max = 20)
     private String mediosPago;
-    @Size(max = 14)
+    @Size(min=7, max = 11)
     private String telefono;
     @Size(min=7, max = 14)
     @NotBlank
