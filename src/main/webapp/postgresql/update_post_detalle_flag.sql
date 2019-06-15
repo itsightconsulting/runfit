@@ -11,7 +11,6 @@ CREATE OR REPLACE FUNCTION public.update_post_detalle_flag(
 	OUT res boolean)
     RETURNS boolean
     LANGUAGE 'plpgsql'
-
     COST 100
     VOLATILE
 AS $BODY$

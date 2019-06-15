@@ -15,10 +15,10 @@ import java.util.List;
 public class TrainerDTO implements Serializable {
 
     private int postulanteTrainerId;
-    @Size(min=2, max = 30)
+    @Size(min=3, max = 30)
     @NotNull
     private String apellidos;
-    @Size(min=2, max = 30)
+    @Size(min=3, max = 30)
     @NotNull
     private String nombres;
     @Size(min = 7, max = 40)
@@ -77,8 +77,9 @@ public class TrainerDTO implements Serializable {
     private String formasTrabajo;
     @Size(min = 8, max = 150)
     private String horario;
-    @Size(min = 6, max = 40)
+    @Size(min = 4, max = 40)
     @NotNull
+    @Pattern(regexp = "^[a-z]{4,}[0-9\\w.\\w-]*$")
     private String nomPag;
     @Size(max = 10)
     private String cantidadFiles;

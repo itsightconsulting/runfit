@@ -1,6 +1,6 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 1 == 1;
+var flag_form_populate = 0 == 1;
 var initPageActive = 1;
 var hiddenHeaderBar = 0 == 1;
 try {
@@ -247,8 +247,11 @@ function next_step(sheetNumber, toSheetNumber) {
 
 function smallBoxAlertValidation(inputsNotPassed){
     const tout = (2000*(inputsNotPassed.length)) + 4000;
-    const strCamps = inputsNotPassed.map(v=>`<i class="fa fa-dot-circle-o fa-fw"></i>
-                                            ${v.getAttribute('data-aka')}<br>`).join('');
+    const strCamps = inputsNotPassed.map(v=>{
+        const previous = v.previousElementSibling;
+        const nomFinal = previous === null ? v.getAttribute('data-aka').toUpperCase() : previous.textContent;
+        return `<i class="fa fa-dot-circle-o fa-fw"></i>${nomFinal}<br>`
+    }).join('');
     $.smallBox(
         {
             color: '#cc4d4d',
@@ -331,7 +334,6 @@ function next_step_cs(i){
     if(skip_validation || checkList.isValid){
         const all = document.querySelectorAll('.fade-ficha');
         const sels = document.querySelectorAll('.step');
-        console.log(all, sels);
         all.forEach((v,ii)=>{
             v.classList.remove('active');
             sels[ii].classList.remove('active')
@@ -353,7 +355,6 @@ function next_step_cs_rt(i){
     if(skip_validation || checkList.isValid){
         const all = document.querySelectorAll('.tab-pane');
         const sels = document.querySelectorAll('.step');
-        console.log(all);
         all.forEach((v,ii)=>{
             v.classList.remove('active');
             v.classList.remove('in');
@@ -427,7 +428,11 @@ function submitReuseLogin(){
 }
 
 function trimAllInputs(frm){
-    frm.querySelectorAll('input').forEach(e=>e.value = e.value.trim());
+    frm.querySelectorAll('input').forEach(e=>{
+        if(e.type !== 'file'){
+            e.value = e.value.trim();
+        }
+    });
     frm.querySelectorAll('textarea').forEach(e=>e.value = e.value.trim());
 }
 

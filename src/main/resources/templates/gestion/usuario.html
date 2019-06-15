@@ -454,6 +454,10 @@
             const promise = new Promise((resolve, reject) => validarCorreo(null, resolve, reject));
             params.perfilId = $('#PerfilId').val();
             const tipoUsuarioUrl = params.perfilId == 2 ? 'trainer' : params.perfilId == 3 ? 'cliente' : 'administrador';
+            if(params.perfilId !=1){
+                $.smallBox({color: 'alert', content: 'Por este medio solo puede registrar Administradores, elija del listado de Perfil a Administrador'})
+                return;
+            }
 
             //Luego esperamos que la promesa se cumpla con resolve para finalmente registrar
             promise.then(()=>{
@@ -464,6 +468,8 @@
                         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                         url: _ctx + 'gestion/'+tipoUsuarioUrl+'/agregar',
                         dataType: "text",
+                        blockLoading: true,
+                        noOne: false,
                         data: params,
                         success: function (data, textStatus) {
                             if (textStatus == "success") {
