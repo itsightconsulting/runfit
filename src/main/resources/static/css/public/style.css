@@ -3352,8 +3352,13 @@ input.state-error, select.state-error, textarea.state-error{
   border: 1px solid #b7010d !important;
 }
 button.multiselect{
-  background-color: #3a3a3a !important;
+  background-color: #fafafa !important;
   margin-bottom: 0px !important;
+  border-radius: 15px;
+  color: #666666;
+  border: 1px solid rgba(141, 141, 141, 0.4);
+  font-size: 14px;
+  padding: 9px 30px;
 }
 
 button.multiselect + ul{
@@ -3532,6 +3537,15 @@ span.input-group-btn{
 }
 .form-control .multiselect-search{
   display: inline-block !important;
+}
+
+.full-100 ~  div > button{
+    width: 100% !important;
+    text-align: left;
+}
+
+textarea.inp-svc-incluye{
+    height: 74px !important;
 }
 
 

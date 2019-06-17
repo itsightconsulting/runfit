@@ -21,12 +21,12 @@ public class ServicioDTO implements Serializable {
     @Size(min = 2, max = 50)
     @NotNull
     private String nombre;
-    @Size(min = 5, max = 2000)
+    @Size(min = 80, max = 2000)
     @NotNull
     private String descripcion;
     @Size(max = 2000)
     private String incluye;
-    @Size(max = 1000)
+    @Size(min = 20, max = 1000)
     private String infoAdicional;
     @Valid
     private List<Tarifario> tarifarios;

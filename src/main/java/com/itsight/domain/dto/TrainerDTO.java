@@ -105,7 +105,7 @@ public class TrainerDTO implements Serializable {
     private String mapCoordenadas;
     @Digits(integer = 5, fraction = 2)
     private Double mapCircleRadio;
-    @Size(max = 600)
+    @Size(max = 480)
     private String redes;
     @NotBlank
     @Size(max = 30)

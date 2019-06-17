@@ -262,7 +262,7 @@ public class TrainerFicha implements Serializable {
     private String mapCoordenadas;
     @Column(nullable = true, precision = 7, scale = 2)
     private Double mapCircleRadio;
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String redes;
     @Column(nullable = true)
     private Boolean flagFichaAceptada;

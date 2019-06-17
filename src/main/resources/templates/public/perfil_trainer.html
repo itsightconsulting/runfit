@@ -373,28 +373,20 @@
                     <div class="col-sm-12" id="CuentaBancariaUnica">
                         <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div>
+                        </div>
                         <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Tipo documento:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-td"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Número de documento:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nd"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div>
+                        </div>
                         <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Cuenta dólares:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cd"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div>
+                        </div>
                         <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Interbancario dólares:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div>
+                        </div>
                         <input id="ModalCuentaBancoId" type="hidden"/>
                     </div>
                 </div>
@@ -463,12 +455,8 @@
               const dC = document.getElementById('CuentaBancariaUnica');
               dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id===d.bancoId).nombre;
               dC.querySelector('.cc-titular').textContent = d.titular;
-              dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
-              dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
               dC.querySelector('.cc-cs').textContent = d.numeroSoles;
-              dC.querySelector('.cc-cd').textContent = d.numeroDolares;
               dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
-              dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
           } else if(clases.contains('tarifa-svc')) {
               let padre = {};
               if(input.tagName === "IMG" || input.tagName === "H6"){
@@ -496,7 +484,7 @@
       function mostrarDetalleServicio(servicioId){
           const svc = servicios.find(e=>e.id===servicioId);
           document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
-          document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional.replace(/\r?\n/g, '<br />');
+          document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional ? svc.infoAdicional.replace(/\r?\n/g, '<br />') : "";
           setIncluyeDelServicio(svc.incluye);
           setFileTermCond(svc);
           setTarifarios(svc.tarifarios);
@@ -505,11 +493,10 @@
       function setFileTermCond(svc){
           if(svc.tycFile){
               document.getElementById('EnlaceTYC').classList.remove('hidden');
-              const doc = document.createElement('a');
-              //doc.type = "application/pdf";
+              const doc = document.createElement('embed');
+              doc.type = "application/pdf";
               doc.style = "width: 100%; height: 100%";
-              doc.href = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
-              doc.textContent = "Descargar";
+              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
               document.getElementById('TYC').innerHTML = "";
               document.getElementById('TYC').appendChild(doc);
           } else {
@@ -846,7 +833,9 @@
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
-            document.getElementById('btnElegir').classList.remove('hidden');
+            if(!window.location.href.split("/").find(e=>e==="ver")){
+                document.getElementById('btnElegir').classList.remove('hidden');
+            }
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
             let est = document.querySelector('#Estudios');
@@ -973,7 +962,7 @@
           document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
+          document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional ? servicios[0].infoAdicional.replace(/\r?\n/g, '<br />') : "";
           selServicioId = fSs.id;
       }
 

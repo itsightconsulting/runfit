@@ -19,22 +19,18 @@ public class CuentaPago implements Serializable {
     @NotBlank
     @Size(min= 10,max = 40)
     private String numeroSoles;
-    @NotBlank
     @Size(min= 10,max = 40)
     private String numeroDolares;
     @NotBlank
     @Size(min= 10,max = 50)
     private String interbancarioSoles;
-    @NotBlank
     @Size(min= 10,max = 50)
     private String interbancarioDolares;
     @NotBlank
     @Size(min= 8,max = 80)
     private String titular;
-    @NotBlank
     @Size(max = 40)
     private String titularTipoDoc;
-    @NotBlank
     @Size(min= 8,max = 16)
     private String titularNumDoc;
 }

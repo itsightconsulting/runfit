@@ -156,6 +156,19 @@ function agregarTextareaDinamico(e, max, clase){
     return e.previousElementSibling;
 }
 
+function agregarTextareaDinamico(e, max, clase, maxlength){
+    const len = e.parentElement.children.length;
+    if(len === max+1){
+        e.classList.add('hide');
+    }
+    const previous = e.previousElementSibling;
+    previous.insertAdjacentElement('afterend', htmlStringToElement(`<li><textarea class="form-control mg-bt-10 ${clase}" type="text" maxlength="${maxlength}"></textarea></li>`));
+    const textarea = e.previousElementSibling.firstElementChild;
+    textarea.setAttribute('name', `${clase+len}`);
+    $(textarea).rules("add",{rangelength: [8, 500]});
+    return previous;
+}
+
 function acumuladorMas(id){
     const e = document.getElementById(id);
     const value = Number(e.value);
@@ -267,7 +280,8 @@ function doMultiselectCheckBox(){
                 const option = e[0];
                 const select = option.parentElement;
                 $(select).valid();
-        }});
+            }
+        });
     })
 
     document.querySelectorAll('select:not([multiple])').forEach(e=>{
@@ -280,7 +294,8 @@ function doMultiselectCheckBox(){
                 const option = e[0];
                 const select = option.parentElement;
                 $(select).valid();
-            }});
+            }
+        });
     })
 }
 

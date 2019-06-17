@@ -39,11 +39,11 @@
                                           <div class="form-group">
                                               <div class="">
                                                   <label>NOMBRE(S)<span class="obligatorio">*</span></label>
-                                                  <input class="form-control" name="Nombres" id="Nombres" maxlength="30" data-aka="Nombres" type="text">
+                                                  <input class="form-control" name="Nombres" id="Nombres" data-aka="Nombres" type="text">
                                               </div>
                                               <div class="">
                                                   <label>APELLIDO(S)<span class="obligatorio">*</span></label>
-                                                  <input class="form-control" name="Apellidos" id="Apellidos" data-aka="Apellidos" maxlength="30" type="text">
+                                                  <input class="form-control" name="Apellidos" id="Apellidos" data-aka="Apellidos" type="text">
                                               </div>
                                               <div class="pad-right-middle" style="width: 100%">
                                                   <label>SEXO<span class="obligatorio">*</span></label>
@@ -63,7 +63,7 @@
                                           </div>
                                           <div class="form-group">
                                               <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
-                                              <input class="form-control" name="Especialidad" id="Especialidad" data-aka="Especialidad" maxlength="80" type="text">
+                                              <input class="form-control" name="Especialidad" id="Especialidad" data-aka="Especialidad" type="text">
                                           </div>
                                           <div class="form-group">
                                               <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
@@ -75,8 +75,7 @@
                                           </div>
                                           <div class="form-group">
                                               <label>ACERCA DE MI<span class="obligatorio">*</span></label>
-                                              <textarea class="form-control" id="Acerca" name="Acerca" maxlength="2000"
-                                              data-aka="Acerca de mí"></textarea>
+                                              <textarea class="form-control" id="Acerca" name="Acerca" data-aka="Acerca de mí"></textarea>
                                           </div>
                                           <div class="form-group">
                                               <div class="pad-right-middle" style="width:100%;">
@@ -111,26 +110,26 @@
                                                </div>
                                               <div class="form-group" id="Estudios">
                                                   <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-estudio" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-estudio" id="EstudiosCertificaciones" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-estudio', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group">
                                                   <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
-                                                  <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo" maxlength="1000"></textarea>
+                                                  <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
                                               </div>
                                               <div class="form-group" id="ExpLaboral">
                                                   <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-experiencia" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-experiencia" id="Experiencias" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-experiencia', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group" id="Logros">
                                                   <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-resultado" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)" maxlength="90"/>
+                                                  <input class="form-control mg-bt-10 inp-resultado" id="Resultados" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-resultado', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group" id="dvHorario">
                                                   <label>HORARIO LABORAL</label>
-                                                  <input class="form-control" id="Horario" name="Horario" type="text" maxlength="150">
+                                                  <input class="form-control" id="Horario" name="Horario" type="text">
                                               </div>
                                               <div class="form-group">
                                                   <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS<span class="obligatorio">*</span></label>
@@ -165,11 +164,11 @@
                                               </div>
                                               <div class="form-group">
                                                   <label>CENTRO DE TRABAJO</label>
-                                                  <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro" maxlength="90">
+                                                  <input class="form-control" type="text" id="CentroTrabajo" name="CentroTrabajo" placeholder="AQUALAB - Av. Nicolás de Ribera 145, San Isidro">
                                               </div>
                                               <div class="form-group" id="Especialidades">
                                                   <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                                  <input class="form-control mg-bt-10 inp-esp-domino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno" maxlength="80"/>
+                                                  <input class="form-control mg-bt-10 inp-esp-domino" id="EspecDomino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
                                                   <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-esp-domino', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                               </div>
                                               <div class="form-group">
@@ -199,7 +198,7 @@
                                               </div>
                                               <div class="form-group">
                                                   <label>GALERÍA DE FOTOS</label><br>
-                                                  <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
+                                                  <input type="file" multiple="multiple" class="hidden" name="InpGaleria" id="InpGaleria">
                                                   <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...</label>
                                               </div>
                                               <div class="row" style="padding-bottom: 20px">
@@ -234,11 +233,11 @@
                                       </div>
                                       <div class="form-group">
                                           <label>TELÉFONO</label>
-                                          <input class="form-control" type="text" id="Telefono" name="Telefono" maxlength="11">
+                                          <input class="form-control" type="text" id="Telefono" name="Telefono">
                                       </div>
                                       <div class="form-group">
                                           <label>MÓVIL<span class="obligatorio">*</span></label>
-                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil" maxlength="13">
+                                          <input th:value="${postulante.movil}" class="form-control" type="text" id="Movil" name="Movil">
                                       </div>
                                       <div class="form-group">
                                           <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
@@ -249,7 +248,7 @@
                                       </div>
                                       <div class="form-group">
                                           <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento" maxlength="13">
+                                          <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
                                       </div>
                                       <div class="form-group">
                                           <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
@@ -298,7 +297,7 @@
                                           <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
                                               <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                           </label>
-                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="Nombre de página" maxlength="40">
+                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="Nombre de página">
                                       </div>
                                       <div class="" style="padding-bottom: 10px; font-weight: 100;">
                                           <label id="NomPagFull"></label>
@@ -312,21 +311,31 @@
                                           <div id="SvcCamposBasicos">
                                               <div class="form-group">
                                                   <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
-                                                  <input class="form-control" id="NombreServicio" name="NombreServicio" maxlength="50" type="text">
+                                                  <input class="form-control" id="NombreServicio" name="NombreServicio" type="text">
                                               </div>
                                               <div class="form-group">
                                                   <label>DESCRIPCIÓN<span class="obligatorio">*</span></label>
-                                                  <textarea class="form-control" id="DescripcionServicio"></textarea>
+                                                  <textarea class="form-control" id="DescripcionServicio" name="DescripcionServicio"></textarea>
                                               </div>
                                               <div class="form-group list-counter" id="MainIncluyeServicios">
-                                                  <label>QUE INCLUYE</label>
-                                                  <li><textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
-                                                  <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                                  <label>QUE INCLUYE<span class="obligatorio">*</span></label>
+                                                  <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                                                  <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                              </div>
+                                              <div class="form-group">
+                                                  <label>INFORMACIÓN ADICIONAL</label>
+                                                  <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
                                               </div>
                                           </div>
                                           <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">
                                               <i class="fa fa-plus-circle fa-fw"></i>
                                               AGREGAR SERVICIO
+                                          </button>
+                                          <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio">
+                                          <button rel="tooltip"
+                                                  title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
+                                                  id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
+                                              <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                           </button>
                                           <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
                                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
@@ -338,13 +347,13 @@
                                           </div>
                                           <div class="clase-tarifario collapse in" id="contentTarifario">
                                               <div class="form-group">
-                                                  <label for="NombreTarifario">Nombre</label>
+                                                  <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
                                                   <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
                                               </div>
 
                                               <div class="form-group">
-                                                  <label for="FrecuenciaPaquete">Frecuencia</label>
-                                                  <select class="form-control hidden" id="FrecuenciaPaquete">
+                                                  <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                                  <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
                                                       <option value="Diaria">Diaria</option>
                                                       <option value="Interdiaria">Interdiaria</option>
                                                       <option value="Semanal">Semanal</option>
@@ -362,7 +371,7 @@
                                                                   <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
                                                               </li>
                                                               <li class="result">
-                                                                  <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                                  <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0" disabled="disabled">
                                                               </li>
                                                               <li class="count">
                                                                   <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
@@ -380,7 +389,7 @@
                                                                   <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
                                                               </li>
                                                               <li class="result">
-                                                                  <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
+                                                                  <input class="counter-input" disabled="disabled" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
                                                               </li>
                                                               <li class="count">
                                                                   <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
@@ -398,7 +407,7 @@
                                                                   <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
                                                               </li>
                                                               <li class="result">
-                                                                  <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
+                                                                  <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
                                                               </li>
                                                               <li class="count">
                                                                   <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
@@ -411,7 +420,7 @@
                                                           <label>PRECIO TOTAL(S/.)</label>
                                                       </div>
                                                       <div class="col-xs-5 text-right">
-                                                          <input id="PrecioPaquete" class="price" type="text" value="0.00">
+                                                          <input id="PrecioPaquete" name="PrecioPaquete" class="price" type="text" value="0.00">
                                                       </div>
                                                   </div>
                                               </div>
@@ -431,10 +440,6 @@
                                               </div>
                                           </div>
                                           <hr>
-                                          <div class="form-group">
-                                              <label>INFORMACIÓN ADICIONAL</label>
-                                              <textarea class="form-control" id="ServicioInfAdic"></textarea>
-                                          </div>
                                           <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
                                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Después de seleccionar el método de pago, click en agregar y repita tantas veces como métodos de pago acepte"></i>
                                             <i data-toggle="collapse" data-target="#contentInfoPago" rel="tooltip" data-original-title="Mostrar/Ocultar" class="fa fa-chevron-up fa-plus-cs " style="color: #a8fa00;float:right;"></i>
@@ -470,18 +475,21 @@
                                                   </ul>
                                               </div>
                                               <div class="form-group info-cuenta hidden">
-                                                  <select class="form-control mg-bt-10" name="BancoId" id="BancoId">
-                                                  </select>
-                                                  <input class="form-control mg-bt-10" id="TitularCuenta" type="text" placeholder="Titular de la cuenta">
-                                                  <select class="form-control mg-bt-10" id="TitularTipoDoc">
-                                                      <option value="DNI">DNI</option>
-                                                      <option value="CE">CE</option>
-                                                  </select>
-                                                  <input class="form-control mg-bt-10" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
-                                                  <input class="form-control mg-bt-10" id="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
-                                                  <input class="form-control mg-bt-10" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">
-                                                  <input class="form-control mg-bt-10" id="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
-                                                  <input class="form-control mg-bt-10" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
+                                                  <fieldset style="border: 1px solid rgba(141, 141, 141, 0.4);border-radius: 15px; padding: 10px">
+                                                    <h4>CUENTA BANCARIA</h4>
+                                                      <label for="BancoId">BANCO<span class="obligatorio">*</span></label><select class="form-control mg-bt-10 hidden" name="BancoId" id="BancoId">
+                                                      </select>
+                                                      <label for="TitularCuenta">TITULAR<span class="obligatorio">*</span></label><input class="form-control mg-bt-10" id="TitularCuenta" name="TitularCuenta" type="text" placeholder="Titular de la cuenta" style="margin-top: 10px">
+                                                      <!--<label for="TitularTipoDoc">TIPO DOCUMENTO<span class="obligatorio">*</span></label><select class="form-control mg-bt-10 hidden" id="TitularTipoDoc">
+                                                          <option value="DNI">DNI</option>
+                                                          <option value="CE">CE</option>
+                                                      </select>-->
+                                                      <!--<label for="TitularNumDoc">Titular</label><input class="form-control mg-bt-10" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad" style="margin-top: 10px">-->
+                                                      <label for="NumeroCuentaSoles">NUMERO DE CUENTA EN SOLES<span class="obligatorio">*</span></label><input class="form-control mg-bt-10" id="NumeroCuentaSoles" name="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
+                                                      <!--<label for="NumeroCuentaDolares">NUMERO DE CUENTA EN DOLARES</label><input class="form-control mg-bt-10" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">-->
+                                                      <label for="InterbancarioSoles">INTERBANCARIO EN SOLES</label><input class="form-control mg-bt-10" id="InterbancarioSoles" name="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
+                                                      <!--<label for="InterbancarioDolares">INTERBANCARIO EN DOLARES</label><input class="form-control mg-bt-10" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">-->
+                                                  </fieldset>
                                               </div>
                                               <div class="form-group info-tarjetas hidden">
                                                   <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}+'?'+${version}" style="width: 64px;"></a>
@@ -490,15 +498,9 @@
                                                   <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}+'?'+${version}" style="width: 64px;"></a>
                                                   <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}+'?'+${version}"></a>
                                               </div>
-                                              <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago">AGREGAR INFORMACIÓN PAGO</button>
+                                              <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago"><i class="fa fa-fw fa-plus-circle"></i> AGREGAR INFORMACIÓN PAGO</button>
                                           </div>
                                           <hr>
-                                          <input type="file" id="inpCondServicio" class="hide">
-                                          <button rel="tooltip"
-                                                  title="Opcional: Subir un archivo en formato pdf en donde se especifique los términos y condiciones del servicio que se encuentra registrando"
-                                                  id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
-                                              <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO
-                                          </button>
                                           <button data-ficha-id="0" style="margin-bottom: 10px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
                                           <input type="hidden" id="FichaClienteId"/>
                                           <div class="row collapse" id="FichasDisponibles">
@@ -573,29 +575,21 @@
                       <div class="col-sm-12" id="CuentaBancariaUnica">
                           <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div>
+                          </div>
                           <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div></div>
-                          <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Tipo documento:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-td"></span></div></div>
-                          <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Número de documento:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nd"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div>
+                          </div>
                           <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div></div>
-                          <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Cuenta dólares:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cd"></span></div></div>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div>
+                          </div>
                           <div class="row">
                             <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div></div>
-                          <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Interbancario dólares:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
-                            <input id="ModalCuentaBancoId" type="hidden"/>
+                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div>
+                          </div>
+                          <input id="ModalCuentaBancoId" type="hidden"/>
                       </div>
                   </div>
                   <div class="modal-footer text-center" style="background: #a8fa00;">
@@ -674,7 +668,9 @@
         (function () {
             uploadAndShow(inpImgPerfil, imgPerfil);
             uploadImgs(inpGaleria, 'ImgsGaleria');
-            //showInitTab(initTabActive);
+            if(flag_form_populate){
+                setTimeout(()=>showInitTab(initTabActive), 1000);
+            }
             btnGuardar.addEventListener('click', sendMainForm);
             btnNuevoServicio.addEventListener('click', agregarServicio);
             btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
@@ -973,11 +969,13 @@
 
         function sendMainForm(e){
             e.preventDefault();//To avoid form sended automatically
-            const checkList = validationByNumSheet(3);
-            if(checkList.inputs.length == 0){
+            const checkList1 = validationByNumSheet(1);
+            const checkList2 = validationByNumSheet(2);
+            const checkList3 = validationByNumSheet(3);
+            if(checkList1.isValid && checkList2.isValid && checkList3.isValid){
                 sendForm();
             }else {
-                smallBoxAlertValidation(checkList.inputs);
+                smallBoxAlertValidation(checkList1.inputs.concat(checkList2.inputs).concat(checkList3.inputs));
             }
         }
 
@@ -993,7 +991,6 @@
             const arrURL = window.location.href.split("/");
             const hshId = arrURL[arrURL.length-1];
             const body = generateBody();
-
 
             //TYC FILES
             servicios.forEach(v=>{
@@ -1022,8 +1019,6 @@
                 body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
             }
 
-            body.sexo = Number($('input[name="Sexo"]:checked').val());
-            body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
             body.tipoTrainerId = 1;
 
             $buttonName = "Guardar";
@@ -1103,13 +1098,13 @@
                 if(qInput.value === "2"){
                     tabService.querySelector('.info-tarjetas').classList.add('hidden');
                     tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.remove('hidden'));
-                    nomButton = "Agregar nueva cuenta bancaria";
+                    nomButton = "AGREGAR NUEVA CUENTA BANCARIA";
                 }
 
                 if(qInput.value === "3"){
                     const exists = metodosPago.some(e=>e.infoPagoId ===3);
                     if(exists){
-                        nomButton = "Modificar con nueva elección";
+                        nomButton = "MODIFICAR CON NUEVA ELECCIÓN";
                     }
                     tabService.querySelectorAll('.info-cuenta').forEach(e => e.classList.add('hidden'));
                     tabService.querySelector('.info-tarjetas').classList.remove('hidden');
@@ -1126,12 +1121,8 @@
                 const dC = document.getElementById('CuentaBancariaUnica');
                 dC.querySelector('.cc-nom-banco').textContent = banks.find(b=>b.id==d.bancoId).nombre;
                 dC.querySelector('.cc-titular').textContent = d.titular;
-                dC.querySelector('.cc-td').textContent = d.titularTipoDoc;
-                dC.querySelector('.cc-nd').textContent = d.titularNumDoc;
                 dC.querySelector('.cc-cs').textContent = d.numeroSoles;
-                dC.querySelector('.cc-cd').textContent = d.numeroDolares;
                 dC.querySelector('.cc-cis').textContent = d.interbancarioSoles;
-                dC.querySelector('.cc-cid').textContent = d.interbancarioDolares;
             } else if(clases.contains('div-fichas')){
                 const btn = document.getElementById('btnElegirFicha');
                 const fichaName = input.previousElementSibling.textContent.trim();
@@ -1146,6 +1137,7 @@
             const input = e.target;
             const clases = input.classList;
             if(clases.contains('inp-svc-tyc')){
+                selServicioId = selServicioId === -1 ? 1 : selServicioId;
                 if(selServicioId > 0){
                     const input = e.target;
                     const obj = {};
@@ -1162,7 +1154,7 @@
                     if(nomFile.trim().length>19){
                         nomFile = nomFile.substring(0, 16).trim()+"...";
                     }
-                    btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+                    btnSubirCondServicio.innerHTML = "<i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
                 } else {
                     $.smallBox({color: "rgb(204, 77, 77)",
                         content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>Ha ocurrido un error al cargar su archivo. Por favor omita este paso pora ahora</em>" ,
@@ -1200,6 +1192,7 @@
             document.querySelector('#txtCantidadMeses').value = t.meses;
             document.querySelector('#txtCantidadSesiones').value = t.sesiones;
             document.querySelector('#PrecioPaquete').value = t.precio;
+            $('#FrecuenciaPaquete').multiselect('refresh');
         }
 
         function setIncluyeDelServicio(incluidos){
@@ -1209,14 +1202,17 @@
                 mainIncluidos.querySelector('input').value = arrIncluidos[0];
             } else {
                 mainIncluidos.innerHTML =
-                    `<label>QUE INCLUYE</label>
-                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
-                     <a href="javascript:void(0);" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye')">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
+                    `<label>QUE INCLUYE<span class="obligatorio">*</span></label>
+                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" maxlength="500" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                     <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
                 const firstInput = mainIncluidos.querySelector('textarea');
                 const btnPlus = mainIncluidos.querySelector('a');
                 firstInput.value = arrIncluidos[0];
-                arrIncluidos.slice(1).forEach(e=>{
-                    agregarTextareaDinamico(btnPlus, 10, 'inp-svc-incluye').firstElementChild.value = e;
+                arrIncluidos.slice(1).forEach((e,i)=>{
+                    const ele = agregarTextareaDinamico(btnPlus, 10, 'inp-svc-incluye', 500).firstElementChild;
+                    ele.name = "inp-svc-incluye"+i;
+                    ele.value = e;
+                    $(ele).rules("add",{rangelength: [8, 500]})
                 })
             }
         }
@@ -1263,15 +1259,21 @@
                 if(nomFile.trim().length>19){
                     nomFile = nomFile.substring(0, 16).trim()+"...";
                 }
-                btnSubirCondServicio.innerHTML = "CONDICIONES DEL SERVICIO: <i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+                btnSubirCondServicio.innerHTML = "<i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
             }else{
-                btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR CONDICIONES DEL SERVICIO';
+                btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C';
             }
+            $(btnSubirCondServicio).tooltip();
         }
 
         function agregarServicio(){
             const s = getServicio();
             if(s.valid){
+                const isNomRepeat = servicios.find(e=>e.nombre===s.nombre);
+                if(isNomRepeat){
+                    $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Nombre del servicio esta repetido, modificarlo</em>" ,timeout: 3500})
+                    return;
+                }
                 selServicioId = s.id;
                 servicios.push(s);
                 addServiceAndcleanCampos(s);
@@ -1296,14 +1298,12 @@
             inpFile.className = "inp-svc-tyc hidden";
             inpFile.accept = "application/pdf";
             inpCondServicio.insertAdjacentElement('afterend', inpFile);
-            btnSubirCondServicio.setAttribute('onclick', "javascript:document.getElementById('"+inpFile.id+"').click()");
         }
 
         function editarServicio(svcId){
             const svc = servicios.find(s=>s.id===svcId);
             if(svc !== undefined){
                 setBasicsServicio(svc);
-                service.querySelector('.svc-focus').click();
             }else {
                 $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
             }
@@ -1312,7 +1312,16 @@
         function editarTarifa(tId){
             const t = getTarifa();
             if(t.valid) {
-                let tarifa = servicios.find(s=>s.id===selServicioId).tarifarios.find(t=>t.id===tId);
+                const svcAsociado = servicios.find(s=>s.id===selServicioId);
+                const tarifarios = svcAsociado.tarifarios;
+                const isNomRepeat = tarifarios.filter(e=>e.id!==tId).find(e=>e.nombre === t.nombre);
+                if(isNomRepeat){
+                    $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Nombre del tarifario esta repetido, modificarlo</em>" ,timeout: 3500})
+                    return;
+                }
+
+                let tarifa = tarifarios.find(tar=>tar.id===tId);
+
                 tarifa.nombre = t.nombre;
                 tarifa.frecuencia = t.frecuencia;
                 tarifa.meses = t.meses;
@@ -1320,8 +1329,9 @@
                 tarifa.sesiones = t.sesiones;
                 tarifa.precio = t.precio;
                 tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
+                $.smallBox({color: "#111509",content: '<i class="fa fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
             } else{
-                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000})
             }
         }
 
@@ -1331,11 +1341,26 @@
             svc.descripcion = document.querySelector('#DescripcionServicio').value.trim();
             svc.incluye = getAsStringIncluyeServices();
             svc.valid = false;
-            if(svc.nombre !== "" && svc.descripcion !== "" && svc.incluye !== ""){
+
+            const jQvalidate = Array.from(document.querySelector('#SvcCamposBasicos').querySelectorAll('.form-control')).filter(e=>!$(e).valid()).length == 0 ? true : false;
+
+            if(svc.nombre !== "" && svc.descripcion !== "" && svc.incluye !== "" && jQvalidate){
                 svc.valid = true;
                 svc.tarifarios = new Array();
                 svc.infoAdicional = document.querySelector('#ServicioInfAdic').value.trim();
                 svc.id = ++accServicioId;
+            }
+            if(!svc.nombre){
+                document.querySelector('#NombreServicio').classList.remove('state-sucess');
+                document.querySelector('#NombreServicio').classList.add('state-error');
+            }
+            if(!svc.descripcion){
+                document.querySelector('#DescripcionServicio').classList.remove('state-sucess');
+                document.querySelector('#DescripcionServicio').classList.add('state-error');
+            }
+            if(!document.querySelector('#PrimerIncluyeServicio').value.trim()){
+                document.querySelector('#PrimerIncluyeServicio').classList.remove('state-sucess');
+                document.querySelector('#PrimerIncluyeServicio').classList.add('state-error');
             }
             return svc;
         }
@@ -1345,32 +1370,56 @@
             const descripcion = document.querySelector('#DescripcionServicio').value.trim();
             const incluye = getAsStringIncluyeServices();
             const infoAdicional = document.querySelector('#ServicioInfAdic').value.trim();
-            if(nombre !== "" && descripcion !== "" && incluye !== ""){
+            const jQvalidate = Array.from(document.querySelector('#SvcCamposBasicos').querySelectorAll('.form-control')).filter(e=>!$(e).valid()).length == 0 ? true : false;
+            if(nombre !== "" && descripcion !== "" && incluye !== "" && jQvalidate){
+                const isNomRepeat = servicios.filter(e=>e.id!==svc.id).find(e=>e.nombre === nombre);
+                if(isNomRepeat){
+                    $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Nombre del servicio esta repetido, modificarlo</em>" ,timeout: 3500})
+                    return;
+                }
                 svc.nombre = nombre;
                 svc.descripcion = descripcion;
                 svc.incluye = incluye;
                 svc.infoAdicional = infoAdicional;
-                service.querySelector('.svc-focus').textContent = nombre;
+                $.smallBox({color: "#111509",content: '<i class="fa fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
             }else{
                 $.smallBox({
                     color: 'alert',
-                    content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>Los nuevos datos que edito del servicio son inválidos, verifique que el nombre, descripción no se encuentren vacíos</i>'
+                    content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>Los nuevos datos que editó del servicio son inválidos, verifíquelos y corríjalos</i>'
                 });
+                if(!svc.nombre){
+                    document.querySelector('#NombreServicio').classList.remove('state-sucess');
+                    document.querySelector('#NombreServicio').classList.add('state-error');
+                }
+                if(!svc.descripcion){
+                    document.querySelector('#DescripcionServicio').classList.remove('state-sucess');
+                    document.querySelector('#DescripcionServicio').classList.add('state-error');
+                }
+                if(!document.querySelector('#PrimerIncluyeServicio').value.trim()){
+                    document.querySelector('#PrimerIncluyeServicio').classList.remove('state-sucess');
+                    document.querySelector('#PrimerIncluyeServicio').classList.add('state-error');
+                }
             }
         }
 
         function getTarifa(){
             const tar = new Object();
-            tar.nombre = document.querySelector('#NombreTarifario').value;
-            tar.frecuencia = document.querySelector('#FrecuenciaPaquete').value;
+            tar.nombre = document.querySelector('#NombreTarifario').value.trim();
+            tar.frecuencia = document.querySelector('#FrecuenciaPaquete').value.trim();
             tar.personas = document.querySelector('#txtCantidadPersonas').value.trim();
             tar.meses = document.querySelector('#txtCantidadMeses').value.trim();
             tar.sesiones = document.querySelector('#txtCantidadSesiones').value.trim();
             tar.valid = false;
-            if(tar.nombre !== "" && tar.frecuencia !== "" && Number(tar.personas)>0 && (Number(tar.meses)>0 || Number(tar.sesiones)>0)){
+
+            const jQvalidate = Array.from(document.querySelectorAll('#contentTarifario input')).filter(e=>!$(e).valid()).length == 0 ? true : false;
+            if(jQvalidate && tar.nombre !== "" && tar.frecuencia !== "" && Number(tar.personas)>0 && (Number(tar.meses)>0 || Number(tar.sesiones)>0)){
                 tar.precio = document.querySelector('#PrecioPaquete').value;
                 tar.valid = true;
                 tar.id = ++accTarifaId;
+            }
+            if(tar.nombre === ""){
+                document.querySelector('#NombreTarifario').classList.remove('state-success');
+                document.querySelector('#NombreTarifario').classList.add('state-error');
             }
             return tar;
         }
@@ -1378,15 +1427,15 @@
         function getCuentaBancaria(){
             const c = new Object();
             c.titular = document.querySelector('#TitularCuenta').value.trim();
-            c.titularTipoDoc = document.querySelector('#TitularTipoDoc').value;
-            c.titularNumDoc = document.querySelector('#TitularNumDoc').value.trim();
+            //c.titularTipoDoc = document.querySelector('#TitularTipoDoc').value;
+            //c.titularNumDoc = document.querySelector('#TitularNumDoc').value.trim();
             c.numeroSoles = document.querySelector('#NumeroCuentaSoles').value.trim();
-            c.numeroDolares = document.querySelector('#NumeroCuentaDolares').value.trim();
+            //c.numeroDolares = document.querySelector('#NumeroCuentaDolares').value.trim();
             c.interbancarioSoles = document.querySelector('#InterbancarioSoles').value.trim();
-            c.interbancarioDolares = document.querySelector('#InterbancarioDolares').value.trim();
+            //c.interbancarioDolares = document.querySelector('#InterbancarioDolares').value.trim();
             c.bancoId = document.querySelector('#BancoId').value.trim();
             c.valid = false;
-            if(c.titularTipoDoc !== "" && c.titular !== "" && c.titularNumDoc !== "" && (c.numeroSoles !== "" || c.numeroDolares !== "") && (c.interbancarioSoles !== "" || c.interbancarioDolares !== "") && c.bancoId !== ""){
+            if(/*c.titularTipoDoc !== "" &&*/ c.titular !== "" /*&& c.titularNumDoc !== ""*/ && (c.numeroSoles !== "" /*|| c.numeroDolares !== ""*/) && (c.interbancarioSoles !== "" /*|| c.interbancarioDolares !== ""*/) && c.bancoId !== ""){
                 c.valid = true;
                 c.id = ++accCuentaId;
             }
@@ -1416,12 +1465,16 @@
                                           </div>
                                           <div class="form-group">
                                               <label>DESCRIPCIÓN<span class="obligatorio">*</span></label>
-                                              <textarea class="form-control" id="DescripcionServicio"></textarea>
+                                              <textarea class="form-control" id="DescripcionServicio" name="DescripcionServicio"></textarea>
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
-                                              <label>QUE INCLUYE</label>
+                                              <label>QUE INCLUYE<span class="obligatorio">*</span></label>
                                               <li><textarea class="form-control mg-bt-10" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>INFORMACIÓN ADICIONAL</label>
+                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
                                           </div>
                                           `;
             divCamposBasicos.innerHTML = htmlBasics;
@@ -1432,10 +1485,11 @@
         }
 
         function showInitTab(numTab){
-            const tabIds = ["", "about", "contact", "service"];
+            next_step_cs_rt(Number(numTab));
+            /*const tabIds = ["", "about", "contact", "service"];
             document.querySelector(`a[href="#${tabIds[numTab]}"]`).parentElement.classList.add('active');
             document.querySelector(`#${tabIds[numTab]}`).classList.add('in');
-            document.querySelector(`#${tabIds[numTab]}`).classList.add('active');
+            document.querySelector(`#${tabIds[numTab]}`).classList.add('active');*/
         }
 
         function agregarTarifaAServicio(){
@@ -1443,6 +1497,12 @@
             if(t.valid){
                 const s = servicios.find(v=>v.id === selServicioId);
                 if(s !== undefined){
+                    const tarifarios = s.tarifarios;
+                    const isNomRepeat = tarifarios.find(e=>e.nombre === t.nombre);
+                    if(isNomRepeat){
+                        $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Nombre del tarifario esta repetido, modificarlo</em>" ,timeout: 3500});
+                        return;
+                    }
                     cleanPaqueteCampos();
                     s.tarifarios.push(t);
                     $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 2000})
@@ -1450,9 +1510,9 @@
                         .appendChild(
                             htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
                 }else
-                    $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Agregar primero un servicio</em>" ,timeout: 2500})
+                    $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Usted debe primero agregar un servicio ya que los tarifarios deben ir asociados a un servicio</em>" ,timeout: 7500});
             }else{
-                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
+                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000});
             }
         }
 
@@ -1546,12 +1606,12 @@
 
         function cleanCuentaBanCampos(){
             document.querySelector('#TitularCuenta').value = "";
-            document.querySelector('#TitularTipoDoc').selectedIndex = 0;
-            document.querySelector('#TitularNumDoc').value = "";
+            //document.querySelector('#TitularTipoDoc').selectedIndex = 0;
+            //document.querySelector('#TitularNumDoc').value = "";
             document.querySelector('#NumeroCuentaSoles').value = "";
-            document.querySelector('#NumeroCuentaDolares').value = "";
+            //document.querySelector('#NumeroCuentaDolares').value = "";
             document.querySelector('#InterbancarioSoles').value = "";
-            document.querySelector('#InterbancarioDolares').value = "";
+            //document.querySelector('#InterbancarioDolares').value = "";
             document.querySelector('#BancoId').selectedIndex = 0;
         }
 
@@ -1581,6 +1641,10 @@
             document.getElementById('Password').value = "runfit123";
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
+
+            document.querySelector('input[name="FormaTrabajo"]').checked = true;
+            Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
+
             //Estudios
             const inpEst = document.querySelector('.inp-estudio');
             ["Licenciado en cultura física y deporte",
@@ -1618,7 +1682,7 @@
             document.querySelector('#NomPag').value = `pedro`+t1+t2;
 
             //Servicios
-            document.querySelector('#NombreServicio').value = "Performance PRO";
+            /*document.querySelector('#NombreServicio').value = "Performance PRO";
             document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
             document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
                 '\n' +
@@ -1662,15 +1726,13 @@
             setTimeout(()=>{
                 document.getElementById('btnElegirFicha').click();
                 setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
-                }, 500);
-
-            document.querySelector('input[name="FormaTrabajo"]').checked = true;
-            Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
-
+                }, 500);*/
         }
 
         function generateBody(){
             const obj = getFormData($('#frm_registro'));
+            obj.sexo = Number($('input[name="Sexo"]:checked').val());
+            obj.disciplinaIds = $('#DisciplinaId').val().join('|');
 
             if(!obj.horario){
                 delete obj.horario;
@@ -1706,9 +1768,17 @@
 
             obj.nota = document.getElementById('NotaFinal').value;
             const redes = getRedesSociales();
-            if(redes.have){
+            if(redes.have) {
                 obj.redes = redes.nombres;
             }
+
+            //Validando lista servicios
+            obj.servicios.forEach(e=>{
+                if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
+                    delete e.infoAdicional;
+                }
+            })
+
             return obj;
         }
 
@@ -1832,19 +1902,22 @@
                     },
                     EspecDomino: {
                         required: true,
-                        rangelength: [10, 90]
+                        rangelength: [10, 80]
                     },
                     FormaTrabajo:{
                         required: true
                     },
                     RsFb:{
                         url: true,
+                        rangelength: [10,150],
                     },
                     RsIn:{
                         url: true,
+                        rangelength: [10,150],
                     },
                     RsYo:{
                         url: true,
+                        rangelength: [10,150],
                     },
                     Telefono:{
                         number: true,
@@ -1872,7 +1945,50 @@
                         rangelength: [8, 30]
                     },
                     NombreServicio:{
-                        rangelength: [2, 50]
+                        lettersonly: true,
+                        rangelength: [2, 50],
+                    },
+                    PrimerIncluyeServicio:{
+                        rangelength: [8, 10*50]
+                    },
+                    DescripcionServicio:{
+                        rangelength: [80, 2000]
+                    },
+                    ServicioInfAdic:{
+                        rangelength: [20, 1000]
+                    },
+                    NombreTarifario:{
+                        rangelength: [2, 30],
+                        lettersonly: true
+                    },
+                    txtCantidadPersonas:{
+                        number: true,
+                        min: 1
+                    },
+                    txtCantidadMeses:{
+                        number: true,
+                        min: 1
+                    },
+                    txtCantidadSesiones:{
+                        number: true,
+                        min: 1
+                    },
+                    PrecioPaquete:{
+                        number: true,
+                        rangelength: [1, 8],
+                        min: 1
+                    },
+                    TitularCuenta:{
+                        rangelength: [6, 60],
+                        lettersonly: true,
+                    },
+                    NumeroCuentaSoles:{
+                        pattern: "[0-9]{3,}[0-9 -]*$",
+                        rangelength: [10, 30]
+                    },
+                    InterbancarioSoles:{
+                        pattern: "[0-9]{3,}[0-9 -]*$",
+                        rangelength: [10, 30]
                     },
                     NomPag: {
                         required: true,
@@ -1883,8 +1999,60 @@
                 messages: {
                     Username: {
                         pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
-                    }
+                    },
+                    NombreServicio:{
+                        pattern: "Solo se admiten letras y números"
+                    },
+                    PrecioPaquete:{
+                        number: function(){
+                            setTimeout(() => {
+                                $('#IcoPrecioPaquete').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoPrecioPaquete" title="Solo se permiten números con punto como separador decimal"></i>';
+                        },
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoPrecioPaquete').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoPrecioPaquete" title="El valor debe ser mayor a 0"></i>';
+                        },
+                    },
+                    txtCantidadPersonas:{
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoTxtCantidadPersonas').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadPersonas" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
+                        }
+                    },
+                    txtCantidadMeses:{
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoTxtCantidadMeses').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadMeses" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
+                        }
+                    },
+                    txtCantidadSesiones:{
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoTxtCantidadSesiones').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
+                        }
+                    },
+                    NumeroCuentaSoles:{
+                        pattern: "Solo se permiten números y como separadores espacio y guión",
+                    },
+                    InterbancarioSoles:{
+                        pattern: "Solo se permiten números y como separadores espacio y guión",
+                    },
                 }
+            });
+
+            const rules = $(frm).validate().settings.rules;
+            Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+                document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
             });
         }
 
