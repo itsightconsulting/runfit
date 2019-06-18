@@ -309,3 +309,10 @@ function bodyFocusOutEventListener(e){
         input.value = input.value.trim();
     }
 }
+
+function activeTooltips(){
+    const all = document.querySelectorAll('i[rel="tooltip"]');
+    all.forEach(e=>{
+        $(e).tooltip();
+    })
+}

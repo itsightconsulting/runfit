@@ -1,6 +1,6 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 1 == 1;
+var flag_form_populate = 0 == 1;
 var initPageActive = 1;
 var hiddenHeaderBar = 0 == 1;
 try {
@@ -248,6 +248,7 @@ function next_step(sheetNumber, toSheetNumber) {
 function smallBoxAlertValidation(inputsNotPassed){
     const tout = (2000*(inputsNotPassed.length)) + 4000;
     const strCamps = inputsNotPassed.map(v=>{
+        console.log(v);
         const previous = v.previousElementSibling;
         const nomFinal = previous === null ? v.getAttribute('data-aka').toUpperCase() : previous.textContent;
         return `<i class="fa fa-dot-circle-o fa-fw"></i>${nomFinal}<br>`
