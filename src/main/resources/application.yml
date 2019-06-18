@@ -1,9 +1,9 @@
 spring:
   profiles:
-    active: development
+    active: production
   jpa:
     hibernate:
-        ddl-auto: update
+        ddl-auto: create
         naming:
           implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     properties:

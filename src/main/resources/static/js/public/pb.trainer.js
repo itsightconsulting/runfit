@@ -30,9 +30,7 @@ const body = document.querySelector('body');
 (function () {
     uploadAndShow(inpImgPerfil, imgPerfil);
     uploadImgs(inpGaleria, 'ImgsGaleria');
-    if(flag_form_populate){
-        setTimeout(()=>showInitTab(initTabActive), 1000);
-    }
+    if(flag_form_populate){setTimeout(()=>showInitTab(initTabActive), 1000);}
     btnGuardar.addEventListener('click', sendMainForm);
     btnNuevoServicio.addEventListener('click', agregarServicio);
     btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
@@ -45,9 +43,7 @@ const body = document.querySelector('body');
     inpImgPerfil.addEventListener('change', changeImgPerfil);
     body.addEventListener('click', bodyClickEventListener);
     body.addEventListener('focusout', bodyFocusOutEventListener);
-    document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
-        $(e).tooltip();
-    })
+    document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{$(e).tooltip();})
     inpNomPag.addEventListener('keyup', (e)=>{
         document.getElementById('NomPagFull').textContent =
             window.location.protocol+"//"+ window.location.host +"/p/trainer/" +e.target.value.trim();

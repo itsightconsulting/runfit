@@ -6,7 +6,7 @@
     <title>Inscripción de entrenadores | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/cropper.min.css}+'?'+${version}"/>
   </head>
   <body>
       <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -33,25 +33,24 @@
                               <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
                               <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
                           </ul>
-                          <div class="tab-content">
-
-                              <div class="tab-pane fade" id="about">
-                                  <form id="frm_registro">
+                          <form id="frm_registro">
+                              <div class="tab-content">
+                                  <div class="tab-pane fade" id="about">
                                       <div class="form-group">
                                           <div class="">
                                               <label>NOMBRE(S)<span class="obligatorio">*</span></label>
-                                              <input class="form-control" name="Nombres" id="Nombres" type="text">
+                                              <input class="form-control" name="Nombres" id="Nombres" data-aka="Nombres" type="text">
                                           </div>
                                           <div class="">
                                               <label>APELLIDO(S)<span class="obligatorio">*</span></label>
-                                              <input class="form-control" name="Apellidos" id="Apellidos" type="text">
+                                              <input class="form-control" name="Apellidos" id="Apellidos" data-aka="Apellidos" type="text">
                                           </div>
                                           <div class="pad-right-middle" style="width: 100%">
                                               <label>SEXO<span class="obligatorio">*</span></label>
                                               <ul class="checks">
                                                   <li>
                                                       <div class="chk-content">Masculino
-                                                          <input name="Sexo" value="1" type="radio"><span class="checkmark"></span>
+                                                          <input name="Sexo" data-aka="Sexo" value="1" type="radio"><span class="checkmark"></span>
                                                       </div>
                                                   </li>
                                                   <li>
@@ -64,249 +63,256 @@
                                       </div>
                                       <div class="form-group">
                                           <label>ESPECIALIDAD<span class="obligatorio">*</span></label>
-                                          <input class="form-control" name="Especialidad" id="Especialidad" type="text">
+                                          <input class="form-control" name="Especialidad" id="Especialidad" data-aka="Especialidad" type="text">
                                       </div>
                                       <div class="form-group">
                                           <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                          <select class="form-control" id="DisciplinaId" name="DisciplinaId" multiple="multiple" style=" height:80px !important;">
+                                          <select class="form-control hidden" id="DisciplinaId" name="DisciplinaId"
+                                                  data-aka="Deporte o actividades"
+                                                  multiple="multiple" style=" height:80px !important;">
                                               <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
                                           </select>
                                       </div>
                                       <div class="form-group">
-                                          <label>ACERCA DE MI<span class="obligatorio">*</span></label>
-                                          <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
+                                          <label>ACERCA DE MÍ<span class="obligatorio">*</span></label>
+                                          <textarea class="form-control" id="Acerca" name="Acerca" data-aka="Acerca de mí"></textarea>
                                       </div>
                                       <div class="form-group">
-                                          <div class="pad-right-middle" style="width:100%;">
-                                              <label>IDIOMAS<span class="obligatorio">*</span></label>
-                                              <ul class="checks">
-                                                  <li style="margin-right: 22px;">
-                                                      <div class="chk-content">Español
-                                                          <input name="Idiomas" value="es" data-aka="Seleccionar idiomas" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li style="margin-right: 22px;">
-                                                      <div class="chk-content">Inglés
-                                                          <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li style="margin-right: 22px;">
-                                                      <div class="chk-content">Portugués
-                                                          <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li style="margin-right: 22px;">
-                                                      <div class="chk-content">Francés
-                                                          <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li style="margin-right: 22px;">
-                                                      <div class="chk-content">Chino
-                                                          <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                              </ul>
-                                           </div>
-                                          <div class="form-group" id="Estudios">
-                                              <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-estudio" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-estudio')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
+                                              <div class="pad-right-middle" style="width:100%;">
+                                                  <label>IDIOMAS<span class="obligatorio">*</span></label>
+                                                  <ul class="checks">
+                                                      <li style="margin-right: 22px;">
+                                                          <div class="chk-content">Español
+                                                              <input name="Idiomas" value="es" data-aka="IDIOMAS*" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li style="margin-right: 22px;">
+                                                          <div class="chk-content">Inglés
+                                                              <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li style="margin-right: 22px;">
+                                                          <div class="chk-content">Portugués
+                                                              <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li style="margin-right: 22px;">
+                                                          <div class="chk-content">Francés
+                                                              <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li style="margin-right: 22px;">
+                                                          <div class="chk-content">Chino
+                                                              <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                              <div class="form-group" id="Estudios">
+                                                  <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
+                                                  <input class="form-control mg-bt-10 inp-estudio" id="EstudiosCertificaciones" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                                  <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-estudio', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                              </div>
+                                              <div class="form-group">
+                                                  <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
+                                                  <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
+                                              </div>
+                                              <div class="form-group" id="ExpLaboral">
+                                                  <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
+                                                  <input class="form-control mg-bt-10 inp-experiencia" id="Experiencias" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                                  <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-experiencia', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                              </div>
+                                              <div class="form-group" id="Logros">
+                                                  <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
+                                                  <input class="form-control mg-bt-10 inp-resultado" id="Resultados" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                                  <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-resultado', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                              </div>
+                                              <div class="form-group">
+                                                  <label>SELECCIONA EL NIVEL DE RENDIMIENTO DE LAS PERSONAS QUE ASESORAS<span class="obligatorio">*</span></label>
+                                                  <ul class="checks">
+                                                      <li>
+                                                          <div class="chk-content">Principiante
+                                                              <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li>
+                                                          <div class="chk-content">Intermedio
+                                                              <input name="NivelClientes" value="in" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li>
+                                                          <div class="chk-content">Avanzado
+                                                              <input name="NivelClientes" value="av" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li>
+                                                          <div class="chk-content">Profesional
+                                                              <input name="NivelClientes" value="pf" type="checkbox"/><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                              <div class="form-group" id="Especialidades">
+                                                  <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
+                                                  <input class="form-control mg-bt-10 inp-esp-domino" id="EspecDomino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                                  <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-esp-domino', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
+                                              </div>
+                                              <div class="form-group">
+                                                  <label>FORMA DE TRABAJO<span class="obligatorio">*</span></label>
+                                                  <ul class="checks">
+                                                      <li>
+                                                          <div class="chk-content">Al aire libre
+                                                              <input type="checkbox" name="FormaTrabajo" value="ai" data-aka="FORMA DE TRABAJO*"><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li>
+                                                          <div class="chk-content">Personalizado
+                                                              <input type="checkbox" name="FormaTrabajo" value="pe"><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li>
+                                                          <div class="chk-content">En grupo
+                                                              <input type="checkbox" name="FormaTrabajo" value="eg"><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                      <li>
+                                                          <div class="chk-content">Online
+                                                              <input type="checkbox" name="FormaTrabajo" value="on"><span class="checkmark"></span>
+                                                          </div>
+                                                      </li>
+                                                  </ul>
+                                              </div>
                                           </div>
-                                          <div class="form-group">
-                                              <label>MÉTODO DE TRABAJO<span class="obligatorio">*</span></label>
-                                              <textarea style="overflow: auto" class="form-control" rows="4" type="text" id="MetodoTrabajo" name="MetodoTrabajo"></textarea>
+                                          <button data-ficha-id="0" style="margin-bottom: 20px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
+                                          <input type="hidden" id="FichaClienteId"/>
+                                          <div class="row collapse" id="FichasDisponibles">
+                                              <div class="col col-md-12 text-center" style="padding-bottom:15px">
+                                                  <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                                      <h6>Standard</h6>
+                                                      <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                                  </div>
+                                                  <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
+                                                      <h6>Running</h6>
+                                                      <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
+                                                  </div>
+                                                  <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top: 14px; text-align: left !important; font-size: 0.9em;">
+                                                      <div class="chk-content" onclick="javascript:document.getElementById('InpMultipleFicha').click();" style="font-size: 1em; !important">
+                                                          <a href="javascript:void(0)">
+                                                              Si ofreces servicios tanto de running como de otras disciplinas, debes elegir ambas fichas clickando aquí
+                                                          </a>
+                                                          <input id="InpMultipleFicha" type="checkbox"><span class="checkmark"></span>
+                                                      </div>
+                                                  </div>
+                                                  <hr>
+                                              </div>
                                           </div>
-                                          <div class="form-group" id="ExpLaboral">
-                                              <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-experiencia" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-experiencia')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                          </div>
-                                          <div class="form-group" id="Logros">
-                                              <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-resultado" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 7, 'inp-resultado')"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                          </div>
-                                          <div class="form-group">
-                                              <label>Selecciona el nivel de rendimiento de las personas que asesoras</label>
-                                              <ul class="checks">
-                                                  <li>
-                                                      <div class="chk-content">Principiante
-                                                          <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">Intermedio
-                                                          <input name="NivelClientes" value="in" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">Avanzado
-                                                          <input name="NivelClientes" value="av" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">Profesional
-                                                          <input name="NivelClientes" value="pf" type="checkbox"/><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                              </ul>
-                                          </div>
-                                          <div class="form-group" id="Especialidades">
-                                              <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                              <input class="form-control mg-bt-10 inp-esp-domino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
-                                              <a href="javascript:void(0);" onclick="javascript:agregarInputDinamico(this, 5)"><i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>
-                                          </div>
-                                          <div class="form-group">
-                                              <label>FORMA DE TRABAJO<span class="obligatorio">*</span></label>
-                                              <ul class="checks">
-                                                  <li>
-                                                      <div class="chk-content">Al aire libre
-                                                          <input type="checkbox" name="FormaTrabajo" value="ai"><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">Personalizado
-                                                          <input type="checkbox" name="FormaTrabajo" value="pe"><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">En grupo
-                                                          <input type="checkbox" name="FormaTrabajo" value="eg"><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                                  <li>
-                                                      <div class="chk-content">Online
-                                                          <input type="checkbox" name="FormaTrabajo" value="on"><span class="checkmark"></span>
-                                                      </div>
-                                                  </li>
-                                              </ul>
-                                          </div>
+                                  </div>
+                                  <div class="tab-pane fade" id="contact">
+                                      <div class="form-group">
+                                          <label>CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
                                       </div>
-                                      <button data-ficha-id="0" style="margin-bottom: 20px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
-                                      <input type="hidden" id="FichaClienteId"/>
-                                      <div class="row collapse" id="FichasDisponibles">
-                                          <div class="col col-md-12 text-center" style="padding-bottom:15px">
-                                              <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                  <h6>Standard</h6>
-                                                  <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
-                                              </div>
-                                              <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                  <h6>Running</h6>
-                                                  <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
-                                              </div>
-                                              <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top: 14px; text-align: left !important; font-size: 0.9em;">
-                                                  <div class="chk-content" onclick="javascript:document.getElementById('InpMultipleFicha').click();" style="font-size: 1em; !important">
-                                                      <a href="javascript:void(0)">
-                                                          Si ofreces servicios tanto de running como de otras disciplinas, debes elegir ambas fichas clickando aquí
-                                                      </a>
-                                                      <input id="InpMultipleFicha" type="checkbox"><span class="checkmark"></span>
+                                      <div class="form-group">
+                                          <label>TELÉFONO</label>
+                                          <input class="form-control" type="text" id="Telefono" name="Telefono">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>MÓVIL<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="Movil" name="Movil">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
+                                          <select class="form-control hidden" id="TipoDocumento" name="TipoDocumento">
+                                              <option value="1">DNI</option>
+                                              <option value="2">CE</option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
+                                      </div>
+                                      <div class="form-group">
+                                          <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  <div class="col-md-5 col-sm-5">
+                                                      <label>DEPARTAMENTO:</label>
+                                                  </div>
+                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                      <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                          <option selected="selected" value="15">Lima</option>
+                                                      </select>
                                                   </div>
                                               </div>
-                                              <hr>
-                                          </div>
-                                      </div>
-                                  </form>
-                              </div>
-                              <div class="tab-pane fade" id="contact">
-                                  <div class="form-group">
-                                      <label>CORREO ELECTRONICO<span class="obligatorio">*</span></label>
-                                      <input class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
-                                  </div>
-                                  <div class="form-group">
-                                      <label>TELEFONO</label>
-                                      <input class="form-control" type="text" id="Telefono" name="Telefono">
-                                  </div>
-                                  <div class="form-group">
-                                      <label>CELULAR<span class="obligatorio">*</span></label>
-                                      <input class="form-control" type="text" id="Movil" name="Movil">
-                                  </div>
-                                  <div class="form-group">
-                                      <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                      <select class="form-control" id="TipoDocumento" name="TipoDocumento">
-                                          <option value="1">DNI</option>
-                                          <option value="2">CE</option>
-                                      </select>
-                                  </div>
-                                  <div class="form-group">
-                                      <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
-                                      <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
-                                  </div>
-                                  <div class="form-group">
-                                      <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
-                                      <div class="row">
-                                          <div class="col-md-12">
-                                              <div class="col-md-5 col-sm-5">
-                                                  <label>Departamento:</label>
+                                              <div class="col-md-12">
+                                                  <div class="col-md-5 col-sm-5">
+                                                      <label>PROVINCIA:</label>
+                                                  </div>
+                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                      <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                          <option selected="selected" value="01">Lima</option>
+                                                      </select>
+                                                  </div>
                                               </div>
-                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                  <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
-                                                      <option selected="selected" value="15">Lima</option>
-                                                  </select>
+                                              <div class="col-md-12">
+                                                  <div class="col-md-5 col-sm-5">
+                                                      <label>DISTRITO:</label>
+                                                  </div>
+                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
+                                                      <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                          <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
+                                                      </select>
+                                                  </div>
                                               </div>
-                                          </div>
-                                          <div class="col-md-12">
-                                              <div class="col-md-5 col-sm-5">
-                                                  <label>Provincia:</label>
-                                              </div>
-                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                  <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
-                                                      <option selected="selected" value="01">Lima</option>
-                                                  </select>
-                                              </div>
-                                          </div>
-                                          <div class="col-md-12">
-                                              <div class="col-md-5 col-sm-5">
-                                                  <label>Distrito:</label>
-                                              </div>
-                                              <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                  <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
-                                                      <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
-                                                  </select>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
-                                      <input class="form-control" type="text" id="Username" name="Username">
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
-                                      <input class="form-control" type="password" id="Password" name="Password">
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span></label>
-                                      <input class="form-control" type="text" id="NomPag" name="NomPag" maxlength="40">
-                                  </div>
-                              </div>
-                              <div class="tab-pane fade" id="service">
-                                  <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
-                                  <form>
-                                      <div class="ver-servicios">
-                                          <div id="NomServicios" class="form-group">
                                           </div>
                                       </div>
                                       <div class="form-group">
-                                          <label>DESCRIPCIÓN</label>
-                                          <p id="DescripcionServicio"></p>
-                                      </div>
-                                      <div class="form-group" id="MainIncluyeServicios">
-                                          <label>QUE INCLUYE</label>
-                                          <ul id="IncluyeServicio" class="list-counter">
-                                              <li></li>
-                                          </ul>
+                                          <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="text" id="Username" name="Username">
                                       </div>
                                       <div class="form-group">
-                                          <label>INFORMACIÓN ADICIONAL</label>
-                                          <p id="InfoAdicional"></p>
+                                          <label for="Password">PASSWORD<span class="obligatorio">*</span></label>
+                                          <input class="form-control" type="password" id="Password" name="Password">
                                       </div>
-                                      <hr>
-                                  </form>
+                                      <div class="form-group">
+                                          <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
+                                              <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
+                                          </label>
+                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="Nombre de página">
+                                      </div>
+                                      <div class="" style="padding-bottom: 10px; font-weight: 100;">
+                                          <label id="NomPagFull"></label>
+                                      </div>
+                                  </div>
+                                  <div class="tab-pane fade" id="service">
+                                      <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
+                                      <form>
+                                          <div class="ver-servicios">
+                                              <div id="NomServicios" class="form-group">
+                                              </div>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>DESCRIPCIÓN</label>
+                                              <p id="DescripcionServicio"></p>
+                                          </div>
+                                          <div class="form-group" id="MainIncluyeServicios">
+                                              <label>QUE INCLUYE</label>
+                                              <ul id="IncluyeServicio" class="list-counter">
+                                                  <li></li>
+                                              </ul>
+                                          </div>
+                                          <div class="form-group">
+                                              <label>INFORMACIÓN ADICIONAL</label>
+                                              <p id="InfoAdicional"></p>
+                                          </div>
+                                          <hr>
+                                      </form>
+                                  </div>
+                                  <input type="hidden" id="HshVerEmpTrainerId" th:value="${hshVerEmpTrainerId}">
+                                  <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
                               </div>
-                          <input type="hidden" id="HshVerEmpTrainerId" th:value="${hshVerEmpTrainerId}">
-                          <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
+                          </form>
                           <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
-                      </div>
                   </div>
               </div>
           </section>
@@ -364,19 +370,20 @@
       </div>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
+    <script th:src="@{/js/cropper.min.js}+'?'+${version}" type="text/javascript"></script>
     <script>
         const inpImgPerfil = document.getElementById('InpImgPerfil');
         const imgPerfil = document.getElementById('ImagePerfil');
         const inpMultipleFicha = document.getElementById('InpMultipleFicha');
         const btnGuardar = document.getElementById('btnGuardar');
         const btnVerPerEmpresa = document.getElementById('btnVerPerEmpresa');
-        const body = document.querySelector('body');
+        const frm = document.getElementById('frm_registro');
         const initTabActive = 1;
         let servicios = [];
         //Cropper
         let cropper = {};
         const actions = document.getElementById('actions');
+        const body = document.querySelector('body');
 
         (function () {
             uploadAndShow(inpImgPerfil, imgPerfil);
@@ -392,6 +399,60 @@
             })
             init();
         })();
+
+        function instanceCropper(){
+            actions.querySelector('.docs-buttons').onclick = function (e) {
+                let target = e.target;
+                let result;
+                let data;
+
+                if (!cropper) {
+                    return;
+                }
+
+                while (target !== this) {
+                    if (target.getAttribute('data-method')) {
+                        break;
+                    }
+
+                    target = target.parentNode;
+                }
+
+                if (target === this || target.disabled || target.className.indexOf('disabled') > -1) {
+                    return;
+                }
+
+                data = {
+                    method: target.getAttribute('data-method'),
+                    target: target.getAttribute('data-target'),
+                    option: target.getAttribute('data-option') || undefined,
+                    secondOption: target.getAttribute('data-second-option') || undefined
+                };
+
+                if (data.method) {
+                    switch (data.method) {
+                        case 'getCroppedCanvas':
+                            try {
+                                data.option = JSON.parse(data.option);
+                            } catch (e) {
+                                console.log(e.message);
+                            }
+                            break;
+                    }
+
+
+                    result = cropper[data.method](data.option, data.secondOption);
+
+                    switch (data.method) {
+                        case 'getCroppedCanvas':
+                            if (result) {
+                                $('#FinalImagenRecortada').attr('src', result.toDataURL(inpImgPerfil.files[0].type));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
 
         function clickMultipleFicha(e){
             const input = e.target;
@@ -422,8 +483,14 @@
             } else if (clases.contains('checkmark')) {
                 const padre = input.parentElement;
                 const inpCheck = padre.querySelector('input[type="checkbox"]');
-                inpCheck.checked = !inpCheck.checked;
+                if(inpCheck){
+                    inpCheck.checked = !inpCheck.checked;
+                }
+
+
             }
+
+            checkBoxAndRadioValidationEventListener(e, input, clases);
         }
 
         function clickImgPerfiL(e){
@@ -582,61 +649,11 @@
             getServiciosAsync();
             modalEventos();
             activeTooltips();
-            if(flag_form_populate){
-                populateForm();
-            }
+            constraintsValidation();
+            instanceCropper();
+            doMultiselectCheckBox();
+            if(flag_form_populate){populateForm();}
 
-            actions.querySelector('.docs-buttons').onclick = function (e) {
-                let target = e.target;
-                let result;
-                let data;
-
-                if (!cropper) {
-                    return;
-                }
-
-                while (target !== this) {
-                    if (target.getAttribute('data-method')) {
-                        break;
-                    }
-
-                    target = target.parentNode;
-                }
-
-                if (target === this || target.disabled || target.className.indexOf('disabled') > -1) {
-                    return;
-                }
-
-                data = {
-                    method: target.getAttribute('data-method'),
-                    target: target.getAttribute('data-target'),
-                    option: target.getAttribute('data-option') || undefined,
-                    secondOption: target.getAttribute('data-second-option') || undefined
-                };
-
-                if (data.method) {
-                    switch (data.method) {
-                        case 'getCroppedCanvas':
-                            try {
-                                data.option = JSON.parse(data.option);
-                            } catch (e) {
-                                console.log(e.message);
-                            }
-                            break;
-                    }
-
-
-                    result = cropper[data.method](data.option, data.secondOption);
-
-                    switch (data.method) {
-                        case 'getCroppedCanvas':
-                            if (result) {
-                                $('#FinalImagenRecortada').attr('src', result.toDataURL(inpImgPerfil.files[0].type));
-                            }
-                            break;
-                    }
-                }
-            }
         }
 
         function activeTooltips(){
@@ -874,6 +891,183 @@
             dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
             document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
             selServicioId = fSs.id;
+        }
+
+        function constraintsValidation() {
+            $(frm).validate({
+                errorClass: errorClass,
+                errorElement: errorElement,
+                highlight: function (element) {
+                    if(element.type === 'radio' || element.type==='checkbox'){
+                        let msgError = "";
+                        setTimeout(() => {
+                            const eleMsgError = document.querySelector(`#${element.name}-error`);
+                            if(eleMsgError != undefined){
+                                msgError = eleMsgError.textContent;
+                                eleMsgError.remove();
+                            }
+                        }, 100);
+                        const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+                        setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
+                    }else{
+                        $(element).removeClass('state-success').addClass("state-error");
+                        $(element).removeClass('valid');
+                    }
+                },
+                unhighlight: function (element) {
+                    if(element.type === 'radio' || element.type==='checkbox'){
+                        const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+                        parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
+                    } else {
+                        $(element).removeClass("state-error").addClass('state-success');
+                        $(element).addClass('valid');
+                    }
+                },
+                ignore: ".ignore",
+                rules: {
+                    Nombres: {
+                        required: true,
+                        rangelength: [3, 30],
+                        lettersonly: true
+
+                    },
+                    Apellidos: {
+                        required: true,
+                        rangelength: [3, 30],
+                        lettersonly: true
+                    },
+                    Sexo:{
+                        required: true
+                    },
+                    Especialidad:{
+                        required: true,
+                        rangelength: [5, 80]
+                    },
+                    DisciplinaId:{
+                        required: true
+                    },
+                    Acerca:{
+                        required: true,
+                        rangelength: [80, 2000]
+                    },
+                    Idiomas:{
+                        required: true
+                    },
+                    EstudiosCertificaciones:{
+                        required: true,
+                        rangelength: [8, 90]
+                    },
+                    MetodoTrabajo:{
+                        required: true,
+                        rangelength: [5, 1000]
+                    },
+                    Experiencias: {
+                        required: true,
+                        rangelength: [20, 90]
+                    },
+                    Resultados: {
+                        required: true,
+                        rangelength: [20, 90]
+                    },
+                    NivelClientes:{
+                        required: true
+                    },
+                    EspecDomino: {
+                        required: true,
+                        rangelength: [10, 80]
+                    },
+                    FormaTrabajo:{
+                        required: true
+                    },
+                    Telefono:{
+                        number: true,
+                        rangelength: [7, 11]
+                    },
+                    Movil:{
+                        required: true,
+                        number: true,
+                        notstartswith: "0",
+                        rangelength: [7, 13]
+                    },
+                    NumeroDocumento: {
+                        required: true,
+                        number: true,
+                        rangelength: [8, 13],
+                    },
+                    Username:{
+                        required: true,
+                        pattern: "[a-z]{3,}[0-9]*$",
+                        rangelength: [7, 30],
+                        alphanumeric: true
+                    },
+                    Password:{
+                        required: true,
+                        rangelength: [8, 30]
+                    },NomPag: {
+                        required: true,
+                        pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
+                        rangelength: [4, 40]
+                    }
+                },
+                messages: {
+                    Username: {
+                        pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
+                    },
+                    NombreServicio:{
+                        pattern: "Solo se admiten letras y números"
+                    },
+                    PrecioPaquete:{
+                        number: function(){
+                            setTimeout(() => {
+                                $('#IcoPrecioPaquete').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoPrecioPaquete" title="Solo se permiten números con punto como separador decimal"></i>';
+                        },
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoPrecioPaquete').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoPrecioPaquete" title="El valor debe ser mayor a 0"></i>';
+                        },
+                    },
+                    txtCantidadPersonas:{
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoTxtCantidadPersonas').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadPersonas" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
+                        }
+                    },
+                    txtCantidadMeses:{
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoTxtCantidadMeses').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadMeses" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
+                        }
+                    },
+                    txtCantidadSesiones:{
+                        min: function(){
+                            setTimeout(() => {
+                                $('#IcoTxtCantidadSesiones').tooltip();
+                            }, 200);
+                            return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
+                        }
+                    },
+                    NumeroCuentaSoles:{
+                        pattern: "Solo se permiten números y como separadores espacio y guión",
+                    },
+                    InterbancarioSoles:{
+                        pattern: "Solo se permiten números y como separadores espacio y guión",
+                    },
+                }
+            });
+
+            const rules = $(frm).validate().settings.rules;
+            Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+                console.log(e);
+                document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+            });
         }
 
     </script>

@@ -6,7 +6,7 @@
     <title>Inscripción de entrenadores | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/cropper.min.css}+'?'+${version}"/>
 </head>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -74,7 +74,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>ACERCA DE MI<span class="obligatorio">*</span></label>
+                                    <label>ACERCA DE MÍ<span class="obligatorio">*</span></label>
                                     <textarea class="form-control" id="Acerca" name="Acerca" data-aka="Acerca de mí"></textarea>
                                 </div>
                                 <div class="form-group">
@@ -632,10 +632,9 @@
     <br class="cb"/><b>Radio:</b> --
 </div>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-<script th:src="@{/js/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.1/cropper.min.js"></script>
+<script th:src="@{/js/cropper.min.js}+'?'+${version}" type="text/javascript"></script>
 <script>
 
     function sendForm(){
