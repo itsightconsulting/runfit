@@ -266,7 +266,6 @@ function checkBoxAndRadioValidationEventListener(e, input, clases){
                 $(truly).valid();
             }
         }
-
     }
 }
 

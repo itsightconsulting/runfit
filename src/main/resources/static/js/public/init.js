@@ -1,6 +1,6 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 0 == 1;
+var flag_form_populate = 1 == 1;
 var initPageActive = 1;
 var hiddenHeaderBar = 0 == 1;
 try {
@@ -365,6 +365,7 @@ function next_step_cs_rt(i){
         sels[i-1].parentElement.classList.add('active');
     }
     else {
+        console.log(checkList.inputs);
         smallBoxAlertValidation(checkList.inputs);
     }
     time_line();
