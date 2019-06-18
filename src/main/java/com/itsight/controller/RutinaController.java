@@ -371,7 +371,7 @@ public class RutinaController {
     public @ResponseBody String nueva(@RequestBody @Valid RutinaDTO rutinaDto,
                  @RequestParam(name = "key") String redFitnessId,
                  @RequestParam(name = "rn") String runnerId,
-                HttpSession session, BindingResult bindingResult) {
+                                      HttpSession session, BindingResult bindingResult) {
         if(!bindingResult.hasErrors()){
             int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
             int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);

@@ -57,6 +57,7 @@ public class ViewConstant {
     public static final String MAIN_AUDIO = "gestion/audio";
     public static final String MAIN_VIDEO = "gestion/video";
     public static final String MAIN_DOCUMENTO = "gestion/documento";
+    public static final String MAIN_TIPO_CATEGORIA = "gestion/tipo_categoria";
     public static final String MAIN_TIPO_VIDEO = "gestion/tipo_video";
     public static final String MAIN_SUB_TIPO_VIDEO = "gestion/sub_tipo_video";
     public static final String MAIN_RUTINARIO_CE = "gestion/rutinario_ce";

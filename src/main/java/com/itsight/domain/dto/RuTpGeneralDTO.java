@@ -14,6 +14,7 @@ public class RuTpGeneralDTO implements Serializable {
 
     private Integer redFitnessId;
     private Integer clienteId;
+    private Integer tipoRutinaId;
     private int anios;
     private int meses;
     private int totalSemanas;
@@ -24,4 +25,5 @@ public class RuTpGeneralDTO implements Serializable {
     private Date fechaFin;
     private List<SemanaPlantillaDTO> semanas;
     private RutinaControl control;
+
 }

@@ -27,7 +27,7 @@ public class RutinaDTO implements Serializable {
     private int meses;
     private int totalSemanas;
     private int dias;
-    private int tipoRutina;
+    private Integer tipoRutina;
     private int contadorRutinas;
     private String matrizMejoraVelocidades;
     private String matrizMejoraCadencia;

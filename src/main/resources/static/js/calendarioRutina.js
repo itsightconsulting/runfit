@@ -11,8 +11,6 @@ const divContent = document.querySelector('#content');
 $(function () {
     tabRutina.addEventListener('click', principalesEventosCalendario);
     divContent.addEventListener('click', principalesEventos);
-
-
 });
 
 function principalesEventosCalendario(e) {

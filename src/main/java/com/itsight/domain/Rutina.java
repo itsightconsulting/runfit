@@ -61,8 +61,15 @@ public class Rutina extends AuditingEntity {
     private int totalSemanas;
     @Column(nullable = false)
     private int dias;
-    @Column(nullable = false)
-    private int tipoRutina;
+
+    //ManytoOne
+    //Generatedvalue +
+    // id y nombre
+    //
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="TipoRutinaId", referencedColumnName = "TipoRutinaId")
+    private TipoRutina tipoRutina;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Temporal(TemporalType.DATE)
@@ -109,4 +116,7 @@ public class Rutina extends AuditingEntity {
 
     public void setRedFitness(Integer redFitnessId){this.redFitness = new RedFitness(redFitnessId);}
 
+    public void setTipoRutina(Integer tipoRutinaId) {
+        this.tipoRutina = new TipoRutina(tipoRutinaId);
+    }
 }

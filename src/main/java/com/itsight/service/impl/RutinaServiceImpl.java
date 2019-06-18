@@ -13,6 +13,7 @@ import com.itsight.repository.RutinaRepository;
 import com.itsight.service.RedFitnessService;
 import com.itsight.service.RuConsolidadoService;
 import com.itsight.service.RutinaService;
+import com.itsight.service.TipoRutinaService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -41,13 +42,16 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
     private RedFitnessService redFitnessService;
 
+    private TipoRutinaService tipoRutinaService;
+
     private HttpSession session;
 
     @Autowired
-    public RutinaServiceImpl(RutinaRepository repository, RuConsolidadoService ruConsolidadoService, RedFitnessService redFitnessService, HttpSession session) {
+    public RutinaServiceImpl(RutinaRepository repository, RuConsolidadoService ruConsolidadoService, RedFitnessService redFitnessService, TipoRutinaService tipoRutinaService, HttpSession session) {
         super(repository);
         this.ruConsolidadoService = ruConsolidadoService;
         this.redFitnessService = redFitnessService;
+        this.tipoRutinaService = tipoRutinaService;
         this.session = session;
     }
 
@@ -206,7 +210,9 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
         nueRutina.setLstSemana(semanas);
         nueRutina.setFlagActivo(false);
-        nueRutina.setTipoRutina(Enums.TipoRutina.RUNNING.get());
+        // nueRutina.setTipoRutina(Enums.TipoRutina.RUNNING.get());
+
+        nueRutina.setTipoRutina(rutinaDto.getTipoRutina());
         ruConsolidadoService.save(new RuConsolidado(rutinaDto.getGeneral(), rutinaDto.getStats(), rutinaDto.getMejoras(), rutinaDto.getMatrizMejoraVelocidades(), rutinaDto.getMatrizMejoraCadencia(), rutinaDto.getMatrizMejoraTcs(), rutinaDto.getMatrizMejoraLonPaso(), rutinaDto.getDtGrafico(), nueRutina));
         //AFTER REGISTRO LOS IDS YA SE PUEDEN RECUPERAR
         int[] arrSemIds = new int[nueRutina.getLstSemana().size()];
@@ -233,7 +239,9 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
         nueRutina.setLstSemana(semanas);
         nueRutina.setFlagActivo(false);
-        nueRutina.setTipoRutina(GENERAL.get());
+
+        // nueRutina.setTipoRutina(GENERAL.get());
+        nueRutina.setTipoRutina(rutina.getTipoRutinaId());
         repository.save(nueRutina);
         //AFTER REGISTRO LOS IDS YA SE PUEDEN RECUPERAR
         int[] arrSemIds = new int[nueRutina.getLstSemana().size()];

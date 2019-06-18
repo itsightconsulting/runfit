@@ -2,6 +2,7 @@ package com.itsight.domain.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.Rutina;
+import com.itsight.domain.TipoRutina;
 import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class RutinaPOJO implements Serializable {
     private int meses;
     private int totalSemanas;
     private int dias;
-    private int tipoRutina;
+    private TipoRutina tipoRutina;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaCliAcceso;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
