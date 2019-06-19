@@ -576,7 +576,7 @@ function addServiceAndcleanCampos(svc){
                                           </div>
                                           <div class="form-group">
                                               <label>INFORMACIÓN ADICIONAL</label>
-                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
+                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic"></textarea>
                                           </div>
                                           `;
     divCamposBasicos.innerHTML = htmlBasics;
@@ -788,15 +788,12 @@ function setBasicsServicio(svc){
     }
 }
 
-
-
 function eliminarCuentaBanco(){
     $.smallBox({
         color: "rgb(204, 77, 77)",
         content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>¿Estás seguro de eliminar esta cuenta bancaria?</em><br><br>" +
             "<div class='text-center'><button type='button' onclick='confirmarEliminarCB();' class='btn btn-danger' style='margin: 10px'>SI</button><button type='button' class='btn btn-primary' style='margin: 10px'>NO</button></div>" ,
         timeout: 12000});
-
 }
 
 function confirmarEliminarCB(){
@@ -831,9 +828,10 @@ function setIncluyeDelServicio(incluidos){
         mainIncluidos.innerHTML =
             `<label>QUE INCLUYE<span class="obligatorio">*</span></label>
                      <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" maxlength="500" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
-                     <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right" style="color: #a8fa00;padding-right: 5px;padding-top: 5px"></i></a>`;
+                     <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>`;
         const firstInput = mainIncluidos.querySelector('textarea');
         const btnPlus = mainIncluidos.querySelector('a');
+
         firstInput.value = arrIncluidos[0];
         arrIncluidos.slice(1).forEach((e,i)=>{
             const ele = agregarTextareaDinamico(btnPlus, 10, 'inp-svc-incluye', 500).firstElementChild;

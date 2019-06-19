@@ -12,16 +12,16 @@ import java.io.Serializable;
 @Data
 public class ContactoTrainerDTO implements Serializable {
 
-    @Size(max = 100)
+    @Size(min=5, max = 60)
     @NotBlank
     private String nombre;
 
-    @Size(max = 40)
+    @Size(min=7, max = 40)
     @ExtendedEmailValidator
     @NotBlank
     private String correo;
 
-    @Size(max = 16)
+    @Size(min=7, max = 13)
     @NotBlank
     private String movil;
 

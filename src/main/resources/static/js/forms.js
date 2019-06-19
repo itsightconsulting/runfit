@@ -158,15 +158,12 @@ function agregarTextareaDinamico(e, max, clase){
 
 function agregarTextareaDinamico(e, max, clase, maxlength){
     const len = e.parentElement.children.length;
-    if(len === max+1){
-        e.classList.add('hide');
-    }
     const previous = e.previousElementSibling;
     previous.insertAdjacentElement('afterend', htmlStringToElement(`<li><textarea class="form-control mg-bt-10 ${clase}" type="text" maxlength="${maxlength}"></textarea></li>`));
-    const textarea = e.previousElementSibling.firstElementChild;
+    const textarea = previous.firstElementChild;
     textarea.setAttribute('name', `${clase+len}`);
     $(textarea).rules("add",{rangelength: [8, 500]});
-    return previous;
+    return previous.nextElementSibling;
 }
 
 function acumuladorMas(id){

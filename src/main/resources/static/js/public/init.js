@@ -248,7 +248,6 @@ function next_step(sheetNumber, toSheetNumber) {
 function smallBoxAlertValidation(inputsNotPassed){
     const tout = (2000*(inputsNotPassed.length)) + 4000;
     const strCamps = inputsNotPassed.map(v=>{
-        console.log(v);
         const previous = v.previousElementSibling;
         const nomFinal = previous === null ? v.getAttribute('data-aka').toUpperCase() : previous.textContent;
         return `<i class="fa fa-dot-circle-o fa-fw"></i>${nomFinal}<br>`

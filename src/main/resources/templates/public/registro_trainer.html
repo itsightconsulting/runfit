@@ -50,7 +50,7 @@
                                         <ul class="checks">
                                             <li>
                                                 <div class="chk-content">Masculino
-                                                    <input name="Sexo" data-aka="Sexo" value="1" type="radio"><span class="checkmark"></span>
+                                                    <input name="Sexo" data-aka="SEXO" value="1" type="radio"><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>ACERCA DE MÍ<span class="obligatorio">*</span></label>
-                                    <textarea class="form-control" id="Acerca" name="Acerca" data-aka="Acerca de mí"></textarea>
+                                    <textarea class="form-control" id="Acerca" name="Acerca"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <div class="pad-right-middle" style="width:100%;">
@@ -304,7 +304,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade inpts-3" id="service">
-                                <h4>Mis servicios</h4>
+                                <h4>MIS SERVICIOS</h4>
                                 <div>
                                     <div class="ver-servicios">
                                     </div>
@@ -350,7 +350,6 @@
                                             <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
                                             <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
                                             <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
@@ -540,8 +539,6 @@
                         </div>
                     </form>
                     <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
-
-
                 </div>
             </div>
     </section>
@@ -762,7 +759,7 @@
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
 
         //Servicios
-        /*document.querySelector('#NombreServicio').value = "Performance PRO";
+        document.querySelector('#NombreServicio').value = "Performance PRO";
         document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
         document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
             '\n' +
@@ -793,20 +790,24 @@
         document.getElementById('btnNuevaTarifa').click();
 
         //Información de pago
-        document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
-        document.getElementById('TitularNumDoc').value = "35311222";
-        document.getElementById('NumeroCuentaSoles').value = "194-91022548-0-66";
-        document.getElementById('InterbancarioSoles').value = "00219419102254806693";
-        document.getElementById('NumeroCuentaDolares').value = "192-91022548-0-66";
-        document.getElementById('InterbancarioDolares').value = "10219419102254806693";
+        document.querySelectorAll('.info-pago')[1].click();
         document.getElementById('btnNuevaInfoPago').click();
+        setTimeout(() => {
+            document.querySelectorAll('.info-pago')[2].click();
+            document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
+            document.getElementById('NumeroCuentaSoles').value = "194-91022548-0-66";
+            document.getElementById('InterbancarioSoles').value = "00219419102254806693";
+            document.getElementById('btnNuevaInfoPago').click();
+        }, 1000);
+
+
 
         document.querySelector('#inpTermCond').checked = true;
 
         setTimeout(()=>{
             document.getElementById('btnElegirFicha').click();
             setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
-            }, 500);*/
+            }, 500);
     }
 
     function generateBody(){
@@ -817,6 +818,7 @@
         if(!obj.horario){
             delete obj.horario;
         }
+
         //Ubigeo
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();

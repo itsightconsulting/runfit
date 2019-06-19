@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.management.Query;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -331,8 +332,7 @@ public class TrainerFichaController extends BaseController {
             model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
             return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
         }
-            return new ModelAndView(ViewConstant.P_ERROR404);
-
+        return new ModelAndView(ViewConstant.P_ERROR404);
     }
 
     @PostMapping("/empresa/agregar/sub/{hshEmpTraId}")
@@ -340,7 +340,6 @@ public class TrainerFichaController extends BaseController {
             @PathVariable String hshEmpTraId,
             @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException, IOException {
         Integer empTraId = getDecodeHashId("rf-emp-trainer", hshEmpTraId);
-        trainerFicha.setCorreo(trainerFicha.getCorreo());
         Integer ttId = trainerService.getTipoTrainerIdById(empTraId);
         if(ttId != null && ttId == 2) {
             String[] ccsAndMediosPago = trainerFichaService.obtenerCcsAndMediosPagoById(empTraId).split("@");

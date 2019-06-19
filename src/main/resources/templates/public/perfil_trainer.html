@@ -159,11 +159,11 @@
                               </div>
                           </div>
                           <div class="form-group">
-                              <label>¿CUÁL ES TU SEXO?</label>
+                              <label>¿CUÁL ES TU SEXO?<span class="obligatorio">*</span></label>
                               <ul class="checks">
                                   <li>
                                       <div class="chk-content">Hombre
-                                          <input name="Sexo" type="radio" value="1"><span class="checkmark"></span>
+                                          <input name="Sexo" data-aka="¿CUÁL ES TU SEXO?" type="radio"  value="1"><span class="checkmark"></span>
                                       </div>
                                   </li>
                                   <li>
@@ -181,12 +181,12 @@
                           </div>
                           <div class="form-group">
                               <div class="pad-right-middle">
-                                  <label>CELULAR<span class="obligatorio">*</span></label>
+                                  <label>MÓVIL<span class="obligatorio">*</span></label>
                                   <input id="Movil" name="Movil" class="form-control" type="text">
                               </div>
                           </div>
                           <div class="form-group">
-                              <label>CUÉNTANOS EN QUÉ TE PODEMOS AYUDAR</label>
+                              <label>CUÉNTANOS EN QUÉ TE PODEMOS AYUDAR<span class="obligatorio">*</span></label>
                               <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
                           </div>
                           <button id="btnInfoContacto" class="btn btn-default btn-black" type="button">ENVIAR</button>
@@ -353,7 +353,7 @@
                         </div>
                         <!--end carousel-inner-->
                         <!--Begin Previous and Next buttons-->
-                        <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"><i class="fa fa-chevron-left"></i></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"><i class="fa fa-chevron-right"></i></span></a>
+                        <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span></a>
                         <!--end carousel--></div>
                     <!--end modal-body--></div>
                 <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
@@ -416,6 +416,7 @@
       const btnAbrirCajaNotificacion = document.getElementById('btnAbrirCajaNotificacion');
       const tabService = document.getElementById('service');
       const body = document.querySelector('body');
+      const frm = document.getElementById('frm_contacto');
       let ccBancarias = [];
       let servicios = [];
       let selServicioId = -1;
@@ -425,6 +426,8 @@
           btnElegir.addEventListener('click', irARegistro);
           btnInfoContacto.addEventListener('click', registrarContactoTrainer);
           tabService.addEventListener('click', clickListenerTabService);
+          body.addEventListener('click', bodyClickEventListener);
+          body.addEventListener('focusout', bodyFocusOutEventListener);
           if(btnAprobarTrainer !== null){
               btnAprobarTrainer.addEventListener('click', aprobacionFinalTrainer);
               btnAbrirCajaNotificacion.addEventListener('click', (e)=>{
@@ -432,7 +435,6 @@
                   document.getElementById('SeccionCorreccion').classList.remove('hidden');
               });
           }
-
           init();
       })();
 
@@ -550,11 +552,14 @@
               });
               all[ix].parentElement.classList.remove('hidden');
           }
+          checkBoxAndRadioValidationEventListener(e, input, clases);
+
       }
 
       function init(){
         getTrainer();
         checkFrom();
+        constraintsValidation();
       }
 
       function checkFrom(){
@@ -614,8 +619,11 @@
       }
 
       function registrarContactoTrainer(){
-          const $frm = document.getElementById('frm_contacto');
-          const params = getFormData($($frm));
+
+          if(!$(frm).valid()){
+              return;
+          }
+          const params = getFormData($(frm));
           const inpSexo = document.querySelector('input[name="Sexo"]:checked');
           params.sexo = inpSexo === null ? '': inpSexo.value;
           params.correoTrainer = $perfil.correo;
@@ -1046,6 +1054,73 @@
                 ${objValoracion.exactaValoracion.toFixed(1)}<span> (${objValoracion.valoraciones} valoraciones)</span>
           `;
       }
+
+      function constraintsValidation() {
+
+          $('#frm_contacto').validate({
+              errorClass: errorClass,
+              errorElement: errorElement,
+              highlight: function (element) {
+                  if(element.type === 'radio' || element.type==='checkbox'){
+                      let msgError = "";
+                      setTimeout(() => {
+                          const eleMsgError = document.querySelector(`#${element.name}-error`);
+                          if(eleMsgError != undefined){
+                              msgError = eleMsgError.textContent;
+                              eleMsgError.remove();
+                          }
+                      }, 100);
+                      const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+                      setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
+                  }else{
+                      $(element).removeClass('state-success').addClass("state-error");
+                      $(element).removeClass('valid');
+                  }
+              },
+              unhighlight: function (element) {
+                  if(element.type === 'radio' || element.type==='checkbox'){
+                      const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+                      parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
+                  } else {
+                      $(element).removeClass("state-error").addClass('state-success');
+                      $(element).addClass('valid');
+                  }
+              },
+              ignore: ".ignore",
+              rules: {
+                  Nombre: {
+                      required: true,
+                      rangelength: [5, 60],
+                      lettersonly: true
+                  },
+                  Correo: {
+                      required: true,
+                      emailAddress: true,
+                      rangelength: [7, 40]
+                  },
+                  Movil: {
+                      required: true,
+                      number: true,
+                      notstartswith: "0",
+                      rangelength: [7, 13]
+                  },
+                  Mensaje: {
+                      required: true,
+                      rangelength: [5, 1000],
+                  },
+                  Sexo:{
+                      required: true
+                  }
+              },
+              messages:{}
+          });
+
+          const rules = $(frm).validate().settings.rules;
+          Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+              document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+          });
+      }
+
     </script>
   </body>
 </html>

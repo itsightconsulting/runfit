@@ -29,13 +29,13 @@
                       </div>
                       <div class="col-md-7">
                           <ul class="nav nav-tabs">
-                              <li><a data-toggle="tab" href="#about"><span>ACERCA DE MÍ</span></a></li>
-                              <li><a data-toggle="tab" href="#contact"><span>CONTACTO</span></a></li>
-                              <li><a data-toggle="tab" href="#service"><span>SERVICIOS</span></a></li>
+                              <li class="active"><a class="step step-01" data-num-sheet="1" onclick="next_step_cs_rt(1)"><span>ACERCA DE MÍ</span></a></li>
+                              <li><a class="step step-02" data-num-sheet="2" onclick="next_step_cs_rt(2)"><span>CONTACTO</span></a></li>
+                              <li><a class="step step-03" data-num-sheet="3" onclick="next_step_cs_rt(3)"><span>SERVICIOS</span></a></li>
                           </ul>
                           <form id="frm_registro">
                               <div class="tab-content">
-                                  <div class="tab-pane fade" id="about">
+                                  <div class="tab-pane fade in inpts-1" id="about">
                                       <div class="form-group">
                                           <div class="">
                                               <label>NOMBRE(S)<span class="obligatorio">*</span></label>
@@ -50,7 +50,7 @@
                                               <ul class="checks">
                                                   <li>
                                                       <div class="chk-content">Masculino
-                                                          <input name="Sexo" data-aka="Sexo" value="1" type="radio"><span class="checkmark"></span>
+                                                          <input name="Sexo" data-aka="SEXO" value="1" type="radio"><span class="checkmark"></span>
                                                       </div>
                                                   </li>
                                                   <li>
@@ -207,10 +207,10 @@
                                               </div>
                                           </div>
                                   </div>
-                                  <div class="tab-pane fade" id="contact">
+                                  <div class="tab-pane fade inpts-2" id="contact">
                                       <div class="form-group">
                                           <label>CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="Correo" name="Correo" disabled="disabled">
+                                          <input class="form-control" type="text" id="Correo" name="Correo">
                                       </div>
                                       <div class="form-group">
                                           <label>TELÉFONO</label>
@@ -284,7 +284,7 @@
                                           <label id="NomPagFull"></label>
                                       </div>
                                   </div>
-                                  <div class="tab-pane fade" id="service">
+                                  <div class="tab-pane fade inpts-3" id="service">
                                       <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
                                       <form>
                                           <div class="ver-servicios">
@@ -389,7 +389,8 @@
             uploadAndShow(inpImgPerfil, imgPerfil);
             showInitTab(initTabActive);
             body.addEventListener('click', bodyClickEventListener);
-            btnGuardar.addEventListener('click', sendForm);
+            body.addEventListener('focusout', bodyFocusOutEventListener);
+            btnGuardar.addEventListener('click', sendMainForm);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
             inpMultipleFicha.addEventListener('click', clickMultipleFicha);
@@ -399,6 +400,17 @@
             })
             init();
         })();
+
+        function sendMainForm(e){
+            e.preventDefault();//To avoid form sended automatically
+            const checkList1 = validationByNumSheet(1);
+            const checkList2 = validationByNumSheet(2);
+            if(checkList1.isValid && checkList2.isValid){
+                sendForm();
+            }else {
+                smallBoxAlertValidation(checkList1.inputs.concat(checkList2.inputs));
+            }
+        }
 
         function instanceCropper(){
             actions.querySelector('.docs-buttons').onclick = function (e) {
@@ -486,10 +498,7 @@
                 if(inpCheck){
                     inpCheck.checked = !inpCheck.checked;
                 }
-
-
             }
-
             checkBoxAndRadioValidationEventListener(e, input, clases);
         }
 
@@ -732,10 +741,10 @@
         }
 
         function showInitTab(numTab){
-            const tabIds = ["", "about", "contact", "service"];
-            document.querySelector(`a[href="#${tabIds[numTab]}"]`).parentElement.classList.add('active');
-            document.querySelector(`#${tabIds[numTab]}`).classList.add('in');
-            document.querySelector(`#${tabIds[numTab]}`).classList.add('active');
+            //const tabIds = ["", "about", "contact", "service"];
+            //document.querySelector(`a[href="#${tabIds[numTab]}"]`).parentElement.classList.add('active');
+            //document.querySelector(`#${tabIds[numTab]}`).classList.add('in');
+            //document.querySelector(`#${tabIds[numTab]}`).classList.add('active');
         }
 
         function ocultarModalTermCondYAceptar(){
@@ -750,11 +759,12 @@
             const t1 = t0.slice(-3);
             const t2 = t0.slice(-6).slice(0, 3);
 
-            document.querySelector('#Nombres').value = "Pedro "+t1 + " "+ t2;
-            document.querySelector('#Apellidos').value = "Pedro "+t1 + " "+ t2;
+            document.querySelector('#Nombres').value = "Pedro ";
+            document.querySelector('#Apellidos').value = "Roscate ";
             document.querySelector('input[name="Sexo"]').checked = true;
-            document.getElementById('Username').value = "Pedro"+t1 + ""+ t2;
+            document.getElementById('Username').value = "pedro"+t1 + ""+ t2;
             document.getElementById('Password').value = "runfit123";
+            document.getElementById('NomPag').value = "pedro"+t1 + ""+ t2;
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
             populateTabContacto(t0, t1, t2);
@@ -765,6 +775,7 @@
             "Diplomado en rehabilitación enfocada en deportista calificados",
             "Curso en rescate en el agua",
             "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+            document.querySelector('#EstudiosCertificaciones').value = "Diplomado en nutrición para atletas";
             document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
                 '\n' +
                 'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
@@ -773,19 +784,22 @@
             ["Entrenador en AquaLab (2013 – hasta la fecha)",
              "Entrenador freelance (2005 – hasta la fecha)",
              "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
-            //Experiencia Laboral
+            document.querySelector('#Experiencias').value = "Diplomado en nutrición para atletas";
+            //Resultados
             const inpRes = document.querySelector('.inp-resultado');
             ["Juan Pérez, campeón en natación 100 m libres (2017)",
                 "Rocío Flores, campeona sudamericana 4x100 m (2017)",
                 "Michael Barros, campeón en natación 4x200 (2016)",
                 "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+            document.querySelector('#Resultados').value = "Diplomado en nutrición para atletas";
             //Especialidades que domino
             const inpEspDom = document.querySelector('.inp-esp-domino');
             ["Entrenamiento en grupo",
                 "Entrenamiento uno a uno",
                 "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+            document.querySelector('#EspecDomino').value = "Diplomado en nutrición para atletas";
 
-            document.querySelector('#Telefono').value = `01 777 6666`;
+            document.querySelector('#Telefono').value = `017776666`;
             document.querySelector('#NumeroDocumento').value = `23232323`;
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
@@ -827,13 +841,7 @@
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
             obj.fichaClienteIds = inpMultipleFicha.checked ? "1|2" : Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
-            const rdmNum = Math.floor(Math.random() * 100);
-            const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
-            if(flag_form_populate){
-                obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
-            }else{
-                obj.nomPag = document.getElementById('NomPag').value;
-            }
+            obj.nomPag = document.getElementById('NomPag').value;
             return obj;
         }
 
@@ -979,6 +987,11 @@
                     FormaTrabajo:{
                         required: true
                     },
+                    Correo: {
+                        required: true,
+                        emailAddress: true,
+                        rangelength: [7, 40]
+                    },
                     Telefono:{
                         number: true,
                         rangelength: [7, 11]
@@ -1065,7 +1078,6 @@
 
             const rules = $(frm).validate().settings.rules;
             Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
-                console.log(e);
                 document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
             });
         }
