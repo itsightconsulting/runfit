@@ -815,10 +815,6 @@
         obj.sexo = Number($('input[name="Sexo"]:checked').val());
         obj.disciplinaIds = $('#DisciplinaId').val().join('|');
 
-        if(!obj.horario){
-            delete obj.horario;
-        }
-
         //Ubigeo
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
@@ -854,7 +850,19 @@
             obj.redes = redes.nombres;
         }
 
-        //Validando lista servicios
+        if(!obj.horario){
+            delete obj.horario;
+        }
+
+        if(!obj.centroTrabajo){
+            delete obj.centroTrabajo;
+        }
+
+        if(!obj.telefono){
+            delete obj.telefono;
+        }
+
+        //Validando lista servicios con el fin de pasar la validación en caso no se haya especificado el campo infoAdicional
         obj.servicios.forEach(e=>{
             if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
                 delete e.infoAdicional;

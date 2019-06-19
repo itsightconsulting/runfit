@@ -176,7 +176,7 @@
                             </label>
                           </div>
                           <!-- TARIFARIOS -->
-                          <h4 class="sub-title">TARIFARIOS</h4>
+                          <h4 id="CabeceraTarifarios" class="sub-title">TARIFARIOS</h4>
                           <div class="row">
                               <div class="col col-md-12 text-center" id="Tarifarios">
                               </div>
@@ -194,7 +194,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>CANTIDAD DE PERSONAS</label>
+                                          <label>CANTIDAD DE PERSONAS:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
                                           <ul class="counter">
@@ -208,7 +208,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>CANTIDAD DE MESES</label>
+                                          <label>CANTIDAD DE MESES:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
                                           <ul class="counter">
@@ -222,7 +222,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>CANTIDAD DE SESIONES</label>
+                                          <label>CANTIDAD DE SESIONES:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
                                           <ul class="counter">
@@ -236,7 +236,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.)</label>
+                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.):</label>
                                       </div>
                                       <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
                                           <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
@@ -442,6 +442,13 @@
       function setTarifarios(tarifarios){
           const dt = document.getElementById('Tarifarios');
           dt.innerHTML = "";
+          if(!tarifarios.length){
+              document.querySelector('#contentTarifario').classList.add('hidden');
+              document.querySelector('#CabeceraTarifarios').classList.add('hidden');
+          }else{
+              document.querySelector('#contentTarifario').classList.remove('hidden');
+              document.querySelector('#CabeceraTarifarios').classList.remove('hidden');
+          }
           tarifarios.forEach((t,ix)=>{
               t.id = ix;
               dt.appendChild(
