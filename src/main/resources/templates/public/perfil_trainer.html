@@ -97,7 +97,7 @@
                       <ul id="Niveles" class="list-description">
                       </ul>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dvCentroTrabajo">
                       <label>CENTRO DE TRABAJO</label>
                       <p id="CentroTrabajo"></p>
                     </div>
@@ -838,7 +838,9 @@
         setValoracion(t.canPerValoracion, t.totalValoracion);
         document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
-        document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
+        if(t.centroTrabajo){
+            document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
+        }
         let res = document.querySelector('#Resultados');
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
