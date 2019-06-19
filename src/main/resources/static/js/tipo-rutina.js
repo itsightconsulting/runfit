@@ -13,7 +13,7 @@
         pageSetUp();
         listarRegistros();
 
-                    $('#Operacion').text('Registrar');
+        $('#Operacion').text('Registrar');
 
 
         body.addEventListener("focusout", bodyFocusOutEventListener);
@@ -259,13 +259,7 @@
         }
     }
 
-        function isFieldPresent(value) {
 
-          console.log(value);
-
-
-          return value.length > 0;
-        }
 
     function validarRegistros() {
 
