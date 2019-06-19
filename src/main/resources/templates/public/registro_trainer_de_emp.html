@@ -1006,6 +1006,10 @@
                         required: true,
                         number: true,
                         rangelength: [8, 13],
+                        customnumdoc: function(){
+                            const val = $('#TipoDocumento').val();
+                            return val;
+                        }
                     },
                     Username:{
                         required: true,
@@ -1015,7 +1019,8 @@
                     },
                     Password:{
                         required: true,
-                        rangelength: [8, 30]
+                        rangelength: [8, 30],
+                        pwcheck: true
                     },NomPag: {
                         required: true,
                         pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",

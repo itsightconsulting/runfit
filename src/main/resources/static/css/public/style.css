@@ -3549,4 +3549,12 @@ textarea.inp-svc-incluye{
     height: 74px !important;
 }
 
+input.form-control ~ em {
+  color: #E54C4B
+}
+
+textarea.form-control ~ em {
+  color: #E54C4B
+}
+
 
