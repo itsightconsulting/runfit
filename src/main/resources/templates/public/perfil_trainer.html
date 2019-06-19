@@ -870,7 +870,9 @@
         selServicioId = 0;
         checkMapaAndGaleria(t);
         checkRedesAndNota(t);
-        populateContactoTabAndObs(t);
+        if(flag_form_populate){
+            populateContactoTabAndObs(t);
+        }
       }
 
       function checkMapaAndGaleria(t){

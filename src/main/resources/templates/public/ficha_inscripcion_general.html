@@ -739,11 +739,11 @@
                     <div class="login-register">
                       <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
                         <label style="width: 110px !important;" for="Username">Usuario</label>
-                        <input type="text" id="Username" name="Username" style="padding: 6px 12px" aria-invalid="false" class="">
+                        <input type="text" class="form-control" id="Username" name="Username" style="padding: 6px 12px;width: 30%" aria-invalid="false">
                       </div>
                       <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
                         <label style="width: 112px !important;" for="Password">Contraseña</label>
-                        <input type="password" id="Password" name="Password" style="padding: 6px 12px" aria-invalid="false" class="">
+                        <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
                       </div>
                     </div>
                   </div>
@@ -1408,10 +1408,14 @@
           required: true
         },
         Username: {
-          required: true
+          required: true,
+          pattern: "[a-z]{3,}[0-9]*$",
+          rangelength: [7, 30],
+          alphanumeric: true
         },
         Password: {
-          required: true
+          required: true,
+          rangelength: [8, 30]
         }
       },
       messages: {
@@ -1449,6 +1453,9 @@
         },
         KilometrajePromedioSemana: {
           required: "El campo es obligatorio"
+        },
+        Username: {
+          pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
         }
       }
     });

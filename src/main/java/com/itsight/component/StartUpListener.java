@@ -592,6 +592,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void addingTipoDocumentoToTable(){
         if(tipoDocumentoService.findOne(1) == null) tipoDocumentoService.save(new TipoDocumento("DNI"));
         if(tipoDocumentoService.findOne(2) == null) tipoDocumentoService.save(new TipoDocumento("CE"));
+        if(tipoDocumentoService.findOne(3) == null) tipoDocumentoService.save(new TipoDocumento("RUC"));
     }
 
     public void addingConfiguracionGeneralToTable(){
