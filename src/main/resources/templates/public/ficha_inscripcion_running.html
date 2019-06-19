@@ -1293,7 +1293,8 @@
 
       const stUbicacion = document.getElementById('stUbicacion');
       const mainFrm = document.getElementById('frm_registro');
-      const btGuardar = document.getElementById('btnGuardar');
+      const btnGuardar = document.getElementById('btnGuardar');
+      const body = document.querySelector('body');
       let lstCondMejoras = [];
 
       (function () {
@@ -1305,6 +1306,7 @@
         mainEventListeners();
         tooltipsOn();
         constraintsValidation();
+        
       }
 
       function mainSeeders(){
@@ -1372,9 +1374,9 @@
 
       function mainEventListeners(){
         stUbicacion.addEventListener('change', evtLsChangeUbicacion);
-        btGuardar.addEventListener('click', sendMainForm);
-        document.querySelector('body').addEventListener('click', musculosDelCuerpo);
-
+        btnGuardar.addEventListener('click', sendMainForm);
+        document.querySelector('body').addEventListener('click', bodyClickEventListener);
+        document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
       }
 
       function tooltipsOn(){
@@ -1405,7 +1407,7 @@
         }
       }
 
-      function musculosDelCuerpo(e){
+      function bodyClickEventListener(e){
         const input = e.target;
         const clases = input.classList;
 
@@ -1439,6 +1441,19 @@
             })
           }
           regenerarListaMusculosSeleccionados();
+        }
+        checkBoxAndRadioValidationEventListener(e, input, clases);
+      }
+
+      function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+          if(input.type==="text" || input.type==="number"){
+            input.value = input.value.trim();
+          }
+        }
+        if(input.tagName === "TEXTAREA"){
+          input.value = input.value.trim();
         }
       }
 
@@ -1489,6 +1504,9 @@
           success: function (res) {
             if(res == "-1"){
               $.smallBox({});
+              setTimeout(() => {
+                document.querySelector('.login_link').click();
+              }, 2500);
               //window.location.reload();
             }
             console.log(res);

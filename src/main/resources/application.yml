@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: herokudev
+    active: production
   jpa:
     hibernate:
         ddl-auto: none
