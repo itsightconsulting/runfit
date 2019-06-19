@@ -35,7 +35,6 @@ public class TipoRutinaController {
         return new ModelAndView(ViewConstant.MAIN_TIPO_RUTINA);
     }
 
-
     @GetMapping(value="/obtener/{txtFiltro}/{estado}")
     public @ResponseBody
     List<TipoRutina> obtenerTipoRutina(@PathVariable("txtFiltro") String txtFiltro, @PathVariable("estado") String estado)

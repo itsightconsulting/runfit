@@ -13,7 +13,7 @@ public class TipoRutinaDTO implements Serializable {
     @PositiveOrZero
     private Integer id;
 
-    @Size(max=250)
+    @Size(max=100)
     @NotBlank
     private String nombre;
 
