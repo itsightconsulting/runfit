@@ -45,6 +45,7 @@ public class ViewConstant {
     public static final String MAIN_PRODUCTO = "gestion/producto";
     public static final String MAIN_CATEGORIA = "gestion/categoria";
     public static final String MAIN_RUTINA_NUEVO = "gestion/rutina/nueva_rutina";
+    public static final String MAIN_TIPO_RUTINA = "gestion/tipo_rutina";
     public static final String MAIN_PAQUETE = "gestion/paquete";
     public static final String MAIN_OBJETIVO = "gestion/objetivo";
     public static final String MAIN_PLAN = "gestion/plan";

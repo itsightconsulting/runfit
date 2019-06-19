@@ -79,11 +79,9 @@
                             <tr>
                                 <th data-field="id" data-halign="center" data-valign="middle" data-align="center"
                                     data-width="30" data-title="Código"></th>
-                                <th data-field="nombre" data-formatter="linkFormatter" data-halign="left"
-                                    data-valign="middle" data-align="left" data-title="Nombre"></th>
-                                <th data-field="descripcion" data-halign="left" data-valign="middle" data-align="left"
-                                    data-title="Descripcion"></th>
-                                <th data-formatter="isActived" data-halign="center" data-valign="middle"
+                                <th data-field="nombre"  data-halign="left"
+                                    data-valign="middle" data-formatter="linkFormatter" data-align="left"  data-title="Nombre"></th>
+                                <th data-field="flagActivo" data-formatter="isActived" data-halign="center" data-valign="middle"
                                     data-align="center" data-width="80" data-class="td-status" data-title="Estado"></th>
                                 <th data-formatter="Opciones" data-halign="center" data-valign="middle"
                                     data-align="center" data-width="120" data-title="Acciones"></th>
@@ -110,6 +108,7 @@
                                             <div class="row">
                                                 <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
                                                     <section class="">
+
                                                         <label class="label">Nombre: </label>
                                                         <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                             <input id="Nombre" name="Nombre" type="text"
@@ -121,18 +120,7 @@
                                                     </section>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <section class="">
-                                                        <label class="label">Descripción: </label>
-                                                        <label class="input"><i class="icon-append fa fa-asterisk"></i>
-                                                            <input id="Descripcion" name="Descripcion" type="text"
-                                                                   placeholder="Descripción" maxlength="255"/>
-                                                            <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                        </label>
-                                                    </section>
-                                                </div>
-                                            </div>
+
                                             <div class="row">
                                                 <section class="col col-6">
                                                 </section>
@@ -233,241 +221,7 @@ you can add as many as you like
 
 
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var $table = $('#tblRegistros');
-    var $index = $('#Id');
-
-
-    $(function () {
-
-        pageSetUp();
-        listarRegistros();
-
-        //V A L I D A T E
-        validarRegistros();
-
-        $("#btnNuevo").click(function () {
-            $('#Operacion').text('Registrar');
-            irRegistro();
-        });
-
-        $("#btnGuardar").click(function () {
-            registro();
-        });
-
-        $("#btnCancelar").click(function () {
-            irListado($index);
-        });
-
-        $("#btnFiltrar").click(function () {
-            listarRegistros();
-        });
-
-        $('#frm_busqueda').submit(function (e) {
-            e.preventDefault();
-        });
-    });
-
-    function listarRegistros() {
-
-        if ($("#frm_busqueda").valid()) {
-
-            $table.bootstrapTable('destroy');
-            var comodin = $("#txtFiltro").val();
-            var estado = $("#Estado").val();
-
-            if (comodin == null || comodin == "") {
-                comodin = "0";
-            }
-            if (estado == null) {
-                estado = "-1";
-            }
-            //Dem
-            $table.bootstrapTable({
-                url: _ctx + 'gestion/tipo-audio/obtenerListado/' + comodin + '/' + estado,
-                pagination: true,
-                sidePagination: 'client',
-                pageSize: 10,
-                onLoadSuccess: d => {
-                },
-                onLoadError: function (xhr) {
-                    exception(xhr);
-                },
-            });
-        }
-    }
-
-    function registro() {
-        if ($("#frm_registro").valid()) {
-            var params = getFormData($('#frm_registro'));
-            params.flagActivo = $('#FlagActivo').is(':checked');
-
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                url: _ctx + 'gestion/tipo-audio/agregar',
-                dataType: "json",
-                data: params,
-                success: function (data, textStatus) {
-                    if (textStatus == "success") {
-                        if (data == "-9") {
-                            $.smallBox({
-                                content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",
-                                timeout: 4500,
-                                color: "alert",
-                            });
-                        }
-                        if (params.id > 0) {
-                            $.smallBox({
-                                content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
-                            });
-                        }
-                    }
-                },
-                error: function (xhr) {
-                    exception(xhr);
-                },
-                complete: function () {
-                    irListado($index);
-                    listarRegistros();
-                    limpiarBusqueda();
-                }
-            });
-        }
-    }
-
-    function editar(id) {
-        irRegistro();
-        $('#Operacion').text('Actualizar');
-        var param = new Object();
-        param.id = id;
-
-        $("#load_pace").show();
-        $.ajax({
-            type: 'GET',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/tipo-audio/obtener',
-            dataType: "json",
-            data: param,
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    $("#Id").val(data.id);
-                    $("#Nombre").val(data.nombre);
-                    $("#Descripcion").val(data.descripcion);
-                    data.flagActivo === true ?
-                        $('#FlagActivo').prop('checked', true)
-                        :
-                        $('#FlagActivoOff').prop('checked', true);
-
-                }
-            },
-            error: function (xhr) {
-                exception(xhr);
-            },
-            complete: function () {
-                limpiarBusqueda();
-            }
-        });
-    }
-
-    function desactivar(id, ix) {
-        var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
-        $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
-            content: "<br/>¿Quieres activar o desactivar el registro?",
-            buttons: '[No][Si]'
-        }, function (ButtonPressed) {
-            if (ButtonPressed === "Si") {
-                var params = {};
-                params.id = id;
-                params.flagActivo = actualStatus == "Activo" ? false : true;
-                console.log(params);
-                $.ajax({
-                    type: 'PUT',
-                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/tipo-audio/desactivar',
-                    dataType: "json",
-                    data: params,
-                    success: function (data, textStatus) {
-                        if (textStatus == "success") {
-                            $.smallBox({
-                                content: "<i> Se actualizó el registro...</i>",
-                            });
-
-                            actualStatus == "Activo" ?
-                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
-                                :
-                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
-                        }
-                    },
-                    error: function (xhr) {
-                        exception(xhr);
-                    },
-                    complete: function () {
-                        limpiarBusqueda();
-                    }
-                });
-            } else {
-            }
-        })
-    }
-
-    function linkFormatter(value, row) {
-        return `<a href="javascript:void(0);" onclick="javascript:editar(${row.id})" title="Editar">${row.nombre}</a>`;
-    }
-
-
-    function Opciones(value, row, index) {
-        return  `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp`;
-    }
-
-    function isActived(value, row, index) {
-        if (row.flagActivo) {
-            return '<span class="label label-success">Activo</span>';
-        } else {
-            return '<span class="label label-danger">Inactivo</span>';
-        }
-    }
-
-    $.validator.addMethod("extension", function (value, element, param) {
-        param = typeof param === "string" ? param.replace(/,/g, "|") : "mp3";
-        return this.optional(element) || value.match(new RegExp("\\.(" + param + ")$", "i"));
-    }, $.validator.format("Solo se permiten archivos mp3"));
-
-    function validarRegistros() {
-        $("#frm_registro").validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
-            highlight: function (element) {
-                $(element).parent().removeClass('state-success').addClass("state-error");
-                $(element).removeClass('valid');
-            },
-            unhighlight: function (element) {
-                $(element).parent().removeClass("state-error").addClass('state-success');
-                $(element).addClass('valid');
-            },
-            ignore: ".ignore",
-            rules: {
-                Nombre: {
-                    required: true,
-                    maxlength: $("#Nombre").prop("maxlength"),
-                },
-            },
-            messages: {
-                Nombre: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
-            },
-            submitHandler: function () {
-                registro();
-            }
-        });
-    }
-
-    /*]]>*/
-</script>
+<script th:src="@{/js/tipo-rutina.js}+'?'+${version}"> </script>
 
 </body>
 
