@@ -20,32 +20,32 @@ public class TrainerFichaDTO implements Serializable {
     @Positive
     @Max(3)
     private Integer sexo;
-    @Size(max = 200)
+    @Size(min=5, max = 80)
     private String especialidad;
     @Size(min = 80, max = 2000)
     @NotNull
     private String acerca;
-    @Size(min = 2, max = 100)
+    @Size(min = 2, max = 30)
     @NotNull
     private String idiomas;
-    @Size(min = 8, max = 500)
+    @Size(min = 8, max = 1820)
     private String estudios;
     @Size(min = 5, max = 1000)
     @NotNull
     private String metodoTrabajo;
-    @Size(min = 20, max = 500)
+    @Size(min = 20, max = 1820)
     private String experiencias;
-    @Size(min = 10, max = 500)
+    @Size(min = 20, max = 1820)
     @NotNull
     private String resultados;
-    @Size(min = 2, max = 80)
+    @Size(min = 2, max = 20)
     @NotNull
     private String niveles;
-    @Size(min = 10, max = 120)
+    @Size(min = 10, max = 500)
     private String centroTrabajo;
-    @Size(min = 10, max = 100)
+    @Size(min = 10, max = 1620)
     private String especialidades;
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 20)
     @NotNull
     private String formasTrabajo;
     @Size(min = 8, max = 150)
@@ -67,7 +67,7 @@ public class TrainerFichaDTO implements Serializable {
     private String mapCoordenadas;
     @Digits(integer = 5, fraction = 2)
     private Double mapCircleRadio;
-    @Size(max = 600)
+    @Size(max = 480)
     private String redes;
     @Positive
     @Max(3)

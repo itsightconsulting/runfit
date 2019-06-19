@@ -134,7 +134,7 @@ function uploadImgs(input, mainDivId) {
 
 function agregarInputDinamico(e, max, clase){
     if(e.parentElement.children.length === max){
-        e.classList.add('hide');
+        e.classList.add('hidden');
     }
     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<input class="form-control mg-bt-10 ${clase}" type="text"/>`));
     return e.previousElementSibling;
@@ -142,7 +142,7 @@ function agregarInputDinamico(e, max, clase){
 
 function agregarInputDinamico(e, max, clase, maxlength){
     if(e.parentElement.children.length === max){
-        e.classList.add('hide');
+        e.classList.add('hidden');
     }
     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<input class="form-control mg-bt-10 ${clase}" type="text" maxlength="${maxlength}"/>`));
     return e.previousElementSibling;
@@ -150,7 +150,7 @@ function agregarInputDinamico(e, max, clase, maxlength){
 
 function agregarTextareaDinamico(e, max, clase){
     if(e.parentElement.children.length === max+1){
-        e.classList.add('hide');
+        e.classList.add('hidden');
     }
     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<li><textarea class="form-control mg-bt-10 ${clase}" type="text"></textarea></li>`));
     return e.previousElementSibling;

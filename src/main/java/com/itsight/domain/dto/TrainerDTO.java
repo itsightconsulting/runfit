@@ -68,7 +68,7 @@ public class TrainerDTO implements Serializable {
     @Size(min = 2, max = 20)
     @NotNull
     private String niveles;
-    @Size(min = 10, max = 90)
+    @Size(min = 10, max = 500)
     private String centroTrabajo;
     @Size(min = 10, max = 1620)
     private String especialidades;

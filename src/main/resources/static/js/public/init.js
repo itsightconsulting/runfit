@@ -252,16 +252,18 @@ function smallBoxAlertValidation(inputsNotPassed){
         const nomFinal = previous === null ? v.getAttribute('data-aka').toUpperCase() : previous.textContent;
         return `<i class="fa fa-dot-circle-o fa-fw"></i>${nomFinal}<br>`
     }).join('');
-    $.smallBox(
-        {
-            color: '#cc4d4d',
-            content: `Aún tiene pendiente completar los siguientes campos:<br>
+    if(strCamps){
+        $.smallBox(
+            {
+                color: '#cc4d4d',
+                content: `Aún tiene pendiente completar los siguientes campos:<br>
                       <span style="padding-bottom: 3px"></span>
                       <p style="height: 80px; overflow-y: auto;">${strCamps}</p>`,
-            timeout: tout,
-            icon: "fa fa-exclamation-circle"
-        }
-    )
+                timeout: tout,
+                icon: "fa fa-exclamation-circle"
+            }
+        )
+    }
 }
 d  = [];
 

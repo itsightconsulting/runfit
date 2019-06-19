@@ -35,8 +35,7 @@
                     </ul>
                     <form id="frm_registro">
                     <div class="tab-content">
-                        <div class="tab-pane fade active in" id="about">
-
+                        <div class="tab-pane fade active in inpts-1" id="about">
                                 <div class="form-group">
                                     <div class="">
                                         <label>NOMBRE COMPLETO:<span class="obligatorio">*</span></label>
@@ -556,9 +555,7 @@
         body.addEventListener('click', bodyClickEventListener);
         body.addEventListener('focusout', bodyFocusOutEventListener);
         tabService.addEventListener('click', clickListenerTabService);
-        if(btnActualizarPerfil !== null){
-            btnActualizarPerfil.addEventListener('click', actualizarPerfil);
-        }
+        btnActualizarPerfil.addEventListener('click', actualizarPerfil);
         init();
     })();
 
@@ -748,6 +745,11 @@
     }
 
     function actualizarPerfil(e){
+        const val = validationByNumSheet(1);
+        if(!val.isValid){
+            smallBoxAlertValidation(val.inputs);
+            return;
+        }
         e.preventDefault();
         const inpHshId = document.getElementById('HshTrainerId');
         const hshId = inpHshId.value === "" ? $perfil.hshTrainerId : inpHshId.value;
@@ -758,6 +760,9 @@
         deleteSomePropertiesByTipoTraienerId(d);
         if(!d.centroTrabajo){
             delete d.centroTrabajo;
+        }
+        if(!d.especialidad){
+            delete d.especialidad;
         }
 
         $buttonName = "ACTUALIZAR Y ENVIAR";
@@ -920,7 +925,6 @@
     function recrearPerfil(t){
         const ttId = t.tipoTrainerId;
         checkTabStaff(t.staffGaleria, t.id, ttId);
-
         document.querySelector('#FinalImagenRecortada').src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/"+t.nomImgPerfil;
         document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
         let idiomas = t.idiomas.split("|");
@@ -928,32 +932,52 @@
         idiomas.forEach(i=> divIdiomas.querySelector(`input[value="${i}"]`).checked = true);
         document.querySelector('#MetodoTrabajo').value = t.metodoTrabajo.replace(/\r?\n/g, '\n');
         document.querySelector('#CentroTrabajo').value = t.centroTrabajo;
-        const inpRes = document.querySelector('.inp-resultado');
-        t.resultados.split("|").forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+        const inpRes = document.querySelector('#Resultados');
+        const plusButton = inpRes.nextElementSibling;
+        const arrResultados = t.resultados.split("|");
+        inpRes.value = arrResultados[0];
+        arrResultados.slice(1).forEach(e => agregarInputDinamico(plusButton, 20, 'inp-resultado', 90).value = e);
         let niveles = t.niveles.split("|");
         const divNiveles = document.querySelector('#Niveles');
         niveles.forEach(i=> divNiveles.querySelector(`input[value="${i}"]`).checked = true);
         let formasTra = t.formasTrabajo.split("|");
         const divFT = document.querySelector('#FormasTrabajo');
         formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
-
         if(ttId == TipoTrainer.PARTICULAR || ttId == TipoTrainer.DE_EMPRESA){
             document.querySelector('#NombreFull').value = t.nombreCompleto;
             document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
             document.querySelector('#Especialidad').value = t.especialidad;
-            const inpEst = document.querySelector('.inp-estudio');
-            t.estudios.split("|").forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
-            const inpExp = document.querySelector('.inp-experiencia');
-            t.experiencias.split("|").forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
-            const inpEspDom = document.querySelector('.inp-esp-domino');
-            t.especialidades.split("|").forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+            const inpEst = document.querySelector('#EstudiosCertificaciones');
+            const plusInpEst = inpEst.nextElementSibling;
+            const arrEstudios= t.estudios.split("|");
+            inpEst.value = arrEstudios[0];
+            arrEstudios.slice(1).forEach(e => agregarInputDinamico(plusInpEst, 20, 'inp-estudio', 90).value = e);
+
+            const inpExp = document.querySelector('#Experiencias');
+            const plusInpExp = inpEst.nextElementSibling;
+            const arrExperiencias= t.experiencias.split("|");
+            inpExp.value = arrExperiencias[0];
+            arrExperiencias.slice(1).forEach(e => agregarInputDinamico(plusInpExp, 20, 'inp-experiencia', 90).value = e);
+
+            const inpEspDom = document.querySelector('#EspecDomino');
+            const plusEspDom = inpEspDom.nextElementSibling;
+            const arrEspDomino= t.especialidades.split("|");
+            inpEspDom.value = arrEspDomino[0];
+            arrEspDomino.slice(1).forEach(e => agregarInputDinamico(plusEspDom, 20, 'inp-esp-domino', 80).value = e);
         }else {
             document.querySelector('#NombreFull').value = t.nombreCompleto.substr(0, t.nombreCompleto.indexOf(" xxx"));
             document.getElementById('dvSexo').classList.add('hidden');
+            document.querySelectorAll('input[name="Sexo"]').forEach(e=>e.classList.add('ignore'))
             document.getElementById('dvEspecialidad').classList.add('hidden');
+            document.querySelector('#Especialidad').classList.add('ignore');
             document.getElementById('Estudios').classList.add('hidden');
             document.getElementById('ExpLaboral').classList.add('hidden');
             document.getElementById('Especialidades').classList.add('hidden');
+
+            document.querySelector('#EstudiosCertificaciones').classList.add('ignore');
+            document.querySelector('#Experiencias').classList.add('ignore');
+            document.querySelector('#EspecDomino').classList.add('ignore');
+
         }
 
         document.querySelector('#Horario').value = t.horario;
@@ -1599,7 +1623,6 @@
 
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
-            console.log(e);
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
