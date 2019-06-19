@@ -842,6 +842,18 @@
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
             obj.fichaClienteIds = inpMultipleFicha.checked ? "1|2" : Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
             obj.nomPag = document.getElementById('NomPag').value;
+
+            if(!obj.horario){
+                delete obj.horario;
+            }
+
+            if(!obj.centroTrabajo){
+                delete obj.centroTrabajo;
+            }
+
+            if(!obj.telefono){
+                delete obj.telefono;
+            }
             return obj;
         }
 
@@ -897,7 +909,9 @@
             document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
             const dvIncServicio = document.getElementById('IncluyeServicio');
             dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-            document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
+            if(servicios[0].infoAdicional){
+                document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
+            }
             selServicioId = fSs.id;
         }
 
