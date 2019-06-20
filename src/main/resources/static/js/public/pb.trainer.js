@@ -181,6 +181,7 @@ function clickListenerTabService(e) {
         const notHidden = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
         if(notHidden){notHidden.classList.add('hidden')}
         tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
+        instanceIcons();
     } else if(clases.contains('tarifa-svc')) {
         let padre = {};
         if(input.tagName === "IMG" || input.tagName === "H6"){
@@ -205,7 +206,10 @@ function clickListenerTabService(e) {
     } else if(clases.contains('edit-tar-svc')){
         const tId = Number(input.getAttribute('data-id'));
         editarTarifa(tId);
-    } else if(clases.contains('fa-plus-cs')){
+    } else if(clases.contains('del-tar-svc')){
+        const tId = Number(input.getAttribute('data-id'));
+        eliminarTarifa(tId);
+    }else if(clases.contains('fa-plus-cs')){
         clases.toggle('fa-chevron-up');
         clases.toggle('fa-chevron-down');
     } else if(clases.contains('info-pago')){
@@ -579,6 +583,10 @@ function ocultarModalTermCondYAceptar(){
     $('#myModalTermCond').modal('hide');
 }
 
+function instanceIcons(){
+    $('.del-svc').tooltip();
+    $('.edit-svc').tooltip();
+}
 
 
 function addServiceAndcleanCampos(svc){
@@ -588,16 +596,14 @@ function addServiceAndcleanCampos(svc){
     document.querySelector('#ServicioInfAdic').value = "";
     const element = htmlStringToElement(
         `<div class="form-group editar">
-                            <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);" title="Confirmar modificaciones al servicio">
-                                <img class="del-svc" data-id="${svc.id}" src="${_ctx}img/public/garbage.png">
-                                <img class="edit-svc" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
+                            <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);">
+                                <img class="del-svc" title="Eliminar" data-id="${svc.id}" src="${_ctx}img/public/garbage.png">
+                                <img class="edit-svc" title="Confirmar modificaciones al servicio" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
                             </a>
                             <label class="servicio svc-focus" data-id="${svc.id}">${svc.nombre}</label>
                         </div>`);
     const resumenServicios = document.querySelector('.ver-servicios');
     resumenServicios.appendChild(element);
-
-
     const divCamposBasicos = document.querySelector('#SvcCamposBasicos');
     const htmlBasics = `<div class="form-group">
                                               <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
@@ -614,7 +620,7 @@ function addServiceAndcleanCampos(svc){
                                           </div>
                                           <div class="form-group">
                                               <label>INFORMACIÓN ADICIONAL</label>
-                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;" maxlength="1000"></textarea>
+                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" maxlength="1000"></textarea>
                                           </div>
                                           `;
     divCamposBasicos.innerHTML = htmlBasics;
@@ -760,6 +766,30 @@ function editarTarifa(tId){
     }
 }
 
+function eliminarTarifa(tId){
+    const attrOnClick = `onclick='confirmarEliminarTarifario(${tId})'`;
+    $.smallBox({
+        color: "rgb(204, 77, 77)",
+        content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>¿Estás seguro de eliminar este tarifario?</em><br><br>"+
+            "<div class='text-center'><button type='button' "+attrOnClick+" class='btn btn-danger' style='margin: 10px'>SI</button><button type='button' class='btn btn-primary' style='margin: 10px'>NO</button></div>" ,
+        timeout: 12000});
+}
+
+function confirmarEliminarTarifario(tId){
+    const svcAsociado = servicios.find(s=>s.id===selServicioId);
+    const tarifarios = svcAsociado.tarifarios;
+    let tarIx = 0;
+    tarifarios.forEach((t, ix) => {
+        if(t.id === tId){
+            tarifarios.splice(ix, 1);
+            return;
+        }
+    });
+    service.querySelector('.tarifa-svc-pick').remove();
+    cleanPaqueteCampos();
+    setTimeout(()=>{$.smallBox({content: "<i class='fa fa-fw fa-check-circle'></i>Se ha eliminado satisfactoriamente"});},200)
+}
+
 function getServicio(){
     const svc = new Object();
     svc.nombre = document.querySelector('#NombreServicio').value.trim();
@@ -838,9 +868,7 @@ function eliminarServicio(svcId){
 }
 
 function confirmarEliminarServicicio(svcId){
-    let svcIx = 0;
-    servicios.forEach((s,ix)=>{if(s.id===Number(svcId)){svcIx = ix; return;}});
-    servicios.splice(svcIx, 1);
+    servicios.forEach((s,ix)=>{if(s.id===Number(svcId)){servicios.splice(ix, 1); return;}});
     service.querySelector('.svc-focus').parentElement.remove();
     if(servicios.length){
         service.querySelector('.ver-servicios .servicio').click();
@@ -879,6 +907,8 @@ function mostrarDetalleTarifaSvc(tarifaId){
     document.querySelector('#txtCantidadSesiones').value = t.sesiones;
     document.querySelector('#PrecioPaquete').value = t.precio;
     $('#FrecuenciaPaquete').multiselect('refresh');
+    $('.del-tar-svc').tooltip();
+    $('.edit-tar-svc').tooltip();
 }
 
 function setIncluyeDelServicio(incluidos){
@@ -922,9 +952,9 @@ function putTarifario(id, nombre){
                             <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
-                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
-                            <img class="del-svc" data-id="${id}" src="${_ctx}img/public/garbage.png">
-                            <img style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
+                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);">
+                            <img title="Eliminar" style="margin: 0px 0px 5px" class="del-tar-svc" data-id="${id}" src="${_ctx}img/public/garbage.png">
+                            <img title="Confirmar modificaciones" style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
                         </a>
                     </div>`
 }
@@ -1009,7 +1039,7 @@ function getImgUuids(rdms){
 
 function resetServicios(){
     const divCamposBasicos = document.querySelector('#SvcCamposBasicos');
-    const htmlBasics = `<div class="form-group">
+    const htmlBasics =                   `<div class="form-group">
                                               <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
                                               <input class="form-control" id="NombreServicio" name="NombreServicio" maxlength="50">
                                           </div>
@@ -1024,7 +1054,7 @@ function resetServicios(){
                                           </div>
                                           <div class="form-group">
                                               <label>INFORMACIÓN ADICIONAL</label>
-                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;" maxlength="1000"></textarea>
+                                              <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" maxlength="1000"></textarea>
                                           </div>
                                           `;
     divCamposBasicos.innerHTML = htmlBasics;
@@ -1035,7 +1065,7 @@ function resetServicios(){
         }
     });
     $('#btnSubirCondServicio').attr('onclick', 'javascript:document.getElementById(\'inpCondServicio\').click()');
-    $('#btnSubirCondServicio').html('<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C')
+    $('#btnSubirCondServicio').html('<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C');
     termConSvc = [];
     selServicioId = -1;
     accServicioId = 0;

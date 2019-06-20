@@ -55,10 +55,8 @@ function readURLCs(input, img, ix, mainDivId) {
             dvCarusel.className = 'owl-carousel owl-theme';
             imgTemps.forEach(v=>{
                 const dvItem = document.createElement('div');
-                const btCerrar = document.createElement('button');
                 dvItem.classList.add('item');
                 dvItem.appendChild(v);
-                dvItem.app
                 dvCarusel.appendChild(dvItem);
             });
             const mainDiv = document.querySelector('#'+mainDivId);
@@ -95,7 +93,7 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
         const modal = document.querySelector('#myGallery');
         const galeriaModal = modal.querySelector('.carousel-inner');
         galeriaModal.appendChild(htmlStringToElement(`
-                                                                <div class="item ${i== 0 ? 'active':''}">
+                                                                <div class="item ${i== 0 ? 'active':''}"> 
                                                                     <img src="${baseSrc + src}" style="display: block;margin: auto"/>
                                                                     <div class="carousel-caption">
                                                                     </div>
@@ -109,11 +107,7 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
 }
 function uploadImgs(input, mainDivId) {
 
-
-
     $(input).change(function () {
-
-
         //submit the form here
         var file, imgTemp;
         for(let i=0; i<input.files.length;i++){
@@ -179,6 +173,9 @@ function acumuladorMas(id){
     if(value > -1){
         e.value = value + 1;
     }
+    try {
+        $(e).valid();
+    }catch (e) {}
 }
 
 function acumuladorMenos(id){
@@ -187,6 +184,9 @@ function acumuladorMenos(id){
     if(value > 0){
         e.value = value - 1;
     }
+    try {
+        $(e).valid();
+    }catch (e) {}
 }
 
 function getValuesByClass(clase){
@@ -319,10 +319,7 @@ function activeTooltips(){
     all.forEach(e=>{
         $(e).tooltip();
     })
-    }
-
-
-
+}
 
 function  galeriaPerfilCarousel() {
 
@@ -374,11 +371,12 @@ function  galeriaPerfilCarousel() {
               },
               600: {
                   items: 3
+              },
               1000: {
                   items: 4
               }
           }
-      })
+      });
 
     $(".owl-stage").css({"right":"70px"});
     $(".owl-prev").empty()
@@ -386,7 +384,5 @@ function  galeriaPerfilCarousel() {
     $(".owl-next").empty()
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 
-
-
-}
+  }
 }
