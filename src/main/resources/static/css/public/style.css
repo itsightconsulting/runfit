@@ -87,6 +87,11 @@
   border-bottom: 4px solid #a8fa00
 }
 
+.navbar-inverse ul.navbar-right li:hover {
+  padding-bottom: 9px;
+  border-bottom: 4px solid #a8fa00;
+}
+
 .navbar-inverse ul.navbar-right li.active a:hover,
 .navbar-inverse ul.navbar-right li.active a:focus {
   background-color: transparent
@@ -3560,4 +3565,17 @@ textarea.form-control ~ em {
 
 section.trainers-form {
   word-break: break-word;
+}
+
+.close-modal {
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  float: right;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  opacity: .8;
 }

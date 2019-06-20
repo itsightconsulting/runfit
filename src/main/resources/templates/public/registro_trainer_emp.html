@@ -297,7 +297,7 @@
                                               <i class="fa fa-plus-circle fa-fw"></i>
                                               AGREGAR SERVICIO
                                           </button>
-                                          <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio">
+                                          <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
                                           <button rel="tooltip"
                                                   title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
                                                   id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
@@ -961,6 +961,12 @@
                         required: true,
                         pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
                         rangelength: [4, 40]
+                    },
+                    InpImgPerfil:{
+                        extension: "jpg|jpeg|png",
+                    },
+                    inpCondServicio:{
+                        extension: "pdf",
                     }
                 },
                 messages: {

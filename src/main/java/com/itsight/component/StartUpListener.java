@@ -907,6 +907,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(disciplinaService.findOne(2) == null) disciplinaService.save(new Disciplina("Ciclismo"));
         if(disciplinaService.findOne(3) == null) disciplinaService.save(new Disciplina("Natación"));
         if(disciplinaService.findOne(4) == null) disciplinaService.save(new Disciplina("Boxeo"));
+        if(disciplinaService.findOne(5) == null) disciplinaService.save(new Disciplina("Clavados"));
+        if(disciplinaService.findOne(6) == null) disciplinaService.save(new Disciplina("Triatlón"));
+        if(disciplinaService.findOne(7) == null) disciplinaService.save(new Disciplina("Levantamiento de pesas"));
+        if(disciplinaService.findOne(8) == null) disciplinaService.save(new Disciplina("Pentatlón"));
     }
 
     public void addingTipoTrainers(){
