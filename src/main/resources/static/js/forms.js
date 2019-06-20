@@ -371,11 +371,12 @@ function  galeriaPerfilCarousel() {
               },
               600: {
                   items: 3
+              },
               1000: {
                   items: 4
               }
           }
-      })
+      });
 
     $(".owl-stage").css({"right":"70px"});
     $(".owl-prev").empty()
@@ -383,7 +384,5 @@ function  galeriaPerfilCarousel() {
     $(".owl-next").empty()
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 
-
-
-}
+  }
 }
