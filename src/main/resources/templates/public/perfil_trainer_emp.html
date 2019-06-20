@@ -599,6 +599,7 @@
               dataType: 'json',
               noOne: true,
               success: function (res) {
+                  res = res.servicios;
                   res.forEach(e => {
                     if(e.tarifarios) {
                         e.tarifarios = JSON.parse(e.tarifarios);

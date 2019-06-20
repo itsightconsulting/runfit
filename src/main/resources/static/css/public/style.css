@@ -1884,7 +1884,8 @@ h1 {
 .encuentra-tu-coach .group-trainer .col-md-9 p {
   margin-bottom: 25px;
   font-size: 18px;
-  line-height: 1.6
+  line-height: 1.6;
+  word-break: break-word;
 }
 
 .encuentra-tu-coach .group-trainer .rating {
@@ -3557,4 +3558,6 @@ textarea.form-control ~ em {
   color: #E54C4B
 }
 
-
+section.trainers-form {
+  word-break: break-word;
+}

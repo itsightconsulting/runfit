@@ -211,7 +211,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         addingToContextSession();
         addingInitUsers();
         creatingFileDirectories();
-        if(tipoDocumentoService.findOne(3) == null) tipoDocumentoService.save(new TipoDocumento("RUC"));
     }
 
     public void insertACategoriaEjercicio() {
