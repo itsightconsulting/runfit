@@ -414,7 +414,7 @@
                         </div>
                         <div class="form-group div-actualizacion">
                             <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                            <button class="btn btn-default btn-black" id="btnActualizarPerfil"><i class="fa fa-check"></i>ACTUALIZAR Y ENVIAR</button>
+                            <button class="btn btn-default btn-black" id="btnGuardar"><i class="fa fa-check"></i>ACTUALIZAR Y ENVIAR</button>
                         </div>
                     </form>
                 </div>
@@ -531,7 +531,7 @@
 <script th:src="@{/js/cropper.min.js}+'?'+${version}" type="text/javascript"></script>
 <script th:inline="javascript">
     let $perfil = {};
-    const btnActualizarPerfil = document.getElementById('btnActualizarPerfil');
+    const btnGuardar = document.getElementById('btnGuardar');
     const imgPerfil = document.getElementById('ImagePerfil');
     const tabService = document.getElementById('service');
     const inpImgPerfil = document.getElementById('InpImgPerfil');
@@ -543,6 +543,7 @@
     let selServicioId = -1;
     let termConSvc = [];
     let accTarifaId = 0;
+    let empTrainerId = 0;
     //Cropper
     let cropper = {};
     const actions = document.getElementById('actions');
@@ -555,7 +556,7 @@
         body.addEventListener('click', bodyClickEventListener);
         body.addEventListener('focusout', bodyFocusOutEventListener);
         tabService.addEventListener('click', clickListenerTabService);
-        btnActualizarPerfil.addEventListener('click', actualizarPerfil);
+        btnGuardar.addEventListener('click', actualizarPerfil);
         init();
     })();
 
@@ -1415,6 +1416,8 @@
             blockLoading: false,
             noOne: true,
             success: function (res) {
+                empTrainerId = res.empresaTrainerId;
+                res = res.servicios;
                 res.forEach(e => {
                     if(e.tarifarios) {
                         e.tarifarios = JSON.parse(e.tarifarios);

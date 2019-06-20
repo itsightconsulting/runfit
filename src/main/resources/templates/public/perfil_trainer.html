@@ -97,7 +97,7 @@
                       <ul id="Niveles" class="list-description">
                       </ul>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dvCentroTrabajo">
                       <label>CENTRO DE TRABAJO</label>
                       <p id="CentroTrabajo"></p>
                     </div>
@@ -228,7 +228,7 @@
                             </label>
                           </div>
                           <!-- TARIFARIOS -->
-                          <h4 class="sub-title">TARIFARIOS</h4>
+                          <h4 id="CabeceraTarifarios" class="sub-title">TARIFARIOS</h4>
                           <div class="row">
                               <div class="col col-md-12 text-center" id="Tarifarios">
                               </div>
@@ -246,7 +246,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>CANTIDAD DE PERSONAS</label>
+                                          <label>CANTIDAD DE PERSONAS:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
                                           <ul class="counter">
@@ -260,7 +260,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>CANTIDAD DE MESES</label>
+                                          <label>CANTIDAD DE MESES:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
                                           <ul class="counter">
@@ -274,7 +274,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>CANTIDAD DE SESIONES</label>
+                                          <label>CANTIDAD DE SESIONES:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
                                           <ul class="counter">
@@ -288,7 +288,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.)</label>
+                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.):</label>
                                       </div>
                                       <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
                                           <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
@@ -498,7 +498,11 @@
               const doc = document.createElement('embed');
               doc.type = "application/pdf";
               doc.style = "width: 100%; height: 100%";
-              doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
+              if(empTrainerId>0){
+                  doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+empTrainerId+"/"+svc.tycFile;
+              }else{
+                  doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
+              }
               document.getElementById('TYC').innerHTML = "";
               document.getElementById('TYC').appendChild(doc);
           } else {
@@ -509,6 +513,13 @@
       function setTarifarios(tarifarios){
           const dt = document.getElementById('Tarifarios');
           dt.innerHTML = "";
+          if(!tarifarios.length){
+              document.querySelector('#contentTarifario').classList.add('hidden');
+              document.querySelector('#CabeceraTarifarios').classList.add('hidden');
+          }else{
+              document.querySelector('#contentTarifario').classList.remove('hidden');
+              document.querySelector('#CabeceraTarifarios').classList.remove('hidden');
+          }
           tarifarios.forEach((t,ix)=>{
               t.id = ix;
               dt.appendChild(
@@ -759,6 +770,9 @@
               dataType: 'json',
               noOne: true,
               success: function (res) {
+                  empTrainerId = res.empresaTrainerId;
+                  res = res.servicios;
+
                   if($perfil.tipoTrainerId === TipoTrainer.DE_EMPRESA){
                       const mines = $perfil.svcIds.split(",");
                       res = mines.map(e=>
@@ -831,7 +845,11 @@
         setValoracion(t.canPerValoracion, t.totalValoracion);
         document.querySelector('#Sexo').textContent = t.sexo === 1 ? 'Masculino' : 'Femenino';
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
-        document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
+        if(t.centroTrabajo){
+            document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
+        }else{
+            $('#dvCentroTrabajo').addClass('hidden');
+        }
         let res = document.querySelector('#Resultados');
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
@@ -1103,7 +1121,6 @@
                   Movil: {
                       required: true,
                       number: true,
-                      notstartswith: "0",
                       rangelength: [7, 13]
                   },
                   Mensaje: {

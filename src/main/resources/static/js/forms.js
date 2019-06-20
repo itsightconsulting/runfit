@@ -1,4 +1,4 @@
-function uploadAndShow(input, img, ){
+function uploadAndShow(input, img){
     uploadImg(input, img)
 }
 
@@ -55,8 +55,10 @@ function readURLCs(input, img, ix, mainDivId) {
             dvCarusel.className = 'owl-carousel owl-theme';
             imgTemps.forEach(v=>{
                 const dvItem = document.createElement('div');
+                const btCerrar = document.createElement('button');
                 dvItem.classList.add('item');
                 dvItem.appendChild(v);
+                dvItem.app
                 dvCarusel.appendChild(dvItem);
             });
             const mainDiv = document.querySelector('#'+mainDivId);

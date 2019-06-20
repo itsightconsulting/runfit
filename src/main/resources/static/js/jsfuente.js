@@ -672,7 +672,6 @@ function generateRandomMail(){
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
 
                 var defaultValue = $("#btnGuardar")[0].textContent;
-                console.log(defaultValue)
                 $("#btnGuardar").attr('disabled','disabled');
                 $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
                  setTimeout(function() {

@@ -9,6 +9,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.CuentaPago;
+import com.itsight.domain.pojo.ResServicioPOJO;
 import com.itsight.domain.pojo.ServicioPOJO;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.SecurityUserRepository;
@@ -191,14 +192,14 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/get/servicios/{trainerId}")
-    public @ResponseBody List<ServicioPOJO> obtenerServiciosByTrainerId(
+    public @ResponseBody ResServicioPOJO<List<ServicioPOJO>> obtenerServiciosByTrainerId(
             @PathVariable() String trainerId,
             @RequestParam() String tipoTrainerId){
         if(Integer.parseInt(tipoTrainerId) == PARA_EMPRESA.get()){
             Integer empTraId = trainerFichaService.getTrEmpIdById(Integer.parseInt(trainerId));
-            return servicioService.findAllByTrainerId(empTraId);
+            return new ResServicioPOJO(empTraId, servicioService.findAllByTrainerId(empTraId));
         }
-        return servicioService.findAllByTrainerId(Integer.parseInt(trainerId));
+        return new ResServicioPOJO(0, servicioService.findAllByTrainerId(Integer.parseInt(trainerId)));
     }
 
     @GetMapping("/get/servicios/hsh/{hshTrainerId}")

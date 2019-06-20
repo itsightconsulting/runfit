@@ -745,6 +745,11 @@
         function generateBody(){
             const obj = getFormData($('#frm_registro'));
 
+            // Las empresas no tienen apellidos por lo que para su caso estamos guardando el nombre de la empresa en
+            // el campo nombre pero debido a la validación que tiene el campo apellidos
+            // obligatoriamente se debe colocar una cadena de 3 caracteres para que pase la validación y se pueda registrar sin problemas
+            obj.apellidos = "xxx";
+
             //Ubigeo
             obj.paisId = 604;
             obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
@@ -783,6 +788,17 @@
             if(!obj.centroTrabajo){
                 delete obj.centroTrabajo;
             }
+            if(!obj.telefono){
+                delete obj.telefono;
+            }
+
+            //Validando lista servicios con el fin de pasar la validación en caso no se haya especificado el campo infoAdicional
+            obj.servicios.forEach(e=>{
+                if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
+                    delete e.infoAdicional;
+                }
+            })
+
             return obj;
         }
 
@@ -873,13 +889,16 @@
                     Movil:{
                         required: true,
                         number: true,
-                        notstartswith: "0",
                         rangelength: [7, 13]
                     },
                     NumeroDocumento: {
                         required: true,
                         number: true,
                         rangelength: [8, 13],
+                        customnumdoc: function(){
+                            const val = $('#TipoDocumento').val();
+                            return val;
+                        }
                     },
                     Username:{
                         required: true,
@@ -889,7 +908,8 @@
                     },
                     Password:{
                         required: true,
-                        rangelength: [8, 30]
+                        rangelength: [8, 30],
+                        pwcheck: true
                     },
                     NombreServicio:{
                         lettersonly: true,
