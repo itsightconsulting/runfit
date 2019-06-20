@@ -28,7 +28,6 @@ const actions = document.getElementById('actions');
 const body = document.querySelector('body');
 
 (function () {
-    uploadAndShow(inpImgPerfil, imgPerfil);
     uploadImgs(inpGaleria, 'ImgsGaleria');
     if(flag_form_populate){setTimeout(()=>showInitTab(initTabActive), 1000);}
     btnGuardar.addEventListener('click', sendMainForm);
@@ -37,11 +36,10 @@ const body = document.querySelector('body');
     btnNuevaInfoPago.addEventListener('click', agregarNuevaInfoPago);
     btnEliminarPaquete.addEventListener('click', eliminarPaqueteDeServicio);
     tabService.addEventListener('click', clickListenerTabService);
-    tabService.addEventListener('change', changeListenerTabService);
     tabs.addEventListener('click', clickListenerTabs);
-    inpImgPerfil.addEventListener('click', clickImgPerfiL);
-    inpImgPerfil.addEventListener('change', changeImgPerfil);
+    inpImgPerfil.addEventListener('click', clickImgPerfil);
     body.addEventListener('click', bodyClickEventListener);
+    body.addEventListener('change', bodyChangeEventListener);
     body.addEventListener('focusout', bodyFocusOutEventListener);
     document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{$(e).tooltip();})
     inpNomPag.addEventListener('keyup', (e)=>{
@@ -183,7 +181,6 @@ function clickListenerTabService(e) {
         const notHidden = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
         if(notHidden){notHidden.classList.add('hidden')}
         tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
-        agregarInputTermCond();
     } else if(clases.contains('tarifa-svc')) {
         let padre = {};
         if(input.tagName === "IMG" || input.tagName === "H6"){
@@ -257,12 +254,74 @@ function clickListenerTabService(e) {
     }
 }
 
+function clickListenerTabs(e){
+    const input = e.target;
+    if (input.tagName==="SPAN" && input.textContent.trim().toLowerCase()==="staff"){
+        btnGuardar.classList.add('hidden');
+    } else {
+        btnGuardar.classList.remove('hidden');
+    }
+}
 
+function clickImgPerfil(e){
+    if(typeof cropper.canvas === 'object'){
+        e.preventDefault();
+        $('#myModalCropper').modal('show');
+    }
+}
 
-function changeListenerTabService(e){
+function bodyClickEventListener(e){
     const input = e.target;
     const clases = input.classList;
+    checkBoxAndRadioValidationEventListener(e, input, clases);
+}
+
+function bodyChangeEventListener(e){
+    const input = e.target;
+    const clases = input.classList;
+    if(input.id === "InpImgPerfil"){
+        const isValid = checkingValidExtension(input);
+        if(isValid){
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(imgPerfil).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
+            $('#myModalCropper').modal('show');
+        }
+    }
+    tycChangeEventListener(e, input, clases);
+}
+
+function checkingValidExtension(input){
+    if($(frm).validate().settings.rules[input.name]){
+        const extensiones = $(frm).validate().settings.rules[input.name].extension.split("|");
+        const fileExt = input.files[0].type.split("/")[1];
+        const exists = extensiones.filter(ext => ext === fileExt);
+        if(exists.length){
+            return true;
+        }else{
+            const ext = $(frm).validate().settings.rules[input.name].extension.toUpperCase();
+            input.value = "";
+            $.smallBox({
+                color: 'alert',
+                content: `<i class="fa fa-fw fa-exclamation-circle"></i>Solo se permite cargar archivos de tipo: ${ext}`
+            })
+            return false;
+        }
+    }
+}
+
+function tycChangeEventListener(e, input, clases){
     if(clases.contains('inp-svc-tyc')){
+        const isValid = checkingValidExtension(input);
+        if(!isValid){
+            return;
+        }
         selServicioId = selServicioId === -1 ? 1 : selServicioId;
         if(selServicioId > 0){
             const input = e.target;
@@ -287,32 +346,6 @@ function changeListenerTabService(e){
                 timeout: 3500})
         }
     }
-}
-
-function clickListenerTabs(e){
-    const input = e.target;
-    if (input.tagName==="SPAN" && input.textContent.trim().toLowerCase()==="staff"){
-        btnGuardar.classList.add('hidden');
-    } else {
-        btnGuardar.classList.remove('hidden');
-    }
-}
-
-function clickImgPerfiL(e){
-    if(typeof cropper.canvas === 'object'){
-        e.preventDefault();
-        $('#myModalCropper').modal('show');
-    }
-}
-
-function changeImgPerfil(){
-    $('#myModalCropper').modal('show');
-}
-
-function bodyClickEventListener(e){
-    const input = e.target;
-    const clases = input.classList;
-    checkBoxAndRadioValidationEventListener(e, input, clases);
 }
 
 function checkSiNomPagExiste(e){
@@ -685,9 +718,11 @@ function agregarInputTermCond(){
     const inpFile = document.createElement('input');
     inpFile.type = 'file';
     inpFile.id = "inpCondServicio"+selServicioId;
+    inpFile.name = "inpCondServicio";
     inpFile.className = "inp-svc-tyc hidden";
     inpFile.accept = "application/pdf";
     inpCondServicio.insertAdjacentElement('afterend', inpFile);
+    document.querySelector('#btnSubirCondServicio').setAttribute('onclick', `javascript:document.getElementById('${inpFile.id}').click()`);
 }
 
 function editarServicio(svcId){

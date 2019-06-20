@@ -20,7 +20,7 @@
             <div class="container">
                 <div class="col-md-5">
                     <div class="avatar-form">
-                        <input type="file" id="InpImgPerfil">
+                        <input type="file" id="InpImgPerfil" name="InpImgPerfil">
                         <div class="avatar-form-content img-container">
                             <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                         </div>
@@ -331,7 +331,7 @@
                                         <i class="fa fa-plus-circle fa-fw"></i>
                                         AGREGAR SERVICIO
                                     </button>
-                                    <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio">
+                                    <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
                                     <button rel="tooltip"
                                             title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
                                             id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
@@ -983,7 +983,6 @@
                 Movil:{
                     required: true,
                     number: true,
-                    notstartswith: "0",
                     rangelength: [7, 13]
                 },
                 NumeroDocumento: {
@@ -1056,6 +1055,12 @@
                     required: true,
                     pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
                     rangelength: [4, 40]
+                },
+                InpImgPerfil:{
+                    extension: "jpg|jpeg|png",
+                },
+                inpCondServicio:{
+                    extension: "pdf",
                 }
             },
             messages: {

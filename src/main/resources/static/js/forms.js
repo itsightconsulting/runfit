@@ -1,4 +1,4 @@
-function uploadAndShow(input, img, ){
+function uploadAndShow(input, img){
     uploadImg(input, img)
 }
 
