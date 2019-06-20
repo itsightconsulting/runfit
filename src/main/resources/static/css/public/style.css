@@ -3549,4 +3549,16 @@ textarea.inp-svc-incluye{
     height: 74px !important;
 }
 
+.close-modal {
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    opacity: .8;
+}
 

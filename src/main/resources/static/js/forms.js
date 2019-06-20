@@ -64,7 +64,7 @@ function readURLCs(input, img, ix, mainDivId) {
                 mainDiv.children[0].remove();
             }
             mainDiv.appendChild(dvCarusel);
-            carousel();
+           galeriaPerfilCarousel();
         }
     }
 }
@@ -79,6 +79,7 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
         img.setAttribute('data-target', '#myModal');
         img.classList.add('img-gal');
         dvCarusel.className = 'owl-carousel owl-theme';
+        dvCarusel.id="fotos-carousel";
         const dvItem = document.createElement('div');
         dvItem.classList.add('item');
 
@@ -92,7 +93,7 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
         const modal = document.querySelector('#myGallery');
         const galeriaModal = modal.querySelector('.carousel-inner');
         galeriaModal.appendChild(htmlStringToElement(`
-                                                                <div class="item ${i== 0 ? 'active':''}"> 
+                                                                <div class="item ${i== 0 ? 'active':''}">
                                                                     <img src="${baseSrc + src}" style="display: block;margin: auto"/>
                                                                     <div class="carousel-caption">
                                                                     </div>
@@ -102,11 +103,15 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
     })
 
     mainDiv.appendChild(dvCarusel);
-    carousel();
+    galeriaPerfilCarousel();
 }
 function uploadImgs(input, mainDivId) {
 
+
+
     $(input).change(function () {
+
+
         //submit the form here
         var file, imgTemp;
         for(let i=0; i<input.files.length;i++){
@@ -312,4 +317,74 @@ function activeTooltips(){
     all.forEach(e=>{
         $(e).tooltip();
     })
+    }
+
+
+
+
+function  galeriaPerfilCarousel() {
+
+  if($('.owl-carousel .item').size() < 5)
+  {
+
+    $('.owl-carousel').owlCarousel({
+          loop: false,
+          margin: 15,
+          nav: false,
+          rtl: false,
+          autoWidth: true,
+          rewind: true,
+          mouseDrag: false,
+          touchDrag: true,
+          responsive: {
+              0: {
+                  items: 1
+              },
+              600: {
+                  items: 3
+              },
+              1000: {
+                  items: 4
+              }
+          }
+      })
+
+
+    $(".owl-prev").empty()
+    $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
+    $(".owl-next").empty()
+    $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
+
+
+
+  }else{
+
+    $('.owl-carousel').owlCarousel({
+          loop: false,
+          margin: 15,
+          nav: true,
+          rtl: true,
+          autoWidth: true,
+          rewind: true,
+          responsive: {
+              0: {
+                  items: 1
+              },
+              600: {
+                  items: 3
+              1000: {
+                  items: 4
+              }
+          }
+      })
+
+    $(".owl-stage").css({"right":"70px"});
+    $(".owl-prev").empty()
+    $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
+    $(".owl-next").empty()
+    $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
+
+
+
+}
 }
