@@ -51,22 +51,46 @@ function readURLCs(input, img, ix, mainDivId) {
         reader.readAsDataURL(input.files[ix]);
         imgTemps.push(img);
         if(input.files.length == ix+1){
-            const dvCarusel = document.createElement('div');
-            dvCarusel.className = 'owl-carousel owl-theme';
-            imgTemps.forEach(v=>{
-                const dvItem = document.createElement('div');
-                dvItem.classList.add('item');
-                dvItem.appendChild(v);
-                dvCarusel.appendChild(dvItem);
-            });
+
+            var dvCarusel =  generarDOMCarousel(imgTemps);
             const mainDiv = document.querySelector('#'+mainDivId);
             if(mainDiv.children.length == 1){
                 mainDiv.children[0].remove();
             }
             mainDiv.appendChild(dvCarusel);
            galeriaPerfilCarousel();
-        }
+
+
+           $('#ImgsGaleria').unbind().on( "click",".boton-remover",function(e){
+
+             console.log("test");
+             e.preventDefault();
+
+             console.log(e.target.id);
+                 var index = parseInt(e.target.id,10);
+                 var divValue = 'img'+ (index+1);
+                 imgTemps.splice(index, 1);
+
+                 $('.owl-carousel').remove();
+
+                 var dvCarusel = generarDOMCarousel(imgTemps);
+
+                  const mainDiv = document.querySelector('#'+mainDivId);
+                   mainDiv.appendChild(dvCarusel);
+                  galeriaPerfilCarousel();
+
+            });
+
+
+
+
+
     }
+
+
+
+ }
+
 }
 
 function poblarCarusel(srcs, mainDivId, baseSrc) {
@@ -118,6 +142,9 @@ function uploadImgs(input, mainDivId) {
                     //Previsualizar
                     readURLCs($(input)[0], img, i, mainDivId);
                 };
+
+
+
                 imgTemp.onerror = function () {
                     $(input).val("");
                     $.smallBox({
@@ -385,4 +412,33 @@ function  galeriaPerfilCarousel() {
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 
   }
+}
+
+function generarDOMCarousel(imgTemps){
+
+
+ const dvCarusel = document.createElement('div');
+            dvCarusel.className = 'owl-carousel owl-theme carousel-img';
+            imgTemps.forEach( (v,index)=>{
+                const dvItem = document.createElement('div');
+                dvItem.classList.add('item');
+                dvItem.setAttribute('value', "img" + (index+1) );
+                dvItem.appendChild(v);
+                var btCerrar = document.createElement('a');
+                btCerrar.classList.add('boton-remover');
+                var imgCerrar = document.createElement('img');
+                imgCerrar.setAttribute('id', index );
+                imgCerrar.setAttribute('src', _ctx+'img/remove.png');
+                imgCerrar.classList.add('img-remover');
+
+
+
+                btCerrar.appendChild(imgCerrar);
+                dvItem.appendChild(btCerrar);
+                dvCarusel.appendChild(dvItem);
+
+            });
+
+ return dvCarusel;
+
 }
