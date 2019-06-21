@@ -1247,6 +1247,15 @@ h1 {
     word-break: break-all;
     white-space: inherit
   }
+  /*21-06-19*/
+  .rating-holder{
+    padding: 0px !important;
+    padding-left: 0px !important;
+  }
+
+  .avatar-form > fieldset{
+    padding-top: 10px;
+  }
 }
 
 .colaboradores {
@@ -3604,3 +3613,8 @@ section.trainers-form {
 .cc-elegido{
   cursor: default;
 }
+
+.modal .carousel div.item>img{
+  max-height: 540px;
+}
+

@@ -549,7 +549,7 @@
 </div>
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
 <!-- MODALS  -->
-<th:block th:insert="public/modals-registro-trainer :: fg-modals-reg-trainer"></th:block>
+<th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
 <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
@@ -585,8 +585,9 @@
         }
         //TYC FILES END
 
-        //Cantidad files de galeria y de t&c's
-        body.cantidadFiles = inpGaleria.files.length+"|"+tycFiles.length;
+        //CANTIDAD FILES DE GALERIA Y DE T&C'S
+        //$galeria: Global variable no considerando aquellos que se han sido eliminados
+        body.cantidadFiles = $galeria.length+"|"+tycFiles.length;
 
         if(document.getElementById('Coordenadas') != null){
             body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
@@ -613,7 +614,7 @@
                 bridgeMultipart: true,
                 success: (d)=> {
                     //Subir imgen
-                    if(inpGaleria.files.length + tycFiles.length === 0){
+                    if($galeria.length + tycFiles.length === 0){
                         uploadFotoPerfil(d, body);
                     }else{
                         uploadFotosPerfil(d, body)

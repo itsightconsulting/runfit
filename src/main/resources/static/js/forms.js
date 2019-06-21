@@ -39,9 +39,10 @@ function uploadImg(input, img) {
 }
 
 const imgTemps = [];
-//const srcs = [];
+const nomImgsGaleria = [];
 
-function readURLCs(input, img, ix, mainDivId) {
+function readURLCs(input, img, ix, mainDivId, nomImg) {
+    nomImgsGaleria.push(nomImg);
     if (input.files && input.files[ix]) {
         var reader = new FileReader();
 
@@ -52,43 +53,43 @@ function readURLCs(input, img, ix, mainDivId) {
         imgTemps.push(img);
         if(input.files.length == ix+1){
 
-            var dvCarusel =  generarDOMCarousel(imgTemps);
+            var dvCarusel =  generarDOMCarousel(imgTemps, nomImgsGaleria);
             const mainDiv = document.querySelector('#'+mainDivId);
             if(mainDiv.children.length == 1){
                 mainDiv.children[0].remove();
             }
             mainDiv.appendChild(dvCarusel);
-           galeriaPerfilCarousel();
+            galeriaPerfilCarousel();
 
-
+            //EventListener para remover imagenes del carusel
            $('#ImgsGaleria').unbind().on( "click",".boton-remover",function(e){
-
-             console.log("test");
+               const img = e.target;
+               const nomImg = img.getAttribute('data-nom');
+               nomImgsGaleria.forEach((e, ix)=>{
+                   if(e === nomImg){
+                       nomImgsGaleria.splice(ix, 1);
+                   }
+               })
+               $galeria.forEach((e, ix)=>{
+                   if(!nomImgsGaleria.find(g=>g === e.name)){
+                       $galeria.splice(ix, 1);
+                   }
+               })
              e.preventDefault();
 
-             console.log(e.target.id);
-                 var index = parseInt(e.target.id,10);
-                 var divValue = 'img'+ (index+1);
-                 imgTemps.splice(index, 1);
+             console.log(img.id);
+             var index = parseInt(img.id,10);
+             imgTemps.splice(index, 1);
 
-                 $('.owl-carousel').remove();
+             $('.owl-carousel').remove();
 
-                 var dvCarusel = generarDOMCarousel(imgTemps);
+             var dvCarusel = generarDOMCarousel(imgTemps, nomImgsGaleria);
 
-                  const mainDiv = document.querySelector('#'+mainDivId);
-                   mainDiv.appendChild(dvCarusel);
-                  galeriaPerfilCarousel();
-
-            });
-
-
-
-
-
+             const mainDiv = document.querySelector('#'+mainDivId);
+             mainDiv.appendChild(dvCarusel);
+             galeriaPerfilCarousel();
+           });
     }
-
-
-
  }
 
 }
@@ -132,6 +133,9 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
 function uploadImgs(input, mainDivId) {
 
     $(input).change(function () {
+        for(let i=0; i<this.files.length; i++){
+            $galeria.push(this.files[i]);
+        }
         //submit the form here
         var file, imgTemp;
         for(let i=0; i<input.files.length;i++){
@@ -139,8 +143,9 @@ function uploadImgs(input, mainDivId) {
             if ((file = this.files[i])) {
                 imgTemp = new Image();
                 imgTemp.onload = function () {
+                    const nameImg = input.files[i].name;
                     //Previsualizar
-                    readURLCs($(input)[0], img, i, mainDivId);
+                    readURLCs($(input)[0], img, i, mainDivId, nameImg);
                 };
                 imgTemp.onerror = function () {
                     $(input).val("");
@@ -408,8 +413,7 @@ function  galeriaPerfilCarousel() {
   }
 }
 
-function generarDOMCarousel(imgTemps){
-
+function generarDOMCarousel(imgTemps, nomImgsGaleria){
 
  const dvCarusel = document.createElement('div');
             dvCarusel.className = 'owl-carousel owl-theme carousel-img';
@@ -424,8 +428,7 @@ function generarDOMCarousel(imgTemps){
                 imgCerrar.setAttribute('id', index );
                 imgCerrar.setAttribute('src', _ctx+'img/remove.png');
                 imgCerrar.classList.add('img-remover');
-
-
+                imgCerrar.setAttribute('data-nom', nomImgsGaleria[index]);
 
                 btCerrar.appendChild(imgCerrar);
                 dvItem.appendChild(btCerrar);

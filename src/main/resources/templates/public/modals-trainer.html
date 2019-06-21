@@ -1,4 +1,4 @@
-<div th:fragment="fg-modals-reg-trainer">
+<div th:fragment="fg-modals-p-trainer">
     <div class="modal fade" tabindex="-1" role="dialog" id="myModalCC" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -34,7 +34,7 @@
         </div><!-- /.modal-dialog -->
     </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper" data-backdrop="static">
-        <div class="modal-dialog" role="document" style="width: 70%;size: 90%;">
+        <div class="modal-dialog" role="document" style="width: 70%">
             <div class="modal-content" style="width: 100%">
                 <div class="modal-header" style="background: #000000;text-align: center;border:none">
                     <button id="btnCerrarRecorteFotoPerfil" type="button"  data-dismiss="modal" class="close-modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -81,7 +81,26 @@
                         <i class="fa fa-fw fa-2x fa-check" style="color: white; cursor:pointer;"></i>
                     </div>
                 </a>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
+    <div class="modal fade slide in" id="myModal" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body" style="padding: 0px !important">
+                    <div id="myGallery" class="carousel slide" data-interval="false">
+                        <ol class="carousel-indicators">
+                        </ol>
+                        <div class="carousel-inner text-center">
+
+                        </div>
+                        <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </div>
+                    </div>
+                <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
+                    <span class="" style="color: white;font-size: 1.4em;">Cerrar<i style="font-size: 1.2em !important;" class="fa-fw fa fa-close"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

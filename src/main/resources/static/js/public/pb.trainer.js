@@ -12,11 +12,12 @@ const tabService = document.getElementById('service');
 const inpCondServicio = document.getElementById('inpCondServicio');
 const frm = document.getElementById('frm_registro');
 const inpNomPag = document.getElementById('NomPag');
+const $galeria = [];
 const servicios = [];
 let ccBancarias = [];
 const metodosPago = [];
 let termConSvc = [];
-const initTabActive = 3;
+const initTabActive = 1;
 let selServicioId = -1;
 let accServicioId = 0;
 let accTarifaId = 0;
@@ -992,9 +993,11 @@ function uploadFotosPerfil(d){
         const data = new FormData();
         data.append("files", file);
         data.append("fileExtension", ".jpg");
-        Array.from(inpGaleria.files).forEach(f=>{
+        //IMG GALERIA
+        $galeria.forEach(f=>{
             data.append("files", f);
         });
+        //TERMINOS Y CONDICIONES DE SERVICIO
         termConSvc.forEach(v=>{
             if(v.file){
                 data.append("files", v.file);
