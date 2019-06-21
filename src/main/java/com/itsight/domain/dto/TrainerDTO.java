@@ -85,7 +85,7 @@ public class TrainerDTO implements Serializable {
     private String cantidadFiles;
     @Size(max = 50)
     private String ixsCondSvcFile;
-    @Size(max = 400)
+    @Size(min= 10, max = 400)
     private String nota;
     @Valid
     private List<ServicioDTO> servicios;

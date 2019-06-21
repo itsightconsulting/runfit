@@ -979,6 +979,52 @@
       regenerarListaMusculosSeleccionados();
     }
     checkBoxAndRadioValidationEventListener(e, input, clases);
+
+    /* Elementos a disposición */
+    if(clases.contains('checkmark') || clases.contains('chk-content')){
+      if(clases.contains('checkmark')){
+        const prev = input.previousElementSibling;
+        if(prev){
+          if(prev.name === "ItemsFitness"){
+            if(prev.value === "9"){
+              if(prev.checked){
+                document.querySelectorAll('input[name="ItemsFitness"]').forEach(e => {
+                  if(e.value !== "9"){
+                    e.checked = false;
+                    e.parentElement.parentElement.parentElement.classList.remove('active');
+                  }
+                });
+              }
+            }else{
+              const inpNa = document.querySelector('input[name="ItemsFitness"][value="9"]');
+              inpNa.checked = false;
+              inpNa.parentElement.parentElement.parentElement.classList.remove('active');
+            }
+          }
+        }
+      }
+
+      if(clases.contains('chk-content')){
+        const inp = input.querySelector('input[name="ItemsFitness"]');
+        if(inp){
+          if(inp.value === "9"){
+            if(inp.checked){
+              document.querySelectorAll('input[name="ItemsFitness"]').forEach(e => {
+                if(e.value !== "9"){
+                  e.checked = false;
+                  e.parentElement.parentElement.parentElement.classList.remove('active');
+                }
+              });
+            }
+          }else{
+            const inpNa = document.querySelector('input[name="ItemsFitness"][value="9"]');
+            inpNa.checked = false;
+            inpNa.parentElement.parentElement.parentElement.classList.remove('active');
+          }
+        }
+      }
+    }
+    /* END elementos a disposición*/
   }
 
   function bodyFocusOutEventListener(e){

@@ -142,9 +142,6 @@ function uploadImgs(input, mainDivId) {
                     //Previsualizar
                     readURLCs($(input)[0], img, i, mainDivId);
                 };
-
-
-
                 imgTemp.onerror = function () {
                     $(input).val("");
                     $.smallBox({
@@ -375,15 +372,12 @@ function  galeriaPerfilCarousel() {
           }
       })
 
-
     $(".owl-prev").empty()
     $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
     $(".owl-next").empty()
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 
-
-
-  }else{
+  } else{
 
     $('.owl-carousel').owlCarousel({
           loop: false,

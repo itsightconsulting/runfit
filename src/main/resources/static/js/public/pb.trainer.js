@@ -16,12 +16,11 @@ const servicios = [];
 let ccBancarias = [];
 const metodosPago = [];
 let termConSvc = [];
-const initTabActive = 1;
+const initTabActive = 3;
 let selServicioId = -1;
 let accServicioId = 0;
 let accTarifaId = 0;
 let accCuentaId = 0;
-let terminosAceptados = false;
 //Cropper
 let cropper = {};
 const actions = document.getElementById('actions');
@@ -80,9 +79,10 @@ function agregarServicio(){
         });
         service.querySelector(`.ver-servicios .edit[data-id="${s.id}"]`).classList.remove('hidden');
         document.getElementById('Tarifarios').innerHTML = "";
-        tabService.querySelector('.servicio.svc-focus').click();
+        //tabService.querySelector('.servicio.svc-focus').click();
+        Tarifarios.innerHTML = "";
         agregarInputTermCond();
-    } else{
+    } else {
         $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
     }
 }
@@ -278,6 +278,19 @@ function bodyClickEventListener(e){
     const input = e.target;
     const clases = input.classList;
     checkBoxAndRadioValidationEventListener(e, input, clases);
+
+    //T&C
+    if(clases.contains('chk-content')){
+        e.stopPropagation();
+        const parent = input.parentElement;
+        if(parent.classList.contains('terms')){
+            parent.querySelector('input').checked = !parent.querySelector('input').checked;
+        }
+    }
+
+    if(clases.contains('ver-tyc')){
+        input.nextElementSibling.checked = !input.nextElementSibling.checked;
+    }
 }
 
 function bodyChangeEventListener(e){
@@ -499,11 +512,6 @@ function instanceCropper(){
 }
 
 function modalEventos(){
-    $('#myModalTermCond').on('hidden.bs.modal', ()=> {
-        if(!terminosAceptados) {
-            document.getElementById('inpTermCond').checked = false;
-        }
-    })
 
     $('#myModalCropper').on('shown.bs.modal', ()=>{
         if(typeof cropper.canvas !== 'object'){
@@ -578,9 +586,10 @@ function abrirModalTermCond(){
 }
 
 function ocultarModalTermCondYAceptar(){
-    document.getElementById('inpTermCond').checked=true;
-    terminosAceptados = true;
+    const inp = document.getElementById('inpTermCond');
+    inp.checked=true;
     $('#myModalTermCond').modal('hide');
+    $(inp).valid();
 }
 
 function instanceIcons(){
@@ -874,6 +883,7 @@ function confirmarEliminarServicicio(svcId){
         service.querySelector('.ver-servicios .servicio').click();
     }else{
         resetServicios();
+        resetTarifarios();
     }
     setTimeout(()=>{$.smallBox({content: "<i class='fa fa-fw fa-check-circle'></i>Se ha eliminado satisfactoriamente"});},200)
 }
@@ -1071,4 +1081,9 @@ function resetServicios(){
     accServicioId = 0;
     accTarifaId = 0;
     accCuentaId = 0;
+}
+
+function resetTarifarios(){
+    cleanPaqueteCampos();
+    Tarifarios.innerHTML = "";
 }

@@ -38,7 +38,7 @@
                         <div class="tab-pane fade active in inpts-1" id="about">
                                 <div class="form-group">
                                     <div class="">
-                                        <label>NOMBRE COMPLETO:<span class="obligatorio">*</span></label>
+                                        <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
                                         <input class="form-control" name="NombreFull" id="NombreFull" type="text" disabled="disabled">
                                     </div>
                                 </div>
@@ -202,20 +202,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group rs">
+                                    <div class="form-group rs-trainer">
                                         <label>REDES SOCIALES</label>
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text">
                                         </div>
                                     </div>
-                                    <div class="form-group rs">
+                                    <div class="form-group rs-trainer">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text">
                                         </div>
                                     </div>
-                                    <div class="form-group rs">
+                                    <div class="form-group rs-trainer">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input value="" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
@@ -401,11 +401,11 @@
                                 <hr>
                                 <input type="file" id="inpCondServicio" class="hide">
                                 <input type="hidden" id="FichaClienteId"/>
-                                <div class="form-group hidden" id="divNotaFinal">
+                                <div class="form-group hidden" id="divNota">
                                     <label>NOTA
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
                                     </label>
-                                    <textarea class="form-control" id="NotaFinal"></textarea>
+                                    <textarea class="form-control" id="Nota" name="Nota"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -458,9 +458,12 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
-<div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper">
+<div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper" data-backdrop="static">
     <div class="modal-dialog" role="document" style="width: 70%;height: 90%;">
         <div class="modal-content" style="width: 100%">
+            <div class="modal-header" style="background: #000000;text-align: center;border:none">
+                <button type="button" data-dismiss="modal" class="close-modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
             <div class="modal-body" style="height: 90%;padding: 0px">
                 <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
                     <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
@@ -706,6 +709,16 @@
                 }
             }
         }
+        checkRevisionTrainerDeEmpresa();
+    }
+
+    function checkRevisionTrainerDeEmpresa(){
+        const url = window.location.href.split("/");
+        if(url.find(e=>e==='s')){
+            document.querySelectorAll('.rs-trainer').forEach(e => {
+                e.classList.add('hidden');
+            });
+        }
     }
 
     function modalEventos(){
@@ -747,7 +760,11 @@
 
     function actualizarPerfil(e){
         const val = validationByNumSheet(1);
-        if(!val.isValid){
+        const nota = document.querySelector('#Nota');
+        if(!val.isValid || !$(nota).valid()){
+            if(!$(nota).valid()){
+                val.inputs.push(nota);
+            }
             smallBoxAlertValidation(val.inputs);
             return;
         }
@@ -767,6 +784,7 @@
         }
 
         $buttonName = "ACTUALIZAR Y ENVIAR";
+        $("#frm_registro :input").prop("disabled", true);
         $.ajax({
             type: 'PUT',
             contentType: 'application/json',
@@ -1017,8 +1035,8 @@
         }
 
         if(t.nota){
-            document.getElementById('divNotaFinal').classList.remove('hidden');
-            document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+            document.getElementById('divNota').classList.remove('hidden');
+            document.getElementById('Nota').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
         }
     }
 
@@ -1382,7 +1400,7 @@
         if(redes.have){
             obj.redes = redes.nombres;
         }
-        obj.nota = document.getElementById('NotaFinal').value;
+        obj.nota = document.getElementById('Nota').value;
         obj.servicios = servicios;
         obj.mediosPago = $perfil.mediosPago;
         obj.sexo = $perfil.tipoTrainerId == TipoTrainer.PARTICULAR ||
@@ -1398,6 +1416,9 @@
         obj.imgExt = finalExtension;
         if(!obj.horario){
             delete obj['horario'];
+        }
+        if(!obj.nota){
+            delete obj.nota;
         }
         return obj;
     }
@@ -1568,6 +1589,9 @@
                     number: true,
                     rangelength: [1, 8],
                     min: 1
+                },
+                Nota: {
+                    rangelength: [10, 400]
                 }
             },
             messages: {

@@ -3588,7 +3588,7 @@ section.trainers-form {
   height: 120px;
  }
 
-    .img-remover {
+.img-remover {
      display: block !important;
      height: 40px !important;
      width: 40px !important;
@@ -3600,3 +3600,7 @@ section.trainers-form {
      border-radius: 50%;
      border: 2px solid #000000;
  }
+
+.cc-elegido{
+  cursor: default;
+}

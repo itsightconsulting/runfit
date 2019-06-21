@@ -176,7 +176,8 @@ public class Enums {
         OBS_PERFIL_SUBSANADAS("Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"),
         CHECK_PERFIL_EMPRESA_EN_VISTA_BUSQUEDA("El perfil que ha intentado ver ya no es accesible mediante esta ruta puesto que ya ha sido aprobado. Si desea revisar su perfil encuentrelo en la vista de 'Encuentra tu coach'"),
         NOTIFICACION_RED_FIT_PERSONAL("El atleta ha sido notificado."),
-        NOTIFICACION_RED_FIT_GENERAL("Los atletas han sido notificados.");
+        NOTIFICACION_RED_FIT_GENERAL("Los atletas han sido notificados."),
+        TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS("Usted ya ha actualizado el perfil de este entrenador, si ya corrigió todas las observaciones vuelva al perfil de su empresa y envíe la confirmación desde allí para finalizar el proceso.");
         final String msg;
 
         Msg(String msg){

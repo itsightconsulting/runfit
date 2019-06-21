@@ -252,7 +252,7 @@ public class TrainerFicha implements Serializable {
     @Column(nullable = false, updatable = false)
     private String extFp;
 
-    @Column(nullable = true, unique = true, updatable = false)
+    @Column(nullable = false, unique = true, updatable = false)
     private String nomPag;
 
     @Column(nullable = true)
@@ -271,6 +271,8 @@ public class TrainerFicha implements Serializable {
     private Integer trEmpId;
     @Column(nullable = true)
     private String svcIds;
+    @Column(nullable = false)
+    private boolean flagPermisoUpd;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)

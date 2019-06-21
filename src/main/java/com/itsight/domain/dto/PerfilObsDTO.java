@@ -3,8 +3,7 @@ package com.itsight.domain.dto;
 import com.itsight.validation.ExtendedEmailValidator;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Data
@@ -21,4 +20,9 @@ public class PerfilObsDTO implements Serializable {
     @NotBlank
     @Size(min = 10, max = 1000)
     private String obs;
+
+    @Positive
+    @Max(3)
+    @NotNull
+    private Integer tipoTrainerId;
 }
