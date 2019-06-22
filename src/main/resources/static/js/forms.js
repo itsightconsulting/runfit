@@ -91,7 +91,6 @@ function readURLCs(input, img, ix, mainDivId, nomImg) {
            });
     }
  }
-
 }
 
 function poblarCarusel(srcs, mainDivId, baseSrc) {
@@ -351,10 +350,8 @@ function activeTooltips(){
 }
 
 function  galeriaPerfilCarousel() {
-
   if($('.owl-carousel .item').size() < 5)
   {
-
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,
@@ -383,7 +380,6 @@ function  galeriaPerfilCarousel() {
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 
   } else{
-
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,

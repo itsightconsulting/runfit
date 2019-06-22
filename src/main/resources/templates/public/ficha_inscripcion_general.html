@@ -100,7 +100,7 @@
                 <li>
                   <div class="form-group" id="stUbicacion">
                     <label>¿Dónde vives?<span class="obligatorio">*</span></label>
-                    <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" readonly="readonly">
+                    <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" disabled="disabled">
                       <option selected="selected" value="604">Perú</option>
                     </select>
                     <div class="row">
@@ -109,7 +109,7 @@
                           <label>Departamento:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento">
+                          <select class="form-control margin-o-bottom-10" disabled="disabled" id="Dep" name="Dep" data-aka="Ubigeo departamento">
                             <option selected="selected" value="15">Lima</option>
                           </select>
                         </div>
@@ -119,7 +119,7 @@
                           <label>Provincia:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                          <select class="form-control margin-o-bottom-10" disabled="disabled" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                             <option selected="selected" value="01">Lima</option>
                           </select>
                         </div>
@@ -840,6 +840,7 @@
     mainEventListeners();
     tooltipsOn();
     constraintsValidation();
+    doMultiselectCheckBox();
   }
 
   function mainSeeders(){

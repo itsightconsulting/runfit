@@ -71,7 +71,7 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="col-md-4 pad-0">
-                              <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control">
+                              <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control hidden">
                                 <option value="">Seleccione</option>
                                 <option value="1">DNI</option>
                                 <option value="2">CE</option>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-7 pad-0">
-                              <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
+                              <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control hidden" type="text" placeholder="Número documento"/>
                             </div>
                           </div>
                         </div>
@@ -100,7 +100,7 @@
                     <li>
                       <div class="form-group" id="stUbicacion">
                         <label>¿Dónde vives?<span class="obligatorio">*</span></label>
-                        <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" readonly="readonly">
+                        <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10 hidden" disabled="disabled">
                           <option selected="selected" value="604">Perú</option>
                         </select>
                         <div class="row">
@@ -109,7 +109,7 @@
                               <label>Departamento:</label>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                              <select class="form-control margin-o-bottom-10" id="Dep" name="Dep" data-aka="Ubigeo departamento">
+                              <select class="form-control margin-o-bottom-10 hidden" disabled="disabled" id="Dep" name="Dep" data-aka="Ubigeo departamento">
                                 <option selected="selected" value="15">Lima</option>
                               </select>
                             </div>
@@ -119,7 +119,7 @@
                               <label>Provincia:</label>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                              <select class="form-control margin-o-bottom-10" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                              <select class="form-control margin-o-bottom-10 hidden" disabled="disabled" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                                 <option selected="selected" value="01">Lima</option>
                               </select>
                             </div>
@@ -129,7 +129,7 @@
                               <label>Distrito:</label>
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                              <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                              <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                                 <option selected="selected" value="01">Lima</option>
                               </select>
                             </div>
@@ -140,7 +140,7 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuál es tu estado civil?<span class="obligatorio">*</span></label>
-                        <select class="form-control" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
+                        <select class="form-control hidden" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
                           <option value="1">Soltera(o)</option>
                           <option value="2">Comprometida(o)</option>
                           <option value="3">Casada(o)</option>
@@ -353,7 +353,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hide">
+                        <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hide hidden">
                           <option value="">Seleccione</option>
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
@@ -394,7 +394,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hide">
+                        <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hide hidden">
                           <option value="">Seleccione</option>
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
@@ -418,7 +418,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <select class="form-control hide" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
+                        <select class="form-control hide hidden" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
                           <option value="1">Menos de 5 KG</option>
                           <option value="2">Menos de 10 KG</option>
                           <option value="3">Más de 10 KG</option>
@@ -426,7 +426,7 @@
                       </div>
                       <div class="form-group">
                         <label>Tu alimentación es:<span class="obligatorio">*</span></label>
-                        <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control">
+                        <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
                           <option value="1">Sana</option>
                           <option value="2">Promedio</option>
                           <option value="3">Mala</option>
@@ -435,7 +435,7 @@
                       </div>
                       <div class="form-group">
                         <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
-                        <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control">
+                        <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control hidden">
                           <option value="1">Nulo</option>
                           <option value="2">Bajo</option>
                           <option value="3">Intermedio</option>
@@ -584,7 +584,7 @@
                       <li>
                         <div class="form-group">
                           <label>¿Cuál es el nivel de atleta con el que te identificarías?<span class="obligatorio">*</span></label>
-                          <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control">
+                          <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control hidden">
                             <option value="1">Básico</option>
                             <option value="2">Intermedio</option>
                             <option value="3">Avanzado</option>
@@ -888,7 +888,7 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuántos días corres a la semana?<span class="obligatorio">*</span></label>
-                        <select id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" data-aka="Seleccionar días a la semana que corres" class="form-control">
+                        <select id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" data-aka="Seleccionar días a la semana que corres" class="form-control hidden">
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -1067,10 +1067,10 @@
                                 <tbody>
                                   <tr>
                                     <td>
-                                      <input class="form-control inp-fecha" type="date" th:value="${today}" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-fecha" name="InpFechaCompetencia" data-aka="Fecha competencia" type="date" th:value="${today}" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
-                                      <select class="form-control inp-distancia" style="max-width: 100% !important;">
+                                      <select class="form-control inp-distancia hidden" style="max-width: 100% !important;">
                                         <option value="5">5K</option>
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
@@ -1082,10 +1082,10 @@
                                       <input class="form-control inp-nombre" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
-                                      <input class="form-control inp-tiempo" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-tiempo" name="TiempoComp" data-aka="TIEMPO OBJETIVO DE COMPETENCIA" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
                                     </td>
                                     <td colspan="2"><i onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: gray;cursor: not-allowed;"></i>
-                                      <select class="form-control inp-prioridad" style="max-width: 95% !important;">
+                                      <select class="form-control inp-prioridad hidden" style="max-width: 95% !important;">
                                         <option value="1">Alta</option>
                                         <option value="2">Media</option>
                                         <option value="3">Baja</option>
@@ -1095,7 +1095,7 @@
                                   <!-- This is our clonable table line -->
                                   <tr class="hide" data-acc="0">
                                     <td>
-                                      <input class="form-control inp-fecha" type="date" th:value="${today}" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-fecha" data-aka="Fecha competencia" type="date" th:value="${today}" style="max-width: 100% !important;"/>
                                     </td>
                                     <td>
                                       <select class="form-control inp-distancia" style="max-width: 100% !important;">
@@ -1295,6 +1295,11 @@
       const mainFrm = document.getElementById('frm_registro');
       const btnGuardar = document.getElementById('btnGuardar');
       const body = document.querySelector('body');
+
+      var oneDaysFromNow = new Date();
+      oneDaysFromNow.setDate(oneDaysFromNow.getDate() + 1);
+      oneDaysFromNow = parseFromStringToDate(getFechaFormatoString(oneDaysFromNow));
+
       let lstCondMejoras = [];
 
       (function () {
@@ -1306,7 +1311,7 @@
         mainEventListeners();
         tooltipsOn();
         constraintsValidation();
-        
+        doMultiselectCheckBox();
       }
 
       function mainSeeders(){
@@ -1377,6 +1382,30 @@
         btnGuardar.addEventListener('click', sendMainForm);
         document.querySelector('body').addEventListener('click', bodyClickEventListener);
         document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
+        document.querySelector('body').addEventListener('change', bodyChangeEventListener);
+      }
+
+      function bodyChangeEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+
+        if(input.tagName === "INPUT"){
+          if(input.type === "date"){
+            if($(input).valid()){
+              if(input.nextElementSibling && input.nextElementSibling.tagName === "EM"){
+                input.nextElementSibling.remove();
+              }
+            }
+          }
+
+          if(input.type === "time"){
+            if($(input).valid()){
+              if(input.nextElementSibling && input.nextElementSibling.tagName === "EM"){
+                input.nextElementSibling.remove();
+              }
+            }
+          }
+        }
       }
 
       function tooltipsOn(){
@@ -1443,7 +1472,6 @@
           regenerarListaMusculosSeleccionados();
         }
         checkBoxAndRadioValidationEventListener(e, input, clases);
-
         /* Elementos a disposición */
         if(clases.contains('checkmark') || clases.contains('chk-content')){
           if(clases.contains('checkmark')){
@@ -1733,7 +1761,22 @@
         const tbody = tblCompetencia.querySelector('tbody');
         filaClonada.querySelector('.fa-minus').setAttribute('data-acc', rowNum);
         tbody.append(filaClonada);
-        //$('#TablaDetalle').children()[0].children[Number($('#TablaDetalle').find('.hide').children()[0].textContent)+1].children[1].focus();
+        //Agregando al obj validación el nuevo input fecha
+        /* */
+        const nuevaAgregada = tbody.lastElementChild;
+        const inpFecha = nuevaAgregada.querySelector('.inp-fecha');
+        inpFecha.setAttribute('name', "InpFechaCompetencia"+rowNum);
+        $(inpFecha).rules("add",{required: true, greaterThanDate: oneDaysFromNow});
+
+        const inpDesComp = nuevaAgregada.querySelector('.inp-nombre');
+        inpDesComp.setAttribute('name', "DesComp"+rowNum);
+        inpDesComp.setAttribute('data-aka', "NOMBRE DE COMPETICIÓN A PARTICIPAR");
+        $(inpDesComp).rules("add",{required: true, rangelength: [5, 40]});
+
+        const inpTiempoComp = nuevaAgregada.querySelector('.inp-tiempo');
+        inpTiempoComp.setAttribute('name', "DesComp"+rowNum);
+        inpTiempoComp.setAttribute('data-aka', "TIEMPO OBJETIVO DE COMPETENCIA");
+        $(inpTiempoComp).rules("add",{required: true, greaterThanSeconds: 1});
       }
 
       function eliminarFila(e){
@@ -1958,7 +2001,8 @@
               required: true
             },
             DesComp: {
-              required: true
+              required: true,
+              rangelength: [5, 40]
             },
             ItemsFitness: {
               required: true
@@ -1976,6 +2020,14 @@
               required: true,
               rangelength: [8, 30],
               pwcheck: true
+            },
+            InpFechaCompetencia:{
+              required: true,
+              greaterThanDate: oneDaysFromNow
+            },
+            TiempoComp:{
+              required: true,
+              greaterThanSeconds: 1
             }
           },
           messages: {
