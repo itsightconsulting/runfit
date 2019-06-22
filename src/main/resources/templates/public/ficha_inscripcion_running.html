@@ -7,6 +7,25 @@
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
+    <style>
+      input[type=time]::-webkit-datetime-edit-ampm-field {
+        display: none !important;
+      }
+      input[type=time]::-webkit-clear-button {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        -o-appearance: none !important;
+        -ms-appearance:none !important;
+        appearance: none !important;
+        margin: -10px !important;
+      }
+
+      .steps ul.distance li input{
+        width: 118% !important;
+        padding: 10px !important;
+        margin-right: 10px !important;
+      }
+    </style>
   </head>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -333,7 +352,7 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group hide" id="divDesFumador">
+                      <div class="form-group hidden" id="divDesFumador">
                         <label>¿Con qué frecuencia fumas?<span class="obligatorio">*</span></label>
                         <input id="DesFumador" name="DesFumador" class="form-control" data-aka="Frecuencia de fumar" type="text" placeholder="Poca, regular, constante..."/>
                       </div>
@@ -352,8 +371,8 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hide hidden">
+                      <div class="form-group hidden">
+                        <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hidden">
                           <option value="">Seleccione</option>
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
@@ -393,8 +412,8 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hide hidden">
+                      <div class="form-group hidden">
+                        <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hidden">
                           <option value="">Seleccione</option>
                           <option value="1">Papá</option>
                           <option value="2">Mamá</option>
@@ -417,8 +436,8 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <select class="form-control hide hidden" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
+                      <div class="form-group hidden">
+                        <select class="form-control hidden" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
                           <option value="1">Menos de 5 KG</option>
                           <option value="2">Menos de 10 KG</option>
                           <option value="3">Más de 10 KG</option>
@@ -464,7 +483,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input class="form-control hide" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text"/>
+                        <input class="form-control hidden" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Tienes alergia a algún medicamento?<span class="obligatorio">*</span></label>
@@ -482,7 +501,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control hide" type="text"/>
+                        <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control hidden" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
@@ -500,7 +519,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control hide" placeholder="Especificar la o las operaciones" type="text"/>
+                        <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control hidden" placeholder="Especificar la o las operaciones" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Tienes alguna hernia discal o padeces otra condición especial en la columna?<span class="obligatorio">*</span></label>
@@ -518,7 +537,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <input class="form-control hide" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
+                        <input class="form-control hidden" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>Padeces de:<span class="obligatorio">*</span></label>
@@ -1731,15 +1750,6 @@
         }).catch((err)=>{
           exception(err);
         });
-      }
-
-      function hideShowGenericInp(ele){
-        const val = ele.value;
-        const eleRefId = ele.getAttribute('data-ele-hd');
-        if(val == 0)
-          document.querySelector(eleRefId).classList.add('hide');
-        else
-          document.querySelector(eleRefId).classList.remove('hide');
       }
 
       function agregarInputDinamico(e){

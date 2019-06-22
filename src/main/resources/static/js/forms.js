@@ -435,3 +435,16 @@ function generarDOMCarousel(imgTemps, nomImgsGaleria){
  return dvCarusel;
 
 }
+
+function hideShowGenericInp(ele){
+    const val = ele.value;
+    const eleRefId = ele.getAttribute('data-ele-hd');
+    let finalElement = document.querySelector(eleRefId);
+    if(finalElement.tagName === "SELECT"){
+        finalElement = finalElement.parentElement.parentElement;
+    }
+    if(val == 0)
+        finalElement.classList.add('hidden');
+    else
+        finalElement.classList.remove('hidden');
+}
