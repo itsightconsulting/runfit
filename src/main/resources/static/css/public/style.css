@@ -2400,6 +2400,10 @@ h1 {
   background: #a8fa00
 }
 
+#DivSvgSkeleton{
+  padding-right: 60px;
+}
+
 .steps table thead {
   background: #000;
   text-transform: uppercase;
@@ -2696,6 +2700,9 @@ img.tibial {
   }
   .steps ol>li {
     padding-left: 60px
+  }
+  #DivSvgSkeleton{
+    padding-right: 0px;
   }
 }
 
