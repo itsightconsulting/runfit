@@ -330,6 +330,37 @@ function doMultiselectCheckBox(){
     })
 }
 
+function multiSelectFichaRunning(){
+    document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
+        $(e).multiselect({
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 300,
+            onChange: (e, optIsSelected)=>{
+                const option = e[0];
+                const select = option.parentElement;
+                $(select).valid();
+            }
+        });
+    })
+
+    document.querySelectorAll('select:not([multiple])').forEach(e=>{
+        if(!e.classList.contains('no-multi')){
+            $(e).multiselect({
+                multiple: false,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: 300,
+                onChange: (e, optIsSelected)=>{
+                    const option = e[0];
+                    const select = option.parentElement;
+                    $(select).valid();
+                }
+            });
+        }
+    })
+}
+
 function bodyFocusOutEventListener(e){
     const input = e.target;
     if(input.tagName === "INPUT"){
@@ -447,4 +478,19 @@ function hideShowGenericInp(ele){
         finalElement.classList.add('hidden');
     else
         finalElement.classList.remove('hidden');
+}
+
+function recordsRunningValidation(input){
+    const distance = Number(input.parentElement.parentElement.querySelector('.inp-distancia').value);
+    if(distance === 5){
+        return
+    }else if(distance === 10){
+        return 12*60;
+    }else if(distance === 15){
+        return 41*60;
+    }else if(distance === 21){
+        return 58*60;
+    }else if(distance === 42){
+        return 121*60;
+    }
 }

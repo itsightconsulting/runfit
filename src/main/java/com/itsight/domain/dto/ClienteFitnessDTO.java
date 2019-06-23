@@ -6,6 +6,7 @@ import com.itsight.domain.jsonb.*;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import lombok.Data;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ClienteFitnessDTO implements Serializable {
     private Integer imc;
     private Integer nivel;
 
+    @Valid
     private List<CondicionMejora> mejoras;
     private String tiempoUnKilometro;
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
@@ -38,7 +40,9 @@ public class ClienteFitnessDTO implements Serializable {
     //JSONB
     private CondicionAnatomica condicionAnatomica;
     private Salud salud;
+    @Valid
     private List<CompetenciaRunner> competencias;
+    @Valid
     private List<FitElemento> fitElementos;
     private Integer frecuenciaComunicacion;
     private Integer viaConexion;

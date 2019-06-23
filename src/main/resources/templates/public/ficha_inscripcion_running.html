@@ -20,18 +20,17 @@
         margin: -10px !important;
       }
 
-      .steps ul.distance li input{
-        width: 118% !important;
-        padding: 10px !important;
-        margin-right: 10px !important;
-      }
-
       #DivSvgSkeleton .tooltip.fade{
         top: 0px !important;
       }
 
       #DivSvgSkeleton .tooltip-arrow{
           display: none;
+      }
+
+      #tblCompetencia tbody input{
+        width: 100%;
+        max-width: 100%;
       }
     </style>
   </head>
@@ -903,12 +902,12 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
-                        <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="time" value="00:00" step="1"/>
+                        <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" value="00:00:01"/>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
-                        <label>Y tu kilometraje promedio semanal ¿cuál es?<span class="obligatorio">*</span></label>
+                        <label>Y tu kilometraje promedio semanal ¿Cuál es?<span class="obligatorio">*</span></label>
                         <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" data-aka="Kilometraje promedio semanal" class="form-control" type="number"/>
                       </div>
                     </li>
@@ -1055,19 +1054,19 @@
                         <p class="form-group-subtitle">Puedes elegir cualquier opción</p>
                         <ul class="distance">
                           <li>
-                            <input type="time" value="00:00" step="1"/>
+                            <input type="text" id="TwoKm" name="TwoKm" value="00:00:00"/>
                             <p>2km</p>
                           </li>
                           <li>
-                            <input type="time" value="00:00" step="1"/>
+                            <input type="text" id="FourKm" name="FourKm" value="00:00:00"/>
                             <p>4km</p>
                           </li>
                           <li>
-                            <input type="time" value="00:00" step="1"/>
+                            <input type="text" id="TweOneKm" name="TweOneKm" value="00:00:00"/>
                             <p>21km</p>
                           </li>
                           <li>
-                            <input type="time" value="00:00" step="1"/>
+                            <input type="text" id="FouTwoKm" name="FouTwoKm" value="00:00:00"/>
                             <p>42km</p>
                           </li>
                         </ul>
@@ -1084,20 +1083,21 @@
                               <table class="table" id="tblCompetencia">
                                 <thead>
                                   <tr>
-                                    <th>Fecha</th>
-                                    <th>Distancia</th>
-                                    <th colspan="2">Maratón</th>
-                                    <th><span class="fa fa-clock-o fa-fw"></span>Objetivo</th>
-                                    <th colspan="2">Prioridad</th>
+                                    <th>FECHA</th>
+                                    <th>DISTANCIA</th>
+                                    <th style="width: 38%">MARATÓN</th>
+                                    <th><span class="fa fa-clock-o fa-fw"></span>OBJETIVO</th>
+                                    <th>PRIORIDAD</th>
+                                    <th class="hidden" style="width: auto">&nbsp;</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
                                     <td>
-                                      <input class="form-control inp-fecha" name="InpFechaCompetencia" data-aka="Fecha competencia" type="date" th:value="${today}" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-fecha" name="InpFechaCompetencia" data-aka="Fecha competencia" type="date" th:value="${today}"/>
                                     </td>
                                     <td>
-                                      <select class="form-control inp-distancia hidden" style="max-width: 100% !important;">
+                                      <select class="form-control inp-distancia no-multi">
                                         <option value="5">5K</option>
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
@@ -1105,27 +1105,30 @@
                                         <option value="42" selected="selected">42K</option>
                                       </select>
                                     </td>
-                                    <td colspan="2">
-                                      <input class="form-control inp-nombre" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text" style="max-width: 100% !important;"/>
+                                    <td>
+                                      <input class="form-control inp-nombre" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text"/>
                                     </td>
                                     <td>
-                                      <input class="form-control inp-tiempo" name="TiempoComp" data-aka="TIEMPO OBJETIVO DE COMPETENCIA" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-tiempo" name="TiempoComp" maxlength="8" data-aka="TIEMPO OBJETIVO DE COMPETENCIA" type="text" value="00:00:00"/>
                                     </td>
-                                    <td colspan="2"><i onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: gray;cursor: not-allowed;"></i>
-                                      <select class="form-control inp-prioridad hidden" style="max-width: 95% !important;">
+                                    <td>
+                                      <select class="form-control inp-prioridad no-multi">
                                         <option value="1">Alta</option>
                                         <option value="2">Media</option>
                                         <option value="3">Baja</option>
                                       </select>
                                     </td>
+                                    <td style="width: 32px; border: 1px solid transparent">
+                                        &nbsp;
+                                    </td>
                                   </tr>
                                   <!-- This is our clonable table line -->
                                   <tr class="hide" data-acc="0">
                                     <td>
-                                      <input class="form-control inp-fecha" data-aka="Fecha competencia" type="date" th:value="${today}" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-fecha" data-aka="Fecha competencia" type="date" th:value="${today}"/>
                                     </td>
                                     <td>
-                                      <select class="form-control inp-distancia" style="max-width: 100% !important;">
+                                      <select class="form-control inp-distancia no-multi">
                                         <option value="5">5K</option>
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
@@ -1133,25 +1136,28 @@
                                         <option value="42">42K</option>
                                       </select>
                                     </td>
-                                    <td colspan="2">
-                                      <input class="form-control inp-nombre" type="text" style="max-width: 100% !important;"/>
+                                    <td>
+                                      <input class="form-control inp-nombre" type="text" maxlength="40"/>
                                     </td>
                                     <td>
-                                      <input class="form-control inp-tiempo" type="time" value="00:00" step="1" style="max-width: 100% !important;"/>
+                                      <input class="form-control inp-tiempo" maxlength="8" type="text" value="00:00:00"/>
                                     </td>
-                                    <td colspan="2"><i title="Eliminar competencia" onclick="eliminarFila(this)" data-acc="" class="fa fa-minus" style="float: right;font-size: 0.65em;color: #c93030;cursor: pointer;"></i>
-                                      <select class="form-control inp-prioridad" style="max-width: 95% !important;">
+                                    <td>
+                                      <select class="form-control inp-prioridad no-multi">
                                         <option value="1">Alta</option>
                                         <option value="2">Media</option>
                                         <option value="3">Baja</option>
                                       </select>
+                                    </td>
+                                    <td style="width: 32px; border: 1px solid transparent">
+                                        <img onclick="eliminarFila(this)" data-acc="" th:src="@{/img/public/garbage.png}" alt="Eliminar">
                                     </td>
                                   </tr>
                                 </tbody>
                               </table>
                             </div>
                           </div>
-                          <a class="btn btn-black pull-right" onclick="agregarFilaCompetencia()" style="font-size: 1em; !important;">Agregar<i class="fa fa-plus-circle fa-fw"></i></a>
+                          <a class="btn btn-black pull-right" onclick="agregarFilaCompetencia()" style="font-size: 1em !important; margin-right: 54px;">Agregar<i class="fa fa-plus-circle fa-fw"></i></a>
                         </div>
                       </div>
                     </li>
@@ -1319,13 +1325,13 @@
       let selectedMuscles = [];
 
       const stUbicacion = document.getElementById('stUbicacion');
-      const mainFrm = document.getElementById('frm_registro');
+      const frm = document.getElementById('frm_registro');
       const btnGuardar = document.getElementById('btnGuardar');
       const body = document.querySelector('body');
 
-      var oneDaysFromNow = new Date();
-      oneDaysFromNow.setDate(oneDaysFromNow.getDate() + 1);
-      oneDaysFromNow = parseFromStringToDate(getFechaFormatoString(oneDaysFromNow));
+      var nowDate = new Date();
+      nowDate.setDate(nowDate.getDate());
+      nowDate = parseFromStringToDate(getFechaFormatoString(nowDate));
 
       let lstCondMejoras = [];
 
@@ -1338,7 +1344,7 @@
         mainEventListeners();
         tooltipsOn();
         constraintsValidation();
-        doMultiselectCheckBox();
+        multiSelectFichaRunning();
           $('#TxtMusculoOtro')[0].style.marginTop = $('#DivSvgSkeleton').height() + 'px';
       }
 
@@ -1437,6 +1443,14 @@
               }
             }
           }
+        }
+
+        if(clases.contains('inp-distancia')){
+            const tr = input.parentElement.parentElement;
+            const inpTiempo = tr.querySelector('.inp-tiempo');
+            if(inpTiempo.nextElementSibling){
+                inpTiempo.nextElementSibling.remove();
+            }
         }
       }
 
@@ -1651,7 +1665,7 @@
         obj.cliFit.mejoras = getValuesCondicionMejora();
         obj.cliFit.frecuenciaComunicacion = 1;
         obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
-        obj.cliFit.tiempoDistancia = "{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}";
+        obj.cliFit.tiempoDistancia = getTiemposDistancias();
         obj.cliFit.fichaId =  1;//Runner = 1
 
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
@@ -1698,11 +1712,20 @@
         return obj;
       }
 
+      function getTiemposDistancias(){
+        const obj = {};
+        obj["2"] =  document.querySelector('#TwoKm').value;
+        obj["4"] =  document.querySelector('#FourKm').value;
+        obj["21"] =  document.querySelector('#TweOneKm').value;
+        obj["42"] =  document.querySelector('#FouTwoKm').value;
+        return JSON.stringify(obj);
+      }
+
       function getCompetenciasParticipar(){
         const rows = Array.from(document.querySelector('#tblCompetencia tbody').querySelectorAll('tr:not(.hide)'));
           return rows.map(v=>{
               const obj = new Object();
-              obj.fecha = v.querySelector('.inp-fecha').value;
+              obj.fecha = parseFromStringToDate(v.querySelector('.inp-fecha').value);
               obj.distancia = v.querySelector('.inp-distancia').value;
               obj.nombre = v.querySelector('.inp-nombre').value;
               obj.tiempoObjetivo = v.querySelector('.inp-tiempo').value;
@@ -1778,14 +1801,14 @@
         filaClonada.classList.add('nuevo');
         fileRef.setAttribute('data-acc', rowNum);
         const tbody = tblCompetencia.querySelector('tbody');
-        filaClonada.querySelector('.fa-minus').setAttribute('data-acc', rowNum);
+        filaClonada.querySelector('img').setAttribute('data-acc', rowNum);
         tbody.append(filaClonada);
         //Agregando al obj validación el nuevo input fecha
         /* */
         const nuevaAgregada = tbody.lastElementChild;
         const inpFecha = nuevaAgregada.querySelector('.inp-fecha');
         inpFecha.setAttribute('name', "InpFechaCompetencia"+rowNum);
-        $(inpFecha).rules("add",{required: true, greaterThanDate: oneDaysFromNow});
+        $(inpFecha).rules("add",{required: true, greaterThanDate: nowDate});
 
         const inpDesComp = nuevaAgregada.querySelector('.inp-nombre');
         inpDesComp.setAttribute('name', "DesComp"+rowNum);
@@ -1793,19 +1816,27 @@
         $(inpDesComp).rules("add",{required: true, rangelength: [5, 40]});
 
         const inpTiempoComp = nuevaAgregada.querySelector('.inp-tiempo');
-        inpTiempoComp.setAttribute('name', "DesComp"+rowNum);
+        inpTiempoComp.setAttribute('name', "TiempoComp"+rowNum);
         inpTiempoComp.setAttribute('data-aka', "TIEMPO OBJETIVO DE COMPETENCIA");
-        $(inpTiempoComp).rules("add",{required: true, greaterThanSeconds: 1});
+        $(inpTiempoComp).rules("add",{required: true, timing: true, greaterThanSeconds: recordsRunningValidation});
+        if(tbody.querySelectorAll('tr').length>=3){
+            $('input[name="DesComp"]').rules('add', {required: true});
+        }
       }
 
       function eliminarFila(e){
         const tblCompetencia = document.getElementById('tblCompetencia');
-        const delFila = tblCompetencia.querySelector(`tbody tr.nuevo[data-acc="${Number(e.getAttribute('data-acc'))}"]`);
+        const tbody = tblCompetencia.querySelector('tbody');
+        const delFila = tbody.querySelector(`tr.nuevo[data-acc="${Number(e.getAttribute('data-acc'))}"]`);
         delFila.remove();
+
+        if(tbody.querySelectorAll('tr').length<3){
+            $('input[name="DesComp"]').rules('add', {required: false});
+        }
       }
 
       function constraintsValidation() {
-        $(mainFrm).validate({
+        $(frm).validate({
           errorClass: errorClass,
           errorElement: errorElement,
           highlight: function (element) {
@@ -1846,6 +1877,7 @@
             },
             FechaNacimiento: {
               required: true,
+              lessThanDate: nowDate
             },
             TipoDocumentoId:{
               required: true
@@ -1996,7 +2028,10 @@
               required: true
             },
             TiempoUnKilometro: {
-              required: true
+              required: true,
+              timing: true,
+              greaterThanSeconds: 2*60,
+              rangelength: [7, 8]
             },
             KilometrajePromedioSemana: {
               required: true
@@ -2042,12 +2077,34 @@
             },
             InpFechaCompetencia:{
               required: true,
-              greaterThanDate: oneDaysFromNow
+              greaterThanDate: nowDate,
+              dateISO: true
             },
             TiempoComp:{
               required: true,
-              greaterThanSeconds: 1
-            }
+              timing: true,
+              greaterThanSeconds: recordsRunningValidation
+            },
+            TwoKm:{
+              timing: true,
+              rangelength: [7,8],
+              greaterThanSeconds: 4*60
+            },
+            FourKm:{
+              timing: true,
+              rangelength: [7,8],
+              greaterThanSeconds: 10*60
+            },
+            TweOneKm:{
+              timing: true,
+              rangelength: [7,8],
+              greaterThanSeconds: 58*60
+            },
+            FouTwoKm:{
+              timing: true,
+              rangelength: [7,8],
+              greaterThanSeconds: 121*60
+            },
           },
           messages: {
             Nombres: {
@@ -2088,6 +2145,14 @@
               pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
             }
           }
+        });
+
+        //Removemos el require de el campo nombre maratón de la tabla de competencias
+        $('input[name="DesComp"]').rules('add', {required: false});
+        //Maxlength
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
       }
 
@@ -2130,7 +2195,7 @@
         document.querySelector('#DesObjetivos').value = "Ser el mejor";
         document.querySelectorAll('.distance input')[1].value = "00:23:20";
         document.querySelector('#DesComp').value = "Maratón de Boston";
-        document.querySelector('#Username').value = String(new Date().getTime());
+        document.querySelector('#Username').value = "abc"+String(new Date().getTime());
         document.querySelector('#Password').value = "runfit123";
 
         var tid = setInterval( function () {
