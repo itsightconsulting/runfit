@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
     <title>Runfit</title>
@@ -30,11 +31,29 @@
                                 <h1 class="page-title txt-color-blueDark">
                                     <i class="fa fa-file-zip-o fa-fw"></i>
                                     Gestión
-                                    <span>>
+                                    <span>
 											<b>Tipos de Rutina</b>
 										</span>
-                                </h1>
-                            </div>
+
+
+                                    <!--  Prueba Login FB
+
+                                    <div name="pruebaLoginFacebook">
+
+                                        <div class="container unauthenticated">
+                                            Login With Facebook:
+                                        </div>
+                                        <div class="container authenticated" style="display:none">
+                                            Logged into Facebook as: <span id="user"></span>
+                                        </div>
+
+                                        <input type="hidden" name="scope" value="public_profile" />
+                                        <a href="/login">INGRESA CON FACEBOOK</a>
+
+                                    </div>
+
+
+                                    -->
                             <div class="col-sm-8 col-md-8 col-lg-8">
                                 <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
                                        style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
@@ -222,6 +241,19 @@ you can add as many as you like
 
 
 <script th:src="@{/js/tipo-rutina.js}+'?'+${version}"> </script>
+
+
+
+<script th:inline="javascript">
+    $.get("/user", function(data) {
+        $("#user").html(data.userAuthentication.details.name);
+        $(".unauthenticated").hide()
+        $(".authenticated").show()
+    });
+
+</script>
+
+
 
 </body>
 
