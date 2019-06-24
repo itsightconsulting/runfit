@@ -40,14 +40,14 @@
         </ul>
         <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
             <p class="name"><!-- Dennys Gorina --></p>
-            <p class="email" th:if="${#authentication != null}" th:text="${#authentication.name}"></p>
+            <p class="email" id="FullNameOnlyMenu"></p>
         </div>
         <ul class="options">
             <li><a th:href="@{/p/quienes-somos}"> <span>QUIÉNES SOMOS</span></a></li>
             <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
             <li><a th:href="@{/p/busqueda/trainers}"><span>ASESORES</span></a></li>
             <li><a th:href="@{/p/postulacion/trainer}"> <span>EMPRENDE CON NOSOTROS</span></a></li>
-        </ul><a class="cerrar-sesion-mobile" href="javascript:openLogin()"><span class="fa fa-remove"></span>Cerrar sesión</a>
+        </ul><a class="cerrar-sesion-mobile" href="javascript:cerrarSesion();"><span class="fa fa-remove"></span>Cerrar sesión</a>
     </div>
     <div id="menu" style="display: none">
         <div class="menu-desktop view-only-desktop">

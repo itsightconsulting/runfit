@@ -527,11 +527,11 @@
                                         <label>NOTA
                                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
                                         </label>
-                                        <textarea class="form-control" id="NotaFinal"></textarea>
+                                        <textarea class="form-control" id="Nota" name="Nota"></textarea>
                                     </div>
-                                    <div class="terms" onclick="javascript:abrirModalTermCond()">
-                                        <div class="chk-content"><a href="javascript:void(0)">ACEPTO TÉRMINOS Y CONDICIONES<span class="obligatorio">*</span></a>
-                                            <input id="inpTermCond" type="checkbox"><span class="checkmark"></span>
+                                    <div class="terms">
+                                        <div class="chk-content"><a class="ver-tyc" href="javascript:void(0)" onclick="javascript:abrirModalTermCond()">ACEPTO TÉRMINOS Y CONDICIONES<span class="obligatorio">*</span></a>
+                                            <input id="inpTermCond" name="inpTermCond" type="checkbox"><span class="checkmark"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -543,97 +543,13 @@
             </div>
     </section>
 </div>
-<footer th:replace="html-commons/p/footer :: fg-footer"></footer>
-<!-- MODALS  -->
-<div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond" style=";height: 100%;">
-    <div class="modal-dialog" role="document" style="width: 95%;height: 82%;">
-        <div class="modal-content" style="width: 100%;height: 100%;">
-            <div class="modal-body" style="height: 100%;overflow-y:auto;">
-                <div class="col-sm-12 padding-o-top-10">
-                    <div th:replace="public/terminos_condiciones :: fg-term-cond"></div>
-                </div>
-            </div>
-            <a href="javascript:void(0)" onclick="ocultarModalTermCondYAceptar()" data-toggle="hover" rel="tooltip" data-original-title="Aceptar los términos y condiciones">
-                <div class="modal-footer mod-term-cond" style="background: #a8fa00;text-align: center;">
-                    <i class="fa fa-fw fa-2x fa-check" style="color: white; cursor:pointer;"></i>
-                </div>
-            </a>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="modal fade" tabindex="-1" role="dialog" id="myModalCC" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background: #a8fa00;color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
-                <h3 class="modal-title">Cuenta Bancaria</h3>
-            </div>
-            <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
-                <div class="col-sm-12" id="CuentaBancariaUnica">
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div>
-                    </div>
-                    <input id="ModalCuentaBancoId" type="hidden"/>
-                </div>
-            </div>
-            <div class="modal-footer text-center" style="background: #a8fa00;">
-                <i class="fa fa-fw fa-2x fa-trash-o" style="cursor:pointer;" onclick="eliminarCuentaBanco()" title="Eliminar cuenta bancaria"></i>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper" data-backdrop="static">
-    <div class="modal-dialog" role="document" style="width: 70%;size: 90%;">
-        <div class="modal-content" style="width: 100%">
-
-            <div class="modal-header" style="background: #000000;text-align: center;border:none">
-
-                <button id="btnCerrarRecorteFotoPerfil" type="button"  data-dismiss="modal" class="close-modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-            </div>
-            <div class="modal-body" style="height: 90%;padding: 0px">
-                <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
-                    <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
-                </div>
-            </div>
-            <div class="modal-footer" style="background: #000000;text-align: center;border:none">
-                <div class="row" id="actions">
-                    <div class="col-md-12 docs-buttons">
-                        <div class="btn-group btn-group-crop">
-                            <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
-                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
-                                            <i class="fa fa-check-circle fa-fw"></i>Confirmar
-                                        </span>
-                            </button>
-                            <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
-                                        <span class="docs-tooltip" data-toggle="tooltip" title="">
-                                            <i class="fa fa-refresh fa-fw"></i>Cambiar
-                                        </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="col-md-6 no-padding-991" id="status" style="display: none">
     <b>Coordenadas:</b> --
     <br class="cb"/><b>Radio:</b> --
 </div>
+<footer th:replace="html-commons/p/footer :: fg-footer"></footer>
+<!-- MODALS  -->
+<th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
 <script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
@@ -669,8 +585,9 @@
         }
         //TYC FILES END
 
-        //Cantidad files de galeria y de t&c's
-        body.cantidadFiles = inpGaleria.files.length+"|"+tycFiles.length;
+        //CANTIDAD FILES DE GALERIA Y DE T&C'S
+        //$galeria: Global variable no considerando aquellos que se han sido eliminados
+        body.cantidadFiles = $galeria.length+"|"+tycFiles.length;
 
         if(document.getElementById('Coordenadas') != null){
             body.mapCoordenadas = document.getElementById('Coordenadas').textContent.trim();
@@ -683,7 +600,10 @@
         body.tipoTrainerId = 1;
 
         $buttonName = "Guardar";
+
         if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
+
+            $("#frm_registro :input").prop("disabled", true);
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
@@ -694,7 +614,7 @@
                 bridgeMultipart: true,
                 success: (d)=> {
                     //Subir imgen
-                    if(inpGaleria.files.length + tycFiles.length === 0){
+                    if($galeria.length + tycFiles.length === 0){
                         uploadFotoPerfil(d, body);
                     }else{
                         uploadFotosPerfil(d, body)
@@ -702,6 +622,7 @@
                 }, error: (xhr) => {
                     exception(xhr);
                 }, complete: () => {
+
                 }
             })
         }else{
@@ -743,21 +664,21 @@
         const inpExp = document.querySelector('.inp-experiencia');
         ["Entrenador en AquaLab (2013 – hasta la fecha)",
             "Entrenador freelance (2005 – hasta la fecha)",
-            "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+            "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 20, 'inp-experiencia', 90).value = e);
         inpExp.value = "Entrenador en AquaLab (2013 – hasta la fecha)";
         //Experiencia Laboral
         const inpRes = document.querySelector('.inp-resultado');
         ["Juan Pérez, campeón en natación 100 m libres (2017)",
             "Rocío Flores, campeona sudamericana 4x100 m (2017)",
             "Michael Barros, campeón en natación 4x200 (2016)",
-            "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+            "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 20, 'inp-resultado', 90).value = e);
         inpRes.value = "Juan Pérez, campeón en natación 100 m libres (2017)";
         document.querySelector('#CentroTrabajo').value = 'AQUALAB - Av. Nicolás de Ribera 145, San Isidro';
         //Especialidades que domino
         const inpEspDom = document.querySelector('.inp-esp-domino');
         ["Entrenamiento en grupo",
             "Entrenamiento uno a uno",
-            "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+            "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 20, 'inp-esp-domino', 80).value = e);
         inpEspDom.value = "Entrenamiento en grupo";
 
         document.querySelector('#Telefono').value = `017776666`;
@@ -850,10 +771,14 @@
             obj.nomPag = document.getElementById('NomPag').value;
         }
 
-        obj.nota = document.getElementById('NotaFinal').value;
+        obj.nota = document.getElementById('Nota').value;
         const redes = getRedesSociales();
         if(redes.have) {
             obj.redes = redes.nombres;
+        }
+
+        if(!obj.nota){
+            delete obj.nota;
         }
 
         if(!obj.horario){
@@ -994,12 +919,11 @@
                 NumeroDocumento: {
                     required: true,
                     number: true,
-                    rangelength: [8, 13]
-                    /*,
+                    rangelength: [8, 13],
                     customnumdoc: function(){
                         const val = $('#TipoDocumento').val();
                         return val;
-                    } */
+                    }
                 },
                 Username:{
                     required: true,
@@ -1068,6 +992,18 @@
                 },
                 inpCondServicio:{
                     extension: "pdf",
+                },
+                inpTermCond: {
+                    required: function(ele){
+                        if(!ele.checked){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                },
+                Nota: {
+                    rangelength: [10, 400]
                 }
             },
             messages: {
@@ -1121,6 +1057,9 @@
                 InterbancarioSoles:{
                     pattern: "Solo se permiten números y como separadores espacio y guión",
                 },
+                inpTermCond:{
+                    required: "Debe aceptar los términos y condiciones"
+                }
             }
         });
 

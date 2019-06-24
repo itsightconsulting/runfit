@@ -87,7 +87,7 @@
   border-bottom: 4px solid #a8fa00
 }
 
-.navbar-inverse ul.navbar-right li:hover {
+.navbar-inverse ul.navbar-right>li a span:hover {
   padding-bottom: 9px;
   border-bottom: 4px solid #a8fa00;
 }
@@ -1247,6 +1247,15 @@ h1 {
     word-break: break-all;
     white-space: inherit
   }
+  /*21-06-19*/
+  .rating-holder{
+    padding: 0px !important;
+    padding-left: 0px !important;
+  }
+
+  .avatar-form > fieldset{
+    padding-top: 10px;
+  }
 }
 
 .colaboradores {
@@ -2391,6 +2400,10 @@ h1 {
   background: #a8fa00
 }
 
+#DivSvgSkeleton{
+  padding-right: 60px;
+}
+
 .steps table thead {
   background: #000;
   text-transform: uppercase;
@@ -2687,6 +2700,9 @@ img.tibial {
   }
   .steps ol>li {
     padding-left: 60px
+  }
+  #DivSvgSkeleton{
+    padding-right: 0px;
   }
 }
 
@@ -3588,7 +3604,7 @@ section.trainers-form {
   height: 120px;
  }
 
-    .img-remover {
+.img-remover {
      display: block !important;
      height: 40px !important;
      width: 40px !important;
@@ -3600,3 +3616,12 @@ section.trainers-form {
      border-radius: 50%;
      border: 2px solid #000000;
  }
+
+.cc-elegido{
+  cursor: default;
+}
+
+.modal .carousel div.item>img{
+  max-height: 540px;
+}
+

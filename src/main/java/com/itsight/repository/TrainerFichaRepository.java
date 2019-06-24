@@ -28,8 +28,15 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
     TrainerFichaPOJO findByTrainerId(Integer trainerId);
 
     @Modifying
-    @Query("UPDATE TrainerFicha T SET T.flagFichaAceptada = ?1 WHERE T.trainer.id = ?2")
-    void updateFlagFichaAceptadaByTrainerId(Boolean flagFichaAceptada, Integer trainerId);
+    @Query("UPDATE TrainerFicha T SET T.flagFichaAceptada = ?1, T.flagPermisoUpd = ?2 WHERE T.trainer.id = ?3")
+    void updateFlagFichaAceptadaAndFlagPermisoUpdByTrainerId(Boolean flagFichaAceptada,Boolean flagPermisoUpd, Integer trainerId);
+
+    @Modifying
+    @Query("UPDATE TrainerFicha T SET T.flagPermisoUpd = ?1 WHERE T.trainer.id = ?2")
+    void updateFlagPermisoUpdByTrainerId(Boolean flagPermisoUpd, Integer trainerId);
+
+    @Query("SELECT T.flagPermisoUpd FROM TrainerFicha T WHERE T.trainer.id = ?1")
+    Boolean getFlagPermisoUpdByTrainerId(Integer trainerId);
 
     @Query("SELECT T.flagFichaAceptada FROM TrainerFicha T WHERE T.trainer.id = ?1")
     Boolean getFlagFichaAceptadaByTrainerId(Integer trainerId);
@@ -70,4 +77,11 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
 
     @Procedure(name = "fn_validacion_nom_pag")
     Boolean findNomPagExist(@Param("_nom_pag") String correo);
+
+    @Query(value = "SELECT tf.flag_permiso_upd FROM trainer_ficha tf WHERE tf.nom_pag = ?1", nativeQuery = true)
+    Boolean getFlagPermisoUpdByNomPag(String nomPag);
+
+    @Modifying
+    @Query("UPDATE TrainerFicha T SET T.flagFichaAceptada = ?1, T.flagPermisoUpd = ?2 WHERE T.trEmpId = ?3")
+    void updateFlagFichaAceptadaAndFlagPermisoUpdByTrEmpId(boolean flag1, boolean flag2, int id);
 }

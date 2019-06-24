@@ -324,7 +324,14 @@ you can add as many as you like
                     }
                 },
                 error: function (xhr) {
-                    exception(xhr);
+                    console.log(xhr);
+                    //exception(xhr);
+                    $.smallBox({
+                        content: "<i> "+xhr.responseText+"...</i>",
+                        color: "#8a6d3b",
+                        iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                        timeout: 5000,
+                    });
                 },
                 complete: function () {
                     irListado($index);

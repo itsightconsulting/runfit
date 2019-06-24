@@ -1167,12 +1167,12 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setTiempoDistancia("{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}");
             List<CompetenciaRunner> comps = new ArrayList<>();
             Integer[] distancias = {10,21,42};
-            String[] fechas = {"2019-02-10","2019-03-10","2019-04-27"};
+            //String[] fechas = {"2019-02-10","2019-03-10","2019-04-27"};
             String[] tiempos = {"00:58", "02:10", "04:12"};
             for(int k=1; k<4;k++){
                 CompetenciaRunner cr = new CompetenciaRunner();
                 cr.setDistancia(distancias[k-1]);
-                cr.setFecha(fechas[k-1]);
+                cr.setFecha(new Date());
                 cr.setNombre("Maratón "+k);
                 cr.setPrioridad(2);
                 cr.setTiempoObjetivo(tiempos[k-1]);

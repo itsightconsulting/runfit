@@ -31,4 +31,8 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
     String obtenerCcsAndMediosPagoById(Integer trainerId);
 
     Boolean checkNomPagExiste(String nomPag);
+
+    Boolean getFlagPermisoUpdByTrainerId(Integer trainerId);
+
+    Boolean getFlagPermisoUpdByNomPag(String nomPag);
 }

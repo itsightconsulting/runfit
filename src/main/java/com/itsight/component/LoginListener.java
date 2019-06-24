@@ -91,10 +91,14 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             //Generando cookies
-            String fullName = usu.getNombres() + " " + usu.getApellidos();
-            response.addCookie(Utilitarios.createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
-            if(usu.getUuidFp().equals("")){
-                response.addCookie(Utilitarios.createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
+            if(usu == null){
+                response.addCookie(Utilitarios.createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
+            }else{
+                String fullName = usu.getNombres() + " " + usu.getApellidos();
+                response.addCookie(Utilitarios.createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
+                if(usu.getUuidFp().equals("")){
+                    response.addCookie(Utilitarios.createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
+                }
             }
         } catch (Exception e){
             e.printStackTrace();

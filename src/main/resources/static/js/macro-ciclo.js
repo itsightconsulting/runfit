@@ -1,4 +1,4 @@
-let $porcentajesIntensidad = [];
+﻿let $porcentajesIntensidad = [];
 
 Ficha = (function(){
     return {
@@ -50,7 +50,7 @@ FichaGet = (function(){
             const proyecciones = FichaDOMQueries.getProyecciones();
             basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
             basico.periodizacion = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{if(v.value>0) return Number(v.value)});
-            basico.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="1"')).map(v=>{if(v.value>0) return Number(v.value)/100;});
+            basico.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="1"]')).map(v=>{if(v.value>0) return Number(v.value)/100;});
             basico.distancia = Number(document.querySelector('#DistanciaRutina input:checked').value);
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;

@@ -1,4 +1,4 @@
-BaseCalculo = (function(){
+﻿BaseCalculo = (function(){
     return {
         //C154:O155
         oficialesMedidasKms : [
@@ -187,7 +187,7 @@ RitmosSVYC = (function(){
             const base = JSON.parse(JSON.stringify(FichaGet.obtenerBase()));
             const proyecciones = FichaDOMQueries.getProyecciones();
             //Reemplazando de distribución de kilometraje a distribución fijada en mejora de velocidades
-            base.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.velocidad-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
+            base.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.velocidad-calc[data-type="1"]')).map(v=>{return Number(v.value)/100;});
             const factorDesentrenamientoControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
             const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
             const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
@@ -284,7 +284,7 @@ Calc = (function(){
         getRitmosCadenciaCompetencia: (cadActual, cadCompetencia, base)=>{
             const cBase = JSON.parse(JSON.stringify(base));
             //Reemplazando de distribución de kilometraje a distribución fijada en mejora de cadencia
-            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.cadencia-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
+            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.cadencia-calc[data-type="1"]')).map(v=>{return Number(v.value)/100;});
             let ritmoBase = cadCompetencia - cadActual ;
             const arrRitmos = [];
             let it = 0;
@@ -311,7 +311,7 @@ Calc = (function(){
         getTCSs: (tcsActual, tcsCompetencia, base)=>{
             const cBase = JSON.parse(JSON.stringify(base));
             //Reemplazando de distribución de kilometraje a distribución fijada en mejora de TCS
-            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.tcs-calc[data-type="1"')).map(v=>{return Number(v.value)/100;});
+            cBase.distribucionPorcentaje = Array.from(FichaDOMQueries.getProyecciones().querySelectorAll('.tcs-calc[data-type="1"]')).map(v=>{return Number(v.value)/100;});
             let tcsBase = tcsCompetencia - tcsActual ;
             const tcss = [];
             let it = 0;

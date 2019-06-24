@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +18,7 @@ public class ClienteDTO implements Serializable  {
     private String correo;
     private String correoTrainer;
     private String movil;
+    @Past
     private Date fechaNacimiento;
     private String username;
     /*FK's*/

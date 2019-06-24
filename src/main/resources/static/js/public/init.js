@@ -249,11 +249,12 @@ function next_step(sheetNumber, toSheetNumber) {
 
 function smallBoxAlertValidation(inputsNotPassed){
     const tout = (2000*(inputsNotPassed.length)) + 4000;
-    const strCamps = inputsNotPassed.map(v=>{
+    let arrCamps = inputsNotPassed.map(v=>{
         const previous = v.previousElementSibling;
         const nomFinal = previous === null ? v.getAttribute('data-aka').toUpperCase() : previous.textContent;
-        return `<i class="fa fa-dot-circle-o fa-fw"></i>${nomFinal}<br>`
-    }).join('');
+        return nomFinal;
+    })
+    let strCamps = Array.from(new Set(arrCamps)).map(e=>`<i class="fa fa-dot-circle-o fa-fw"></i>${e}<br>`).join('');
     if(strCamps){
         $.smallBox(
             {
@@ -492,11 +493,44 @@ function FullHeightBanner() {
     }
 };
 
-(function(){
+(function () {
+    setFullNameForPublicMenuInMobile();
     validLoginForm();
-    if(hiddenHeaderBar){
+    if (hiddenHeaderBar) {
         hideNavBar();
     }
 })();
+
+function setFullNameForPublicMenuInMobile(){
+    const gll_nombre = atob(getCookiePb('GLL_NOMBRE_COMPLETO'));
+    if(gll_nombre){
+        const menu = document.getElementById('FullNameOnlyMenu');
+        if(!menu){}else{
+            if(gll_nombre.includes(" xxx")){
+                menu.textContent = gll_nombre.substr(0, gll_nombre.indexOf(" xxx"));
+            } else {
+                menu.textContent = gll_nombre;
+            }
+        }
+    }else{//Escondemos el boton de cerrar sesión
+        $('.cerrar-sesion-mobile').addClass('hidden');
+    }
+}
+
+function getCookiePb(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 

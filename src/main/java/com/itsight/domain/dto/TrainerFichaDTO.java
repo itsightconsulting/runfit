@@ -50,7 +50,7 @@ public class TrainerFichaDTO implements Serializable {
     private String formasTrabajo;
     @Size(min = 8, max = 150)
     private String horario;
-    @Size(max = 400)
+    @Size(min= 10, max = 400)
     private String nota;
     @Valid
     private List<ServicioDTO> servicios;

@@ -100,21 +100,32 @@ public class TrainerFichaController extends BaseController {
     public @ResponseBody ModelAndView getTrainerByIdRevision(Model model,
                 @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
         Integer trainerId = getDecodeHashIdSecCustom("rf-aprobacion", hshTrainerId);
-        Boolean isActived = securityUserRepository.findEnabledById(trainerId);
-        if(isActived == null){
+
+        Boolean existsAuthorize = trainerFichaService.getFlagPermisoUpdByTrainerId(trainerId);
+
+        if(existsAuthorize == null){
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
-        if(isActived){
+
+        if(!existsAuthorize){
             return new ModelAndView(ViewConstant.P_ERROR404);
-        } else {
-            model.addAttribute("hshTrainerId", hshTrainerId);
-            model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
-            return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
         }
+        model.addAttribute("hshTrainerId", hshTrainerId);
+        model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
+        return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
     }
 
     @GetMapping("/get/revision/s/{nomPag:.+}")
-    public @ResponseBody ModelAndView getTrainerRevisionByUsername(){
+    public @ResponseBody ModelAndView getTrainerRevisionVistaByUsername(@PathVariable String nomPag, Model model){
+        Boolean existsAuthorize = trainerFichaService.getFlagPermisoUpdByNomPag(nomPag);
+        if(existsAuthorize == null){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        if(!existsAuthorize){
+            model.addAttribute("msg", Enums.Msg.TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_N);
+        }
         return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
     }
 

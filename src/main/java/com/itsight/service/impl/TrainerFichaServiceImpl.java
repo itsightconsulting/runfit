@@ -22,6 +22,8 @@ import java.util.List;
 import static com.itsight.util.Enums.Mail.PERFIL_CHECK_OBS_SUBS;
 import static com.itsight.util.Enums.Mail.PERFIL_POST_OBS;
 import static com.itsight.util.Enums.Msg.OBS_PERFIL_TRAINER;
+import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.PARA_EMPRESA;
 
 @Service
 @Transactional
@@ -157,7 +159,12 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), perfilObs.getObs(), domainName, perfilObs.getHshTrainerId());
         emailService.enviarCorreoInformativo(correo.getAsunto(), perfilObs.getCorreo(), cuerpo);
-        repository.updateFlagFichaAceptadaByTrainerId(false, id);
+        if(perfilObs.getTipoTrainerId() == EMPRESA.get()){
+            repository.updateFlagFichaAceptadaAndFlagPermisoUpdByTrainerId(false, true, id);
+            repository.updateFlagFichaAceptadaAndFlagPermisoUpdByTrEmpId(false, true, id);
+        } else {
+            repository.updateFlagFichaAceptadaAndFlagPermisoUpdByTrainerId(false, true, id);
+        }
         return OBS_PERFIL_TRAINER.get();
     }
 
@@ -168,6 +175,7 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     @Override
     public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer id) throws JsonProcessingException {
+        int tipoTrainerId = trainerFicha.getTipoTrainerId();
         repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
         //Actualizando servicios
         if(!trainerFicha.getServicios().isEmpty()){
@@ -177,13 +185,19 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
             }
         }
 
-        if(trainerFicha.getTipoTrainerId() != Enums.TipoTrainer.PARA_EMPRESA.get()){
+        if(trainerFicha.getTipoTrainerId() != PARA_EMPRESA.get()){
+            if(tipoTrainerId == EMPRESA.get()){
+                repository.updateFlagFichaAceptadaAndFlagPermisoUpdByTrEmpId(false, false, id);
+            }
             String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+            repository.updateFlagPermisoUpdByTrainerId(false, id);
             //Obtener cuerpo del correo
             Correo correo = correoService.findOne(PERFIL_CHECK_OBS_SUBS.get());
             //Envio de correo
             String cuerpo = String.format(correo.getBody(), domainName, trainerFicha.getTrainerId());//TrainerId esta como hash
             emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+        } else {
+            repository.updateFlagPermisoUpdByTrainerId(false, id);
         }
         return Parseador.getEncodeHash32Id("rf-load-media", id);
     }
@@ -206,5 +220,15 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     @Override
     public Boolean checkNomPagExiste(String nomPag) {
         return repository.findNomPagExist(nomPag);
+    }
+
+    @Override
+    public Boolean getFlagPermisoUpdByTrainerId(Integer trainerId) {
+        return repository.getFlagPermisoUpdByTrainerId(trainerId);
+    }
+
+    @Override
+    public Boolean getFlagPermisoUpdByNomPag(String nomPag) {
+        return repository.getFlagPermisoUpdByNomPag(nomPag);
     }
 }

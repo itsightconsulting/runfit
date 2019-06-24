@@ -21,7 +21,7 @@ public class TipoAudio {
 
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nombre;
 
     @Size(max = 255)

@@ -39,9 +39,10 @@ function uploadImg(input, img) {
 }
 
 const imgTemps = [];
-//const srcs = [];
+const nomImgsGaleria = [];
 
-function readURLCs(input, img, ix, mainDivId) {
+function readURLCs(input, img, ix, mainDivId, nomImg) {
+    nomImgsGaleria.push(nomImg);
     if (input.files && input.files[ix]) {
         var reader = new FileReader();
 
@@ -52,45 +53,44 @@ function readURLCs(input, img, ix, mainDivId) {
         imgTemps.push(img);
         if(input.files.length == ix+1){
 
-            var dvCarusel =  generarDOMCarousel(imgTemps);
+            var dvCarusel =  generarDOMCarousel(imgTemps, nomImgsGaleria);
             const mainDiv = document.querySelector('#'+mainDivId);
             if(mainDiv.children.length == 1){
                 mainDiv.children[0].remove();
             }
             mainDiv.appendChild(dvCarusel);
-           galeriaPerfilCarousel();
+            galeriaPerfilCarousel();
 
-
+            //EventListener para remover imagenes del carusel
            $('#ImgsGaleria').unbind().on( "click",".boton-remover",function(e){
-
-             console.log("test");
+               const img = e.target;
+               const nomImg = img.getAttribute('data-nom');
+               nomImgsGaleria.forEach((e, ix)=>{
+                   if(e === nomImg){
+                       nomImgsGaleria.splice(ix, 1);
+                   }
+               })
+               $galeria.forEach((e, ix)=>{
+                   if(!nomImgsGaleria.find(g=>g === e.name)){
+                       $galeria.splice(ix, 1);
+                   }
+               })
              e.preventDefault();
 
-             console.log(e.target.id);
-                 var index = parseInt(e.target.id,10);
-                 var divValue = 'img'+ (index+1);
-                 imgTemps.splice(index, 1);
+             console.log(img.id);
+             var index = parseInt(img.id,10);
+             imgTemps.splice(index, 1);
 
-                 $('.owl-carousel').remove();
+             $('.owl-carousel').remove();
 
-                 var dvCarusel = generarDOMCarousel(imgTemps);
+             var dvCarusel = generarDOMCarousel(imgTemps, nomImgsGaleria);
 
-                  const mainDiv = document.querySelector('#'+mainDivId);
-                   mainDiv.appendChild(dvCarusel);
-                  galeriaPerfilCarousel();
-
-            });
-
-
-
-
-
+             const mainDiv = document.querySelector('#'+mainDivId);
+             mainDiv.appendChild(dvCarusel);
+             galeriaPerfilCarousel();
+           });
     }
-
-
-
  }
-
 }
 
 function poblarCarusel(srcs, mainDivId, baseSrc) {
@@ -132,6 +132,9 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
 function uploadImgs(input, mainDivId) {
 
     $(input).change(function () {
+        for(let i=0; i<this.files.length; i++){
+            $galeria.push(this.files[i]);
+        }
         //submit the form here
         var file, imgTemp;
         for(let i=0; i<input.files.length;i++){
@@ -139,12 +142,10 @@ function uploadImgs(input, mainDivId) {
             if ((file = this.files[i])) {
                 imgTemp = new Image();
                 imgTemp.onload = function () {
+                    const nameImg = input.files[i].name;
                     //Previsualizar
-                    readURLCs($(input)[0], img, i, mainDivId);
+                    readURLCs($(input)[0], img, i, mainDivId, nameImg);
                 };
-
-
-
                 imgTemp.onerror = function () {
                     $(input).val("");
                     $.smallBox({
@@ -329,6 +330,37 @@ function doMultiselectCheckBox(){
     })
 }
 
+function multiSelectFichaRunning(){
+    document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
+        $(e).multiselect({
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 300,
+            onChange: (e, optIsSelected)=>{
+                const option = e[0];
+                const select = option.parentElement;
+                $(select).valid();
+            }
+        });
+    })
+
+    document.querySelectorAll('select:not([multiple])').forEach(e=>{
+        if(!e.classList.contains('no-multi')){
+            $(e).multiselect({
+                multiple: false,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: 300,
+                onChange: (e, optIsSelected)=>{
+                    const option = e[0];
+                    const select = option.parentElement;
+                    $(select).valid();
+                }
+            });
+        }
+    })
+}
+
 function bodyFocusOutEventListener(e){
     const input = e.target;
     if(input.tagName === "INPUT"){
@@ -349,10 +381,8 @@ function activeTooltips(){
 }
 
 function  galeriaPerfilCarousel() {
-
   if($('.owl-carousel .item').size() < 5)
   {
-
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,
@@ -375,16 +405,12 @@ function  galeriaPerfilCarousel() {
           }
       })
 
-
     $(".owl-prev").empty()
     $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
     $(".owl-next").empty()
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 
-
-
-  }else{
-
+  } else{
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,
@@ -414,8 +440,7 @@ function  galeriaPerfilCarousel() {
   }
 }
 
-function generarDOMCarousel(imgTemps){
-
+function generarDOMCarousel(imgTemps, nomImgsGaleria){
 
  const dvCarusel = document.createElement('div');
             dvCarusel.className = 'owl-carousel owl-theme carousel-img';
@@ -430,8 +455,7 @@ function generarDOMCarousel(imgTemps){
                 imgCerrar.setAttribute('id', index );
                 imgCerrar.setAttribute('src', _ctx+'img/remove.png');
                 imgCerrar.classList.add('img-remover');
-
-
+                imgCerrar.setAttribute('data-nom', nomImgsGaleria[index]);
 
                 btCerrar.appendChild(imgCerrar);
                 dvItem.appendChild(btCerrar);
@@ -441,4 +465,32 @@ function generarDOMCarousel(imgTemps){
 
  return dvCarusel;
 
+}
+
+function hideShowGenericInp(ele){
+    const val = ele.value;
+    const eleRefId = ele.getAttribute('data-ele-hd');
+    let finalElement = document.querySelector(eleRefId);
+    if(finalElement.tagName === "SELECT"){
+        finalElement = finalElement.parentElement.parentElement;
+    }
+    if(val == 0)
+        finalElement.classList.add('hidden');
+    else
+        finalElement.classList.remove('hidden');
+}
+
+function recordsRunningValidation(input){
+    const distance = Number(input.parentElement.parentElement.querySelector('.inp-distancia').value);
+    if(distance === 5){
+        return
+    }else if(distance === 10){
+        return 12*60;
+    }else if(distance === 15){
+        return 41*60;
+    }else if(distance === 21){
+        return 58*60;
+    }else if(distance === 42){
+        return 121*60;
+    }
 }

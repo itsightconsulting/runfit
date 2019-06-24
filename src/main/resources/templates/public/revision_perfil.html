@@ -38,7 +38,7 @@
                         <div class="tab-pane fade active in inpts-1" id="about">
                                 <div class="form-group">
                                     <div class="">
-                                        <label>NOMBRE COMPLETO:<span class="obligatorio">*</span></label>
+                                        <label>NOMBRE COMPLETO<span class="obligatorio">*</span></label>
                                         <input class="form-control" name="NombreFull" id="NombreFull" type="text" disabled="disabled">
                                     </div>
                                 </div>
@@ -202,20 +202,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group rs">
+                                    <div class="form-group rs-trainer">
                                         <label>REDES SOCIALES</label>
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text">
                                         </div>
                                     </div>
-                                    <div class="form-group rs">
+                                    <div class="form-group rs-trainer">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text">
                                         </div>
                                     </div>
-                                    <div class="form-group rs">
+                                    <div class="form-group rs-trainer">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input value="" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
@@ -401,11 +401,11 @@
                                 <hr>
                                 <input type="file" id="inpCondServicio" class="hide">
                                 <input type="hidden" id="FichaClienteId"/>
-                                <div class="form-group hidden" id="divNotaFinal">
+                                <div class="form-group hidden" id="divNota">
                                     <label>NOTA
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
                                     </label>
-                                    <textarea class="form-control" id="NotaFinal"></textarea>
+                                    <textarea class="form-control" id="Nota" name="Nota"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -423,104 +423,8 @@
     </section>
 </div>
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
-<!-- MODALS  -->
-<div class="modal fade" tabindex="-1" role="dialog" id="myModalCC">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background: #a8fa00;color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
-                <h3 class="modal-title">Cuenta Bancaria</h3>
-            </div>
-            <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
-                <div class="col-sm-12" id="CuentaBancariaUnica">
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
-                        <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div>
-                    </div>
-                    <input id="ModalCuentaBancoId" type="hidden"/>
-                </div>
-            </div>
-            <div class="modal-footer text-center" style="background: #a8fa00;">
-                <i class="fa fa-fw fa-2x fa-trash-o" style="cursor:pointer;" onclick="eliminarCuentaBanco()" title="Eliminar cuenta bancaria"></i>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper">
-    <div class="modal-dialog" role="document" style="width: 70%;height: 90%;">
-        <div class="modal-content" style="width: 100%">
-            <div class="modal-body" style="height: 90%;padding: 0px">
-                <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
-                    <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
-                </div>
-            </div>
-            <div class="modal-footer" style="background: #000000;text-align: center;border:none">
-                <div class="row" id="actions">
-                    <div class="col-md-12 docs-buttons">
-                        <div class="btn-group btn-group-crop">
-                            <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
-                                        <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
-                                            <i class="fa fa-check-circle fa-fw"></i>Confirmar
-                                        </span>
-                            </button>
-                            <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
-                                        <span class="docs-tooltip" data-toggle="tooltip" title="">
-                                            <i class="fa fa-refresh fa-fw"></i>Cambiar
-                                        </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade slide in" id="myModal">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-body" style="padding: 0px !important">
-                <!--CAROUSEL CODE GOES HERE-->
-                <!--begin carousel-->
-                <div id="myGallery" class="carousel slide" data-interval="false">
-                    <ol class="carousel-indicators">
-                    </ol>
-                    <div class="carousel-inner text-center">
-
-                    </div>
-                    <!--end carousel-inner-->
-                    <!--Begin Previous and Next buttons-->
-                    <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span></a>
-                    <!--end carousel--></div>
-                <!--end modal-body--></div>
-            <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
-                <span class="" style="color: white;font-size: 1.4em;">Cerrar<i style="font-size: 1.2em !important;" class="fa-fw fa fa-close"></i></span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade slide in" id="modalTYC">
-    <div class="modal-dialog modal-lg" style="width: 70%; height: 85%;">
-        <div class="modal-content">
-            <div class="modal-body" style="padding: 0px !important" id="TYC">
-            </div>
-            <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
-                <span class="" style="color: #a8fa00;font-size: 1.4em;"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-check-circle-o"></i></span>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- MODALS -->
+<th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
 <div class="col-md-6 no-padding-991" id="status" style="display: none">
     <b>Coordenadas:</b> --
     <br class="cb"/><b>Radio:</b> --
@@ -706,6 +610,16 @@
                 }
             }
         }
+        checkRevisionTrainerDeEmpresa();
+    }
+
+    function checkRevisionTrainerDeEmpresa(){
+        const url = window.location.href.split("/");
+        if(url.find(e=>e==='s')){
+            document.querySelectorAll('.rs-trainer').forEach(e => {
+                e.classList.add('hidden');
+            });
+        }
     }
 
     function modalEventos(){
@@ -747,7 +661,11 @@
 
     function actualizarPerfil(e){
         const val = validationByNumSheet(1);
-        if(!val.isValid){
+        const nota = document.querySelector('#Nota');
+        if(!val.isValid || !$(nota).valid()){
+            if(!$(nota).valid()){
+                val.inputs.push(nota);
+            }
             smallBoxAlertValidation(val.inputs);
             return;
         }
@@ -767,6 +685,7 @@
         }
 
         $buttonName = "ACTUALIZAR Y ENVIAR";
+        $("#frm_registro :input").prop("disabled", true);
         $.ajax({
             type: 'PUT',
             contentType: 'application/json',
@@ -1017,8 +936,8 @@
         }
 
         if(t.nota){
-            document.getElementById('divNotaFinal').classList.remove('hidden');
-            document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+            document.getElementById('divNota').classList.remove('hidden');
+            document.getElementById('Nota').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
         }
     }
 
@@ -1382,7 +1301,7 @@
         if(redes.have){
             obj.redes = redes.nombres;
         }
-        obj.nota = document.getElementById('NotaFinal').value;
+        obj.nota = document.getElementById('Nota').value;
         obj.servicios = servicios;
         obj.mediosPago = $perfil.mediosPago;
         obj.sexo = $perfil.tipoTrainerId == TipoTrainer.PARTICULAR ||
@@ -1398,6 +1317,9 @@
         obj.imgExt = finalExtension;
         if(!obj.horario){
             delete obj['horario'];
+        }
+        if(!obj.nota){
+            delete obj.nota;
         }
         return obj;
     }
@@ -1568,6 +1490,9 @@
                     number: true,
                     rangelength: [1, 8],
                     min: 1
+                },
+                Nota: {
+                    rangelength: [10, 400]
                 }
             },
             messages: {

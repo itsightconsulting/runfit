@@ -276,79 +276,7 @@
       </section>
     </div>
     <!-- MODALS -->
-    <div class="modal fade slide in" id="myModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body" style="padding: 0px !important">
-                    <!--CAROUSEL CODE GOES HERE-->
-                    <!--begin carousel-->
-                    <div id="myGallery" class="carousel slide" data-interval="false">
-                        <ol class="carousel-indicators">
-                        </ol>
-                        <div class="carousel-inner text-center">
-
-                        </div>
-                        <!--end carousel-inner-->
-                        <!--Begin Previous and Next buttons-->
-                        <a class="left carousel-control" href="#myGallery" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#myGallery" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span></a>
-                        <!--end carousel--></div>
-                    <!--end modal-body--></div>
-                <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
-                    <span class="" style="color: white;font-size: 1.4em;">Cerrar<i style="font-size: 1.2em !important;" class="fa-fw fa fa-close"></i></span>
-                </div>
-                <!--end modal-content--></div>
-            <!--end modal-dialoge--></div>
-        <!--end myModal-->></div>
-    <div class="modal fade" tabindex="-1" role="dialog" id="myModalCC">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background: #a8fa00;color: white">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
-                    <h3 class="modal-title">Cuenta Bancaria</h3>
-                </div>
-                <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
-                    <div class="col-sm-12" id="CuentaBancariaUnica">
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Tipo documento:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-td"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Número de documento:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nd"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Cuenta dólares:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cd"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div></div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Interbancario dólares:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cid"></span></div></div>
-                        <input id="ModalCuentaBancoId" type="hidden"/>
-                    </div>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-    <div class="modal fade slide in" id="modalTYC">
-        <div class="modal-dialog modal-lg" style="width: 70%; height: 85%;">
-            <div class="modal-content">
-                <div class="modal-body" style="padding: 0px !important; height: 550px;" id="TYC">
-                </div>
-                <div class="modal-footer mod-term-cond" title="Cerrar" style="float:right;background: transparent;text-align: center;cursor:pointer;border:none" data-dismiss="modal">
-                    <span class="" style="color: #a8fa00;font-size: 1.4em;"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-check-circle-o"></i></span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
@@ -478,20 +406,6 @@
           incluidos.forEach(e=>{
               mainIncluidos.appendChild(htmlStringToElement(`<li>${e.replace(/\r?\n/g, '\n')}</li>`));
           });
-      }
-
-      function bodyClickEventListener(e){
-          const input = e.target;
-          const clases = input.classList;
-          if(clases.contains('img-gal')){
-              const galModal = document.getElementById('myModal');
-              const ix = Number(input.parentElement.getAttribute('data-slide-to'));
-              const all = galModal.querySelectorAll('img');
-              all.forEach(v=>{
-                  v.parentElement.classList.add('hidden')
-              });
-              all[ix].parentElement.classList.remove('hidden');
-          }
       }
 
       function init(){

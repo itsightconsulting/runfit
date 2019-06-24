@@ -8,6 +8,11 @@
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
 </head>
 <style>
+    .trash-nb{
+        border-left: 1px solid transparent !important;
+        border-top: 1px solid transparent !important;
+        border-bottom: 1px solid transparent !important;
+    }
 </style>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
@@ -293,8 +298,6 @@
     $(function () {
         listarRegistros();
         init();
-        console.log(b64DecodeUnicode(getCookie("GLL_NOMBRE_COMPLETO")));
-
         fInitRutGen.addEventListener('change', setTotalSemanas);
         fFinRutGen.addEventListener('change', setTotalSemanas);
         modalPlantillas.addEventListener('click', eventosClickModalPlantillas);
@@ -449,7 +452,7 @@
 
         }
     }
-    
+
     function searchSvg(path){
         let svg = path;
         while(svg.tagName.toUpperCase() !== "SVG"){

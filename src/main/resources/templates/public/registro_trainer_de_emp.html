@@ -319,25 +319,12 @@
       </div>
       <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
       <!-- MODALS  -->
-      <div class="modal fade" tabindex="-1" role="dialog" id="myModalTermCond" style=";height: 100%;">
-          <div class="modal-dialog" role="document" style="width: 95%;height: 82%;">
-              <div class="modal-content" style="width: 100%;height: 100%;">
-                  <div class="modal-body" style="height: 100%;overflow-y:auto;">
-                      <div class="col-sm-12 padding-o-top-10">
-                          <div th:replace="public/terminos_condiciones :: fg-term-cond"></div>
-                      </div>
-                  </div>
-                  <a href="javascript:void(0)" onclick="ocultarModalTermCondYAceptar()" data-toggle="hover" rel="tooltip" data-original-title="Aceptar los términos y condiciones">
-                    <div class="modal-footer mod-term-cond" style="background: #a8fa00;text-align: center;">
-                        <i class="fa fa-fw fa-2x fa-check" style="color: white; cursor:pointer;"></i>
-                    </div>
-                  </a>
-              </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-      <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper">
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper" data-backdrop="static">
           <div class="modal-dialog" role="document" style="width: 70%;height: 90%;">
               <div class="modal-content" style="width: 100%">
+                  <div class="modal-header" style="background: #000000;text-align: center;border:none">
+                      <button type="button" data-dismiss="modal" class="close-modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  </div>
                   <div class="modal-body" style="height: 90%;padding: 0px">
                       <div class="col-sm-12 text-center" style="width: 100%;height: 100%;padding:0px;">
                           <img id="ImagePerfil" style="max-width: 90%; max-height: 100%; display:none">
@@ -716,6 +703,7 @@
             }
             $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
+                $("#frm_registro :input").prop("disabled", true);
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
@@ -770,33 +758,38 @@
             populateTabContacto(t0, t1, t2);
             //Estudios
             const inpEst = document.querySelector('.inp-estudio');
+            const a = inpEst.nextElementSibling;
             ["Licenciado en cultura física y deporte",
             "Diplomado en nutrición para atletas",
             "Diplomado en rehabilitación enfocada en deportista calificados",
             "Curso en rescate en el agua",
-            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(inpEst, 7, 'inp-estudio').value = e);
+            "Curso en metodología del entrenamiento"].forEach(e => agregarInputDinamico(a, 20, 'inp-estudio', 90).value = e);
             document.querySelector('#EstudiosCertificaciones').value = "Diplomado en nutrición para atletas";
             document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
                 '\n' +
                 'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
             //Experiencia Laboral
             const inpExp = document.querySelector('.inp-experiencia');
+            const ab = inpExp.nextElementSibling;
             ["Entrenador en AquaLab (2013 – hasta la fecha)",
              "Entrenador freelance (2005 – hasta la fecha)",
-             "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(inpExp, 3, 'inp-experiencia').value = e);
+             "Selección nacional de natación (2000 – 2005)"].forEach(e => agregarInputDinamico(ab, 20, 'inp-experiencia', 90).value = e);
             document.querySelector('#Experiencias').value = "Diplomado en nutrición para atletas";
             //Resultados
             const inpRes = document.querySelector('.inp-resultado');
+            const abc = inpRes.nextElementSibling;
+
             ["Juan Pérez, campeón en natación 100 m libres (2017)",
                 "Rocío Flores, campeona sudamericana 4x100 m (2017)",
                 "Michael Barros, campeón en natación 4x200 (2016)",
-                "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado').value = e);
+                "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(abc, 20, 'inp-resultado', 90).value = e);
             document.querySelector('#Resultados').value = "Diplomado en nutrición para atletas";
             //Especialidades que domino
             const inpEspDom = document.querySelector('.inp-esp-domino');
+            const abcd = inpEspDom.nextElementSibling;
             ["Entrenamiento en grupo",
                 "Entrenamiento uno a uno",
-                "Natación para profesionales"].forEach(e => agregarInputDinamico(inpEspDom, 4, 'inp-esp-domino').value = e);
+                "Natación para profesionales"].forEach(e => agregarInputDinamico(abcd, 4, 'inp-esp-domino', 80).value = e);
             document.querySelector('#EspecDomino').value = "Diplomado en nutrición para atletas";
 
             document.querySelector('#Telefono').value = `017776666`;

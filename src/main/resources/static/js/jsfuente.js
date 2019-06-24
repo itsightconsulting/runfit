@@ -457,6 +457,10 @@ function getFechaFormatoString(d) {
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
 }
 
+function getFechaFormatoString2(d) {
+    return `${('00' + d.getDate()).slice(-2)}-${('00' + (d.getMonth() + 1)).slice(-2)}-${d.getFullYear()}`;
+}
+
 function setFechaActual(array) {
     let dateToString = d => `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
     array.forEach(v => {
@@ -659,24 +663,27 @@ function generateRandomMail(){
 }
 
 (function ajaxEvents(){
-
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
         if(options.dataType === "xml") {
-            return ;
+            return;
         }
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
         } else{
-
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
+                var defaultValue = "";
+                if($("#btnGuardar")[0]){
+                    defaultValue = $("#btnGuardar")[0].textContent;
+                    $("#btnGuardar").attr('disabled','disabled');
+                    $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+                }
 
-                var defaultValue = $("#btnGuardar")[0].textContent;
-                $("#btnGuardar").attr('disabled','disabled');
-                $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
                  setTimeout(function() {
-                        $("#btnGuardar")[0].textContent = defaultValue;
-                    }, 2000);
+                     if($("#btnGuardar")[0]){
+                         $("#btnGuardar")[0].textContent = defaultValue;
+                     }
+                 }, 2000);
 
 
             } else if(options.type === 'GET' && options.noOne !== undefined){
@@ -766,7 +773,8 @@ function cerrarSesion(){
             url: _ctx + "logout",
             type: "POST",
             success: function(e) {
-                window.location = _ctx + "login"
+                document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
+                window.location = _ctx + "login";
             },
             error: function(e) {
                 console.log(e)
@@ -881,3 +889,4 @@ function actualizarConfiguracionCliente(e){
         complete: function () {}
     });
 }
+
