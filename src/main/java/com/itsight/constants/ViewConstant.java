@@ -83,6 +83,8 @@ public class ViewConstant {
 
     public static final String PRINCIPAL = "bienvenido";
     public static final String LOGIN = "login";
+    public static final String RECUPERAR_PASSWORD = "recuperar_password";
+    public static final String CAMBIAR_PASSWORD = "cambiar_password";
     public static final String VISA_PORTAL = "visa/visa-pago";
     public static final String ERROR403 = "error/403";
     public static final String ERROR404 = "error/404";

@@ -2908,7 +2908,7 @@ input[type=range]:focus::-ms-fill-upper {
   text-transform: uppercase
 }
 
-.menu_mobile .cerrar-sesion-mobile {
+.menu_mobile .cerrar-sesion-mobile, .menu_mobile .iniciar-sesion-mobile {
   width: 100%;
   display: block;
   position: absolute;
@@ -2920,7 +2920,7 @@ input[type=range]:focus::-ms-fill-upper {
   text-transform: uppercase
 }
 
-.menu_mobile .cerrar-sesion-mobile .fa {
+.menu_mobile .cerrar-sesion-mobile .fa, .menu_mobile .iniciar-sesion-mobile .fa {
   color: #a8fa00;
   font-size: 14px;
   margin-right: 10px;

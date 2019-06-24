@@ -20,7 +20,7 @@ public class Parseador {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", new Locale("es", "ES"));
 		Date parseDate = null;
-		
+
 		try {
 			parseDate = sdf.parse(date);
 		} catch (ParseException e) {

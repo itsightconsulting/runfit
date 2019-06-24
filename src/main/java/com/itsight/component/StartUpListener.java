@@ -156,6 +156,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private IdiomaRepository idiomaRepository;
 
+    @Autowired
+    private TipoRutinaService tipoRutinaService;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
@@ -178,6 +181,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingPaises();
             addingDisciplinas();
             addingTipoTrainers();
+            addingTipoRutina();
             try {
                 addingUbPeru();
                 addingModulo();
@@ -918,6 +922,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(tipoTrainerService.findOne(2) == null) tipoTrainerService.save(new TipoTrainer("Empresa"));
         if(tipoTrainerService.findOne(3) == null) tipoTrainerService.save(new TipoTrainer("Asociado a empresa"));
 
+    }
+
+    public void addingTipoRutina(){
+        if(tipoRutinaService.findOne(1) == null) tipoRutinaService.save(new TipoRutina("Running"));
+        if(tipoRutinaService.findOne(2) == null) tipoRutinaService.save(new TipoRutina("General"));
     }
 
     public void addingUbPeru() throws IOException {

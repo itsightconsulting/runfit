@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.TipoRutina;
 import com.itsight.domain.dto.TipoRutinaDTO;
 import com.itsight.generic.BaseServiceImpl;
@@ -28,6 +29,95 @@ public class TipoRutinaServiceImpl extends BaseServiceImpl<TipoRutinaRepository>
     }
 
     @Override
+    public TipoRutina save(TipoRutina entity) {
+        return repository.save(entity);
+    }
+
+    @Override
+    public TipoRutina update(TipoRutina entity) {
+        return null;
+    }
+
+    @Override
+    public TipoRutina findOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public TipoRutina findOneWithFT(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+    }
+
+    @Override
+    public List<Integer> findIdsByFlagActivo(boolean flagActivo) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findAll() {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findByNombre(String nombre) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findByNombreContainingIgnoreCase(String nombre) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findByDescripcionContainingIgnoreCase(String descripcion) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findByFlagActivo(boolean flagActivo) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findByFlagEliminado(boolean flagEliminado) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> findByIdsIn(List<Integer> ids) {
+        return null;
+    }
+
+    @Override
+    public List<TipoRutina> listarPorFiltro(String comodin, String estado, String fk) {
+        return null;
+    }
+
+    @Override
+    public String registrar(TipoRutina entity, String wildcard) throws CustomValidationException {
+        return null;
+    }
+
+    @Override
+    public String actualizar(TipoRutina entity, String wildcard) {
+        return null;
+    }
+
+    @Override
+    public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
+
+    }
+
+
+
+
+
+    @Override
     public List<TipoRutina> obtenerTipoRutina(String txtFiltro , String flagEstado) {
 
         TipoRutina tipoRutina = new TipoRutina();
@@ -50,10 +140,7 @@ public class TipoRutinaServiceImpl extends BaseServiceImpl<TipoRutinaRepository>
 
     @Override
     public TipoRutina obtenerTipoRutinaporId(Integer id) {
-
-
         return repository.findById(id).orElse(null);
-
     }
 
 
@@ -62,10 +149,7 @@ public class TipoRutinaServiceImpl extends BaseServiceImpl<TipoRutinaRepository>
     public TipoRutina ingresarTipoRutina(TipoRutinaDTO tipoRutina) {
 
         TipoRutina obj = new TipoRutina();
-
         BeanUtils.copyProperties(tipoRutina, obj);
-
-
         return repository.save(obj);
     }
 
@@ -101,5 +185,4 @@ public class TipoRutinaServiceImpl extends BaseServiceImpl<TipoRutinaRepository>
         }
 
     }
-
 }

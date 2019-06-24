@@ -1,11 +1,15 @@
 package com.itsight.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PasswordDTO {
 
     private String nuevaPassword;
     private String nuevaPasswordRe;
     private String userId;
     private String username;
+    private String schema;
     private int tipoUsuario;
 
     public String getNuevaPassword() {
@@ -46,5 +50,13 @@ public class PasswordDTO {
 
     public void setTipoUsuario(int tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 }

@@ -404,6 +404,7 @@ function goLogin() {
 function goRegister() {
     $(".login-sesion").fadeOut();
     $(".login-register").fadeIn();
+    $(".login-register").removeClass('hidden');
 }
 
 $(function() {
@@ -502,8 +503,10 @@ function FullHeightBanner() {
 })();
 
 function setFullNameForPublicMenuInMobile(){
+    const authName = $('#AuthName').text();
     const gll_nombre = atob(getCookiePb('GLL_NOMBRE_COMPLETO'));
     if(gll_nombre){
+        $('.iniciar-sesion-mobile').addClass('hidden');
         const menu = document.getElementById('FullNameOnlyMenu');
         if(!menu){}else{
             if(gll_nombre.includes(" xxx")){
@@ -512,8 +515,11 @@ function setFullNameForPublicMenuInMobile(){
                 menu.textContent = gll_nombre;
             }
         }
-    }else{//Escondemos el boton de cerrar sesión
+    } else{//Escondemos el boton de cerrar sesión
         $('.cerrar-sesion-mobile').addClass('hidden');
+    }
+    if(authName === "anonymousUser" || !authName){
+        document.getElementById('FullNameOnlyMenu').textContent = "";
     }
 }
 

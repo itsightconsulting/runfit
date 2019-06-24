@@ -27,6 +27,9 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     @Query(value = "SELECT SU.enabled FROM SecurityUser SU WHERE SU.id = ?1")
     Boolean findEnabledById(Integer id);
 
+    @Query(value = "SELECT SU.enabled FROM SecurityUser SU WHERE SU.username = ?1")
+    Boolean findEnabledByUsername(String username);
+
     @Modifying
     @Query(value = "UPDATE SecurityUser SU SET SU.enabled =?2 WHERE SU.username = ?1")
     void updateEstadoByUsername(String username, boolean flag);
@@ -47,6 +50,9 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
 
     @Procedure(name = "fn_validacion_correo")
     Boolean findCorreoExist(@Param("_correo") String correo);
+
+    @Procedure(name = "get_correo_by_id")
+    String getCorreoById(@Param("_user_id") Integer id);
 
     @Modifying
     @Query(value = "update security_user set enabled=true where security_user_id in (select trainer_id from trainer_ficha where tr_emp_id = ?1)", nativeQuery = true)
