@@ -204,7 +204,7 @@
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Numero de Documento: </label>
+                                                    <label class="label">Número de Documento: </label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="NumeroDocumento" name="NumeroDocumento" type="text"
                                                                placeholder="Número de documento" class="" maxlength="11"
@@ -215,7 +215,7 @@
                                             </div>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Nombre de cliente: </label>
+                                                    <label class="label">Nombre de usuario: </label>
                                                     <label class="input"><i class="icon-append fa fa-user"></i>
                                                         <input id="Username" name="Username" type="text"
                                                                placeholder="Nombre de cliente" class="" maxlength="60"
@@ -237,7 +237,7 @@
                                             </div>
                                             <div class="row" id="PassUser">
                                                 <section class="col col-6">
-                                                    <label class="label margin txt-color">Password: </label>
+                                                    <label class="label margin txt-color">Contraseña: </label>
                                                     <label class="input"><i class="icon-append fa fa-lock"></i>
                                                         <input id="Password" name="Password" type="password"
                                                                placeholder="Password" class="" maxlength="24"
@@ -352,6 +352,7 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const body = document.querySelector('body');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
 
@@ -362,6 +363,7 @@
 
         //V A L I D A T E
         validarRegistros();
+        init();
 
         $("#btnNuevo").click(function () {
             $('#Operacion').text('Registrar');
@@ -399,6 +401,18 @@
         modalsEventos();
 
     });
+
+    function init(){
+        body.addEventListener('click', (e)=>{
+            const input = e.target;
+            const clases = input.classList;
+            if(input.tagName === "BUTTON"){
+                if(clases.contains('botTempo')){
+                    input.setAttribute('disabled', 'disabled');
+                }
+            }
+        })
+    }
 
     function listarRegistros() {
 
@@ -514,6 +528,8 @@
             type: 'GET',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             url: _ctx + 'gestion/usuario/obtener',
+            blockLoading: false,
+            noOne: true,
             dataType: "json",
             data: params,
             success: function (data, textStatus) {

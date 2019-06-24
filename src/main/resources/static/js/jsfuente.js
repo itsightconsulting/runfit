@@ -666,7 +666,7 @@ function generateRandomMail(){
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
         if(options.dataType === "xml") {
-            return ;
+            return;
         }
         if (options.processData == false && options.bridgeMultipart === undefined) {
             spinnerUpload(xhr);
@@ -675,12 +675,15 @@ function generateRandomMail(){
                 var defaultValue = "";
                 if($("#btnGuardar")[0]){
                     defaultValue = $("#btnGuardar")[0].textContent;
+                    $("#btnGuardar").attr('disabled','disabled');
+                    $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
                 }
-                $("#btnGuardar").attr('disabled','disabled');
-                $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
+
                  setTimeout(function() {
-                        $("#btnGuardar")[0].textContent = defaultValue;
-                    }, 2000);
+                     if($("#btnGuardar")[0]){
+                         $("#btnGuardar")[0].textContent = defaultValue;
+                     }
+                 }, 2000);
 
 
             } else if(options.type === 'GET' && options.noOne !== undefined){

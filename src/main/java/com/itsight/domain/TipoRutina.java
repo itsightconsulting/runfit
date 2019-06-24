@@ -14,7 +14,17 @@ import java.util.List;
 public class TipoRutina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "tipo_rutina_seq")
+    @GenericGenerator(
+            name = "tipo_rutina_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "prefer_sequence_per_entity", value = "true"),
+                    @org.hibernate.annotations.Parameter(name = "tipo_rutina_seq", value = "tipo_rutina_seq"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Column(name="TipoRutinaId")
     private Integer id;
 

@@ -1329,9 +1329,10 @@
       const btnGuardar = document.getElementById('btnGuardar');
       const body = document.querySelector('body');
 
-      var nowDate = new Date();
-      nowDate.setDate(nowDate.getDate());
-      nowDate = parseFromStringToDate(getFechaFormatoString(nowDate));
+      const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
+      let nowDatePlusOne = new Date();
+      nowDatePlusOne.setDate(nowDatePlusOne.getDate()+1);
+      nowDatePlusOne = parseFromStringToDate(getFechaFormatoString(nowDatePlusOne));
 
       let lstCondMejoras = [];
 
@@ -1808,7 +1809,7 @@
         const nuevaAgregada = tbody.lastElementChild;
         const inpFecha = nuevaAgregada.querySelector('.inp-fecha');
         inpFecha.setAttribute('name', "InpFechaCompetencia"+rowNum);
-        $(inpFecha).rules("add",{required: true, greaterThanDate: nowDate});
+        $(inpFecha).rules("add",{greaterThanDate: nowDatePlusOne});
 
         const inpDesComp = nuevaAgregada.querySelector('.inp-nombre');
         inpDesComp.setAttribute('name', "DesComp"+rowNum);
@@ -1876,7 +1877,6 @@
               maxlength: function(e){return Number(e.getAttribute('maxlength'))}
             },
             FechaNacimiento: {
-              required: true,
               lessThanDate: nowDate
             },
             TipoDocumentoId:{
@@ -2076,9 +2076,7 @@
               pwcheck: true
             },
             InpFechaCompetencia:{
-              required: true,
-              greaterThanDate: nowDate,
-              dateISO: true
+              greaterThanDate: nowDatePlusOne,
             },
             TiempoComp:{
               required: true,
@@ -2113,9 +2111,6 @@
             Apellidos: {
               required: "El campo es obligatorio"
             },
-            FechaNacimiento: {
-              required: "El campo es obligatorio"}
-            ,
             Sexo: {
               required: "El campo es obligatorio",
               min: "El tamaño minimo debe ser 4"

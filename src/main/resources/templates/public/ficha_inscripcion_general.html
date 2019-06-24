@@ -826,6 +826,8 @@
   const absIds = ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"];
   let selectedMuscles = [];
 
+  const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
+
   const stUbicacion = document.getElementById('stUbicacion');
   const mainFrm = document.getElementById('frm_registro');
   const btnGuardar = document.getElementById('btnGuardar');
@@ -1287,7 +1289,7 @@
           maxlength: function(e){return Number(e.getAttribute('maxlength'))}
         },
         FechaNacimiento: {
-          required: true,
+          lessThanDate: nowDate,
         },
         TipoDocumentoId:{
           required: true
