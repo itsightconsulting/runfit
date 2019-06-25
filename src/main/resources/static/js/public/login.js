@@ -12,35 +12,38 @@ function init(){
 }
 
 function eventos(){
-    if(btnRecuperar){
+    if(btnRecuperar){//Iniciar recuperación password
         btnRecuperar.addEventListener('click', preSendFormRecuperacion);
     }
-    if(btnCambiar){
+    if(btnCambiar){//Finalizar recuperación password con el cambio
         btnCambiar.addEventListener('click', preSendFormCambiar);
     }
 
-    body.addEventListener('focusout', (e)=>{
-        const input = e.target;
-        if(input.tagName === "INPUT"){
-            if(input.type==="text" || input.type==="number"){
-                input.value = input.value.trim();
-            }
-        }
-        if(input.tagName === "TEXTAREA"){
+    body.addEventListener('focusout', bodyClickEventListener);
+    body.addEventListener('keyup', bodyKeyupEventListener);
+}
+
+function bodyClickEventListener(e){
+    const input = e.target;
+    if(input.tagName === "INPUT"){
+        if(input.type==="text" || input.type==="number"){
             input.value = input.value.trim();
         }
-    })
+    }
+    if(input.tagName === "TEXTAREA"){
+        input.value = input.value.trim();
+    }
+}
 
-    body.addEventListener('keyup', (e)=>{
-        const input = e.target;
-        if(input.tagName === "INPUT"){
-            if(input.type==="text" || input.type==="number"){
-                if(input.nextElementSibling){
-                    input.nextElementSibling.remove();
-                }
+function bodyKeyupEventListener(e){
+    const input = e.target;
+    if(input.tagName === "INPUT"){
+        if(input.type==="text" || input.type==="number"){
+            if(input.nextElementSibling){
+                input.nextElementSibling.remove();
             }
         }
-    })
+    }
 }
 
 function preSendFormRecuperacion(){
@@ -84,19 +87,7 @@ function sendFormRecuperacion(){
             }, 500)
         },
         error: function (xhr) {
-            const messageError = xhr.responseJSON.message;
-            const sibling = username.nextElementSibling;
-            if(sibling){
-                if(sibling.tagName === "EM"){
-                    sibling.innerText = messageError;
-                }
-            } else{
-                const em = document.createElement('em');
-                em.innerText = messageError;
-                em.classList.remove('help-block');
-                em.classList.add('help-block');
-                username.insertAdjacentElement('afterend', em);
-            }
+            customErrorHandler(xhr, username);
         },
         complete: function () {
         }
@@ -138,19 +129,7 @@ function sendFormCambiar(){
             }, 500)
         },
         error: function (xhr) {
-            const messageError = xhr.responseJSON.message;
-            const sibling = passwordRe.nextElementSibling;
-            if(sibling){
-                if(sibling.tagName === "EM"){
-                    sibling.innerText = messageError;
-                }
-            } else{
-                const em = document.createElement('em');
-                em.innerText = messageError;
-                em.classList.remove('help-block');
-                em.classList.add('help-block');
-                passwordRe.insertAdjacentElement('afterend', em);
-            }
+            customErrorHandler(xhr, passwordRe);
         },
         complete: function () {
         }
@@ -166,4 +145,20 @@ function goRegister(){
 function goLogin() {
     $(".login-register").fadeOut();
     $(".login-sesion").fadeIn();
+}
+
+function customErrorHandler(xhr, input){
+    const messageError = xhr.responseJSON.message;
+    const sibling = input.nextElementSibling;
+    if(sibling){
+        if(sibling.tagName === "EM"){
+            sibling.innerText = messageError;
+        }
+    } else{
+        const em = document.createElement('em');
+        em.innerText = messageError;
+        em.classList.remove('help-block');
+        em.classList.add('help-block');
+        input.insertAdjacentElement('afterend', em);
+    }
 }
