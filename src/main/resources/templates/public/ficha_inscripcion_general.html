@@ -1342,7 +1342,6 @@
           },
           Movil: {
             required: true,
-            maxlength: $("#Movil").prop("maxlength"),
             phoneValid: true
           },
           PaisId:{
@@ -1382,22 +1381,19 @@
             required: true
           },
           DescripcionDolor: {
-            maxlength: $("#Movil").prop("DescripcionDolor"),
-
+            rangelength: [5,500]
           },
           MomDolor: {
-
+            required: true
           },
           MomDolorIni: {
-
+            required: true
           },
           DesLesion: {
-           maxlength: $("#Movil").prop("DesLesion"),
-
-
+            rangelength: [2,500]
           },
           RecomMedica:{
-           maxlength: $("#Movil").prop("RecomMedica"),
+            rangelength: [2,500]
           },
           FlagEmbarazo: {
             required: true
@@ -1442,25 +1438,31 @@
             required: true
           },
           DesEnfermedad: {
-            required: ()=>{return cxRq('#FlagEnfermedad')}
+            required: ()=>{return cxRq('#FlagEnfermedad')},
+            rangelength: [1,300]
           },
           FlagAleMed:{
             required: true
           },
           DesAleMed: {
-            required: ()=>{return cxRq('#FlagAleMed')}
+            required: ()=>{return cxRq('#FlagAleMed')},
+            rangelength: [1,300]
+
           },
           FlagOperacion:{
             required: true
           },
           DesOperacion: {
-            required: ()=>{return cxRq('#FlagOperacion')}
+            required: ()=>{return cxRq('#FlagOperacion')},
+            rangelength: [1,500]
+
           },
           FlagHerDisOrCondCol:{
             required: true
           },
           DesHerDisOrCondCol: {
-            required: ()=>{return cxRq('#FlagHerDisOrCondCol')}
+            required: ()=>{return cxRq('#FlagHerDisOrCondCol')},
+            rangelength: [5,500]
           },
           DesPadVarios: {
             required: true
@@ -1469,10 +1471,14 @@
             required: true
           },
           HistorialDeportivoAnt: {
-            required: true
+            required: true,
+            rangelength: [10,500]
+
           },
           HistorialDeportivoAct: {
-            required: true
+            required: true,
+            rangelength: [10,500]
+
           },
           FrecuenciaCardiaca: {
             required: true,
@@ -1519,7 +1525,8 @@
             required: true
           },
           DesObjetivos: {
-            required: true
+            required: true,
+            rangelength:[3,300]
           },
           DesComp: {
             required: true
