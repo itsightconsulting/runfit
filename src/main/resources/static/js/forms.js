@@ -240,30 +240,46 @@ function getValuesConcatInpCheckbox(name){
 
 function agregarInputsDinamico(e){
 
-      console.log(e.parentElement.children.length);
-     if(e.parentElement.children.length == 7){
+    /*
+
+      if(e.parentElement.children.length == 5){
+
+        console.log(e.nextElementSibling);
+
+       // e.nextElementSibling.classList.remove('hide').add('show');
+
+      }
+
+
+
+     */
+      if(e.parentElement.children.length == 7){
          e.classList.add('hide');
+
      }
      e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Nombre del contacto" class="form-control inp-cont-emer" type="text"/>'));
      e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Celular del contacto" class="form-control inp-cont-emer" type="text"/>'));
  }
 
 
-function reducirInputsDinamico(e){
+
+/*function reducirInputsDinamico(e){
 
     //Sin contar al botón de agregar contactos
 
     var inputElementN1 = e.previousElementSibling.previousElementSibling;
     var inputElementN2 = inputElementN1.previousElementSibling;
 
-     console.log(inputElementN1 , inputElementN2);
-
-     if(e.parentElement.children.length == 4){
-         e.classList.add('hide');
-     }
      inputElementN1.remove();
      inputElementN2.remove();
-   }
+
+      if(e.parentElement.children.length == 5){
+              e.classList.add('hide');
+              e.previousElementSibling.classList.add('show');
+          }
+
+
+   }*/
 
 
 
@@ -491,10 +507,18 @@ function generarDOMCarousel(imgTemps, nomImgsGaleria){
 
 function hideShowGenericInp(ele){
     const val = ele.value;
+
+    console.log(val);
     const eleRefId = ele.getAttribute('data-ele-hd');
+    console.log(eleRefId);
+
     let finalElement = document.querySelector(eleRefId);
+    console.log(finalElement.tagName);
+
     if(finalElement.tagName === "SELECT"){
         finalElement = finalElement.parentElement.parentElement;
+    }else if(finalElement.tagName ==="INPUT"){
+        finalElement = finalElement.parentElement;
     }
     if(val == 0)
         finalElement.classList.add('hidden');

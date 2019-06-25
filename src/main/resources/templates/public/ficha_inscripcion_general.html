@@ -71,7 +71,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="col-md-4 pad-0">
-                          <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control">
+                          <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control hidden">
                             <option value="">Seleccione</option>
                             <option value="1">DNI</option>
                             <option value="2">CE</option>
@@ -100,7 +100,7 @@
                 <li>
                   <div class="form-group" id="stUbicacion">
                     <label>¿Dónde vives?<span class="obligatorio">*</span></label>
-                    <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10" disabled="disabled">
+                    <select id="PaisId" name="PaisId" class="form-control margin-o-bottom-10 hidden" disabled="disabled">
                       <option selected="selected" value="604">Perú</option>
                     </select>
                     <div class="row">
@@ -109,7 +109,7 @@
                           <label>Departamento:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10" disabled="disabled" id="Dep" name="Dep" data-aka="Ubigeo departamento">
+                          <select class="form-control margin-o-bottom-10 hidden" disabled="disabled" id="Dep" name="Dep" data-aka="Ubigeo departamento">
                             <option selected="selected" value="15">Lima</option>
                           </select>
                         </div>
@@ -119,7 +119,7 @@
                           <label>Provincia:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10" disabled="disabled" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                          <select class="form-control margin-o-bottom-10 hidden" disabled="disabled" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                             <option selected="selected" value="01">Lima</option>
                           </select>
                         </div>
@@ -129,7 +129,7 @@
                           <label>Distrito:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                          <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                             <option selected="selected" value="01">Lima</option>
                           </select>
                         </div>
@@ -140,7 +140,7 @@
                 <li>
                   <div class="form-group">
                     <label>¿Cuál es tu estado civil?<span class="obligatorio">*</span></label>
-                    <select class="form-control" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
+                    <select class="form-control hidden" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
                       <option value="1">Soltera(o)</option>
                       <option value="2">Comprometida(o)</option>
                       <option value="3">Casada(o)</option>
@@ -166,11 +166,7 @@
                           <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
                         </div>
                       </li>
-                      <li>
-                        <div class="chk-content">Otro
-                          <input type="radio" name="Sexo" value="3"/><span class="checkmark"></span>
-                        </div>
-                      </li>
+
                     </ul>
                   </div>
                 </li>
@@ -338,9 +334,9 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group hide" id="divDesFumador">
+                  <div class="form-group hidden" id="divDesFumador">
                     <label>¿Con qué frecuencia fumas?<span class="obligatorio">*</span></label>
-                    <input id="DesFumador" name="DesFumador" class="form-control" data-aka="Frecuencia de fumar" type="text" placeholder="Poca, regular, constante..."/>
+                    <input id="DesFumador" name="DesFumador" class="form-control " data-aka="Frecuencia de fumar" type="text" placeholder="Poca, regular, constante..."/>
                   </div>
                   <div class="form-group">
                     <label>¿Antecedentes familiares de infarto o hipertensión?<span class="obligatorio">*</span></label>
@@ -357,8 +353,8 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hide">
+                  <div class="form-group hidden">
+                    <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control">
                       <option value="">Seleccione</option>
                       <option value="1">Papá</option>
                       <option value="2">Mamá</option>
@@ -398,8 +394,8 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hide">
+                  <div class="form-group hidden">
+                    <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hidden">
                       <option value="">Seleccione</option>
                       <option value="1">Papá</option>
                       <option value="2">Mamá</option>
@@ -422,16 +418,16 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <select class="form-control hide" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
+                  <div class="form-group hidden">
+                    <select class="form-control" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
                       <option value="1">Menos de 5 KG</option>
                       <option value="2">Menos de 10 KG</option>
                       <option value="3">Más de 10 KG</option>
-                    </select>
+                    </select>git
                   </div>
                   <div class="form-group">
                     <label>Tu alimentación es:<span class="obligatorio">*</span></label>
-                    <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control">
+                    <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
                       <option value="1">Sana</option>
                       <option value="2">Promedio</option>
                       <option value="3">Mala</option>
@@ -440,7 +436,7 @@
                   </div>
                   <div class="form-group">
                     <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
-                    <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control">
+                    <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control hidden">
                       <option value="1">Nulo</option>
                       <option value="2">Bajo</option>
                       <option value="3">Intermedio</option>
@@ -458,7 +454,7 @@
                     <ul class="checks">
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
-                          <input id="FlagEnfermedad" name="FlagEnfermedad" data-aka="Especificar si padece de alguna enfermedad" type="radio" value="1" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
+                          <input id="FlagEnfermedad" name="FlagEnfermedad" data-aka="Especificar si padece de alguna enfermedad"  type="radio" value="1" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
@@ -468,8 +464,8 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <input class="form-control hide" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text"/>
+                  <div class="form-group hidden">
+                    <input class="form-control" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" placeholder="Especificar si padece de alguna enfermedad"   type="text"/>
                   </div>
                   <div class="form-group">
                     <label>¿Tienes alergia a algún medicamento?<span class="obligatorio">*</span></label>
@@ -486,8 +482,8 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control hide" type="text"/>
+                  <div class="form-group hidden">
+                    <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" placeholder="Especificar medicamento(s) al que es alérgico" class="form-control" type="text"/>
                   </div>
                   <div class="form-group">
                     <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
@@ -504,8 +500,8 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control hide" placeholder="Especificar la o las operaciones" type="text"/>
+                  <div class="form-group hidden">
+                    <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control" placeholder="Especificar la o las operaciones" type="text"/>
                   </div>
                   <div class="form-group">
                     <label>¿Tienes alguna hernia discal o padeces otra condición especial en la columna?<span class="obligatorio">*</span></label>
@@ -522,8 +518,8 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <input class="form-control hide" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
+                  <div class="form-group hidden">
+                    <input class="form-control" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
                   </div>
                   <div class="form-group">
                     <label>Padeces de:<span class="obligatorio">*</span></label>
@@ -557,7 +553,7 @@
                     <input id="ContactoEmergenciaNombre" name="ContactoEmergencia" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/>
                     <input id="ContactoEmergenciaMovil" name="ContactoEmergencia" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/>
                     <a href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
-                    <a href="javascript:void(0);" onclick="javascript:reducirInputsDinamico(this)"><i title="Reducir cantidad de contacto" class="fa fa-minus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
+                 <!--   <a href="javascript:void(0);" onclick="javascript:reducirInputsDinamico(this)"><i title="Reducir cantidad de contacto" class="fa fa-minus pull-right hide" style="color: #a8fa00; padding-right: 5px;"></i></a> -->
 
                   </div>
                   <p class="title-form-group">Historial deportivo</p>
@@ -591,7 +587,7 @@
                 <li>
                   <div class="form-group">
                     <label>¿Cuál es el nivel de atleta con el que te identificarías?<span class="obligatorio">*</span></label>
-                    <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control">
+                    <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control hidden">
                       <option value="1">Básico</option>
                       <option value="2">Intermedio</option>
                       <option value="3">Avanzado</option>
@@ -1277,14 +1273,6 @@
     });
   }
 
-  function hideShowGenericInp(ele){
-    const val = ele.value;
-    const eleRefId = ele.getAttribute('data-ele-hd');
-    if(val == 0)
-      document.querySelector(eleRefId).classList.add('hide');
-    else
-      document.querySelector(eleRefId).classList.remove('hide');
-  }
 
   function agregarInputDinamico(e){
     if(e.parentElement.children.length == 4){
@@ -1379,11 +1367,13 @@
           },
           Peso:{
             required: true,
-            number : true
+            max: 300,
+            rangelength:[2,3]
           },
           Talla:{
             required: true,
-            digits : true
+            rangelength : [2,3],
+            max:280
           },
           Imc:{
             required: true
@@ -1485,10 +1475,19 @@
             required: true
           },
           FrecuenciaCardiaca: {
-            required: true
+            required: true,
+            min: 40,
+            max: 130,
+            rangelength:[2 ,3],
+            digits: true
           },
           FrecuenciaCardiacaMaxima: {
-            required: true
+            required: true,
+            min: 100,
+            max: 220,
+            rangelength:[2  ,3],
+            digits: true
+
           },
           FormaInicial: {
             required: true,
@@ -1583,6 +1582,17 @@
             pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
           }
         }
+
+      });
+
+
+      //Removemos el require de el campo nombre maratón de la tabla de competencias
+      //Maxlength
+      const rules = $(mainFrm).validate().settings.rules;
+      console.log(rules);
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+        document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        console.log(document.getElementById(e));
       });
     }
 
