@@ -106,7 +106,7 @@
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-7 pad-0">
-                              <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control hidden" type="text" placeholder="Número documento"/>
+                              <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
                             </div>
                           </div>
                         </div>
@@ -179,18 +179,13 @@
                         <label>¿Cúal es tu sexo?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
-                            <div class="chk-content">Mujer
+                            <div class="chk-content" id="sxMujer">Mujer
                               <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
-                            <div class="chk-content">Hombre
+                            <div class="chk-content" id="sxHombre">Hombre
                               <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="chk-content">Otro
-                              <input type="radio" name="Sexo" value="3"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -235,7 +230,7 @@
                     </li>
                     <li>
                       <div class="form-group">
-                        <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:<span class="obligatorio">*</span></label>
+                        <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
                         <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                       </div>
                     </li>
@@ -285,13 +280,13 @@
                     </li>
                     <li>
                       <div class="form-group">
-                        <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?<span class="obligatorio">*</span></label>
+                        <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?</label>
                         <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control"></textarea>
                       </div>
                     </li>
                     <li>
                       <div class="form-group">
-                        <label>¿Tiene alguna recomendación o limitación médica?<span class="obligatorio">*</span></label>
+                        <label>¿Tiene alguna recomendación o limitación médica?</label>
                         <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control"></textarea>
                       </div>
                     </li>
@@ -301,12 +296,12 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input type="checkbox" name="FlagEmbarazo" data-aka="Se encuentra embarazada" id="FlagEmbarazo"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagEmbarazo" data-aka="Se encuentra embarazada" id="FlagEmbarazo"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">No
-                              <input type="checkbox" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -490,8 +485,8 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <input class="form-control hidden" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text"/>
+                      <div class="form-group hidden">
+                        <input class="form-control" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text" placeholder="Especificar la enfermedad que padece"/>
                       </div>
                       <div class="form-group">
                         <label>¿Tienes alergia a algún medicamento?<span class="obligatorio">*</span></label>
@@ -508,8 +503,8 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control hidden" type="text"/>
+                      <div class="form-group hidden">
+                        <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control" type="text" placeholder="Especificar medicamento(s) al que es alérgico"/>
                       </div>
                       <div class="form-group">
                         <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
@@ -526,8 +521,8 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control hidden" placeholder="Especificar la o las operaciones" type="text"/>
+                      <div class="form-group hidden">
+                        <input name="DesOperacion" data-aka="Especificar la descripción de la operación a la cual se sometio" id="DesOperacion" class="form-control" placeholder="Especificar la o las operaciones" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>¿Tienes alguna hernia discal o padeces otra condición especial en la columna?<span class="obligatorio">*</span></label>
@@ -544,30 +539,30 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
-                        <input class="form-control hidden" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
+                      <div class="form-group hidden">
+                        <input class="form-control" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" data-aka="Especificar brevemente la hernia o el problema en la columna" placeholder="Escribir una breve descripción" type="text"/>
                       </div>
                       <div class="form-group">
                         <label>Padeces de:<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Artritis
-                              <input name="DesPadVarios" value="Artritis" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="1" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Condromalacia
-                              <input name="DesPadVarios" value="Condromalacia" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="2" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Osteocondritis
-                              <input name="DesPadVarios" value="Osteocondritis" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="3" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">N.A.
-                              <input name="DesPadVarios" value="N.A." type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="4" type="checkbox" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -1347,7 +1342,7 @@
         tooltipsOn();
         constraintsValidation();
         multiSelectFichaRunning();
-          $('#TxtMusculoOtro')[0].style.marginTop = $('#HumanMuscles').height() + 'px';
+        $('#TxtMusculoOtro')[0].style.marginTop = $('#HumanMuscles').height() + 'px';
       }
 
       function mainSeeders(){
@@ -1408,17 +1403,28 @@
           document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
           document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
           $('#Dep').val(15);
+          $('#Dis').multiselect('rebuild');
         }).catch((err)=>{
           exception(err);
         });
       }
 
       function mainEventListeners(){
+        eventListenerSexo();
         stUbicacion.addEventListener('change', evtLsChangeUbicacion);
         btnGuardar.addEventListener('click', sendMainForm);
         document.querySelector('body').addEventListener('click', bodyClickEventListener);
         document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
         document.querySelector('body').addEventListener('change', bodyChangeEventListener);
+      }
+
+      function eventListenerSexo(){
+        document.querySelector('#sxMujer').addEventListener('click', (e)=>{
+          $('#liFlagEmbarazo').removeClass('hidden');
+        })
+        document.querySelector('#sxHombre').addEventListener('click', (e)=>{
+          $('#liFlagEmbarazo').addClass('hidden');
+        })
       }
 
       function tooltipsOn(){
@@ -1522,41 +1528,22 @@
             const prev = input.previousElementSibling;
             if(prev){
               if(prev.name === "ItemsFitness"){
-                if(prev.value === "9"){
-                  if(prev.checked){
-                    document.querySelectorAll('input[name="ItemsFitness"]').forEach(e => {
-                      if(e.value !== "9"){
-                        e.checked = false;
-                        e.parentElement.parentElement.parentElement.classList.remove('active');
-                      }
-                    });
-                  }
-                }else{
-                  const inpNa = document.querySelector('input[name="ItemsFitness"][value="9"]');
-                  inpNa.checked = false;
-                  inpNa.parentElement.parentElement.parentElement.classList.remove('active');
-                }
+                validarSeleccionNA(prev,"ItemsFitness","9");
+              }
+              if(prev.name === "DesPadVarios"){
+                validarSeleccionNA(prev,"DesPadVarios","4");
               }
             }
           }
 
           if(clases.contains('chk-content')){
-            const inp = input.querySelector('input[name="ItemsFitness"]');
-            if(inp){
-                if(inp.value === "9"){
-                  if(inp.checked){
-                    document.querySelectorAll('input[name="ItemsFitness"]').forEach(e => {
-                      if(e.value !== "9"){
-                        e.checked = false;
-                        e.parentElement.parentElement.parentElement.classList.remove('active');
-                      }
-                    });
-                  }
-                }else{
-                  const inpNa = document.querySelector('input[name="ItemsFitness"][value="9"]');
-                  inpNa.checked = false;
-                  inpNa.parentElement.parentElement.parentElement.classList.remove('active');
-                }
+            const inpObjetos = input.querySelector('input[name="ItemsFitness"]');
+            const inpPadeceDe =  input.querySelector('input[name="DesPadVarios"]');
+            if(inpObjetos){
+              validarSeleccionNA(inpObjetos,"ItemsFitness","9");
+            }
+            if(inpPadeceDe){
+              validarSeleccionNA(inpPadeceDe,"DesPadVarios","4");
             }
           }
         }
@@ -1566,9 +1553,26 @@
       function bodyFocusOutEventListener(e){
         const input = e.target;
         if(input.tagName === "INPUT"){
-           if(input.type==="text"){
+
+          //Generación de IMC
+          var peso = $('#Peso').val();
+          var talla = $('#Talla').val();
+
+          if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
+
+            var tallaKg =  talla / 100;
+            var imc = peso / Math.pow(tallaKg,2);
+            imc = imc.toFixed(1);
+            $('#Imc').val(imc);
+          } else {
+            $('#Imc').val("");
+
+          }
+          //Fin de generación de IMC
+
+           if(input.type==="text") {
               input.value = input.value.trim().replace(/ +/g, " ");
-           }else if(input.type==="email"  || input.type==="number"){
+           } else if(input.type==="email"  || input.type==="number"){
              input.value = input.value.trim().replace(/ +/g, "");
            }
         }
@@ -1600,6 +1604,25 @@
         const listRight = document.querySelector('.ul-msc-r');
         listLeft.innerHTML =  arrMj.map(v=> templateMuscleEleList(v)).join('');
         listRight.innerHTML = arrMn.map(v=> templateMuscleEleList(v)).join('');
+      }
+
+      function validarSeleccionNA ( element,inputName,optionValue){
+
+        if(element.value === optionValue){
+          if(element.checked){
+            document.querySelectorAll('input[name="'+inputName+'"]').forEach(e => {
+              if(e.value !== optionValue){
+                e.checked = false;
+                e.parentElement.parentElement.parentElement.classList.remove('active');
+              }
+            });
+          }
+        }else{
+          const inpNa = document.querySelector('input[name="'+inputName+'"][value="'+optionValue+'"]');
+          inpNa.checked = false;
+          inpNa.parentElement.parentElement.parentElement.classList.remove('active');
+
+        }
       }
 
       function templateMuscleEleList(name){
@@ -1873,11 +1896,13 @@
           rules: {
             Nombres: {
               required: true,
-              maxlength: function(e){return Number(e.getAttribute('maxlength'))}
+              rangelength: [3, 30],
+              lettersonly: true
             },
             Apellidos: {
               required: true,
-              maxlength: function(e){return Number(e.getAttribute('maxlength'))}
+              rangelength: [3, 30],
+              lettersonly: true
             },
             FechaNacimiento: {
               lessThanDate: nowDate
@@ -1887,14 +1912,17 @@
             },
             NumeroDocumento: {
               required: true,
+              number: true,
+              rangelength: [8, 13],
               customnumdoc: function(){
-                        const val = $('#TipoDocumentoId').val();
-                        return val;
-                    }
+                const val = $('#TipoDocumentoId').val();
+                return val;
+              }
             },
             Correo: {
               required: true,
-              emailValid: true
+              emailValid: true,
+              rangelength: [7, 40]
             },
             Movil: {
               required: true,
@@ -1922,10 +1950,16 @@
               min: 1
             },
             Peso:{
-              required: true
+              required: true,
+              number : true,
+              rangelength: [2, 3],
+              max: 300
             },
             Talla:{
-              required: true
+              required: true,
+              digits : true,
+              rangelength: [2, 3],
+              max: 280
             },
             Imc:{
               required: true
@@ -1934,7 +1968,10 @@
               required: true
             },
             DescripcionDolor: {
-
+              required: function(){
+                return document.querySelector('#FlagPadeceDolor').checked;
+              },
+              rangelength: [5, 500]
             },
             MomDolor: {
 
@@ -1943,10 +1980,10 @@
 
             },
             DesLesion: {
-
+              rangelength: [2, 500],
             },
             RecomMedica:{
-
+              rangelength: [2, 500],
             },
             FlagEmbarazo: {
               required: true
@@ -2170,7 +2207,7 @@
         const t1 = t0.slice(-3);
         const t2 = t0.slice(-6).slice(0, 3);
 
-        document.querySelector('#Nombres').value = "Pedro "+t1;
+        document.querySelector('#Nombres').value = "Pedro ";
         document.querySelector('#Apellidos').value = "Sotelo";
         document.querySelector('#FechaNacimiento').value = "1993-02-28";
         document.querySelector('#TipoDocumentoId').value = 1;

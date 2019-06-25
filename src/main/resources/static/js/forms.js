@@ -226,6 +226,9 @@ function getValuesConcatInpCheckbox(name){
     if(inpts.length > 0){
         return Array.from(inpts).map((v)=>
         {
+            if(name === "DesPadVarios"){
+                return v.parentElement.textContent.trim()
+            }
             if(v.value === "Otro"){
                 const txtOtro = document.getElementById(`${name}Otro`);
                 if(txtOtro.value.trim().length>0) {

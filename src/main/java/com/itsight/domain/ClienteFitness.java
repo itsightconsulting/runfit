@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.jsonb.CondicionMejora;
 import com.itsight.domain.jsonb.*;
+import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -54,8 +55,9 @@ public class ClienteFitness implements Serializable {
     private BigDecimal peso;
     @Column(nullable = false)
     private Integer talla;
-    @Column(nullable = false)
-    private Integer imc;
+    @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
+    @Column(precision = 3, scale = 1, nullable = false)
+    private Double imc;
     @Column(nullable = false)
     private Integer nivel;//Nivel del atleta
     @Type(type = "jsonb")
