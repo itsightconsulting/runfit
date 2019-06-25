@@ -5,7 +5,7 @@ let errorElement = 'em';
 let token = $("meta[name='_csrf']").attr("content");
 let header = $("meta[name='_csrf_header']").attr("content");
 var _ctx = $('meta[name="_ctx"]').attr('content');
-let $buttonName = "";
+let $defaulTextButton = "";
 let $gbInterval = 0;
 var _URL = window.URL || window.webkitURL;
 
@@ -672,20 +672,11 @@ function generateRandomMail(){
             spinnerUpload(xhr);
         } else{
             if((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading){
-                var defaultValue = "";
                 if($("#btnGuardar")[0]){
-                    defaultValue = $("#btnGuardar")[0].textContent;
+                    $defaulTextButton = $("#btnGuardar")[0].textContent;
                     $("#btnGuardar").attr('disabled','disabled');
                     $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
                 }
-
-                 setTimeout(function() {
-                     if($("#btnGuardar")[0]){
-                         $("#btnGuardar")[0].textContent = defaultValue;
-                     }
-                 }, 2000);
-
-
             } else if(options.type === 'GET' && options.noOne !== undefined){
 
             } else{
@@ -709,9 +700,13 @@ function generateRandomMail(){
                 if ((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading) {
                     if (!options.bridgeMultipart) {
                         $('#btnGuardar').removeAttr('disabled');
-                        $('#btnGuardar').text($buttonName);
+                        $('#btnGuardar').text($defaulTextButton);
                     } else {
-                        $('#btnGuardar').text($buttonName);
+                        //$('#btnGuardar').text($defaulTextButton);
+                    }
+
+                    if($("#btnGuardar")[0]){
+                        $("#btnGuardar")[0].textContent = $defaulTextButton;
                     }
                 } else {
                     if (options.type === 'GET' && options.noOne !== undefined) {

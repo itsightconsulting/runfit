@@ -170,6 +170,7 @@
                           <option value="1">Soltera(o)</option>
                           <option value="2">Comprometida(o)</option>
                           <option value="3">Casada(o)</option>
+                          <option value="4">Viuda(o)</option>
                         </select>
                       </div>
                     </li>
@@ -1565,9 +1566,11 @@
       function bodyFocusOutEventListener(e){
         const input = e.target;
         if(input.tagName === "INPUT"){
-          if(input.type==="text" || input.type==="number"){
-            input.value = input.value.trim();
-          }
+           if(input.type==="text"){
+              input.value = input.value.trim().replace(/ +/g, " ");
+           }else if(input.type==="email"  || input.type==="number"){
+             input.value = input.value.trim().replace(/ +/g, "");
+           }
         }
         if(input.tagName === "TEXTAREA"){
           input.value = input.value.trim();
@@ -1884,12 +1887,19 @@
             },
             NumeroDocumento: {
               required: true,
+              customnumdoc: function(){
+                        const val = $('#TipoDocumentoId').val();
+                        return val;
+                    }
             },
             Correo: {
               required: true,
+              emailValid: true
             },
             Movil: {
               required: true,
+              digits: true,
+              maxlength: function(e){return Number(e.getAttribute('maxlength'))
             },
             PaisId:{
               required: true,
@@ -1912,8 +1922,7 @@
               min: 1
             },
             Peso:{
-              required: true,
-              number: true
+              required: true
             },
             Talla:{
               required: true

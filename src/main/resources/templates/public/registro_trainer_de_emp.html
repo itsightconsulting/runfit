@@ -701,7 +701,6 @@
                 $.smallBox({color: "alert", content: '<span><i class="fa fa-exclamation-circle fa-fw"></i>Debe asignar por lo menos un servicio al trainer</span>'});
                 return;
             }
-            $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
                 $("#frm_registro :input").prop("disabled", true);
                 $.ajax({

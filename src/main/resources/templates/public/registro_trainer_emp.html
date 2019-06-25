@@ -565,7 +565,6 @@
             body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
             body.tipoTrainerId = 2;
 
-            $buttonName = "Guardar";
             if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
                 $("#frm_registro :input").prop("disabled", true);
                 $.ajax({

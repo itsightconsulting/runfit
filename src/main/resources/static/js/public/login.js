@@ -77,7 +77,7 @@ function sendFormRecuperacion(){
                 $.SmartMessageBox({
                     title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
                     content: "" +
-                        "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al correo asociado a esta cuenta. Por favor revise su bandeja para continuar con los próximos pasos</i><br/>",
+                        "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para continuar con los próximos pasos</i><br/>",
                     buttons: '[SALIR]'
                 }, function (ButtonPressed) {
                     if(ButtonPressed){
