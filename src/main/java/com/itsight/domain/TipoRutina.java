@@ -28,9 +28,7 @@ public class TipoRutina {
     @Column(name="TipoRutinaId")
     private Integer id;
 
-
-   //@NaturalId
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nombre;
 
     @JsonBackReference
@@ -98,5 +96,9 @@ public class TipoRutina {
 
     public void setLstRutina(List<Rutina> lstRutina) {
         this.lstRutina = lstRutina;
+    }
+
+    public TipoRutina(String nombre) {
+        this.nombre = nombre;
     }
 }

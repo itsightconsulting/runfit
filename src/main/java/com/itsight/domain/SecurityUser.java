@@ -103,7 +103,13 @@ import java.util.Set;
         parameters = {
             @StoredProcedureParameter(name = "_correo", mode = ParameterMode.IN, type = String.class),
             @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
-        })
+        }),
+    @NamedStoredProcedureQuery(name = "get_correo_by_id",
+            procedureName = "get_correo_by_id",
+            parameters = {
+                    @StoredProcedureParameter(name = "_user_id", mode = ParameterMode.IN, type = Integer.class),
+                    @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = String.class)
+            })
 })
 public class SecurityUser{
 

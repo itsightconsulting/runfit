@@ -334,11 +334,12 @@ function agregarModalParaVisualizacionImagen() {
 }
 
 function spinnerSwitchTab(effect){
+    const gifRunner = _ctx + "img/runner.gif";
     $.SmartMessageBox({
         title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
         content: "" +
             "<br/><i style='font-size: 1.2em;'>La acción solicitada ha iniciado. Por favor espere...</i><i class='fa fa-spinner fa-spin fa-15x pull-right'></i><br/>" +
-            "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='http://4.bp.blogspot.com/-lt--oWaKhWM/UtZTNXQkeYI/AAAAAAAAtsU/8liEKT5YJBw/s1600/deatlet13.gif'><div class='row text-center'></div>",
+            "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='"+gifRunner+"'><div class='row text-center'></div>",
         buttons: '[]'
     }, function (ButtonPressed) {
         if(ButtonPressed.trim() === ""){

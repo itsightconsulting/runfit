@@ -35,19 +35,20 @@
     <div class="menu_mobile view-only-mobile">
         <div class="bg-opacity"></div>
         <ul class="header-options">
-            <li class="col-xs-9 pad-0"><a href="#"><span class="fa fa-cog"></span>Configuración</a></li>
-            <li class="col-xs-3 text-right pad-0"><a href="#"><span class="fa fa-home"></span></a></li>
+            <li class="col-xs-9 pad-0"><a href="#">&nbsp;</a></li>
+            <li class="col-xs-3 text-right pad-0"><a th:href="@{/p/inicio}"><span class="fa fa-home"></span></a></li>
         </ul>
         <div class="avatar"><img th:src="@{/img/public/logo.png}+'?'+${version}"/>
-            <p class="name"><!-- Dennys Gorina --></p>
-            <p class="email" id="FullNameOnlyMenu"></p>
+            <p class="name" id="FullNameOnlyMenu"></p>
+            <p class="email hidden" id="AuthName" th:if="${#authentication != null}" th:text="${#authentication.name}"></p>
         </div>
         <ul class="options">
             <li><a th:href="@{/p/quienes-somos}"> <span>QUIÉNES SOMOS</span></a></li>
             <li><a th:href="@{/p/contigo}" data-menu="atletas"> <span>ATLETAS</span></a></li>
             <li><a th:href="@{/p/busqueda/trainers}"><span>ASESORES</span></a></li>
             <li><a th:href="@{/p/postulacion/trainer}"> <span>EMPRENDE CON NOSOTROS</span></a></li>
-        </ul><a class="cerrar-sesion-mobile" href="javascript:cerrarSesion();"><span class="fa fa-remove"></span>Cerrar sesión</a>
+        </ul><a class="cerrar-sesion-mobile" href="javascript:cerrarSesion();"><span class="fa fa-remove"></span>CERRAR SESIÓN</a>
+        <a class="iniciar-sesion-mobile" href="javascript:document.querySelector('.login').classList.add('active');"><span class="fa fa-sign-in"></span>INICIAR SESIÓN</a>
     </div>
     <div id="menu" style="display: none">
         <div class="menu-desktop view-only-desktop">

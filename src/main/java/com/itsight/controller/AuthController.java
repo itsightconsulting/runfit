@@ -1,19 +1,59 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
+import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.SecurityUser;
+import com.itsight.domain.UsuarioRecover;
+import com.itsight.domain.dto.PasswordDTO;
+import com.itsight.repository.SecurityUserRepository;
+import com.itsight.repository.UsuarioRecoverRepository;
+import com.itsight.service.EmailService;
+import com.itsight.service.SecUserProcedureInvoker;
+import com.itsight.service.SecurityUserService;
+import com.itsight.service.impl.SecurityServiceImpl;
+import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Collection;
+import java.util.Date;
+
+import static com.itsight.util.Enums.Msg.ENLACE_CADUCADO;
 
 @Controller
-public class AuthController {
+public class AuthController extends BaseController {
+
+    private SecurityUserRepository securityUserRepository;
+
+    private EmailService emailService;
+
+    private UsuarioRecoverRepository usuarioRecoverRepository;
+
+    private SecurityUserService securityUserService;
+
+    @Autowired
+    public AuthController(SecurityUserRepository securityUserRepository,
+                          EmailService emailService,
+                          UsuarioRecoverRepository usuarioRecoverRepository,
+                          SecurityUserService securityUserService) {
+        this.securityUserRepository = securityUserRepository;
+        this.emailService = emailService;
+        this.usuarioRecoverRepository = usuarioRecoverRepository;
+        this.securityUserService = securityUserService;
+    }
 
     @GetMapping(value = "/login")
     public String loginForm(@RequestParam(value = "error", required = false) String error,
@@ -31,7 +71,7 @@ public class AuthController {
 
     //	@PreAuthorize("hasAnyRole({'ADMIN','USER'}) or hasAuthority('READ_PRIVILEGE')")
     @GetMapping(value = {"/bienvenido", "/"})
-    public String welcome() {
+    public String welcome(){
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for (GrantedAuthority authority: authorities){
             if(authority.getAuthority().equals("ROLE_TRAINER") || authority.getAuthority().equals("ROLE_ADMIN"))
@@ -63,4 +103,40 @@ public class AuthController {
         return "lock";
     }
 
+    @GetMapping(value = "/p/recuperar/password")
+    public String recuperarPassword(){
+        return ViewConstant.RECUPERAR_PASSWORD;
+    }
+
+    @PostMapping(value = "/p/recuperacion/password/check/username")
+    public @ResponseBody String recuperarPasswordCheckUsernameExiste(@RequestParam String username) throws CustomValidationException, InterruptedException {
+        if(username == null || username.trim().equals("")){
+            throw new CustomValidationException(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()));
+        }
+        return Utilitarios.jsonResponse(securityUserService.recuperarPassword(username));
+    }
+
+    @GetMapping(value = "/p/cambiar/password/{hshId}")
+    public String vistaCambiarPassword(@PathVariable String hshId, @RequestParam String sc, Model model) throws SecCustomValidationException {
+        Integer id = getDecodeHashIdSecCustom(new String(Base64.getDecoder().decode(sc.getBytes())), hshId);
+        UsuarioRecover usurec = usuarioRecoverRepository.findById(id).orElse(null);
+        if(usurec == null){
+            return ViewConstant.P_ERROR404;
+        }
+        if(!usurec.isFlagRecover()){
+            model.addAttribute("msg", ENLACE_CADUCADO.get());
+            return ViewConstant.MAIN_INF_N;
+        }
+        if(usurec.getFechaLimite().before(new Date())){
+            model.addAttribute("msg", ENLACE_CADUCADO.get());
+            return ViewConstant.MAIN_INF_N;
+        }
+        return ViewConstant.CAMBIAR_PASSWORD;
+    }
+
+    @PostMapping(value = "/p/recuperacion/password/cambiar")
+    public @ResponseBody String cambiarPassword(@ModelAttribute PasswordDTO passwordDTO) throws CustomValidationException {
+        Integer id = getDecodeHashId(new String(Base64.getDecoder().decode(passwordDTO.getSchema().getBytes())), passwordDTO.getUserId());
+        return securityUserService.cambiarPassword(passwordDTO, id);
+    }
 }
