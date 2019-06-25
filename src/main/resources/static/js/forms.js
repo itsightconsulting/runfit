@@ -239,12 +239,28 @@ function getValuesConcatInpCheckbox(name){
 }
 
 function agregarInputsDinamico(e){
-    if(e.parentElement.children.length == 6){
-        e.classList.add('hide');
-    }
-    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Nombre del contacto" class="form-control inp-cont-emer" type="text"/>'));
-    e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Celular del contacto" class="form-control inp-cont-emer" type="text"/>'));
-}
+
+      console.log(e.parentElement.children.length);
+     if(e.parentElement.children.length == 7){
+         e.classList.add('hide');
+     }
+     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Nombre del contacto" class="form-control inp-cont-emer" type="text"/>'));
+     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Celular del contacto" class="form-control inp-cont-emer" type="text"/>'));
+ }
+
+
+function reducirInputsDinamico(e){
+
+     console.log(e.parentElement.children.length);
+     if(e.parentElement.children.length == 4){
+         e.classList.add('hide');
+     }
+     e.previousElementSibling.remove();
+     e.previousElementSibling.remove();
+   }
+
+
+
 
 function getValoracion(cantPerVal, totalVal){
     const valoraciones = cantPerVal;
