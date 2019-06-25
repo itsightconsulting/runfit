@@ -251,12 +251,18 @@ function agregarInputsDinamico(e){
 
 function reducirInputsDinamico(e){
 
-     console.log(e.parentElement.children.length);
+    //Sin contar al botón de agregar contactos
+
+    var inputElementN1 = e.previousElementSibling.previousElementSibling;
+    var inputElementN2 = inputElementN1.previousElementSibling;
+
+     console.log(inputElementN1 , inputElementN2);
+
      if(e.parentElement.children.length == 4){
          e.classList.add('hide');
      }
-     e.previousElementSibling.remove();
-     e.previousElementSibling.remove();
+     inputElementN1.remove();
+     inputElementN2.remove();
    }
 
 
