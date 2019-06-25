@@ -31,6 +31,8 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
+import static com.itsight.util.Enums.Msg.ENLACE_CADUCADO;
+
 @Controller
 public class AuthController extends BaseController {
 
@@ -107,11 +109,11 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping(value = "/p/recuperacion/password/check/username")
-    public @ResponseBody ResponseEntity<String> recuperarPasswordCheckUsernameExiste(@RequestParam String username) throws CustomValidationException {
+    public @ResponseBody String recuperarPasswordCheckUsernameExiste(@RequestParam String username) throws CustomValidationException, InterruptedException {
         if(username == null || username.trim().equals("")){
-            return new ResponseEntity<>(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()), HttpStatus.BAD_REQUEST);
+            throw new CustomValidationException(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()));
         }
-        return new ResponseEntity<>(Utilitarios.jsonResponse(securityUserService.recuperarPassword(username)), HttpStatus.OK);
+        return Utilitarios.jsonResponse(securityUserService.recuperarPassword(username));
     }
 
     @GetMapping(value = "/p/cambiar/password/{hshId}")
@@ -122,36 +124,19 @@ public class AuthController extends BaseController {
             return ViewConstant.P_ERROR404;
         }
         if(!usurec.isFlagRecover()){
-            model.addAttribute("msg", "El enlace ha caducado");
+            model.addAttribute("msg", ENLACE_CADUCADO.get());
             return ViewConstant.MAIN_INF_N;
         }
         if(usurec.getFechaLimite().before(new Date())){
-            model.addAttribute("msg", "El enlace ha caducado");
+            model.addAttribute("msg", ENLACE_CADUCADO.get());
             return ViewConstant.MAIN_INF_N;
         }
         return ViewConstant.CAMBIAR_PASSWORD;
     }
 
     @PostMapping(value = "/p/recuperacion/password/cambiar")
-    public ResponseEntity<String> cambiarPassword(@ModelAttribute PasswordDTO passwordDTO) throws CustomValidationException {
+    public @ResponseBody String cambiarPassword(@ModelAttribute PasswordDTO passwordDTO) throws CustomValidationException {
         Integer id = getDecodeHashId(new String(Base64.getDecoder().decode(passwordDTO.getSchema().getBytes())), passwordDTO.getUserId());
-
-        if(!passwordDTO.getNuevaPassword().equals(passwordDTO.getNuevaPasswordRe())){
-            return new ResponseEntity<>(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()), HttpStatus.UNAUTHORIZED);
-        }
-
-        UsuarioRecover usuRec = usuarioRecoverRepository.findById(id).orElse(null);
-        if(usuRec == null || !usuRec.isFlagRecover()){
-            return new ResponseEntity<>(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()), HttpStatus.NOT_FOUND);
-        }
-        if(usuRec.getFechaLimite().before(new Date())){
-            return new ResponseEntity<>(Utilitarios.jsonResponse(Enums.Msg.VALIDACION_FALLIDA.get()), HttpStatus.NOT_FOUND);
-        }
-        usuRec.setFlagRecover(false);
-        usuarioRecoverRepository.saveAndFlush(usuRec);
-        securityUserRepository.actualizarPassword(Utilitarios.encoderPassword(passwordDTO.getNuevaPassword()), id);
-        String correo = securityUserRepository.getCorreoById(id);
-        emailService.enviarCorreoInformativo("Contraseña actualizada", correo, "Su contraseña se ha actualizado con éxito");
-        return new ResponseEntity<>(Utilitarios.jsonResponse(Enums.Msg.REGISTRO_EXITOSO.get()), HttpStatus.OK);
+        return securityUserService.cambiarPassword(passwordDTO, id);
     }
 }

@@ -130,7 +130,9 @@ public class Enums {
         PERFIL_POST_OBS(9),
         PERFIL_TRAINER_APROBADO(10),
         PERFIL_CHECK_OBS_SUBS(11),
-        ULTIMA_ETAPA_POSTULANTE_EMP(12);
+        ULTIMA_ETAPA_POSTULANTE_EMP(12),
+        INIT_CAMBIO_PASSWORD(13),
+        FINAL_CAMBIO_PASSWORD(14);
 
         final int id;
 
@@ -177,7 +179,11 @@ public class Enums {
         CHECK_PERFIL_EMPRESA_EN_VISTA_BUSQUEDA("El perfil que ha intentado ver ya no es accesible mediante esta ruta puesto que ya ha sido aprobado. Si desea revisar su perfil encuentrelo en la vista de 'Encuentra tu coach'"),
         NOTIFICACION_RED_FIT_PERSONAL("El atleta ha sido notificado."),
         NOTIFICACION_RED_FIT_GENERAL("Los atletas han sido notificados."),
-        TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS("Usted ya ha actualizado el perfil de este entrenador, si ya corrigió todas las observaciones vuelva al perfil de su empresa y envíe la confirmación desde allí para finalizar el proceso.");
+        TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS("Usted ya ha actualizado el perfil de este entrenador, si ya corrigió todas las observaciones vuelva al perfil de su empresa y envíe la confirmación desde allí para finalizar el proceso."),
+        USUARIO_NO_EXISTE("El usuario que ha ingresado no existe."),
+        USUARIO_INACTIVO("El usuario que ha ingresado se encuentra inactivo."),
+        ENLACE_CADUCADO("El enlace ha caducado"),
+        ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado");
         final String msg;
 
         Msg(String msg){
