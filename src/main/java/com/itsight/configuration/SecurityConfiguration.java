@@ -41,7 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/gestion/cliente/validacion-correo").permitAll()
                 .antMatchers("/gestion/cliente/validacion-username").permitAll()
                 .antMatchers("/session-expirada").permitAll()
-                .antMatchers("/session-multiple").permitAll();
+                .antMatchers("/session-multiple").permitAll()
+                .antMatchers("/login*","/signin/**","/signup/**").permitAll();
 
         http.authorizeRequests()
                 .antMatchers(
@@ -81,6 +82,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SessionRegistry sessionRegistry() {
         SessionRegistry sessionRegistry = new SessionRegistryImpl();
+
         return sessionRegistry;
     }
+
 }

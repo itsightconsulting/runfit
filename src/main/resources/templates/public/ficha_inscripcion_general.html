@@ -89,8 +89,8 @@
                 <li>
                   <div class="form-group more-inputs">
                     <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                    <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
-                    <input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/>
+                    <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="email"/>
+                    <input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text" maxlength="13"/>
                   </div>
                 </li>
               </ol>
@@ -144,12 +144,17 @@
                       <option value="1">Soltera(o)</option>
                       <option value="2">Comprometida(o)</option>
                       <option value="3">Casada(o)</option>
+                      <option value="4">Viuda(o)</option>
+
                     </select>
                   </div>
                 </li>
                 <li>
                   <div class="form-group">
                     <label>¿Cúal es tu sexo?<span class="obligatorio">*</span></label>
+
+
+
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Mujer
@@ -209,7 +214,7 @@
                 <li>
                   <div class="form-group">
                     <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:<span class="obligatorio">*</span></label>
-                    <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
+                    <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control" maxlength="250"></textarea>
                   </div>
                 </li>
                 <li>
@@ -259,13 +264,13 @@
                 <li>
                   <div class="form-group">
                     <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al hacer actividad física?<span class="obligatorio">*</span></label>
-                    <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control"></textarea>
+                    <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control" maxlength="250"></textarea>
                   </div>
                 </li>
                 <li>
                   <div class="form-group">
                     <label>¿Tiene alguna recomendación o limitación médica?<span class="obligatorio">*</span></label>
-                    <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control"></textarea>
+                    <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control" maxlength="250"></textarea>
                   </div>
                 </li>
                 <li id="liFlagEmbarazo">
@@ -274,12 +279,12 @@
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Si
-                          <input type="checkbox" name="FlagEmbarazo" data-aka="Se encuentra embarazada" id="FlagEmbarazo"/><span class="checkmark"></span>
+                          <input type="radio" name="FlagEmbarazo" data-aka="Se encuentra embarazada" id="FlagEmbarazo"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">No
-                          <input type="checkbox" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
+                          <input type="radio" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -524,23 +529,23 @@
                     <label>Padeces de:<span class="obligatorio">*</span></label>
                     <ul class="checks">
                       <li>
-                        <div class="chk-content">Artritis
-                          <input name="DesPadVarios" value="Artritis" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
+                        <div class="chk-content" name="Artritis">Artritis
+                          <input name="DesPadVarios" value="1" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Condromalacia
-                          <input name="DesPadVarios" value="Condromalacia" type="checkbox"/><span class="checkmark"></span>
+                          <input name="DesPadVarios" value="2" type="checkbox"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Osteocondritis
-                          <input name="DesPadVarios" value="Osteocondritis" type="checkbox"/><span class="checkmark"></span>
+                          <input name="DesPadVarios" value="3" type="checkbox"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">N.A.
-                          <input name="DesPadVarios" value="N.A." type="checkbox" checked="checked"/><span class="checkmark"></span>
+                          <input name="DesPadVarios" value="4" type="checkbox" checked="checked"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -551,7 +556,9 @@
                     <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
                     <input id="ContactoEmergenciaNombre" name="ContactoEmergencia" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/>
                     <input id="ContactoEmergenciaMovil" name="ContactoEmergencia" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/>
+                    <a href="javascript:void(0);" onclick="javascript:reducirInputsDinamico(this)"><i title="Reducir cantidad de contacto" class="fa fa-minus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
                     <a href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
+
                   </div>
                   <p class="title-form-group">Historial deportivo</p>
                   <div class="form-group">
@@ -816,6 +823,9 @@
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
 <script th:inline="javascript">
+
+
+
   const composedMuscles = [
     ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"],
     ["path338","path340"],
@@ -949,6 +959,7 @@
     const input = e.target;
     const clases = input.classList;
 
+
     if(clases.contains('body-muscle')){
       //e.preventDefault();
       e.stopPropagation();
@@ -986,56 +997,90 @@
     /* Elementos a disposición */
     if(clases.contains('checkmark') || clases.contains('chk-content')){
       if(clases.contains('checkmark')){
+
         const prev = input.previousElementSibling;
         if(prev){
-          if(prev.name === "ItemsFitness"){
-            if(prev.value === "9"){
-              if(prev.checked){
-                document.querySelectorAll('input[name="ItemsFitness"]').forEach(e => {
-                  if(e.value !== "9"){
-                    e.checked = false;
-                    e.parentElement.parentElement.parentElement.classList.remove('active');
-                  }
-                });
-              }
-            }else{
-              const inpNa = document.querySelector('input[name="ItemsFitness"][value="9"]');
-              inpNa.checked = false;
-              inpNa.parentElement.parentElement.parentElement.classList.remove('active');
+
+
+          console.log(prev);
+
+           if(prev.name === "ItemsFitness"){
+
+            validarSeleccionNA(prev,"ItemsFitness","9");
+
             }
-          }
-        }
+
+            if(prev.name === "DesPadVarios"){
+
+             validarSeleccionNA(prev,"DesPadVarios","4");
+
+            }
+       }
+
       }
 
       if(clases.contains('chk-content')){
-        const inp = input.querySelector('input[name="ItemsFitness"]');
-        if(inp){
-          if(inp.value === "9"){
-            if(inp.checked){
-              document.querySelectorAll('input[name="ItemsFitness"]').forEach(e => {
-                if(e.value !== "9"){
-                  e.checked = false;
-                  e.parentElement.parentElement.parentElement.classList.remove('active');
-                }
-              });
-            }
-          }else{
-            const inpNa = document.querySelector('input[name="ItemsFitness"][value="9"]');
-            inpNa.checked = false;
-            inpNa.parentElement.parentElement.parentElement.classList.remove('active');
-          }
+
+       const inpObjetos = input.querySelector('input[name="ItemsFitness"]');
+
+       const inpPadeceDe =  input.querySelector('input[name="DesPadVarios"]');
+
+        if(inpObjetos){
+
+
+
+            validarSeleccionNA(inpObjetos,"ItemsFitness","9");
+
+        }
+
+        if(inpPadeceDe){
+
+                    validarSeleccionNA(inpPadeceDe,"DesPadVarios","4");
+
+
         }
       }
     }
     /* END elementos a disposición*/
+
+
+
+
   }
 
   function bodyFocusOutEventListener(e){
     const input = e.target;
     if(input.tagName === "INPUT"){
-      if(input.type==="text" || input.type==="number"){
-        input.value = input.value.trim();
+
+      //Generación de IMC
+
+       var peso = $('#Peso').val();
+       var talla = $('#Talla').val();
+
+      if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
+
+        var tallaKg =  talla / 100;
+        var imc = peso / Math.pow(tallaKg,2);
+            imc = imc.toFixed(1);
+
+
+         $('#Imc').val(imc);
+
+      }else{
+         $('#Imc').val("");
+
       }
+
+     //Fin de generación de IMC
+
+
+
+      if(input.type==="text"){
+         input.value = input.value.trim().replace(/ +/g, " ");
+      }else if(input.type==="email"  || input.type==="number"){
+         input.value = input.value.trim().replace(/ +/g, "");
+      }
+
     }
     if(input.tagName === "TEXTAREA"){
       input.value = input.value.trim();
@@ -1248,284 +1293,298 @@
     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input class="form-control inp-cont-emer" type="text"/>'));
   }
 
-  function constraintsValidation() {
-    $(mainFrm).validate({
-      errorClass: errorClass,
-      errorElement: errorElement,
-      highlight: function (element) {
-        if(element.type === 'radio' || element.type==='checkbox'){
-          let msgError = "";
-          setTimeout(() => {
-            const eleMsgError = document.querySelector(`#${element.name}-error`);
-            if(eleMsgError != undefined){
-              msgError = eleMsgError.textContent;
-              eleMsgError.remove();
-            }
-          }, 100);
-          const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-          setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
-        }else{
-          $(element).removeClass('state-success').addClass("state-error");
-          $(element).removeClass('valid');
-        }
-      },
-      unhighlight: function (element) {
-        if(element.type === 'radio' || element.type==='checkbox'){
-          const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-          parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-        } else {
-          $(element).removeClass("state-error").addClass('state-success');
-          $(element).addClass('valid');
-        }
-      },
-      ignore: ".ignore",
-      rules: {
-        Nombres: {
-          required: true,
-          maxlength: function(e){return Number(e.getAttribute('maxlength'))}
+    function constraintsValidation() {
+      $(mainFrm).validate({
+        errorClass: errorClass,
+        errorElement: errorElement,
+        highlight: function (element) {
+          if(element.type === 'radio' || element.type==='checkbox'){
+            let msgError = "";
+            setTimeout(() => {
+              const eleMsgError = document.querySelector(`#${element.name}-error`);
+              if(eleMsgError != undefined){
+                msgError = eleMsgError.textContent;
+                eleMsgError.remove();
+              }
+            }, 100);
+            const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+            setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
+          }else{
+            $(element).removeClass('state-success').addClass("state-error");
+            $(element).removeClass('valid');
+          }
         },
-        Apellidos: {
-          required: true,
-          maxlength: function(e){return Number(e.getAttribute('maxlength'))}
+        unhighlight: function (element) {
+          if(element.type === 'radio' || element.type==='checkbox'){
+            const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+            parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
+          } else {
+            $(element).removeClass("state-error").addClass('state-success');
+            $(element).addClass('valid');
+          }
         },
-        FechaNacimiento: {
-          lessThanDate: nowDate,
-        },
-        TipoDocumentoId:{
-          required: true
-        },
-        NumeroDocumento: {
-          required: true,
-        },
-        Correo: {
-          required: true,
-        },
-        Movil: {
-          required: true,
-        },
-        PaisId:{
-          required: true,
-        },
-        Dep:{
-          required: true
-        },
-        Pro:{
-          required: true
-        },
-        Dis:{
-          required: true
-        },
-        EstadoCivil:{
-          required: true
-        },
-        Sexo: {
-          required: true,
-          number: true,
-          min: 1
-        },
-        Peso:{
-          required: true
-        },
-        Talla:{
-          required: true
-        },
-        Imc:{
-          required: true
-        },
-        FlagPadeceDolor:{
-          required: true
-        },
-        DescripcionDolor: {
+        ignore: ".ignore",
+        rules: {
+          Nombres: {
+            required: true,
+            maxlength: function(e){return Number(e.getAttribute('maxlength'))},
+            lettersonly: true
+          },
+          Apellidos: {
+            required: true,
+            maxlength: function(e){return Number(e.getAttribute('maxlength'))}
+          },
+          FechaNacimiento: {
+            lessThanDate: nowDate
+          },
+          TipoDocumentoId:{
+            required: true
+          },
+          NumeroDocumento: {
+            required: true,
+            customnumdoc: function(){
+                          const val = $('#TipoDocumentoId').val();
+                          return val;
+                      }
 
-        },
-        MomDolor: {
+          },
+          Correo: {
+            required: true,
+            emailValid: true
+          },
+          Movil: {
+            required: true,
+            maxlength: $("#Movil").prop("maxlength"),
+            phoneValid: true
+          },
+          PaisId:{
+            required: true,
+          },
+          Dep:{
+            required: true
+          },
+          Pro:{
+            required: true
+          },
+          Dis:{
+            required: true
+          },
+          EstadoCivil:{
+            required: true
+          },
+          Sexo: {
+            required: true,
+            number: true,
+            min: 1
+          },
+          Peso:{
+            required: true,
+            number : true
+          },
+          Talla:{
+            required: true,
+            digits : true
+          },
+          Imc:{
+            required: true
+          },
+          FlagPadeceDolor:{
+            required: true
+          },
+          DescripcionDolor: {
+            maxlength: $("#Movil").prop("DescripcionDolor"),
 
-        },
-        MomDolorIni: {
+          },
+          MomDolor: {
 
-        },
-        DesLesion: {
+          },
+          MomDolorIni: {
 
-        },
-        RecomMedica:{
+          },
+          DesLesion: {
+           maxlength: $("#Movil").prop("DesLesion"),
 
+
+          },
+          RecomMedica:{
+           maxlength: $("#Movil").prop("RecomMedica"),
+          },
+          FlagEmbarazo: {
+            required: true
+          },
+          FlagHiperTensionArt: {
+            required: true
+          },
+          FlagFumador: {
+            required: true
+          },
+          DesFumador: {
+            required: ()=>{return cxRq('#FlagFumador')}
+          },
+          FlagAntFamInfOrHiper:{
+            required: true
+          },
+          FamInfOrHiper: {
+            required: ()=>{return cxRq('#FlagAntFamInfOrHiper')}
+          },
+          FlagResInsulina: {
+            required: true
+          },
+          FlagAntFamDiabetes:{
+            required: true
+          },
+          FamDiabetico: {
+            required: ()=>{return cxRq('#FlagAntFamDiabetes')}
+          },
+          FlagSobrepeso:{
+            required: true
+          },
+          CatSobrepeso: {
+            required: ()=>{return cxRq('#FlagSobrepeso')}
+          },
+          CatAlimentacion: {
+            required: true
+          },
+          NivelEstres:{
+            required: true
+          },
+          FlagEnfermedad:{
+            required: true
+          },
+          DesEnfermedad: {
+            required: ()=>{return cxRq('#FlagEnfermedad')}
+          },
+          FlagAleMed:{
+            required: true
+          },
+          DesAleMed: {
+            required: ()=>{return cxRq('#FlagAleMed')}
+          },
+          FlagOperacion:{
+            required: true
+          },
+          DesOperacion: {
+            required: ()=>{return cxRq('#FlagOperacion')}
+          },
+          FlagHerDisOrCondCol:{
+            required: true
+          },
+          DesHerDisOrCondCol: {
+            required: ()=>{return cxRq('#FlagHerDisOrCondCol')}
+          },
+          DesPadVarios: {
+            required: true
+          },
+          ContactoEmergencia: {
+            required: true
+          },
+          HistorialDeportivoAnt: {
+            required: true
+          },
+          HistorialDeportivoAct: {
+            required: true
+          },
+          FrecuenciaCardiaca: {
+            required: true
+          },
+          FrecuenciaCardiacaMaxima: {
+            required: true
+          },
+          FormaInicial: {
+            required: true,
+            number: true,
+            min: 0
+          },
+          CondicionMejora: {
+            required: true
+          },
+          TiempoUnKilometro: {
+            required: true
+          },
+          KilometrajePromedioSemana: {
+            required: true
+          },
+          DiasSemanaCorriendo: {
+            required: true
+          },
+          FlagCalentamiento: {
+            required: true
+          },
+          FlagEstiramiento: {
+            required: true
+          },
+          DesgasteZapatilla: {
+            required: true
+          },
+          DesTerPredom: {
+            required: true
+          },
+          DesObjetivos: {
+            required: true
+          },
+          DesComp: {
+            required: true
+          },
+          ItemsFitness: {
+            required: true
+          },
+          ViaConexion: {
+            required: true
+          },
+          Username: {
+            required: true,
+            pattern: "[a-z]{3,}[0-9]*$",
+            rangelength: [7, 30],
+            alphanumeric: true
+          },
+          Password: {
+            required: true,
+            rangelength: [8, 30],
+            pwcheck: true
+          }
         },
-        FlagEmbarazo: {
-          required: true
-        },
-        FlagHiperTensionArt: {
-          required: true
-        },
-        FlagFumador: {
-          required: true
-        },
-        DesFumador: {
-          required: ()=>{return cxRq('#FlagFumador')}
-        },
-        FlagAntFamInfOrHiper:{
-          required: true
-        },
-        FamInfOrHiper: {
-          required: ()=>{return cxRq('#FlagAntFamInfOrHiper')}
-        },
-        FlagResInsulina: {
-          required: true
-        },
-        FlagAntFamDiabetes:{
-          required: true
-        },
-        FamDiabetico: {
-          required: ()=>{return cxRq('#FlagAntFamDiabetes')}
-        },
-        FlagSobrepeso:{
-          required: true
-        },
-        CatSobrepeso: {
-          required: ()=>{return cxRq('#FlagSobrepeso')}
-        },
-        CatAlimentacion: {
-          required: true
-        },
-        NivelEstres:{
-          required: true
-        },
-        FlagEnfermedad:{
-          required: true
-        },
-        DesEnfermedad: {
-          required: ()=>{return cxRq('#FlagEnfermedad')}
-        },
-        FlagAleMed:{
-          required: true
-        },
-        DesAleMed: {
-          required: ()=>{return cxRq('#FlagAleMed')}
-        },
-        FlagOperacion:{
-          required: true
-        },
-        DesOperacion: {
-          required: ()=>{return cxRq('#FlagOperacion')}
-        },
-        FlagHerDisOrCondCol:{
-          required: true
-        },
-        DesHerDisOrCondCol: {
-          required: ()=>{return cxRq('#FlagHerDisOrCondCol')}
-        },
-        DesPadVarios: {
-          required: true
-        },
-        ContactoEmergencia: {
-          required: true
-        },
-        HistorialDeportivoAnt: {
-          required: true
-        },
-        HistorialDeportivoAct: {
-          required: true
-        },
-        FrecuenciaCardiaca: {
-          required: true
-        },
-        FrecuenciaCardiacaMaxima: {
-          required: true
-        },
-        FormaInicial: {
-          required: true,
-          number: true,
-          min: 0
-        },
-        CondicionMejora: {
-          required: true
-        },
-        TiempoUnKilometro: {
-          required: true
-        },
-        KilometrajePromedioSemana: {
-          required: true
-        },
-        DiasSemanaCorriendo: {
-          required: true
-        },
-        FlagCalentamiento: {
-          required: true
-        },
-        FlagEstiramiento: {
-          required: true
-        },
-        DesgasteZapatilla: {
-          required: true
-        },
-        DesTerPredom: {
-          required: true
-        },
-        DesObjetivos: {
-          required: true
-        },
-        DesComp: {
-          required: true
-        },
-        ItemsFitness: {
-          required: true
-        },
-        ViaConexion: {
-          required: true
-        },
-        Username: {
-          required: true,
-          pattern: "[a-z]{3,}[0-9]*$",
-          rangelength: [7, 30],
-          alphanumeric: true
-        },
-        Password: {
-          required: true,
-          rangelength: [8, 30],
-          pwcheck: true
+        messages: {
+          Nombres: {
+            required: "El campo es obligatorio"
+          },
+          Apellidos: {
+            required: "El campo es obligatorio"
+          },
+          FechaNacimiento: {
+            required: "El campo es obligatorio"}
+          ,
+          Sexo: {
+            required: "El campo es obligatorio",
+            min: "El tamaño minimo debe ser 4"
+          }
+          ,
+          MomDolorIni: {
+            required: "El campo es obligatorio"
+          },
+          FlagHiperTensionArt: {
+            required: "El campo es obligatorio"
+          },
+          FlagFumador: {
+            required: "El campo es obligatorio",
+          },
+          Mejoras: {
+            required: "El campo es obligatorio"
+          },
+          MusculoSensible: {
+            required: "El campo es obligatorio"
+          },
+          ViaConexion: {
+            required: "El campo es obligatorio"
+          },
+          KilometrajePromedioSemana: {
+            required: "El campo es obligatorio"
+          },
+          Username: {
+            pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
+          }
         }
-      },
-      messages: {
-        Nombres: {
-          required: "El campo es obligatorio"
-        },
-        Apellidos: {
-          required: "El campo es obligatorio"
-        },
-        FechaNacimiento: {
-          required: "El campo es obligatorio"}
-        ,
-        Sexo: {
-          required: "El campo es obligatorio",
-          min: "El tamaño minimo debe ser 4"
-        }
-        ,
-        MomDolorIni: {
-          required: "El campo es obligatorio"
-        },
-        FlagHiperTensionArt: {
-          required: "El campo es obligatorio"
-        },
-        FlagFumador: {
-          required: "El campo es obligatorio",
-        },
-        Mejoras: {
-          required: "El campo es obligatorio"
-        },
-        MusculoSensible: {
-          required: "El campo es obligatorio"
-        },
-        ViaConexion: {
-          required: "El campo es obligatorio"
-        },
-        KilometrajePromedioSemana: {
-          required: "El campo es obligatorio"
-        },
-        Username: {
-          pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
-        }
-      }
-    });
-  }
+      });
+    }
 
   function cxRq(id){
     return $(id).is(':checked');
@@ -1571,6 +1630,28 @@
       // do your work
     }, 100);
   }
+
+
+
+ function validarSeleccionNA ( element,inputName,optionValue){
+
+           if(element.value === optionValue){
+              if(element.checked){
+                document.querySelectorAll('input[name="'+inputName+'"]').forEach(e => {
+                  if(e.value !== optionValue){
+                    e.checked = false;
+                    e.parentElement.parentElement.parentElement.classList.remove('active');
+                  }
+                });
+              }
+            }else{
+              const inpNa = document.querySelector('input[name="'+inputName+'"][value="'+optionValue+'"]');
+              inpNa.checked = false;
+              inpNa.parentElement.parentElement.parentElement.classList.remove('active');
+
+            }
+
+ }
 
 </script>
 </body>
