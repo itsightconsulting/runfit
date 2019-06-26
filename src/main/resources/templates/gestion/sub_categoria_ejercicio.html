@@ -453,7 +453,7 @@ you can add as many as you like
                 },
                 CategoriaEjercicioId:{
                     required: true,
-                    number: true,
+                    digits: true,
                 }
             },
             messages: {
@@ -461,8 +461,7 @@ you can add as many as you like
                     required: "El campo es obligatorio",
                     maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
                 },CategoriaEjercicioId:{
-                    required: "El campo es obligatorio",
-                    number: "El valor seleccionado es incorrecto",
+                    required: "El campo es obligatorio"
                 }
             },
             submitHandler: function () {

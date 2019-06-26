@@ -858,6 +858,15 @@ h1 {
     color: #a8fa00;
 }
 
+.clients-form .form-group .add{
+  display: inline-block;
+  position: absolute;
+  top: 15px;
+  right: 0;
+  color: #a8fa00;
+  font-size: 1.5em;
+}
+
 .trainers-form .form-group input.price,
 .trainers-form .form-group select.price {
   width: 118px;
@@ -2280,7 +2289,7 @@ h1 {
   margin-left: 2px
 }
 
-.steps .form-group.more-inputs input {
+.steps .form-group.more-inputs div {
   margin-bottom: 15px
 }
 

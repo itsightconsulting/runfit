@@ -43,12 +43,10 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     @Autowired
     private ConfiguracionClienteService configuracionClienteService;
 
-    private ServletContext context;
-
 /*    @Autowired
     private SecurityUserRepository securityUserRepository;*/
 
-    @Autowired
+    @Autowired(required = false)
     private HttpSession session;
 
     @Override

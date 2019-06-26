@@ -256,12 +256,20 @@ function agregarInputsDinamico(e){
 
 
      */
-      if(e.parentElement.children.length == 7){
+    const childsLen = e.parentElement.children.length;
+
+    if(childsLen === 7){
          e.classList.add('hide');
 
      }
-     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Nombre del contacto" class="form-control inp-cont-emer" type="text"/>'));
-     e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input placeholder="Celular del contacto" class="form-control inp-cont-emer" type="text"/>'));
+     const nomContacto = e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<div><input placeholder="Nombre del contacto" maxlength="60" class="form-control inp-cont-emer" name="${'ContactoEmergenciaNombre'+childsLen}" type="text"/></div>`));
+     const movContacto = e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement(`<div><input placeholder="Celular del contacto" maxlength="11" class="form-control inp-cont-emer" name="${'ContactoEmergenciaMovil'+childsLen+1}" type="text"/></div>`));
+     if(frm){
+         $(nomContacto.firstElementChild).rules('add', {lettersonly: true,
+             rangelength: [3, 60]});
+         $(movContacto.firstElementChild).rules('add', {digits: true,
+             rangelength: [9, 11]});
+     }
  }
 
 
@@ -511,12 +519,9 @@ function generarDOMCarousel(imgTemps, nomImgsGaleria){
 function hideShowGenericInp(ele){
     const val = ele.value;
 
-    console.log(val);
     const eleRefId = ele.getAttribute('data-ele-hd');
-    console.log(eleRefId);
 
     let finalElement = document.querySelector(eleRefId);
-    console.log(finalElement.tagName);
 
     if(finalElement.tagName === "SELECT"){
         finalElement = finalElement.parentElement.parentElement;
@@ -541,5 +546,51 @@ function recordsRunningValidation(input){
         return 58*60;
     }else if(distance === 42){
         return 121*60;
+    }
+}
+
+
+
+function eventListenerSexo(){
+    document.querySelector('#sxMujer').addEventListener('click', (e)=>{
+        $('#liFlagEmbarazo').removeClass('hidden');
+    })
+    document.querySelector('#sxHombre').addEventListener('click', (e)=>{
+        $('#liFlagEmbarazo').addClass('hidden');
+    })
+}
+
+function eventListenerPadeceDolor(){
+    document.querySelector('#FlagPadeceDolorSi').addEventListener('click', (e)=>{
+        setTimeout(()=>{
+            $('#DescripcionDolor').valid();
+        }, 100)
+    })
+    document.querySelector('#FlagPadeceDolorNo').addEventListener('click', (e)=>{
+        setTimeout(()=>{
+            $('#DescripcionDolor').valid();
+        }, 100)
+    })
+}
+
+function cxRq(id){
+    return $(id).is(':checked');
+}
+
+function validarSeleccionNA ( element,inputName,optionValue){
+
+    if(element.value === optionValue){
+        if(element.checked){
+            document.querySelectorAll('input[name="'+inputName+'"]').forEach(e => {
+                if(e.value !== optionValue){
+                    e.checked = false;
+                    e.parentElement.parentElement.parentElement.classList.remove('active');
+                }
+            });
+        }
+    }else{
+        const inpNa = document.querySelector('input[name="'+inputName+'"][value="'+optionValue+'"]');
+        inpNa.checked = false;
+        inpNa.parentElement.parentElement.parentElement.classList.remove('active');
     }
 }

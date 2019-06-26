@@ -1538,11 +1538,11 @@ DiaOpc = (function(){
                 rules: {
                     SubCategoriaId: {
                         required: true,
-                        number: true,
+                        digits: true,
                     },
                     EspecificacionSubCategoriaId: {
                         required: true,
-                        number: true,
+                        digits: true,
                     }
                 },
                 messages: {

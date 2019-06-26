@@ -62,7 +62,7 @@
               </div></a>
             </div>
           </div>
-          <form id="frm_registro" style="margin:0px !important">
+          <form id="frm_registro" style="margin:0px !important" class="clients-form">
             <div class="row ficha-01 fade-ficha inpts-1">
               <div class="col-md-12">
                 <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
@@ -96,7 +96,7 @@
                         <label>¿Nos brindas tu documento de identidad?<span class="obligatorio">*</span></label>
                         <div class="row">
                           <div class="col-md-12">
-                            <div class="col-md-4 pad-0">
+                            <div class="">
                               <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control hidden">
                                 <option value="">Seleccione</option>
                                 <option value="1">DNI</option>
@@ -104,10 +104,9 @@
                                 <option value="3">Otro</option>
                               </select>
                             </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-7 pad-0">
-                              <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
-                            </div>
+                          </div>
+                          <div class="col-md-12" style="margin-top: 10px;">
+                            <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
                           </div>
                         </div>
                       </div>
@@ -115,8 +114,8 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                        <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
-                        <input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/>
+                        <div><input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/></div>
+                        <div><input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/></div>
                       </div>
                     </li>
                   </ol>
@@ -194,9 +193,9 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>Indícanos por favor tu peso(KG) y talla(CM)<span class="obligatorio">*</span></label>
-                        <input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/>
-                          <input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/>
-                        <input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
+                        <div><input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/></div>
+                        <div><input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/></div>
+                        <div><input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/></div>
                       </div>
                     </li>
                   </ol>
@@ -216,12 +215,12 @@
                         <label>¿Padeces actualmente de algún dolor?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
-                            <div class="chk-content">Si
+                            <div class="chk-content" id="FlagPadeceDolorSi">Si
                               <input type="radio" name="FlagPadeceDolor" data-aka="Padece algún dolor" id="FlagPadeceDolor"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
-                            <div class="chk-content">No
+                            <div class="chk-content" id="FlagPadeceDolorNo">No
                               <input type="radio" name="FlagPadeceDolor" checked="checked"/><span class="checkmark"></span>
                             </div>
                           </li>
@@ -236,7 +235,7 @@
                     </li>
                     <li>
                       <div class="form-group block-checks">
-                        <label>El dolor está presente:</label>
+                        <label>Cuando realizas actividad física, el dolor está presente:</label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Siempre (incluso en reposo)
@@ -571,9 +570,9 @@
                       <li>
                         <div class="form-group more-inputs">
                           <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                          <input id="ContactoEmergenciaNombre" name="ContactoEmergencia" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/>
-                          <input id="ContactoEmergenciaMovil" name="ContactoEmergencia" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/>
-                          <a href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
+                          <div><input id="ContactoEmergenciaNombre" name="ContactoEmergenciaNombre" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/></div>
+                          <div><input id="ContactoEmergenciaMovil" name="ContactoEmergenciaMovil" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/></div>
+                          <a class="add" href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
                         </div>
                         <p class="title-form-group">Historial deportivo</p>
                         <div class="form-group">
@@ -1094,11 +1093,11 @@
                                     </td>
                                     <td>
                                       <select class="form-control inp-distancia no-multi">
-                                        <option value="5">5K</option>
+                                        <option value="5" selected="selected">5K</option>
                                         <option value="10">10K</option>
                                         <option value="15">15K</option>
                                         <option value="21">21K</option>
-                                        <option value="42" selected="selected">42K</option>
+                                        <option value="42">42K</option>
                                       </select>
                                     </td>
                                     <td>
@@ -1411,20 +1410,12 @@
 
       function mainEventListeners(){
         eventListenerSexo();
+        eventListenerPadeceDolor();
         stUbicacion.addEventListener('change', evtLsChangeUbicacion);
         btnGuardar.addEventListener('click', sendMainForm);
         document.querySelector('body').addEventListener('click', bodyClickEventListener);
         document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
         document.querySelector('body').addEventListener('change', bodyChangeEventListener);
-      }
-
-      function eventListenerSexo(){
-        document.querySelector('#sxMujer').addEventListener('click', (e)=>{
-          $('#liFlagEmbarazo').removeClass('hidden');
-        })
-        document.querySelector('#sxHombre').addEventListener('click', (e)=>{
-          $('#liFlagEmbarazo').addClass('hidden');
-        })
       }
 
       function tooltipsOn(){
@@ -1606,25 +1597,6 @@
         listRight.innerHTML = arrMn.map(v=> templateMuscleEleList(v)).join('');
       }
 
-      function validarSeleccionNA ( element,inputName,optionValue){
-
-        if(element.value === optionValue){
-          if(element.checked){
-            document.querySelectorAll('input[name="'+inputName+'"]').forEach(e => {
-              if(e.value !== optionValue){
-                e.checked = false;
-                e.parentElement.parentElement.parentElement.classList.remove('active');
-              }
-            });
-          }
-        }else{
-          const inpNa = document.querySelector('input[name="'+inputName+'"][value="'+optionValue+'"]');
-          inpNa.checked = false;
-          inpNa.parentElement.parentElement.parentElement.classList.remove('active');
-
-        }
-      }
-
       function templateMuscleEleList(name){
           return `<li>
                      <div class="chk-content">${name}
@@ -1645,14 +1617,15 @@
           data: JSON.stringify(body),
           blockLoading: true,
           success: function (res) {
+            $('#btnGuardar').attr('disabled', 'disabled');
             if(res == "-1"){
-              $.smallBox({});
+              /*$('input[name="username"]').val(body.username);
+              $('input[name="password"]').val(body.password);
+              document.querySelector('.login_link').click();
               setTimeout(() => {
-                document.querySelector('.login_link').click();
-              }, 2500);
-              //window.location.reload();
+                $('#btn-login').click();
+              }, 1000);*/
             }
-            console.log(res);
           }, error: (xhr) => {
             exception(xhr);
           }, complete: () => {
@@ -1912,7 +1885,7 @@
             },
             NumeroDocumento: {
               required: true,
-              number: true,
+              digits: true,
               rangelength: [8, 13],
               customnumdoc: function(){
                 const val = $('#TipoDocumentoId').val();
@@ -1946,14 +1919,14 @@
             },
             Sexo: {
               required: true,
-              number: true,
+              digits: true,
               min: 1
             },
             Peso:{
               required: true,
               number : true,
-              rangelength: [2, 3],
-              max: 300
+              max: 300,
+              rangelength: [2, 5],
             },
             Talla:{
               required: true,
@@ -1980,10 +1953,10 @@
 
             },
             DesLesion: {
-              rangelength: [2, 500],
+              rangelength: [5, 500],
             },
             RecomMedica:{
-              rangelength: [2, 500],
+              rangelength: [5, 500],
             },
             FlagEmbarazo: {
               required: true
@@ -1995,7 +1968,8 @@
               required: true
             },
             DesFumador: {
-              required: ()=>{return cxRq('#FlagFumador')}
+              required: ()=>{return cxRq('#FlagFumador')},
+              rangelength: [4, 30]
             },
             FlagAntFamInfOrHiper:{
               required: true
@@ -2028,47 +2002,68 @@
               required: true
             },
             DesEnfermedad: {
-              required: ()=>{return cxRq('#FlagEnfermedad')}
+              required: ()=>{return cxRq('#FlagEnfermedad')},
+              rangelength: [1, 60]
             },
             FlagAleMed:{
               required: true
             },
             DesAleMed: {
-              required: ()=>{return cxRq('#FlagAleMed')}
+              required: ()=>{return cxRq('#FlagAleMed')},
+              rangelength: [1,60]
             },
             FlagOperacion:{
               required: true
             },
             DesOperacion: {
-              required: ()=>{return cxRq('#FlagOperacion')}
+              required: ()=>{return cxRq('#FlagOperacion')},
+              rangelength: [1,60]
             },
             FlagHerDisOrCondCol:{
               required: true
             },
             DesHerDisOrCondCol: {
-              required: ()=>{return cxRq('#FlagHerDisOrCondCol')}
+              required: ()=>{return cxRq('#FlagHerDisOrCondCol')},
+              rangelength: [5, 100]
             },
             DesPadVarios: {
               required: true
             },
-            ContactoEmergencia: {
-              required: true
+            ContactoEmergenciaNombre: {
+              required: true,
+              lettersonly: true,
+              rangelength: [3, 60]
+            },
+            ContactoEmergenciaMovil: {
+              required: true,
+              digits: true,
+              rangelength: [9, 11]
             },
             HistorialDeportivoAnt: {
-              required: true
+              required: true,
+              rangelength: [10, 500]
             },
             HistorialDeportivoAct: {
-              required: true
+              required: true,
+              rangelength: [10, 500]
             },
             FrecuenciaCardiaca: {
-              required: true
+              required: true,
+              min: 40,
+              max: 130,
+              rangelength:[2 ,3],
+              digits: true
             },
             FrecuenciaCardiacaMaxima: {
-              required: true
+              required: true,
+              min: 100,
+              max: 220,
+              rangelength:[2  ,3],
+              digits: true
             },
             FormaInicial: {
               required: true,
-              number: true,
+              digits: true,
               min: 0
             },
             CondicionMejora: {
@@ -2099,7 +2094,8 @@
               required: true
             },
             DesObjetivos: {
-              required: true
+              required: true,
+              rangelength:[10, 500]
             },
             DesComp: {
               required: true,
@@ -2151,12 +2147,6 @@
             },
           },
           messages: {
-            Nombres: {
-              required: "El campo es obligatorio"
-            },
-            Apellidos: {
-              required: "El campo es obligatorio"
-            },
             Sexo: {
               required: "El campo es obligatorio",
               min: "El tamaño minimo debe ser 4"
@@ -2197,10 +2187,6 @@
         });
       }
 
-      function cxRq(id){
-        return $(id).is(':checked');
-      }
-
       function populateForm(){
         //Page 1
         const t0 = String(new Date().getTime());
@@ -2223,7 +2209,7 @@
         document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
         document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
         document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
-        document.querySelector('#FrecuenciaCardiaca').value = 177;
+        document.querySelector('#FrecuenciaCardiaca').value = 120;
         document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
         document.querySelector('input[name="CondicionMejora"]').checked = true;
 
@@ -2234,10 +2220,12 @@
         document.querySelector('#KilometrajePromedioSemana').value = 30;
         document.querySelector('#DiasSemanaCorriendo').value = 4;
         document.querySelector('#DesObjetivos').value = "Ser el mejor";
-        document.querySelectorAll('.distance input')[1].value = "00:23:20";
+        document.querySelector('input[name="TiempoComp"]').value = "03:30:00";
+        $('input[name="InpFechaCompetencia"]').val("2020-05-25")
         document.querySelector('#DesComp').value = "Maratón de Boston";
         document.querySelector('#Username').value = "abc"+String(new Date().getTime());
         document.querySelector('#Password').value = "runfit123";
+
 
         var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;

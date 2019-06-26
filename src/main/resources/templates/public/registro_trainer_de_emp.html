@@ -999,17 +999,17 @@
                         rangelength: [7, 40]
                     },
                     Telefono:{
-                        number: true,
+                        digits: true,
                         rangelength: [7, 11]
                     },
                     Movil:{
                         required: true,
-                        number: true,
+                        digits: true,
                         rangelength: [7, 13]
                     },
                     NumeroDocumento: {
                         required: true,
-                        number: true,
+                        digits: true,
                         rangelength: [8, 13],
                         customnumdoc: function(){
                             const val = $('#TipoDocumento').val();

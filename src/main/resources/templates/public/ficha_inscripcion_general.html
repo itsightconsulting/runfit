@@ -36,7 +36,7 @@
           </div></a>
         </div>
       </div>
-      <form id="frm_registro" style="margin:0px !important">
+      <form id="frm_registro" style="margin:0px !important" class="clients-form">
         <div class="row ficha-01 fade-ficha inpts-1">
           <div class="col-md-12">
             <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
@@ -70,7 +70,7 @@
                     <label>¿Nos brindas tu documento de identidad?<span class="obligatorio">*</span></label>
                     <div class="row">
                       <div class="col-md-12">
-                        <div class="col-md-4 pad-0">
+                        <div class="">
                           <select name="TipoDocumentoId" id="TipoDocumentoId" data-aka="Tipo de documento de identidad" class="form-control hidden">
                             <option value="">Seleccione</option>
                             <option value="1">DNI</option>
@@ -78,10 +78,9 @@
                             <option value="3">Otro</option>
                           </select>
                         </div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-7 pad-0">
-                          <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
-                        </div>
+                      </div>
+                      <div class="col-md-12" style="margin-top: 10px;">
+                        <input id="NumeroDocumento" name="NumeroDocumento" data-aka="Numero documento" class="form-control" type="text" placeholder="Número documento"/>
                       </div>
                     </div>
                   </div>
@@ -89,8 +88,8 @@
                 <li>
                   <div class="form-group more-inputs">
                     <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                    <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="email"/>
-                    <input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text" maxlength="13"/>
+                    <div><input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/></div>
+                    <div><input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/></div>
                   </div>
                 </li>
               </ol>
@@ -152,30 +151,26 @@
                 <li>
                   <div class="form-group">
                     <label>¿Cúal es tu sexo?<span class="obligatorio">*</span></label>
-
-
-
-                    <ul class="checks">
-                      <li>
-                        <div class="chk-content">Mujer
-                          <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="chk-content">Hombre
-                          <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
-                        </div>
-                      </li>
-
-                    </ul>
+                      <ul class="checks">
+                        <li>
+                          <div class="chk-content" id="sxMujer">Mujer
+                            <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="chk-content" id="sxHombre">Hombre
+                            <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
+                          </div>
+                        </li>
+                      </ul>
                   </div>
                 </li>
                 <li>
                   <div class="form-group more-inputs">
                     <label>Indícanos por favor tu peso(KG) y talla(CM)<span class="obligatorio">*</span></label>
-                    <input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/>
-                    <input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/>
-                    <input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/>
+                    <div><input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/></div>
+                    <div><input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/></div>
+                    <div><input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/></div>
                   </div>
                 </li>
               </ol>
@@ -195,12 +190,12 @@
                     <label>¿Padeces actualmente de algún dolor?<span class="obligatorio">*</span></label>
                     <ul class="checks">
                       <li>
-                        <div class="chk-content">Si
+                        <div class="chk-content" id="FlagPadeceDolorSi">Si
                           <input type="radio" name="FlagPadeceDolor" data-aka="Padece algún dolor" id="FlagPadeceDolor"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
-                        <div class="chk-content">No
+                        <div class="chk-content" id="FlagPadeceDolorNo">No
                           <input type="radio" name="FlagPadeceDolor" checked="checked"/><span class="checkmark"></span>
                         </div>
                       </li>
@@ -259,13 +254,13 @@
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al hacer actividad física?<span class="obligatorio">*</span></label>
+                    <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al hacer actividad física?</label>
                     <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control" maxlength="250"></textarea>
                   </div>
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>¿Tiene alguna recomendación o limitación médica?<span class="obligatorio">*</span></label>
+                    <label>¿Tiene alguna recomendación o limitación médica?</label>
                     <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control" maxlength="250"></textarea>
                   </div>
                 </li>
@@ -550,11 +545,10 @@
                 <li>
                   <div class="form-group more-inputs">
                     <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                    <input id="ContactoEmergenciaNombre" name="ContactoEmergencia" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/>
-                    <input id="ContactoEmergenciaMovil" name="ContactoEmergencia" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/>
-                    <a href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
+                    <div><input id="ContactoEmergenciaNombre" name="ContactoEmergenciaNombre" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/></div>
+                    <div><input id="ContactoEmergenciaMovil" name="ContactoEmergenciaMovil" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/></div>
+                    <a class="add" href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
                  <!--   <a href="javascript:void(0);" onclick="javascript:reducirInputsDinamico(this)"><i title="Reducir cantidad de contacto" class="fa fa-minus pull-right hide" style="color: #a8fa00; padding-right: 5px;"></i></a> -->
-
                   </div>
                   <p class="title-form-group">Historial deportivo</p>
                   <div class="form-group">
@@ -835,7 +829,7 @@
   const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
 
   const stUbicacion = document.getElementById('stUbicacion');
-  const mainFrm = document.getElementById('frm_registro');
+  const frm = document.getElementById('frm_registro');
   const btnGuardar = document.getElementById('btnGuardar');
   let lstCondMejoras = [];
 
@@ -910,12 +904,15 @@
       document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
       document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
       $('#Dep').val(15);
+      $('#Dis').multiselect('rebuild');
     }).catch((err)=>{
       exception(err);
     });
   }
 
   function mainEventListeners(){
+    eventListenerSexo();
+    eventListenerPadeceDolor();
     stUbicacion.addEventListener('change', evtLsChangeUbicacion);
     btnGuardar.addEventListener('click', sendMainForm);
     document.querySelector('body').addEventListener('click', bodyClickEventListener);
@@ -1128,13 +1125,15 @@
       data: JSON.stringify(body),
       blockLoading: true,
       success: function (res) {
+        $('#btnGuardar').attr('disabled', 'disabled');
         if(res == "-1"){
-          $.smallBox({});
+          /*$('input[name="username"]').val(body.username);
+          $('input[name="password"]').val(body.password);
+          document.querySelector('.login_link').click();
           setTimeout(() => {
-            document.querySelector('.login_link').click();
-          }, 2500);
+            $('#btn-login').click();
+          }, 1000);*/
         }
-        console.log(res);
       }, error: (xhr) => {
          exception(xhr);
       }, complete: () => {
@@ -1282,7 +1281,7 @@
   }
 
     function constraintsValidation() {
-      $(mainFrm).validate({
+      $(frm).validate({
         errorClass: errorClass,
         errorElement: errorElement,
         highlight: function (element) {
@@ -1330,11 +1329,12 @@
           },
           NumeroDocumento: {
             required: true,
+            digits: true,
+            rangelength: [8, 13],
             customnumdoc: function(){
                           const val = $('#TipoDocumentoId').val();
                           return val;
-                      }
-
+            }
           },
           Correo: {
             required: true,
@@ -1361,16 +1361,18 @@
           },
           Sexo: {
             required: true,
-            number: true,
+            digits: true,
             min: 1
           },
           Peso:{
             required: true,
+            number : true,
             max: 300,
-            rangelength:[2,3]
+            rangelength:[2,5]
           },
           Talla:{
             required: true,
+            digits : true,
             rangelength : [2,3],
             max:280
           },
@@ -1381,19 +1383,20 @@
             required: true
           },
           DescripcionDolor: {
-            rangelength: [5,500]
+            required: function(){
+              return document.querySelector('#FlagPadeceDolor').checked;
+            },
+            rangelength: [5, 500]
           },
           MomDolor: {
-            required: true
           },
           MomDolorIni: {
-            required: true
           },
           DesLesion: {
-            rangelength: [2,500]
+            rangelength: [5,500]
           },
           RecomMedica:{
-            rangelength: [2,500]
+            rangelength: [5,500]
           },
           FlagEmbarazo: {
             required: true
@@ -1405,7 +1408,8 @@
             required: true
           },
           DesFumador: {
-            required: ()=>{return cxRq('#FlagFumador')}
+            required: ()=>{return cxRq('#FlagFumador')},
+            rangelength: [4, 30]
           },
           FlagAntFamInfOrHiper:{
             required: true
@@ -1439,14 +1443,14 @@
           },
           DesEnfermedad: {
             required: ()=>{return cxRq('#FlagEnfermedad')},
-            rangelength: [1,300]
+            rangelength: [1, 60]
           },
           FlagAleMed:{
             required: true
           },
           DesAleMed: {
             required: ()=>{return cxRq('#FlagAleMed')},
-            rangelength: [1,300]
+            rangelength: [1,60]
 
           },
           FlagOperacion:{
@@ -1454,7 +1458,7 @@
           },
           DesOperacion: {
             required: ()=>{return cxRq('#FlagOperacion')},
-            rangelength: [1,500]
+            rangelength: [1,60]
 
           },
           FlagHerDisOrCondCol:{
@@ -1462,13 +1466,20 @@
           },
           DesHerDisOrCondCol: {
             required: ()=>{return cxRq('#FlagHerDisOrCondCol')},
-            rangelength: [5,500]
+            rangelength: [5, 100]
           },
           DesPadVarios: {
             required: true
           },
-          ContactoEmergencia: {
-            required: true
+          ContactoEmergenciaNombre: {
+            required: true,
+            lettersonly: true,
+            rangelength: [3, 60]
+          },
+          ContactoEmergenciaMovil: {
+            required: true,
+            digits: true,
+            rangelength: [9, 11]
           },
           HistorialDeportivoAnt: {
             required: true,
@@ -1493,11 +1504,10 @@
             max: 220,
             rangelength:[2  ,3],
             digits: true
-
           },
           FormaInicial: {
             required: true,
-            number: true,
+            digits: true,
             min: 0
           },
           CondicionMejora: {
@@ -1526,10 +1536,7 @@
           },
           DesObjetivos: {
             required: true,
-            rangelength:[3,300]
-          },
-          DesComp: {
-            required: true
+            rangelength:[10, 500]
           },
           ItemsFitness: {
             required: true
@@ -1541,7 +1548,6 @@
             required: true,
             pattern: "[a-z]{3,}[0-9]*$",
             rangelength: [7, 30],
-            alphanumeric: true
           },
           Password: {
             required: true,
@@ -1550,15 +1556,6 @@
           }
         },
         messages: {
-          Nombres: {
-            required: "El campo es obligatorio"
-          },
-          Apellidos: {
-            required: "El campo es obligatorio"
-          },
-          FechaNacimiento: {
-            required: "El campo es obligatorio"}
-          ,
           Sexo: {
             required: "El campo es obligatorio",
             min: "El tamaño minimo debe ser 4"
@@ -1589,23 +1586,14 @@
             pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
           }
         }
-
       });
 
-
-      //Removemos el require de el campo nombre maratón de la tabla de competencias
       //Maxlength
-      const rules = $(mainFrm).validate().settings.rules;
-      console.log(rules);
-        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+      const rules = $(frm).validate().settings.rules;
+      Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
         document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
-        console.log(document.getElementById(e));
       });
     }
-
-  function cxRq(id){
-    return $(id).is(':checked');
-  }
 
   function populateForm(){
     //Page 1
@@ -1613,7 +1601,7 @@
     const t1 = t0.slice(-3);
     const t2 = t0.slice(-6).slice(0, 3);
 
-    document.querySelector('#Nombres').value = "Pedro "+t1;
+    document.querySelector('#Nombres').value = "Pedro ";
     document.querySelector('#Apellidos').value = "Sotelo";
     document.querySelector('#FechaNacimiento').value = "1993-02-28";
     document.querySelector('#TipoDocumentoId').value = 1;
@@ -1629,13 +1617,13 @@
     document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
     document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
     document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
-    document.querySelector('#FrecuenciaCardiaca').value = 177;
+    document.querySelector('#FrecuenciaCardiaca').value = 120;
     document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
     document.querySelector('input[name="CondicionMejora"]').checked = true;
 
     //Page 3
     document.querySelector('#DesObjetivos').value = "Ser el mejor";
-    document.querySelector('#Username').value = String(new Date().getTime());
+    document.querySelector('#Username').value = "abc"+String(new Date().getTime());
     document.querySelector('#Password').value = "runfit123";
 
     var tid = setInterval( function () {
@@ -1647,29 +1635,6 @@
       // do your work
     }, 100);
   }
-
-
-
- function validarSeleccionNA ( element,inputName,optionValue){
-
-           if(element.value === optionValue){
-              if(element.checked){
-                document.querySelectorAll('input[name="'+inputName+'"]').forEach(e => {
-                  if(e.value !== optionValue){
-                    e.checked = false;
-                    e.parentElement.parentElement.parentElement.classList.remove('active');
-                  }
-                });
-              }
-            }else{
-              const inpNa = document.querySelector('input[name="'+inputName+'"][value="'+optionValue+'"]');
-              inpNa.checked = false;
-              inpNa.parentElement.parentElement.parentElement.classList.remove('active');
-
-            }
-
- }
-
 </script>
 </body>
 </html>
