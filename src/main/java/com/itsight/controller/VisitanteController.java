@@ -25,8 +25,7 @@ public class VisitanteController {
 
     @PostMapping(value="/registro")
     public @ResponseBody String registroVisitante(@ModelAttribute @Valid VisitanteDTO visitante){
-
-    return  visitanteService.registrarVisitante(visitante);
+         return  visitanteService.registrarVisitante(visitante);
  }
 
 
