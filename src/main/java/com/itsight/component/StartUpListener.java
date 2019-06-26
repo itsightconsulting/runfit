@@ -591,6 +591,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(rolService.findOne(2) == null) rolService.save(new Rol("Entrenador","ROLE_TRAINER"));
         if(rolService.findOne(3) == null) rolService.save(new Rol("Cliente Runner","ROLE_RUNNER"));
         if(rolService.findOne(4) == null) rolService.save(new Rol("Cliente Tienda","ROLE_STORE"));
+        if(rolService.findOne(5) == null) rolService.save(new Rol("Visitante","ROLE_GUEST"));
+
+
     }
 
     public void addingTipoDocumentoToTable(){

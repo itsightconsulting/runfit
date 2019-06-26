@@ -57,7 +57,7 @@
             if (estado == null) {
                 estado = "-1";
             }
-            //Dem
+            //Demo
             $table.bootstrapTable({
                 url: _ctx + 'gestion/tipo-rutina/obtener/' + txtFiltro + '/' + estado ,
                 pagination: true,
