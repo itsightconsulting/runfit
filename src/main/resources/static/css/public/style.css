@@ -2635,6 +2635,21 @@ img.tibial {
   display: none
 }
 
+.i-checked{
+  position: absolute;
+  font-size: 1.5em;
+  margin-top: 9px;
+  margin-left: -30px;
+}
+
+.i-checked-verified{
+  position: absolute;
+  font-size: 1.5em;
+  margin-top: 9px;
+  margin-left: -30px;
+  color: #a8fa00
+}
+
 @media only screen and (max-width: 360px) {
   .steps .btn-bg-black {
     min-width: 220px

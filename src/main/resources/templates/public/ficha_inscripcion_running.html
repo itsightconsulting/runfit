@@ -114,7 +114,11 @@
                     <li>
                       <div class="form-group more-inputs">
                         <label>¿Podrías facilitarnos tus datos de contacto para comunicarnos mejor?<span class="obligatorio">*</span></label>
-                        <div><input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/></div>
+                        <div>
+                          <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                          <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                          <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                        </div>
                         <div><input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/></div>
                       </div>
                     </li>
@@ -1232,7 +1236,11 @@
                         <div class="login-register">
                           <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
                             <label style="width: 110px !important;" for="Username">Usuario</label>
-                            <input type="text" class="form-control" id="Username" name="Username" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                            <div>
+                              <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                              <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                              <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                            </div>
                           </div>
                           <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
                             <label style="width: 112px !important;" for="Password">Contraseña</label>
@@ -1323,6 +1331,7 @@
       const frm = document.getElementById('frm_registro');
       const btnGuardar = document.getElementById('btnGuardar');
       const body = document.querySelector('body');
+      const verifiedNames = [];
 
       const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
       let nowDatePlusOne = new Date();
@@ -1566,6 +1575,21 @@
            } else if(input.type==="email"  || input.type==="number"){
              input.value = input.value.trim().replace(/ +/g, "");
            }
+
+          if(input.name === "Correo"){
+            if($(input).valid()){
+              if(!verifiedNames.includes(input.value)){
+                validUniqueEmailOrUsername(input, 'correo');
+              }
+            }
+          }
+          if(input.name === "Username"){
+            if($(input).valid()){
+              if(!verifiedNames.includes(input.value)){
+                validUniqueEmailOrUsername(input, 'username');
+              }
+            }
+          }
         }
         if(input.tagName === "TEXTAREA"){
           input.value = input.value.trim();
@@ -1895,7 +1919,7 @@
             Correo: {
               required: true,
               emailValid: true,
-              rangelength: [7, 40]
+              rangelength: [7, 40],
             },
             Movil: {
               required: true,
@@ -2227,12 +2251,12 @@
         document.querySelector('#Password').value = "runfit123";
 
 
-        var tid = setInterval( function () {
+        /*var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;
           else document.getElementById('btnGuardar').click();
           clearInterval( tid );
           // do your work
-        }, 100);
+        }, 100);*/
       }
 
     </script>

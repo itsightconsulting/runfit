@@ -594,3 +594,38 @@ function validarSeleccionNA ( element,inputName,optionValue){
         inpNa.parentElement.parentElement.parentElement.classList.remove('active');
     }
 }
+
+function validUniqueEmailOrUsername(input, pathURLDiff){
+    input.setAttribute('disabled', 'disabled');
+    input.previousElementSibling.previousElementSibling.classList.add('hidden');
+    input.previousElementSibling.classList.remove('hidden');
+    $.ajax({
+        type: 'GET',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: _ctx+'p/validacion-'+pathURLDiff,
+        blockLoading: false,
+        noOne: true,
+        data: {valor: input.value},
+        dataType: 'json',
+        success: function(res){
+            input.previousElementSibling.classList.add('hidden');
+            if(!res){
+                if(verifiesNames){
+                    verifiesNames.push(input.value);
+                }
+                input.previousElementSibling.previousElementSibling.classList.remove('hidden');
+            }else{
+                if(pathURLDiff === 'username'){
+                    $(input).rules('add', {dynUnique: input.value, messages:{dynUnique: 'El nombre de usuario ingresado ya se encuentra registrado'}});
+                }else{
+                    $(input).rules('add', {dynUnique: input.value});
+                }
+                $(input).valid();
+            }
+            input.removeAttribute('disabled');
+        },
+        error: (err)=>{
+            exception(err);
+        }
+    })
+}
