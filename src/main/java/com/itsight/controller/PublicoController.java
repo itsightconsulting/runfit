@@ -11,6 +11,7 @@ import com.itsight.domain.jsonb.Parametro;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.repository.IdiomaRepository;
+import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Enums.Msg;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.itsight.util.Utilitarios.jsonResponse;
 
@@ -41,7 +43,7 @@ public class PublicoController extends BaseController {
 
     private UbPeruService ubPeruService;
 
-    private TrainerFichaService trainerFichaService;
+    private SecurityUserRepository securityUserRepository;
 
     private IdiomaRepository idiomaRepository;
 
@@ -55,14 +57,14 @@ public class PublicoController extends BaseController {
                              DisciplinaService disciplinaService,
                              PostulanteTrainerService postulanteTrainerService,
                              UbPeruService ubPeruService,
-                             TrainerFichaService trainerFichaService,
+                             SecurityUserRepository securityUserRepository,
                              IdiomaRepository idiomaRepository,
                              ClienteService clienteService) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
         this.postulanteTrainerService = postulanteTrainerService;
         this.ubPeruService = ubPeruService;
-        this.trainerFichaService = trainerFichaService;
+        this.securityUserRepository = securityUserRepository;
         this.idiomaRepository = idiomaRepository;
         this.clienteService = clienteService;
     }
@@ -297,5 +299,15 @@ public class PublicoController extends BaseController {
             // TODO: handle exception
         }
         return Enums.ResponseCode.EX_GENERIC.get();
+    }
+
+    @GetMapping(value = "/validacion-correo")
+    public @ResponseBody Boolean validarCorreoUnico(@RequestParam String valor){
+        return securityUserRepository.findCorreoExist(valor);
+    }
+
+    @GetMapping(value = "/validacion-username")
+    public @ResponseBody Boolean validarUsernameUnico(@RequestParam String valor){
+        return Optional.ofNullable(securityUserRepository.findIdByUsername(valor)).isPresent();
     }
 }

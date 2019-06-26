@@ -1159,7 +1159,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             ClienteFitness cliFit = new ClienteFitness();
             cliFit.setNivel((int) Math.ceil((double)i/3.0));
             cliFit.setEstadoCivil(1);
-            cliFit.setImc(15+i);
+            cliFit.setImc(Double.parseDouble(String.valueOf(15+i)));
             cliFit.setPeso(BigDecimal.valueOf(65+i));
             cliFit.setSexo(1);
             cliFit.setDesgasteZapatilla("Inicio");

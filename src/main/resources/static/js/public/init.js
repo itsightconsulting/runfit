@@ -263,7 +263,8 @@ function smallBoxAlertValidation(inputsNotPassed){
     const tout = (2000*(inputsNotPassed.length)) + 4000;
     let arrCamps = inputsNotPassed.map(v=>{
         const previous = v.previousElementSibling;
-        const nomFinal = previous === null ? v.getAttribute('data-aka').toUpperCase() : previous.textContent;
+        const preText = previous ? previous.textContent : "";
+        const nomFinal = !preText ? v.getAttribute('data-aka').toUpperCase() : preText;
         return nomFinal;
     })
     let strCamps = Array.from(new Set(arrCamps)).map(e=>`<i class="fa fa-dot-circle-o fa-fw"></i>${e}<br>`).join('');

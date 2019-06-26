@@ -7,6 +7,7 @@ import com.itsight.json.JsonMoneySimpleSerializer;
 import lombok.Data;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +22,8 @@ public class ClienteFitnessDTO implements Serializable {
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     private BigDecimal peso;
     private Integer talla;
-    private Integer imc;
+    @Digits(integer = 3, fraction = 1)
+    private Double imc;
     private Integer nivel;
 
     @Valid
