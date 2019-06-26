@@ -610,8 +610,8 @@ function validUniqueEmailOrUsername(input, pathURLDiff){
         success: function(res){
             input.previousElementSibling.classList.add('hidden');
             if(!res){
-                if(verifiesNames){
-                    verifiesNames.push(input.value);
+                if(verifiedNames){
+                    verifiedNames.push(input.value);
                 }
                 input.previousElementSibling.previousElementSibling.classList.remove('hidden');
             }else{

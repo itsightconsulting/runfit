@@ -1050,22 +1050,22 @@
                     <li class="col-md-6 pad-0">
                       <div class="form-group">
                         <label class="pad-0">Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?<span class="obligatorio">*</span></label>
-                        <p class="form-group-subtitle">Puedes elegir cualquier opción</p>
+                        <p class="form-group-subtitle">Completar únicamente una distancia</p>
                         <ul class="distance">
                           <li>
-                            <input type="text" id="TwoKm" name="TwoKm" value="00:00:00"/>
+                            <input type="text" id="TwoKm" name="TwoKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
                             <p>2km</p>
                           </li>
                           <li>
-                            <input type="text" id="FourKm" name="FourKm" value="00:00:00"/>
+                            <input type="text" id="FourKm" name="FourKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
                             <p>4km</p>
                           </li>
                           <li>
-                            <input type="text" id="TweOneKm" name="TweOneKm" value="00:00:00"/>
+                            <input type="text" id="TweOneKm" name="TweOneKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
                             <p>21km</p>
                           </li>
                           <li>
-                            <input type="text" id="FouTwoKm" name="FouTwoKm" value="00:00:00"/>
+                            <input type="text" id="FouTwoKm" name="FouTwoKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
                             <p>42km</p>
                           </li>
                         </ul>
@@ -1977,7 +1977,7 @@
 
             },
             DesLesion: {
-              rangelength: [5, 500],
+              rangelength: [2, 500],
             },
             RecomMedica:{
               rangelength: [5, 500],
