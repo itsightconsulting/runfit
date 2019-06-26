@@ -150,6 +150,12 @@ public class SecurityUser{
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private Administrador administrador;
 
+
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
+    private Visitante visitante;
+
+
     public SecurityUser() {
     }
 

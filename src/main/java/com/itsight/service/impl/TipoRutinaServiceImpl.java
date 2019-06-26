@@ -168,8 +168,6 @@ public class TipoRutinaServiceImpl extends BaseServiceImpl<TipoRutinaRepository>
     public void actualizarFlagActivadoRutina(Integer id) {
 
         try{
-
-
             TipoRutina qRTipoRutina = repository.findById(id).orElse(null);
 
 

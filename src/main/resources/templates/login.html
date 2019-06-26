@@ -71,31 +71,36 @@
                 </div>
             </form>
         </div>
+
+        <form id="register-form" method="post">
+
         <div class="login-register hidden">
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Nombres</label>
-                <input type="text">
+                <input id="nombres" name="nombres" type="text">
             </div>
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Apellidos</label>
-                <input type="text">
+                <input id="apellidos" name="apellidos" type="text">
             </div>
             <div class="form-group mail"><span class="fa fa-envelope-o"></span>
                 <label>Correo electrónico</label>
-                <input type="text">
+                <input id="email" name="email" type="text">
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Contraseña</label>
-                <input type="text">
+                <input id="passwordRegister" name="passwordRegister" type="password">
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Confirmar Contraseña</label>
-                <input type="text">
+                <input id="passwordConfirmation" name="passwordConfirmation"  type="password">
             </div>
             <div class="actions">
-                <button class="btn-login" type="button">REGISTRAR</button>
+                <button class="btn-login" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
                 <p>¿Ya es miembro RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
             </div>
+
+         </form>
         </div>
     </div>
 <!--================================================== -->
@@ -127,6 +132,7 @@
 
 <!-- JQUERY VALIDATE -->
 <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
 <script th:src="@{/js/public/login.js}+'?'+${version}"></script>
 
 <script>

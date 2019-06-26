@@ -2,13 +2,21 @@ const body = document.querySelector('body');
 const formRecuperacion = document.getElementById('recover-pass-form');
 const btnRecuperar = document.getElementById('btnRecuperar');
 const btnCambiar = document.getElementById('btnCambiar');
+const btnRegistrar = document.getElementById('btn-register');
 
 (function () {
     init();
+
+
+
 })();
 
 function init(){
     eventos();
+    validacionFormularioVisitante();
+
+
+
 }
 
 function eventos(){
@@ -17,6 +25,10 @@ function eventos(){
     }
     if(btnCambiar){//Finalizar recuperación password con el cambio
         btnCambiar.addEventListener('click', preSendFormCambiar);
+    }
+
+    if(btnRegistrar){//Finalizar recuperación password con el cambio
+        btnRegistrar.addEventListener('click', registro);
     }
 
     body.addEventListener('focusout', bodyClickEventListener);
@@ -161,4 +173,109 @@ function customErrorHandler(xhr, input){
         em.classList.add('help-block');
         input.insertAdjacentElement('afterend', em);
     }
+}
+
+function registro() {
+    if ($("#register-form").valid()) {
+        const params = getFormData($('#register-form'));
+
+        params.password = $('#passwordRegister').val();
+
+       delete params.passwordRegister;
+
+
+       console.log(params);
+
+       $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx+'p/visitante/registro',
+                dataType: "json",
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-9") {
+
+                         console.log(":c");
+                        }
+
+                    }
+                },
+                error: function (xhr) {
+                   //exception(xhr);
+
+                   console.log(xhr);
+                },
+                complete: function () {
+                   console.log("YEAAAAH YEAHHH");
+                }
+            });
+
+
+
+        }
+}
+
+function validacionFormularioVisitante(){
+
+    $("#register-form").validate({
+        // Rules for form validation}
+        ignore: ".ignore",
+        highlight: function (element) {
+            $(element).parent().removeClass('state-success').addClass("state-error");
+            $(element).removeClass('valid');
+        },
+        unhighlight: function (element) {
+            $(element).parent().removeClass("state-error").addClass('state-success');
+            $(element).addClass('valid');
+        },
+        rules: {
+            nombres: {
+                required: true,
+                rangelength: [1, 30],
+                lettersonly:true
+            },
+            apellidos: {
+                required: true,
+                rangelength: [3, 30],
+                lettersonly: true
+            },
+            email: {
+                required: true,
+                rangelength: [7, 30],
+                emailValid:true
+            },
+            passwordRegister: {
+                required: true,
+                rangelength: [8, 30]
+            },
+            passwordConfirmation: {
+                required: true,
+                equalTo: "#passwordRegister"
+            },
+        },
+        // Messages for form validation
+        messages: {
+            passwordConfirmation : {
+                equalTo: 'Repite la misma contraseña'
+            }
+        },
+        // Do not change code below
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+}
+
+
+
+function getFormData($form) {
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function (n, i) {
+        indexed_array[n['name'][0].toLowerCase() + n['name'].slice(1)] = n['value'];
+    });
+
+    return indexed_array;
 }
