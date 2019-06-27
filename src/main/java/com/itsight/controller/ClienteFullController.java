@@ -1,12 +1,18 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
+import com.itsight.domain.dto.SemanaDTO;
+import com.itsight.domain.pojo.RuCliPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +42,7 @@ public class ClienteFullController {
     private PostService postService;
     private ClienteService clienteService;
     private ConfiguracionClienteService configuracionClienteService;
+    private RutinaProcedureInvoker rutinaProcedureInvoker;
 
     @Value("${main.repository}")
     private String mainRoute;
@@ -44,7 +51,8 @@ public class ClienteFullController {
     public ClienteFullController(SemanaService semanaService, RutinaService rutinaService, RedFitnessService redFitnessService,
                                  MiniPlantillaService miniPlantillaService, DiaRutinarioService diaRutinarioService,
                                  EspecificacionSubCategoriaService especificacionSubCategoriaService, PostService postService, ClienteService clienteService,
-                                 ConfiguracionClienteService configuracionClienteService){
+                                 ConfiguracionClienteService configuracionClienteService,
+                                 RutinaProcedureInvoker rutinaProcedureInvoker){
         this.semanaService = semanaService;
         this.rutinaService = rutinaService;
         this.redFitnessService = redFitnessService;
@@ -54,6 +62,7 @@ public class ClienteFullController {
         this.postService = postService;
         this.clienteService = clienteService;
         this.configuracionClienteService = configuracionClienteService;
+        this.rutinaProcedureInvoker = rutinaProcedureInvoker;
     }
 
     @GetMapping(value = "/t")
@@ -66,7 +75,6 @@ public class ClienteFullController {
         return new ModelAndView(ViewConstant.CLIENTE_PRINCIPAL);
     }
 
-
     @GetMapping(value = "/get/obtenerSemanasPorRutina")
     public @ResponseBody List<Semana> obtenerTodasSemanasDeUltimaRutina(HttpSession session) {
         int userId = (int) session.getAttribute("id");
@@ -75,19 +83,30 @@ public class ClienteFullController {
     }
 
     @GetMapping(value = "/get/ultima-rutina")
-    public @ResponseBody Rutina obtenerInfoUltimaRutinaGeneradaORutinaFavorita(HttpSession session) {
-        int userId = (int) session.getAttribute("id");
-        Integer fvrtId = (Integer) session.getAttribute("fvrtId");
-        Integer rutinaId;
-        if(fvrtId != null){
-            rutinaId = fvrtId;
-        }else{
-            rutinaId = rutinaService.getMaxRutinaIdByClienteId(userId);
+    public @ResponseBody ResponseEntity<RuCliPOJO> obtenerInfoUltimaRutinaGeneradaORutinaFavorita (
+                @CookieValue(name = "GLL_FAV_RUTINA", defaultValue = "") String
+                hshFavRutinaId, HttpSession session){
+        if (hshFavRutinaId.equals("")) {
+            Integer rutinaId = Parseador.getDecodeHash32Id("rf-gallcoks", hshFavRutinaId);
+            session.setAttribute("rId", rutinaId);
+            return new ResponseEntity<>(rutinaProcedureInvoker.findById(rutinaId), HttpStatus.OK);
         }
-        if(rutinaId != null){
-            return rutinaService.findOne(rutinaId);
+
+        Integer id = (Integer) session.getAttribute("id");
+        RuCliPOJO rutina = rutinaProcedureInvoker.getLastByClienteId(id, 1);
+        if (rutina != null) {
+            session.setAttribute("rId", rutina.getId());
+            return new ResponseEntity<>(rutina, HttpStatus.OK);
         }
-        return new Rutina();
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/get/semana/ix")
+    public @ResponseBody Semana obtenerSemanaEspecifica(
+            @RequestParam String semanaIx,
+            HttpSession session) throws CustomValidationException {
+        Integer rutinaId = (Integer) session.getAttribute("rId");
+        return semanaService.findOneWithDaysEspById(rutinaId, Integer.parseInt(semanaIx));
     }
 
     @GetMapping(value = "/get/rutinas")

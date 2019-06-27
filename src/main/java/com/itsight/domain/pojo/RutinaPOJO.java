@@ -18,7 +18,7 @@ public class RutinaPOJO implements Serializable {
     private int meses;
     private int totalSemanas;
     private int dias;
-    private TipoRutina tipoRutina;
+    private Integer tipoRutina;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaCliAcceso;
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
@@ -34,7 +34,7 @@ public class RutinaPOJO implements Serializable {
         this.meses = rutina.getMeses();
         this.totalSemanas = rutina.getTotalSemanas();
         this.dias = rutina.getDias();
-        this.tipoRutina = rutina.getTipoRutina();
+        this.tipoRutina = rutina.getTipoRutina().getId();
         this.fechaCliAcceso = rutina.getFechaCliAcceso();
         this.fechaInicio = rutina.getFechaInicio();
         this.fechaFin = rutina.getFechaFin();

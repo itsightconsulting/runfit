@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -63,4 +64,7 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
     @Query(value = "select concat_ws(',',rutina_id, tipo_rutina) from rutina where cliente_id=?1 and fecha_fin > now() order by 1", nativeQuery = true)
     List<String> findRutinaIdsByClienteId(int id);
+
+    @Query(value = "select semana_ids[?2] from rutina where rutina_id=?1", nativeQuery = true)
+    Integer findSemanaIdByIndex(Integer rutinaId, int semanaIx);
 }

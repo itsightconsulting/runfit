@@ -49,6 +49,8 @@ public class PublicoController extends BaseController {
 
     private ClienteService clienteService;
 
+    private TrainerFichaService trainerFichaService;
+
     @Autowired
     private BandejaTemporalRepository bandejaTemporalRepository;
 
@@ -59,7 +61,8 @@ public class PublicoController extends BaseController {
                              UbPeruService ubPeruService,
                              SecurityUserRepository securityUserRepository,
                              IdiomaRepository idiomaRepository,
-                             ClienteService clienteService) {
+                             ClienteService clienteService,
+                             TrainerFichaService trainerFichaService) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
         this.postulanteTrainerService = postulanteTrainerService;
@@ -67,6 +70,7 @@ public class PublicoController extends BaseController {
         this.securityUserRepository = securityUserRepository;
         this.idiomaRepository = idiomaRepository;
         this.clienteService = clienteService;
+        this.trainerFichaService = trainerFichaService;
     }
 
     @GetMapping("/inicio")
@@ -309,5 +313,10 @@ public class PublicoController extends BaseController {
     @GetMapping(value = "/validacion-username")
     public @ResponseBody Boolean validarUsernameUnico(@RequestParam String valor){
         return Optional.ofNullable(securityUserRepository.findIdByUsername(valor)).isPresent();
+    }
+
+    @GetMapping(value = "/validacion-nompag")
+    public @ResponseBody Boolean validarNomPag(@RequestParam String valor){
+        return trainerFichaService.checkNomPagExiste(valor);
     }
 }

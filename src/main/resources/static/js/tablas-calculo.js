@@ -226,20 +226,24 @@ RitmosSVYC = (function(){
 Calc = (function(){
     return {
         setRestantes: ()=>{
-            const tiempoDesentrControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
-            const disCompetencia = Number(document.querySelector('#DistanciaCompetencia').value);
-            const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return disCompetencia == v.dist})[0].medida;
-            const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
-            const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
-            const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
-            const factorDisCompetencia = BaseCalculo.factorVelocidadByKms.filter(v=>{return disCompetencia == v.dist})[0].factor;
-            const cadencia = Number(document.querySelector('#CadenciaControl').value);
-            $('#RitmoCompetenciaActual').val(String(tiempoDesentrControl * Math.pow((medidaDisCompetencia/medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia).toHHMMSSM());
-            $('#RitmoXKilometro').val(String(document.querySelector('#TiempoCompetencia').value.toSeconds()/medidaDisCompetencia).toHHMMSSM());
-            $('#LongitudPasoCA').val(((3600*24*1000)/(String($('#RitmoCompetenciaActual').val()).toSeconds()*24*60*cadencia)).toFixed(2));
-            $('#PasoSubida').val(String(Number($('#RitmoXKilometro').val().toSeconds())+15).toHHMMSSM());
-            $('#PasoPlano').val(String(Number($('#RitmoXKilometro').val().toSeconds())).toHHMMSSM());
-            $('#PasoBajada').val(String(Number($('#RitmoXKilometro').val().toSeconds())-15).toHHMMSSM());
+            try {
+                const tiempoDesentrControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
+                const disCompetencia = Number(document.querySelector('#DistanciaCompetencia').value);
+                const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return disCompetencia == v.dist})[0].medida;
+                const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
+                const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;
+                const factorRitmoCompetencia = BaseCalculo.factorRitmosCompetenciaByNivel[Number(document.querySelector('#NivelAtleta input:checked').value)-1].factor;
+                const factorDisCompetencia = BaseCalculo.factorVelocidadByKms.filter(v=>{return disCompetencia == v.dist})[0].factor;
+                const cadencia = Number(document.querySelector('#CadenciaControl').value);
+                $('#RitmoCompetenciaActual').val(String(tiempoDesentrControl * Math.pow((medidaDisCompetencia/medidaDisControl) * (factorRitmoCompetencia), factorDisCompetencia) / medidaDisCompetencia).toHHMMSSM());
+                $('#RitmoXKilometro').val(String(document.querySelector('#TiempoCompetencia').value.toSeconds()/medidaDisCompetencia).toHHMMSSM());
+                $('#LongitudPasoCA').val(((3600*24*1000)/(String($('#RitmoCompetenciaActual').val()).toSeconds()*24*60*cadencia)).toFixed(2));
+                $('#PasoSubida').val(String(Number($('#RitmoXKilometro').val().toSeconds())+15).toHHMMSSM());
+                $('#PasoPlano').val(String(Number($('#RitmoXKilometro').val().toSeconds())).toHHMMSSM());
+                $('#PasoBajada').val(String(Number($('#RitmoXKilometro').val().toSeconds())-15).toHHMMSSM());
+            }catch (e) {
+                console.log(e);
+            }
         },
         getDistribucionTiempoPlanificado: (base)=>{
             const meta = document.querySelector('#RitmoXKilometro').value.toSeconds();

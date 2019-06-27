@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.BatchUpdateException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @ControllerAdvice

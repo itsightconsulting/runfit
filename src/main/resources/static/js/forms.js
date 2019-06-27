@@ -595,7 +595,7 @@ function validarSeleccionNA ( element,inputName,optionValue){
     }
 }
 
-function validUniqueEmailOrUsername(input, pathURLDiff){
+function validUniqueEmailOrUsernameOrNomPag(input, pathURLDiff){
     input.setAttribute('disabled', 'disabled');
     input.previousElementSibling.previousElementSibling.classList.add('hidden');
     input.previousElementSibling.classList.remove('hidden');
@@ -617,7 +617,11 @@ function validUniqueEmailOrUsername(input, pathURLDiff){
             }else{
                 if(pathURLDiff === 'username'){
                     $(input).rules('add', {dynUnique: input.value, messages:{dynUnique: 'El nombre de usuario ingresado ya se encuentra registrado'}});
-                }else{
+                }
+                else if(pathURLDiff === 'nompag'){
+                    $(input).rules('add', {dynUnique: input.value, messages:{dynUnique: 'El nombre de página ingresado ya se encuentra registrado'}});
+                }
+                else{
                     $(input).rules('add', {dynUnique: input.value});
                 }
                 $(input).valid();

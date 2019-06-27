@@ -287,7 +287,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
-                                    <input class="form-control" type="text" id="Username" name="Username">
+                                    <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                    <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                    <input class="form-control" type="text" id="Username" data-aka="NOMBRE DE USUARIO" name="Username">
                                 </div>
                                 <div class="form-group">
                                     <label for="Password">CONTRASEÑA<span class="obligatorio">*</span></label>
@@ -297,7 +299,9 @@
                                     <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                     </label>
-                                    <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="Nombre de página">
+                                    <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                    <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                    <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="NOMBRE DE PÁGINA">
                                 </div>
                                 <div class="" style="padding-bottom: 10px; font-weight: 100;">
                                     <label id="NomPagFull"></label>
@@ -557,6 +561,7 @@
 <script>
 
     function sendForm(){
+        $regTipo = TipoTrainer.PARTICULAR;
         if(servicios.length === 0){
             $.smallBox({content: "Debe agregar por lo menos un servicio", color: "alert"});
             return;

@@ -76,7 +76,7 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
     String getCcsAndMediosPagoById(Integer trainerId);
 
     @Procedure(name = "fn_validacion_nom_pag")
-    Boolean findNomPagExist(@Param("_nom_pag") String correo);
+    Boolean findNomPagExist(@Param("_nom_pag") String nomPag);
 
     @Query(value = "SELECT tf.flag_permiso_upd FROM trainer_ficha tf WHERE tf.nom_pag = ?1", nativeQuery = true)
     Boolean getFlagPermisoUpdByNomPag(String nomPag);

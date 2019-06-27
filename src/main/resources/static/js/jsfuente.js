@@ -500,7 +500,7 @@ function parseFromStringToDate(dateString) {
 
 function parseFromStringToDate2(dateString) {
     var dt = dateString.split("/");
-    return new Date(dt[2], Number(dt[1]) - 1, dt[0]);
+    return new Date(dt[2].substr(0, 4), Number(dt[1]) - 1, dt[0]);
 }
 
 function spinnerHTMLRaw() {

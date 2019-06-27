@@ -1,13 +1,14 @@
 (function(){
-
     init();
-
 })();
 
 function init(){
     instanciandoIndicadoresCirculo();
-    getSemanasDeLaUltimaRutinaGenerada();
-    getDatosDeLaUltimaRutina();
+
+    getDatosDeLaUltimaRutina().then((res)=>{
+        const ix = getSemanaIndice(res.fechaInicio, res.fechaFin);
+        getSemanasDeLaUltimaRutinaGenerada(ix);
+    });
     eventTab();
     pulsosRitmos();
 }
@@ -41,11 +42,13 @@ function eventTab() {
     });
 }
 
-function getSemanasDeLaUltimaRutinaGenerada(){
+function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
     $.ajax({
         type: 'GET',
-        url: _ctx + 'cliente/get/obtenerSemanasPorRutina',
+        url: _ctx + 'cliente/get/semana/ix?semanaIx='+semanaIx,
         dataType: "json",
+        blockLoading: false,
+        noOne: true,
         success: function (data, textStatus) {
             if (textStatus == "success") {
                 if (data == "-9") {
@@ -55,15 +58,13 @@ function getSemanasDeLaUltimaRutinaGenerada(){
                         color: "alert",
                     });
                 } else {
-                    console.log(data);
-                    //$('.datepicker_inline').data("DateTimePicker").date(data[0].fechaInicio);
-
+                    $('.datepicker_inline').data("DateTimePicker").date(data.fechaInicio);
                     vistaDia(data);
                     vistaMes(data);
                 }
                 setTimeout(  () => {
                     imgToSvg();
-                }, 500);
+                }, 400);
             }
 
         },
@@ -74,8 +75,8 @@ function getSemanasDeLaUltimaRutinaGenerada(){
 
         }
     });
-
 }
+
 function elementosDia(val) {
     var elementoDia = val.elementos;
     var texto = "";
@@ -108,7 +109,7 @@ function elementosDia(val) {
 }
 
 function vistaDia(data) {
-    var date = data;
+    var date = [data];
     $.each(date, function (i, dato) {
         var fecha = dato.fechaInicio.split('/');
         var firstFecha = parseInt(date[0].fechaInicio.split('/')[1]);
@@ -152,7 +153,7 @@ function vistaDia(data) {
 }
 
 function vistaMes(data) {
-    var date = data;
+    var date = [data];
     $.each(date, function (i, dato) {
         var fecha = dato.fechaInicio.split('/');
         var firstFecha = parseInt(date[0].fechaInicio.split('/')[1]);
@@ -252,34 +253,60 @@ function pulsosRitmos() {
     $("#panel_days .panel:first .panel-heading.day a").trigger("click");
 }
 
-function getDatosDeLaUltimaRutina(){
-    $.ajax({
-        type: 'GET',
-        url: _ctx + 'cliente/get/ultima-rutina',
-        dataType: "json",
-        success: function (data, textStatus) {
-            if(data.totalSemanas === 0){
-                $.smallBox({content: "<span><i class='fa fa-exclamation-circle fa-fw'></i> ¡Usted aún no cuenta con alguna rutina asignada!</span>",
-                                timeout: 10000});
-                return;
-            }
-            if (textStatus == "success") {
-                if (data == "-9") {
-                    $.smallBox({
-                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                        timeout: 4500,
-                        color: "alert",
-                    });
-                } else {
-                    console.log(data);
-                }
-            }
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {
+async function getDatosDeLaUltimaRutina(){
 
+    return new Promise((resolve, reject)=>{
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'cliente/get/ultima-rutina',
+            dataType: "json",
+            success: function (data, textStatus) {
+                resolve(data);
+                if (data.totalSemanas === 0) {
+                    $.smallBox({
+                        content: "<span><i class='fa fa-exclamation-circle fa-fw'></i> ¡Usted aún no cuenta con alguna rutina asignada!</span>",
+                        timeout: 10000
+                    });
+                    return;
+                }
+                if (textStatus == "success") {
+                    if (data == "-9") {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    }
+                }
+            },
+            error: function (xhr) {
+                reject(xhr);
+                exception(xhr);
+            },
+            complete: function () {
+
+            }
+        });
+    })
+}
+
+function getSemanaIndice(fechaInicio, fechaFin){
+    const today = parseFromStringToDate(getFechaFormatoString(new Date()));
+    const fin = parseFromStringToDate2(fechaFin);
+    const diffDaysFfin = moment(fin).diff(today, 'days');
+    if(diffDaysFfin<0){
+        return 0;//Si es negativo quiere decir que la rutina ya ha culminado por ende siempre se devolverá la primera semana
+    }
+    const init = parseFromStringToDate2(fechaInicio);
+    const diffDays = moment(today).diff(init, 'days');
+    let weekIndex = 0;
+    if(diffDays > 0){
+        weekIndex = Math.ceil(diffDays/7);
+        if(diffDays%7 === 0){
+            weekIndex +=1;//representa el ceil para los lunes
+        }else{
+            weekIndex -=1;
         }
-    });
+    }
+    return weekIndex;
 }

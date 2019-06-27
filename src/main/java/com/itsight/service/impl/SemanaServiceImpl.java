@@ -2,6 +2,7 @@ package com.itsight.service.impl;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Dia;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Semana;
@@ -15,10 +16,12 @@ import com.itsight.service.SemanaService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import com.itsight.util.Validador;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.*;
 
@@ -220,5 +223,20 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
             }
         }
         return EX_VALIDATION_FAILED.get();
+    }
+
+    @Override
+    public List<Semana> findByRutinaIdOrderByIdDesc(Integer rutinaId, int semanaIx) {
+        return repository.findByRutinaIdOrderByIdDesc(rutinaId, PageRequest.of(1, semanaIx));
+    }
+
+    @Override
+    public Semana findOneWithDaysEspById(Integer rutinaId, int semanaIx) throws CustomValidationException {
+        //Debido a que el arreglo en postgresql empieza desde 1
+        if (rutinaId == null) {
+            throw new CustomValidationException(Enums.Msg.VALIDACION_FALLIDA.get(), SESSION_VALUE_NOT_FOUND.get());
+        }
+        Integer semanaId = rutinaRepository.findSemanaIdByIndex(rutinaId, semanaIx+1);
+        return repository.findOneWithDays(semanaId);
     }
 }

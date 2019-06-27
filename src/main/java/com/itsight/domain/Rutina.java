@@ -7,7 +7,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.dto.RutinaDTO;
 import com.itsight.domain.jsonb.RutinaControl;
+import com.itsight.domain.pojo.RuCliPOJO;
+import com.itsight.domain.pojo.RutinaPOJO;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
@@ -16,6 +19,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.*;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,6 +28,29 @@ import java.util.Date;
 import java.util.List;
 
 
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "getLastByClienteId",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = RuCliPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "id"),
+                                        @ColumnResult(name = "anios"),
+                                        @ColumnResult(name = "meses"),
+                                        @ColumnResult(name = "totalSemanas"),
+                                        @ColumnResult(name = "dias"),
+                                        @ColumnResult(name = "tipoRutinaId"),
+                                        @ColumnResult(name = "fechaInicio"),
+                                        @ColumnResult(name = "fechaFin"),
+                                        @ColumnResult(name = "control"),
+                                        @ColumnResult(name = "rows"),
+                                }
+
+                        )
+                }
+        )
+})
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "rutina.cliente", attributeNodes = {
                 @NamedAttributeNode(value = "cliente")}),

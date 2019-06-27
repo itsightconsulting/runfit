@@ -4,7 +4,8 @@ Ficha = (function(){
     return {
         instanciar: (ficha)=>{
             const comps = ficha.competencias;
-            $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
+            console.log(ficha.competencias);
+            $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
 
             $('#Nombres').val(atob(getParamFromURL("nm")));
             $('#ApellidoPaterno').val(atob(getParamFromURL("nm")));
@@ -118,7 +119,7 @@ FichaSet = (function(){
         },
         instanciarDatosFicha: (ficha)=>{
             const comps = ficha.competencias;
-            $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
+            $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
             document.querySelector('#Nombres').value = atob(getParamFromURL("nm"));
             document.querySelector('#ApellidoPaterno').value = atob(getParamFromURL("nm"));
             document.querySelector('#FechaNacimiento').value = atob(getParamFromURL("fn"));

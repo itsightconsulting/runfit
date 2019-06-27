@@ -6,6 +6,7 @@ import com.itsight.service.ClienteService;
 import com.itsight.service.ConfiguracionClienteService;
 import com.itsight.service.TrainerService;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -26,6 +27,7 @@ import java.util.Date;
 
 import static com.itsight.util.Enums.CfsCliente.*;
 import static com.itsight.util.Enums.Galletas.*;
+import static com.itsight.util.Utilitarios.createCookie;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
@@ -75,13 +77,19 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
 
                 String favRutId = configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name());
-                response.addCookie(Utilitarios.createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_ENTRENAMIENTO.name())));
-                response.addCookie(Utilitarios.createCookie(GLL_CONTROL_REP_VIDEO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_REP_VIDEO.name())));
-
-                Integer favRutinaId = favRutId.equals("") ? null : Integer.parseInt(favRutId);
-                if(favRutinaId != null){
-                    session.setAttribute("fvrtId", favRutinaId);
+                if(!favRutId.equals("")){
+                    response.addCookie(
+                            createCookie(GLL_FAV_RUTINA.name(),
+                            Parseador.getEncodeHash32Id(
+                                        "rf-gallcoks",
+                                                Integer.parseInt(configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name())))));
+                }else{
+                    response.addCookie(createCookie(GLL_FAV_RUTINA.name(), ""));
                 }
+
+                response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_ENTRENAMIENTO.name())));
+                response.addCookie(createCookie(GLL_CONTROL_REP_VIDEO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_REP_VIDEO.name())));
+
             }
 
             //Fixing authentication object
@@ -90,12 +98,12 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
 
             //Generando cookies
             if(usu == null){
-                response.addCookie(Utilitarios.createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
+                response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
             }else{
                 String fullName = usu.getNombres() + " " + usu.getApellidos();
-                response.addCookie(Utilitarios.createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
+                response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
                 if(usu.getUuidFp().equals("")){
-                    response.addCookie(Utilitarios.createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
+                    response.addCookie(createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
                 }
             }
         } catch (Exception e){

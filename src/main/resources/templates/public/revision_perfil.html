@@ -202,20 +202,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group rs-trainer">
+                                    <div class="form-group rs">
                                         <label>REDES SOCIALES</label>
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text">
                                         </div>
                                     </div>
-                                    <div class="form-group rs-trainer">
+                                    <div class="form-group rs">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text">
                                         </div>
                                     </div>
-                                    <div class="form-group rs-trainer">
+                                    <div class="form-group rs">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
                                             <input value="" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
@@ -414,7 +414,7 @@
                         </div>
                         <div class="form-group div-actualizacion">
                             <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                            <button class="btn btn-default btn-black" id="btnGuardar"><i class="fa fa-check"></i>ACTUALIZAR Y ENVIAR</button>
+                            <button class="btn btn-default btn-black" id="btnGuardar"><i class="fa fa-fw fa-check"></i>ACTUALIZAR Y ENVIAR</button>
                         </div>
                     </form>
                 </div>
@@ -614,11 +614,13 @@
     }
 
     function checkRevisionTrainerDeEmpresa(){
+
         const url = window.location.href.split("/");
         if(url.find(e=>e==='s')){
-            document.querySelectorAll('.rs-trainer').forEach(e => {
+            document.querySelectorAll('.rs').forEach(e => {
                 e.classList.add('hidden');
             });
+            $('#btnGuardar').html('<i class="fa fa-fw fa-check"></i>ACTUALIZAR');
         }
     }
 
@@ -660,6 +662,26 @@
     }
 
     function actualizarPerfil(e){
+        e.preventDefault();
+        if($perfil.tipoTrainerId === TipoTrainer.EMPRESA){
+            $.SmartMessageBox({
+                title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> Al actualizar el perfil principal debe considerar que ya no podrá actualizar los perfiles de sus colaboradores(en caso se haya observado alguno de estos perfiles), " +
+                    "por ello le recomendamos actualizar antes estos perfiles(en caso se requiera) y luego regresar a este perfil PRINCIPAL para confirmar todos cambios realizados. " +
+                    "¿Desea confirmar y enviar todos los cambios?",
+                buttons: "[No][Si]"
+            }, function(e) {
+                if(e === "Si"){
+                    setTimeout(() => {
+                        confirmarActPerfil();
+                    }, 500);
+                }
+            })
+        }else{
+            confirmarActPerfil();
+        }
+    }
+
+    function confirmarActPerfil(){
         const val = validationByNumSheet(1);
         const nota = document.querySelector('#Nota');
         if(!val.isValid || !$(nota).valid()){
@@ -669,7 +691,7 @@
             smallBoxAlertValidation(val.inputs);
             return;
         }
-        e.preventDefault();
+
         const inpHshId = document.getElementById('HshTrainerId');
         const hshId = inpHshId.value === "" ? $perfil.hshTrainerId : inpHshId.value;
         const d = generateBodyToUpdate();
@@ -685,6 +707,7 @@
         }
 
         $("#frm_registro :input").prop("disabled", true);
+
         $.ajax({
             type: 'PUT',
             contentType: 'application/json',
@@ -698,8 +721,17 @@
                     if(!document.getElementById('FinalImagenRecortada').src.startsWith("https")){
                         uploadFotoPerfil(data);
                     } else{
-                        reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"},
-                             3600000);
+                        if($perfil.tipoTrainerId === TipoTrainer.DE_EMPRESA){
+                            reqSuccess({res: "Éxito, usted actualizó la ficha de su colaborador. Recuerde que para confirmar todos " +
+                                    "los cambios y enviarlos para la revisión general deberá ir al perfil principal " +
+                                    "y seleccionar desde allí el botón: ACTUALIZAR Y ENVIAR"},
+                                3600000);
+                        }else{
+                            reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada." +
+                                    " Le estaremos notificando los resultados. Gracias"},
+                                3600000);
+                        }
+
                     }
                     document.querySelector('.div-actualizacion').classList.add('hidden');
                 }
@@ -1164,7 +1196,7 @@
             tarifa.sesiones = t.sesiones;
             tarifa.precio = t.precio;
             tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
-            $.smallBox({color: "#111509",content: '<i class="fa fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
+            $.smallBox({color: "#111509",content: '<i class="fa fa-fw fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
         } else{
             $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000})
         }
