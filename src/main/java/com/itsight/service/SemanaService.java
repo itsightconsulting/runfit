@@ -1,5 +1,6 @@
 package com.itsight.service;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Dia;
 import com.itsight.domain.Semana;
 import com.itsight.generic.BaseService;
@@ -20,4 +21,7 @@ public interface SemanaService extends BaseService<Semana, Integer> {
 
     String actualizarFullMetricasVelocidad(String mVz) throws IOException;
 
+    List<Semana> findByRutinaIdOrderByIdDesc(Integer rutinaId, int semanaIx);
+
+    Semana findOneWithDaysEspById(Integer rutinaId, int semanaIx) throws CustomValidationException;
 }

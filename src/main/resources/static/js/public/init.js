@@ -1,7 +1,6 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 1 == 1;
-var initPageActive = 3;
+var flag_form_populate = 0 == 1;
 var hiddenHeaderBar = 0 == 1;
 try {
     //Remarcar página visitada
@@ -13,9 +12,6 @@ try {
             menu.classList.add('active');
         }
     }
-    document.querySelector('.step-0'+initPageActive).classList.toggle('active');
-    document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
-    //a = pubMenu;
 }catch (e) {}
 
 function time_line() {
@@ -64,26 +60,24 @@ function specificCheckBoxes(id) {
 
 function checkBoxes() {
     $(".chk-content").click(function() {
-
         var _self = $(this).find('input');
         var tipoElemento = _self.attr("type");
 
         if(tipoElemento !== "radio"){
 
             var clase = _self.attr("data-body");
+
              if (_self.is(':checked')) {
                    $("." + clase + "").fadeOut();
-                    _self.prop('checked', false)
+                    _self.prop('checked', false);
              } else {
-                    _self.prop('checked', true)
+                    _self.prop('checked', true);
                     $("." + clase + "").fadeIn();
                   }
 
         } else{
                _self.prop('checked', true)
                $("." + clase + "").fadeIn();
-
-
         }
     })
 }
@@ -272,7 +266,7 @@ function smallBoxAlertValidation(inputsNotPassed){
         $.smallBox(
             {
                 color: '#cc4d4d',
-                content: `Aún tiene pendiente completar los siguientes campos:<br>
+                content: `Aún tiene pendiente completar o validar los siguientes campos:<br>
                       <span style="padding-bottom: 3px"></span>
                       <p style="height: 80px; overflow-y: auto;">${strCamps}</p>`,
                 timeout: tout,
@@ -302,7 +296,6 @@ function smallBoxAlertValidation2(inputsNotPassed){
 function validationByNumSheet(numSheet, sheetNumberTo){
     let continuosValidator = true;
     const inptsNoPassed = [];
-
     let alls = getAllInputsByNumberSheet(numSheet);
     if(numSheet == "1" && sheetNumberTo === 3){
         alls = alls.concat(getAllInputsByNumberSheet(2));
@@ -370,6 +363,7 @@ function next_step_cs_rt(i){
     const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
     const sheetNumberTo = i;
     const checkList = activeNumSheet == 3 || activeNumSheet > i ? {isValid: true} : validationByNumSheet(activeNumSheet, sheetNumberTo);
+
     if(skip_validation || checkList.isValid){
         const all = document.querySelectorAll('.tab-pane');
         const sels = document.querySelectorAll('.step');
@@ -383,10 +377,8 @@ function next_step_cs_rt(i){
         sels[i-1].parentElement.classList.add('active');
     }
     else {
-        console.log(checkList.inputs);
         smallBoxAlertValidation(checkList.inputs);
     }
-    time_line();
 }
 
 function openMenuMobile() {

@@ -210,7 +210,9 @@
                                   <div class="tab-pane fade inpts-2" id="contact">
                                       <div class="form-group">
                                           <label>CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="Correo" name="Correo">
+                                          <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                          <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                          <input class="form-control" type="text" data-aka="CORREO ELECTRÓNICO" id="Correo" name="Correo">
                                       </div>
                                       <div class="form-group">
                                           <label>TELÉFONO</label>
@@ -268,7 +270,9 @@
                                       </div>
                                       <div class="form-group">
                                           <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
-                                          <input class="form-control" type="text" id="Username" name="Username">
+                                          <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                          <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                          <input class="form-control" type="text" data-aka="NOMBRE DE USUARIO" id="Username" name="Username">
                                       </div>
                                       <div class="form-group">
                                           <label for="Password">CONTRASEÑA<span class="obligatorio">*</span></label>
@@ -278,7 +282,9 @@
                                           <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
                                               <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                           </label>
-                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="Nombre de página">
+                                          <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                          <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="NOMBRE DE PÁGINA">
                                       </div>
                                       <div class="" style="padding-bottom: 10px; font-weight: 100;">
                                           <label id="NomPagFull"></label>
@@ -365,7 +371,8 @@
         const btnGuardar = document.getElementById('btnGuardar');
         const btnVerPerEmpresa = document.getElementById('btnVerPerEmpresa');
         const frm = document.getElementById('frm_registro');
-        const initTabActive = 1;
+        const verifiedNames = [];
+        const initPageActive = 1;
         let servicios = [];
         //Cropper
         let cropper = {};
@@ -374,9 +381,10 @@
 
         (function () {
             uploadAndShow(inpImgPerfil, imgPerfil);
-            showInitTab(initTabActive);
+
             body.addEventListener('click', bodyClickEventListener);
             body.addEventListener('focusout', bodyFocusOutEventListener);
+            body.addEventListener('focusout', bodyFocusOutListenerOwn);
             btnGuardar.addEventListener('click', sendMainForm);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
@@ -388,6 +396,11 @@
             init();
         })();
 
+        function instanceInitTab(){
+            document.querySelector('.step-0'+initPageActive).classList.toggle('active');
+            document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
+        }
+
         function sendMainForm(e){
             e.preventDefault();//To avoid form sended automatically
             const checkList1 = validationByNumSheet(1);
@@ -396,6 +409,31 @@
                 sendForm();
             }else {
                 smallBoxAlertValidation(checkList1.inputs.concat(checkList2.inputs));
+            }
+        }
+
+        function bodyFocusOutListenerOwn(e) {
+            const input = e.target;
+            if(input.name === "Correo"){
+                if($(input).valid()){
+                    if(!verifiedNames.includes(input.value)){
+                        validUniqueEmailOrUsernameOrNomPag(input, 'correo');
+                    }
+                }
+            }
+            if(input.name === "Username"){
+                if($(input).valid()){
+                    if(!verifiedNames.includes(input.value)){
+                        validUniqueEmailOrUsernameOrNomPag(input, 'username');
+                    }
+                }
+            }
+            if(input.name === "NomPag"){
+                if($(input).valid()){
+                    if(!verifiedNames.includes(input.value)){
+                        validUniqueEmailOrUsernameOrNomPag(input, 'nompag');
+                    }
+                }
             }
         }
 
@@ -479,11 +517,11 @@
                 clases.add('svc-focus');
                 const svcId = Number(input.getAttribute('data-id'));
                 mostrarDetalleServicio(svcId);
-            } else if (clases.contains('checkmark')) {
-                const padre = input.parentElement;
-                const inpCheck = padre.querySelector('input[type="checkbox"]');
-                if(inpCheck){
-                    inpCheck.checked = !inpCheck.checked;
+            } else if(clases.contains('checkmark')){
+                const inp = input.previousElementSibling;
+                //Importante únicamente para este caso(Sirve para el tab de servicios: elección de servicios)
+                if(inp.name==="SvcCheck"){
+                    inp.checked = !inp.checked;
                 }
             }
             checkBoxAndRadioValidationEventListener(e, input, clases);
@@ -642,6 +680,7 @@
         }
 
         function init(){
+            instanceInitTab();
             getServiciosAsync();
             modalEventos();
             activeTooltips();
@@ -725,13 +764,6 @@
                             content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
                             timeout: 5000});
             }
-        }
-
-        function showInitTab(numTab){
-            //const tabIds = ["", "about", "contact", "service"];
-            //document.querySelector(`a[href="#${tabIds[numTab]}"]`).parentElement.classList.add('active');
-            //document.querySelector(`#${tabIds[numTab]}`).classList.add('in');
-            //document.querySelector(`#${tabIds[numTab]}`).classList.add('active');
         }
 
         function ocultarModalTermCondYAceptar(){

@@ -1317,6 +1317,8 @@
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
+      const initPageActive = 3;
+
       const composedMuscles = [
         ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"],
         ["path338","path340"],
@@ -1345,12 +1347,18 @@
       })();
 
       function init(){
+        instanceInitTab();
         mainSeeders();
         mainEventListeners();
         tooltipsOn();
         constraintsValidation();
         multiSelectFichaRunning();
         $('#TxtMusculoOtro')[0].style.marginTop = $('#HumanMuscles').height() + 'px';
+      }
+
+      function instanceInitTab(){
+        document.querySelector('.step-0'+initPageActive).classList.toggle('active');
+        document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
       }
 
       function mainSeeders(){
@@ -1597,14 +1605,14 @@
           if(input.name === "Correo"){
             if($(input).valid()){
               if(!verifiedNames.includes(input.value)){
-                validUniqueEmailOrUsername(input, 'correo');
+                validUniqueEmailOrUsernameOrNomPag(input, 'correo');
               }
             }
           }
           if(input.name === "Username"){
             if($(input).valid()){
               if(!verifiedNames.includes(input.value)){
-                validUniqueEmailOrUsername(input, 'username');
+                validUniqueEmailOrUsernameOrNomPag(input, 'username');
               }
             }
           }
@@ -1661,12 +1669,12 @@
           success: function (res) {
             $('#btnGuardar').attr('disabled', 'disabled');
             if(res == "-1"){
-              /*$('input[name="username"]').val(body.username);
+              $('input[name="username"]').val(body.username);
               $('input[name="password"]').val(body.password);
               document.querySelector('.login_link').click();
               setTimeout(() => {
                 $('#btn-login').click();
-              }, 1000);*/
+              }, 1000);
             }
           }, error: (xhr) => {
             exception(xhr);

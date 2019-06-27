@@ -12,16 +12,19 @@ const tabService = document.getElementById('service');
 const inpCondServicio = document.getElementById('inpCondServicio');
 const frm = document.getElementById('frm_registro');
 const inpNomPag = document.getElementById('NomPag');
+const initPageActive = 1;
 const $galeria = [];
 const servicios = [];
+const verifiedNames = [];
 let ccBancarias = [];
 const metodosPago = [];
 let termConSvc = [];
-const initTabActive = 1;
 let selServicioId = -1;
 let accServicioId = 0;
 let accTarifaId = 0;
 let accCuentaId = 0;
+let $regTipo = 0;
+
 //Cropper
 let cropper = {};
 const actions = document.getElementById('actions');
@@ -29,7 +32,9 @@ const body = document.querySelector('body');
 
 (function () {
     uploadImgs(inpGaleria, 'ImgsGaleria');
-    if(flag_form_populate){setTimeout(()=>showInitTab(initTabActive), 1000);}
+    document.querySelector('.step-01').classList.toggle('active');
+    document.querySelector('.inpts-1').classList.toggle('active');
+
     btnGuardar.addEventListener('click', sendMainForm);
     btnNuevoServicio.addEventListener('click', agregarServicio);
     btnNuevaTarifa.addEventListener('click', agregarTarifaAServicio);
@@ -41,12 +46,12 @@ const body = document.querySelector('body');
     body.addEventListener('click', bodyClickEventListener);
     body.addEventListener('change', bodyChangeEventListener);
     body.addEventListener('focusout', bodyFocusOutEventListener);
+    body.addEventListener('focusout', bodyFocusOutListenerOwn);
     document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{$(e).tooltip();})
     inpNomPag.addEventListener('keyup', (e)=>{
         document.getElementById('NomPagFull').textContent =
             window.location.protocol+"//"+ window.location.host +"/p/trainer/" +e.target.value.trim();
     });
-    inpNomPag.addEventListener('focusout', checkSiNomPagExiste);
     init();
 })();
 
@@ -60,6 +65,36 @@ function sendMainForm(e){
     }else {
         smallBoxAlertValidation(checkList1.inputs.concat(checkList2.inputs).concat(checkList3.inputs));
     }
+}
+
+function bodyFocusOutListenerOwn(e) {
+    const input = e.target;
+    if(input.name === "Correo"){
+        if($(input).valid()){
+            if(!verifiedNames.includes(input.value)){
+                validUniqueEmailOrUsernameOrNomPag(input, 'correo');
+            }
+        }
+    }
+    if(input.name === "Username"){
+        if($(input).valid()){
+            if(!verifiedNames.includes(input.value)){
+                validUniqueEmailOrUsernameOrNomPag(input, 'username');
+            }
+        }
+    }
+    if(input.name === "NomPag"){
+        if($(input).valid()){
+            if(!verifiedNames.includes(input.value)){
+                validUniqueEmailOrUsernameOrNomPag(input, 'nompag');
+            }
+        }
+    }
+}
+
+function instanceInitTab(){
+    document.querySelector('.step-0'+initPageActive).classList.add('active');
+    document.querySelector('.inpts-'+initPageActive).classList.add('active');
 }
 
 function agregarServicio(){
@@ -366,33 +401,6 @@ function tycChangeEventListener(e, input, clases){
     }
 }
 
-function checkSiNomPagExiste(e){
-    const input = e.target;
-    setTimeout(() => {
-        if($(input).valid()){
-            $.ajax({
-                type: 'GET',
-                url: _ctx+'p/trainer/validacion/nom-pag?nomPag='+input.value,
-                blockLoading: false,
-                noOne: true,
-                dataType: 'json',
-                success: function (res) {
-                    if(res){
-                        input.classList.remove('state-success');
-                        input.classList.remove('valid');
-                        input.classList.add('state-error');
-                        $.smallBox({color: 'alert', content: '<i>El nombre de página elegido ya esta en uso</i>'});
-                    }
-                },
-                error: (xhr)=>{
-                    exception(xhr);
-                },
-                complete: ()=> {}
-            });
-        }
-    }, 100);
-}
-
 function clickMultipleFicha(e){
     const input = e.target;
     if(input.checked){
@@ -435,13 +443,17 @@ function uploadFotoPerfil(d){
                 }
                 return myXhr;
             },
-            success: function (data) {
-                reqSuccess(data, 3600000);
+            success: function (res) {
+                alertaFinalByTipoTrainer(res);
             },
             error: (xhr)=>{
                 exception(xhr);
             },
-            complete: ()=> {}
+            complete: ()=> {
+                //Solo aplica para registro trainer como empresa
+                $('.step-04').click();
+                $(window).scrollTop(0);
+            }
         });
     }
 }
@@ -449,6 +461,7 @@ function uploadFotoPerfil(d){
 
 
 function init(){
+    instanceInitTab();
     modalEventos();
     populateBancos();
     activeTooltips();
@@ -987,11 +1000,18 @@ function uploadFotosPerfil(d){
     //submit the form here
     const hshId = d.res;
     const rdmsUUIDs = getImgUuids(d.rdm);
+
     let file = inpImgPerfil;
     if (file.files.length > 0) {
-        file = file.files[0];
+        //FOTO PERFIL
+        const blobBin = atob($('#FinalImagenRecortada')[0].src.split(',')[1]);
+        var array = [];
+        for(var i = 0; i < blobBin.length; i++) {
+            array.push(blobBin.charCodeAt(i));
+        }
+        var ff=new Blob([new Uint8Array(array)], {type: file.type});
         const data = new FormData();
-        data.append("files", file);
+        data.append("files", ff);
         data.append("fileExtension", ".jpg");
         //IMG GALERIA
         $galeria.forEach(f=>{
@@ -1018,14 +1038,31 @@ function uploadFotosPerfil(d){
                 }
                 return myXhr;
             },
-            success: function (data) {
-                reqSuccess(data, 3600000);
+            success: function (res) {
+                alertaFinalByTipoTrainer(res);
             },
             error: (xhr)=>{
                 exception(xhr);
             },
-            complete: ()=> {}
+            complete: ()=> {
+                //Solo aplica para registro trainer como empresa
+                $('.step-04').click();
+                $(window).scrollTop(0);
+            }
         });
+    }
+}
+
+function alertaFinalByTipoTrainer(r){
+    if($regTipo == TipoTrainer.EMPRESA){
+        const msg = r.res;
+        $("#frm_registro :input").prop("disabled", true);
+        $.smallBox({content: "<i class='fa fa-check'></i> "+msg + "<br>Además ya puede proceder a registrar a sus colaboradores.",
+            color: '#111509',
+            timeout: 3600000
+        });
+    }else{
+        reqSuccess(r, 3600000);
     }
 }
 

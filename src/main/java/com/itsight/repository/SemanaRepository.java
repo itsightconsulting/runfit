@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.Semana;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,6 @@ public interface SemanaRepository extends JpaRepository<Semana, Integer> {
     @Query(value = "update semana as t set metricas_velocidad = c.mets from (SELECT CAST(unnest(string_to_array(?1, ',')) as int), unnest(string_to_array(?2, ' ')) ORDER BY 1) as c(id, mets) where c.id = t.semana_id", nativeQuery = true)
     void actualizarMetsVelocidadByIds(String ids, String mets);
 
+    @Query("SELECT DISTINCT S FROM Semana S LEFT JOIN FETCH S.lstDia D WHERE S.rutina.id=?1")
+    List<Semana> findByRutinaIdOrderByIdDesc(Integer rutinaId, PageRequest pageRequest);
 }

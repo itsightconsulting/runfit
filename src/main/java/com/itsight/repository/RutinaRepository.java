@@ -65,4 +65,6 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
     @Query(value = "select concat_ws(',',rutina_id, tipo_rutina) from rutina where cliente_id=?1 and fecha_fin > now() order by 1", nativeQuery = true)
     List<String> findRutinaIdsByClienteId(int id);
 
+    @Query(value = "select semana_ids[?2] from rutina where rutina_id=?1", nativeQuery = true)
+    Integer findSemanaIdByIndex(Integer rutinaId, int semanaIx);
 }

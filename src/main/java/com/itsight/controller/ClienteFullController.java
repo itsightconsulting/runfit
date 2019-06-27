@@ -1,8 +1,10 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
+import com.itsight.domain.dto.SemanaDTO;
 import com.itsight.domain.pojo.RuCliPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
@@ -86,14 +88,25 @@ public class ClienteFullController {
                 hshFavRutinaId, HttpSession session){
         if (hshFavRutinaId.equals("")) {
             Integer rutinaId = Parseador.getDecodeHash32Id("rf-gallcoks", hshFavRutinaId);
+            session.setAttribute("rId", rutinaId);
             return new ResponseEntity<>(rutinaProcedureInvoker.findById(rutinaId), HttpStatus.OK);
         }
+
         Integer id = (Integer) session.getAttribute("id");
         RuCliPOJO rutina = rutinaProcedureInvoker.getLastByClienteId(id, 1);
         if (rutina != null) {
+            session.setAttribute("rId", rutina.getId());
             return new ResponseEntity<>(rutina, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/get/semana/ix")
+    public @ResponseBody Semana obtenerSemanaEspecifica(
+            @RequestParam String semanaIx,
+            HttpSession session) throws CustomValidationException {
+        Integer rutinaId = (Integer) session.getAttribute("rId");
+        return semanaService.findOneWithDaysEspById(rutinaId, Integer.parseInt(semanaIx));
     }
 
     @GetMapping(value = "/get/rutinas")

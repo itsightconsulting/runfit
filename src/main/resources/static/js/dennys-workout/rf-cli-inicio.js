@@ -6,7 +6,7 @@ function init(){
     instanciandoIndicadoresCirculo();
 
     getDatosDeLaUltimaRutina().then((res)=>{
-        const ix = getIndice(res.fechaInicio, res.fechaFin);
+        const ix = getSemanaIndice(res.fechaInicio, res.fechaFin);
         getSemanasDeLaUltimaRutinaGenerada(ix);
     });
     eventTab();
@@ -42,13 +42,14 @@ function eventTab() {
     });
 }
 
-function getSemanasDeLaUltimaRutinaGenerada(ix){
+function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
     $.ajax({
         type: 'GET',
-        url: _ctx + 'cliente/get/obtenerSemanasPorRutina',
+        url: _ctx + 'cliente/get/semana/ix?semanaIx='+semanaIx,
         dataType: "json",
+        blockLoading: false,
+        noOne: true,
         success: function (data, textStatus) {
-            console.log(data[ix]);
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -57,15 +58,13 @@ function getSemanasDeLaUltimaRutinaGenerada(ix){
                         color: "alert",
                     });
                 } else {
-                    console.log(data);
-                    //$('.datepicker_inline').data("DateTimePicker").date(data[0].fechaInicio);
-
-                    //vistaDia(data);
-                    //vistaMes(data);
+                    $('.datepicker_inline').data("DateTimePicker").date(data.fechaInicio);
+                    vistaDia(data);
+                    vistaMes(data);
                 }
                 setTimeout(  () => {
                     imgToSvg();
-                }, 500);
+                }, 400);
             }
 
         },
@@ -76,8 +75,8 @@ function getSemanasDeLaUltimaRutinaGenerada(ix){
 
         }
     });
-
 }
+
 function elementosDia(val) {
     var elementoDia = val.elementos;
     var texto = "";
@@ -110,7 +109,7 @@ function elementosDia(val) {
 }
 
 function vistaDia(data) {
-    var date = data;
+    var date = [data];
     $.each(date, function (i, dato) {
         var fecha = dato.fechaInicio.split('/');
         var firstFecha = parseInt(date[0].fechaInicio.split('/')[1]);
@@ -154,7 +153,7 @@ function vistaDia(data) {
 }
 
 function vistaMes(data) {
-    var date = data;
+    var date = [data];
     $.each(date, function (i, dato) {
         var fecha = dato.fechaInicio.split('/');
         var firstFecha = parseInt(date[0].fechaInicio.split('/')[1]);
@@ -277,8 +276,6 @@ async function getDatosDeLaUltimaRutina(){
                             timeout: 4500,
                             color: "alert",
                         });
-                    } else {
-                        console.log(data);
                     }
                 }
             },
@@ -293,7 +290,7 @@ async function getDatosDeLaUltimaRutina(){
     })
 }
 
-function getIndice(fechaInicio, fechaFin){
+function getSemanaIndice(fechaInicio, fechaFin){
     const today = parseFromStringToDate(getFechaFormatoString(new Date()));
     const fin = parseFromStringToDate2(fechaFin);
     const diffDaysFfin = moment(fin).diff(today, 'days');
