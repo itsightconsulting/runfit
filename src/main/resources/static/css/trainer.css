@@ -921,10 +921,26 @@ section#suspendidos .panel .list-group li .mes {
     position: relative;
     transition: .3s; }
 section#suspendidos .panel .list-group li .mes:hover {
-    border-color: #a8fa00; }
+    border-color: #CF3239; }
 section#suspendidos .panel .list-group li .mes:hover:after {
     display: block; }
 section#suspendidos .panel .list-group li .mes:after {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    background-color: #CF3239;
+    border-radius: 50%;
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    margin: auto; }
+section#suspendidos .panel .list-group li .mes.suspension:hover {
+    border-color: #a8fa00; }
+section#suspendidos .panel .list-group li .mes.suspension:hover:after {
+    display: block; }
+section#suspendidos .panel .list-group li .mes.suspension:after {
     content: " ";
     width: 8px;
     height: 8px;
@@ -936,6 +952,7 @@ section#suspendidos .panel .list-group li .mes:after {
     left: 0;
     right: 0;
     margin: auto; }
+
 
 section#suspendidos .owl-nav {
     top: -112px; }

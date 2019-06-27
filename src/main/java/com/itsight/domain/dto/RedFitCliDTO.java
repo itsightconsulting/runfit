@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class RedFitCliDTO implements Serializable {
@@ -26,6 +27,10 @@ public class RedFitCliDTO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaFinalPlanificacion;
 
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    private Date fechaCreacion;
+
+
     private String cliNombreCompleto;
 
     private String cliMovil;
@@ -44,6 +49,8 @@ public class RedFitCliDTO implements Serializable {
 
     private int rows;
 
+    private List<String> mesesCliSuspendidos;
+
     public RedFitCliDTO(Integer id, String nota, String msgCliente, int contadorRutinas, int estadoPlan, Date fechaInicialPlanificacion, Date fechaFinalPlanificacion, String cliNombreCompleto, String cliMovil, Date cliFechaUltimoAcceso, Date cliFechaNacimiento ,Integer cliId, String cliCorreo, Integer predeterminadaFichaId, int rows) {
         this.id = id;
         this.nota = nota;
@@ -60,5 +67,15 @@ public class RedFitCliDTO implements Serializable {
         this.cliCorreo = cliCorreo;
         this.predeterminadaFichaId = predeterminadaFichaId;
         this.rows = rows;
+    }
+
+    public RedFitCliDTO(Integer id, String cliNombreCompleto, Date fechaCreacion) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.cliNombreCompleto = cliNombreCompleto;
+    }
+
+    public RedFitCliDTO(List<String> mesesCliSuspendidos) {
+        this.mesesCliSuspendidos = mesesCliSuspendidos;
     }
 }

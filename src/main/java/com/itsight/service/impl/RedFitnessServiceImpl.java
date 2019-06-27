@@ -15,6 +15,7 @@ import com.itsight.service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.itsight.util.Parseador.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_GENERAL;
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_PERSONAL;
+import static com.itsight.util.Parseador.fromStringToDateSimple;
 
 @Transactional
 @Service
@@ -206,5 +208,21 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     @Override
     public void actualizarFlagActivoByIdAndTrainerId(int id, Integer trainerId, boolean flag) {
         repository.updateFlagActivoByIdAndTrainerId(id, trainerId, flag);
+    }
+
+    @Override
+    public List<RedFitCliDTO> findSuspendidosbyTrainerId(Integer trainerId, String mes) {
+
+        List<RedFitCliDTO> listaSuspendidos  = repository.findClientesSuspendidosByTrainerId(trainerId,mes);
+
+        return listaSuspendidos;
+    }
+
+    @Override
+    public String getMesesCliSuspendidos(Integer trainerId) {
+
+        String infoMesesSuspendidos  = repository.getMesesCliSuspendidos(trainerId);
+
+        return infoMesesSuspendidos;
     }
 }

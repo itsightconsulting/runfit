@@ -37,4 +37,7 @@ public class RedFitnessProcedureInvokerImpl implements RedFitnessProcedureInvoke
         storedProcedureQuery.setParameter(3, queryParams.getOffset() == 0 ? null : queryParams.getOffset());
         return storedProcedureQuery.getResultList();
     }
+
+
+
 }

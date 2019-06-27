@@ -8,6 +8,8 @@
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
 </head>
 <style>
+
+
 </style>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
@@ -21,93 +23,52 @@
                 <li class="col-md-3"><a href="#">rutinario</a></li>
                 <li class="col-md-2"><a href="#">g. audios</a></li>
                 <li class="col-md-3"><a href="#">planes prediseñados</a></li>
+
             </ul>
+
+
+        </header>
             <section id="suspendidos">
                 <div class="container-t">
-                    <h2 class="title_carousel">suspendidos - <span>enero</span></h2>
+                    <h2 id="tituloGestionSuspendidos" class="title_carousel"></h2>
                     <div class="owl-carousel owl-theme" id="carouselSuspendidos">
-                        <div class="item row">
-                            <div class="col-md-5">
+                        <div class="item row" id="dvItemsSuspendidos">
+                            <div id="dvCalendario" class="col-md-5">
                                 <div class="panel-group">
-                                    <div class="panel panel-default">
+                                    <div class="panel panel-default" id="calendarioSuspendidos">
                                         <h4>calendario anual</h4>
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title"><img class="svg" src="img/iconos-trainers/icon_calendar2.svg">2019<a data-toggle="collapse" href="#collapse1"><img class="arrow svg" src="img/iconos-trainers/icon_flecha2.svg"></a></h3>
-                                        </div>
-                                        <div class="panel-collapse collapse" id="collapse1">
-                                            <ul class="list-group">
-                                                <li class="list-group-item">
-                                                    <div class="row">
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 1</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 2</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 3</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 4</div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <div class="row">
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 5</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes"> Mes 6</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes"> Mes 7</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes"> Mes 8</div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title"><img class="svg" src="img/iconos-trainers/icon_calendar2.svg">2020<a data-toggle="collapse" href="#collapse2"><img class="arrow svg" src="img/iconos-trainers/icon_flecha2.svg"></a></h3>
-                                        </div>
-                                        <div class="panel-collapse collapse" id="collapse2">
-                                            <ul class="list-group">
-                                                <li class="list-group-item">
-                                                    <div class="row">
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 1</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 2</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 3</div>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <div class="mes">Mes 4</div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-7">
+                            <div id="dvClientes" class="col-md-7">
+
+                             <form id="filtroPeriodo-form" method="get">
                                 <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="EJEMPLO 01 / 2019">
+                                    <input id="inputPeriodo" name="inputPeriodo" class="form-control" type="text" placeholder="EJEMPLO 01 / 2019">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-default" type="submit">BUSCAR</button>
+                                        <button id="btnBuscarPeriodo" class="btn btn-default" type="submit">BUSCAR</button>
                                     </div>
+
                                 </div>
-                                <h3 class="date">enero 2019</h3>
+                             </form>
+
+                            <h3 id="fechaListaSuspendidos" class="date">enero 2019</h3>
+
+                                <div id="dvSuspendidos">
+
+                                    <ul id="listaSuspendidos" class="users">
+
+                                     </ul>
+
+
+                                </div>
+
+                 <!--
                                 <ul class="users">
                                     <li>
                                         <div class="row">
-                                            <div class="col-sm-8"><img class="user" src="img/user.png">
+                                            <div class="col-sm-8"><img class="user" th:src="@{/img/user.png}">
                                                 <h4>yasmine andía h.<span>01 / 12 / 2019</span></h4>
                                             </div>
                                             <div class="col-sm-4"><a class="btn_Activar" href="#">activar</a><a href="#">ver perfil</a></div>
@@ -115,7 +76,7 @@
                                     </li>
                                     <li>
                                         <div class="row">
-                                            <div class="col-sm-8"><img class="user" src="img/user.png">
+                                            <div class="col-sm-8"><img class="user" th:src="@{/img/user.png}">
                                                 <h4>yasmine andía h.<span>01 / 12 / 2019</span></h4>
                                             </div>
                                             <div class="col-sm-4"><a class="btn_Activar" href="#">activar</a><a href="#">ver perfil</a></div>
@@ -123,13 +84,15 @@
                                     </li>
                                     <li>
                                         <div class="row">
-                                            <div class="col-sm-8"><img class="user" src="img/user.png">
+                                            <div class="col-sm-8"><img class="user" th:src="@{/img/user.png}">
                                                 <h4>yasmine andía h.<span>01 / 12 / 2019</span></h4>
                                             </div>
                                             <div class="col-sm-4"><a class="btn_Activar" href="#">activar</a><a href="#">ver perfil</a></div>
                                         </div>
                                     </li>
                                 </ul>
+
+                              -->
                             </div>
                         </div>
                         <div class="item">2</div>
@@ -137,10 +100,476 @@
                     </div>
                 </div>
             </section>
-        </header>
+
     </div>
 </div>
 <th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+
+<script>
+
+
+    const btnBuscarPeriodo = document.getElementById('btnBuscarPeriodo');
+    const dvItems = document.getElementById('dvItemsSuspendidos');
+    const dvCalendario = document.getElementById('dvCalendario');
+    const dvClientes = document.getElementById('dvClientes')
+    let currentPeriodoSeleccionado;
+    let defaultFilter;
+    let flagBusqueda = false;
+
+
+
+    $(function() {
+        init();
+
+    })
+
+    function init(){
+
+        defaultFilter = getDefaultDateQuery();
+        getPeriodosClientesSuspendidos();
+        cargarClientesSuspendidos(defaultFilter);
+        btnBuscarPeriodo.addEventListener('click',function(evt) {
+            evt.preventDefault();
+            busquedaSuspendidosporInput(evt);
+        } ,false);
+        validacionFiltroPeriodo();
+
+
+
+    }
+
+    function seleccionMesCalendario(){
+
+
+    }
+
+    function getDefaultDateQuery(){
+
+        const CurrentDate = new Date();
+        const filterQuery= CurrentDate.getFullYear()+'-'+('0' + (CurrentDate.getMonth()+1)).slice(-2);
+
+        return filterQuery;
+    }
+
+    function getMonthFilterQuery(filter){
+
+        const month = filter.slice(0,2);
+        const year = filter.slice(3,7);
+
+        return year+"-"+month;
+
+   }
+
+    function getDBMonthQuery(filter){
+
+        const month = filter.slice(0,2);
+        const year = filter.slice(2,6);
+
+        return year+"-"+month;
+
+
+    }
+
+
+
+    function getMonthQuery(filter){
+
+        const month = filter.slice(0,2);
+        const year = filter.slice(3,7);
+
+        return year+"-"+month;
+
+
+    }
+
+    const monthNames = ["enero", "febrero", "marzo", "abril", "mayo","junio","julio", "agosto", "septiembre", "octubre", "noviembre","diciembre"];
+
+
+    function cargarClientesSuspendidos(periodoSeleccionado){
+
+
+        let month = periodoSeleccionado.slice(5,7);
+        let monthIndex = parseInt(month)-1;
+        const monthName =monthNames[monthIndex];
+        const year = periodoSeleccionado.slice(0,4);
+
+         $.ajax({
+            type: 'GET',
+            url: _ctx + 'gestion/trainer/red/suspendidos/obtener',
+            dataType: 'json',
+            data:{mes:periodoSeleccionado},
+            blockLoading: false,
+            noOne: true,
+            success: function (res) {
+
+
+                if(res.length === 0){
+
+                    limpiarListado();
+                    const noOne = document.createElement('div');
+                    noOne.className = "";
+                    noOne.style.fontSize = "1.3em";
+                    noOne.style.color = "#a8fa00";
+                    noOne.style.padding = "15px 0px";
+                    noOne.style.textAlign = "center";
+
+                    noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se cuenta con clientes suspendidos para este periodo";
+                    document.getElementById('listaSuspendidos').appendChild(noOne);
+                }else{
+
+                    limpiarListado();
+                    recrearListado(res);
+
+                }
+            }, error: (xhr) => {
+
+                exception(xhr);
+            }, complete: () => {
+                 visualizarMesSeleccion(monthName,year);
+
+
+             }
+        })
+    }
+
+    function activarCliente(e){
+
+
+
+        const clienteId = e;
+
+        let filtroPeriodo = flagBusqueda ?  currentPeriodoSeleccionado  : defaultFilter;
+
+
+        console.log(filtroPeriodo);
+
+
+        $.ajax({
+            type: 'PUT',
+            url: _ctx + 'gestion/trainer/red/suspendidos/activar',
+            dataType: 'json',
+            data: {id: clienteId},
+            blockLoading: false,
+            noOne: true,
+            success: function (res) {
+
+                cargarClientesSuspendidos(filtroPeriodo);
+            }
+            , error: (xhr) => {
+                exception(xhr);
+            }, complete: () => {
+
+                getPeriodosClientesSuspendidos();
+
+            }
+        })
+    }
+
+    function visualizarMesSeleccion(mes,año){
+
+
+
+        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+mes+"</span>");
+        $('#fechaListaSuspendidos').html( ""+mes+" "+año);
+    }
+
+    function busquedaSuspendidosporInput(){
+
+
+      if ($("#filtroPeriodo-form").valid()) {
+
+          const periodo = $('#inputPeriodo').val();
+          const filtro = getMonthFilterQuery(periodo);
+
+          flagBusqueda = true;
+          currentPeriodoSeleccionado = filtro;
+          getPeriodosClientesSuspendidos();
+          cargarClientesSuspendidos(filtro);
+
+      }
+    }
+
+    function validacionFiltroPeriodo(){
+
+
+        $("#filtroPeriodo-form").validate({
+            // Rules for form validation}
+            ignore: ".ignore",
+            highlight: function (element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            rules: {
+                inputPeriodo:{
+                    required: true,
+                    monthInputValid: true
+                }
+            },
+            // Messages for form validation
+            messages: {
+
+            },
+            // Do not change code below
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            }
+        });
+
+
+
+    }
+
+
+    function cargarPeriodosClientesSuspendidos(data){
+
+
+
+       const periodoObject = getPeriodoObject(data);
+
+       console.log(periodoObject);
+
+       if(periodoObject[0].year !== "") {
+
+           dvCalendario.style.display ="block";
+           dvClientes.style.display ="block";
+
+           for (let i = 0; i < periodoObject.length; i++) {
+
+               const año = periodoObject[i].year;
+               cargarAños(periodoObject[i].year, i + 1);
+               cargarMeses(periodoObject[i].year, i + 1);
+
+               for (let j = 0; j < periodoObject[i].meses.length; j++) {
+
+                   const mes = periodoObject[i].meses[j];
+                   const selector = "d" + ("0" + mes).slice(-2) + año;
+                   const a = document.getElementById(selector);
+                   a.classList.add("suspension");
+
+               }
+           }
+
+       }else{
+
+               const noOne = document.createElement('div');
+
+
+               noOne.className = "row";
+               noOne.style.fontSize = "1.0em";
+               noOne.style.color = "#9D9D9D";
+               noOne.style.fontWeight = "bold";
+               noOne.style.padding = "15px 0px";
+               noOne.innerHTML = "<div class='col-md-12' style='text-align: center'><i class='fa fa-info-circle fa-fw'></i>Actualmente no se tienen clientes suspendidos </div>";
+
+               dvCalendario.style.display ="none";
+               dvClientes.style.display ="none";
+
+               dvItems.insertBefore(noOne, dvItems.firstChild);
+
+
+
+       }
+
+        $(".mes").click(function(e){
+
+           let periodo = e.target.id.slice(1);
+            periodo = getDBMonthQuery(periodo);
+            flagBusqueda = true;
+            currentPeriodoSeleccionado = periodo;
+            cargarClientesSuspendidos(periodo);
+
+
+        });
+
+    }
+
+    function cargarAños(año,index)
+    {
+        const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
+
+
+        calendarioSuspendidos.appendChild(htmlStringToElement(`<div class="panel-heading">
+                                                        <h3 class="panel-title" ><img class="svg" src="${_ctx}img/iconos-trainers/icon_calendar2.svg">${año}<a data-toggle="collapse" href="#collapse${index}"><img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></h3>
+                                                          </div>`));
+    }
+
+
+    function cargarMeses(año,index){
+
+        const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
+
+        calendarioSuspendidos.appendChild(htmlStringToElement(`
+         <div class="panel-collapse collapse" id="collapse${index}" data-value="${año}">
+                <ul class="list-group">
+                <li class="list-group-item">
+                <div class="row">
+                <div class="col-xs-3">
+                <div class="mes"  id="d01${año}" >Mes 1</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d02${año}">Mes 2</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d03${año}">Mes 3</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes"  id="d04${año}">Mes 4</div>
+            </div>
+            </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                <div class="col-xs-3">
+                <div class="mes" id="d05${año}">Mes 5</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d06${año}"> Mes 6</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d07${año}"> Mes 7</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d08${año}"> Mes 8</div>
+            </div>
+            </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                <div class="col-xs-3">
+                <div class="mes" id="d09${año}">Mes 9</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d10${año}"> Mes 10</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d11${año}"> Mes 11</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="mes" id="d12${año}"> Mes 12</div>
+            </div>
+            </div>
+            </li>
+            </ul>
+            </div>
+
+       `));
+
+
+    }
+
+    function getPeriodoObject(data) {
+
+        console.log(data);
+
+        let infoPeriodos = data;
+
+        infoPeriodos = data.split(',');
+
+
+        let periodoObject=[];
+
+        for(var i = 0; i<infoPeriodos.length;i++){
+
+
+            const index =periodoObject.findIndex( x =>  x.year === infoPeriodos[i].slice(0,4));
+
+
+            if(index === -1){
+                let mes = infoPeriodos[i].slice(4,6);
+                mes = parseInt(mes);
+                const periodo = {year:infoPeriodos[i].slice(0,4), meses :[mes]};
+                periodoObject.push(periodo);
+            }
+            else{
+
+                let mes = infoPeriodos[i].slice(4,6);
+                mes = parseInt(mes);
+                periodoObject[index].meses.push(mes);
+            }
+        }
+
+        return periodoObject;
+
+
+    }
+
+
+    function getPeriodosClientesSuspendidos (){
+
+       $.ajax({
+           type:"GET",
+           url: _ctx + 'gestion/trainer/red/suspendidos/obtener/periodos',
+           success: function (data) {
+               limpiarCalendario();
+               cargarPeriodosClientesSuspendidos(data);
+
+           }
+           , error: (xhr) => {
+           }, complete: () => {
+
+
+
+           }
+
+
+
+       });
+
+
+
+    }
+
+
+    function limpiarListado(){
+
+        const listaSuspendidos = document.getElementById('listaSuspendidos');
+
+        while (listaSuspendidos.firstChild) {
+            listaSuspendidos.removeChild(listaSuspendidos.firstChild);
+        }
+
+    }
+
+    function limpiarCalendario(){
+
+        const calendariosuspendidos = document.getElementById('calendarioSuspendidos');
+        while (calendariosuspendidos.firstChild) {
+            calendariosuspendidos.removeChild(calendariosuspendidos.firstChild);
+        }
+
+
+    }
+
+
+
+    function recrearListado(arr){
+
+        const listaSuspendidos = document.getElementById('listaSuspendidos');
+
+        arr.forEach((e)=>{
+
+           listaSuspendidos.appendChild(htmlStringToElement(`<li>
+            <div class="row">
+                <div class="col-sm-8"><img class="user" src="${_ctx}img/user.png">
+                <h4>${e.cliNombreCompleto}<span>${e.fechaCreacion}</span></h4>
+            </div>
+            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#">ver perfil</a></div>
+            </div>
+            </li>`));
+
+
+        })
+    }
+
+
+</script>
+
+
+
 </body>
 </html>

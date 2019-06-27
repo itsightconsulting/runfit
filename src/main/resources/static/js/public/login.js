@@ -195,19 +195,13 @@ function registro() {
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
                         if (data == "-9") {
-
-                         console.log(":c");
                         }
-
                     }
                 },
                 error: function (xhr) {
                    //exception(xhr);
-
-                   console.log(xhr);
                 },
                 complete: function () {
-                   console.log("YEAAAAH YEAHHH");
                 }
             });
 

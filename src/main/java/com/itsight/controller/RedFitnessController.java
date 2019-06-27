@@ -44,6 +44,12 @@ public class RedFitnessController {
         return new ModelAndView(ViewConstant.MAIN_TRAINER_RED);
     }
 
+
+    @GetMapping(value = {"/suspendidos"})
+    public String suspendido() {
+        return ViewConstant.MAIN_SUSPENDIDO;
+    }
+
     @GetMapping(value = "/obtenerListado")
     public @ResponseBody
     ResPaginationDTO listarConFiltro(@RequestParam String nombres,
@@ -90,6 +96,41 @@ public class RedFitnessController {
         Integer trainerId = (Integer) session.getAttribute("id");
         redFitnessService.actualizarFlagActivoByIdAndTrainerId(Integer.parseInt(id), trainerId, false);
         return Utilitarios.jsonResponse(EXITO_GENERICA.get());
+    }
+
+    @PutMapping(value = "/suspendidos/activar")
+    public @ResponseBody
+    String activarClienteSuspendido(
+            @RequestParam String id,
+            HttpSession session) {
+        Integer trainerId = (Integer) session.getAttribute("id");
+        redFitnessService.actualizarFlagActivoByIdAndTrainerId(Integer.parseInt(id), trainerId, true);
+
+        return Utilitarios.jsonResponse(EXITO_GENERICA.get());
+    }
+
+    @GetMapping(value="/suspendidos/obtener")
+    public @ResponseBody
+    List<RedFitCliDTO> listarClientesSuspendidos(HttpSession session, @RequestParam String mes){
+
+        Integer trainerId = (Integer) session.getAttribute("id");
+        List<RedFitCliDTO> lstSuspendidos = redFitnessService.findSuspendidosbyTrainerId(trainerId,mes);
+
+        return lstSuspendidos;
+
+    }
+
+
+
+    @GetMapping(value="/suspendidos/obtener/periodos")
+    public @ResponseBody
+    String getMesesClientesSuspendidos(HttpSession session){
+
+        Integer trainerId = (Integer) session.getAttribute("id");
+        String infoPeriodoSuspendidos = redFitnessService.getMesesCliSuspendidos(trainerId);
+
+        return infoPeriodoSuspendidos;
+
     }
 
 }

@@ -25,4 +25,9 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
     String enviarNotificacionGeneral(Integer trainerId, String asunto, String cuerpo);
 
     void actualizarFlagActivoByIdAndTrainerId(int id, Integer trainerId, boolean flag);
+
+    List<RedFitCliDTO> findSuspendidosbyTrainerId(Integer trainerId,String mes);
+
+    String getMesesCliSuspendidos(Integer trainerId);
+
 }
