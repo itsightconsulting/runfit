@@ -8,6 +8,9 @@ function init(){
     getDatosDeLaUltimaRutina().then((res)=>{
         const ix = getSemanaIndice(res.fechaInicio, res.fechaFin);
         getSemanasDeLaUltimaRutinaGenerada(ix);
+    }).catch((err)=>{
+        console.log(err);
+        $.smallBox({color: '#79722b', content: 'Usted aún no cuenta con alguna rutina'});
     });
     eventTab();
     pulsosRitmos();
@@ -280,8 +283,7 @@ async function getDatosDeLaUltimaRutina(){
                 }
             },
             error: function (xhr) {
-                reject(xhr);
-                exception(xhr);
+                reject(xhr.status);
             },
             complete: function () {
 

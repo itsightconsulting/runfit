@@ -25,7 +25,6 @@ select
     count(*) over()::int as rows
 from rutina
 WHERE cliente_id = $1
-AND flag_activo = true
 ORDER BY id desc
 LIMIT $2
 $func$ LANGUAGE sql;

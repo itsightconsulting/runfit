@@ -86,7 +86,7 @@ public class ClienteFullController {
     public @ResponseBody ResponseEntity<RuCliPOJO> obtenerInfoUltimaRutinaGeneradaORutinaFavorita (
                 @CookieValue(name = "GLL_FAV_RUTINA", defaultValue = "") String
                 hshFavRutinaId, HttpSession session){
-        if (hshFavRutinaId.equals("")) {
+        if (!hshFavRutinaId.equals("")) {
             Integer rutinaId = Parseador.getDecodeHash32Id("rf-gallcoks", hshFavRutinaId);
             session.setAttribute("rId", rutinaId);
             return new ResponseEntity<>(rutinaProcedureInvoker.findById(rutinaId), HttpStatus.OK);
@@ -98,7 +98,7 @@ public class ClienteFullController {
             session.setAttribute("rId", rutina.getId());
             return new ResponseEntity<>(rutina, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/get/semana/ix")
