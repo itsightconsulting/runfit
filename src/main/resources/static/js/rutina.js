@@ -209,7 +209,7 @@ class Semana{
             this.kilometrajeTotal = obj.kilometrajeTotal;
             this.objetivos = obj.objetivos;
             this.flagEnvioCliente = obj.flagEnvioCliente;
-        }else{
+        } else{
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             this.flagFull = true;

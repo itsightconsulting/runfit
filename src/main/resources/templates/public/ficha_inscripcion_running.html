@@ -32,6 +32,10 @@
         width: 100%;
         max-width: 100%;
       }
+
+      input.marca-referencial{
+        cursor: pointer !important;
+      }
     </style>
   </head>
   <body>
@@ -1053,19 +1057,19 @@
                         <p class="form-group-subtitle">Completar únicamente una distancia</p>
                         <ul class="distance">
                           <li>
-                            <input type="text" id="TwoKm" name="TwoKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
+                            <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00"/>
                             <p>2km</p>
                           </li>
                           <li>
-                            <input type="text" id="FourKm" name="FourKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
+                            <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00" disabled="disabled"/>
                             <p>4km</p>
                           </li>
                           <li>
-                            <input type="text" id="TweOneKm" name="TweOneKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
+                            <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00" disabled="disabled"/>
                             <p>21km</p>
                           </li>
                           <li>
-                            <input type="text" id="FouTwoKm" name="FouTwoKm" class="marca-referencial" value="00:00:00" disabled="disabled"/>
+                            <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00" disabled="disabled"/>
                             <p>42km</p>
                           </li>
                         </ul>
@@ -1073,7 +1077,7 @@
                     </li>
                     <li class="display-table">
                       <div class="form-group">
-                        <label>¿Cuáles son las competencias en las que quisieras participar?</label>
+                        <label>¿Cuáles son las competencias en las que quisieras participar?<span class="obligatorio">*</span></label>
                       </div>
                       <div class="row">
                         <div class="col-md-12">
@@ -1097,9 +1101,7 @@
                                     </td>
                                     <td>
                                       <select class="form-control inp-distancia no-multi">
-                                        <option value="5" selected="selected">5K</option>
                                         <option value="10">10K</option>
-                                        <option value="15">15K</option>
                                         <option value="21">21K</option>
                                         <option value="42">42K</option>
                                       </select>
@@ -1112,9 +1114,9 @@
                                     </td>
                                     <td>
                                       <select class="form-control inp-prioridad no-multi">
-                                        <option value="1">Alta</option>
+                                        <option value="1">Baja</option>
                                         <option value="2">Media</option>
-                                        <option value="3">Baja</option>
+                                        <option value="3">Alta</option>
                                       </select>
                                     </td>
                                     <td style="width: 32px; border: 1px solid transparent">
@@ -1128,9 +1130,7 @@
                                     </td>
                                     <td>
                                       <select class="form-control inp-distancia no-multi">
-                                        <option value="5">5K</option>
                                         <option value="10">10K</option>
-                                        <option value="15">15K</option>
                                         <option value="21">21K</option>
                                         <option value="42">42K</option>
                                       </select>
@@ -1143,9 +1143,9 @@
                                     </td>
                                     <td>
                                       <select class="form-control inp-prioridad no-multi">
-                                        <option value="1">Alta</option>
+                                        <option value="1">Baja</option>
                                         <option value="2">Media</option>
-                                        <option value="3">Baja</option>
+                                        <option value="3">Alta</option>
                                       </select>
                                     </td>
                                     <td style="width: 32px; border: 1px solid transparent">
@@ -1548,6 +1548,24 @@
           }
         }
         /* END elementos a disposición*/
+
+        if (clases.contains('marca-referencial')) {
+          input.removeAttribute('disabled');
+          body.querySelectorAll('.marca-referencial').forEach(e => {
+            if(e.name === input.name){
+              return;
+            }
+            e.setAttribute('disabled', 'disabled');
+            e.classList.remove('state-error');
+            e.classList.remove('state-success');
+            e.value = "00:00:00";
+            const em = e.nextElementSibling;
+            if(em.tagName === "EM"){
+              em.remove();
+            }
+          });
+          input.focus();
+        }
       }
 
       function bodyFocusOutEventListener(e){
@@ -1749,7 +1767,10 @@
         const rows = Array.from(document.querySelector('#tblCompetencia tbody').querySelectorAll('tr:not(.hide)'));
           return rows.map(v=>{
               const obj = new Object();
-              obj.fecha = parseFromStringToDate(v.querySelector('.inp-fecha').value);
+              obj.fecha = v.querySelector('.inp-fecha').value;
+
+              let parseFecha = parseFromStringToDate(obj.fecha);
+              obj.fecha = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
               obj.distancia = v.querySelector('.inp-distancia').value;
               obj.nombre = v.querySelector('.inp-nombre').value;
               obj.tiempoObjetivo = v.querySelector('.inp-tiempo').value;
@@ -2152,22 +2173,22 @@
             TwoKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 4*60
+              greaterThanSeconds: 4*60,
             },
             FourKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 10*60
+              greaterThanSeconds: 10*60,
             },
             TweOneKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 58*60
+              greaterThanSeconds: 58*60,
             },
             FouTwoKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 121*60
+              greaterThanSeconds: 121*60,
             },
           },
           messages: {
@@ -2202,8 +2223,6 @@
           }
         });
 
-        //Removemos el require de el campo nombre maratón de la tabla de competencias
-        $('input[name="DesComp"]').rules('add', {required: false});
         //Maxlength
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{

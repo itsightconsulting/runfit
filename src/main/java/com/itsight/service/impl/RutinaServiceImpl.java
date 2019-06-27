@@ -240,8 +240,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         nueRutina.setLstSemana(semanas);
         nueRutina.setFlagActivo(false);
 
-        // nueRutina.setTipoRutina(GENERAL.get());
-        nueRutina.setTipoRutina(rutina.getTipoRutinaId());
+        nueRutina.setTipoRutina(GENERAL.get());
         repository.save(nueRutina);
         //AFTER REGISTRO LOS IDS YA SE PUEDEN RECUPERAR
         int[] arrSemIds = new int[nueRutina.getLstSemana().size()];
@@ -302,4 +301,5 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     public List<String> findRutinaIdsByClienteId(int id) {
         return repository.findRutinaIdsByClienteId(id);
     }
+
 }
