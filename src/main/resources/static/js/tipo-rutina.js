@@ -201,7 +201,7 @@
         var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
 
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            title: "<i class='fa fa-bullhorn'></i> Notificación",
             content: "<br/>¿Quieres activar o desactivar el registro?",
             buttons: '[No][Si]'
         }, function (ButtonPressed) {
@@ -311,7 +311,7 @@
 function bodyFocusOutEventListener(e){
     const input = e.target;
     if(input.tagName === "INPUT"){
-        if(input.type==="text" || input.type==="number"){
+        if(input.type==="text"){
             input.value = input.value.trim();
         }
     }

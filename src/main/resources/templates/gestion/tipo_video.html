@@ -357,7 +357,7 @@ you can add as many as you like
     function desactivar(id, ix) {
         var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            title: "<i class='fa fa-bullhorn'></i> Notificación",
             content: "<br/>¿Quieres activar o desactivar el registro?",
             buttons: '[No][Si]'
         }, function (ButtonPressed) {

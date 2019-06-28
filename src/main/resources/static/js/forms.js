@@ -411,10 +411,13 @@ function multiSelectFichaRunning(){
 }
 
 function bodyFocusOutEventListener(e){
+
     const input = e.target;
     if(input.tagName === "INPUT"){
-        if(input.type==="text" || input.type==="number"){
-            input.value = input.value.trim();
+        if(input.type==="text") {
+            input.value = input.value.trim().replace(/ +/g, " ");
+        } else if(input.type==="email"){
+            input.value = input.value.trim().replace(/ +/g, "");
         }
     }
     if(input.tagName === "TEXTAREA"){

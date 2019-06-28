@@ -30,21 +30,21 @@
                 <div class="col-md-8">
                   <div class="form-group">
                     <label for="Nombre">NOMBRE COMPLETO<span class="obligatorio">*</span></label>
-                    <input id="Nombre" name="Nombre" class="form-control" type="text">
+                    <input id="Nombre" name="Nombre" class="form-control" type="text" maxlength="60">
                   </div>
                   <div class="form-group">
                     <label for="Correo">CORREO ELECTRÓNICO<span class="obligatorio">*</span></label>
-                    <input name="Correo" id="Correo" class="form-control" type="text">
+                    <input name="Correo" id="Correo" class="form-control" type="text" maxlength="40">
                   </div>
                   <div class="form-group">
-                    <label for="Movil">TELÉFONO<span class="obligatorio">*</span></label>
-                    <input id="Movil" name="Movil" class="form-control" type="text">
+                    <label for="Movil">MÓVIL<span class="obligatorio">*</span></label>
+                    <input id="Movil" name="Movil" class="form-control" type="text" maxlength="13">
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
                     <label for="Mensaje">MENSAJE<span class="obligatorio">*</span></label>
-                    <textarea id="Mensaje" name="Mensaje" class="form-control"></textarea>
+                    <textarea id="Mensaje" name="Mensaje" class="form-control" maxlength="1000"></textarea>
                   </div>
                 </div>
                 <div class="text-right">
@@ -60,12 +60,23 @@
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
       (function () {
+        const body = document.querySelector('body');
         const btnGuardar = document.getElementById('btnGuardar');
-        btnGuardar.addEventListener('click', registrarComunicacion)
+        btnGuardar.addEventListener('click', registrarComunicacion);
         if(flag_form_populate){
           randomData();
         }
+
+        constraintsValidation();
+        body.addEventListener('click', bodyClickEventListener);
+        body.addEventListener('focusout', bodyFocusOutEventListener);
       })();
+
+      function bodyClickEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+        checkBoxAndRadioValidationEventListener(e, input, clases);
+      }
 
       function randomData(){
         document.querySelector('#Nombre').value = new Date().getTime();
@@ -76,6 +87,9 @@
 
       function registrarComunicacion(){
         const $frm = document.getElementById('frm_registro');
+        if(!$($frm).valid()){
+          return;
+        }
         const params = getFormData($($frm));
         $.ajax({
           type: 'POST',
@@ -94,6 +108,63 @@
           },
           complete: function () {
           }
+        });
+      }
+
+      function constraintsValidation() {
+
+        $('#frm_registro').validate({
+          errorClass: errorClass,
+          errorElement: errorElement,
+          highlight: function (element) {
+            if(element.type === 'radio' || element.type==='checkbox'){
+              let msgError = "";
+              setTimeout(() => {
+                const eleMsgError = document.querySelector(`#${element.name}-error`);
+                if(eleMsgError != undefined){
+                  msgError = eleMsgError.textContent;
+                  eleMsgError.remove();
+                }
+              }, 100);
+              const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+              setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
+            }else{
+              $(element).removeClass('state-success').addClass("state-error");
+              $(element).removeClass('valid');
+            }
+          },
+          unhighlight: function (element) {
+            if(element.type === 'radio' || element.type==='checkbox'){
+              const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
+              parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
+            } else {
+              $(element).removeClass("state-error").addClass('state-success');
+              $(element).addClass('valid');
+            }
+          },
+          ignore: ".ignore",
+          rules: {
+            Nombre: {
+              required: true,
+              rangelength: [5, 60],
+              lettersonly: true
+            },
+            Correo: {
+              required: true,
+              emailAddress: true,
+              rangelength: [7, 40]
+            },
+            Movil: {
+              required: true,
+              digits: true,
+              rangelength: [7, 13]
+            },
+            Mensaje: {
+              required: true,
+              rangelength: [5, 1000],
+            },
+          },
+          messages:{}
         });
       }
     </script>

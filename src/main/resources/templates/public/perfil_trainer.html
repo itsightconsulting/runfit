@@ -498,6 +498,11 @@
         getTrainer();
         checkFrom();
         constraintsValidation();
+        modalOptionHidden();
+      }
+
+      function modalOptionHidden(){
+          document.querySelector('#myModalCC .modal-footer').classList.add('hidden');
       }
 
       function checkFrom(){
@@ -541,7 +546,7 @@
             }
         }else{
             $.SmartMessageBox({
-                title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Workout Notification</b>",
+                title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Notificación</b>",
                 content: "<div style='font-size: 1.3em'>Antes de ir al formulario de registro, deseamos saber, ¿El servicio elegido está relacionado con la disciplina de running?</div>",
                 buttons: '[NO][SI]'
             }, function (ButtonPressed) {

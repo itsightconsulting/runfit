@@ -38,7 +38,7 @@ function eventos(){
 function bodyClickEventListener(e){
     const input = e.target;
     if(input.tagName === "INPUT"){
-        if(input.type==="text" || input.type==="number"){
+        if(input.type==="text"){
             input.value = input.value.trim();
         }
     }

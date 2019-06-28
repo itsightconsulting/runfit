@@ -476,7 +476,7 @@ function guardarEnMisRutinas(e){
     if(!isNaN(valId) && valId > 0){
         $('#modalCategoriasRutinas').modal('hide');
         $.SmartMessageBox({
-            title : "Workout Notification",
+            title : "Notificación",
             content : "Por favor ingrese un título para la mini rutina",
             buttons : "[Cancelar][Guardar]",
             input : "text",
