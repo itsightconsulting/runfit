@@ -145,7 +145,7 @@
               <button class="btn btn-default btn-black" type="button" id="btnBuscar">BUSCAR</button>
             </div>
             <div class="col-md-12 dv-rows hidden" style="font-size: 1.6em;padding: 10px;color: #303030;">
-              <i class="fa fa-check fa-fw"></i> Se han encontrado <span id="Rows"></span> coincidencias</div>
+              <i class="fa fa-check fa-fw"></i> <span id="Rows"></span></div>
             </div>
           <div id="Trainers">
 
@@ -224,6 +224,7 @@
           blockLoading: false,
           noOne: true,
           success: function (res) {
+
             if(res.length === 0){
               const noOne = document.createElement('div');
               noOne.className = "";
@@ -236,7 +237,12 @@
             }else{
               recrearListado(res);
               totalRows = res[0].rows;
-              document.querySelector('#Rows').textContent = totalRows;
+              if(totalRows > 1){
+                document.querySelector('#Rows').textContent = `Se encontraron ${totalRows} coincidencias`;
+              } else {
+                document.querySelector('#Rows').textContent = `Se encontró ${totalRows} coincidencia`;
+
+              }
               document.querySelector('.dv-rows').classList.remove('hidden');
             }
           }, error: (xhr) => {

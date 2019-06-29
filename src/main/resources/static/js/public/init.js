@@ -1,6 +1,6 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
 var skip_validation = 0 == 1;
-var flag_form_populate = 0 == 1;
+var flag_form_populate = 1 == 1;
 var hiddenHeaderBar = 0 == 1;
 try {
     //Remarcar página visitada
@@ -238,14 +238,15 @@ function next_step(sheetNumber, toSheetNumber) {
             $('.step-01').removeClass("active");
             $(".ficha-02").addClass("active");
             $('.step-02').addClass("active");
-            $("body" ).scrollTop( 0 );
+            $(window).scrollTop(200);
+
             time_line();
         } else if ($(".ficha-02").hasClass("active")) {
             $(".ficha-02").removeClass("active");
             $('.step-02').removeClass("active");
             $(".ficha-03").addClass("active");
             $('.step-03').addClass("active");
-            $("body" ).scrollTop( 0 );
+            $(window).scrollTop( 200);
             time_line();
         }
     }else{

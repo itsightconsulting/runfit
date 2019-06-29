@@ -17,43 +17,37 @@
             <div class="title-page">
               <h1>CONTIGO<span>EN CADA PASO</span></h1>
             </div>
-          </div><img class="detail" th:src="@{/img/public/home-details.png}+'?'+${version}" style="min-height: auto"/>
+          </div><img class="detail" th:src="@{/img/home-details0.png}+'?'+${version}" style="min-height: auto"/>
         </div>
       </div>
-
-
-
       <section class="entrena_correctamente">
         <div class="bg-color"></div>
         <div class="container text-center">
-
-
-
           <h1 class="title_section">ENTRENA CORRECTAMENTE</h1>
           <p class="description_section">La confianza proviene de la metodología perfecta combinada con las mejores herramientas</p>
-          <ol>
-            <li class="col-md-3">
-              <div class="item"><img th:src="@{/img/public/entrena-1.png}+'?'+${version}"/>
-                <h2>Contáctate con tu Coach</h2>
+          <ol class="pasos">
+            <li class="col-md-3 paso_elegido">
+              <div class="item"><img class="entrena-pasos" data-od="1" th:src="@{/img/public/entrena-1.png}+'?'+${version}"/>
+                <h2 class="entrena-pasos" data-od="1">CONTÁCTATE CON TU ASESOR</h2>
                 <p>Un experto te guiará de forma personalizada en el camino para el logro de tus objetivos</p>
               </div>
             </li>
             <li class="col-md-3">
-              <div class="item"><img th:src="@{/img/public/entrena-2.png}+'?'+${version}"/>
-                <h2>Recibe tu programa de entrenamiento</h2>
+              <div class="item"><img class="entrena-pasos" data-od="2" th:src="@{/img/public/entrena-2.png}+'?'+${version}"/>
+                <h2 class="entrena-pasos" data-od="2">Recibe tu programa de entrenamiento</h2>
                 <p>Trabajarás con un programa de entrenamiento personalizado y estructurado metodológicamente con los volúmenes e intensidades precisas. </p>
               </div>
             </li>
             <li class="col-md-3">
-              <div class="item"><img th:src="@{/img/public/entrena-3.png}+'?'+${version}"/>
-                <h2>Entrena donde quieras</h2>
+              <div class="item"><img class="entrena-pasos" data-od="3" th:src="@{/img/public/entrena-3.png}+'?'+${version}"/>
+                <h2 class="entrena-pasos" data-od="3">Entrena donde quieras</h2>
                 <p>Podrás llevar el programa de entrenamiento contigo y contarás con más de 500 videos demostrativos para que lo puedas ejecutar correctamente. </p>
               </div>
             </li>
             <li class="col-md-3">
-              <div class="item"><img th:src="@{/img/public/entrena-4.png}+'?'+${version}"/>
-                <h2>Recibe seguimiento y feedback de tu coach  </h2>
-                <p>Estarás en contacto directo con tu coach para que te guie en cada paso.</p>
+              <div class="item"><img class="entrena-pasos" data-od="4" th:src="@{/img/public/entrena-4.png}+'?'+${version}"/>
+                <h2 class="entrena-pasos" data-od="4">Recibe seguimiento y feedback de tu asesor  </h2>
+                <p>Estarás en contacto directo con tu asesor para que te guie en cada paso.</p>
               </div>
             </li>
           </ol>
@@ -194,7 +188,7 @@
         <div class="col-md-6 coach">
           <div class="bg-color"></div>
           <div class="text-center"><img th:src="@{/img/public/coach.png}+'?'+${version}"/>
-            <h3>Encuentra a tu coach</h3>
+            <h3>Encuentra a tu asesor</h3>
             <p>Deja que un experto te ayude en cada paso del camino. Elige al especialista que se adecue a tus necesidades. </p>
             <div class="col-md-12"></div>
             <a th:href="@{/p/busqueda/trainers}"><button class="btn btn-default" type="button">Encuéntralo</button></a>
@@ -215,8 +209,62 @@
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
-      (function(){
+      const body = document.querySelector('body');
+      const pasos = document.querySelectorAll('section.entrena_correctamente ol.pasos>li');
+      const srcPasosBase = [];
+      let numberImgProtector = 1;
+      (function () {
+          init();
       })();
+
+      function init(){
+        eventos();
+        protectorCambiante();
+        obtenerImgPasosBase();
+      }
+
+      function eventos(){
+        body.addEventListener('click', bodyClickEventListener);
+      }
+
+      function bodyClickEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+        const padre = input.parentElement;
+        if (clases.contains('entrena-pasos')) {
+          const numImg = input.getAttribute('data-od');
+          if(numImg !== "1"){
+            pasos[0].querySelector('img').style.opacity = '0.6';
+          }else{
+            pasos[0].querySelector('img').style.opacity = '1';
+          }
+          srcPasosBase.forEach((e, ix)=>{
+            pasos[ix].querySelector('img').src = e;
+          })
+          document.querySelector('.paso_elegido').classList.remove('paso_elegido');
+          const abuelo = padre.parentElement;
+          abuelo.classList.add('paso_elegido');
+          abuelo.querySelector('img').src = _ctx+`img/public/contigo-${numImg}.png`;
+        }
+      }
+
+      function protectorCambiante(){
+        const milisegundos = 2500;
+        setTimeout(() => {
+          if(numberImgProtector == 4){
+            numberImgProtector = 1;
+          }
+          document.querySelector('img.detail').src = _ctx + `img/home-details${numberImgProtector}.png`;
+          ++numberImgProtector;
+          protectorCambiante();
+        }, milisegundos);
+      }
+
+      function obtenerImgPasosBase(){
+        pasos.forEach(e=>{
+          srcPasosBase.push(e.querySelector('img').src);
+        })
+      }
     </script>
   </body>
 </html>
