@@ -773,7 +773,7 @@ section.ritmos_tiempo .box_tiempo {
   .panel-group .panel {
     background-color: transparent;
     border: none; }
-    .panel-group .panel:nth-child(2n+1) .panel-heading:before {
+    .panel-group .panel .panel-heading.ph-1:before {
       content: " ";
       background-color: #a8fa00;
       width: 7px;
@@ -783,7 +783,17 @@ section.ritmos_tiempo .box_tiempo {
       top: 0;
       bottom: 0;
       margin: auto; }
-    .panel-group .panel:nth-child(2n) .panel-heading:before {
+    .panel-group .panel .panel-heading.ph-2:before {
+      content: " ";
+      background-color: #fa7f21;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto; }
+    .panel-group .panel .panel-heading.ph-3:before {
       content: " ";
       background-color: #cf3239;
       width: 7px;
@@ -1466,3 +1476,11 @@ section #moreFav {
     section h4 .svg {
       max-width: 18px;
       max-height: 16px; } }
+
+svg.ico{
+  cursor: pointer !important;
+}
+
+.rutina-cli #diario .svg-color-nota{
+  fill: #ddf515 !important;
+}

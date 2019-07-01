@@ -432,6 +432,14 @@ function activeTooltips(){
     })
 }
 
+function searchSvgTraversing(path){
+    let svg = path;
+    while(svg.tagName.toUpperCase() !== "SVG"){
+        svg = svg.parentElement;
+    }
+    return svg;
+}
+
 function  galeriaPerfilCarousel() {
   if($('.owl-carousel .item').size() < 5)
   {

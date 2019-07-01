@@ -597,6 +597,8 @@ MacroCiclo = (function(){
                             else
                                 return {parcial: v.indicadores[numSemBaseIx].p};
                         }));
+
+                        r.semanas[fix].prioridad = fix % 2 == 0 ? "1,2,3,1,2,3,1" : "3,2,1,1,2,3,3";
                     })
                     r.totalSemanas = Number(r.totalSemanas)+cantSemExcedentes;
                     const consolidado = MacroCicloGet.consolidado(mVC);

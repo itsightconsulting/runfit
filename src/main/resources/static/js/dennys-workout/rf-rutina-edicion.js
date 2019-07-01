@@ -140,6 +140,7 @@ function avanzarRetrocederSemana(numSem, action, parentDiv){
             instanciarTooltips();
             generarDiasEnviados();
             parentDiv.removeAttribute('hidden');
+            console.log(action);
         }
     });
 }

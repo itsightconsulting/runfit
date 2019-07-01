@@ -37,10 +37,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                     .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS)).resourceChain(true)
                     .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));
         else
-            registry.addResourceHandler("/img/**",
+            registry.addResourceHandler(
                     "/fonts/**")
                     .addResourceLocations(
-                            "classpath:/static/img/",
                             "classpath:/static/fonts/")
                     .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS)).resourceChain(true)
                     .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));

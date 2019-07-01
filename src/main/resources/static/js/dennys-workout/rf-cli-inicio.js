@@ -1,19 +1,111 @@
+//Variables requeridas
+let indexGlobal = 0;
+let $body = $("html,body");
+let $rutina;
+let $inFocus;
+let $diaPlantilla;
+let $diaPlantillas;
+let $yelmo = '';
+let $nombreActualizar = '';
+let $memoriaAudio = '';
+let $mediaAudio = '';
+let $mediaNombre = '';
+let $mediaVideo = '';
+let $tiempoActualizar = '';
+let $kmsActualizar = '';
+let $gIndex = '';
+let $tipoMedia = '';
+let $refIxsSemCalendar = [];
+let $fechasCompetencia = [];
+let $eleGenerico;
+let $estilosCopiados = [];
+let $kilometrajeBase = [];
+let $semCalculoMacro = {};
+let $objetivos = [];
+let $ruConsolidado;
+let $chartTemporada = {};
+let $chartMiniPorc = {};
+let $idsComp = [];
+let $semanasEnviadas = [];
+let $diasSeleccionados = [];
+let isDg = "n";//Importante iniciarlo con n
+let $gSemanaIx = 0;
+
 (function(){
     init();
 })();
 
 function init(){
-    instanciandoIndicadoresCirculo();
+    getDatosDeLaUltimaRutina().then((rutina)=>{
+        instanciandoIndicadoresCirculo();
 
-    getDatosDeLaUltimaRutina().then((res)=>{
-        const ix = getSemanaIndice(res.fechaInicio, res.fechaFin);
-        getSemanasDeLaUltimaRutinaGenerada(ix);
+        const ix = getSemanaIndice(rutina.fechaInicio, rutina.fechaFin);
+        getSemanasDeLaUltimaRutinaGenerada(ix).then((sem)=>{
+            //Importante mantener el orden para el correcto funcionamiento
+            $rutina = new Rutina(rutina);
+            $rutina.init(sem, ix);
+
+            $('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
+            //vistaDia(sem);
+            vistaMes(sem);
+            setTimeout(  () => {
+                imgToSvg();
+            }, 400);
+        }).catch((xhr)=>{
+            exception(xhr)
+        });
+
+        $body[0].addEventListener('click', principalesEventosClickRutina);
+        /*
+        validators();
+        instanciarDatosFitnessCliente();
+
+        tabRutina.addEventListener('click', principalesEventosTabRutina);
+        $semanario.addEventListener('click', principalesEventosClickRutina);
+        $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
+        $semanario.addEventListener('focusin', principalEventoFocusIn);
+        cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla);
+        mainTabs.addEventListener('click', principalesAlCambiarTab);
+        btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
+        btnGenerarRutinaCompleta.addEventListener('click', MacroCiclo.generarRutinaCompleta);
+        window.addEventListener('scroll', scrollGlobal);//Scroll event para regresar al techo del container
+        instanciaMediaBD();
+        instanciarTooltips();
+        modalEventos();*/
     }).catch((err)=>{
         console.log(err);
         $.smallBox({color: '#79722b', content: 'Usted aún no cuenta con alguna rutina'});
     });
     eventTab();
     pulsosRitmos();
+}
+
+function principalesEventosClickRutina(e){
+    const input = e.target;
+    const clases = input.classList;
+    console.log(input.tagName);
+    if(input.tagName === "path"){
+        let svg = searchSvgTraversing(input);
+        svgIconsEvents(svg);
+    }
+    else if(input.tagName === "svg"){
+        svgIconsEvents(input);
+    }
+}
+
+function searchSvgTraversing(path){
+    let svg = path;
+    while(svg.tagName.toUpperCase() !== "SVG"){
+        svg = svg.parentElement;
+    }
+    return svg;
+}
+
+function svgIconsEvents(svg){
+    const clases = svg.classList;
+    if (clases.contains('ico-video')) {
+        //svg.parentElement.parentElement.querySelectorAll('[data-fancybox]').forEach(e => $(e).fancybox());
+    }
 }
 
 function instanciandoIndicadoresCirculo(){
@@ -45,39 +137,23 @@ function eventTab() {
     });
 }
 
-function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
-    $.ajax({
-        type: 'GET',
-        url: _ctx + 'cliente/get/semana/ix?semanaIx='+semanaIx,
-        dataType: "json",
-        blockLoading: false,
-        noOne: true,
-        success: function (data, textStatus) {
-            if (textStatus == "success") {
-                if (data == "-9") {
-                    $.smallBox({
-                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
-                        timeout: 4500,
-                        color: "alert",
-                    });
-                } else {
-                    $('.datepicker_inline').data("DateTimePicker").date(data.fechaInicio);
-                    vistaDia(data);
-                    vistaMes(data);
-                }
-                setTimeout(  () => {
-                    imgToSvg();
-                }, 400);
-            }
-
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {
-
-        }
-    });
+async function getSemanasDeLaUltimaRutinaGenerada(semanaIx){
+    return new Promise((resolve, reject)=>{
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'cliente/get/semana/ix?semanaIx='+semanaIx,
+            dataType: "json",
+            blockLoading: false,
+            noOne: true,
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (xhr) {
+                reject(xhr);
+            },
+            complete: function () {}
+        });
+    })
 }
 
 function elementosDia(val) {
@@ -122,7 +198,6 @@ function vistaDia(data) {
             $.each(day, function (i, val) {
                 var firstDate = moment(date[0].lstDia[0].fecha, "DD-MM-YYYY").week();
                 var weeknumber = moment(val.fecha, "DD-MM-YYYY").week();
-                var data = elementosDia(val);
                 if (firstDate == weeknumber) {
                     $("#panel_days").append(
                         `<div class="panel panel-default">
@@ -131,7 +206,7 @@ function vistaDia(data) {
                             <div class="icons">
                               <img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg">
                               <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${val.minutos}</span>
-                              <a data-toggle="collapse" data-parent="#panel_days" href="#dia${i}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
+                              <a data-toggle="collapse" data-parent="#panel_days" href="#dia${i}"><img class=" arrow" src="img/iconos/icon_flecha2.svg"></a>
                             </div>
                           </div>
                           <div class="panel-collapse collapse" id="dia${i}">
@@ -143,7 +218,7 @@ function vistaDia(data) {
                                 <li><img class="svg" src="img/iconos/icon_km.svg">${val.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
                               </ul>
                             <div class="panel-group elementos">
-                              ${data}
+                              ${elementosDia(val)}
                             </div>
                           </div>
                         </div>
@@ -191,8 +266,10 @@ function vistaMes(data) {
 
     });
     $(document).ready(function () {
+        console.log(data[0]);
         if(data[0]){
             var json = jQuery.parseJSON(data[0].metricas);
+            console.log(data[0].metricas);
             var tr;
             for (var i = 0; i < json.length; i++) {
                 tr = $('<tr/>');
@@ -310,5 +387,6 @@ function getSemanaIndice(fechaInicio, fechaFin){
             weekIndex -=1;
         }
     }
+    $gSemanaIx = weekIndex;
     return weekIndex;
 }
