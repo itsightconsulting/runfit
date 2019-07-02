@@ -8,4 +8,8 @@ public interface SecurityUserService {
     String recuperarPassword(String username) throws CustomValidationException;
 
     String cambiarPassword(PasswordDTO passwordDTO, Integer id) throws CustomValidationException;
+
+    void updateFlagEnabled(Integer securityUserId , boolean flagEnabled);
+
+
 }

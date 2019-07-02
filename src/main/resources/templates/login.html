@@ -17,6 +17,8 @@
     <!-- Basic Styles -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/font-awesome.min.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/style.css}+'?'+${version}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}" media="screen"/>
+
 
     <!-- We recommend you use "your_style.css" to override SmartAdmin
          specific styles this will also ensure you retrain your customization with each SmartAdmin update.
@@ -29,6 +31,7 @@
     <!-- #GOOGLE FONT -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"/>
     <style>
+
         .hidden{
             display: none;
         }
@@ -77,23 +80,23 @@
         <div class="login-register hidden">
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Nombres</label>
-                <input id="nombres" name="nombres" type="text">
+                <input id="Nombres" name="Nombres" type="text">
             </div>
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Apellidos</label>
-                <input id="apellidos" name="apellidos" type="text">
+                <input id="Apellidos" name="Apellidos" type="text">
             </div>
             <div class="form-group mail"><span class="fa fa-envelope-o"></span>
                 <label>Correo electrónico</label>
-                <input id="email" name="email" type="text">
+                <input id="Correo" name="Correo" type="text">
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Contraseña</label>
-                <input id="passwordRegister" name="passwordRegister" type="password">
+                <input id="PasswordRegister" name="PasswordRegister" type="password">
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Confirmar Contraseña</label>
-                <input id="passwordConfirmation" name="passwordConfirmation"  type="password">
+                <input id="PasswordConfirmation" name="PasswordConfirmation"  type="password">
             </div>
             <div class="actions">
                 <button class="btn-login" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
@@ -127,13 +130,17 @@
 <!-- JS TOUCH : include this plugin for mobile drag / drop touch events
 <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
 
-<!-- BOOTSTRAP JS -->
-<script th:src="@{/js/bootstrap/bootstrap.min.js}+'?'+${version}"></script>
 
-<!-- JQUERY VALIDATE -->
-<script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
-<script th:src="@{/js/public/login.js}+'?'+${version}"></script>
+    <!-- BOOTSTRAP JS -->
+    <script th:src="@{/js/bootstrap/bootstrap.min.js}+'?'+${version}"></script>
+    <script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
+    <script th:src="@{/js/forms.js}+'?'+${version}"></script>
+    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
+
+    <!-- JQUERY VALIDATE -->
+    <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+    <script th:src="@{/js/public/login.js}+'?'+${version}"></script>
+
 
 <script>
     $(function () {
@@ -189,6 +196,10 @@
             document.getElementById('login-form').submit();
         }
     });
+
+
+
+
 </script>
 
 

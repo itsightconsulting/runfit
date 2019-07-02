@@ -4,6 +4,8 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.BandejaTemporal;
 import com.itsight.domain.PostulanteTrainer;
+import com.itsight.domain.SecurityUser;
+import com.itsight.domain.Visitante;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
@@ -23,8 +25,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import com.itsight.advice.SecCustomValidationException;
+
 
 import javax.validation.Valid;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +56,8 @@ public class PublicoController extends BaseController {
 
     private TrainerFichaService trainerFichaService;
 
+    private SecurityUserService securityUserService;
+
     @Autowired
     private BandejaTemporalRepository bandejaTemporalRepository;
 
@@ -62,7 +69,8 @@ public class PublicoController extends BaseController {
                              SecurityUserRepository securityUserRepository,
                              IdiomaRepository idiomaRepository,
                              ClienteService clienteService,
-                             TrainerFichaService trainerFichaService) {
+                             TrainerFichaService trainerFichaService,
+                             SecurityUserService securityUserService) {
         this.condicionMejoraService = condicionMejoraService;
         this.disciplinaService = disciplinaService;
         this.postulanteTrainerService = postulanteTrainerService;
@@ -71,6 +79,7 @@ public class PublicoController extends BaseController {
         this.idiomaRepository = idiomaRepository;
         this.clienteService = clienteService;
         this.trainerFichaService = trainerFichaService;
+        this.securityUserService = securityUserService;
     }
 
     @GetMapping("/inicio")
@@ -318,5 +327,32 @@ public class PublicoController extends BaseController {
     @GetMapping(value = "/validacion-nompag")
     public @ResponseBody Boolean validarNomPag(@RequestParam String valor){
         return trainerFichaService.checkNomPagExiste(valor);
+    }
+
+    @GetMapping("/visitante/registro/verificar-correo/{hashVisitanteId}")
+    public ModelAndView confirmarCorreoRegistroVisitante (
+            Model model,
+            @PathVariable(name = "hashVisitanteId") String hashVisitanteId, @RequestParam String sc ) throws SecCustomValidationException{
+
+        Integer ViId = getDecodeHashIdSecCustom(new String(Base64.getDecoder().decode(sc.getBytes())), hashVisitanteId);
+
+        if(ViId == 0){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        SecurityUser securityUser = securityUserRepository.findById(ViId).orElse(null);
+
+        if(securityUser == null){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+
+        if(securityUser.isEnabled()){
+            model.addAttribute("msg", Msg.CUENTA_YA_VERIFICADA.get());
+            return new ModelAndView(ViewConstant.MAIN_INF_P);
+        }
+
+        securityUserService.updateFlagEnabled(securityUser.getId(), true);
+        model.addAttribute("msg", Msg.CUENTA_VERIFICADA.get());
+        return new ModelAndView(ViewConstant.MAIN_INF_P);
     }
 }

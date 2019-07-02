@@ -16,6 +16,10 @@ $BODY$
 
         result := true;
 
+    ELSEIF EXISTS(SELECT 1 from visitante WHERE correo = _correo limit 1) THEN
+
+        result := true;
+
     ELSE
 
         result := false;

@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/gestion/cliente-fitness")
 public class ClienteFitnessController {
@@ -72,6 +74,21 @@ public class ClienteFitnessController {
     @GetMapping(value = "/planes")
     public ModelAndView principalplanes() {
         return new ModelAndView(ViewConstant.MAIN_PLANES);
+    }
+
+
+    @GetMapping(value = "/perfil")
+    public ModelAndView perfilClienteFitness() {
+        return new ModelAndView(ViewConstant.CLIENTE_PERFIL);
+    }
+
+
+    @GetMapping(value = "/obtener/completo")
+    public @ResponseBody ClienteFitness obtenerInfoCompletaByClienteId(HttpSession session){
+
+        Integer clienteId = (Integer) session.getAttribute("id");
+
+        return clienteFitnessService.findClientDataByClienteId(clienteId);
     }
 
 }

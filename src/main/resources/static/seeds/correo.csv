@@ -13,3 +13,5 @@ Runfit, observaciones subsanadas pendientes de revisión|<p>Más detalles en: <a
 Runfit, ya falta poco para que seas parte de nuestra familia|<p>Más detalles en: <a href='%s/p/trainer/checkout/%s/%s'>Ver perfil trainer</a></p>|2
 Runfit, recuperación contraseña|<p>Ingresa a este link para que cambies tu contraseña: <a href='%s/p/cambiar/password/%s?sc=%s'>Cambiar</a> <br> Tomar en consideración que el enlace caducará en 24 horas</p>|2
 Runfit, se cambio su contraseña con éxito|<p>Ir al login: <a href='%s/login'>Runfit</a></p>|2
+Verificar correo para finalizar el registro|<h1> Ya falta poco para que puedas enterarte de todo el contenido que tenemos para ti </h1> <h2> Verificar correo: <a href='%s/p/visitante/registro/verificar-correo/%s?sc=%s'>Verificar</a></h2>|2
+

@@ -31,11 +31,11 @@ function eventos(){
         btnRegistrar.addEventListener('click', registro);
     }
 
-    body.addEventListener('focusout', bodyClickEventListener);
+    body.addEventListener('focusout', bodyFocusOutEventListener);
     body.addEventListener('keyup', bodyKeyupEventListener);
 }
 
-function bodyClickEventListener(e){
+function bodyFocusOutEventListener(e){
     const input = e.target;
     if(input.tagName === "INPUT"){
         if(input.type==="text" || input.type==="number"){
@@ -179,7 +179,7 @@ function registro() {
     if ($("#register-form").valid()) {
         const params = getFormData($('#register-form'));
 
-        params.password = $('#passwordRegister').val();
+        params.password = $('#PasswordRegister').val();
 
        delete params.passwordRegister;
 
@@ -193,14 +193,36 @@ function registro() {
                 dataType: "json",
                 data: params,
                 success: function (data, textStatus) {
-                    if (textStatus == "success") {
-                        if (data == "-9") {
-                        }
-                    }
+
+                    setTimeout(()=>{
+                            $('.actions').addClass('hidden');
+                        $.SmartMessageBox({
+                            title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                            content: "" +
+                                "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
+                            buttons: '[SALIR]'
+                        }, function (ButtonPressed) {
+                            if(ButtonPressed){
+                                window.location.href = _ctx + "login";
+                            }
+                        })
+                }, 700)
                 },
                 error: function (xhr) {
-                   //exception(xhr);
-                },
+
+                    const mensaje = xhr.responseJSON.message;
+
+                        $('#divSmallBoxes').css('z-index','100000');
+
+                        $.smallBox({
+                            title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                            content: "" +
+                                "<br/><i style='font-size: 1.2em;'>"+mensaje+"</i>",
+                            timeout: 4500,
+                            color: "alert"
+                        })
+
+                    },
                 complete: function () {
                 }
             });
@@ -224,33 +246,33 @@ function validacionFormularioVisitante(){
             $(element).addClass('valid');
         },
         rules: {
-            nombres: {
+            Nombres: {
                 required: true,
                 rangelength: [1, 30],
                 lettersonly:true
             },
-            apellidos: {
+            Apellidos: {
                 required: true,
                 rangelength: [3, 30],
                 lettersonly: true
             },
-            email: {
+            Correo: {
                 required: true,
                 rangelength: [7, 30],
-                emailValid:true
+                correoValid:true
             },
-            passwordRegister: {
+            PasswordRegister: {
                 required: true,
                 rangelength: [8, 30]
             },
-            passwordConfirmation: {
+            PasswordConfirmation: {
                 required: true,
-                equalTo: "#passwordRegister"
+                equalTo: "#PasswordRegister"
             },
         },
         // Messages for form validation
         messages: {
-            passwordConfirmation : {
+            PasswordConfirmation : {
                 equalTo: 'Repite la misma contraseña'
             }
         },

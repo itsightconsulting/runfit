@@ -31,8 +31,8 @@ public class Visitante {
     @Column(name = "Apellidos", nullable = false)
     private String apellidos;
 
-    @Column(name = "Email", unique = true, updatable = false)
-    private String email;
+    @Column(name = "Correo", unique = true, updatable = false)
+    private String correo;
 
     @Column(name = "Password", nullable = false)
     private String password;

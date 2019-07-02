@@ -17,4 +17,7 @@ public interface ClienteFitnessRepository extends JpaRepository<ClienteFitness, 
 
     @Query("SELECT CF FROM ClienteFitness CF WHERE CF.cliente.id = ?1")
     ClienteFitness findByClienteId(Integer clienteId);
+
+    @Query(value="SELECT CF FROM ClienteFitness CF JOIN FETCH CF.cliente C WHERE CF.cliente.id = ?1")
+    ClienteFitness findClienteAllDataByClienteId(Integer clienteId);
 }

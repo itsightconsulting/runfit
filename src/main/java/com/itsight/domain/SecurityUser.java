@@ -264,4 +264,13 @@ public class SecurityUser{
     public void setId(Integer id) {
         this.id = id;
     }
+
+
+    public Visitante getVisitante() {
+        return visitante;
+    }
+
+    public void setVisitante(Visitante visitante) {
+        this.visitante = visitante;
+    }
 }

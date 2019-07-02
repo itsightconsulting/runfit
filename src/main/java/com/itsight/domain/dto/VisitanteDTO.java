@@ -19,7 +19,7 @@ public class VisitanteDTO implements Serializable {
     @ExtendedEmailValidator
     @NotBlank
     @NaturalId
-    private String email;
+    private String correo;
 
     @Size(max=40)
     @NotBlank

@@ -132,7 +132,8 @@ public class Enums {
         PERFIL_CHECK_OBS_SUBS(11),
         ULTIMA_ETAPA_POSTULANTE_EMP(12),
         INIT_CAMBIO_PASSWORD(13),
-        FINAL_CAMBIO_PASSWORD(14);
+        FINAL_CAMBIO_PASSWORD(14),
+        REGISTRO_VISITANTE_CONFIRMAR_CORREO(15);
 
         final int id;
 
@@ -184,6 +185,7 @@ public class Enums {
         USUARIO_INACTIVO("El usuario que ha ingresado se encuentra inactivo."),
         ENLACE_CADUCADO("El enlace ha caducado"),
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado");
+
         final String msg;
 
         Msg(String msg){

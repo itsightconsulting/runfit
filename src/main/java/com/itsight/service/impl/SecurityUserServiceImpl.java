@@ -69,6 +69,8 @@ public class SecurityUserServiceImpl implements SecurityUserService {
             usuarioRecoverRepository.saveAndFlush(usuRec);
         }
 
+
+
         String hshId = Parseador.getEncodeHash32Id(schema, su.getId());
         String b64sc = new String(Base64.getEncoder().encode(schema.getBytes()));
 
@@ -104,5 +106,11 @@ public class SecurityUserServiceImpl implements SecurityUserService {
         String cuerpo = String.format(correo.getBody(), domainName);
         emailService.enviarCorreoInformativo(correo.getAsunto(), correoDestinatario, cuerpo);
         return EXITO_GENERICA.get();
+    }
+
+
+    @Override
+    public void updateFlagEnabled(Integer securityUserId, boolean flagEnabled) {
+        securityUserRepository.updateEstadoById(securityUserId, !flagEnabled);
     }
 }

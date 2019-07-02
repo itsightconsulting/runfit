@@ -8,6 +8,7 @@
     <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/css  :: fg-css"></th:block>
 </head>
+
 <body class="desktop-detected pace-done mobile-view-activated smart-style-2">
 
 <!-- HEADER -->
@@ -176,20 +177,7 @@
     <!-- END MAIN CONTENT -->
 
 </div>
-<!-- MODALS -->
-<!-- MODAL REPRODUCCION DE AUDIO -->
-<div class="modal fade" id="myModalAudio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="">
-            <div class="text-align-center" style="padding-top: 200px;">
-                <audio id="someaud" controls="" controlsList="nodownload" autoplay="" width="100%" height="100%">
-                    <source id="AudioReproduccion" src="" type="audio/mpeg"/>
-                </audio>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- FINAL MODAL REPRODUCCION DE AUDIO -->
+
 <!-- END MODALS -->
 <!-- END MAIN PANEL -->
 <!-- PAGE FOOTER -->
@@ -243,15 +231,16 @@ you can add as many as you like
 <script th:src="@{/js/tipo-rutina.js}+'?'+${version}"> </script>
 
 
-
+<!--
 <script th:inline="javascript">
     $.get("/user", function(data) {
         $("#user").html(data.userAuthentication.details.name);
         $(".unauthenticated").hide()
         $(".authenticated").show()
     });
-
 </script>
+
+-->
 
 
 

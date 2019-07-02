@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.dto.TipoRutinaDTO;
 import com.itsight.domain.dto.VisitanteDTO;
 import com.itsight.service.VisitanteService;
@@ -24,9 +25,12 @@ public class VisitanteController {
     }
 
     @PostMapping(value="/registro")
-    public @ResponseBody String registroVisitante(@ModelAttribute @Valid VisitanteDTO visitante){
-         return  visitanteService.registrarVisitante(visitante);
- }
+    public @ResponseBody String registroVisitante(@ModelAttribute @Valid VisitanteDTO visitante) throws CustomValidationException {
+        return visitanteService.registrarVisitante(visitante);
+    }
+
+
+
 
 
 }

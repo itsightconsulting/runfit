@@ -162,6 +162,10 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
+
+
+
+
         //Nos aseguramos que si los seeders ya han sido ejecutados nos saltemos su registro
         if(tipoDocumentoService.findOne(1) == null){
             //Main Seeders

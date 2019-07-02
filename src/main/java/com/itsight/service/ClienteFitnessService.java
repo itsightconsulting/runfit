@@ -11,4 +11,7 @@ public interface ClienteFitnessService extends BaseService<ClienteFitness, Integ
 
     ClienteFitness findByClienteId(Integer clienteId);
 
+    ClienteFitness findClientDataByClienteId(Integer clienteId);
+
+
 }
