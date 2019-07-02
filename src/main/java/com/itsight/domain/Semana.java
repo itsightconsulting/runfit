@@ -1,5 +1,6 @@
 package com.itsight.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -88,6 +89,9 @@ public class Semana {
 
     @Column(columnDefinition = "text")
     private String metricasVelocidad;
+
+    @Column(nullable = true)
+    private String prioridad;
 
     @Column
     private boolean flagEnvioCliente;

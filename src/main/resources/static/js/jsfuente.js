@@ -229,7 +229,7 @@ function exception(xhr, errorName) {
             }else{
                 if(xhr['status'] == 401){
                     $.SmartMessageBox({
-                        title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Workout Notification</b>",
+                        title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Notificación</b>",
                         content: "<div class='font-md'><i> Su sesión ha expirado, usted será redireccionado a la página de login...</div></i>",
                         buttons: '[OK]'
                     }, function (ButtonPressed) {
@@ -365,7 +365,7 @@ function spinnerSwitchTab(effect){
 
 function spinnerUpload(xhr) {
     $.SmartMessageBox({
-        title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+        title: "<i class='fa fa-bullhorn'></i> Notificación",
         content: "" +
             "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +
             "<div class='progress' style='width:100%;'><div id='ProgressUpload' class='progress-bar bg-color-teal' data-transitiongoal='0'>0%</div></div>" +

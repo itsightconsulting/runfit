@@ -147,7 +147,7 @@ public class RutinaController {
         sb.append("<p>Su entrenador acaba de asignarle una rutina que se encuentra disponible en nuestra plataforma, esperemos que obtenga los mejores resultados de esta.<br> Que siga teniendo un buen día.</p><br>");
         sb.append("<div class='' style='text-align: center;'><a style='text-decoration:none;width: 115px;height: 25px;background: #28a745;padding: 10px;text-align: center;border-radius: 5px;color: white;font-weight: bold;' class='' href=\""+domainName+"/login/\" target=\"_blanket\">Plataforma Workout</a></div>");
         sb.append("<h4>Dennys Workout, <br> Los Eucaliptos, Los Olivos 15008, Perú.</h4>");
-        emailService.enviarCorreoInformativo("Dennys Workout Notification", correo, sb.toString());*/
+        emailService.enviarCorreoInformativo("Runfit Notificación", correo, sb.toString());*/
         return ResponseCode.REGISTRO.get();
     }
 

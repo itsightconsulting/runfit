@@ -22,6 +22,7 @@ public class SemanaPlantillaDTO {
     private double kilometrajeTotal;
     private String metricas;
     private String metricasVelocidad;
+    private String prioridad;
 
     private List<DiaPlantillaDTO> dias;
 

@@ -154,16 +154,16 @@
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>¿Cúal es tu sexo?<span class="obligatorio">*</span></label>
+                    <label>¿Cúal es tu género?<span class="obligatorio">*</span></label>
                       <ul class="checks">
                         <li>
-                          <div class="chk-content" id="sxMujer">Mujer
-                            <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
+                          <div class="chk-content" id="sxHombre">Masculino
+                            <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
                           </div>
                         </li>
                         <li>
-                          <div class="chk-content" id="sxHombre">Hombre
-                            <input type="radio" name="Sexo" value="1"/><span class="checkmark"></span>
+                          <div class="chk-content" id="sxMujer">Femenino
+                            <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -171,9 +171,9 @@
                 </li>
                 <li>
                   <div class="form-group more-inputs">
-                    <label>Indícanos por favor tu peso(KG) y talla(CM)<span class="obligatorio">*</span></label>
-                    <div><input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg)"/></div>
-                    <div><input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla (Cm)"/></div>
+                    <label>Indícanos por favor tu peso(Kg) y talla(cm)<span class="obligatorio">*</span></label>
+                    <div><input id="Peso" name="Peso" data-aka="Peso" class="form-control" type="text" placeholder="Peso (Kg). Ej. 70"/></div>
+                    <div><input id="Talla" name="Talla" data-aka="Talla" class="form-control" type="text" placeholder="Talla(cm). Ej: 170"/></div>
                     <div><input id="Imc" name="Imc" data-aka="Imc" class="form-control" type="text" placeholder="IMC (Índice de masa corporal)"/></div>
                   </div>
                 </li>
@@ -284,11 +284,11 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
-                    <button class="btn btn-bg-black" type="button" onclick="next_step(1, 2)">Siguiente</button>
-                  </div>
                 </li>
               </ol>
+              <div class="form-group" style="margin-left: 15.5%;">
+                <button class="btn btn-bg-black" type="button" onclick="next_step(1, 2)">Siguiente</button>
+              </div>
             </div>
           </div>
         </div>
@@ -566,11 +566,14 @@
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>Queremos conocer tus frecuencias cardiacas:<br/>Frecuencia cardiaca basal:<span class="obligatorio">*</span></label>
+                    <label>Queremos conocer tus frecuencias cardiacas:<span class="obligatorio">*</span></label>
+                    <p class="form-group-subtitle">Frecuencia cardiaca basal:
+                      <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca basal se refiere a las pulsaciones que una persona tiene por minuto en estado de reposo"></i>
+                    </p>
                     <input id="FrecuenciaCardiaca" name="FrecuenciaCardiaca" data-aka="Frecuencia cardíaca basal" class="form-control" type="number"/>
-                  </div>
-                  <div class="form-group">
-                    <label>Frecuencia cardiaca máxima:<span class="obligatorio">*</span></label>
+                    <p class="form-group-subtitle" style="padding-top: 15px;">Frecuencia cardiaca máxima:
+                      <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca máxima es el número de latidos máximo que puede alcanzar tu corazón durante 1 minuto sometido a esfuerzo"></i>
+                    </p>
                     <input id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" data-aka="Frecuencia cardíaca máxima" class="form-control" type="number"/>
                   </div>
                 </li>
@@ -821,7 +824,7 @@
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
 <script th:inline="javascript">
-  const initPageActive = 3;
+  const initPageActive = 1;
 
   const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
   const stUbicacion = document.getElementById('stUbicacion');
@@ -924,6 +927,7 @@
 
   function tooltipsOn(){
     $('svg path[data-toggle="tooltip"]').tooltip();
+    activeTooltips();
   }
 
   function evtLsChangeUbicacion(e){
@@ -1071,7 +1075,7 @@
 
       if(input.type==="text"){
          input.value = input.value.trim().replace(/ +/g, " ");
-      }else if(input.type==="email"  || input.type==="number"){
+      }else if(input.type==="email"){
          input.value = input.value.trim().replace(/ +/g, "");
       }
 
@@ -1205,7 +1209,6 @@
     condAnatomica.frecuenciaCardiaca = obj.frecuenciaCardiaca;
     condAnatomica.frecuenciaCardiacaMaxima = obj.frecuenciaCardiacaMaxima;
     condAnatomica.formaInicial = obj.formaInicial;
-    condAnatomica.musculosSensibles = selectedMuscles.map(v=>{return {id: v.id.slice(4), nombre: v.name}});
     const salud = obj.cliFit.salud = new Object();
     salud.flagEnfermedad = document.querySelector('#FlagEnfermedad').checked;
     salud.flagFumador = document.querySelector('#FlagFumador').checked;
@@ -1642,14 +1645,14 @@
     document.querySelector('#Username').value = "abc"+String(new Date().getTime());
     document.querySelector('#Password').value = "runfit123";
 
-    var tid = setInterval( function () {
+    /*var tid = setInterval( function () {
       if ( document.readyState !== 'complete' ) return;
       else {
         document.getElementById('btnGuardar').click();
       }
       clearInterval( tid );
       // do your work
-    }, 100);
+    }, 100);*/
   }
 </script>
 </body>

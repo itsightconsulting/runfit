@@ -207,11 +207,11 @@ function carouselPlanes() {
       });
 }
 
-function fancybox() {
+/*function fancybox() {
   $(document).ready(function() {
     $("[data-fancybox]").fancybox();
   });
-}
+}*/
 
 function carouselSuspendidos() {
   $('#carouselSuspendidos').owlCarousel({

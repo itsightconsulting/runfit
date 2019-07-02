@@ -596,7 +596,7 @@
 
     function actualizarFlag(rfId){
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            title: "<i class='fa fa-bullhorn'></i> Notificación",
             content: "" +
                 "<br/><h6>Confirmar baja de atleta:</h6>",
             buttons: '[NO][SI]'
@@ -654,9 +654,9 @@
 
     function fttNp(v, row, ix, pos){
         if(row.contadorRutinas >0){
-            return `<img class="svg rt-cli-ant" onclick="abrirOpcionesNuevaRutina(${row.id})" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+            return `<img class="svg rt-cli-ant" onclick="abrirOpcionesNuevaRutina(${row.id})" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit_file.svg"/>`;
         }else{
-            return `<img class="svg rt-cli-ant" rel="tooltip" title="Este cliente no cuenta con rutinas anteriores, debe generarle una con la opción de al lado" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+            return `<img class="svg rt-cli-ant" rel="tooltip" title="Este cliente no cuenta con rutinas anteriores, debe generarle una con la opción de al lado" src="${_ctx}img/iconos/icon_edit_file.svg"/>`;
         }
     }
 
@@ -680,19 +680,19 @@
                 opciones += `<img class="svg"
                                 title="Crear rutina" rel="tooltip"
                                 onclick='javascript:${fnNuevoRutina}(${row.id},${row.cliId}, ${row.contadorRutinas}, ${"\"" + btoa(row.cliFechaNacimiento) + "\""}, ${"\"" + btoa(row.cliNombreCompleto) + "\""});'
-                                src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg"/>`
+                                src="${_ctx}img/iconos/iconos_RunFit_entrena copia 10.svg"/>`
                 break;
             case EstadoPlan.EN_REVISION:
-                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_entrena copia 10.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
                 break;
             case EstadoPlan.POR_ENVIAR:
-                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_entrena copia 10.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
                 break;
             case EstadoPlan.INICIADO:
-                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_entrena copia 10.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
                 break;
             default://EstadoPlan.CULMINADO
-                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_programa copia.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
+                opciones +=`<img class="svg" src="${_ctx}img/iconos/iconos_RunFit_entrena copia 10.svg" title="Ya se ha asignado una rutina al cliente" rel="tooltip">`;
                 break;
         }
         return opciones;
@@ -701,7 +701,7 @@
         return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_archivo.svg"/>`;
     }
     function fttTemporada(v, row, ix){
-        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/iconos_RunFit_entrena copia 26.svg"/>`;
     }
     function fttEnviarCorreo(v, row, ix){
         return `<img class="svg" onclick="preNotificacionPersonal(${row.id}, ${row.cliId}, '${row.cliCorreo}')" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_mail.svg"/>`;
@@ -864,7 +864,7 @@
         id = getHash32Id('rf-rutina', id);
         clienteId = getHash16Id('rf-rutina', clienteId);
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Workout Notification",
+            title: "<i class='fa fa-bullhorn'></i> Notificación",
             content: "" +
                 "<br/><h6>Confirmar:</h6>",
             buttons: '[NO][SI]'

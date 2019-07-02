@@ -15,6 +15,7 @@
       #indicadorCirculo2,#indicadorCirculo4{
         color: #cf3239 !important;
       }
+
     </style>
   </head>
   <body>
@@ -26,7 +27,8 @@
           <header>
             <div class="text-center">
               <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="img/iconos/icon_hamburger.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="img/logo.png" alt=""></a>
-              <h4 class="user"><img class="svg" src="img/iconos/icon_perfil.svg"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+              <h4 class="user">
+                <img class="svg" src="img/iconos/icon_perfil.svg"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
             </div>
           </header>
           <ul class="nav nav-tabs">
@@ -34,7 +36,7 @@
             <li><a data-toggle="tab" href="#semanal"><img class="svg" src="img/iconos/icon_calendar-mensual.svg"></a></li>
             <li><a data-toggle="tab" href="#mensual"><img class="svg" src="img/iconos/icon_calendar-mensual.svg"></a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content rutina-cli">
             <div class="tab-pane fade in active" id="diario">
               <h4 class="text-center" id="weekDay"></h4>
               <div class="panel-group" id="panel_days">
@@ -497,6 +499,7 @@
     <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
     <!-- CUSTOM NOTIFICATION -->
     <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
+    <script th:src="@{/js/rf-cli-rutina.js}+'?'+${version}"></script>
     <script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
   </body>
 </html>

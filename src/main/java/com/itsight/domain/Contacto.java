@@ -19,7 +19,7 @@ public class Contacto {
     private String correo;
     @Column(name = "Movil", nullable = false)
     private String movil;
-    @Column(name = "mensaje", nullable = false)
+    @Column(name = "mensaje", nullable = false, columnDefinition = "TEXT")
     private String mensaje;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "FechaCreacion", nullable = false, updatable = false)

@@ -42,7 +42,7 @@ ul, ol {
     outline: none !important; }
 
 .container-t {
-    padding: 0 30px; }
+    padding: 0 44px; }
 
 #main-content {
     margin-left: 280px;
@@ -1014,3 +1014,4 @@ section#suspendidos ul.users li a.btn_Activar {
     margin-bottom: 14px;
     border-radius: 15px;
     text-decoration: none; }
+

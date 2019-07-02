@@ -38,7 +38,7 @@ public class PostulanteTrainer {
     @Column(nullable = false)
     private String movil;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String mensaje;
 
     @Column(nullable = false)

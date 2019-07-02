@@ -160,15 +160,15 @@
                               </div>
                           </div>
                           <div class="form-group">
-                              <label>¿CUÁL ES TU SEXO?<span class="obligatorio">*</span></label>
+                              <label>¿CUÁL ES TU GÉNERO?<span class="obligatorio">*</span></label>
                               <ul class="checks">
                                   <li>
-                                      <div class="chk-content">Hombre
+                                      <div class="chk-content">Masculino
                                           <input name="Sexo" data-aka="¿CUÁL ES TU SEXO?" type="radio"  value="1"><span class="checkmark"></span>
                                       </div>
                                   </li>
                                   <li>
-                                      <div class="chk-content">Mujer
+                                      <div class="chk-content">Femenino
                                           <input name="Sexo" type="radio" value="2"><span class="checkmark"></span>
                                       </div>
                                   </li>
@@ -423,7 +423,11 @@
       function mostrarDetalleServicio(servicioId){
           const svc = servicios.find(e=>e.id===servicioId);
           document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
-          document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional ? svc.infoAdicional.replace(/\r?\n/g, '<br />') : "";
+          const infoAdicional = document.getElementById('InfoAdicional');
+          infoAdicional.innerHTML = svc.infoAdicional ? svc.infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
+          if(svc.infoAdicional){
+              infoAdicional.parentElement.classList.remove('hidden');
+          }
           setIncluyeDelServicio(svc.incluye);
           setFileTermCond(svc);
           setTarifarios(svc.tarifarios);
@@ -498,6 +502,11 @@
         getTrainer();
         checkFrom();
         constraintsValidation();
+        modalOptionHidden();
+      }
+
+      function modalOptionHidden(){
+          document.querySelector('#myModalCC .modal-footer').classList.add('hidden');
       }
 
       function checkFrom(){
@@ -541,7 +550,7 @@
             }
         }else{
             $.SmartMessageBox({
-                title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Workout Notification</b>",
+                title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Notificación</b>",
                 content: "<div style='font-size: 1.3em'>Antes de ir al formulario de registro, deseamos saber, ¿El servicio elegido está relacionado con la disciplina de running?</div>",
                 buttons: '[NO][SI]'
             }, function (ButtonPressed) {
@@ -918,7 +927,8 @@
           document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional ? servicios[0].infoAdicional.replace(/\r?\n/g, '<br />') : "";
+          const infoAdicional = document.getElementById('InfoAdicional');
+          infoAdicional.innerHTML = servicios[0].infoAdicional ? servicios[0].infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
           selServicioId = fSs.id;
       }
 

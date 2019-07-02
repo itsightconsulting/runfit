@@ -475,9 +475,18 @@ footer li a span.fa{
   background-color: #9bb22a
 }
 
-.entrena_correctamente ol li:first-child::before {
+/*.entrena_correctamente ol li:first-child::before {
   background-color: #303030;
   color: #fff
+}*/
+
+.entrena_correctamente ol li.paso_elegido::before {
+  background-color: #303030;
+  color: #fff
+}
+
+.entrena_correctamente ol .entrena-pasos{
+  cursor: pointer;
 }
 
 .entrena_correctamente ol li .item {
@@ -2631,6 +2640,10 @@ img.tibial {
   left: 76px
 }
 
+.ul-msc-l{
+  font-size: 0.8em !important;
+}
+
 .cuerpos .humano_movil {
   display: none
 }
@@ -3649,3 +3662,11 @@ section.trainers-form {
   max-height: 540px;
 }
 
+.chk-content .checkmark-musculo:after{
+  height: 8px !important;
+
+}
+
+.chk-content .checkmark-musculo{
+  top: 3px !important;
+}

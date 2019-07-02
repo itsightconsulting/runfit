@@ -1,45 +1,27 @@
 function imgToSvg () {
-    jQuery('img.svg').each(function () {
-        var $img = jQuery(this);
-        var imgID = $img.attr('id');
-        var imgOnClick = $img.attr('onclick');
-        var imgClass = $img.attr('class');
-        var imgURL = $img.attr('src');
-        var rel = $img.attr('rel');
-        var title = $img.attr('title');
-        var dtPlace = $img.attr('data-placement');
 
-        jQuery.get(imgURL, function (data) {
-            var $svg = jQuery(data).find('svg');
-            if (typeof imgID !== 'undefined') {
-                $svg = $svg.attr('id', imgID);
-            }
-            if (typeof imgClass !== 'undefined') {
-                $svg = $svg.attr('class', imgClass + ' replaced-svg');
-            }
-            if (typeof imgOnClick !== 'undefined') {
-                $svg = $svg.attr('onclick', imgOnClick);
-            }
-            if (typeof imgOnClick !== 'undefined') {
-                $svg = $svg.attr('onclick', imgOnClick);
-            }
-            if (typeof rel !== 'undefined') {
-                $svg = $svg.attr('rel', rel);
-            }
-            if (typeof title !== 'undefined') {
-                $svg = $svg.attr('title', title);
-            }
-            if (typeof dtPlace !== 'undefined') {
-                $svg = $svg.attr('data-placement', dtPlace);
-            }
+    $('img.svg').each(function () {
+        var $img = jQuery(this);
+        var imgURL = $img.attr('src');
+        var element = $img[0];
+
+        $.get(imgURL, function (data) {
+            var $svg = $(data).find('svg');
+            $img[0].getAttributeNames().forEach(e=>{
+                $svg = $svg.attr(e, element.getAttribute(e));
+            })
             $svg = $svg.removeAttr('xmlns:a');
             if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
                 $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
             }
             $img.replaceWith($svg);
+            if($svg[0].hasAttribute('rel')){
+                $($svg[0]).tooltip();
+            }
+
         }, 'xml');
     });
-};
+}
 
 function datepicker_init () {
     $('.datepicker_inline').datetimepicker({
@@ -179,11 +161,11 @@ function owlCarouselVideoteca() {
 
 }
 
-function fancybox() {
+/*function fancybox() {
     $(document).ready(function() {
         $("[data-fancybox]").fancybox();
     });
-}
+}*/
 
 function heightCard() {
     var ancho = window.innerWidth;
@@ -233,7 +215,7 @@ $(function() {
     owlCarouselVideoteca();
     //heightCard();
     miniPanelActive();
-    fancybox();
+    //fancybox();
     select_fave();
     weekMonth();
     try{

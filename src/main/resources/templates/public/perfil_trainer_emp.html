@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-  <title>Perfil trainer específico | Fitness | Runfit</title>
+  <title>Perfil empresa | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
 </head>
@@ -347,7 +347,11 @@
       function mostrarDetalleServicio(servicioId){
           const svc = servicios.find(e=>e.id===servicioId);
           document.querySelector('#DescripcionServicio').innerHTML = svc.descripcion.replace(/\r?\n/g, '<br />');
-          document.querySelector('#InfoAdicional').innerHTML = svc.infoAdicional.replace(/\r?\n/g, '<br />');
+          const infoAdicional = document.getElementById('InfoAdicional');
+          infoAdicional.innerHTML = svc.infoAdicional ? svc.infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
+          if(svc.infoAdicional){
+              infoAdicional.parentElement.classList.remove('hidden');
+          }
           setIncluyeDelServicio(svc.incluye);
           setFileTermCond(svc);
           setTarifarios(svc.tarifarios);
@@ -687,9 +691,8 @@
           document.getElementById('DescripcionServicio').innerHTML =  fSs.descripcion.replace(/\r?\n/g, '<br />');
           const dvIncServicio = document.getElementById('IncluyeServicio');
           dvIncServicio.innerHTML = fSs.incluye.split("|").map((e) => `<li>${e}</li>`).join('');
-          if(servicios[0].infoAdicional){
-              document.getElementById('InfoAdicional').innerHTML = servicios[0].infoAdicional.replace(/\r?\n/g, '<br />');
-          }
+          const infoAdicional = document.getElementById('InfoAdicional');
+          infoAdicional.innerHTML = servicios[0].infoAdicional ? servicios[0].infoAdicional.replace(/\r?\n/g, '<br />') : infoAdicional.parentElement.classList.add('hidden');
           selServicioId = fSs.id;
       }
 
