@@ -36,6 +36,29 @@
       input.marca-referencial{
         cursor: pointer !important;
       }
+
+      .ok-time-selector {
+        position: absolute;
+        top: -6px;
+        right: -9px;
+        font-size: 1.8em;
+        color: black;
+      }
+
+      .dv-input-time:after{
+        content: ":";
+        position: absolute;
+        top: 9px;
+        right: -2px;
+      }
+
+      .popover-content{
+        width: 300px;
+      }
+
+      .input-time{
+        /*border: 1px solid #9d9d9d !important;*/
+      }
     </style>
   </head>
   <body>
@@ -454,21 +477,19 @@
                         </select>
                       </div>
                       <div class="form-group">
-                        <label>Tu alimentación es:<span class="obligatorio">*</span></label>
+                        <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
                         <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
-                          <option value="1">Sana</option>
-                          <option value="2">Promedio</option>
-                          <option value="3">Mala</option>
-                          <option value="3">Pésima</option>
+                          <option value="1">Buenos</option>
+                          <option value="2">Malos</option>
+                          <option value="3">Regulares</option>
                         </select>
                       </div>
                       <div class="form-group">
                         <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
                         <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control hidden">
-                          <option value="1">Nulo</option>
-                          <option value="2">Bajo</option>
-                          <option value="3">Intermedio</option>
-                          <option value="4">Alto</option>
+                          <option value="1">Bajo</option>
+                          <option value="2">Medio</option>
+                          <option value="3">Alto</option>
                         </select>
                       </div>
                     </li>
@@ -607,7 +628,7 @@
                       </li>
                       <li class="range-height">
                         <div class="form-group">
-                          <label>¿En que forma estás?<br/>¡Dinos la verdad eh!<span class="obligatorio">*</span></label>
+                          <label>¿En que forma física estás?<br/>¡Dinos la verdad eh!<span class="obligatorio">*</span></label>
                         </div>
                         <div class="rango bg-slide">
                           <input id="FormaInicial" name="FormaInicial" type="range" value="0" data-aka="Seleccione que tan en forma se encuentra"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
@@ -909,7 +930,9 @@
                     <li>
                       <div class="form-group">
                         <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
-                        <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" value="00:00:01"/>
+                        <div class="input-time">
+                          <input id="TiempoUnKilometro" name="TiempoUnKilometro" readonly="readonly" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" value="00:00:01"/>
+                        </div>
                       </div>
                     </li>
                     <li>
@@ -1061,7 +1084,7 @@
                         <p class="form-group-subtitle">Completar únicamente una distancia</p>
                         <ul class="distance">
                           <li>
-                            <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00"/>
+                            <div class="input-time"><input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00"/></div>
                             <p>2km</p>
                           </li>
                           <li>
@@ -1104,11 +1127,7 @@
                                       <input class="form-control inp-fecha" name="InpFechaCompetencia" data-aka="Fecha competencia" type="date" th:value="${today}"/>
                                     </td>
                                     <td>
-                                      <select class="form-control inp-distancia no-multi">
-                                        <option value="10">10K</option>
-                                        <option value="21">21K</option>
-                                        <option value="42">42K</option>
-                                      </select>
+                                      <input class="form-control inp-distancia" name="InpDistancia" id="InpDistancia" data-aka="Distancia de competencia" type="text"/>
                                     </td>
                                     <td>
                                       <input class="form-control inp-nombre" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text"/>
@@ -1133,11 +1152,7 @@
                                       <input class="form-control inp-fecha" data-aka="Fecha competencia" type="date" th:value="${today}"/>
                                     </td>
                                     <td>
-                                      <select class="form-control inp-distancia no-multi">
-                                        <option value="10">10K</option>
-                                        <option value="21">21K</option>
-                                        <option value="42">42K</option>
-                                      </select>
+                                      <input class="form-control inp-distancia" type="text" maxlength="5" data-aka="Distancia de competencia"/>
                                     </td>
                                     <td>
                                       <input class="form-control inp-nombre" type="text" maxlength="40"/>
@@ -1322,6 +1337,7 @@
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:inline="javascript">
       const initPageActive = 1;
+      let $oculto = "";
 
       const composedMuscles = [
         ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"],
@@ -1437,6 +1453,19 @@
         document.querySelector('body').addEventListener('click', bodyClickEventListener);
         document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
         document.querySelector('body').addEventListener('change', bodyChangeEventListener);
+        document.querySelector('body').addEventListener('keypress', (e)=>{
+          const input = e.target;
+          if (input.classList.contains('input-time')) {
+            var code = (e.which) ? e.which : e.keyCode;
+            if (code > 31 && (code < 48 || code > 57)) {
+              e.preventDefault();
+            }else{
+              setTimeout(() => {
+                $oculto = Array.from(input.parentElement.parentElement.querySelectorAll('input')).map(e => e.value).join(':');
+              }, 50);
+            }
+          }
+        });
       }
 
       function tooltipsOn(){
@@ -1873,6 +1902,11 @@
         inpDesComp.setAttribute('data-aka', "NOMBRE DE COMPETICIÓN A PARTICIPAR");
         $(inpDesComp).rules("add",{required: true, rangelength: [5, 40]});
 
+        const inpDistancia = nuevaAgregada.querySelector('.inp-distancia');
+        inpDistancia.setAttribute('name', "InpDistancia"+rowNum);
+        inpDistancia.setAttribute('data-aka', "DISTANCIA DE COMPETENCIA");
+        $(inpDistancia).rules("add",{required: true, number: true, rangelength: [5, 40]});
+
         const inpTiempoComp = nuevaAgregada.querySelector('.inp-tiempo');
         inpTiempoComp.setAttribute('name', "TiempoComp"+rowNum);
         inpTiempoComp.setAttribute('data-aka', "TIEMPO OBJETIVO DE COMPETENCIA");
@@ -1952,7 +1986,7 @@
             },
             Correo: {
               required: true,
-              correoValid: true,
+              emailValid: true,
               rangelength: [7, 40],
             },
             Movil: {
@@ -2178,6 +2212,11 @@
             InpFechaCompetencia:{
               greaterThanDate: nowDatePlusOne,
             },
+            InpDistancia:{
+              required: true,
+              number: true,
+              rangelength: [1,5]
+            },
             TiempoComp:{
               required: true,
               timing: true,
@@ -2290,7 +2329,55 @@
           // do your work
         }, 100);*/
       }
+      //TODO LO REFERENTE A LOS POPOVER PARA SELECCION DE TIEMPO
+      $(function () {
+        const content = `<div class='row'>
+                            <div class="col-md-12 text-center">
+                              <div class="col col-md-4 col-xs-4 dv-input-time"><input placeholder="HH" class="form-control text-center input-time" maxlength="2"/></div>
+                              <div class="col col-md-4 col-xs-4 dv-input-time"><input placeholder="MM" class="form-control text-center input-time" maxlength="2"/></div>
+                              <div class="col col-md-4 col-xs-4"><input placeholder="SS" class="form-control text-center input-time" maxlength="2"/></div>
+                              <a class="btn ok-time-selector" data-dismiss="popover"><i data-dismiss="popover" class="fa fa-15px fa-check-circle-o"></i></a>
+                            </div>
+                         </div>`;
+        $('.input-time').attr('data-content', content);
 
+        /*data-html="true" data-placement="bottom" data-toggle="tooltip"*/
+        $('.input-time').popover({html: true, placement: "bottom"});
+
+        $('body').on('hidden.bs.popover', function (e) {
+          $(e.target).data("bs.popover").inState.click = false;
+        });
+
+      });
+
+      $(body).on('hidden.bs.popover', function (e) {
+        const input = e.target;
+        const clases = input.classList;
+        if(clases.contains('input-time')){
+          const reallyInput = input.firstElementChild;
+          reallyInput.value = !$oculto ? '' : $oculto;
+          $(reallyInput).valid();
+          //Para que no intervenga si se abre en otro input
+          //$oculto = "";
+        }
+      })
+      $(body).on('shown.bs.popover', function (e) {
+        const input = e.target;
+        const clases = input.classList;
+        if(clases.contains('input-time')){
+          if(/^[0-9]{1,2}:[0-5][0-9]:[0-5][0-9]$/i.test(input.value)){
+            const popover = input.nextElementSibling;
+            const arrTime = input.value.split(":");
+            popover.querySelectorAll('input').forEach((e, ix)=>{
+              e.value = arrTime[ix];
+            })
+          }
+
+          input.nextElementSibling.querySelector('a.ok-time-selector').addEventListener('click', ()=>{
+            $(input).popover('hide');
+          })
+        }
+      })
     </script>
   </body>
 </html>

@@ -38,9 +38,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                     .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));
         else
             registry.addResourceHandler(
-                    "/fonts/**")
+                    "/img/**","/fonts/**")
                     .addResourceLocations(
-                            "classpath:/static/fonts/")
+                            "classpath:/static/fonts/",
+                            "classpath:/static/img/")
                     .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS)).resourceChain(true)
                     .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));
     }

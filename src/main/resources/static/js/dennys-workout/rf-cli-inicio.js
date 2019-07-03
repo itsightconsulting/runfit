@@ -30,6 +30,7 @@ let $semanasEnviadas = [];
 let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
 let $gSemanaIx = 0;
+let $numSem = document.getElementById('NumSemana');
 
 (function(){
     init();
@@ -254,7 +255,6 @@ function vistaMes(data) {
                           <li><img class="svg" src="img/iconos/icon_cronometro.svg">${dato.minutos}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
                           <li><img class="svg" src="img/iconos/icon_km.svg">${dato.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
                         </ul>
-                        
                         ${data}
                       </div>
                     </div>`
@@ -266,7 +266,6 @@ function vistaMes(data) {
 
     });
     $(document).ready(function () {
-        console.log(data[0]);
         if(data[0]){
             var json = jQuery.parseJSON(data[0].metricas);
             console.log(data[0].metricas);
