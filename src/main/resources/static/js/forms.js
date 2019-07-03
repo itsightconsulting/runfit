@@ -365,6 +365,9 @@ function doMultiselectCheckBox(){
     })
 
     document.querySelectorAll('select:not([multiple])').forEach(e=>{
+        if(e.classList.contains('no-multi')){
+            return;
+        }
         $(e).multiselect({
             multiple: false,
             enableFiltering: true,
@@ -373,40 +376,17 @@ function doMultiselectCheckBox(){
             onChange: (e, optIsSelected)=>{
                 const option = e[0];
                 const select = option.parentElement;
-                $(select).valid();
-            }
-        });
-    })
-}
-
-function multiSelectFichaRunning(){
-    document.querySelectorAll('select[multiple="multiple"]').forEach(e=>{
-        $(e).multiselect({
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            maxHeight: 300,
-            onChange: (e, optIsSelected)=>{
-                const option = e[0];
-                const select = option.parentElement;
-                $(select).valid();
-            }
-        });
-    })
-
-    document.querySelectorAll('select:not([multiple])').forEach(e=>{
-        if(!e.classList.contains('no-multi')){
-            $(e).multiselect({
-                multiple: false,
-                enableFiltering: true,
-                enableCaseInsensitiveFiltering: true,
-                maxHeight: 300,
-                onChange: (e, optIsSelected)=>{
-                    const option = e[0];
-                    const select = option.parentElement;
-                    $(select).valid();
+                if(select.classList.contains('ubigeo')){
+                    if(select.id === "Dep"){
+                        depYprovChange(select.value, '', 1);
+                    } else if(select.id === "Pro"){
+                        const depId = document.getElementById('Dep').value;
+                        depYprovChange(depId, select.value , 2);
+                    }
                 }
-            });
-        }
+                $(select).valid();
+            }
+        });
     })
 }
 
@@ -643,4 +623,50 @@ function validUniqueEmailOrUsernameOrNomPag(input, pathURLDiff){
             exception(err);
         }
     })
+}
+
+
+/* UBIGEO */
+
+function depYprovChange(depId, provId, pos){
+    const scpY = '&amp;';
+    const url = pos == 1 ? `p/ubigeo/get/peru-prov-by-dep?depId=${depId}` : `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${depId+scpY.substr(0,1)}provId=${provId}`;
+    fetch(_ctx+url)
+        .then(res=> {
+                if(res.ok){
+                    return res.json();
+                }
+            }
+        ).then(res=>{
+        const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
+        const pfSel = pos == 1 ? '<option value="">Seleccione</option>' : '';
+        document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        if(pos == 1){
+            const dis = document.getElementById('Dis');
+            document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
+        }
+        $(pos==1 ? '#Pro' : '#Dis').multiselect('rebuild');
+    }).catch((err)=>{
+        exception(err);
+    });
+}
+
+function getUbigeoPeruLim(){
+    fetch(_ctx+'p/ubigeo/get/peru-lim')
+        .then(res=> {
+                if(res.ok){
+                    return res.json();
+                }
+            }
+        ).then(res=>{
+        document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        $('#Dep').val(15);
+        $('#Dep').multiselect('rebuild');
+        $('#Dis').multiselect('rebuild');
+        $('#Pro').multiselect('rebuild');
+    }).catch((err)=>{
+        exception(err);
+    });
 }

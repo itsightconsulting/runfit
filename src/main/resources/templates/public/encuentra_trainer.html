@@ -22,13 +22,13 @@
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>BÚSQUEDA POR NOMBRE</label>
-                <input class="form-control" type="text" id="Nombres" name="Nombres" placeholder="Nombre del trainer">
+                <input class="form-control" type="text" id="Nombres" name="Nombres" placeholder="Nombre del trainer" maxlength="60">
               </div>
             </div>
             <div class="col-md-4">  
               <div class="form-group">
                 <label>UTILIZA PALABRAS CLAVES</label>
-                <input class="form-control" id="Acerca" name="Acerca" type="text" placeholder="Ejem: Trail, circuitos, funcional...">
+                <input class="form-control" id="Acerca" name="Acerca" type="text" placeholder="Ejem: Trail, circuitos, funcional..." maxlength="30">
               </div>
             </div>
             <div class="col-md-4">
@@ -45,7 +45,7 @@
             <div class="col-md-4 view-only-desktop">
               <div class="form-group">
                 <label>SERVICIOS</label>
-                <input class="form-control" type="text" id="Servicio" name="Servicio" placeholder="Nombre del servicio">
+                <input class="form-control" type="text" id="Servicio" name="Servicio" placeholder="Nombre del servicio" maxlength="50">
               </div>
             </div>
             <div class="col-md-8 view-only-desktop">
@@ -254,6 +254,7 @@
       }
 
       function recrearListado(arr){
+        console.log(arr);
         const divTrainers = document.getElementById('Trainers');
         arr.forEach((e)=>{
           const acLen = e.acerca.length;
@@ -274,7 +275,6 @@
           }else{
             nombreFinal = e.nombreCompleto.includes(' xxx') ? e.nombreCompleto.substring(0, e.nombreCompleto.indexOf(" xxx")) : e.nombreCompleto;
           }
-
           divTrainers.appendChild(htmlStringToElement(`
           <div class="group-trainer row">
               <div class="col-md-3 pad-0">

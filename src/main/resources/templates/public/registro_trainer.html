@@ -258,7 +258,7 @@
                                                 <label>DEPARTAMENTO:</label>
                                             </div>
                                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
                                                     <option selected="selected" value="15">Lima</option>
                                                 </select>
                                             </div>
@@ -268,7 +268,7 @@
                                                 <label>PROVINCIA:</label>
                                             </div>
                                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                                                     <option selected="selected" value="01">Lima</option>
                                                 </select>
                                             </div>
@@ -278,7 +278,7 @@
                                                 <label>DISTRITO:</label>
                                             </div>
                                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                                                     <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
                                                 </select>
                                             </div>
@@ -296,12 +296,12 @@
                                     <input class="form-control" type="password" id="Password" name="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
+                                    <label for="Username">DIRECCIÓN WEB<span class="obligatorio">*</span>
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                     </label>
                                     <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
                                     <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                                    <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="NOMBRE DE PÁGINA">
+                                    <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="DIRECCIÓN WEB">
                                 </div>
                                 <div class="" style="padding-bottom: 10px; font-weight: 100;">
                                     <label id="NomPagFull"></label>
@@ -939,7 +939,6 @@
                     pwcheck: true
                 },
                 NombreServicio:{
-                    lettersonly: true,
                     rangelength: [2, 50],
                 },
                 PrimerIncluyeServicio:{
@@ -1011,9 +1010,6 @@
             messages: {
                 Username: {
                     pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
-                },
-                NombreServicio:{
-                    pattern: "Solo se admiten letras y números"
                 },
                 PrecioPaquete:{
                     number: function(){

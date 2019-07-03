@@ -228,7 +228,13 @@ Calc = (function(){
         setRestantes: ()=>{
             try {
                 const tiempoDesentrControl = document.querySelector('#TiempoDesentrControl').value.toSeconds();
-                const disCompetencia = Number(document.querySelector('#DistanciaCompetencia').value);
+                const eleDistancia = document.querySelector('#DistanciaCompetencia');
+                let disCompetencia;
+                if(!eleDistancia.value){
+                    eleDistancia.selectedIndex = 1;
+                }
+                disCompetencia = Number(eleDistancia.value);
+
                 const medidaDisCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return disCompetencia == v.dist})[0].medida;
                 const distanciaControl = Number(document.querySelector('#DistanciaControl').value);
                 const medidaDisControl = BaseCalculo.oficialesMedidasKms.filter(v=>{return distanciaControl == v.dist})[0].medida;

@@ -259,7 +259,7 @@ function validacionFormularioVisitante(){
             Correo: {
                 required: true,
                 rangelength: [7, 30],
-                correoValid:true
+                emailValid:true
             },
             PasswordRegister: {
                 required: true,

@@ -3670,3 +3670,59 @@ section.trainers-form {
 .chk-content .checkmark-musculo{
   top: 3px !important;
 }
+
+/* CROPPERJS */
+
+.cropper-crop-box, .cropper-view-box {
+  border-radius: 50% !important;
+}
+
+.cropper-view-box {
+  box-shadow: 0 0 0 1px #39f !important;
+  outline: 0 !important;
+}
+
+.cropper-face cropper-move{
+  border-radius: 50% !important;
+}
+
+.cropper-line.line-n{
+  display: none;
+}
+
+.cropper-line.line-s{
+  display: none;
+}
+
+.cropper-line.line-w{
+  display: none;
+}
+
+.cropper-line.line-e{
+  display: none;
+}
+
+.cropper-point.point-nn{
+  display: none;
+}
+.cropper-point.point-ns{
+  display: none;
+}
+.cropper-point.point-nw{
+  display: none;
+}
+.cropper-point.point-ne{
+  display: none;
+}
+.cropper-point.point-sw{
+  display: none;
+}
+.cropper-point.point-se{
+  display: none;
+}
+
+.cropper-face.cropper-move{
+  border-radius: 50%;
+}
+
+/* END CROPPERJS */

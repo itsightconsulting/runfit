@@ -112,7 +112,7 @@
                           <label>Departamento:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10 hidden" disabled="disabled" id="Dep" name="Dep" data-aka="Ubigeo departamento">
+                          <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento">
                             <option selected="selected" value="15">Lima</option>
                           </select>
                         </div>
@@ -122,7 +122,7 @@
                           <label>Provincia:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10 hidden" disabled="disabled" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                          <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                             <option selected="selected" value="01">Lima</option>
                           </select>
                         </div>
@@ -132,7 +132,7 @@
                           <label>Distrito:</label>
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                          <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                          <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                             <option selected="selected" value="01">Lima</option>
                           </select>
                         </div>
@@ -756,7 +756,7 @@
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>Finalmente, ¿cómo te enteraste de nosotros?</label>
+                    <label>Finalmente, ¿cómo te enteraste de nosotros?<span class="obligatorio">*</span></label>
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Por recomendación
@@ -894,24 +894,6 @@
         }
       })
     }
-  }
-
-  function getUbigeoPeruLim(){
-    fetch(_ctx+'p/ubigeo/get/peru-lim')
-            .then(res=> {
-                      if(res.ok){
-                        return res.json();
-                      }
-                    }
-            ).then(res=>{
-      document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-      document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-      document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-      $('#Dep').val(15);
-      $('#Dis').multiselect('rebuild');
-    }).catch((err)=>{
-      exception(err);
-    });
   }
 
   function mainEventListeners(){
@@ -1266,29 +1248,6 @@
     }
     return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
   }
-
-  function depYprovChange(depId, provId, pos){
-    const scpY = '&amp;';
-    const url = pos == 1 ? `p/ubigeo/get/peru-prov-by-dep?depId=${depId}` : `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${depId+scpY.substr(0,1)}provId=${provId}`;
-    fetch(_ctx+url)
-            .then(res=> {
-                      if(res.ok){
-                        return res.json();
-                      }
-                    }
-            ).then(res=>{
-      const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
-      const pfSel = pos == 1 ? '<option value="">Seleccione</option>' : '';
-      document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-      if(pos == 1){
-        const dis = document.getElementById('Dis');
-        document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
-      }
-    }).catch((err)=>{
-      exception(err);
-    });
-  }
-
 
   function agregarInputDinamico(e){
     if(e.parentElement.children.length == 4){

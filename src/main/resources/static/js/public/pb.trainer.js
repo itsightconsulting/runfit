@@ -462,6 +462,7 @@ function uploadFotoPerfil(d){
 
 function init(){
     instanceInitTab();
+    mainSeeders();
     modalEventos();
     populateBancos();
     activeTooltips();
@@ -469,6 +470,10 @@ function init(){
     instanceCropper();
     doMultiselectCheckBox();
     if(flag_form_populate){populateForm();}
+}
+
+function mainSeeders(){
+    getUbigeoPeruLim();
 }
 
 function instanceCropper(){
