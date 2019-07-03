@@ -437,7 +437,8 @@ function  galeriaPerfilCarousel() {
                   items: 1
               },
               600: {
-                  items: 3
+                  items: 3,
+
               },
               1000: {
                   items: 4
@@ -454,7 +455,7 @@ function  galeriaPerfilCarousel() {
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,
-          nav: true,
+          nav: false,
           rtl: true,
           autoWidth: true,
           rewind: true,
@@ -466,7 +467,8 @@ function  galeriaPerfilCarousel() {
                   items: 3
               },
               1000: {
-                  items: 4
+                  items: 4,
+                  nav: true
               }
           }
       });

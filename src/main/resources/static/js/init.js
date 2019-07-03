@@ -208,6 +208,7 @@ $(function() {
     miniPanelActive();
     //fancybox();
     select_fave();
+    $('[rel="tooltip"]').tooltip()
     try{
         leftPanelFocus()
     }catch(e){}
