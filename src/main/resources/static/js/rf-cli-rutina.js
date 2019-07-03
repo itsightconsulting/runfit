@@ -2654,7 +2654,7 @@ RutinaDiaHTML = (function(){
                           <div class="panel-heading">
                             <h3>${elemento.nombre}<div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div></h3>
                             <div class="icons">
-                              <img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg">
+                              <div class="svg-wrap" rel="tooltip" title="x"><img class="svg" src="img/iconos/icon_microfono.svg"></div><img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg">
                               <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${elemento.minutos}</span>
                               <a data-toggle="collapse" href="#elemento-${ix+''+diaIndex}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
                             </div>
