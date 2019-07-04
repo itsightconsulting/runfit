@@ -37,4 +37,12 @@ public class PaisController {
     UbPeruLimDTO getUbigeoPeruDistByDepAndProv(@RequestParam("depId") String depId, @RequestParam("provId") String provId){
         return ubPeruService.findPeDistByDepAndProv(depId, provId);
     }
+
+    @GetMapping("/get/peru-dis-by-ubi")
+    public @ResponseBody
+    String getDistritoPeruByUbi(@RequestParam("ubi") String ubiId){
+
+        return ubPeruService.findPeDistbyUbi(ubiId);
+    }
+
 }

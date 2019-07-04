@@ -1563,14 +1563,17 @@ h1 {
   position: relative;
   z-index: 1;
   object-fit: cover;
-  object-position: bottom;
+  object-position: center;
 }
 
 .banner.home img.detail {
   position: absolute;
   z-index: 2;
-  right: -12%;
-  bottom: 50px
+  right: -10%;
+  bottom: 50px;
+  max-height: 490px;
+  max-width: 715px;
+  height: 57%;
 }
 
 .banner .title-page h1 {
@@ -1580,7 +1583,7 @@ h1 {
   top: 25%;
   font-size: 72.25px;
   color: #fff;
-  padding-left: 55px
+  padding-left: 45px
 }
 
 .banner .title-page h1 i {
@@ -1601,7 +1604,7 @@ h1 {
   width: 158px;
   height: 100%;
   border-bottom: 3px solid #fff;
-  -webkit-transform: rotate(105deg);
+  -webkit-transform: rotate(100deg);
   position: absolute;
   top: 15px;
   left: 15px
@@ -1760,15 +1763,40 @@ h1 {
 
 .owl-carousel .item img  {
   width: 135px;
-    height: 130px;
-    object-fit: cover;
-    object-position: center;
+  height: 130px;
+  object-fit: cover;
+  object-position: center;
+  transition: .5s;
+}
+
+.owl-carousel .item:hover img,.owl-carousel .item:focus img{
+  opacity: 0.5;
+}
+
+.owl-carousel .item:hover .boton-remover {
+  display: block !important;
+}
+
+.owl-carousel .item .boton-remover {
+  display: none;
+  cursor: pointer;
+}
+
+.owl-carousel .item .boton-remover img {
+  object-fit: contain !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+  opacity: 1;
 }
 
 .owl-carousel .owl-nav {
   position: absolute;
   z-index: 2;
-  top: 50%;
+  top: 40%;
   width: 100%
 }
 
@@ -2094,15 +2122,21 @@ h1 {
   counter-reset: item
 }
 
+.steps .form-group {
+  position: relative;
+}
+
 .steps .title-form-group {
   font-size: 18px;
   font-family: Gotham-HTF-Bold, 'system-ui';
   margin-top: 25px;
-  text-transform: uppercase
+  text-transform: uppercase;
+  display: inline-block;
+  width: 100%;
 }
 
-.steps ul {
-  position: relative
+.steps .title-form-group.mar-top {
+  margin-top: 10px !important;
 }
 
 .steps ul.distance {
@@ -2201,7 +2235,8 @@ h1 {
 .steps .ficha-02 .bg-image {
   position: absolute;
   bottom: 0;
-  left: -12%
+  left: -12%;
+  max-height: 1160px;
 }
 
 .steps .ficha-03 {
@@ -3089,6 +3124,10 @@ button.btn:hover {
 .checks li {
   display: inline-block;
   margin-right: 25px
+}
+
+.checks.mar-0 li {
+  margin-right: 0px
 }
 
 .chk-content {

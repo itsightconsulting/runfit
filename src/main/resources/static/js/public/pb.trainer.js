@@ -55,6 +55,14 @@ const body = document.querySelector('body');
     init();
 })();
 
+function nextTabButton() {
+    $('.btnNextTab').click(function(){
+        var header = $(".navbar-inverse").height();
+        $('.nav-tabs > .active').next('li').find('a').trigger('click');
+        $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+    });
+}
+
 function sendMainForm(e){
     e.preventDefault();//To avoid form sended automatically
     const checkList1 = validationByNumSheet(1);
@@ -462,6 +470,7 @@ function uploadFotoPerfil(d){
 
 function init(){
     instanceInitTab();
+    nextTabButton();
     mainSeeders();
     modalEventos();
     populateBancos();

@@ -373,6 +373,7 @@
                 <div class="col-md-6">
                   <ol>
                     <li>
+                      <p class="title-form-group mar-top">factores de riesgo cardiovascular</p>
                       <div class="form-group">
                         <label>¿Padeces de hipertensión arterial?<span class="obligatorio">*</span></label>
                         <ul class="checks">
@@ -516,6 +517,7 @@
                 <div class="col-md-6">
                   <ol>
                     <li>
+                      <p class="title-form-group mar-top">historial médico y personal</p>
                       <div class="form-group">
                         <label>¿Padeces de alguna enfermedad?<span class="obligatorio">*</span></label>
                         <ul class="checks">
@@ -553,7 +555,7 @@
                         <input id="DesAleMed" name="DesAleMed" data-aka="Especificar medicamento(s) al que es alérgico" class="form-control" type="text" placeholder="Especificar medicamento(s) al que es alérgico"/>
                       </div>
                       <div class="form-group">
-                        <label>¿Te has sometido a operaciones quirurgicas recientemente?<span class="obligatorio">*</span></label>
+                        <label>¿Te has sometido a operaciones quirúrgicas recientemente?<span class="obligatorio">*</span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
@@ -590,23 +592,23 @@
                       </div>
                       <div class="form-group">
                         <label>Padeces de:<span class="obligatorio">*</span></label>
-                        <ul class="checks">
-                          <li>
+                        <ul class="checks mar-0 row">
+                          <li class="col-md-6">
                             <div class="chk-content">Artritis
                               <input name="DesPadVarios" value="1" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
-                          <li>
+                          <li class="col-md-6">
                             <div class="chk-content">Condromalacia
                               <input name="DesPadVarios" value="2" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
-                          <li>
+                          <li class="col-md-6">
                             <div class="chk-content">Osteocondritis
                               <input name="DesPadVarios" value="3" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
-                          <li>
+                          <li class="col-md-6">
                             <div class="chk-content">N.A.
                               <input name="DesPadVarios" value="4" type="checkbox" checked="checked"/><span class="checkmark"></span>
                             </div>
@@ -614,14 +616,14 @@
                         </ul>
                       </div>
                       <p class="title-form-group">Información adicional</p>
+                      <div class="form-group more-inputs">
+                        <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
+                        <div><input id="ContactoEmergenciaNombre" name="ContactoEmergenciaNombre" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/></div>
+                        <div><input id="ContactoEmergenciaMovil" name="ContactoEmergenciaMovil" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/></div>
+                        <a class="add" href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
+                      </div>
+                      <p class="title-form-group">Historial deportivo</p>
                       <li>
-                        <div class="form-group more-inputs">
-                          <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
-                          <div><input id="ContactoEmergenciaNombre" name="ContactoEmergenciaNombre" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/></div>
-                          <div><input id="ContactoEmergenciaMovil" name="ContactoEmergenciaMovil" data-aka="Completar número de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Celular del contacto" type="text"/></div>
-                          <a class="add" href="javascript:void(0);" onclick="javascript:agregarInputsDinamico(this)"><i title="Agregar otro contacto" class="fa fa-plus pull-right" style="color: #a8fa00; padding-right: 5px;"></i></a>
-                        </div>
-                        <p class="title-form-group">Historial deportivo</p>
                         <div class="form-group">
                           <label>Infancia / Juventud<span class="obligatorio">*</span></label>
                           <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
@@ -1092,7 +1094,7 @@
                   <ol>
                     <li class="col-md-6">
                       <div class="form-group">
-                        <label>Cuáles son tus objetivos personales<span class="obligatorio">*</span></label>
+                        <label>¿Cuáles son tus objetivos personales?<span class="obligatorio">*</span></label>
                         <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-control form-group full"></textarea>
                       </div>
                     </li>
@@ -1103,26 +1105,42 @@
                         <ul class="distance">
                           <li>
                             <div class="input-time">
+<<<<<<< HEAD
                               <!--IMPORTANTE QUE LA PRIMERA NO TENGA LA PROP readonly por tema de validación -->
                               <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+=======
+                              <input type="text" placeholder="HH:MM:SS" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+>>>>>>> 3f901ef20fef0de6d726cb3ba11c3964c24c8fa3
                             </div>
                             <p>2km</p>
                           </li>
                           <li>
                             <div class="input-time">
+<<<<<<< HEAD
                               <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+=======
+                              <input type="text" placeholder="HH:MM:SS" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+>>>>>>> 3f901ef20fef0de6d726cb3ba11c3964c24c8fa3
                             </div>
                             <p>4km</p>
                           </li>
                           <li>
                             <div class="input-time">
+<<<<<<< HEAD
                               <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+=======
+                              <input type="text" placeholder="HH:MM:SS" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+>>>>>>> 3f901ef20fef0de6d726cb3ba11c3964c24c8fa3
                             </div>
                             <p>21km</p>
                           </li>
                           <li>
                             <div class="input-time">
+<<<<<<< HEAD
                               <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+=======
+                              <input type="text" placeholder="HH:MM:SS" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+>>>>>>> 3f901ef20fef0de6d726cb3ba11c3964c24c8fa3
                             </div>
                             <p>42km</p>
                           </li>

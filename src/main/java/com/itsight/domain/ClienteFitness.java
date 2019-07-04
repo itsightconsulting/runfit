@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.jsonb.CondicionMejora;
 import com.itsight.domain.jsonb.*;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
 import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -27,6 +28,54 @@ import java.util.List;
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
+
+@SqlResultSetMappings({
+        @SqlResultSetMapping(name = "resultMappingClienteFitness",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ClienteFitnessPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "id"),
+                                        @ColumnResult(name = "competencias"),
+                                        @ColumnResult(name = "condicionAnatomica"),
+                                        @ColumnResult(name = "desObjetivos"),
+                                        @ColumnResult(name = "desTerPredom"),
+                                        @ColumnResult(name = "desgasteZapatilla"),
+                                        @ColumnResult(name = "diasSemanaCorriendo"),
+                                        @ColumnResult(name = "estadoCivil"),
+                                        @ColumnResult(name = "fitElementos"),
+                                        @ColumnResult(name = "flagCalentamiento"),
+                                        @ColumnResult(name = "flagEstiramientos"),
+                                        @ColumnResult(name = "frecuenciaComunicacion"),
+                                        @ColumnResult(name = "imc"),
+                                        @ColumnResult(name = "kilometrajePromedioSemana"),
+                                        @ColumnResult(name = "mejoras"),
+                                        @ColumnResult(name = "nivel"),
+                                        @ColumnResult(name = "peso"),
+                                        @ColumnResult(name = "salud"),
+                                        @ColumnResult(name = "sexo"),
+                                        @ColumnResult(name = "talla"),
+                                        @ColumnResult(name = "tiempoDistancia"),
+                                        @ColumnResult(name = "tiempoUnKilometro"),
+                                        @ColumnResult(name = "viaConexion"),
+                                        @ColumnResult(name = "fechaCreacion"),
+                                        @ColumnResult(name = "fechaModificacion"),
+                                        @ColumnResult(name = "flagActivo"),
+                                        @ColumnResult(name = "correo"),
+                                        @ColumnResult(name = "fechaNacimiento"),
+                                        @ColumnResult(name = "fechaUltimoAcceso"),
+                                        @ColumnResult(name = "movil"),
+                                        @ColumnResult(name = "nombres"),
+                                        @ColumnResult(name = "apellidos"),
+                                        @ColumnResult(name = "numeroDocumento"),
+                                        @ColumnResult(name = "paisId"),
+                                        @ColumnResult(name = "tipoDocumentoId"),
+                                        @ColumnResult(name = "ubigeo")
+                                }
+                        )
+                })
+})
+
 @Entity
 @Data
 public class ClienteFitness implements Serializable {

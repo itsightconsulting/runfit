@@ -4,9 +4,14 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.dto.ClienteFitnessDTO;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
+import com.itsight.domain.pojo.RuCliPOJO;
 import com.itsight.service.*;
+import com.itsight.service.impl.ClienteFitnessProcedureInvokerImpl;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,13 +34,16 @@ public class ClienteFitnessController {
 
     private TrainerService trainerService;
 
+    private ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker;
+
     @Autowired
-    public ClienteFitnessController(ClienteFitnessService clienteFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService, TrainerService trainerService) {
+    public ClienteFitnessController(ClienteFitnessService clienteFitnessService, ObjetivoService objetivosService, MusculoService musculoService, TipoDocumentoService tipoDocumentoService, TrainerService trainerService, ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker) {
         this.clienteFitnessService = clienteFitnessService;
         this.objetivosService = objetivosService;
         this.musculoService = musculoService;
         this.tipoDocumentoService = tipoDocumentoService;
         this.trainerService = trainerService;
+        this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
     }
 
     @GetMapping(value = "")
@@ -84,11 +92,14 @@ public class ClienteFitnessController {
 
 
     @GetMapping(value = "/obtener/completo")
-    public @ResponseBody ClienteFitness obtenerInfoCompletaByClienteId(HttpSession session){
+    public @ResponseBody
+    ResponseEntity<ClienteFitnessPOJO> obtenerInfoCompletaByClienteId(HttpSession session){
 
         Integer clienteId = (Integer) session.getAttribute("id");
+        ClienteFitnessPOJO fichaClienteFitness = clienteFitnessProcedureInvoker.getById(clienteId);
 
-        return clienteFitnessService.findClientDataByClienteId(clienteId);
+
+        return new ResponseEntity<>(fichaClienteFitness, HttpStatus.OK);
     }
 
 }
