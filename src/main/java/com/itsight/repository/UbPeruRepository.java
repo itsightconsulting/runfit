@@ -26,4 +26,7 @@ public interface UbPeruRepository extends JpaRepository<UbPeru, String> {
     @Query("SELECT NEW com.itsight.domain.dto.UbPeruDTO(U.dis, U.ub) FROM UbPeru U WHERE U.dep = ?1 AND U.pro = ?2 AND U.dis <> '00'")
     List<UbPeruDTO> findDistByDepIdAndProvId(String depId, String provId);
 
+    @Query(value = "select u.ub from ub_peru u where u.ub_peru_id= cast(?1 as character varying)", nativeQuery = true)
+    String findUbById(String id);
+
 }

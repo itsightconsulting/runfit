@@ -13,4 +13,6 @@ public interface UbPeruService extends BaseService<UbPeru, String> {
     UbPeruLimDTO findPeProvByDep(String depId);
 
     UbPeruLimDTO findPeDistByDepAndProv(String depId, String provId);
+
+    String findPeDistbyUbi(String ubiId);
 }

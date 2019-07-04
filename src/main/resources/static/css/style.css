@@ -1477,10 +1477,11 @@ section #moreFav {
       max-width: 18px;
       max-height: 16px; } }
 
-svg.ico{
-  cursor: pointer !important;
-}
+  svg.ico{
+    cursor: pointer !important;
+  }
 
-.rutina-cli #diario .svg-color-nota{
-  fill: #ddf515 !important;
-}
+  .rutina-cli #diario .svg-color-nota{
+    fill: #ddf515 !important;
+  }
+

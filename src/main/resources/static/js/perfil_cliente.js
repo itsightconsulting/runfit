@@ -1,3 +1,6 @@
+
+let distrito;
+
 (function () {
     init();
 
@@ -22,7 +25,7 @@ function cargarDataCliente(){
       blockLoading: false,
       success:  function(data){
 
-          generarDOMDataCliente(data);
+         // generarDOMDataCliente(data);
 
 
       },
@@ -40,25 +43,33 @@ function cargarDataCliente(){
 function generarDOMDataCliente(data) {
 
     const dvDatosPersonales = document.getElementById('dvDatosPersonales');
-    const nombres = data.cliente.nombres;
-    const apellidos = data.cliente.apellidos;
-    const fechaNacimiento = data.cliente.fechaNacimiento;
-    const tlfMovil = data.cliente.movil;
-    const tlfFijo = data.cliente.telefono;
-    const correo = data.cliente.correo;
-    const tipoDoc = data.cliente.tipoDocumento;
-    const numDoc = data.cliente.numeroDocumento;
-    const fechaCreacion = data.cliente.fechaCreacion;
+    const nombres = data.nombres;
+    const apellidos = data.apellidos;
+    const fechaNacimiento =  data.fechaNacimiento;
+    const tlfMovil = data.movil;
+    const correo = data.correo;
+    const tipoDoc = data.tipoDocumento;
+    const numDoc = data.numeroDocumento;
+    const fechaCreacion = data.fechaCreacion.slice(0,10);
+    const distrito = getDistritobyUbigeo(data.ubigeo);
+
+    console.log("a"+ distrito);
 
     dvDatosPersonales.appendChild(htmlStringToElement(`    
 
-                    <div class="panel-body">
+            <div class="panel-group">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" >
+                    <img class="svg" src="${_ctx}img/iconos-trainers/icon_perfil.svg">
+                     Datos Personales 
+                     <a data-toggle="collapse" href="#collapseDatosPersonales">
+                       <img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg">
+                     </a></h3>
+                </div>
 
-                         <div class="panel-heading">
-                                <h3>Datos Personales
-                                 </h3>
-                         </div>
-                   
+                <div class="panel-collapse collapse" id="collapseDatosPersonales">
+                                         
                          <div class="row" id="dvNombres">
                          
                           <div class="col-md-12">
@@ -90,12 +101,11 @@ function generarDOMDataCliente(data) {
                                   <h4> Número de Documento</h4>
                                   <span>${numDoc}</span>
                             </div>
-                          <div>                             
-                        </div>
-                        
-                        </div>
-                        
-                        <div class="row" id="dvFechas">
+                            
+                           </div>
+                         </div>
+                            
+                         <div class="row" id="dvFechas">
                          
                           <div class="col-md-12">
                         
@@ -108,43 +118,84 @@ function generarDOMDataCliente(data) {
                            
                              <div class="col-md-6">
 
-                                <h4> Fecha de creación de cuenta</h4>
-                                <span>${fechaCreacion}</span>
+                                <h4> Distrito</h4>
+                                <span id="spDistrito">${distrito}</span>
+                                
                              </div>
                              
                            </div>
                          </div>
 
-
-                         <div class="panel-heading">
-                            <h3>Datos de contacto</h3>
-                         </div>
-                         
-                         <div class="row" id="dvTelefonosContacto">
-                           <div class="col-md-6" id="dvTelefonoMovil">
-                             <h4> Télefono Móvil</h4>
-                             <span>${tlfMovil}</span>
-                            </div>
-
-                           <div class="col-md-6" id="dvTelefonoFijo">
-                              <h4> Télefono Fijo</h4>
-                              <span>${tlfFijo}</span>
-                           </div>
-                         </div>
-
-            
-                        <div class="row" id="dvCorreoElectronico">
-                   
-                          <div class="col-md-6">
-                          
-                             <h4> Correo Electrónico</h4>
-                             <span>${correo}</span>
-                         </div>
-                     
-                        </div>
                 </div>
-    
-    
-`));
+                
+               </div>
+              
+              
+              <div class="panel panel-default">
+            
+                
+                       <div class="panel-heading">
+                            <h3 class="panel-title" >
+                            <img class="svg" src="${_ctx}img/iconos-trainers/icon_perfil.svg">
+                             Datos de contacto 
+                             <a data-toggle="collapse" href="#collapseDatosContacto">
+                               <img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg">
+                             </a></h3>
+                       </div>
+                       
+                       
+                       <div class="panel-collapse collapse" id="collapseDatosContacto">
+                    
+                               
+                                 <div class="row" id="dvTelefonosContacto">
+                                  <div class="col-md-12">
+                                  
+                                    <div class="col-md-6" id="dvTelefonoMovil">
+                                     <h4> Télefono Móvil</h4>
+                                     <span>${tlfMovil}</span>
+                                    </div>
+        
+                                   <div class="col-md-6" id="dvCorreoElectronico">
+                                      <h4> Correo Electrónico</h4>
+                                      <span>${correo}</span>
+                                   </div>
+                                  </div>
+                                 </div>
+        
+                         </div>
+                    
+                    </div>
+            
+                </div>
+    `));
 }
 ;
+
+
+
+function getDistritobyUbigeo(ubigeoId){
+
+   $.ajax({
+      type: "GET",
+      data: {ubi : ubigeoId},
+      dataType: 'text',
+      url: _ctx + 'p/ubigeo/get/peru-dis-by-ubi',
+      success: function(data){
+          distrito = data;
+          $('#spDistrito').text(distrito);
+
+      },
+      error: function(xhr){
+
+
+      },
+      complete: function(){
+      }
+
+
+
+   });
+
+
+
+}

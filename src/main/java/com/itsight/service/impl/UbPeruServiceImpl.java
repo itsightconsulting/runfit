@@ -125,4 +125,9 @@ public class UbPeruServiceImpl extends BaseServiceImpl<UbPeruRepository> impleme
         UbPeruLimDTO ubPeruLim = new UbPeruLimDTO(null, null, repository.findDistByDepIdAndProvId(depId, provId));
         return ubPeruLim;
     }
+
+    @Override
+    public String findPeDistbyUbi(String ubiId) {
+        return repository.findUbById(ubiId);
+    }
 }
