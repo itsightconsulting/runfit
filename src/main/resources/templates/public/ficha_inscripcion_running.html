@@ -1103,29 +1103,33 @@
                         <ul class="distance">
                           <li>
                             <div class="input-time">
-                              <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <!--IMPORTANTE QUE LA PRIMERA NO TENGA LA PROP readonly por tema de validación -->
+                              <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>2km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>4km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>21km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>42km</p>
                           </li>
                         </ul>
+                        <label style="margin: 0px;">
+                          <input type="hidden" class="form-control" name="MarcaReferencial" id="MarcaReferencial" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?">
+                        </label>
                       </div>
                     </li>
                     <li class="display-table">
@@ -2254,6 +2258,17 @@
               rangelength: [7,8],
               greaterThanSeconds: 121*60,
             },
+            MarcaReferencial:{
+              required: function(){
+                if($('#TwoKm').val().length>7 ||
+                $('#FourKm').val().length>7 ||
+                $('#TweOneKm').val().length>7 ||
+                $('#FouTwoKm').val().length>7){
+                  return false;
+                }
+                return true;
+              }
+            },
           },
           messages: {
             Sexo: {
@@ -2283,6 +2298,9 @@
             },
             Username: {
               pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
+            },
+            MarcaReferencial:{
+              required: "Debe completar su marca en cualquiera de las distancias"
             }
           }
         });
@@ -2389,10 +2407,14 @@
             const reallyInput = input.firstElementChild;
             const arrTime = $oculto.split(":");
             $oculto = ("0"+arrTime[0]).slice(-2) + ":" + ("0"+arrTime[1]).slice(-2) + ":" + ("0"+arrTime[2]).slice(-2);
+            const clases = reallyInput.classList;
             reallyInput.value = $oculto;
             $(reallyInput).valid();
-            //Para que no intervenga si se abre en otro input
+            if (clases.contains('marca-referencial')) {
+              $('#MarcaReferencial').valid();
+            }
           }
+          //Para que no intervenga si se abre en otro input
           $oculto = "";
         }
       })

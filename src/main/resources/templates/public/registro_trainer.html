@@ -8,6 +8,19 @@
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/cropper.min.css}+'?'+${version}"/>
 </head>
+<style>
+    #FichasDisponibles div {
+        text-align: center;
+    }
+
+    #FichasDisponibles .img-ficha {
+       width: 64px;
+    }
+
+    #FichasDisponibles .chk-ficha{
+        margin-top: 10px;
+    }
+</style>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
 <div th:replace="html-commons/reu-login :: fg-login"></div>
@@ -80,33 +93,7 @@
                                 <div class="form-group">
                                     <div class="pad-right-middle" style="width:100%;">
                                         <label>IDIOMAS<span class="obligatorio">*</span></label>
-                                        <ul class="checks">
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Español
-                                                    <input name="Idiomas" value="es" data-aka="IDIOMAS*" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Inglés
-                                                    <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Portugués
-                                                    <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Francés
-                                                    <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Chino
-                                                    <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <select class="form-control hidden" data-aka="Idiomas" multiple="multiple" id="Idiomas" name="Idiomas"></select>
                                     </div>
                                     <div class="form-group" id="Estudios">
                                         <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
@@ -308,7 +295,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade inpts-3" id="service">
-                                <h4>MIS SERVICIOS</h4>
+                                <h4>MIS SERVICIOS<span class="obligatorio">*</span></h4>
                                 <div>
                                     <div class="ver-servicios">
                                     </div>
@@ -341,7 +328,7 @@
                                             id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
                                         <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                     </button>
-                                    <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
+                                    <h4 class="sub-title">TARIFARIO
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
                                         <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
                                     </h4>
@@ -504,29 +491,29 @@
                                         <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago"><i class="fa fa-fw fa-plus-circle"></i> AGREGAR INFORMACIÓN PAGO</button>
                                     </div>
                                     <hr>
-                                    <button data-ficha-id="0" style="margin-bottom: 10px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
-                                    <input type="hidden" id="FichaClienteId"/>
-                                    <div class="row collapse" id="FichasDisponibles">
-                                        <div class="col col-md-12 text-center" style="padding-bottom:15px">
-                                            <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                <h6>Standard</h6>
-                                                <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                        <div class="form-group" id="FichasDisponibles">
+                                            <label>SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></label>
+                                            <div class="row">
+                                                <ul class="checks">
+                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                        <li>
+                                                            <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
+                                                            <div class="chk-content chk-ficha">Standard
+                                                                <input type="checkbox" value="1" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                            </div>
+                                                        </li>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                        <li>
+                                                            <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
+                                                            <div class="chk-content chk-ficha">Running
+                                                                <input type="checkbox" value="2" name="FichaTrabajo" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                            </div>
+                                                        </li>
+                                                    </div>
+                                                </ul>
                                             </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                <h6>Running</h6>
-                                                <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
-                                            </div>
-                                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top: 14px; text-align: left !important; font-size: 0.9em;">
-                                                <div class="chk-content" onclick="javascript:document.getElementById('InpMultipleFicha').click();" style="font-size: 1em; !important">
-                                                    <a href="javascript:void(0)">
-                                                        Si ofreces servicios tanto de running como de otras disciplinas, debes elegir ambas fichas clickando aquí
-                                                    </a>
-                                                    <input id="InpMultipleFicha" type="checkbox"><span class="checkmark"></span>
-                                                </div>
-                                            </div>
-                                            <hr>
                                         </div>
-                                    </div>
                                     <div class="form-group">
                                         <label>NOTA
                                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
@@ -646,6 +633,7 @@
         document.querySelector('input[name="Sexo"]').checked = true;
         document.getElementById('Username').value = "pedro"+t1 + ""+ t2;
         document.getElementById('Password').value = "runfit123";
+        Array.from(document.getElementById('Idiomas').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
         document.querySelector('#Especialidad').value = `Entrenador para maratones`;
         document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
 
@@ -730,14 +718,7 @@
             document.getElementById('btnNuevaInfoPago').click();
         }, 1000);
 
-
-
         document.querySelector('#inpTermCond').checked = true;
-
-        setTimeout(()=>{
-            document.getElementById('btnElegirFicha').click();
-            setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
-            }, 500);
     }
 
     function generateBody(){
@@ -755,14 +736,14 @@
         obj.correo = document.getElementById('Correo').value;
         obj.username = document.getElementById('Username').value;
         obj.password = document.getElementById('Password').value;
-        obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
+        obj.idiomas = $('#Idiomas').val().join('|');
         obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
         obj.especialidades = getValuesByClass('inp-esp-domino');
         obj.estudios = getValuesByClass('inp-estudio');
         obj.experiencias = getValuesByClass('inp-experiencia');
         obj.resultados = getValuesByClass('inp-resultado');
         obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
-        obj.fichaClienteIds = inpMultipleFicha.checked ? "1|2" : Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
+        obj.fichaClienteIds = getValuesConcatInpCheckbox('FichaTrabajo');
         const rdmNum = Math.floor(Math.random() * 100);
         const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
         obj.servicios = servicios;
@@ -1002,6 +983,9 @@
                             return false;
                         }
                     }
+                },
+                FichaTrabajo:{
+                    required: true
                 },
                 Nota: {
                     rangelength: [10, 400]

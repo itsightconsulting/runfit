@@ -80,33 +80,7 @@
                                       <div class="form-group">
                                               <div class="pad-right-middle" style="width:100%;">
                                                   <label>IDIOMAS<span class="obligatorio">*</span></label>
-                                                  <ul class="checks">
-                                                      <li style="margin-right: 22px;">
-                                                          <div class="chk-content">Español
-                                                              <input name="Idiomas" value="es" data-aka="IDIOMAS*" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                          </div>
-                                                      </li>
-                                                      <li style="margin-right: 22px;">
-                                                          <div class="chk-content">Inglés
-                                                              <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
-                                                          </div>
-                                                      </li>
-                                                      <li style="margin-right: 22px;">
-                                                          <div class="chk-content">Portugués
-                                                              <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
-                                                          </div>
-                                                      </li>
-                                                      <li style="margin-right: 22px;">
-                                                          <div class="chk-content">Francés
-                                                              <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
-                                                          </div>
-                                                      </li>
-                                                      <li style="margin-right: 22px;">
-                                                          <div class="chk-content">Chino
-                                                              <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
-                                                          </div>
-                                                      </li>
-                                                  </ul>
+                                                  <select class="form-control hidden" data-aka="Idiomas" multiple="multiple" id="Idiomas" name="Idiomas"></select>
                                               </div>
                                               <div class="form-group" id="Estudios">
                                                   <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
@@ -635,50 +609,6 @@
             return imgPerfil + "|" + galeria + "|" + flCondSvcs;
         }
 
-        function uploadFotosPerfil(d){
-            //submit the form here
-            const hshId = d.res;
-            const rdmsUUIDs = getImgUuids(d.rdm);
-            let file = inpImgPerfil;
-            if (file.files.length > 0) {
-                file = file.files[0];
-                const data = new FormData();
-                data.append("files", file);
-                data.append("fileExtension", file.name.substr(file.name.lastIndexOf(".")+1));
-                Array.from(inpGaleria.files).forEach(f=>{
-                    data.append("files", f);
-                });
-                termConSvc.forEach(v=>{
-                    if(v.file){
-                        data.append("files", v.file);
-                    }
-                })
-
-                $.ajax({
-                    type: 'PUT',
-                    url: _ctx+'p/trainer/subir/fotos/perfil/'+hshId+'/'+rdmsUUIDs,
-                    data : data,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    xhr: function() {
-                        const myXhr = $.ajaxSettings.xhr();
-                        if(myXhr.upload){
-                            myXhr.upload.addEventListener('progress', progress, false);
-                        }
-                        return myXhr;
-                    },
-                    success: function (data) {
-                        reqSuccess(data, 3600000);
-                    },
-                    error: (xhr)=>{
-                        exception(xhr);
-                    },
-                    complete: ()=> {}
-                });
-            }
-        }
-
         function init(){
             instanceInitTab();
             mainSeeders();
@@ -694,6 +624,7 @@
 
         function mainSeeders(){
             getUbigeoPeruLim();
+            getIdiomas();
         }
 
         function activeTooltips(){
@@ -788,6 +719,7 @@
             document.querySelector('input[name="Sexo"]').checked = true;
             document.getElementById('Username').value = "pedro"+t1 + ""+ t2;
             document.getElementById('Password').value = "runfit123";
+            Array.from(document.getElementById('Idiomas').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
             document.getElementById('NomPag').value = "pedro"+t1 + ""+ t2;
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
@@ -862,7 +794,7 @@
             obj.correo = document.getElementById('Correo').value;
             obj.username = document.getElementById('Username').value;
             obj.password = document.getElementById('Password').value;
-            obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
+            obj.idiomas = $('#Idiomas').val().join('|');
             obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
             obj.especialidades = getValuesByClass('inp-esp-domino');
             obj.estudios = getValuesByClass('inp-estudio');
