@@ -496,6 +496,11 @@ a.fav:hover .svg, a.fav.selected .svg {
 .tab-content {
   margin-top: 44px; }
 
+.svg-wrap {
+  position: relative;
+  display: inline-block;
+}
+
 .datepicker_inline {
   color: #fff;
   text-transform: uppercase;
@@ -869,7 +874,7 @@ section.ritmos_tiempo .box_tiempo {
           top: 5px;
           margin-right: 12px; }
             .panel-group .panel .panel-body ul.datos li .svg .st0 {
-                fill: #9d9d9d;}
+                fill: #9d9d9d !important;}
           .panel-group .panel .panel-body ul.datos li .svg.help {
             position: absolute !important;
             right: 0;

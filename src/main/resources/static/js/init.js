@@ -191,20 +191,11 @@ function select_fave () {
     });
 }
 
-function weekMonth() {
-    moment.locale('es-es');
-    var dayCurrent = moment().format('D');
-    var weekOfMonth = moment().isoWeek() - moment().subtract('days', dayCurrent - 1).isoWeek() + 1;
-    var month = moment().format('MMMM');
-    $("#weekDay,#weekMonth").html("semana " + weekOfMonth + " - " + '<span> ' + month + ' </span>');
-}
-
 function leftPanelFocus(){
     var e=window.location.pathname;
     e.includes("bienvenido")
     || (document.querySelector("#SideBar1").querySelector("a[href*='"+e+"']").parentElement.className="active")
     || (document.querySelector("#SideBar2").querySelector("a[href*='"+e+"']").parentElement.className="active");
-
 }
 
 $(function() {
@@ -217,7 +208,7 @@ $(function() {
     miniPanelActive();
     //fancybox();
     select_fave();
-    weekMonth();
+    $('[rel="tooltip"]').tooltip()
     try{
         leftPanelFocus()
     }catch(e){}

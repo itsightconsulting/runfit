@@ -751,7 +751,7 @@ function generarMetricas(semana) {
         metricas = metricas.map((v,i)=>{return {p: v.parcial, s: v.parcial.toSeconds(), m: wex[i]}});
         metricas.forEach((v,i)=>{
             if(i>3)
-                v.tt = String(v.s*Number(v.m.slice(0, -2))).toHHMMSSM()
+                v.tt = String(v.s*Number(v.m.slice(0, -2))).toHHMMSSM();
             else
                 v.tt = v.p
         });

@@ -13,6 +13,16 @@
         border-top: 1px solid transparent !important;
         border-bottom: 1px solid transparent !important;
     }
+
+    .tooltip-inner {
+        max-width: 250px !important;
+        min-width: 140px !important;
+    }
+
+    .popover{
+        max-width: 400px;
+        min-width: 300px;
+    }
 </style>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
@@ -107,8 +117,10 @@
             </div>
             <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
                 <div class="">
-                    <textarea name="NotaCliente" id="NotaCliente" cols="30" rows="3" class="form-control"></textarea>
+                    <textarea name="NotaCliente" id="NotaCliente" cols="30" rows="3" class="form-control" maxlength="255"></textarea>
                 </div>
+                <br>
+                <em>Máximo 255 caracteres</em>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-md" onclick="actualizarNota()">GUARDAR CAMBIOS</button>

@@ -27,10 +27,24 @@ class Rutina {
 
     mostrarVistaDia(sem, semanaIx){
         const dias = sem.dias;
+        //Set semana actual como título
+        $numSem.textContent = Number(semanaIx)+1;
         //Inicialmente generamos solo la primera semana de todo el plan de entrenamiento
         dias.forEach((dia, ix) => {
             $("#panel_days").append(RutinaDiaHTML.base(dia, ix));
         });
+
+        //instanciarPopovers();
+        //instanciarTooltips();
+        //RutinaOpc.instanciarCopiarSemanaCompleta();
+        //RutinaOpc.instanciarFlagActivo();
+        if($rutina.tipoRutina !== TipoRutina.GENERAL){
+            //Indicadores.instanciarIndicador0();
+            Indicadores.instanciarPasoYpulso();
+            Indicadores.instanciarRitmosProyectados();
+            Indicadores.instanciarKilometrajes();
+            //Indicadores.instanciarPorcentajeAvance();
+        }
 
     }
 
@@ -93,7 +107,6 @@ class Rutina {
     completarFechasSemanas(especifico, ix){
         if(!especifico){
             for(let i=0; i< $rutina.totalSemanas-1;i++){
-                console.log(1);
                 $rutina.semanas[i + 1] = new Semana(undefined, parseFromStringToDate(moment($rutina.semanas[i].fechaFin).add(1, 'd').format('YYYY-MM-DD')),parseFromStringToDate(moment($rutina.semanas[i].fechaFin).add(7, 'd').format('YYYY-MM-DD')));
             }
         }else{
@@ -730,19 +743,22 @@ RutinaGet = (function(){
         },
         getKilometrajes: ()=>{
             const k = {};
-            let kcalTotal = 0, kmPlanificado = 0;
-            const sIx = Number($semActual.textContent)-1;
+            let kcalTotal = 0, kmPlanificado = 0, minutos = 0;
+            const sIx = Number(document.getElementById('NumSemana').textContent)-1;
             $rutina.semanas[sIx].dias.forEach(v=>{
                 kcalTotal+=v.calorias;
-            });
-
-            $rutina.semanas[sIx].dias.forEach(v=>{
                 kmPlanificado+=v.distancia;
+                v.elementos.forEach(ele=>{
+                    if(ele.minutos){
+                        minutos+=ele.minutos;
+                    }
+                })
             });
 
             k.kcal = parseNumberToDecimal(kcalTotal, 2);
             k.kmMacro = $rutina.semanas[sIx].kilometrajeTotal;
             k.kmPlanificado = parseNumberToDecimal(kmPlanificado, 2);
+            k.horas = parseFloat(minutos / 60).toFixed(1);
 
             return k;
         },
@@ -764,6 +780,9 @@ RutinaGet = (function(){
             k.kmPlanificado = parseNumberToDecimal(kmPlanificado, 2);
 
             return k;
+        },
+        getNumSemIx: ()=>{
+            return Number($numSem.textContent)-1;
         }
     }
 })();
@@ -1048,7 +1067,7 @@ RutinaIx = (function(){
     return {
         getIxsForDia: (e)=>{
             let ixs = {};
-            ixs.numSem = $semActual.textContent -1;
+            ixs.numSem = RutinaGet.getNumSemIx();
             ixs.diaIndex = e.getAttribute('data-index')==undefined?e.getAttribute('data-dia-index'):e.getAttribute('data-index');
             return ixs;
         },
@@ -2635,7 +2654,7 @@ RutinaDiaHTML = (function(){
                           <div class="panel-heading">
                             <h3>${elemento.nombre}<div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div></h3>
                             <div class="icons">
-                              <img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg">
+                              <div class="svg-wrap" rel="tooltip" title="x"><img class="svg" src="img/iconos/icon_microfono.svg"></div><img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg">
                               <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${elemento.minutos}</span>
                               <a data-toggle="collapse" href="#elemento-${ix+''+diaIndex}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
                             </div>
@@ -2739,6 +2758,57 @@ RutinaPS = (function () {
 //Indicadores de tiempo y distancia
 Indicadores = (function(){
     return {
+        instanciarPasoYpulso: ()=>{
+            const numSem = RutinaGet.getNumSemIx();
+            const metricas =  $rutina.semanas[numSem].metricas;
+            const divPulsos = document.querySelector('#Pulsos');
+            const divRitmos = document.querySelector('#Ritmos');
+
+            const arrMetricas = metricas.map((e,ix)=>{
+                const indi = e.indicadores;
+                const zNum = ix+1;
+                return {paso:`<tr>
+                                <td>Z${zNum}</td>
+                                <td>${ix ? indi.min.slice(3) : indi.max.slice(3)}</td>
+                                <td>${ix===metricas.length-1 ? indi.min.slice(3) : indi.max.slice(3)}</td>
+                              </tr>`,
+                        pulso: `<tr>
+                                  <td>Z${zNum}</td>
+                                  <td>${e.min}</td>
+                                  <td>${e.max}</td>
+                                </tr>`};
+            });
+            divPulsos.querySelector('tbody').innerHTML = arrMetricas.map(ind=>ind.pulso).join('');
+            divRitmos.querySelector('tbody').innerHTML = arrMetricas.map(ind=>ind.paso).join('');
+        },
+        instanciarRitmosProyectados: ()=>{
+            const numSem = RutinaGet.getNumSemIx();
+            let metricasVel =  $rutina.semanas[numSem].metricasVelocidad;
+            const divMetricasVel = document.querySelector('.ritmos_tiempo');
+            const wex = ["200m", "400m", "800m", "1KM","10KM","15KM","21KM","42KM"];
+            metricasVel = metricasVel.map((v,i)=>{return {p: v.parcial, s: v.parcial.toSeconds(), m: wex[i]}});
+            metricasVel.forEach((v,i)=>{
+                if(i>3)
+                    v.tt = String(v.s*Number(v.m.slice(0, -2))).toHHMMSSM();
+                else
+                    v.tt = v.p
+            });
+            metricasVel.forEach((e,ix)=>{
+                const pasoKm = e.p.slice(3);
+                const fPasoKm = pasoKm.startsWith("0") ? pasoKm.slice(1) : pasoKm;
+                const pasoTotal = ix>3 ? e.tt.slice(0, -3) : e.tt.slice(3);
+                const fPasoTotal = pasoTotal.startsWith("0") ? pasoTotal.slice(1) : pasoTotal;
+                divMetricasVel.appendChild(htmlStringToElement(
+                    `<div class="col-md-3 col-sm-4 col-xs-4">
+                                <div class="box_tiempo">
+                                  <div class="text-center col-xs-7"><span>${e.m}</i></span><span>${fPasoKm}</span></div>
+                                  <div class="text-center col-xs-5"><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg"><span>${fPasoTotal}</span></div>
+                                </div>
+                              </div>`
+                ));
+            })
+            return metricasVel;
+        },
         instanciarIndicador0: ()=>{
             const intensidad = $rutina.control.intensidades[Number($semActual.textContent)-1];
             const ind = intensidad < 61 ? "B" : intensidad < 85 ? "M" : "A";
@@ -2798,17 +2868,26 @@ Indicadores = (function(){
         },
         instanciarKilometrajes: ()=>{
             const k = RutinaGet.getKilometrajes();
-            const raw = `<hr class="margin-0" style="margin: 0px -10px !important"/>
-                        <div>
-                            <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.C.</h6></div>
-                            <div class="txt-color-blueLight text-align-center"><span><b class="kcal">${k.kcal} kcal</b></span></div>
-                            <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.M.</h6></div>
-                            <div class="txt-color-blueLight text-align-center"><span><b>${k.kmMacro} K.M.</b></span></div>
-                            <div class="bg-color-grayDark text-align-center txt-color-white"><h6>K.M.P.</h6></div>
-                            <div class="txt-color-blueLight text-align-center"><span><b class="km-planificado">${k.kmPlanificado} K.M.</b></span></div>
-                        </div>
-                        <hr class="margin-0" style="margin: 0px -10px !important"/>`;
-            document.querySelector('#tabRutina #OpsLaterales #Kilometrajes').innerHTML = raw;
+            const kcalKm = k.kcal%75 === 0 ? k.kcal : parseFloat(k.kcal/75).toFixed(1);//El 75 viene del excel macro
+            const raw = `<ul>
+                            <li>
+                              <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg" data-container="body" data-original-title="El kilometraje planificado por su asesor" rel="tooltip"><strong>KM</strong>semanal</label>
+                              <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_pasos.svg"><strong>${k.kmPlanificado}</strong>km</p>
+                            </li>
+                            <li>
+                              <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>hrs</strong>semanales</label>
+                              <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_ritmo-tiempo.svg"><strong>${k.horas}</strong>hrs</p>
+                            </li>
+                            <li>
+                              <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>kcl</strong></label>
+                              <p class="orange"><img class="svg" src="${_ctx}img/iconos/icon_fuego.svg"><strong>${kcalKm}</strong>km</p>
+                            </li>
+                            <li>
+                              <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>kcl</strong>semanales</label>
+                              <p class="orange"><img class="svg" src="${_ctx}img/iconos/icon_fuego.svg"><strong>${Math.ceil(k.kcal)}</strong></p>
+                            </li>
+                         </ul>`;
+            document.querySelector('.datos_semanales').innerHTML = raw;
         },
         instanciarPorcentajeAvance: ()=>{
             const porcAvance = document.querySelector('#PorcentajeAvanceSemana');

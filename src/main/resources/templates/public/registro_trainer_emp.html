@@ -262,12 +262,12 @@
                                           <input class="form-control" type="password" id="Password" name="Password">
                                       </div>
                                       <div class="form-group">
-                                          <label for="Username">NOMBRE DE PÁGINA<span class="obligatorio">*</span>
+                                          <label for="Username">DIRECCIÓN WEB<span class="obligatorio">*</span>
                                               <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                           </label>
                                           <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
                                           <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="NOMBRE DE PÁGINA">
+                                          <input class="form-control" type="text" id="NomPag" name="NomPag" data-aka="DIRECCIÓN WEB">
                                       </div>
                                       <div class="" style="padding-bottom: 10px; font-weight: 100;">
                                           <label id="NomPagFull"></label>
@@ -845,7 +845,6 @@
                         pwcheck: true
                     },
                     NombreServicio:{
-                        lettersonly: true,
                         rangelength: [2, 50],
                     },
                     PrimerIncluyeServicio:{
@@ -917,9 +916,6 @@
                 messages: {
                     Username: {
                         pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
-                    },
-                    NombreServicio:{
-                        pattern: "Solo se admiten letras y números"
                     },
                     PrecioPaquete:{
                         number: function(){

@@ -105,7 +105,7 @@
 
 .navbar-inverse ul.navbar-right li a {
   font-size: 16px;
-  color: #9d9d9d;
+  color: #fff;
   text-decoration: none
 }
 
@@ -835,6 +835,10 @@ h1 {
   color: #a8fa00
 }
 
+.form-group p {
+  text-align: justify;
+}
+
 .trainers-form .form-group {
   margin-bottom: 30px;
   position: relative
@@ -1189,7 +1193,7 @@ h1 {
     border: none
   }
   .trainers-form ul.nav-tabs li {
-    margin-bottom: 12px
+    margin-bottom: 12px;
   }
   .trainers-form .form-group.rs .col-xs-1 {
     width: 15%
@@ -1247,10 +1251,13 @@ h1 {
     margin-right: 0px
   }
   .trainers-form ul.nav-tabs {
-    margin-top: 70px
+    margin-top: 70px;
+    text-align: center;
   }
   .trainers-form ul.nav-tabs li {
-    margin-right: 12px
+    margin-right: 12px;
+    float: none;
+    display: inline-block;
   }
   .trainers-form ul.nav-tabs li a {
     font-size: 11px
@@ -1921,6 +1928,7 @@ h1 {
   font-size: 18px;
   line-height: 1.6;
   word-break: break-word;
+  text-align: justify;
 }
 
 .encuentra-tu-coach .group-trainer .rating {
@@ -1957,7 +1965,6 @@ h1 {
   }
   .encuentra-tu-coach .group-trainer .col-md-9 p {
     font-size: 14px;
-    text-align: left
   }
   .encuentra-tu-coach .group-trainer h4 {
     text-align: left;
@@ -3670,3 +3677,59 @@ section.trainers-form {
 .chk-content .checkmark-musculo{
   top: 3px !important;
 }
+
+/* CROPPERJS */
+
+.cropper-crop-box, .cropper-view-box {
+  border-radius: 50% !important;
+}
+
+.cropper-view-box {
+  box-shadow: 0 0 0 1px #39f !important;
+  outline: 0 !important;
+}
+
+.cropper-face cropper-move{
+  border-radius: 50% !important;
+}
+
+.cropper-line.line-n{
+  display: none;
+}
+
+.cropper-line.line-s{
+  display: none;
+}
+
+.cropper-line.line-w{
+  display: none;
+}
+
+.cropper-line.line-e{
+  display: none;
+}
+
+.cropper-point.point-nn{
+  display: none;
+}
+.cropper-point.point-ns{
+  display: none;
+}
+.cropper-point.point-nw{
+  display: none;
+}
+.cropper-point.point-ne{
+  display: none;
+}
+.cropper-point.point-sw{
+  display: none;
+}
+.cropper-point.point-se{
+  display: none;
+}
+
+.cropper-face.cropper-move{
+  border-radius: 50%;
+}
+
+/* END CROPPERJS */

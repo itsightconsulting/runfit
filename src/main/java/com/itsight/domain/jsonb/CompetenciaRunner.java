@@ -6,7 +6,7 @@ import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
 
-import javax.validation.constraints.Future;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,7 +17,10 @@ public class CompetenciaRunner implements Serializable {
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Future
     private Date fecha;
-    private int distancia;
+    @Digits(integer = 2, fraction = 2)
+    private Double distancia;
+    @NotBlank
+    @Size(min= 5, max = 60)
     private String nombre;
     private String tiempoObjetivo;
     private int prioridad;

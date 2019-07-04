@@ -1187,7 +1187,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             String[] tiempos = {"00:58", "02:10", "04:12"};
             for(int k=1; k<4;k++){
                 CompetenciaRunner cr = new CompetenciaRunner();
-                cr.setDistancia(distancias[k-1]);
+                cr.setDistancia(distancias[k-1]+0.0);
                 cr.setFecha(new Date());
                 cr.setNombre("Maratón "+k);
                 cr.setPrioridad(2);
