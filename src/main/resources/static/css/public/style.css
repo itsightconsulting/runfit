@@ -2122,15 +2122,21 @@ h1 {
   counter-reset: item
 }
 
+.steps .form-group {
+  position: relative;
+}
+
 .steps .title-form-group {
   font-size: 18px;
   font-family: Gotham-HTF-Bold, 'system-ui';
   margin-top: 25px;
-  text-transform: uppercase
+  text-transform: uppercase;
+  display: inline-block;
+  width: 100%;
 }
 
-.steps ul {
-  position: relative
+.steps .title-form-group.mar-top {
+  margin-top: 10px !important;
 }
 
 .steps ul.distance {
@@ -2229,7 +2235,8 @@ h1 {
 .steps .ficha-02 .bg-image {
   position: absolute;
   bottom: 0;
-  left: -12%
+  left: -12%;
+  max-height: 1160px;
 }
 
 .steps .ficha-03 {
@@ -3117,6 +3124,10 @@ button.btn:hover {
 .checks li {
   display: inline-block;
   margin-right: 25px
+}
+
+.checks.mar-0 li {
+  margin-right: 0px
 }
 
 .chk-content {
