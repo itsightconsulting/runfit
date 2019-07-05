@@ -672,3 +672,10 @@ function getUbigeoPeruLim(){
         exception(err);
     });
 }
+
+function getIdiomas(){
+    const idiomas = document.querySelector('#Idiomas');
+    _idiomas.forEach(e=>{
+        idiomas.appendChild(htmlStringToElement(`<option value="${e.cd}">${e.nombre}</option>`));
+    })
+}

@@ -55,6 +55,14 @@ const body = document.querySelector('body');
     init();
 })();
 
+function nextTabButton() {
+    $('.btnNextTab').click(function(){
+        var header = $(".navbar-inverse").height();
+        $('.nav-tabs > .active').next('li').find('a').trigger('click');
+        $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+    });
+}
+
 function sendMainForm(e){
     e.preventDefault();//To avoid form sended automatically
     const checkList1 = validationByNumSheet(1);
@@ -462,6 +470,7 @@ function uploadFotoPerfil(d){
 
 function init(){
     instanceInitTab();
+    nextTabButton();
     mainSeeders();
     modalEventos();
     populateBancos();
@@ -474,6 +483,7 @@ function init(){
 
 function mainSeeders(){
     getUbigeoPeruLim();
+    getIdiomas();
 }
 
 function instanceCropper(){
@@ -625,8 +635,8 @@ function addServiceAndcleanCampos(svc){
     const element = htmlStringToElement(
         `<div class="form-group editar">
                             <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);">
-                                <img class="del-svc" title="Eliminar" data-id="${svc.id}" src="${_ctx}img/public/garbage.png">
                                 <img class="edit-svc" title="Confirmar modificaciones al servicio" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
+                                <img class="del-svc" title="Eliminar" data-id="${svc.id}" src="${_ctx}img/iconos/icon_trash.svg">
                             </a>
                             <label class="servicio svc-focus" data-id="${svc.id}">${svc.nombre}</label>
                         </div>`);
@@ -982,8 +992,8 @@ function putTarifario(id, nombre){
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                         <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);">
-                            <img title="Eliminar" style="margin: 0px 0px 5px" class="del-tar-svc" data-id="${id}" src="${_ctx}img/public/garbage.png">
                             <img title="Confirmar modificaciones" style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
+                            <img title="Eliminar" style="margin: 0px 0px 5px" class="del-tar-svc" data-id="${id}" src="${_ctx}img/iconos/icon_trash.svg">
                         </a>
                     </div>`
 }
@@ -1028,10 +1038,11 @@ function uploadFotosPerfil(d){
                 data.append("files", v.file);
             }
         })
+        data.append("rdmsUUIDs", rdmsUUIDs);
 
         $.ajax({
             type: 'PUT',
-            url: _ctx+'p/trainer/subir/fotos/perfil/'+hshId+'/'+rdmsUUIDs,
+            url: _ctx+'p/trainer/subir/fotos/perfil/'+hshId,
             data : data,
             contentType: false,
             processData: false,
