@@ -1,7 +1,7 @@
 <footer th:fragment="fg-footer" class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 col-xs-6">
                 <p class="title_footer">Equipo</p>
                 <ul>
                     <li><a th:href="@{/p/quienes-somos}">
@@ -18,10 +18,22 @@
                         <p>Términos y condiciones</p></a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3 col-xs-6 text-right mobile">
+                <p class="title_footer">Contáctenos</p>
+                <ul>
+                    <li>
+                        <p>+51 994279344</p>
+                    </li>
+                    <li>
+                        <p>info@runfit.pe</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-4 col-xs-6">
                 <p class="title_footer">Pago seguro</p><img th:src="@{/img/public/pago.png}+'?'+${version}"/>
             </div>
-            <div class="col-md-2 text-right">
+            <div class="col-md-2 text-right col-xs-6">
                 <p class="title_footer">Síguenos en</p>
                 <ul class="social">
                     <li><a href="#"><span class="fa fa-instagram"></span></a></li>
@@ -29,7 +41,7 @@
                     <li><a href="#"><span class="fa fa-youtube"></span></a></li>
                 </ul>
             </div>
-            <div class="col-md-3 text-right">
+            <div class="col-md-3 text-right no_mobile">
                 <p class="title_footer">Contáctenos</p>
                 <ul>
                     <li>
