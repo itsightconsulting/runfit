@@ -136,7 +136,7 @@ const ResponseCode = Object.freeze({
 const dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
 const exceptNames = {"-9": "EX_NULL_POINTER", "-10": "EX_NULL_POINTER", "-99": "EX_NUMBER_FORMAT", "-100": "EX_MAX_SIZE_MULTIPART", "-101": "EX_MAX_UPLOAD_SIZE"};
 const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-const _idiomas = [{cd: 'es', nombre: 'Español'}, {cd: 'en', nombre: 'Inglés'}, {cd: 'pt', nombre: 'Portugués'}, {cd: 'fr', nombre: 'Francés'}, {cd: 'zh', nombre: 'Chino'}];
+const _idiomas = [{cd: "de", nombre:	"Alemán"},{cd: "ar", nombre:	"Árabe"},{cd: "bn", nombre:	"Bengalí"},{cd: "zh", nombre:	"Chino"},{cd: "ko", nombre:	"Coreano"},{cd: "es", nombre:	"Español"},{cd: "fr", nombre:	"Francés"},{cd: "hi", nombre:	"Hindi"},{cd: "en", nombre:	"Inglés"},{cd: "it", nombre:	"Italiano"},{cd: "ja", nombre:	"Japonés"},{cd: "pt", nombre:	"Portugués"},{cd: "ru", nombre:	"Ruso"}];
 const _niveles = [{cd: 'pr', nombre: 'Principiante'}, {cd: 'in', nombre: 'Intermedio'}, {cd: 'av', nombre: 'Avanzado'}, {cd: 'pf', nombre: 'Profesional'}];
 const _forsTrabajo = [{cd: 'ai', nombre: 'Al aire libre'}, {cd: 'pe', nombre: 'Personalizado'}, {cd: 'eg', nombre: 'En grupo'}, {cd: 'on', nombre: 'Online'}];
 const _ubigeoPeLi = [{ub:"150101", nom:"Lima"}, {ub:"150102", nom:"Ancon"}, {ub:"150103", nom:"Ate"}, {ub:"150104", nom:"Barranco"}, {ub:"150105", nom:"Breña"}, {ub:"150106", nom:"Carabayllo"}, {ub:"150107", nom:"Chaclacayo"}, {ub:"150108", nom:"Chorrillos"}, {ub:"150109", nom:"Cieneguilla"}, {ub:"150110", nom:"Comas"}, {ub:"150111", nom:"El Agustino"}, {ub:"150112", nom:"Independencia"}, {ub:"150113", nom:"Jesus Maria"}, {ub:"150114", nom:"La Molina"}, {ub:"150115", nom:"La Victoria"}, {ub:"150116", nom:"Lince"}, {ub:"150117", nom:"Los Olivos"}, {ub:"150118", nom:"Lurigancho"}, {ub:"150119", nom:"Lurin"}, {ub:"150120", nom:"Magdalena del Mar"}, {ub:"150121", nom:"Pueblo Libre (Magdalena Vieja)"}, {ub:"150122", nom:"Miraflores"}, {ub:"150123", nom:"Pachacamac"}, {ub:"150124", nom:"Pucusana"}, {ub:"150125", nom:"Puente Piedra"}, {ub:"150126", nom:"Punta Hermosa"}, {ub:"150127", nom:"Punta Negra"}, {ub:"150128", nom:"Rimac"}, {ub:"150129", nom:"San Bartolo"}, {ub:"150130", nom:"San Borja"}, {ub:"150131", nom:"San Isidro"}, {ub:"150132", nom:"San Juan de Lurigancho"}, {ub:"150133", nom:"San Juan de Miraflores"}, {ub:"150134", nom:"San Luis"}, {ub:"150135", nom:"San Martin de Porres"}, {ub:"150136", nom:"San Miguel"}, {ub:"150137", nom:"Santa Anita"}, {ub:"150138", nom:"Santa Maria del Mar"}, {ub:"150139", nom:"Santa Rosa"}, {ub:"150140", nom:"Santiago de Surco"}, {ub:"150141", nom:"Surquillo"}, {ub:"150142", nom:"Villa El Salvador"}, {ub:"150143", nom:"Villa Maria del Triunfo"}];
@@ -560,7 +560,8 @@ function validUUID(urlUuid){
 function htmlStringToElement(rawHTML){
     const elemento = document.createElement('template');
     elemento.innerHTML = rawHTML;
-    return elemento.content.firstElementChild;
+    //elemento.content.querySelector("*") for Microsoft Edge compatibility
+    return elemento.content.firstElementChild ? elemento.content.firstElementChild : elemento.content.querySelector("*");
 }
 
 function notificacionesRutinaSegunResponseCode(resCode, wildcard){

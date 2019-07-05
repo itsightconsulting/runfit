@@ -1196,11 +1196,13 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             }
             comps.get(2).setPrioridad(1);
             cliFit.setCompetencias(comps);
-            List<FitElemento> fitElementos = new ArrayList<>();
+
+          /*  List<FitElemento> fitElementos = new ArrayList<>();
             fitElementos.add(new FitElemento(1, "Pulsómetro"));
             fitElementos.add(new FitElemento(2, "Ligas"));
+*/
 
-            cliFit.setFitElementos(fitElementos);
+            cliFit.setFitElementos("1");
             cliFit.setCliente(cli);
             clienteFitnessService.save(cliFit);
             if(i<4){

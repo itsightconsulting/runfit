@@ -80,33 +80,7 @@
                                 <div class="form-group">
                                     <div class="pad-right-middle" style="width:100%;">
                                         <label>IDIOMAS<span class="obligatorio">*</span></label>
-                                        <ul class="checks" id="Idiomas">
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Español
-                                                    <input name="Idiomas" value="es" data-aka="IDIOMAS*" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Inglés
-                                                    <input name="Idiomas" value="en" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Portugués
-                                                    <input name="Idiomas" value="pt" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Francés
-                                                    <input name="Idiomas" value="fr" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                            <li style="margin-right: 22px;">
-                                                <div class="chk-content">Chino
-                                                    <input name="Idiomas" value="zh" type="checkbox"/><span class="checkmark"></span>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <select class="form-control hidden" data-aka="Idiomas" multiple="multiple" id="Idiomas" name="Idiomas"></select>
                                     </div>
                                     <div class="form-group" id="Estudios">
                                         <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
@@ -262,7 +236,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <h4 class="sub-title">TARIFARIO<span class="obligatorio">*</span>
+                                <h4 class="sub-title">TARIFARIO
                                     <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
                                     <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
                                 </h4>
@@ -556,6 +530,7 @@
 
     function init(){
         instanceAllTooltip();
+        getIdiomas();
         modalEventos();
         getTrainer();
         constraintsValidation();
@@ -611,6 +586,7 @@
             }
         }
         checkRevisionTrainerDeEmpresa();
+        doMultiselectCheckBox();
     }
 
     function checkRevisionTrainerDeEmpresa(){
@@ -828,6 +804,7 @@
             success: function (res) {
                 $perfil = res;
                 recrearPerfil(res);
+                $('#Idiomas').multiselect('rebuild');
                 if($perfil.tipoTrainerId !== TipoTrainer.DE_EMPRESA){
                     getServiciosAsync(res.id);
                     document.querySelector('li a[href="#service"]').parentElement.classList.remove('hidden');
@@ -880,7 +857,7 @@
         document.querySelector('#Acerca').value = t.acerca.replace(/\r?\n/g, '\n');
         let idiomas = t.idiomas.split("|");
         const divIdiomas = document.querySelector('#Idiomas');
-        idiomas.forEach(i=> divIdiomas.querySelector(`input[value="${i}"]`).checked = true);
+        idiomas.forEach(i=> divIdiomas.querySelector(`option[value="${i}"]`).selected = 'selected');
         document.querySelector('#MetodoTrabajo').value = t.metodoTrabajo.replace(/\r?\n/g, '\n');
         document.querySelector('#CentroTrabajo').value = t.centroTrabajo;
         const inpRes = document.querySelector('#Resultados');
@@ -1321,7 +1298,7 @@
     function generateBodyToUpdate(){
         const obj = getFormData($('#frm_registro'));
 
-        obj.idiomas = getValuesConcatInpCheckbox('Idiomas');
+        obj.idiomas = $('#Idiomas').val().join('|');
         obj.estudios = getValuesByClass('inp-estudio');
         obj.experiencias = getValuesByClass('inp-experiencia');
         obj.resultados = getValuesByClass('inp-resultado');

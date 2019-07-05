@@ -936,7 +936,7 @@
                         </div>
                       </div>
                       <div class="form-group padding-o-top-10">
-                        <textarea class="form-control" id="TxtMusculoOtro" placeholder="Ingresar otro músculo más específico de requerirlo así"></textarea>
+                        <textarea class="form-control" id="TxtMusculoOtro" name="TxtMusculoOtro" placeholder="Ingresar otro músculo más específico de requerirlo así"></textarea>
                       </div>
                     </li>
                   </ol>
@@ -1043,7 +1043,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <textarea id="DesgasteZapatillaOtro" class="form-control" placeholder="Especificar otra parte"></textarea>
+                        <textarea id="DesgasteZapatillaOtro" name ="DesgasteZapatillaOtro" class="form-control" placeholder="Especificar otra parte"></textarea>
                       </div>
                     </li>
                     <li>
@@ -1079,7 +1079,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <textarea id="DesTerPredomOtro" class="form-control" placeholder="Especificar otro"></textarea>
+                        <textarea id="DesTerPredomOtro" name="DesTerPredomOtro"  class="form-control" placeholder="Especificar otro"></textarea>
                       </div>
                     </li>
                   </ol>
@@ -1101,29 +1101,33 @@
                         <ul class="distance">
                           <li>
                             <div class="input-time">
-                              <input type="text" placeholder="HH:MM:SS" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <!--IMPORTANTE QUE LA PRIMERA NO TENGA LA PROP readonly por tema de validación -->
+                              <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>2km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" placeholder="HH:MM:SS" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>4km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" placeholder="HH:MM:SS" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>21km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" placeholder="HH:MM:SS" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                              <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>42km</p>
                           </li>
                         </ul>
+                        <label style="margin: 0px;">
+                          <input type="hidden" class="form-control" name="MarcaReferencial" id="MarcaReferencial" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?">
+                        </label>
                       </div>
                     </li>
                     <li class="display-table">
@@ -1748,8 +1752,10 @@
         obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
         obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
         obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
+        obj.cliFit.desgasteZapatillaOtro = document.getElementById('DesgasteZapatillaOtro').value;
         obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;
         obj.cliFit.desTerPredom = getValuesConcatInpCheckbox('DesTerPredom');
+        obj.cliFit.desTerPredomOtro =  document.getElementById('DesTerPredomOtro').value;
         obj.cliFit.mejoras = getValuesCondicionMejora();
         obj.cliFit.frecuenciaComunicacion = 1;
         obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
@@ -1768,6 +1774,8 @@
         condAnatomica.frecuenciaCardiacaMaxima = obj.frecuenciaCardiacaMaxima;
         condAnatomica.formaInicial = obj.formaInicial;
         condAnatomica.musculosSensibles = selectedMuscles.map(v=>{return {id: v.id.slice(4), nombre: v.name}});
+        condAnatomica.musculoSensiblesOtros = obj.txtMusculoOtro;
+
         const salud = obj.cliFit.salud = new Object();
         salud.flagEnfermedad = document.querySelector('#FlagEnfermedad').checked;
         salud.flagFumador = document.querySelector('#FlagFumador').checked;
@@ -1795,7 +1803,7 @@
         salud.historialDeportivoAct = obj.historialDeportivoAct;
         //Competencias
         obj.cliFit.competencias = getCompetenciasParticipar();
-        obj.cliFit.fitElementos = [];
+        obj.cliFit.fitElementos = getValuesConcatInpCheckbox('ItemsFitness');
 
         return obj;
       }
@@ -2252,6 +2260,17 @@
               rangelength: [7,8],
               greaterThanSeconds: 121*60,
             },
+            MarcaReferencial:{
+              required: function(){
+                if($('#TwoKm').val().length>7 ||
+                $('#FourKm').val().length>7 ||
+                $('#TweOneKm').val().length>7 ||
+                $('#FouTwoKm').val().length>7){
+                  return false;
+                }
+                return true;
+              }
+            },
           },
           messages: {
             Sexo: {
@@ -2281,6 +2300,9 @@
             },
             Username: {
               pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
+            },
+            MarcaReferencial:{
+              required: "Debe completar su marca en cualquiera de las distancias"
             }
           }
         });
@@ -2387,10 +2409,14 @@
             const reallyInput = input.firstElementChild;
             const arrTime = $oculto.split(":");
             $oculto = ("0"+arrTime[0]).slice(-2) + ":" + ("0"+arrTime[1]).slice(-2) + ":" + ("0"+arrTime[2]).slice(-2);
+            const clases = reallyInput.classList;
             reallyInput.value = $oculto;
             $(reallyInput).valid();
-            //Para que no intervenga si se abre en otro input
+            if (clases.contains('marca-referencial')) {
+              $('#MarcaReferencial').valid();
+            }
           }
+          //Para que no intervenga si se abre en otro input
           $oculto = "";
         }
       })

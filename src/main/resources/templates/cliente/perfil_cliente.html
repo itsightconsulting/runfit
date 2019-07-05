@@ -371,25 +371,26 @@
                                                 <label class="field-name">¿Tienes alguna hernia discal o padeces otra condición especial en la columna?</label>
                                                 <label name="FlagHerDisOrCondCol" id="FlagHerDisOrCondCol" class="field-content"/>
                                             </div>
-                                            <div class="form-group hidden">
+                                            <div class="form-group">
                                                 <label class="field-name">Especificar brevemente la hernia o el problema en la columna</label>
                                                 <input class="form-control" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" type="text" disabled="true"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">Padeces de Artritis/Condromalacia/Osteocondritis/N.A:</label>DesPadVarios
+                                                <label class="field-name">Padeces de Artritis/Condromalacia/Osteocondritis/N.A:</label>
                                                 <input class="form-control" id="DesPadVarios" name="DesPadVarios" type="text" disabled="true"/>
 
                                             </div>
-                                            <p class="title-form-group">Información adicional</p>
+                                            <h5>Información adicional</h5>
                                         <li>
                                             <div class="form-group more-inputs" id="dvContactosEmergencia">
                                                 <label class="field-name">En caso de emergencia llamar a: </label>
 
-                                                <input class="form-control" id="ContactosEmergencia" name="ContactosEmergencia" type="text" disabled="true"/>
+
+
 
 
                                             </div>
-                                            <p class="title-form-group">Historial deportivo</p>
+                                            <h5>Historial deportivo</h5>
                                             <div class="form-group">
                                                 <label class="field-name">Infancia / Juventud</label>
                                                 <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control" disabled="true"></textarea>
@@ -401,7 +402,7 @@
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Queremos conocer tus frecuencias cardiacas:<span class="obligatorio">*</span></label>
+                                                <label class="field-name">Queremos conocer tus frecuencias cardiacas:</label>
                                                 <p class="form-group-subtitle">Frecuencia cardiaca basal:
                                                     <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca basal se refiere a las pulsaciones que una persona tiene por minuto en estado de reposo"></i>
                                                 </p>
@@ -414,7 +415,7 @@
                                         </li>
                                         <li class="range-height">
                                             <div class="form-group">
-                                                <label class="field-name">¿En que forma estás?<br/>¡Dinos la verdad eh!<span class="obligatorio">*</span></label>
+                                                <label class="field-name">¿En que forma estás?<br/>¡Dinos la verdad eh!</label>
                                             </div>
                                             <div class="rango bg-slide">
                                                 <input id="FormaInicial" name="FormaInicial" type="range" value="0" data-aka="Seleccione que tan en forma se encuentra" disabled="true"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
@@ -430,7 +431,7 @@
                                         <li>
                                             <div class="form-group">
                                                 <label class="field-name">De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
-                                                <div id="CondicionesMejora">
+                                                <div id="dvCondicionesMejora">
 
                                                 </div>
                                                 <div class="form-group"><br/>
@@ -455,7 +456,7 @@
                                     <ol>
                                         <li>
                                             <div class="form-group">
-                                                <label>¿Cuáles son los músculos que más se te fatigan al correr?<span class="obligatorio">*</span></label>
+                                                <label class="field-name">¿Cuáles son los músculos que más se te fatigan al correr?</label>
                                                 <div class="row" style="padding: 5px 10px !important;">
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <ul class="checks ul-msc-l">
@@ -465,7 +466,7 @@
                                                         <ul class="checks ul-msc-r">
                                                         </ul>
                                                     </div>
-                                                    <div class="col col-md-12" style="color: #666666">Seleccionar:</div>
+                                                    <div class="col col-md-12" style="color: #fff">Seleccionar:</div>
                                                 </div>
                                             </div>
                                             <div class="cuerpos row">
@@ -702,190 +703,123 @@
                           </svg>
                                                 </div>
                                             </div>
-                                            <div class="form-group padding-o-top-10">
-                                                <textarea class="form-control" id="TxtMusculoOtro" placeholder="Ingresar otro músculo más específico de requerirlo así"></textarea>
+                                            <div class="padding-o-top-10">
+                                                <label class="field-content" id="TxtMusculoOtro" style="margin-top: 287.867px;"></label>
                                             </div>
                                         </li>
+
+                                        <li>
+                                            <div class="form-group">
+                                                <label class="field-name">¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?</label>
+                                                <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" disabled="true"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label class="field-name">Y tu kilometraje promedio semanal ¿Cuál es?</label>
+                                                <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" data-aka="Kilometraje promedio semanal" class="form-control" type="number" disabled="true"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label class="field-name">¿Cuántos días corres a la semana?</label>
+                                                <input id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" class="form-control" type="number" disabled="true"/>
+
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label class="field-name">¿Realizas ejercicios de calentamiento?</label>
+                                                <label class="field-content" id="FlagCalentamiento" name="FlagCalentamiento" />
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="form-group">
+                                                <label class="field-name">¿Siempre haces ejercicios de estiramiento al finalizar tus entrenamiento?</label>
+                                                <label class="field-content" id="FlagEstiramiento" name="FlagEstiramiento" />
+                                            </div>
+                                        </li>
+
                                     </ol>
                                 </div>
                                 <div class="col-md-6">
                                     <ol>
+
                                         <li>
+                                            <div class="form-group block-checks" id="dvDesgasteZapatilla">
+                                                <label class="field-name">¿Nos podrías decir cuál o cuáles son los puntos de desgaste de tus zapatillas?</label>
+
+                                            </div>
                                             <div class="form-group">
-                                                <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
-                                                <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" value="00:00:01"/>
+                                                <textarea id="DesgasteZapatillaOtro" class="form-control" disabled="true"></textarea>
                                             </div>
                                         </li>
                                         <li>
+                                            <div class="form-group block-checks" id="dvDesTerPredom">
+                                                <label class="field-name">¿Por cúal o cúales tipos de terreno sueles correr con mayor frecuencia?</label>
+
+
+                                            </div>
                                             <div class="form-group">
-                                                <label>Y tu kilometraje promedio semanal ¿Cuál es?<span class="obligatorio">*</span></label>
-                                                <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" data-aka="Kilometraje promedio semanal" class="form-control" type="number"/>
+                                                <textarea id="DesTerPredomOtro" class="form-control" disabled="true"></textarea>
                                             </div>
                                         </li>
+
                                         <li>
                                             <div class="form-group">
-                                                <label>¿Cuántos días corres a la semana?<span class="obligatorio">*</span></label>
-                                                <select id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" data-aka="Seleccionar días a la semana que corres" class="form-control hidden">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">0</option>
-                                                </select>
+                                                <label class="field-name">Cuáles son tus objetivos personales</label>
+                                                <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-control form-group full" disabled="true"></textarea>
                                             </div>
                                         </li>
-                                        <li>
+
+                                        <li class="pad-0">
                                             <div class="form-group">
-                                                <label>¿Realizas ejercicios de calentamiento?</label>
-                                                <ul class="checks">
+                                                <label class="pad-0 field-name">Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?</label>
+                                                <p class="form-group-subtitle">Completar únicamente una distancia</p>
+
+                                                   <ul class="distance">
                                                     <li>
-                                                        <div class="chk-content">Si
-                                                            <input id="FlagCalentamiento" name="FlagCalentamiento" data-aka="Especificar si realiza calentamientos" type="radio" checked="checked"/><span class="checkmark"></span>
+                                                        <div class="input-time">
+                                                            <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
                                                         </div>
+                                                        <p>2km</p>
                                                     </li>
                                                     <li>
-                                                        <div class="chk-content">No
-                                                            <input name="FlagCalentamiento" type="radio"/><span class="checkmark"></span>
+                                                        <div class="input-time">
+                                                            <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
                                                         </div>
+                                                        <p>4km</p>
+                                                    </li>
+                                                    <li>
+                                                        <div class="input-time">
+                                                            <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                                                        </div>
+                                                        <p>21km</p>
+                                                    </li>
+                                                    <li>
+                                                        <div class="input-time">
+                                                            <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" disabled="disabled"/>
+                                                        </div>
+                                                        <p>42km</p>
                                                     </li>
                                                 </ul>
+
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label>¿Siempre haces ejercicios de estiramiento al finalizar tus entrenamiento?</label>
-                                                <ul class="checks">
-                                                    <li>
-                                                        <div class="chk-content">Si
-                                                            <input id="FlagEstiramiento" name="FlagEstiramiento" data-aka="Especificar si realiza estiramientos" type="radio" checked="checked"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">No
-                                                            <input name="FlagEstiramiento" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group block-checks">
-                                                <label>¿Nos podrías decir cuál o cuáles son los puntos de desgaste de tus zapatillas?</label>
-                                                <ul class="checks">
-                                                    <li>
-                                                        <div class="chk-content">Punta
-                                                            <input name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" value="Punta" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Dedo interno
-                                                            <input name="DesgasteZapatilla" value="Dedo interno" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Dedo externo
-                                                            <input name="DesgasteZapatilla" value="Dedo externo" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Borde interno del talón
-                                                            <input name="DesgasteZapatilla" value="Borde interno del talón" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Borde externo del talón
-                                                            <input name="DesgasteZapatilla" value="Borde externo del talón" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Otro
-                                                            <input name="DesgasteZapatilla" value="Otro" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="form-group">
-                                                <textarea id="DesgasteZapatillaOtro" class="form-control" placeholder="Especificar otra parte"></textarea>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group block-checks">
-                                                <label>¿Por cúal o cúales tipos de terreno sueles correr con mayor frecuencia?<span class="obligatorio">*</span></label>
-                                                <ul class="checks">
-                                                    <li>
-                                                        <div class="chk-content">Asfalto
-                                                            <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="Asfalto" type="checkbox" checked="checked"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Cemento
-                                                            <input name="DesTerPredom" value="Cemento" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Trail / Trocha
-                                                            <input name="DesTerPredom" value="Trail / Trocha" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Cinta de correr
-                                                            <input name="DesTerPredom" value="Cinta de correr" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Otro
-                                                            <input name="DesTerPredom" value="Otro" type="checkbox"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li></li>
-                                                </ul>
-                                            </div>
-                                            <div class="form-group">
-                                                <textarea id="DesTerPredomOtro" class="form-control" placeholder="Especificar otro"></textarea>
-                                            </div>
-                                        </li>
+
+
+
+
                                     </ol>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <ol>
-                                        <li class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Cuáles son tus objetivos personales<span class="obligatorio">*</span></label>
-                                                <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-control form-group full"></textarea>
-                                            </div>
-                                        </li>
-                                        <li class="col-md-6 pad-0">
-                                            <div class="form-group">
-                                                <label class="pad-0">Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?<span class="obligatorio">*</span></label>
-                                                <p class="form-group-subtitle">Completar únicamente una distancia</p>
-                                                <ul class="distance">
-                                                    <li>
-                                                        <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00"/>
-                                                        <p>2km</p>
-                                                    </li>
-                                                    <li>
-                                                        <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00" disabled="disabled"/>
-                                                        <p>4km</p>
-                                                    </li>
-                                                    <li>
-                                                        <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00" disabled="disabled"/>
-                                                        <p>21km</p>
-                                                    </li>
-                                                    <li>
-                                                        <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" value="00:00:00" disabled="disabled"/>
-                                                        <p>42km</p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
                                         <li class="display-table">
                                             <div class="form-group">
-                                                <label>¿Cuáles son las competencias en las que quisieras participar?<span class="obligatorio">*</span></label>
+                                                <label class="field-name">¿Cuáles son las competencias en las que quisieras participar?</label>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -903,34 +837,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input class="form-control inp-fecha" name="InpFechaCompetencia" data-aka="Fecha competencia" type="date" th:value="${today}"/>
-                                                                    </td>
-                                                                    <td>
-                                                                        <select class="form-control inp-distancia no-multi">
-                                                                            <option value="10">10K</option>
-                                                                            <option value="21">21K</option>
-                                                                            <option value="42">42K</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input class="form-control inp-nombre" id="DesComp" name="DesComp" data-aka="Nombre de competición a participar" type="text"/>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input class="form-control inp-tiempo" name="TiempoComp" maxlength="8" data-aka="TIEMPO OBJETIVO DE COMPETENCIA" type="text" value="00:00:00"/>
-                                                                    </td>
-                                                                    <td>
-                                                                        <select class="form-control inp-prioridad no-multi">
-                                                                            <option value="1">Baja</option>
-                                                                            <option value="2">Media</option>
-                                                                            <option value="3">Alta</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td style="width: 32px; border: 1px solid transparent">
-                                                                        &nbsp;
-                                                                    </td>
-                                                                </tr>
+
                                                                 <!-- This is our clonable table line -->
                                                                 <tr class="hide" data-acc="0">
                                                                     <td>
@@ -956,154 +863,86 @@
                                                                             <option value="3">Alta</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td style="width: 32px; border: 1px solid transparent">
-                                                                        <img onclick="eliminarFila(this)" data-acc="" th:src="@{/img/public/garbage.png}" alt="Eliminar">
-                                                                    </td>
+
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <a class="btn btn-black pull-right" onclick="agregarFilaCompetencia()" style="font-size: 1em !important; margin-right: 54px;">Agregar<i class="fa fa-plus-circle fa-fw"></i></a>
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label>De los siguientes elementos, indícanos cuáles tienes a tu disposición: <span class="obligatorio">*</span></label>
+                                                <label class="field-name">De los siguientes elementos, indícanos cuáles tienes a tu disposición: </label>
                                                 <ul class="list_items">
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/dis_1.jpg}+'?'+${version}"/>
                                                             <div class="chk-content">Pulsómetro
-                                                                <input name="ItemsFitness" type="checkbox" data-aka="Elegir elementos fitness con los que cuenta" value="1"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" data-aka="Elegir elementos fitness con los que cuenta" value="1" disabled="true" /><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item text"><img th:src="@{/img/public/dis_2.png}+'?'+${version}"/>
                                                             <div class="chk-content">Gimnasio
-                                                                <input name="ItemsFitness" type="checkbox" value="2"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="2" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/ligas.png}+'?'+${version}"/>
                                                             <div class="chk-content">Ligas
-                                                                <input name="ItemsFitness" type="checkbox" value="3"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="3" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/bandas.png}+'?'+${version}"/>
                                                             <div class="chk-content">Banda elástica
-                                                                <input name="ItemsFitness" type="checkbox" value="4"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="4" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/bicicleta.png}+'?'+${version}"/>
                                                             <div class="chk-content">Bicicleta de spinning
-                                                                <input name="ItemsFitness" type="checkbox" value="5"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="5" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/escalera.png}+'?'+${version}"/>
                                                             <div class="chk-content">Escalera coordinativa
-                                                                <input name="ItemsFitness" type="checkbox" value="6"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="6" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/mediapelota.png}+'?'+${version}"/>
                                                             <div class="chk-content">Pelotas de equilibrio
-                                                                <input name="ItemsFitness" type="checkbox" value="7"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="7" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/mancuernas.png}+'?'+${version}"/>
                                                             <div class="chk-content">Mancuernas
-                                                                <input name="ItemsFitness" type="checkbox" value="8"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="8" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="item text"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                                                             <div class="chk-content">Ninguna de las anteriores
-                                                                <input name="ItemsFitness" type="checkbox" value="9" checked="checked"/><span class="checkmark"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="9" checked="checked" disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
-                                                <div class="login-register">
-                                                    <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
-                                                        <label style="width: 110px !important;" for="Username">Usuario</label>
-                                                        <div>
-                                                            <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
-                                                            <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                                                            <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
-                                                        <label style="width: 112px !important;" for="Password">Contraseña</label>
-                                                        <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label>Finalmente, ¿cómo te enteraste de nosotros?</label>
-                                                <ul class="checks">
-                                                    <li>
-                                                        <div class="chk-content">Por recomendación
-                                                            <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio" checked="checked"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Vía correo
-                                                            <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Google
-                                                            <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Facebook
-                                                            <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Twitter
-                                                            <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Instagram
-                                                            <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="chk-content">Otro
-                                                            <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
-                                                        </div>
-                                                    </li>
-                                                    <input id="TrainerId" type="hidden" th:value="${trainerId}">
-                                                    <input id="CorreoTrainer" type="hidden" th:value="${correoTrainer}">
-                                                </ul><br/>
-                                            </div>
-                                            <div class="form-group">
-                                                <button id="btnGuardar" class="btn btn-bg-black" type="submit">FINALIZAR</button>
-                                            </div>
-                                        </li>
+
                                     </ol>
                                 </div>
                             </div>
@@ -1168,12 +1007,12 @@
 
     function init(){
         instanceInitTab();
-        mainSeeders();
         cargarDataCliente();
+        tooltipsOn();
         mainEventListeners();
         tooltipsOn();
         constraintsValidation();
-        multiSelectFichaRunning();
+
         $('#TxtMusculoOtro')[0].style.marginTop = $('#HumanMuscles').height() + 'px';
     }
 
@@ -1182,69 +1021,7 @@
         document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
     }
 
-    function mainSeeders(){
-        getUbigeoPeruLim();
-        if(flag_form_populate){
-            getCondicionesMejora();
-            setTimeout(()=>populateForm(), 1000);
-        }
-    }
 
-    function getCondicionesMejora(){
-        const len = lstCondMejoras.length;
-        if(len == 0){
-            $.ajax({
-                type: 'GET',
-                url: _ctx + 'p/condicion-mejora/listar/todos',
-                dataType: 'json',
-                success: function (res) {
-                    lstCondMejoras = res;
-                    const divConMej = document.getElementById('CondicionesMejora');
-                    const f4 = '<div class="col-md-4 pad-0"><ul class="checks">'+res.slice(0, 4).map(e=>`
-                            <li>
-                              <div class="chk-content">${e.nombre}
-                                <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
-                              </div>
-                            </li>
-              `).join('')+'</ul></div>';
-                    const s4 = '<div class="col-md-8 pad-0"><ul class="checks">'+res.slice(4, 8).map(e=>`
-                            <li>
-                              <div class="chk-content">${e.nombre}
-                                <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
-                              </div>
-                            </li>
-              `).join('')+'</ul></div>';
-                    const ls3 = '<div class="row"><div class="col-md-12"><br><ul class="checks">'+res.slice(8, 11).map(e=>`
-                            <li>
-                              <div class="chk-content">${e.nombre}
-                                <input name="CondicionMejora" data-aka="Aspectos a mejorar" value="${e.id}" type="checkbox"><span class="checkmark"></span>
-                              </div>
-                            </li>
-              `).join('')+'</ul></div></div>';
-                    divConMej.innerHTML = `${f4}${s4}${ls3}`;
-                    specificCheckBoxes('CondicionesMejora');
-                }
-            })
-        }
-    }
-
-    function getUbigeoPeruLim(){
-        fetch(_ctx+'p/ubigeo/get/peru-lim')
-            .then(res=> {
-                    if(res.ok){
-                        return res.json();
-                    }
-                }
-            ).then(res=>{
-            document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-            document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-            document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-            $('#Dep').val(15);
-            $('#Dis').multiselect('rebuild');
-        }).catch((err)=>{
-            exception(err);
-        });
-    }
 
     function mainEventListeners(){
         eventListenerSexo();
@@ -1260,6 +1037,7 @@
         $('svg path[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
         activeTooltips();
     }
+
 
     function bodyChangeEventListener(e){
         const input = e.target;
@@ -1795,14 +1573,33 @@
         const desHerDisOrCondCol = salud.desHerDisOrCondCol;
         const desPadVarios = salud.desPadVarios;
 
-        const contactosEmergencia = salud.contactosEmergencia.split("_").join(" ");
+        const contactosEmergencia = salud.contactosEmergencia.split(/(?:[|,_]| )+/);
         const histDeportAnt = salud.historialDeportivoAnt;
         const histDeportAct = salud.historialDeportivoAct;
         const frecuenciaCardiaca= condicionAnatomica.frecuenciaCardiaca;
         const frecuenciaCardiacaMaxima = condicionAnatomica.frecuenciaCardiacaMaxima;
         const formaInicial = condicionAnatomica.formaInicial;
         const nivel = lstnvlAtleta[parseInt(data.nivel)-1];
+        const condMejora =  JSON.parse(data.mejoras);
 
+
+        //ficha 3
+
+        const tiempoUnKilometro = data.tiempoUnKilometro;
+        const kilometrajePromedioSemana = data.kilometrajePromedioSemana;
+        const diasSemanaCorriendo = data.diasSemanaCorriendo;
+        const flagEstiramiento = data.flagEstiramiento ? "Sí" : "No";
+        const flagCalentamiento = data.flagCalentamiento ? "Sí" : "No";
+        const desgasteZapatilla = data.desgasteZapatilla.split("|");
+        const desgasteZapatillaOtro = data.desgasteZapatillaOtro;
+        const musculosSensiblesOtro = condicionAnatomica.musculoSensiblesOtros;
+        const desTerPredom = data.desTerPredom.split("|");
+        const desTerPredomOtro = data.desTerPredomOtro;
+        const desObjetivos = data.desObjetivos;
+        const tiempoDistancia = JSON.parse(data.tiempoDistancia);
+
+        const musculosSeleccionados = (condicionAnatomica.musculosSensibles);
+        const competencias = JSON.parse(data.competencias);
 
 
         $('#Nombres').val(nombres);
@@ -1847,16 +1644,189 @@
         $('#FlagHerDisOrCondCol').text(flagHerDisOrCondCol);
         $('#DesHerDisOrCondCol').val(desHerDisOrCondCol);
         $('#DesPadVarios').val(desPadVarios);
-        $('#ContactosEmergencia').val(contactosEmergencia);
         $('#HistorialDeportivoAnt').val(histDeportAnt);
         $('#HistorialDeportivoAct').val(histDeportAct);
         $('#FrecuenciaCardiaca').val(frecuenciaCardiaca);
         $('#FrecuenciaCardiacaMaxima').val(frecuenciaCardiacaMaxima);
         $('#FormaInicial').val(formaInicial);
         $('#NivelAtleta').text(nivel);
+        $('#TiempoUnKilometro').val(tiempoUnKilometro);
+        $('#KilometrajePromedioSemana ').val(kilometrajePromedioSemana );
+        $('#FlagCalentamiento').text(flagCalentamiento);
+        $('#FlagEstiramiento').text(flagEstiramiento);
+        $('#DiasSemanaCorriendo').val(diasSemanaCorriendo);
+        $('#DesObjetivos').val(desObjetivos);
+        $('#TxtMusculoOtro').text(musculosSensiblesOtro);
+        $('#DesgasteZapatillaOtro').val(desgasteZapatillaOtro);
+        $('#DesTerPredomOtro').val(desTerPredomOtro);
+
+        generarCondicionesMejora(condMejora);
+        generarContactosEmergencia(desgasteZapatilla);
+        generarDesgasteZapatilla(desgasteZapatilla);
+        generarDesTerPredom(desTerPredom);
+        generarTiempoDistancia(tiempoDistancia);
+        seleccionarMusculosSensibles(musculosSeleccionados);
+        llenarTablaCompetenciasSeleccionadas(competencias);
 
 
     }
+
+    function llenarTablaCompetenciasSeleccionadas(competencias){
+
+
+
+         const tablaCompetencia = document.getElementById("tblCompetencia");
+
+
+
+        competencias.forEach( function(element){
+
+            console.log(element.fecha);
+
+            element.fecha = element.fecha.slice(0,10);
+
+            tablaCompetencia.insertRow(-1).innerHTML = '<td>'+element.fecha+'</td><td>'+element.nombre+'</td><td>'+element.distancia+'</td><td>'+element.prioridad+'</td><td>'+element.tiempoObjetivo+'</td>';
+
+        })
+
+
+    }
+
+    function seleccionarMusculosSensibles(musculosSeleccionados){
+
+
+
+        musculosSeleccionados.forEach( function(element){
+
+            const id = "path"+element.id;
+
+            const path = document.getElementById(id);
+
+            path.classList.toggle('muscle-selected');
+
+
+        })
+
+
+    }
+
+    function generarTiempoDistancia(tiempoDistancia){
+
+        if(tiempoDistancia[2]){
+
+            $('#TwoKm').val(tiempoDistancia[2]);
+
+        }else if(tiempoDistancia[4]){
+            $('#FourKm').val(tiempoDistancia[4]);
+
+        }else if(tiempoDistancia[21]){
+            $('#TweOneKm').val(tiempoDistancia[21]);
+
+        }else if(tiempoDistancia[42]){
+            $('#FouTwoKmKm').val(tiempoDistancia[42]);
+
+        }
+
+    }
+
+
+    function generarContactosEmergencia(contactosEmergencia){
+
+        const dvContactosEmergencia = document.getElementById("dvContactosEmergencia");
+
+        contactosEmergencia.forEach((e,index) => {
+
+            const num = index +1;
+
+            if( num % 2 !== 0){
+
+                dvContactosEmergencia.appendChild(htmlStringToElement(`
+                                    <input class="form-control" id="NombreContacto${Math.round(num/2)}" name="NombreContacto${Math.round(num/2)}"
+                                     type="text" disabled="true" value="${e}"/>
+                                    `));
+
+            }else{
+                dvContactosEmergencia.appendChild(htmlStringToElement(`
+                                    <input class="form-control" id="NumeroContacto${num/2}" name="NumeroContacto${num/2}"
+                                     type="text" disabled="true" value="${e}"/>
+
+                               `));
+
+              if(num !== contactosEmergencia.length )
+
+                dvContactosEmergencia.appendChild(htmlStringToElement(`<hr>`));
+            }
+
+
+
+
+
+
+
+         }
+        )
+
+
+    }
+
+    function generarCondicionesMejora(condMejora){
+
+
+        const dvCondicionesMejora = document.getElementById("dvCondicionesMejora");
+
+        const mejoras = condMejora.map(function (obj) { return obj.nombre; });
+
+        mejoras.forEach( (e,index) => {
+
+            const num = index+1;
+
+            dvCondicionesMejora.appendChild(htmlStringToElement(`  <div class="form-group">
+                                                <label id="condMejora${num}" name="condMejoras${num}" class="field-content">${e} </label>
+                                            </div>`));
+
+
+        })
+
+    }
+
+    function generarDesgasteZapatilla(desgasteZapatilla){
+
+
+        const dvDesgasteZapatilla = document.getElementById("dvDesgasteZapatilla");
+
+        desgasteZapatilla.forEach( (e,index) => {
+
+            const num = index+1;
+
+            dvDesgasteZapatilla.appendChild(htmlStringToElement(`  <div class="form-group">
+                                                <label id="desgasteZapatilla${num}" name="desgasteZapatilla${num}" class="field-content">${e} </label>
+                                            </div>`));
+
+
+        })
+
+    }
+
+    function generarDesTerPredom(desTerPredom){
+
+
+        const dvDesTerPredom = document.getElementById("dvDesTerPredom");
+
+
+        desTerPredom.forEach( (e,index) => {
+
+            const num = index+1;
+
+            dvDesTerPredom.appendChild(htmlStringToElement(`  <div class="form-group">
+                                                <label id="desTerPredom${num}" name="desTerPredom${num}" class="field-content">${e} </label>
+                                            </div>`));
+
+
+        })
+
+    }
+
+
 
 
 

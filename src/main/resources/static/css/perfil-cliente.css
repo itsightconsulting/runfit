@@ -408,3 +408,193 @@ section#perfilCliente h4{
     color: #A8FA00;
     font-size: 1.05em
 }
+
+p{
+   color : #fff;
+
+}
+
+hr{
+    border-color: #fff;
+    margin: 15px 0;
+}
+
+.rango .desc-range {
+    position: relative;
+    width: 100%;
+    top: 33px;
+    margin-bottom: 20px;
+}
+
+#HumanMuscles {
+    max-width: 100%;
+    width: 100%;
+    padding: 12px;
+}
+
+.form-group p {
+    text-align: justify;
+}
+
+
+.steps ul.distance {
+    padding: 0;
+    margin: 0;
+}
+
+.steps ul.distance::before {
+    content: '.';
+    font-size: 0;
+    width: 338px;
+    height: 1px;
+    border-top: 1px solid #d3d3d3;
+    position: absolute;
+    bottom: 37px;
+    margin: 0 47px
+}
+
+.steps ul.distance li {
+    display: inline-block;
+    max-width: 80px;
+    margin-right: 10px;
+    text-align: center
+}
+
+.steps ul.distance li input {
+    width: 100%;
+    padding: 10px
+}
+
+.steps ul.distance li p {
+    margin-top: 20px;
+    position: relative
+}
+
+.steps ul.distance li p::before {
+    position: absolute;
+    content: '.';
+    font-size: 0;
+    width: 1px;
+    height: 12px;
+    border-left: 1px solid #d3d3d3;
+    top: -14px;
+    left: m;
+    margin-left: 13px
+}
+
+
+.steps .form-group input, .steps .form-group select {
+    background-color: #fafafa;
+    border-radius: 15px;
+    border: 0;
+    height: 40px;
+    box-shadow: 0 0 0;
+}
+
+.muscle-selected {
+    fill: #a8fa00;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 700;
+    stroke-width: 10;
+}
+
+th,td {
+    color:#fff
+}
+
+
+
+/* list items */
+
+.steps .list_items {
+    padding: 0
+}
+
+.steps .list_items li {
+    border: 3px solid transparent;
+    display: inline-block;
+    width: 210px;
+    margin-right: 45px;
+    height: 220px;
+    margin-top: 15px;
+    margin-bottom: 35px;
+    border-radius: 15px;
+    background: #fafafa;
+    vertical-align: top
+}
+
+.steps .list_items li:nth-child(4n+4) {
+    margin-right: 0
+}
+
+.steps .list_items li .chk-content {
+    font-size: 14px;
+    text-align: left;
+    margin: 10px auto;
+    text-transform: uppercase;
+    max-width: 150px;
+    font-family: Gotham-HTF-Bold, 'system-ui';
+    line-height: 1.3
+}
+
+.steps .list_items li .chk-content .checkmark {
+    top: 0px
+}
+
+.steps .list_items li.active {
+    border-color: #a8fa00
+}
+
+.steps .list_items li .item {
+    text-align: center
+}
+
+.steps .list_items li .item img {
+    max-width: 160px;
+    height: 122px;
+    max-height: 122px;
+    margin: 20px auto 15px
+}
+
+.steps .list_items li .item.text img {
+    height: auto;
+    width: auto;
+    padding: 40px 0
+}
+
+
+.chk-content .checkmark {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #eee;
+}
+
+.chk-content input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.chk-content {
+    display: block;
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #666666;
+    font-size: 18px;
+
+}
+
+.steps .form-group {
+    position: relative;
+}

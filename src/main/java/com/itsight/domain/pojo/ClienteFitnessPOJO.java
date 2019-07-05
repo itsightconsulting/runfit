@@ -25,8 +25,13 @@ public class ClienteFitnessPOJO {
 
     private String desTerPredom;
 
+    private String desTerPredomOtro;
+
+
 
     private String desgasteZapatilla;
+
+    private String desgasteZapatillaOtro;
 
 
     private Integer diasSemanaCorriendo;
@@ -126,7 +131,9 @@ public class ClienteFitnessPOJO {
             String condicionAnatomica,
             String desObjetivos,
             String desTerPredom,
+            String desTerPredomOtro,
             String desgasteZapatilla,
+            String desgasteZapatillaOtro,
             Integer diasSemanaCorriendo,
             Integer estadoCivil,
             String fitElementos,
@@ -169,7 +176,11 @@ public class ClienteFitnessPOJO {
 
                 this.desTerPredom = desTerPredom;
 
+                 this.desTerPredomOtro = desTerPredomOtro;
+
                 this.desgasteZapatilla = desgasteZapatilla;
+
+                this.desgasteZapatillaOtro = desgasteZapatillaOtro;
 
                 this.diasSemanaCorriendo = diasSemanaCorriendo;
 
