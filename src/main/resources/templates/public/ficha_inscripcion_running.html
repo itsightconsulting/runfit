@@ -360,7 +360,7 @@
             </div>
             <div class="row ficha-02 fade-ficha inpts-2">
               <div class="col-md-12">
-                <p class="desc">Ya falta poco para terminar</p>
+                <p class="desc">¡Ya falta poco para terminar!</p>
               </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
               <div class="col-md-12">
                 <h4>Entrenamiento</h4>
@@ -622,11 +622,11 @@
                       <li>
                         <div class="form-group">
                           <label>Infancia / Juventud<span class="obligatorio">*</span></label>
-                          <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
+                          <textarea id="HistorialDeportivoAnt" placeholder="Texto" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                           <label>Actual (desde cuándo, periocidad, tiempo y actividades que realizas)<span class="obligatorio">*</span></label>
-                          <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control"></textarea>
+                          <textarea id="HistorialDeportivoAct" placeholder="Texto" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control"></textarea>
                         </div>
                       </li>
                       <li>
@@ -635,11 +635,11 @@
                           <p class="form-group-subtitle">Frecuencia cardiaca basal:
                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca basal se refiere a las pulsaciones que una persona tiene por minuto en estado de reposo"></i>
                           </p>
-                          <input id="FrecuenciaCardiaca" name="FrecuenciaCardiaca" data-aka="Frecuencia cardíaca basal" class="form-control" type="number"/>
+                          <input id="FrecuenciaCardiaca" placeholder="(N° | pm)" name="FrecuenciaCardiaca" data-aka="Frecuencia cardíaca basal" class="form-control" type="number"/>
                           <p class="form-group-subtitle" style="padding-top: 15px;">Frecuencia cardiaca máxima:
                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca máxima es el número de latidos máximo que puede alcanzar tu corazón durante 1 minuto sometido a esfuerzo"></i>
                           </p>
-                          <input id="FrecuenciaCardiacaMaxima" name="FrecuenciaCardiacaMaxima" data-aka="Frecuencia cardíaca máxima" class="form-control" type="number"/>
+                          <input id="FrecuenciaCardiacaMaxima" placeholder="(N° | pm)" name="FrecuenciaCardiacaMaxima" data-aka="Frecuencia cardíaca máxima" class="form-control" type="number"/>
                         </div>
                       </li>
                       <li class="range-height">
@@ -678,7 +678,7 @@
             </div>
             <div class="row ficha-03 fade-ficha inpts-3">
               <div class="col-md-12">
-                <p class="desc">Ya falta poco para terminar</p>
+                <p class="desc">¡Ya falta poco para terminar!</p>
               </div>
               <div class="col-md-12">
                 <h4>Entrenamiento</h4>
@@ -935,7 +935,8 @@
                           </svg>
                         </div>
                       </div>
-                      <div class="form-group padding-o-top-10">
+                      <br>
+                      <div class="form-group">
                         <textarea class="form-control" id="TxtMusculoOtro" name="TxtMusculoOtro" placeholder="Ingresar otro músculo más específico de requerirlo así"></textarea>
                       </div>
                     </li>
@@ -1102,31 +1103,31 @@
                           <li>
                             <div class="input-time">
                               <!--IMPORTANTE QUE LA PRIMERA NO TENGA LA PROP readonly por tema de validación -->
-                              <input type="text" id="TwoKm" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+                              <input type="text" id="TwoKm" placeholder="HH:MM:SS" name="TwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>2km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" id="FourKm" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+                              <input type="text" id="FourKm" placeholder="HH:MM:SS" name="FourKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>4km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" id="TweOneKm" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+                              <input type="text" id="TweOneKm" placeholder="HH:MM:SS" name="TweOneKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>21km</p>
                           </li>
                           <li>
                             <div class="input-time">
-                              <input type="text" id="FouTwoKm" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
+                              <input type="text" id="FouTwoKm" placeholder="HH:MM:SS" name="FouTwoKm" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?" class="marca-referencial form-control" readonly="readonly"/>
                             </div>
                             <p>42km</p>
                           </li>
                         </ul>
                         <label style="margin: 0px;">
-                          <input type="hidden" class="form-control" name="MarcaReferencial" id="MarcaReferencial" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?">
+                          <input type="hidden" class="form-control"  name="MarcaReferencial" id="MarcaReferencial" data-aka="Si corrieras algunas de las siguientes distancias mañana, ¿qué tiempo lograrías hacer aproximadamente?">
                         </label>
                       </div>
                     </li>

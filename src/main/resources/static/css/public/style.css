@@ -694,7 +694,6 @@ h1 {
 }
 
 .trainers-form {
-  margin-top: -60px;
   margin-bottom: 80px;
   position: relative;
   z-index: 2
@@ -1098,7 +1097,8 @@ h1 {
 .staff {
   padding: 0;
   margin: 0;
-  margin-top: 50px
+  margin-top: 50px;
+  text-align: center;
 }
 
 .staff li {
@@ -2141,7 +2141,8 @@ h1 {
 
 .steps ul.distance {
   padding: 0;
-  margin: 0
+  margin: 0;
+  position: relative;
 }
 
 .steps ul.distance::before {
@@ -2169,7 +2170,8 @@ h1 {
 
 .steps ul.distance li p {
   margin-top: 20px;
-  position: relative
+  position: relative;
+  text-align: center;
 }
 
 .steps ul.distance li p::before {
