@@ -24,5 +24,6 @@ public class CondicionAnatomica implements Serializable {
     private Integer frecuenciaCardiacaMaxima;
     private Integer formaInicial;
     private List<Musculo> musculosSensibles;
+    private String musculoSensiblesOtros;
 
 }

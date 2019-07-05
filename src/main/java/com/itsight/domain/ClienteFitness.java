@@ -40,7 +40,9 @@ import java.util.List;
                                         @ColumnResult(name = "condicionAnatomica"),
                                         @ColumnResult(name = "desObjetivos"),
                                         @ColumnResult(name = "desTerPredom"),
+                                        @ColumnResult(name = "desTerPredomOtro"),
                                         @ColumnResult(name = "desgasteZapatilla"),
+                                        @ColumnResult(name = "desgasteZapatillaOtro"),
                                         @ColumnResult(name = "diasSemanaCorriendo"),
                                         @ColumnResult(name = "estadoCivil"),
                                         @ColumnResult(name = "fitElementos"),
@@ -125,10 +127,16 @@ public class ClienteFitness implements Serializable {
     private boolean flagEstiramientos;
     @Column(nullable = false)
     private String desgasteZapatilla;
+
+    private String desgasteZapatillaOtro;
+
     @Column(nullable = false)
     private String desObjetivos;
     @Column(nullable = false)
     private String desTerPredom;
+
+    private String desTerPredomOtro;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private CondicionAnatomica condicionAnatomica;
@@ -138,9 +146,9 @@ public class ClienteFitness implements Serializable {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<CompetenciaRunner> competencias;
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb", nullable = false)
-    private List<FitElemento> fitElementos;
+
+    @Column(nullable = false)
+    private String fitElementos;
     @Column(nullable = false)
     private Integer frecuenciaComunicacion;
     @Column(nullable = false)

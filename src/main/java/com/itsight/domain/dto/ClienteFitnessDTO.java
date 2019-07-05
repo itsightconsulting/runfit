@@ -35,8 +35,13 @@ public class ClienteFitnessDTO implements Serializable {
     private Boolean flagHaceCalentamiento;
     private Boolean flagHaceEstiramientos;
     private String desgasteZapatilla;
+
+    private String desgasteZapatillaOtro;
+
     private String desObjetivos;
     private String desTerPredom;
+    private String desTerPredomOtro;
+
     private String tiempoDistancia;
 
     //JSONB
@@ -45,7 +50,7 @@ public class ClienteFitnessDTO implements Serializable {
     @Valid
     private List<CompetenciaRunner> competencias;
     @Valid
-    private List<FitElemento> fitElementos;
+    private String fitElementos;
     private Integer frecuenciaComunicacion;
     private Integer viaConexion;
     private UsuarioDTO usuario;

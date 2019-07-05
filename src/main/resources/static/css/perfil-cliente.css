@@ -408,3 +408,97 @@ section#perfilCliente h4{
     color: #A8FA00;
     font-size: 1.05em
 }
+
+p{
+   color : #fff;
+
+}
+
+hr{
+    border-color: #fff;
+    margin: 15px 0;
+}
+
+.rango .desc-range {
+    position: relative;
+    width: 100%;
+    top: 33px;
+    margin-bottom: 20px;
+}
+
+#HumanMuscles {
+    max-width: 100%;
+    width: 100%;
+    padding: 12px;
+}
+
+.form-group p {
+    text-align: justify;
+}
+
+
+.steps ul.distance {
+    padding: 0;
+    margin: 0;
+}
+
+.steps ul.distance::before {
+    content: '.';
+    font-size: 0;
+    width: 338px;
+    height: 1px;
+    border-top: 1px solid #d3d3d3;
+    position: absolute;
+    bottom: 37px;
+    margin: 0 47px
+}
+
+.steps ul.distance li {
+    display: inline-block;
+    max-width: 80px;
+    margin-right: 10px;
+    text-align: center
+}
+
+.steps ul.distance li input {
+    width: 100%;
+    padding: 10px
+}
+
+.steps ul.distance li p {
+    margin-top: 20px;
+    position: relative
+}
+
+.steps ul.distance li p::before {
+    position: absolute;
+    content: '.';
+    font-size: 0;
+    width: 1px;
+    height: 12px;
+    border-left: 1px solid #d3d3d3;
+    top: -14px;
+    left: m;
+    margin-left: 13px
+}
+
+
+.steps .form-group input, .steps .form-group select {
+    background-color: #fafafa;
+    border-radius: 15px;
+    border: 0;
+    height: 40px;
+    box-shadow: 0 0 0;
+}
+
+.muscle-selected {
+    fill: #a8fa00;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 700;
+    stroke-width: 10;
+}
+
+th,td{
+    color: #fff;
+
+}

@@ -938,7 +938,7 @@
                         </div>
                       </div>
                       <div class="form-group padding-o-top-10">
-                        <textarea class="form-control" id="TxtMusculoOtro" placeholder="Ingresar otro músculo más específico de requerirlo así"></textarea>
+                        <textarea class="form-control" id="TxtMusculoOtro" name="TxtMusculoOtro" placeholder="Ingresar otro músculo más específico de requerirlo así"></textarea>
                       </div>
                     </li>
                   </ol>
@@ -1045,7 +1045,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <textarea id="DesgasteZapatillaOtro" class="form-control" placeholder="Especificar otra parte"></textarea>
+                        <textarea id="DesgasteZapatillaOtro" name ="DesgasteZapatillaOtro" class="form-control" placeholder="Especificar otra parte"></textarea>
                       </div>
                     </li>
                     <li>
@@ -1081,7 +1081,7 @@
                         </ul>
                       </div>
                       <div class="form-group">
-                        <textarea id="DesTerPredomOtro" class="form-control" placeholder="Especificar otro"></textarea>
+                        <textarea id="DesTerPredomOtro" name="DesTerPredomOtro"  class="form-control" placeholder="Especificar otro"></textarea>
                       </div>
                     </li>
                   </ol>
@@ -1750,8 +1750,10 @@
         obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
         obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
         obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
+        obj.cliFit.desgasteZapatillaOtro = document.getElementById('DesgasteZapatillaOtro').value;
         obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;
         obj.cliFit.desTerPredom = getValuesConcatInpCheckbox('DesTerPredom');
+        obj.cliFit.desTerPredomOtro =  document.getElementById('DesTerPredomOtro').value;
         obj.cliFit.mejoras = getValuesCondicionMejora();
         obj.cliFit.frecuenciaComunicacion = 1;
         obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
@@ -1770,6 +1772,8 @@
         condAnatomica.frecuenciaCardiacaMaxima = obj.frecuenciaCardiacaMaxima;
         condAnatomica.formaInicial = obj.formaInicial;
         condAnatomica.musculosSensibles = selectedMuscles.map(v=>{return {id: v.id.slice(4), nombre: v.name}});
+        condAnatomica.musculoSensiblesOtros = obj.txtMusculoOtro;
+
         const salud = obj.cliFit.salud = new Object();
         salud.flagEnfermedad = document.querySelector('#FlagEnfermedad').checked;
         salud.flagFumador = document.querySelector('#FlagFumador').checked;
@@ -1797,7 +1801,7 @@
         salud.historialDeportivoAct = obj.historialDeportivoAct;
         //Competencias
         obj.cliFit.competencias = getCompetenciasParticipar();
-        obj.cliFit.fitElementos = [];
+        obj.cliFit.fitElementos = getValuesConcatInpCheckbox('ItemsFitness');
 
         return obj;
       }
