@@ -429,7 +429,24 @@ $(function() {
     checkBoxes();
     activeItems();
     HorizontalEnum_EntrenaCorrectamente();
+    tabsServicio();
 })
+
+function tabsServicio() {
+    $(document).ready(function(){
+
+        $('ul.tabs li').click(function(){
+            var tab_id = $(this).attr('data-tab');
+
+            $('ul.tabs li').removeClass('current');
+            $('.tab-contenido').removeClass('current');
+
+            $(this).addClass('current');
+            $("#"+tab_id).addClass('current');
+        })
+
+    })
+}
 
 function submitReuseLogin(){
     const frmLogin = document.getElementById('login-form');
