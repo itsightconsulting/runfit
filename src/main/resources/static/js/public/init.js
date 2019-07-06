@@ -59,23 +59,32 @@ function specificCheckBoxes(id) {
 }
 
 function checkBoxes() {
+
     $(".chk-content").click(function() {
         var _self = $(this).find('input');
         var tipoElemento = _self.attr("type");
 
+
         if(tipoElemento !== "radio"){
+
+            console.log(_self);
+
 
             var clase = _self.attr("data-body");
 
              if (_self.is(':checked')) {
+
                    $("." + clase + "").fadeOut();
                     _self.prop('checked', false);
              } else {
+
+
                     _self.prop('checked', true);
                     $("." + clase + "").fadeIn();
                   }
 
         } else{
+
                _self.prop('checked', true)
                $("." + clase + "").fadeIn();
         }

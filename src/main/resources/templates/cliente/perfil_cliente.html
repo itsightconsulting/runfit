@@ -20,7 +20,6 @@
             color: #cf3239 !important;
         }
 
-        <style>
          input[type=time]::-webkit-datetime-edit-ampm-field {
              display: none !important;
          }
@@ -56,13 +55,8 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
     <div id="wrapper">
-            <header>
-                <div class="text-center">
-                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="${_ctx}img/iconos/icon_hamburger.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="img/logo.png" alt=""></a>
-                    <h4 class="user"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"}><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
 
-                </div>
-            </header>
+
 
 
             <section class="steps">
@@ -74,23 +68,21 @@
                         <div class="col-md-7 text-right pad-0">
                             <a href="#"><div class="step step-01" data-num-sheet="1" onclick="next_step_cs(1)">
                                 <div class="curve"></div>
-                                <p>PASO<span>01</span></p>
+                                <p>FICHA<span>01</span></p>
                             </div></a>
                             <a href="#"><div class="step step-02" data-num-sheet="2" onclick="next_step_cs(2)">
                                 <div class="curve"></div>
-                                <p>PASO<span>02</span></p>
+                                <p>FICHA<span>02</span></p>
                             </div></a>
                             <a href="#"><div class="step step-03" data-num-sheet="3" onclick="next_step_cs(3)">
                                 <div class="curve"></div>
-                                <p>PASO<span>03</span></p>
+                                <p>FICHA<span>03</span></p>
                             </div></a>
                         </div>
                     </div>
                     <form id="frm_registro" style="margin:0px !important" class="clients-form">
                         <div class="row ficha-01 fade-ficha inpts-1">
-                            <div class="col-md-12">
-                                <p class="desc">Para brindarte la mejor atención personalizada necesitamos conocerte mejor. Por eso, te agradecemos responder las siguientes preguntas:</p>
-                            </div>
+
                             <div class="col-md-12">
                                 <h4>Información personal</h4>
                             </div>
@@ -99,19 +91,19 @@
                                     <ol>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Nombres</label>
+                                                <label >Nombres</label>
                                                 <input id="Nombres" name="Nombres" data-aka="Nombres" class="form-control" type="text" disabled="true"/>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Apellidos</label>
+                                                <label >Apellidos</label>
                                                 <input id="Apellidos" name="Apellidos" data-aka="Apellidos" class="form-control" type="text" disabled="true"/>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Fecha de nacimiento</label>
+                                                <label >Fecha de nacimiento</label>
                                                 <input id="FechaNacimiento" name="FechaNacimiento" data-aka="Fecha de nacimiento" class="form-control" type="text" disabled="true"/>
                                             </div>
                                         </li>
@@ -119,7 +111,7 @@
                                             <div class="form-group more-inputs">
 
                                                <div>
-                                                <label class="field-name"> Documento de Identidad</label>
+                                                <label > Documento de Identidad</label>
 
                                                 <input id="TipoDocumento" name="TipoDocumento" class="form-control" type="text" disabled="true"/>
 
@@ -127,7 +119,7 @@
 
                                                 <div>
 
-                                                 <label class="field-name"> Número de Documento</label>
+                                                 <label > Número de Documento</label>
 
                                                  <input id="NumeroDocumento" name="NumeroDocumento" class="form-control" type="text" disabled="true"/>
 
@@ -140,12 +132,12 @@
                                                 <h5>Datos de Contacto</h5>
 
                                                 <div>
-                                                    <label class="field-name">Correo</label>
+                                                    <label >Correo</label>
                                                     <input id="Correo" name="Correo" class="form-control" type="text" disabled="true"/>
                                                 </div>
 
                                                 <div>
-                                                   <label class="field-name">Movil</label>
+                                                   <label >Movil</label>
                                                    <input id="Movil" name="Movil" class="form-control" type="text" disabled="true"/></div>
                                                 </div>
                                         </li>
@@ -155,20 +147,20 @@
                                     <ol>
                                         <li>
                                             <div class="form-group" id="stUbicacion">
-                                                <label class="field-name">Distrito</label>
+                                                <label >Distrito</label>
                                                 <input id="Distrito" name="Distrito" class="form-control" type="text" disabled="true" />
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Estado Civil</label>
+                                                <label >Estado Civil</label>
                                                 <input id="EstadoCivil" name="EstadoCivil" class="form-control" type="text" disabled="true"/>
 
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Género</label>
+                                                <label >Género</label>
                                                 <input id="Genero" name="Genero" class="form-control" type="text" disabled="true"/>
 
                                             </div>
@@ -178,18 +170,18 @@
 
                                                     <h5>Medidas</h5>
                                                     <div>
-                                                        <label class="field-name">Peso (Kg)</label>
+                                                        <label >Peso (Kg)</label>
                                                         <input id="Peso" name="Peso" class="form-control" type="text" disabled="true"/>
                                                     </div>
 
                                                     <div>
-                                                        <label class="field-name">Talla (cm)</label>
+                                                        <label >Talla (cm)</label>
                                                         <input id="Talla" name="Talla" class="form-control" type="text" disabled="true"/>
                                                     </div>
 
 
                                                     <div>
-                                                         <label class="field-name">IMC</label>
+                                                         <label >IMC</label>
                                                         <input id="Imc" name="Imc" class="form-control" type="text" disabled="true"/>
                                                     </div>
 
@@ -200,18 +192,18 @@
                                     </ol>
                                 </div>
                             </div>
-                            <div class="row"><br/>
-                                <div class="col-md-12 text-right">
-                                    <h4>Condición Anatómica</h4>
-                                </div>
-                            </div>
+
+
                             <div class="row">
                                 <div class="col-md-6"></div>
                                 <div class="col-md-6">
+
+                                    <h4 class="condAnat-title">Condición Anatómica</h4>
+
                                     <ol>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Padeces actualmente de algún dolor?</label>
+                                                <label >¿Padeces actualmente de algún dolor?</label>
 
                                                 <label id="FlagPadeceDolor" name="FlagPadeceDolor" class="field-content"/>
 
@@ -219,53 +211,51 @@
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
+                                                <label >Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
                                                 <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control" disabled="true"></textarea>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Cuando realizas actividad física, el dolor está presente:</label>
+                                                <label >Cuando realizas actividad física, el dolor está presente:</label>
                                                 <label id="MomDolor" name="MomDolor" class="field-content"/>
 
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group block-checks">
-                                                <label class="field-name">Al correr el dolor empieza:</label>
+                                                <label >Al correr el dolor empieza:</label>
                                                 <label id="MomDolorIni" name="MomDolorIni" class="field-content"/>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?</label>
+                                                <label >¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?</label>
                                                 <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control" disabled="true"></textarea>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Tiene alguna recomendación o limitación médica?</label>
+                                                <label >¿Tiene alguna recomendación o limitación médica?</label>
                                                 <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control" disabled="true"></textarea>
                                             </div>
                                         </li>
                                         <li id="liFlagEmbarazo">
                                             <div class="form-group">
-                                                <label class="field-name"> ¿Estás embarazada?</label>
+                                                <label > ¿Estás embarazada?</label>
                                                 <label id="FlagEmbarazo" name="FlagEmbarazo" class="field-content"/>
 
                                             </div>
                                         </li>
                                     </ol>
                                     <div class="form-group" style="margin-left: 15.5%;">
-                                        <button class="btn btn-bg-black" type="button" onclick="next_step(1, 2)">Siguiente</button>
+                                        <button class="btn btn-bg-white" type="button" onclick="next_step(1, 2)">Siguiente</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row ficha-02 fade-ficha inpts-2">
-                            <div class="col-md-12">
-                                <p class="desc">Ya falta poco para terminar</p>
-                            </div>
+
                             <div class="col-md-12">
                                 <h4>Entrenamiento</h4>
                             </div>
@@ -273,64 +263,64 @@
                                 <div class="col-md-6">
                                     <ol>
                                         <li>
-                                            <div class="form-group">
-                                                <label class="field-name">¿Padeces de hipertensión arterial?</label>
+                                            <div class="form-group" id="dv">
+                                                <label >¿Padeces de hipertensión arterial?</label>
                                                 <label id="FlagHiperTensionArt" name="FlagHiperTensionArt" class="field-content"/>
 
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="field-name">¿Fumas?</label>
+                                                <label >¿Fumas?</label>
                                                 <label id="FlagFumador" name="FlagFumador" class="field-content"/>
 
                                             </div>
-                                            <div class="form-group" id="divDesFumador">
-                                                <label class="field-name">¿Con qué frecuencia fumas?</label>
+                                            <div class="form-group" id="dvDesFumador">
+                                                <label >¿Con qué frecuencia fumas?</label>
                                                 <input id="DesFumador" name="DesFumador" class="form-control" type="text" disabled="true"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">¿Antecedentes familiares de infarto o hipertensión?</label>
+                                                <label >¿Antecedentes familiares de infarto o hipertensión?</label>
                                                 <label id="FlagAntFamInfOrHiper" name="FlagAntFamInfOrHiper" class="field-content"/>
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label class="field-name">Familiar referido en la pregunta anterior</label>
+                                                <label >Familiar referido en la pregunta anterior</label>
                                                 <label id="FamInfOrHiper" name="FamInfOrHiper" class="field-content"/>
 
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="field-name">¿Tienes resistencia a la insulina?</label>
+                                                <label >¿Tienes resistencia a la insulina?</label>
                                                 <label id="FlagResInsulina" name="FlagResInsulina" class="field-content"/>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="field-name">¿Tienes familiares directos que padecen de diabetes? </label>
+                                                <label >¿Tienes familiares directos que padecen de diabetes? </label>
                                                 <label id="FlagAntFamDiabetes" name="FlagAntFamDiabetes" class="field-content"/>
 
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="field-name"> Familiar referido en la pregunta anterior</label>
+                                                <label > Familiar referido en la pregunta anterior</label>
                                                 <label id="FamDiabetico" name="FamDiabetico" class="field-content"/>
 
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">¿Consideras que tienes sobrepeso?</label>
+                                                <label >¿Consideras que tienes sobrepeso?</label>
                                                 <label id="FlagSobrepeso" name="FlagSobrepeso" class="field-content"/>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="field-name"> Nivel de sobrepeso </label>
+                                                <label > Nivel de sobrepeso </label>
                                                 <label id="CatSobrepeso" name="CatSobrepeso" class="field-content"/>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="field-name">Tu alimentación es: </label>
+                                                <label >Tu alimentación es: </label>
                                                 <label id="CatAlimentacion" name="CatAlimentacion" class="field-content"/>
                                             <div class="form-group">
-                                                <label class="field-name">¿Cuál es tu nivel de estrés?</label>
+                                                <label >¿Cuál es tu nivel de estrés?</label>
                                                 <label id="NivelEstres" name="NivelEstres" class="field-content"/>
 
                                             </div>
@@ -341,49 +331,47 @@
                                     <ol>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name" >¿Padeces de alguna enfermedad?</label>
+                                                <label  >¿Padeces de alguna enfermedad?</label>
                                                 <label id="FlagEnfermedad" name="FlagEnfermedad" class="field-content"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name"> Especifique la enfermedad que padece</label>
+                                                <label > Especifique la enfermedad que padece</label>
                                                 <input class="form-control" id="DesEnfermedad" name="DesEnfermedad" type="text"  disabled="true"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">¿Tienes alergia a algún medicamento?</label>
+                                                <label >¿Tienes alergia a algún medicamento?</label>
                                                 <label class="field-content" id="FlagAleMed" name="FlagAleMed"/>
 
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">Especificar medicamento(s) al que es alérgico</label>
+                                                <label >Especificar medicamento(s) al que es alérgico</label>
                                                 <input id="DesAleMed" name="DesAleMed" class="form-control" type="text" disabled="true" />
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">¿Te has sometido a operaciones quirurgicas recientemente?</label>
+                                                <label >¿Te has sometido a operaciones quirurgicas recientemente?</label>
                                                 <label id="FlagOperacion" name="FlagOperacion" class="field-content"/>
 
                                             </div>
                                             <div class="form-group">
 
-                                                <label class="field-name">Especificar la descripción de la operación a la cual se sometio</label>
+                                                <label >Especificar la descripción de la operación a la cual se sometio</label>
                                                 <input name="DesOperacion" id="DesOperacion" class="form-control" type="text" disabled="true"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">¿Tienes alguna hernia discal o padeces otra condición especial en la columna?</label>
+                                                <label >¿Tienes alguna hernia discal o padeces otra condición especial en la columna?</label>
                                                 <label name="FlagHerDisOrCondCol" id="FlagHerDisOrCondCol" class="field-content"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">Especificar brevemente la hernia o el problema en la columna</label>
+                                                <label >Especificar brevemente la hernia o el problema en la columna</label>
                                                 <input class="form-control" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" type="text" disabled="true"/>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="field-name">Padeces de Artritis/Condromalacia/Osteocondritis/N.A:</label>
-                                                <input class="form-control" id="DesPadVarios" name="DesPadVarios" type="text" disabled="true"/>
-
+                                            <div class="form-group" id="dvDesPadVarios">
+                                                <label >Padeces de Artritis/Condromalacia/Osteocondritis/N.A:</label>
                                             </div>
                                             <h5>Información adicional</h5>
                                         <li>
                                             <div class="form-group more-inputs" id="dvContactosEmergencia">
-                                                <label class="field-name">En caso de emergencia llamar a: </label>
+                                                <label >En caso de emergencia llamar a: </label>
 
 
 
@@ -392,17 +380,17 @@
                                             </div>
                                             <h5>Historial deportivo</h5>
                                             <div class="form-group">
-                                                <label class="field-name">Infancia / Juventud</label>
+                                                <label >Infancia / Juventud</label>
                                                 <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control" disabled="true"></textarea>
                                             </div>
                                             <div class="form-group">
-                                                <label class="field-name">Actual (desde cuándo, periocidad, tiempo y actividades que realizas)</label>
+                                                <label >Actual (desde cuándo, periocidad, tiempo y actividades que realizas)</label>
                                                 <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control" disabled="true"></textarea>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Queremos conocer tus frecuencias cardiacas:</label>
+                                                <label >Queremos conocer tus frecuencias cardiacas:</label>
                                                 <p class="form-group-subtitle">Frecuencia cardiaca basal:
                                                     <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca basal se refiere a las pulsaciones que una persona tiene por minuto en estado de reposo"></i>
                                                 </p>
@@ -415,7 +403,7 @@
                                         </li>
                                         <li class="range-height">
                                             <div class="form-group">
-                                                <label class="field-name">¿En que forma estás?<br/>¡Dinos la verdad eh!</label>
+                                                <label >¿En que forma estás?<br/>¡Dinos la verdad eh!</label>
                                             </div>
                                             <div class="rango bg-slide">
                                                 <input id="FormaInicial" name="FormaInicial" type="range" value="0" data-aka="Seleccione que tan en forma se encuentra" disabled="true"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
@@ -423,19 +411,19 @@
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Cuál es el nivel de atleta con el que te identificarías?</label>
+                                                <label >¿Cuál es el nivel de atleta con el que te identificarías?</label>
                                                 <label class="field-content" id="NivelAtleta" name="NivelAtleta"/>
 
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
+                                                <label >De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
                                                 <div id="dvCondicionesMejora">
 
                                                 </div>
                                                 <div class="form-group"><br/>
-                                                    <button class="btn btn-bg-black" type="button" onclick="next_step(2)">Siguiente</button>
+                                                    <button class="btn btn-bg-white" type="button" onclick="next_step(2)">Siguiente</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -445,9 +433,7 @@
                             </div>
                         </div>
                         <div class="row ficha-03 fade-ficha inpts-3">
-                            <div class="col-md-12">
-                                <p class="desc">Ya falta poco para terminar</p>
-                            </div>
+
                             <div class="col-md-12">
                                 <h4>Entrenamiento</h4>
                             </div>
@@ -456,7 +442,7 @@
                                     <ol>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Cuáles son los músculos que más se te fatigan al correr?</label>
+                                                <label >¿Cuáles son los músculos que más se te fatigan al correr?</label>
                                                 <div class="row" style="padding: 5px 10px !important;">
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <ul class="checks ul-msc-l">
@@ -710,33 +696,33 @@
 
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?</label>
+                                                <label >¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?</label>
                                                 <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" disabled="true"/>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Y tu kilometraje promedio semanal ¿Cuál es?</label>
+                                                <label >Y tu kilometraje promedio semanal ¿Cuál es?</label>
                                                 <input id="KilometrajePromedioSemana" name="KilometrajePromedioSemana" data-aka="Kilometraje promedio semanal" class="form-control" type="number" disabled="true"/>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Cuántos días corres a la semana?</label>
+                                                <label >¿Cuántos días corres a la semana?</label>
                                                 <input id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" class="form-control" type="number" disabled="true"/>
 
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Realizas ejercicios de calentamiento?</label>
+                                                <label >¿Realizas ejercicios de calentamiento?</label>
                                                 <label class="field-content" id="FlagCalentamiento" name="FlagCalentamiento" />
                                             </div>
                                         </li>
 
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">¿Siempre haces ejercicios de estiramiento al finalizar tus entrenamiento?</label>
+                                                <label >¿Siempre haces ejercicios de estiramiento al finalizar tus entrenamiento?</label>
                                                 <label class="field-content" id="FlagEstiramiento" name="FlagEstiramiento" />
                                             </div>
                                         </li>
@@ -748,7 +734,7 @@
 
                                         <li>
                                             <div class="form-group block-checks" id="dvDesgasteZapatilla">
-                                                <label class="field-name">¿Nos podrías decir cuál o cuáles son los puntos de desgaste de tus zapatillas?</label>
+                                                <label >¿Nos podrías decir cuál o cuáles son los puntos de desgaste de tus zapatillas?</label>
 
                                             </div>
                                             <div class="form-group">
@@ -757,7 +743,7 @@
                                         </li>
                                         <li>
                                             <div class="form-group block-checks" id="dvDesTerPredom">
-                                                <label class="field-name">¿Por cúal o cúales tipos de terreno sueles correr con mayor frecuencia?</label>
+                                                <label >¿Por cúal o cúales tipos de terreno sueles correr con mayor frecuencia?</label>
 
 
                                             </div>
@@ -768,7 +754,7 @@
 
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">Cuáles son tus objetivos personales</label>
+                                                <label >Cuáles son tus objetivos personales</label>
                                                 <textarea id="DesObjetivos" name="DesObjetivos" data-aka="Objetivos personales" class="form-control form-group full" disabled="true"></textarea>
                                             </div>
                                         </li>
@@ -819,7 +805,7 @@
                                     <ol>
                                         <li class="display-table">
                                             <div class="form-group">
-                                                <label class="field-name">¿Cuáles son las competencias en las que quisieras participar?</label>
+                                                <label >¿Cuáles son las competencias en las que quisieras participar?</label>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -874,12 +860,12 @@
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label class="field-name">De los siguientes elementos, indícanos cuáles tienes a tu disposición: </label>
+                                                <label >De los siguientes elementos, indícanos cuáles tienes a tu disposición: </label>
                                                 <ul class="list_items">
                                                     <li>
                                                         <div class="item"><img th:src="@{/img/public/dis_1.jpg}+'?'+${version}"/>
                                                             <div class="chk-content">Pulsómetro
-                                                                <input name="ItemsFitness" type="checkbox" data-aka="Elegir elementos fitness con los que cuenta" value="1" disabled="true" /><span class="checkmark" disabled="true"></span>
+                                                                <input name="ItemsFitness" type="checkbox" data-aka="Elegir elementos fitness con los que cuenta" value="1" disabled="true"  /><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -935,7 +921,7 @@
                                                     <li>
                                                         <div class="item text"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                                                             <div class="chk-content">Ninguna de las anteriores
-                                                                <input name="ItemsFitness" type="checkbox" value="9" checked="checked" disabled="true"/><span class="checkmark" disabled="true"></span>
+                                                                <input name="ItemsFitness" type="checkbox" value="9"  disabled="true"/><span class="checkmark" disabled="true"></span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -954,18 +940,21 @@
         </div>
     </div>
 </div>
-<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
-<th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+
 
 <!-- CUSTOM NOTIFICATION -->
-<script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
-<script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
-<script th:src="@{/js/perfil_cliente.js}+'?'+${version}"></script>
+
+<script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
+<script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
+<script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/forms.js}+'?'+${version}"></script>
+
+
 
 <script th:inline="javascript">
 
     const initPageActive = 1;
-
+ /*
     const composedMuscles = [
         ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"],
         ["path338","path340"],
@@ -975,10 +964,10 @@
     ];
     const absIds = ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"];
     let selectedMuscles = [];
+*/
 
     const stUbicacion = document.getElementById('stUbicacion');
     const frm = document.getElementById('frm_registro');
-    const btnGuardar = document.getElementById('btnGuardar');
     const body = document.querySelector('body');
     const verifiedNames = [];
 
@@ -1009,10 +998,7 @@
         instanceInitTab();
         cargarDataCliente();
         tooltipsOn();
-        mainEventListeners();
-        tooltipsOn();
-        constraintsValidation();
-
+        time_line();
         $('#TxtMusculoOtro')[0].style.marginTop = $('#HumanMuscles').height() + 'px';
     }
 
@@ -1021,17 +1007,6 @@
         document.querySelector('.inpts-'+initPageActive).classList.toggle('active');
     }
 
-
-
-    function mainEventListeners(){
-        eventListenerSexo();
-        eventListenerPadeceDolor();
-        stUbicacion.addEventListener('change', evtLsChangeUbicacion);
-        btnGuardar.addEventListener('click', sendMainForm);
-        document.querySelector('body').addEventListener('click', bodyClickEventListener);
-        document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
-        document.querySelector('body').addEventListener('change', bodyChangeEventListener);
-    }
 
     function tooltipsOn(){
         $('svg path[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
@@ -1070,422 +1045,40 @@
         }
     }
 
-    function evtLsChangeUbicacion(e){
-        e.preventDefault();
-        const input = e.target;
-        const clases = input.classList;
-        const value = input.value;
 
-        if(input.id === "Dep"){
-            depYprovChange(value, '', 1);
-        }else if(input.id === "Pro"){
-            const depId = document.getElementById('Dep').value;
-            depYprovChange(depId, value , 2);
-        }
-    }
 
-    function sendMainForm(e){
-        e.preventDefault();//To avoid form sended automatically
-        const checkList = validationByNumSheet(3);
-        if(checkList.inputs.length == 0){
-            sendForm();
-        }else{
-            smallBoxAlertValidation(checkList.inputs);
-        }
-    }
+    function checkBoxes() {
 
-    function bodyClickEventListener(e){
-        const input = e.target;
-        const clases = input.classList;
+        $(".chk-content").click(function() {
+            var _self = $(this).find('input');
+            var tipoElemento = _self.attr("type");
 
-        if(clases.contains('body-muscle')){
-            e.preventDefault();
-            e.stopPropagation();
-            const id = input.id;
 
-            const isCompMuscle = checkComposedMuscle(composedMuscles, id);
-            if(!isCompMuscle.check){
-                if(!clases.contains('muscle-selected')){
-                    const muscleName = input.getAttribute('data-original-title').slice(4).slice(0, -5);
-                    selectedMuscles.push({id: id, name: muscleName});
-                } else {
-                    selectedMuscles = selectedMuscles.filter(v=>v.id!=id);
-                }
-                clases.toggle('muscle-selected');
-            } else {
-                const msclArr = composedMuscles[isCompMuscle.ix];
-                const absSelected = clases.contains('muscle-selected');
-                const muscleName = input.getAttribute('data-original-title').slice(4).slice(0, -5);
-                msclArr.forEach(v=>{
-                    console.log(v);
-                    const absEle = document.getElementById(v);
-                    if(!absSelected){
-                        selectedMuscles.push({id: absEle.id, name: muscleName});
-                    }else{
-                        selectedMuscles = selectedMuscles.filter(v=>v.id!=absEle.id);
+            if(tipoElemento !== "radio") {
+
+                if (_self.prop("disabled") !== true) {
+
+                    var clase = _self.attr("data-body");
+
+                    if (_self.is(':checked')) {
+
+                        $("." + clase + "").fadeOut();
+                        _self.prop('checked', false);
+                    } else {
+
+
+                        _self.prop('checked', true);
+                        $("." + clase + "").fadeIn();
                     }
-                    absEle.classList.toggle('muscle-selected');
-                })
-            }
-            regenerarListaMusculosSeleccionados();
-        }
-        checkBoxAndRadioValidationEventListener(e, input, clases);
-        /* Elementos a disposición */
-        if(clases.contains('checkmark') || clases.contains('chk-content')){
-            if(clases.contains('checkmark')){
-                const prev = input.previousElementSibling;
-                if(prev){
-                    if(prev.name === "ItemsFitness"){
-                        validarSeleccionNA(prev,"ItemsFitness","9");
-                    }
-                    if(prev.name === "DesPadVarios"){
-                        validarSeleccionNA(prev,"DesPadVarios","4");
-                    }
+
                 }
-            }
 
-            if(clases.contains('chk-content')){
-                const inpObjetos = input.querySelector('input[name="ItemsFitness"]');
-                const inpPadeceDe =  input.querySelector('input[name="DesPadVarios"]');
-                if(inpObjetos){
-                    validarSeleccionNA(inpObjetos,"ItemsFitness","9");
-                }
-                if(inpPadeceDe){
-                    validarSeleccionNA(inpPadeceDe,"DesPadVarios","4");
-                }
-            }
-        }
-        /* END elementos a disposición*/
+            }else{
 
-        if (clases.contains('marca-referencial')) {
-            input.removeAttribute('disabled');
-            body.querySelectorAll('.marca-referencial').forEach(e => {
-                if(e.name === input.name){
-                    return;
-                }
-                e.setAttribute('disabled', 'disabled');
-                e.classList.remove('state-error');
-                e.classList.remove('state-success');
-                e.value = "00:00:00";
-                const em = e.nextElementSibling;
-                if(em.tagName === "EM"){
-                    em.remove();
-                }
-            });
-            input.focus();
-        }
-    }
-
-    function bodyFocusOutEventListener(e){
-        const input = e.target;
-        if(input.tagName === "INPUT"){
-
-            //Generación de IMC
-            var peso = $('#Peso').val();
-            var talla = $('#Talla').val();
-
-            if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
-
-                var tallaKg =  talla / 100;
-                var imc = peso / Math.pow(tallaKg,2);
-                imc = imc.toFixed(1);
-                $('#Imc').val(imc);
-            } else {
-                $('#Imc').val("");
-
-            }
-            //Fin de generación de IMC
-
-            if(input.type==="text") {
-                input.value = input.value.trim().replace(/ +/g, " ");
-            } else if(input.type==="email"){
-                input.value = input.value.trim().replace(/ +/g, "");
-            }
-
-            if(input.name === "Correo"){
-                if($(input).valid()){
-                    if(!verifiedNames.includes(input.value)){
-                        validUniqueEmailOrUsernameOrNomPag(input, 'correo');
-                    }
-                }
-            }
-            if(input.name === "Username"){
-                if($(input).valid()){
-                    if(!verifiedNames.includes(input.value)){
-                        validUniqueEmailOrUsernameOrNomPag(input, 'username');
-                    }
-                }
-            }
-        }
-        if(input.tagName === "TEXTAREA"){
-            input.value = input.value.trim();
-        }
-    }
-
-    function checkComposedMuscle(compsMscls, id){
-        let is = false;
-        let index = -1;
-        compsMscls.forEach((arr, i)=>{
-            if(!is){
-                is = arr.some((v)=>{return v===id});
-                index = is ? i : -1;
+                _self.prop('checked', true)
+                $("." + clase + "").fadeIn();
             }
         })
-        return {check: is, ix: index}
-    }
-
-    function regenerarListaMusculosSeleccionados(){
-        const justNames = Array.from(new Set(selectedMuscles.map(v=>v.name)));
-        const len = justNames.length;
-        const mj = Math.ceil(len/2);
-        const mn = len-mj;
-        const arrMj = justNames.slice(0, mj);
-        const arrMn = mn>0 ? justNames.slice(-mn) : [];
-        const listLeft = document.querySelector('.ul-msc-l');
-        const listRight = document.querySelector('.ul-msc-r');
-        listLeft.innerHTML =  arrMj.map(v=> templateMuscleEleList(v)).join('');
-        listRight.innerHTML = arrMn.map(v=> templateMuscleEleList(v)).join('');
-    }
-
-    function templateMuscleEleList(name){
-        return `<li>
-                     <div class="chk-content" style="font-size: 15px !important;">${name}
-                         <input data-body="${name}" type="checkbox" name="${name}" checked="checked"/><span class="checkmark checkmark-musculo"></span>
-                     </div>
-                  </li>`;
-    }
-
-    function sendForm(){
-        const body = generateBody();
-        body.predetFichaId = TipoFicha.RUNNING;
-
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json',
-            url: _ctx + 'p/cliente/fitness/agregar',
-            dataType: 'json',
-            data: JSON.stringify(body),
-            blockLoading: true,
-            success: function (res) {
-                $('#btnGuardar').attr('disabled', 'disabled');
-                if(res == "-1"){
-                    $('input[name="username"]').val(body.username);
-                    $('input[name="password"]').val(body.password);
-                    document.querySelector('.login_link').click();
-                    setTimeout(() => {
-                        $('#btn-login').click();
-                    }, 1000);
-                }
-            }, error: (xhr) => {
-                exception(xhr);
-            }, complete: () => {
-            }
-        })
-    }
-
-    function generateBody(){
-        const obj = getFormData($('#frm_registro'));
-        const trainerId = document.getElementById('TrainerId');
-        const correoTrainer = document.getElementById('CorreoTrainer');
-        obj.trainerId = trainerId.value === "" ? null : trainerId.value;
-        obj.correoTrainer = correoTrainer.value === "" ? null : atob(correoTrainer.value);
-        obj.servicioId = Number(atob(getParamFromURL("sid")));
-        //Ubigeo
-        obj.paisId = 604;
-        obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
-        obj.cliFit = {};
-
-        obj.cliFit.correoSecundario = document.getElementById('Correo').value;
-        obj.cliFit.estadoCivil = document.getElementById('EstadoCivil').value;
-        obj.cliFit.sexo = document.querySelector('input[name="Sexo"]:checked').value
-        obj.cliFit.peso = document.getElementById('Peso').value;
-        obj.cliFit.talla = document.getElementById('Talla').value;
-        obj.cliFit.imc = document.getElementById('Imc').value;
-        obj.cliFit.nivel = document.getElementById('NivelAtleta').value;
-
-        //private CondicionMejora mejoras;
-        obj.cliFit.tiempoUnKilometro = document.getElementById('TiempoUnKilometro').value;
-        obj.cliFit.kilometrajePromedioSemana = document.getElementById('KilometrajePromedioSemana').value;
-        obj.cliFit.diasSemanaCorriendo = document.getElementById('DiasSemanaCorriendo').value;
-        obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
-        obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
-        obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
-        obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;
-        obj.cliFit.desTerPredom = getValuesConcatInpCheckbox('DesTerPredom');
-        obj.cliFit.mejoras = getValuesCondicionMejora();
-        obj.cliFit.frecuenciaComunicacion = 1;
-        obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
-        obj.cliFit.tiempoDistancia = getTiemposDistancias();
-        obj.cliFit.fichaId =  1;//Runner = 1
-
-        const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
-        condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
-        condAnatomica.descripcionDolor = obj.descripcionDolor;
-        condAnatomica.momDolor = obj.momDolor;
-        condAnatomica.momDolorIni = obj.momDolorIni;
-        condAnatomica.desLesion = obj.desLesion;
-        condAnatomica.recomMedica = obj.recomMedica;
-        condAnatomica.flagEmbarazo = document.querySelector('#FlagEmbarazo').checked;
-        condAnatomica.frecuenciaCardiaca = obj.frecuenciaCardiaca;
-        condAnatomica.frecuenciaCardiacaMaxima = obj.frecuenciaCardiacaMaxima;
-        condAnatomica.formaInicial = obj.formaInicial;
-        condAnatomica.musculosSensibles = selectedMuscles.map(v=>{return {id: v.id.slice(4), nombre: v.name}});
-        const salud = obj.cliFit.salud = new Object();
-        salud.flagEnfermedad = document.querySelector('#FlagEnfermedad').checked;
-        salud.flagFumador = document.querySelector('#FlagFumador').checked;
-        salud.flagHiperTensionArt = document.querySelector('#FlagHiperTensionArt').checked;
-        salud.flagAntFamInfOrHiper = document.querySelector('#FlagAntFamInfOrHiper').checked;
-        salud.flagResInsulina = document.querySelector('#FlagResInsulina').checked;
-        salud.flagAntFamDiabetes = document.querySelector('#FlagAntFamDiabetes').checked;
-        salud.flagSobrepeso = document.querySelector('#FlagSobrepeso').checked;
-        salud.flagAleMed = document.querySelector('#FlagAleMed').checked;
-        salud.flagOperacion = document.querySelector('#FlagOperacion').checked;
-        salud.flagHerDisOrCondCol = document.querySelector('#FlagHerDisOrCondCol').checked;
-        salud.famDiabetico = obj.famDiabetico;
-        salud.famInfOrHiper = obj.famInfOrHiper;
-        salud.catSobrepeso = obj.catSobrepeso;
-        salud.catAlimentacion = obj.catAlimentacion;
-        salud.nivelEstres = obj.nivelEstres;
-        salud.desEnfermedad = obj.desEnfermedad;
-        salud.desFumador = obj.desFumador;
-        salud.desAleMed = obj.desAleMed;
-        salud.desOperacion = obj.desOperacion;
-        salud.desHerDisOrCondCol = obj.desHerDisOrCondCol;
-        salud.desPadVarios = getValuesConcatInpCheckbox('DesPadVarios');
-        salud.contactosEmergencia = getValuesEmergencyContact();
-        salud.historialDeportivoAnt = obj.historialDeportivoAnt;
-        salud.historialDeportivoAct = obj.historialDeportivoAct;
-        //Competencias
-        obj.cliFit.competencias = getCompetenciasParticipar();
-        obj.cliFit.fitElementos = [];
-
-        return obj;
-    }
-
-    function getTiemposDistancias(){
-        const obj = {};
-        obj["2"] =  document.querySelector('#TwoKm').value;
-        obj["4"] =  document.querySelector('#FourKm').value;
-        obj["21"] =  document.querySelector('#TweOneKm').value;
-        obj["42"] =  document.querySelector('#FouTwoKm').value;
-        return JSON.stringify(obj);
-    }
-
-    function getCompetenciasParticipar(){
-        const rows = Array.from(document.querySelector('#tblCompetencia tbody').querySelectorAll('tr:not(.hide)'));
-        return rows.map(v=>{
-            const obj = new Object();
-            obj.fecha = v.querySelector('.inp-fecha').value;
-
-            let parseFecha = parseFromStringToDate(obj.fecha);
-            obj.fecha = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
-            obj.distancia = v.querySelector('.inp-distancia').value;
-            obj.nombre = v.querySelector('.inp-nombre').value;
-            obj.tiempoObjetivo = v.querySelector('.inp-tiempo').value;
-            obj.prioridad = v.querySelector('.inp-prioridad').value;
-            return obj;
-        });
-    }
-
-    function getValuesCondicionMejora(){
-        return Array.from(document.querySelectorAll('input[name="CondicionMejora"]:checked')).map(
-            v=>{return {id: v.value, nombre: v.parentElement.textContent.trim()}}
-        );
-    }
-
-    function getValuesEmergencyContact(){
-        const prContNombre = document.querySelector('#ContactoEmergenciaNombre').value;
-        const prContMovil = document.querySelector('#ContactoEmergenciaMovil').value;
-        if(prContNombre.trim().length>2 && prContNombre.trim().length>6){
-            let others = Array.from(document.querySelectorAll('.inp-cont-emer')).slice(2).map((e,i,k)=>{
-                if(i%2==0){
-                    if(e.value.trim().length>2 && k[i+1].value.trim().length>6){
-                        return e.value.trim()+"_"+ k[i+1].value.trim();
-                    }
-                }
-            }).filter(v=>v!==undefined).join('|');
-            if(others.length>0){
-                others = "|"+others;
-            }
-
-            return prContNombre+"_"+prContMovil+others;
-        }else{
-            return "";
-        }
-        return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
-    }
-
-    function depYprovChange(depId, provId, pos){
-        const scpY = '&amp;';
-        const url = pos == 1 ? `p/ubigeo/get/peru-prov-by-dep?depId=${depId}` : `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${depId+scpY.substr(0,1)}provId=${provId}`;
-        fetch(_ctx+url)
-            .then(res=> {
-                    if(res.ok){
-                        return res.json();
-                    }
-                }
-            ).then(res=>{
-            const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
-            const pfSel = pos == 1 ? '<option value="">Seleccione</option>' : '';
-            document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-            if(pos == 1){
-                const dis = document.getElementById('Dis');
-                document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
-            }
-        }).catch((err)=>{
-            exception(err);
-        });
-    }
-
-    function agregarInputDinamico(e){
-        if(e.parentElement.children.length == 4){
-            e.classList.add('hide');
-        }
-        e.previousElementSibling.insertAdjacentElement('afterend', htmlStringToElement('<input class="form-control inp-cont-emer" type="text"/>'));
-    }
-
-    function agregarFilaCompetencia(){
-        const tblCompetencia = document.getElementById('tblCompetencia');
-        const fileRef = tblCompetencia.querySelector('.hide');
-        const filaClonada = fileRef.cloneNode(true);
-        filaClonada.classList.remove('hide');
-        let rowNum = Number(filaClonada.getAttribute('data-acc'));
-        filaClonada.setAttribute('data-acc', ++rowNum);
-        filaClonada.classList.add('nuevo');
-        fileRef.setAttribute('data-acc', rowNum);
-        const tbody = tblCompetencia.querySelector('tbody');
-        filaClonada.querySelector('img').setAttribute('data-acc', rowNum);
-        tbody.append(filaClonada);
-        //Agregando al obj validación el nuevo input fecha
-        /* */
-        const nuevaAgregada = tbody.lastElementChild;
-        const inpFecha = nuevaAgregada.querySelector('.inp-fecha');
-        inpFecha.setAttribute('name', "InpFechaCompetencia"+rowNum);
-        $(inpFecha).rules("add",{greaterThanDate: nowDatePlusOne});
-
-        const inpDesComp = nuevaAgregada.querySelector('.inp-nombre');
-        inpDesComp.setAttribute('name', "DesComp"+rowNum);
-        inpDesComp.setAttribute('data-aka', "NOMBRE DE COMPETICIÓN A PARTICIPAR");
-        $(inpDesComp).rules("add",{required: true, rangelength: [5, 40]});
-
-        const inpTiempoComp = nuevaAgregada.querySelector('.inp-tiempo');
-        inpTiempoComp.setAttribute('name', "TiempoComp"+rowNum);
-        inpTiempoComp.setAttribute('data-aka', "TIEMPO OBJETIVO DE COMPETENCIA");
-        $(inpTiempoComp).rules("add",{required: true, timing: true, greaterThanSeconds: recordsRunningValidation});
-        if(tbody.querySelectorAll('tr').length>=3){
-            $('input[name="DesComp"]').rules('add', {required: true});
-        }
-    }
-
-    function eliminarFila(e){
-        const tblCompetencia = document.getElementById('tblCompetencia');
-        const tbody = tblCompetencia.querySelector('tbody');
-        const delFila = tbody.querySelector(`tr.nuevo[data-acc="${Number(e.getAttribute('data-acc'))}"]`);
-        delFila.remove();
-
-        if(tbody.querySelectorAll('tr').length<3){
-            $('input[name="DesComp"]').rules('add', {required: false});
-        }
     }
 
     function cargarDataCliente(){
@@ -1497,11 +1090,7 @@
             dataType: "json",
             blockLoading: false,
             success:  function(data){
-
-                console.log(data);
-
                setDataCliente(data);
-
 
             },
             error:   function(xhr){
@@ -1550,7 +1139,7 @@
         const salud = JSON.parse(data.salud);
 
         const flagHipertensionArt = salud.flagHiperTensionArt ? "Sí" : "No";
-        const flagFumador = salud.flagFumador ? "Sí" : "No";
+        const flagFumador = salud.flagFumador ? "Sí" :  "No";
         const desFumador = salud.desFumador;
         const flagAntFamInfOrHiper = salud.flagAntFamInfOrHiper ? "Sí" : "No";
         const famInfOrHiper = lstFamiliar[parseInt(salud.famInfOrHiper)-1];
@@ -1571,7 +1160,7 @@
         const desOperacion = salud.desOperacion;
         const flagHerDisOrCondCol = salud.flagHerDisOrCondCol ? "Sí" : "No";
         const desHerDisOrCondCol = salud.desHerDisOrCondCol;
-        const desPadVarios = salud.desPadVarios;
+        const desPadVarios = salud.desPadVarios.split("|");
 
         const contactosEmergencia = salud.contactosEmergencia.split(/(?:[|,_]| )+/);
         const histDeportAnt = salud.historialDeportivoAnt;
@@ -1589,7 +1178,7 @@
         const kilometrajePromedioSemana = data.kilometrajePromedioSemana;
         const diasSemanaCorriendo = data.diasSemanaCorriendo;
         const flagEstiramiento = data.flagEstiramiento ? "Sí" : "No";
-        const flagCalentamiento = data.flagCalentamiento ? "Sí" : "No";
+        const flagCalentamiento = data.flagCalentamiento ? "Sí" : "No"  ;
         const desgasteZapatilla = data.desgasteZapatilla.split("|");
         const desgasteZapatillaOtro = data.desgasteZapatillaOtro;
         const musculosSensiblesOtro = condicionAnatomica.musculoSensiblesOtros;
@@ -1600,6 +1189,19 @@
 
         const musculosSeleccionados = (condicionAnatomica.musculosSensibles);
         const competencias = JSON.parse(data.competencias);
+        const fitElementos = data.fitElementos.split("|");
+
+
+        flagFumador === "No" ?  ocultarSiguienteItem("FlagFumador") : "";
+        flagAntFamInfOrHiper === "No" ? ocultarSiguienteItem("FlagAntFamInfOrHiper") : "";
+        flagAntFamDiabetes === "No" ? ocultarSiguienteItem("FlagAntFamDiabetes") : "";
+        flagSobrepeso === "No" ? ocultarSiguienteItem("FlagSobrepeso") : "";
+        flagEnfermedad === "No" ? ocultarSiguienteItem("FlagEnfermedad") : "";
+        flagAleMed === "No" ? ocultarSiguienteItem("FlagAleMed") : "";
+        flagOperacion === "No" ? ocultarSiguienteItem("FlagOperacion") : "";
+        flagHerDisOrCondCol === "No" ? ocultarSiguienteItem("FlagHerDisOrCondCol") : "";
+        desgasteZapatillaOtro === "" ? $('#DesgasteZapatillaOtro').remove() :"";
+        desTerPredomOtro === "" ? $('#DesTerPredomOtro').remove() :"";
 
 
         $('#Nombres').val(nombres);
@@ -1626,7 +1228,7 @@
         $('#FlagHiperTensionArt').text(flagHipertensionArt);
         $('#FlagFumador').text(flagFumador);
         $('#DesFumador').val(desFumador);
-        $('#FlagAntFamInfOrHiper').val(flagAntFamInfOrHiper);
+        $('#FlagAntFamInfOrHiper').text(flagAntFamInfOrHiper);
         $('#FamInfOrHiper').text(famInfOrHiper);
         $('#FlagResInsulina').text(flagResInsulina);
         $('#FlagAntFamDiabetes').text(flagAntFamDiabetes);
@@ -1643,7 +1245,6 @@
         $('#DesOperacion').val(desOperacion);
         $('#FlagHerDisOrCondCol').text(flagHerDisOrCondCol);
         $('#DesHerDisOrCondCol').val(desHerDisOrCondCol);
-        $('#DesPadVarios').val(desPadVarios);
         $('#HistorialDeportivoAnt').val(histDeportAnt);
         $('#HistorialDeportivoAct').val(histDeportAct);
         $('#FrecuenciaCardiaca').val(frecuenciaCardiaca);
@@ -1660,16 +1261,40 @@
         $('#DesgasteZapatillaOtro').val(desgasteZapatillaOtro);
         $('#DesTerPredomOtro').val(desTerPredomOtro);
 
+        generarDesPadVarios(desPadVarios);
         generarCondicionesMejora(condMejora);
-        generarContactosEmergencia(desgasteZapatilla);
+        generarContactosEmergencia(contactosEmergencia);
         generarDesgasteZapatilla(desgasteZapatilla);
         generarDesTerPredom(desTerPredom);
         generarTiempoDistancia(tiempoDistancia);
         seleccionarMusculosSensibles(musculosSeleccionados);
         llenarTablaCompetenciasSeleccionadas(competencias);
+        seleccionarItemsFitness(fitElementos);
+    }
+
+
+    function ocultarSiguienteItem(item){
+
+       $('#'+item).parent().next().remove();
 
 
     }
+
+    function seleccionarItemsFitness(fitElementos){
+
+        fitElementos.forEach(function(element){
+
+        console.log(element);
+
+           $('input[name="ItemsFitness"][value="'+element+'"]').prop('checked',true);
+           $('input[name="ItemsFitness"][value="'+element+'"]').parentsUntil('ul').addClass('active');
+        });
+
+
+    };
+
+
+
 
     function llenarTablaCompetenciasSeleccionadas(competencias){
 
@@ -1745,6 +1370,10 @@
                                      type="text" disabled="true" value="${e}"/>
                                     `));
 
+                dvContactosEmergencia.appendChild(htmlStringToElement(`
+                                    <label class="field-content">  Tlf. Móvil </label>
+                                    `));
+
             }else{
                 dvContactosEmergencia.appendChild(htmlStringToElement(`
                                     <input class="form-control" id="NumeroContacto${num/2}" name="NumeroContacto${num/2}"
@@ -1782,6 +1411,24 @@
 
             dvCondicionesMejora.appendChild(htmlStringToElement(`  <div class="form-group">
                                                 <label id="condMejora${num}" name="condMejoras${num}" class="field-content">${e} </label>
+                                            </div>`));
+
+
+        })
+
+    }
+
+
+    function generarDesPadVarios(desPadVarios){
+
+        const dvDesPadVarios = document.getElementById("dvDesPadVarios");
+
+        desPadVarios.forEach( (e,index) => {
+
+            const num = index+1;
+
+            dvDesPadVarios.appendChild(htmlStringToElement(`  <div class="form-group">
+                                                <label id="desPadVarios${num}" name="desPadVarios${num}" class="field-content">${e} </label>
                                             </div>`));
 
 
@@ -1863,406 +1510,61 @@
 
 
 
-    function constraintsValidation() {
-       $(frm).validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
-            highlight: function (element) {
-                if(element.type === 'radio' || element.type==='checkbox'){
-                    let msgError = "";
-                    setTimeout(() => {
-                        const eleMsgError = document.querySelector(`#${element.name}-error`);
-                        if(eleMsgError != undefined){
-                            msgError = eleMsgError.textContent;
-                            eleMsgError.remove();
-                        }
-                    }, 100);
-                    const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                    setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
-                }else{
-                    $(element).removeClass('state-success').addClass("state-error");
-                    $(element).removeClass('valid');
-                }
-            },
-            unhighlight: function (element) {
-                if(element.type === 'radio' || element.type==='checkbox'){
-                    const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                    parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-                } else {
-                    $(element).removeClass("state-error").addClass('state-success');
-                    $(element).addClass('valid');
-                }
-            },
-            ignore: ".ignore",
-            rules: {
-                Nombres: {
-                    required: true,
-                    rangelength: [3, 30],
-                    lettersonly: true
-                },
-                Apellidos: {
-                    required: true,
-                    rangelength: [3, 30],
-                    lettersonly: true
-                },
-                FechaNacimiento: {
-                    lessThanDate: nowDate
-                },
-                TipoDocumentoId:{
-                    required: true
-                },
-                NumeroDocumento: {
-                    required: true,
-                    digits: true,
-                    rangelength: [8, 13],
-                    customnumdoc: function(){
-                        const val = $('#TipoDocumentoId').val();
-                        return val;
-                    }
-                },
-                Correo: {
-                    required: true,
-                    emailValid: true,
-                    rangelength: [7, 40],
-                },
-                Movil: {
-                    required: true,
-                    digits: true,
-                    rangelength: [9,11]
-                },
-                PaisId:{
-                    required: true,
-                },
-                Dep:{
-                    required: true
-                },
-                Pro:{
-                    required: true
-                },
-                Dis:{
-                    required: true
-                },
-                EstadoCivil:{
-                    required: true
-                },
-                Sexo: {
-                    required: true,
-                    digits: true,
-                    min: 1
-                },
-                Peso:{
-                    required: true,
-                    number : true,
-                    max: 300,
-                    rangelength: [2, 5],
-                },
-                Talla:{
-                    required: true,
-                    digits : true,
-                    rangelength: [2, 3],
-                    max: 280
-                },
-                Imc:{
-                    required: true
-                },
-                FlagPadeceDolor:{
-                    required: true
-                },
-                DescripcionDolor: {
-                    required: function(){
-                        return document.querySelector('#FlagPadeceDolor').checked;
-                    },
-                    rangelength: [5, 500]
-                },
-                MomDolor: {
 
-                },
-                MomDolorIni: {
+    function next_step(sheetNumber, toSheetNumber) {
+            if ($(".ficha-01").hasClass("active")) {
+                $(".ficha-01").removeClass("active");
+                $('.step-01').removeClass("active");
+                $(".ficha-02").addClass("active");
+                $('.step-02').addClass("active");
+                $(window).scrollTop(200);
 
-                },
-                DesLesion: {
-                    rangelength: [2, 500],
-                },
-                RecomMedica:{
-                    rangelength: [5, 500],
-                },
-                FlagEmbarazo: {
-                    required: true
-                },
-                FlagHiperTensionArt: {
-                    required: true
-                },
-                FlagFumador: {
-                    required: true
-                },
-                DesFumador: {
-                    required: ()=>{return cxRq('#FlagFumador')},
-                    rangelength: [4, 30]
-                },
-                FlagAntFamInfOrHiper:{
-                    required: true
-                },
-                FamInfOrHiper: {
-                    required: ()=>{return cxRq('#FlagAntFamInfOrHiper')}
-                },
-                FlagResInsulina: {
-                    required: true
-                },
-                FlagAntFamDiabetes:{
-                    required: true
-                },
-                FamDiabetico: {
-                    required: ()=>{return cxRq('#FlagAntFamDiabetes')}
-                },
-                FlagSobrepeso:{
-                    required: true
-                },
-                CatSobrepeso: {
-                    required: ()=>{return cxRq('#FlagSobrepeso')}
-                },
-                CatAlimentacion: {
-                    required: true
-                },
-                NivelEstres:{
-                    required: true
-                },
-                FlagEnfermedad:{
-                    required: true
-                },
-                DesEnfermedad: {
-                    required: ()=>{return cxRq('#FlagEnfermedad')},
-                    rangelength: [1, 60]
-                },
-                FlagAleMed:{
-                    required: true
-                },
-                DesAleMed: {
-                    required: ()=>{return cxRq('#FlagAleMed')},
-                    rangelength: [1,60]
-                },
-                FlagOperacion:{
-                    required: true
-                },
-                DesOperacion: {
-                    required: ()=>{return cxRq('#FlagOperacion')},
-                    rangelength: [1,60]
-                },
-                FlagHerDisOrCondCol:{
-                    required: true
-                },
-                DesHerDisOrCondCol: {
-                    required: ()=>{return cxRq('#FlagHerDisOrCondCol')},
-                    rangelength: [5, 100]
-                },
-                DesPadVarios: {
-                    required: true
-                },
-                ContactoEmergenciaNombre: {
-                    required: true,
-                    lettersonly: true,
-                    rangelength: [3, 60]
-                },
-                ContactoEmergenciaMovil: {
-                    required: true,
-                    digits: true,
-                    rangelength: [9, 11]
-                },
-                HistorialDeportivoAnt: {
-                    required: true,
-                    rangelength: [10, 500]
-                },
-                HistorialDeportivoAct: {
-                    required: true,
-                    rangelength: [10, 500]
-                },
-                FrecuenciaCardiaca: {
-                    required: true,
-                    min: 40,
-                    max: 130,
-                    rangelength:[2 ,3],
-                    digits: true
-                },
-                FrecuenciaCardiacaMaxima: {
-                    required: true,
-                    min: 100,
-                    max: 220,
-                    rangelength:[2  ,3],
-                    digits: true
-                },
-                FormaInicial: {
-                    required: true,
-                    digits: true,
-                    min: 0
-                },
-                CondicionMejora: {
-                    required: true
-                },
-                TiempoUnKilometro: {
-                    required: true,
-                    timing: true,
-                    greaterThanSeconds: 2*60,
-                    rangelength: [7, 8]
-                },
-                KilometrajePromedioSemana: {
-                    required: true
-                },
-                DiasSemanaCorriendo: {
-                    required: true
-                },
-                FlagCalentamiento: {
-                    required: true
-                },
-                FlagEstiramiento: {
-                    required: true
-                },
-                DesgasteZapatilla: {
-                    required: true
-                },
-                DesTerPredom: {
-                    required: true
-                },
-                DesObjetivos: {
-                    required: true,
-                    rangelength:[10, 500]
-                },
-                DesComp: {
-                    required: true,
-                    rangelength: [5, 40]
-                },
-                ItemsFitness: {
-                    required: true
-                },
-                ViaConexion: {
-                    required: true
-                },
-                Username: {
-                    required: true,
-                    pattern: "[a-z]{3,}[0-9]*$",
-                    rangelength: [7, 30],
-                },
-                Password: {
-                    required: true,
-                    rangelength: [8, 30],
-                    pwcheck: true
-                },
-                InpFechaCompetencia:{
-                    greaterThanDate: nowDatePlusOne,
-                },
-                TiempoComp:{
-                    required: true,
-                    timing: true,
-                    greaterThanSeconds: recordsRunningValidation
-                },
-                TwoKm:{
-                    timing: true,
-                    rangelength: [7,8],
-                    greaterThanSeconds: 4*60,
-                },
-                FourKm:{
-                    timing: true,
-                    rangelength: [7,8],
-                    greaterThanSeconds: 10*60,
-                },
-                TweOneKm:{
-                    timing: true,
-                    rangelength: [7,8],
-                    greaterThanSeconds: 58*60,
-                },
-                FouTwoKm:{
-                    timing: true,
-                    rangelength: [7,8],
-                    greaterThanSeconds: 121*60,
-                },
-            },
-            messages: {
-                Sexo: {
-                    required: "El campo es obligatorio",
-                    min: "El tamaño minimo debe ser 4"
-                },
-                MomDolorIni: {
-                    required: "El campo es obligatorio"
-                },
-                FlagHiperTensionArt: {
-                    required: "El campo es obligatorio"
-                },
-                FlagFumador: {
-                    required: "El campo es obligatorio",
-                },
-                Mejoras: {
-                    required: "El campo es obligatorio"
-                },
-                MusculoSensible: {
-                    required: "El campo es obligatorio"
-                },
-                ViaConexion: {
-                    required: "El campo es obligatorio"
-                },
-                KilometrajePromedioSemana: {
-                    required: "El campo es obligatorio"
-                },
-                Username: {
-                    pattern: "Solo se admiten letras mínusculas y números, además el nombre debe empezar con 3 letras"
-                }
-            }
-        });
+                time_line();
+            } else if ($(".ficha-02").hasClass("active")) {
+                $(".ficha-02").removeClass("active");
+                $('.step-02').removeClass("active");
+                $(".ficha-03").addClass("active");
+                $('.step-03').addClass("active");
+                $(window).scrollTop( 200);
+                time_line();
 
-        //Maxlength
-        const rules = $(frm).validate().settings.rules;
-        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
-            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
-        });
+        }
     }
 
-    function populateForm(){
-        //Page 1
-        const t0 = String(new Date().getTime());
-        const t1 = t0.slice(-3);
-        const t2 = t0.slice(-6).slice(0, 3);
+    function time_line() {
+        var total = $(".steps ol").length;
+        var estilos;
 
-/*
-        document.querySelector('#Nombres').value = "Pedro ";
-        document.querySelector('#Apellidos').value = "Sotelo";
-
-        */
-        document.querySelector('#FechaNacimiento').value = "1993-02-28";
-        document.querySelector('#TipoDocumentoId').value = 1;
-        document.querySelector('#NumeroDocumento').value = 42424242;
-        document.querySelector('#Correo').value = generateRandomMail();
-        document.querySelector('#Movil').value = `51987${t1}234`;
-        document.querySelector('#Peso').value = 77;
-        document.querySelector('#Talla').value = 177;
-        document.querySelector('#Imc').value = 77;
-
-        //Page 2
-        document.querySelector('#ContactoEmergenciaNombre').value = "Augusto";
-        document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
-        document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
-        document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
-        document.querySelector('#FrecuenciaCardiaca').value = 120;
-        document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
-        document.querySelector('input[name="CondicionMejora"]').checked = true;
-
-
-        //Page 3
-        //selectedMuscles = JSON.parse('[{"id":"path62","name":"Recto del abdomen"},{"id":"path60","name":"Recto del abdomen"},{"id":"path48","name":"Recto del abdomen"},{"id":"path46","name":"Recto del abdomen"},{"id":"path206","name":"Recto del abdomen"},{"id":"path208","name":"Recto del abdomen"},{"id":"path210","name":"Recto del abdomen"},{"id":"path212","name":"Recto del abdomen"},{"id":"path228","name":"Pectoral mayor"},{"id":"path306","name":"Trapecio inferior"},{"id":"path388","name":"Trapecio inferior"},{"id":"path408","name":"Dorsal ancho"}]');
-        document.querySelector('#TiempoUnKilometro').value = "00:05:55";
-        document.querySelector('#KilometrajePromedioSemana').value = 30;
-        document.querySelector('#DiasSemanaCorriendo').value = 4;
-        document.querySelector('#DesObjetivos').value = "Ser el mejor";
-        document.querySelector('input[name="TiempoComp"]').value = "03:30:00";
-        $('input[name="InpFechaCompetencia"]').val("2020-05-25")
-        document.querySelector('#DesComp').value = "Maratón de Boston";
-        document.querySelector('#Username').value = "abc"+String(new Date().getTime());
-        document.querySelector('#Password').value = "runfit123";
-
-
-        /*var tid = setInterval( function () {
-          if ( document.readyState !== 'complete' ) return;
-          else document.getElementById('btnGuardar').click();
-          clearInterval( tid );
-          // do your work
-        }, 100);*/
+        for (var i = 0; i < total; i++) {
+            var altura_total = $(".steps ol")[i].clientHeight;
+            var altura_rest = $(".steps ol > li:last-child")[i].clientHeight;
+            $(".steps ol")[i].className += " cbp_tmtimeline_" + i + "";
+            estilos = ".cbp_tmtimeline_" + i + ":before{height: " + (altura_total - altura_rest) + "px}";
+            $("html").append("<style>" + estilos + "</style>");
+        }
     }
+
+
+
+    function next_step_cs(i){
+        const activeNumSheet = document.querySelector('.step.active').getAttribute('data-num-sheet');
+        const sheetNumberTo = i;
+
+
+            const all = document.querySelectorAll('.fade-ficha');
+            const sels = document.querySelectorAll('.step');
+            all.forEach((v,ii)=>{
+                v.classList.remove('active');
+                sels[ii].classList.remove('active')
+            });
+            all[i-1].classList.add('active');
+            sels[i-1].classList.add('active');
+
+
+        time_line();
+    }
+
+
 
 </script>
 
