@@ -66,7 +66,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
             boolean isProdOrHku = profile.equals("production") || profile.equals("herokudev");
             if(isProdOrHku) {
                 //Receptor
-                if(profile.equals("herokudev")){
+                if(profile.equals("herokudev") || profile.equals("production")){
                     receptor = "monica.diaz@itsight.pe";
                     preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 }else{
