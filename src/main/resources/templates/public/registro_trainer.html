@@ -70,6 +70,16 @@
         cursor: pointer;
     }
 
+    .sub-menus span{
+        font-family: Gotham-Black, 'system-ui';
+        cursor: pointer;
+    }
+
+    .sub-menu-selected{
+        border-bottom: 3px solid #A8FA00;
+        padding-bottom: 9px;
+    }
+
 </style>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -347,7 +357,8 @@
                                 <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                             </div>
                             <div class="tab-pane fade inpts-3" id="service">
-                                <h4>MIS SERVICIOS<span class="obligatorio">*</span></h4>
+                                <h4 class="sub-menus"><span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span><span class="obligatorio" data-op="2">*</span>
+                                <span class="sub-menu" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span></h4>
                                 <div>
                                     <div class="ver-servicios">
                                     </div>
@@ -370,25 +381,27 @@
                                             <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
                                         </div>
                                     </div>
-                                    <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">
-                                        <i class="fa fa-plus-circle fa-fw"></i>
-                                        AGREGAR SERVICIO
-                                    </button>
-                                    <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
-                                    <button rel="tooltip"
-                                            title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
-                                            id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
-                                        <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
-                                    </button>
-                                    <h4 class="sub-title">TARIFARIO
+                                    <div id="btnsServicio">
+                                        <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">
+                                            <i class="fa fa-plus-circle fa-fw"></i>
+                                            AGREGAR SERVICIO
+                                        </button>
+                                        <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
+                                        <button rel="tooltip"
+                                                title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
+                                                id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
+                                            <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
+                                        </button>
+                                    </div>
+                                    <h4 class="sub-title st-tarifario">TARIFARIO
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
-                                        <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
+                                        <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs hidden" style="color: #a8fa00;float:right;"></i>
                                     </h4>
                                     <div class="row">
                                         <div class="col col-md-12 text-center" id="Tarifarios">
                                         </div>
                                     </div>
-                                    <div class="clase-tarifario collapse in" id="contentTarifario">
+                                    <div class="clase-tarifario collapse in hidden" id="contentTarifario">
                                         <div class="form-group">
                                             <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
                                             <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
@@ -481,7 +494,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <hr>
                                     <h4>MÉTODO DE PAGO
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Opcional"></i>
                                     </h4>
@@ -735,7 +747,7 @@
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
 
         //Servicios
-        document.querySelector('#NombreServicio').value = "Performance PRO";
+        /*document.querySelector('#NombreServicio').value = "Performance PRO";
         document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
         document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
             '\n' +
@@ -763,7 +775,7 @@
         document.getElementById('txtCantidadMeses').value = "4";
         document.getElementById('txtCantidadSesiones').value = "14";
         document.getElementById('PrecioPaquete').value = "800.00";
-        document.getElementById('btnNuevaTarifa').click();
+        document.getElementById('btnNuevaTarifa').click();*/
 
         //Información de pago
        // document.querySelectorAll('.info-pago')[1].click();

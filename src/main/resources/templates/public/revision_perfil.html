@@ -1067,7 +1067,7 @@
         document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
-                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                                     <h6>${t.nombre}</h6>
                                 </a>
                             </div>`))});
@@ -1135,7 +1135,7 @@
         }, 500);
         return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                         <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">

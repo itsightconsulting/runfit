@@ -12,7 +12,7 @@ const tabService = document.getElementById('service');
 const inpCondServicio = document.getElementById('inpCondServicio');
 const frm = document.getElementById('frm_registro');
 const inpNomPag = document.getElementById('NomPag');
-const initPageActive = 1;
+const initPageActive = 3;
 const $galeria = [];
 const servicios = [];
 const verifiedNames = [];
@@ -103,6 +103,7 @@ function bodyFocusOutListenerOwn(e) {
 function instanceInitTab(){
     document.querySelector('.step-0'+initPageActive).classList.add('active');
     document.querySelector('.inpts-'+initPageActive).classList.add('active');
+    document.querySelector('.step-0'+initPageActive).click();
 }
 
 function agregarServicio(){
@@ -306,6 +307,34 @@ function bodyClickEventListener(e){
     if(clases.contains('ver-tyc')){
         input.nextElementSibling.checked = !input.nextElementSibling.checked;
     }
+
+    if(clases.contains('sub-menu')){
+        if(!servicios.length){
+            $.smallBox({timeout: 9000, color: 'alert', content: '<span><i class="fa fa-exclamation-circle fa-fw"></i>Los tarifarios van asociados a los servicios, es por ello que primero debe registrar un servicio y después volver a este menú</span>'})
+            return;
+        }
+        const subTitleTarifario = document.querySelector('.st-tarifario>i.fa-plus-cs');
+        const btnsServicio = document.querySelector('#btnsServicio');
+        const svcBasics = document.querySelector('#SvcCamposBasicos');
+        const tarBasics = document.querySelector('#contentTarifario');
+        const svcEdit = document.querySelector('.svc-focus').parentElement.querySelector('a.edit');
+        const opc = Number(input.getAttribute('data-op'));
+        document.querySelector('.sub-menu-selected').classList.remove('sub-menu-selected');
+        input.classList.add('sub-menu-selected');
+        if(opc === 1){
+            svcBasics.classList.remove('hidden');
+            btnsServicio.classList.remove('hidden');
+            svcEdit.classList.remove('hidden');
+            tarBasics.classList.add('hidden');
+            subTitleTarifario.classList.add('hidden');
+        }else{
+            svcBasics.classList.add('hidden');
+            btnsServicio.classList.add('hidden');
+            svcEdit.classList.add('hidden');
+            tarBasics.classList.remove('hidden');
+            subTitleTarifario.classList.remove('hidden');
+        }
+    }
 }
 
 function bodyChangeEventListener(e){
@@ -450,6 +479,7 @@ function init(){
     instanceCropper();
     doMultiselectCheckBox();
     if(flag_form_populate){populateForm();}
+    $('span[rel="tooltip"]').tooltip();
 }
 
 function mainSeeders(){
@@ -992,7 +1022,7 @@ function putTarifario(id, nombre){
     }, 500);
     return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                         <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);">

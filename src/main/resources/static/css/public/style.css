@@ -924,22 +924,6 @@ h1 {
   border-bottom: 4px solid #a8fa00
 }
 
-.trainers-form .tab-contenido{
-  display: none;
-}
-
-ul.tabs {
-  list-style: none;
-  padding: 0;
-}
-.trainers-form .tab-contenido{
-  display: none;
-}
-
-.trainers-form .tab-contenido.current{
-  display: inherit;
-}
-
 .trainers-form ul.counter {
   list-style: none
 }
@@ -3636,6 +3620,10 @@ button.multiselect + ul{
 
 .ficha-pick{
   border: 4px solid #a8fa00 !important;
+}
+
+img.tarifa-svc {
+  width: 58px;
 }
 
 .tarifa-svc-pick {
