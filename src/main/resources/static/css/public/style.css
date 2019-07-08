@@ -470,7 +470,7 @@ footer li a span.fa{
 }
 
 @media only screen and (max-width: 400px) {
-  .col-xs-6 {
+  footer .col-xs-6 {
     display: block;
     width: 100%;
     text-align: center;
@@ -931,6 +931,8 @@ h1 {
 ul.tabs {
   list-style: none;
   padding: 0;
+  display: inline-block;
+  width: 100%;
 }
 .trainers-form .tab-contenido{
   display: none;
@@ -1390,6 +1392,9 @@ ul.tabs {
   .trainers-form input.price {
     width: 90px !important
   }
+  .tab-link.col-xs-6 {
+    padding: 0;
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -1428,6 +1433,12 @@ ul.tabs {
   .trainers-form ul.nav-tabs {
     margin-top: 70px;
     text-align: center;
+  }
+  .tabs .tab-link .btn-black {
+    min-width: auto;
+    font-size: 13px;
+    padding: 15px;
+    width: 100%;
   }
   .trainers-form ul.nav-tabs li {
     margin-right: 12px;
@@ -2785,8 +2796,8 @@ img.tibial {
   .steps .step {
     right: 0;
     margin: 0 auto;
-    width: 110px;
-    height: 110px
+    width: 108px;
+    height: 108px
   }
   .steps .step .curve {
     left: 33px;
