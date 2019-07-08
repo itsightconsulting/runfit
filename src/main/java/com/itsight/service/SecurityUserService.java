@@ -11,5 +11,4 @@ public interface SecurityUserService {
 
     void updateFlagEnabled(Integer securityUserId , boolean flagEnabled);
 
-
 }

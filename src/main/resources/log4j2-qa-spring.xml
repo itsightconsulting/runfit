@@ -30,7 +30,7 @@
               smtpUsername="contoso.peru@gmail.com"
               smtpPassword="p1ls3n@1477"
               smtpProtocol="smtps"
-              smtpDebug="false"
+              smtpDebug="true"
               bufferSize="2">
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
@@ -46,7 +46,7 @@
             <AppenderRef ref="AppFileAppender"/>
         </Logger>
         <Logger name="com.itsight.advice" level="warn" additivity="false">
-           <AppenderRef ref="AppFileAppender"/>
+           <AppenderRef ref="AppFileAppenderWarn"/>
         </Logger>
         <Logger name="com.itsight.service.impl.EmailServiceImpl" level="error" additivity="false">
             <AppenderRef ref="AppFileAppender"/>

@@ -45,6 +45,12 @@ public class Dia {
     @Column
     private String literal;
     @Column
+    private String smsHeader;
+    @Column
+    private String nota;
+    @Column
+    private String voz;
+    @Column
     private boolean flagDescanso;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
