@@ -726,7 +726,9 @@
                   reconstruirServicios(servicios);
                   reconstruirTarifario(servicios[0].tarifarios);
                   setFileTermCond(servicios[0]);
-                  $('#Tarifarios .tarifa-svc')[0].click();
+                  if($('#Tarifarios .tarifa-svc')[0]){
+                      $('#Tarifarios .tarifa-svc')[0].click();
+                  }
               }, error: (xhr) => {
                   if (xhr.status == 404) {
                       window.location.href = _ctx + "p/recurso-no-encontrado";

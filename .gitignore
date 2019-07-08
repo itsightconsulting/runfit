@@ -3,7 +3,8 @@ target/
 
 ### CUSTOM IGNORES ###
 workoutlogs/
-#src/main/resources/aws-auths.properties
+src/main/resources/aws-auths.properties
+src/main/resources/application.yml
 ### STS ###
 .apt_generated
 .classpath
