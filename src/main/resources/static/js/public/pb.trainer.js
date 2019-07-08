@@ -12,7 +12,7 @@ const tabService = document.getElementById('service');
 const inpCondServicio = document.getElementById('inpCondServicio');
 const frm = document.getElementById('frm_registro');
 const inpNomPag = document.getElementById('NomPag');
-const initPageActive = 3;
+const initPageActive = 1;
 const $galeria = [];
 const servicios = [];
 const verifiedNames = [];
@@ -103,6 +103,7 @@ function bodyFocusOutListenerOwn(e) {
 function instanceInitTab(){
     document.querySelector('.step-0'+initPageActive).classList.add('active');
     document.querySelector('.inpts-'+initPageActive).classList.add('active');
+    //Si este metodo se ejecuta primero que los demás en el evento init, se interrumpe el proceso y el jquery validate no funciona
     document.querySelector('.step-0'+initPageActive).click();
 }
 
@@ -469,7 +470,6 @@ function uploadFotoPerfil(d){
 
 
 function init(){
-    instanceInitTab();
     nextTabButton();
     mainSeeders();
     modalEventos();
@@ -480,6 +480,7 @@ function init(){
     doMultiselectCheckBox();
     if(flag_form_populate){populateForm();}
     $('span[rel="tooltip"]').tooltip();
+    instanceInitTab();
 }
 
 function mainSeeders(){
