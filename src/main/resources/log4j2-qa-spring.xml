@@ -45,6 +45,10 @@
         <Logger name="com.itsight.service.impl" level="warn" additivity="false">
             <AppenderRef ref="AppFileAppender"/>
         </Logger>
+        <!--<Logger name="org.springframework" level="debug" additivity="false">
+            <AppenderRef ref="AppFileAppender"/>
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>-->
         <Logger name="com.itsight.advice" level="warn" additivity="false">
            <AppenderRef ref="AppFileAppenderWarn"/>
         </Logger>

@@ -1027,6 +1027,26 @@ h1 {
     color: #a8fa00;
 }
 
+
+
+.trainers-form .title-icon-ver{
+  height: 42px;
+  line-height: 2;
+}
+
+.trainers-form .title-icon-ver>i:not(.fa){
+  color: #a8fa00;
+  float: right;
+  background: url(/img/ver.png) no-repeat;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.trainers-form .title-icon-ver>.fa{
+  margin: 8px 0 0 8px;
+}
+
 .clients-form .form-group .add{
   /*display: inline-block;
   position: absolute;
@@ -3843,3 +3863,7 @@ section.trainers-form {
 }
 
 /* END CROPPERJS */
+
+.margin-bottom-12{
+  margin-bottom: 12px !important;
+}

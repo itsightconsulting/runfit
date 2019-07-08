@@ -2188,7 +2188,7 @@
             TiempoUnKilometro: {
               required: true,
               timing: true,
-              greaterThanSeconds: 2*60,
+              greaterThanSeconds: "00:02:00",
               rangelength: [7, 8]
             },
             KilometrajePromedioSemana: {
@@ -2248,22 +2248,22 @@
             TwoKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 4*60,
+              greaterThanSeconds: "00:04:00",
             },
             FourKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 10*60,
+              greaterThanSeconds: "00:10:00",
             },
             TweOneKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 58*60,
+              greaterThanSeconds: "00:58:00",
             },
             FouTwoKm:{
               timing: true,
               rangelength: [7,8],
-              greaterThanSeconds: 121*60,
+              greaterThanSeconds: "02:21:00",
             },
             MarcaReferencial:{
               required: function(){

@@ -687,16 +687,17 @@ function mostrarCuentasBancarias(cuentas){
         modalBody.innerHTML = "<div class='alert alert-info'>Aún no ha agregado ninguna cuenta bancaria</div>";
         return;
     }
+    const noEdit = cuentas[0].noEdit ? true : false;
     cuentas.forEach((c, ix)=>{
         c.ix = ix;
-        modalBody.appendChild(htmlStringToElement(setCuentaBancariaHtmlRaw(c)));
+        modalBody.appendChild(htmlStringToElement(setCuentaBancariaHtmlRaw(c, noEdit)));
     })
 }
 
-function setCuentaBancariaHtmlRaw(cc){
-    return`<div class="col-sm-12 cuenta" data-id="${cc.id}">
+function setCuentaBancariaHtmlRaw(cc, noEdit){
+    return `<div class="col-sm-12 cuenta" data-id="${cc.id}">
             <h4>Cuenta <span class="cuenta-num">${++cc.ix}</span>
-                <img src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id})"/>
+                ${!noEdit ? `<img src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id})"/>`:''}
             </h4>
             <div class="col col-md-6 col-xs-12">
                 <div class="form-group">
@@ -769,4 +770,19 @@ function setCuentaBancariaHtmlRaw(cc){
 function verCuentasBancarias(){
     $('#myModalCC').modal();
     mostrarCuentasBancarias(ccBancarias);
+}
+
+function setHeightForModals(arrModalIds){
+    arrModalIds.forEach(e=>{
+        //Modals
+        const mdlCcs = document.getElementById(e);
+        const body = mdlCcs.querySelector('.modal-body');
+        body.style.maxHeight = ($(window).height()-220)+"px";
+        body.style.overflowY ="auto";
+        if($(window).width()<720){
+            mdlCcs.firstElementChild.style.width = ($(window).width()-15)+"px";
+        } else{
+            mdlCcs.firstElementChild.style.width = "720px";
+        }
+    })
 }

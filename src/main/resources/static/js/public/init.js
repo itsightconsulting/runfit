@@ -1,18 +1,7 @@
 var _ctx = $('meta[name="_ctx"]').attr('content');
+var _flag_populate = document.querySelector('meta[name="_auttic_populate"]').content === "true";
 var skip_validation = 0 == 1;
-var flag_form_populate = 0 == 1;
-var hiddenHeaderBar = 0 == 1;
-try {
-    //Remarcar página visitada
-    const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);
-    if(pubMenu != undefined){
-        const menu = pubMenu.parentElement;
-        if(menu.parentElement.classList.contains('dropdown-menu')){
-        }else{
-            menu.classList.add('active');
-        }
-    }
-}catch (e) {}
+var flag_form_populate = _flag_populate;
 
 function time_line() {
     var total = $(".steps ol").length;
@@ -423,6 +412,7 @@ function goRegister() {
 }
 
 $(function() {
+    remarcarPaginaVisitada();
     if($(window).scrollTop()>0){
         $("nav").css({ "background-color": "#000" });
     }
@@ -439,6 +429,22 @@ $(function() {
     activeItems();
     HorizontalEnum_EntrenaCorrectamente();
 })
+
+function remarcarPaginaVisitada(){
+    try {
+        //Remarcar página visitada
+        const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);
+        if(pubMenu != undefined){
+            const menu = pubMenu.parentElement;
+            if(menu.parentElement.classList.contains('dropdown-menu')){
+            }else{
+                menu.classList.add('active');
+            }
+        }
+    }catch (e) {
+        console.log(e);
+    }
+}
 
 function submitReuseLogin(){
     const frmLogin = document.getElementById('login-form');
@@ -512,9 +518,6 @@ function FullHeightBanner() {
 (function () {
     setFullNameForPublicMenuInMobile();
     validLoginForm();
-    if (hiddenHeaderBar) {
-        hideNavBar();
-    }
 })();
 
 function setFullNameForPublicMenuInMobile(){

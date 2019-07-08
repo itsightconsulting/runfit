@@ -159,12 +159,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private TipoRutinaService tipoRutinaService;
 
+    @Value("${flag.populate}")
+    private Boolean flagPopulate;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-
-
-
-
 
         //Nos aseguramos que si los seeders ya han sido ejecutados nos saltemos su registro
         if(tipoDocumentoService.findOne(1) == null){
@@ -1022,6 +1021,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void addingToContextSession() {
         context.setAttribute("MAIN_ROUTE", parametroService.findByClave("MAIN_ROUTE").getValor());
         context.setAttribute("version", currentVersion);
+        context.setAttribute("autpopulate", flagPopulate);
     }
 
     public void agregandoSuperAdmin(){

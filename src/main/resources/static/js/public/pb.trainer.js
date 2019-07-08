@@ -557,20 +557,7 @@ function modalEventos(){
         }
     })
 
-    setHeightForModals();
-}
-
-function setHeightForModals(){
-    //Modal Cuentas Bancarias
-    const mdlCcs = document.getElementById('myModalCC');
-    const body = mdlCcs.querySelector('#ModalCCs');
-    body.style.maxHeight = ($(window).height()-220)+"px";
-    body.style.overflowY ="auto";
-    if($(window).width()<720){
-        mdlCcs.firstElementChild.style.width = ($(window).width()-15)+"px";
-    }else{
-        mdlCcs.firstElementChild.style.width = "720px";
-    }
+    setHeightForModals(['myModalCC']);
 }
 
 function populateBancos(){
