@@ -214,6 +214,11 @@ function clickListenerTabService(e) {
         abuelo.querySelectorAll('.edit').forEach(e=>e.classList.add('hidden'));
         padre.querySelector('.edit').classList.remove('hidden');
         mostrarDetalleTarifaSvc(Number(tarifaId));
+        //Agregando el data id
+        const butonEdit = document.querySelector('button.edit-tar-svc');
+        const butonDel = document.querySelector('button.del-tar-svc');
+        butonEdit.setAttribute('data-id', tarifaId);
+        butonDel.setAttribute('data-id', tarifaId);
     } else if(clases.contains('edit-svc')){
         const svcId = Number(input.getAttribute('data-id'));
         editarServicio(svcId);
