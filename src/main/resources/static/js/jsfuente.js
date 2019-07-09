@@ -666,6 +666,16 @@ function generateRandomMail(){
     return `pedro${t1}infante${t2}@gmail.com`;
 }
 
+(function modalHideScrollOnY(){
+    $('body .modal').on('shown.bs.modal', function () {
+        body.parentElement.style.overflowY = "hidden";
+    });
+
+    $('body .modal').on('hide.bs.modal', function () {
+        body.parentElement.style.overflowY = "auto";
+    });
+})();
+
 (function ajaxEvents(){
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);

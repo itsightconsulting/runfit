@@ -40,33 +40,6 @@
         }
     }
 
-    #ModalCCs h4{
-        border-bottom: 1px dotted #d3d3d3;
-        margin: 0px 12px 15px;
-        padding: 10px 0px;
-    }
-
-    #ModalCCs h4>img{
-        height: 26px;
-        float: right;
-        cursor: pointer;
-    }
-
-    .sub-menus span{
-        font-family: Gotham-Black, 'system-ui';
-        cursor: pointer;
-    }
-
-    .sub-menu-selected{
-        border-bottom: 3px solid #A8FA00;
-        padding-bottom: 9px;
-    }
-
-    .btn-tarifario{
-        max-width: 160px !important;
-        min-width: 160px !important;
-    }
-
 </style>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -345,8 +318,10 @@
                                 <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                             </div>
                             <div class="tab-pane fade inpts-3" id="service">
-                                <h4 class="sub-menus"><span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span><span class="obligatorio" data-op="2">*</span>
-                                <span class="sub-menu" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span></h4>
+                                <h4 class="sub-menus">
+                                    <span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span>
+                                        <span class="obligatorio">*</span>
+                                    <span class="sub-menu" data-op="2" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span></h4>
                                 <div>
                                     <div class="ver-servicios">
                                     </div>
@@ -381,7 +356,7 @@
                                             <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                         </button>
                                     </div>
-                                    <h4 class="sub-title st-tarifario">TARIFARIOS
+                                    <h4 class="sub-title st-tarifario hidden">TARIFARIOS
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
                                         <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs hidden" style="color: #a8fa00;float:right;"></i>
                                     </h4>
@@ -472,7 +447,15 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xs-7">
-                                                    <label>PRECIO TOTAL(S/.)</label>
+                                                    <label>MONEDA</label>
+                                                </div>
+                                                <div class="col-xs-5 text-right">
+                                                    <select class="no-multi" style="display: inline" id="Moneda"><option value="1">S/.</option><option value="2">$</option></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-7">
+                                                    <label>PRECIO TOTAL</label>
                                                 </div>
                                                 <div class="col-xs-5 text-right">
                                                     <input id="PrecioPaquete" name="PrecioPaquete" class="price" type="text" value="0.00">
@@ -480,18 +463,18 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 padding-0">
-                                            <div class="col-md-4 padding-0">
+                                            <div class="col-md-4 col-xs-12 padding-0">
                                                 <button class="btn btn-default btn-black btn-tarifario" id="btnNuevaTarifa" type="button">
                                                     <i class="fa fa-plus-circle fa-fw"></i>
                                                     AGREGAR
                                                 </button>
                                             </div>
-                                            <div class="col-md-4 padding-0">
-                                                <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button" style="width: 160px;">
+                                            <div class="col-md-4 col-xs-12 padding-0">
+                                                <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button">
                                                     <i class="fa fa-pencil fa-fw"></i> EDITAR
                                                 </button>
                                             </div>
-                                            <div class="col-md-4 padding-0">
+                                            <div class="col-md-4 col-xs-12 padding-0">
                                                 <button class="btn btn-default btn-white btn-tarifario del-tar-svc" id="btnEliminarPaquete" type="button">
                                                     <i class="fa fa-trash fa-fw"></i>
                                                     ELIMINAR
@@ -574,7 +557,7 @@
                                             </label>
                                             <div class="row">
                                                 <ul class="checks">
-                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    <div class="col-md-6 col-sm-6 col-xs-6-org">
                                                         <li>
                                                             <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
                                                             <div class="chk-content chk-ficha">Standard
@@ -582,7 +565,7 @@
                                                             </div>
                                                         </li>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    <div class="col-md-6 col-sm-6 col-xs-6-org">
                                                         <li>
                                                             <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
                                                             <div class="chk-content chk-ficha">Running
@@ -751,8 +734,8 @@
         document.querySelector('#NumeroDocumento').value = `23232323`;
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
 
-        //Servicios
-        /*document.querySelector('#NombreServicio').value = "Performance PRO";
+        /*//Servicios
+        document.querySelector('#NombreServicio').value = "Performance PRO";
         document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
         document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
             '\n' +
@@ -1008,7 +991,6 @@
                 },
                 NombreTarifario:{
                     rangelength: [2, 30],
-                    lettersonly: true
                 },
                 txtCantidadPersonas:{
                     digits: true,
