@@ -146,7 +146,6 @@ public class ClienteFitness implements Serializable {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb", nullable = false)
     private List<CompetenciaRunner> competencias;
-
     @Column(nullable = false)
     private String fitElementos;
     @Column(nullable = false)

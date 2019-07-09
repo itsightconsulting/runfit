@@ -195,6 +195,7 @@ RitmosSVYC = (function(){
             const tiempoCompetencia = document.querySelector('#TiempoCompetencia').value.toSeconds();
 
             const metricasBase = BaseCalculo.ofMetricasBase;
+
             const factorDistanciaCompetencia = BaseCalculo.oficialesMedidasKms.filter(v=>{return Number(document.querySelector('#DistanciaCompetencia').value) == v.dist})[0].medida;
             const matriz = [];
 
@@ -216,6 +217,7 @@ RitmosSVYC = (function(){
                         ix1++;
                     }
                 })
+
                 ix1=0;
             })
             return matriz;
@@ -364,7 +366,10 @@ Calc = (function(){
             return {actual: ritmoAerobicoActual, preCompetitivo: ritmoAerobicoPreComp};
         },
         getFactorMejoria: (metricasVelocidades, base)=>{
+
+            debugger
             const ixMV = base.distancia == 10 ? 4 : base.distancia == 15 ? 5 : base.distancia == 21 ? 6 : 7;
+
             return ((1 - (metricasVelocidades[ixMV].indicadores[base.numSem - 1].p.toSeconds() / metricasVelocidades[ixMV].indicadores[0].p.toSeconds())) * 100).toFixed(1);
         }
     }

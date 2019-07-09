@@ -34,8 +34,6 @@ public class Visitante {
     @Column(name = "Correo", unique = true, updatable = false)
     private String correo;
 
-    @Column(name = "Password", nullable = false)
-    private String password;
 
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)

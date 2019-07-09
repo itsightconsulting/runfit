@@ -323,8 +323,7 @@
                                         </div>
                                     </div>
                                 <hr>
-                                <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
-                                </h4>
+                                <h4>MÉTODOS DE PAGO<span class="obligatorio">*</span></h4>
                                 <div class="row">
                                     <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
                                         <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
@@ -1067,7 +1066,7 @@
         document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
-                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                                     <h6>${t.nombre}</h6>
                                 </a>
                             </div>`))});
@@ -1135,7 +1134,7 @@
         }, 500);
         return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                         <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
@@ -1202,6 +1201,9 @@
     }
 
     function mostrarMediosPago(mediosPago, cuentas){
+        if(!mediosPago){
+            return;
+        }
         const ccs = mediosPago.split("|");
         ccs.forEach(id=>{
             tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
@@ -1359,7 +1361,9 @@
                     reconstruirServicios(servicios);
                     reconstruirTarifario(servicios[0].tarifarios);
                     tabService.querySelector('.servicio').click();
-                    $('#Tarifarios .tarifa-svc')[0].click();
+                    if($('#Tarifarios .tarifa-svc')[0]){
+                        $('#Tarifarios .tarifa-svc')[0].click();
+                    }
                 }
 
             }, error: (xhr) => {

@@ -65,14 +65,13 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
             try {
 
                 Visitante obj = new Visitante();
-                BeanUtils.copyProperties(visitanteDTO, obj);
+                String contraseñaEncrypt = encoderPassword(visitanteDTO.getPassword());
 
-                String contraseñaEncrypt = encoderPassword(obj.getPassword());
+                BeanUtils.copyProperties(visitanteDTO, obj, new String[] {"password"});
+
                 String schema = Utilitarios.getRandomString(10);
 
-                obj.setPassword(contraseñaEncrypt);
-
-                SecurityUser securityUser = new SecurityUser(obj.getCorreo(), obj.getPassword(), false);
+                SecurityUser securityUser = new SecurityUser(obj.getCorreo(), contraseñaEncrypt, false);
                 Set<SecurityRole> listSr = new HashSet<>();
                 listSr.add(new SecurityRole("ROLE_GUEST", securityUser));
                 securityUser.setRoles(listSr);
@@ -86,7 +85,7 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
                 Correo correo = correoService.findOne(REGISTRO_VISITANTE_CONFIRMAR_CORREO.get());
 
                 //Envio de correo
-                String correoDestinatario = securityUserRepository.getCorreoById(obj.getId());
+                String correoDestinatario = securityUser.getUsername();
                 String cuerpo = String.format(correo.getBody(), domainName, hshId, b64sc);
 
                 emailService.enviarCorreoInformativo(correo.getAsunto(), correoDestinatario, cuerpo);

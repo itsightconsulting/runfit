@@ -20,6 +20,53 @@
     #FichasDisponibles .chk-ficha{
         margin-top: 10px;
     }
+
+    .checks.metodos-pago li{
+        /*text-align: center;*/
+        width: 25%;
+        margin-bottom: 6px;
+    }
+
+    .metodos-pago img{
+        /*text-align: center;*/
+        margin-left: 25px;
+        width: 64px;
+    }
+
+    @media only screen and (max-width: 760px) {
+        .checks.metodos-pago li{
+            width: 40%;
+            margin-bottom: 12px;
+        }
+    }
+
+    #ModalCCs h4{
+        border-bottom: 1px dotted #d3d3d3;
+        margin: 0px 12px 15px;
+        padding: 10px 0px;
+    }
+
+    #ModalCCs h4>img{
+        height: 26px;
+        float: right;
+        cursor: pointer;
+    }
+
+    .sub-menus span{
+        font-family: Gotham-Black, 'system-ui';
+        cursor: pointer;
+    }
+
+    .sub-menu-selected{
+        border-bottom: 3px solid #A8FA00;
+        padding-bottom: 9px;
+    }
+
+    .btn-tarifario{
+        max-width: 160px !important;
+        min-width: 160px !important;
+    }
+
 </style>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -45,6 +92,7 @@
                         <li><a class="step step-02" data-num-sheet="2" onclick="next_step_cs_rt(2)"><span>CONTACTO</span></a></li>
                         <li><a class="step step-03" data-num-sheet="3" onclick="next_step_cs_rt(3)"><span>SERVICIOS</span></a></li>
                     </ul>
+
 
                     <form id="frm_registro">
                         <div class="tab-content">
@@ -297,7 +345,8 @@
                                 <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                             </div>
                             <div class="tab-pane fade inpts-3" id="service">
-                                <h4>MIS SERVICIOS<span class="obligatorio">*</span></h4>
+                                <h4 class="sub-menus"><span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span><span class="obligatorio" data-op="2">*</span>
+                                <span class="sub-menu" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span></h4>
                                 <div>
                                     <div class="ver-servicios">
                                     </div>
@@ -320,37 +369,51 @@
                                             <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
                                         </div>
                                     </div>
-                                    <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">
-                                        <i class="fa fa-plus-circle fa-fw"></i>
-                                        AGREGAR SERVICIO
-                                    </button>
-                                    <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
-                                    <button rel="tooltip"
-                                            title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
-                                            id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
-                                        <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
-                                    </button>
-                                    <h4 class="sub-title">TARIFARIO
+                                    <div id="btnsServicio">
+                                        <button class="btn btn-default btn-black" type="button" id="btnNuevoServicio">
+                                            <i class="fa fa-plus-circle fa-fw"></i>
+                                            AGREGAR SERVICIO
+                                        </button>
+                                        <input type="file" accept="application/pdf" class="inp-svc-tyc hidden" id="inpCondServicio" name="inpCondServicio">
+                                        <button rel="tooltip"
+                                                title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"
+                                                id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
+                                            <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
+                                        </button>
+                                    </div>
+                                    <h4 class="sub-title st-tarifario">TARIFARIOS
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
-                                        <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
+                                        <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs hidden" style="color: #a8fa00;float:right;"></i>
                                     </h4>
                                     <div class="row">
                                         <div class="col col-md-12 text-center" id="Tarifarios">
                                         </div>
                                     </div>
-                                    <div class="clase-tarifario collapse in" id="contentTarifario">
-                                        <div class="form-group">
-                                            <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
-                                            <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
+                                    <div class="clase-tarifario collapse in hidden" id="contentTarifario">
+                                        <div class="form-group margin-bottom-12">
+                                            <div class="row">
+                                                <div class="col-md-4 col-xs-12">
+                                                    <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
+                                                </div>
+                                                <div class="col-md-8 col-xs-12">
+                                                    <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
-                                            <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
-                                                <option value="Diaria">Diaria</option>
-                                                <option value="Interdiaria">Interdiaria</option>
-                                                <option value="Semanal">Semanal</option>
-                                                <option value="Quincenal">Quincenal</option>
-                                            </select>
+                                        <div class="form-group margin-bottom-12">
+                                            <div class="row">
+                                                <div class="col-md-4 col-xs-12">
+                                                    <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                                </div>
+                                                <div class="col-md-8 col-xs-12">
+                                                    <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
+                                                        <option value="Diaria">Diaria</option>
+                                                        <option value="Interdiaria">Interdiaria</option>
+                                                        <option value="Semanal">Semanal</option>
+                                                        <option value="Quincenal">Quincenal</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
@@ -417,91 +480,105 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 padding-0">
-                                            <div class="col-md-6 padding-0">
-                                                <button class="btn btn-default btn-black" id="btnNuevaTarifa" type="button">
+                                            <div class="col-md-4 padding-0">
+                                                <button class="btn btn-default btn-black btn-tarifario" id="btnNuevaTarifa" type="button">
                                                     <i class="fa fa-plus-circle fa-fw"></i>
-                                                    AGREGAR PAQUETE
+                                                    AGREGAR
                                                 </button>
                                             </div>
-                                            <div class="col-md-6 padding-0">
-                                                <button class="btn btn-default btn-white" id="btnEliminarPaquete" type="button">
+                                            <div class="col-md-4 padding-0">
+                                                <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button" style="width: 160px;">
+                                                    <i class="fa fa-pencil fa-fw"></i> EDITAR
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4 padding-0">
+                                                <button class="btn btn-default btn-white btn-tarifario del-tar-svc" id="btnEliminarPaquete" type="button">
                                                     <i class="fa fa-trash fa-fw"></i>
-                                                    ELIMINAR PAQUETE
+                                                    ELIMINAR
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <h4>INFORMACIÓN DE PAGO<span class="obligatorio">*</span>
-                                        <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Después de seleccionar el método de pago, click en agregar y repita tantas veces como métodos de pago acepte"></i>
-                                        <i data-toggle="collapse" data-target="#contentInfoPago" rel="tooltip" data-original-title="Mostrar/Ocultar" class="fa fa-chevron-up fa-plus-cs " style="color: #a8fa00;float:right;"></i>
+                                    <h4>MÉTODOS DE PAGO
+                                        <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Opcional"></i>
                                     </h4>
-                                    <div class="row">
-                                        <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
-                                            <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                            <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1" style="padding-right: 30px"><img th:src="@{/img/mastercard.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                            <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2" style="padding-right: 30px"><img th:src="@{/img/visa.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                            <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3" style="padding-right: 30px"><img th:src="@{/img/amex.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                            <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                            <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
-                                        </div>
-                                    </div>
-                                    <div class="collapse in" id="contentInfoPago">
+                                    <div class="form-group">
                                         <div class="form-group">
-                                            <ul class="checks">
-                                                <li id="MetodoEfectivo">
-                                                    <div class="chk-content info-pago">En efectivo
-                                                        <input type="radio" value="1" name="MetodoPago" checked="checked"><span class="checkmark info-pago"></span>
+                                            <ul class="checks metodos-pago">
+                                                <li>
+                                                    <img th:src="@{/img/money.png}">
+                                                    <div class="chk-content">En efectivo
+                                                        <input type="checkbox" value="1" name="MetodoPago"><span class="checkmark"></span>
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <div class="chk-content info-pago">Transferencia
-                                                        <input type="radio" value="2" name="MetodoPago"><span class="checkmark info-pago"></span>
+                                                    <img th:src="@{/img/mastercard.png}">
+                                                    <div class="chk-content">Mastercard
+                                                        <input type="checkbox" value="2" name="MetodoPago"><span class="checkmark"></span>
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <div class="chk-content info-pago">Con Tarjeta
-                                                        <input type="radio" value="3" name="MetodoPago"><span class="checkmark info-pago"></span>
+                                                    <img th:src="@{/img/visa.png}">
+                                                    <div class="chk-content">Visa
+                                                        <input type="checkbox" value="3" name="MetodoPago"><span class="checkmark"></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <img th:src="@{/img/amex.png}">
+                                                    <div class="chk-content">Amex
+                                                        <input type="checkbox" value="4" name="MetodoPago"><span class="checkmark"></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <img th:src="@{/img/diners-club.png}">
+                                                    <div class="chk-content">Diners
+                                                        <input type="checkbox" value="5" name="MetodoPago"><span class="checkmark"></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <img th:src="@{/img/discover.png}">
+                                                    <div class="chk-content">Discover
+                                                        <input type="checkbox" value="6" name="MetodoPago"><span class="checkmark"></span>
                                                     </div>
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="form-group info-cuenta hidden">
-                                            <fieldset style="border: 1px solid rgba(141, 141, 141, 0.4);border-radius: 15px; padding: 10px">
-                                                <h4>CUENTA BANCARIA</h4>
-                                                <label for="BancoId">BANCO<span class="obligatorio">*</span></label><select class="form-control mg-bt-10 hidden" name="BancoId" id="BancoId">
-                                            </select>
-                                                <label for="TitularCuenta">TITULAR<span class="obligatorio">*</span></label><input class="form-control mg-bt-10" id="TitularCuenta" name="TitularCuenta" type="text" placeholder="Titular de la cuenta" style="margin-top: 10px">
-                                                <!--<label for="TitularTipoDoc">TIPO DOCUMENTO<span class="obligatorio">*</span></label><select class="form-control mg-bt-10 hidden" id="TitularTipoDoc">
-                                                    <option value="DNI">DNI</option>
-                                                    <option value="CE">CE</option>
-                                                </select>-->
-                                                <!--<label for="TitularNumDoc">Titular</label><input class="form-control mg-bt-10" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad" style="margin-top: 10px">-->
-                                                <label for="NumeroCuentaSoles">NUMERO DE CUENTA EN SOLES<span class="obligatorio">*</span></label><input class="form-control mg-bt-10" id="NumeroCuentaSoles" name="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
-                                                <!--<label for="NumeroCuentaDolares">NUMERO DE CUENTA EN DOLARES</label><input class="form-control mg-bt-10" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">-->
-                                                <label for="InterbancarioSoles">INTERBANCARIO EN SOLES</label><input class="form-control mg-bt-10" id="InterbancarioSoles" name="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
-                                                <!--<label for="InterbancarioDolares">INTERBANCARIO EN DOLARES</label><input class="form-control mg-bt-10" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">-->
-                                            </fieldset>
-                                        </div>
-                                        <div class="form-group info-tarjetas hidden">
-                                            <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}+'?'+${version}" style="width: 64px;"></a>
-                                            <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="2" class="img-cc cc-elegir" th:src="@{/img/visa.png}+'?'+${version}" style="width: 64px;"></a>
-                                            <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="3" class="img-cc cc-elegir" th:src="@{/img/amex.png}+'?'+${version}" style="width: 64px;"></a>
-                                            <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}+'?'+${version}" style="width: 64px;"></a>
-                                            <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}+'?'+${version}"></a>
-                                        </div>
+                                    </div>
+                                    <h4 class="title-icon-ver">CUENTA BANCARIA
+                                        <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentCC" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
+                                        <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                                    </h4>
+                                    <div class="form-group info-cuenta collapse in" id="contentCC">
+                                        <label for="BancoId">BANCO<span class="obligatorio">*</span></label>
+                                        <select class="form-control mg-bt-10 hidden" name="BancoId" id="BancoId">
+                                        </select>
+                                        <label for="TitularCuenta">TITULAR<span class="obligatorio">*</span></label><input class="form-control mg-bt-10" id="TitularCuenta" name="TitularCuenta" type="text" placeholder="Titular de la cuenta" style="margin-top: 10px">
+                                        <label for="TitularTipoDoc">TIPO DOCUMENTO</label>
+                                        <select class="form-control mg-bt-10 hidden" id="TitularTipoDoc">
+                                            <option value="1">DNI</option>
+                                            <option value="2">CE</option>
+                                            <option value="3">RUC</option>
+                                        </select>
+                                        <label for="TitularNumDoc">NÚMERO DOCUMENTO</label><input class="form-control mg-bt-10" id="TitularNumDoc" name="TitularNumDoc" type="text" placeholder="Número de documento de identidad" style="margin-top: 10px">
+                                        <label for="NumeroSoles">NÚMERO DE CUENTA EN SOLES</label><input class="form-control mg-bt-10" id="NumeroSoles" name="NumeroSoles" type="text" placeholder="Número de cuenta soles">
+                                        <label for="NumeroDolares">NÚMERO DE CUENTA EN DÓLARES</label><input class="form-control mg-bt-10" id="NumeroDolares" name="NumeroDolares" type="text" placeholder="Número de cuenta dólares">
+                                        <label for="InterbancarioSoles">INTERBANCARIO EN SOLES</label><input class="form-control mg-bt-10" id="InterbancarioSoles" name="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
+                                        <label for="InterbancarioDolares">INTERBANCARIO EN DÓLARES</label><input class="form-control mg-bt-10" id="InterbancarioDolares" name="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
                                         <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago"><i class="fa fa-fw fa-plus-circle"></i> AGREGAR INFORMACIÓN PAGO</button>
                                     </div>
                                     <hr>
                                         <div class="form-group" id="FichasDisponibles">
-                                            <label>SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></label>
+                                            <label>SELECCIONAR FICHA DE INSCRIPCIÓN
+                                                <span class="obligatorio">*</span>
+                                                <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Puede seleccionar ambas fichas en caso usted trabaje con multiples disciplinas incluído running"></i>
+                                            </label>
                                             <div class="row">
                                                 <ul class="checks">
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <li>
                                                             <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
                                                             <div class="chk-content chk-ficha">Standard
-                                                                <input type="checkbox" value="1" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                                <input type="checkbox" checked="checked" value="1" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
                                                             </div>
                                                         </li>
                                                     </div>
@@ -509,7 +586,7 @@
                                                         <li>
                                                             <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
                                                             <div class="chk-content chk-ficha">Running
-                                                                <input type="checkbox" value="2" name="FichaTrabajo" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                                <input type="checkbox" value="2" name="FichaTrabajo" aria-invalid="false"><span class="checkmark"></span>
                                                             </div>
                                                         </li>
                                                     </div>
@@ -518,7 +595,7 @@
                                         </div>
                                     <div class="form-group">
                                         <label>NOTA
-                                            <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al usuario"></i>
+                                            <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al cliente"></i>
                                         </label>
                                         <textarea class="form-control" id="Nota" name="Nota"></textarea>
                                     </div>
@@ -549,15 +626,10 @@
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
 <script th:src="@{/js/cropper.min.js}+'?'+${version}" type="text/javascript"></script>
 <script>
-
     function sendForm(){
         $regTipo = TipoTrainer.PARTICULAR;
         if(servicios.length === 0){
             $.smallBox({content: "Debe agregar por lo menos un servicio", color: "alert"});
-            return;
-        }
-        if(Array.from($('#MediosPagosAgregados a.cc-elegido:not(".hidden")')).map(e=>e.getAttribute('data-id')).join('|') === ""){
-            $.smallBox({content: "Debe agregar por lo menos un medio de pago desde la pestaña servicios.", color: "alert"});
             return;
         }
         const arrURL = window.location.href.split("/");
@@ -680,7 +752,7 @@
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
 
         //Servicios
-        document.querySelector('#NombreServicio').value = "Performance PRO";
+        /*document.querySelector('#NombreServicio').value = "Performance PRO";
         document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
         document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
             '\n' +
@@ -708,18 +780,18 @@
         document.getElementById('txtCantidadMeses').value = "4";
         document.getElementById('txtCantidadSesiones').value = "14";
         document.getElementById('PrecioPaquete').value = "800.00";
-        document.getElementById('btnNuevaTarifa').click();
+        document.getElementById('btnNuevaTarifa').click();*/
 
         //Información de pago
-        document.querySelectorAll('.info-pago')[1].click();
-        document.getElementById('btnNuevaInfoPago').click();
-        setTimeout(() => {
+       // document.querySelectorAll('.info-pago')[1].click();
+        //document.getElementById('btnNuevaInfoPago').click();
+        /*setTimeout(() => {
             document.querySelectorAll('.info-pago')[2].click();
             document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
-            document.getElementById('NumeroCuentaSoles').value = "194-91022548-0-66";
+            document.getElementById('NumeroSoles').value = "194-91022548-0-66";
             document.getElementById('InterbancarioSoles').value = "00219419102254806693";
             document.getElementById('btnNuevaInfoPago').click();
-        }, 1000);
+        }, 1000);*/
 
         document.querySelector('#inpTermCond').checked = true;
     }
@@ -747,11 +819,11 @@
         obj.resultados = getValuesByClass('inp-resultado');
         obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
         obj.fichaClienteIds = getValuesConcatInpCheckbox('FichaTrabajo');
+        obj.mediosPago = getValuesConcatInpCheckbox('MetodoPago');
         const rdmNum = Math.floor(Math.random() * 100);
         const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
         obj.servicios = servicios;
         obj.cuentas = ccBancarias;
-        obj.mediosPago = Array.from($('#MediosPagosAgregados a.cc-elegido:not(".hidden")')).map(e=>e.getAttribute('data-id')).join('|');
         if(flag_form_populate){
             obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
         }else{
@@ -785,7 +857,7 @@
             if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
                 delete e.infoAdicional;
             }
-        })
+        });
 
         return obj;
     }
@@ -959,11 +1031,26 @@
                     rangelength: [6, 60],
                     lettersonly: true,
                 },
-                NumeroCuentaSoles:{
+                TitularNumDoc:{
+                    digits: true,
+                    rangelength: [8, 13],
+                    customnumdoc: function(){
+                        return $('#TitularTipoDoc').val();
+                    }
+                },
+                NumeroSoles:{
                     pattern: "[0-9]{3,}[0-9 -]*$",
                     rangelength: [10, 30]
                 },
                 InterbancarioSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                NumeroDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioDolares:{
                     pattern: "[0-9]{3,}[0-9 -]*$",
                     rangelength: [10, 30]
                 },
@@ -1036,7 +1123,7 @@
                         return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
                     }
                 },
-                NumeroCuentaSoles:{
+                NumeroSoles:{
                     pattern: "Solo se permiten números y como separadores espacio y guión",
                 },
                 InterbancarioSoles:{

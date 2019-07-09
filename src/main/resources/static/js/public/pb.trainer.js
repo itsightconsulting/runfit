@@ -103,6 +103,8 @@ function bodyFocusOutListenerOwn(e) {
 function instanceInitTab(){
     document.querySelector('.step-0'+initPageActive).classList.add('active');
     document.querySelector('.inpts-'+initPageActive).classList.add('active');
+    //Si este metodo se ejecuta primero que los demás en el evento init, se interrumpe el proceso y el jquery validate no funciona
+    document.querySelector('.step-0'+initPageActive).click();
 }
 
 function agregarServicio(){
@@ -156,43 +158,14 @@ function agregarTarifaAServicio(){
 }
 
 function agregarNuevaInfoPago(){
-    const checkOpcion = document.querySelector('input[name="MetodoPago"]:checked');
-    if(checkOpcion != null){
-        const v = Number(checkOpcion.value);
-        const obj = {};
-        if(v === 1){
-            obj.infoPagoId = 1;
-            obj.detalle = "Efectivo";
-            checkExistsInfoPago(obj);
-            document.getElementById('MetodoEfectivo').classList.add('hidden');
-        }
-        if(v === 2){
-            const c = getCuentaBancaria();
-            if(c.valid){
-                ccBancarias.push(c);
-                const mePagos = document.getElementById('MediosPagosAgregados');
-                cleanCuentaBanCampos();
-                $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
-                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.id}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.id}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
-            }else{
-                $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 3500})
-            }
-        }
-        if(v === 3){
-            const ccs = Array.from(document.querySelectorAll('.cc-elegir:not(.img-cc)')).map(e=>e.getAttribute('data-id')).join('|');
-            if(ccs.length>0){
-                obj.infoPagoId = 3;
-                obj.detalle = ccs;
-                checkExistsInfoPago(obj);
-                $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
-            }else{
-                $.smallBox({color: 'alert',content: '<i>Aún no ha seleccionado ninguna tarjeta</i>'});
-            }
-        }
-    }else{
-        $.smallBox({color: 'alert',content: '<i>Primero debe seleccionar un tipo de medio de pago</i>'});
+    const c = getCuentaBancaria();
+    if(c.valid){
+        ccBancarias.push(c);
+        cleanCuentaBanCampos();
+        $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
+    } else{
+        $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 3500})
     }
-    showInfoPagosSelected();
 }
 
 function eliminarPaqueteDeServicio(){
@@ -241,6 +214,11 @@ function clickListenerTabService(e) {
         abuelo.querySelectorAll('.edit').forEach(e=>e.classList.add('hidden'));
         padre.querySelector('.edit').classList.remove('hidden');
         mostrarDetalleTarifaSvc(Number(tarifaId));
+        //Agregando el data id
+        const butonEdit = document.querySelector('button.edit-tar-svc');
+        const butonDel = document.querySelector('button.del-tar-svc');
+        butonEdit.setAttribute('data-id', tarifaId);
+        butonDel.setAttribute('data-id', tarifaId);
     } else if(clases.contains('edit-svc')){
         const svcId = Number(input.getAttribute('data-id'));
         editarServicio(svcId);
@@ -334,6 +312,34 @@ function bodyClickEventListener(e){
 
     if(clases.contains('ver-tyc')){
         input.nextElementSibling.checked = !input.nextElementSibling.checked;
+    }
+
+    if(clases.contains('sub-menu')){
+        if(!servicios.length){
+            $.smallBox({timeout: 9000, color: 'alert', content: '<span><i class="fa fa-exclamation-circle fa-fw"></i>Los tarifarios van asociados a los servicios, es por ello que primero debe registrar un servicio y después volver a este menú</span>'})
+            return;
+        }
+        const subTitleTarifario = document.querySelector('.st-tarifario>i.fa-plus-cs');
+        const btnsServicio = document.querySelector('#btnsServicio');
+        const svcBasics = document.querySelector('#SvcCamposBasicos');
+        const tarBasics = document.querySelector('#contentTarifario');
+        const svcEdit = document.querySelector('.svc-focus').parentElement.querySelector('a.edit');
+        const opc = Number(input.getAttribute('data-op'));
+        document.querySelector('.sub-menu-selected').classList.remove('sub-menu-selected');
+        input.classList.add('sub-menu-selected');
+        if(opc === 1){
+            svcBasics.classList.remove('hidden');
+            btnsServicio.classList.remove('hidden');
+            svcEdit.classList.remove('hidden');
+            tarBasics.classList.add('hidden');
+            subTitleTarifario.classList.add('hidden');
+        }else{
+            svcBasics.classList.add('hidden');
+            btnsServicio.classList.add('hidden');
+            svcEdit.classList.add('hidden');
+            tarBasics.classList.remove('hidden');
+            subTitleTarifario.classList.remove('hidden');
+        }
     }
 }
 
@@ -469,7 +475,6 @@ function uploadFotoPerfil(d){
 
 
 function init(){
-    instanceInitTab();
     nextTabButton();
     mainSeeders();
     modalEventos();
@@ -479,6 +484,8 @@ function init(){
     instanceCropper();
     doMultiselectCheckBox();
     if(flag_form_populate){populateForm();}
+    $('span[rel="tooltip"]').tooltip();
+    instanceInitTab();
 }
 
 function mainSeeders(){
@@ -554,6 +561,8 @@ function modalEventos(){
             });
         }
     })
+
+    setHeightForModals(['myModalCC']);
 }
 
 function populateBancos(){
@@ -566,20 +575,6 @@ function getAsStringIncluyeServices(){
 
 function showInitTab(numTab){
     next_step_cs_rt(Number(numTab));
-}
-
-function showInfoPagosSelected(){
-    tabService.querySelectorAll('.cc-elegido').forEach(e=>e.classList.add('hidden'));
-    if(metodosPago.find(e=>e.infoPagoId===1)){
-        tabService.querySelector('.cc-elegido[data-id="0"]').classList.remove('hidden');
-    }
-
-    if(metodosPago.find(e=>e.infoPagoId===3)){
-        const ccs = metodosPago.find(e => e.infoPagoId === 3).detalle.split("|");
-        ccs.forEach(id=>{
-            tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
-        })
-    }
 }
 
 function checkExistsInfoPago(o){
@@ -602,9 +597,17 @@ function cleanPaqueteCampos(){
 
 function cleanCuentaBanCampos(){
     document.querySelector('#TitularCuenta').value = "";
-    document.querySelector('#NumeroCuentaSoles').value = "";
+    const tdoc = document.querySelector('#TitularTipoDoc');
+    tdoc.selectedIndex = 0;
+    $(tdoc).multiselect('rebuild');
+    document.querySelector('#TitularNumDoc').value = "";
+    document.querySelector('#NumeroSoles').value = "";
     document.querySelector('#InterbancarioSoles').value = "";
-    document.querySelector('#BancoId').selectedIndex = 0;
+    document.querySelector('#NumeroDolares').value = "";
+    document.querySelector('#InterbancarioDolares').value = "";
+    const bancoId = document.querySelector('#BancoId');
+    bancoId.selectedIndex = 0;
+    $(bancoId).multiselect('rebuild');
 }
 
 function abrirModalTermCond(){
@@ -666,13 +669,28 @@ function addServiceAndcleanCampos(svc){
 
 function getCuentaBancaria(){
     const c = new Object();
+    const ccBank = document.querySelector('#contentCC');
+    const inputs = Array.from(ccBank.querySelectorAll('input')).concat(Array.from(ccBank.querySelectorAll('select'))).filter(ele=>ele.name);
     c.titular = document.querySelector('#TitularCuenta').value.trim();
-    c.numeroSoles = document.querySelector('#NumeroCuentaSoles').value.trim();
+    c.titularTipoDoc = document.querySelector('#TitularTipoDoc').value;
+    c.titularNumDoc = document.querySelector('#TitularNumDoc').value;
+    c.numeroSoles = document.querySelector('#NumeroSoles').value.trim();
+    c.numeroDolares = document.querySelector('#NumeroDolares').value;
     c.interbancarioSoles = document.querySelector('#InterbancarioSoles').value.trim();
+    c.interbancarioDolares = document.querySelector('#InterbancarioDolares').value;
     c.bancoId = document.querySelector('#BancoId').value.trim();
-    c.valid = false;
-    if(c.titular !== "" && (c.numeroSoles !== "") && (c.interbancarioSoles !== "") && c.bancoId !== ""){
-        c.valid = true;
+    c.valid = true;
+    if(c.titular && c.titularNumDoc && (c.numeroSoles || c.numeroDolares)){
+        inputs.forEach(e=>{
+            if(!$(e).valid()){
+                c.valid = false;
+            }
+        });
+    }else{
+        c.valid = false;
+    }
+
+    if(c.valid){
         c.id = ++accCuentaId;
     }
     return c;
@@ -917,19 +935,28 @@ function confirmarEliminarServicicio(svcId){
     setTimeout(()=>{$.smallBox({content: "<i class='fa fa-fw fa-check-circle'></i>Se ha eliminado satisfactoriamente"});},200)
 }
 
-function eliminarCuentaBanco(){
+function eliminarCuentaBanco(ccId){
+    const methodClick = `onclick="confirmarEliminarCB(${ccId})"`;
+
     $.smallBox({
         color: "rgb(204, 77, 77)",
-        content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>¿Estás seguro de eliminar esta cuenta bancaria?</em><br><br>" +
-            "<div class='text-center'><button type='button' onclick='confirmarEliminarCB();' class='btn btn-danger' style='margin: 10px'>SI</button><button type='button' class='btn btn-primary' style='margin: 10px'>NO</button></div>" ,
+        content: "<em>¿Estás seguro de eliminar esta cuenta bancaria?</em><br><br>" +
+            "<div class='text-center'><button type='button'"+methodClick+" class='btn btn-danger' style='margin: 10px'>SI</button><button type='button' class='btn btn-primary' style='margin: 10px'>NO</button></div>" ,
         timeout: 12000});
 }
 
-function confirmarEliminarCB(){
-    const cbId = Number(document.getElementById('ModalCuentaBancoId').value);
+function confirmarEliminarCB(ccId){
+    const cbId = ccId;
     ccBancarias = ccBancarias.filter(c => c.id !== cbId);
-    tabService.querySelector(`.cc-bancaria[data-id="${cbId}"]`).parentElement.remove();
-    $('#myModalCC').modal('hide');
+    const myModalCC = $('#myModalCC')[0];
+    myModalCC.querySelector(`.cuenta[data-id="${ccId}"]`).remove();
+    //Modificando números de orden cuenta
+    myModalCC.querySelectorAll('.cuenta-num').forEach((e, ix)=>{
+        e.textContent = ++ix+"";
+    });
+    setTimeout(()=>{
+        $.smallBox({content: 'La cuenta ha sido removida con éxito'});
+    }, 150)
 }
 
 function mostrarDetalleTarifaSvc(tarifaId){
@@ -988,7 +1015,7 @@ function putTarifario(id, nombre){
     }, 500);
     return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png" style="width:64px"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                         <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);">

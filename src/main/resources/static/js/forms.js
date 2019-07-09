@@ -679,3 +679,110 @@ function getIdiomas(){
         idiomas.appendChild(htmlStringToElement(`<option value="${e.cd}">${e.nombre}</option>`));
     })
 }
+
+function mostrarCuentasBancarias(cuentas){
+    const modalBody = document.getElementById('ModalCCs');
+    modalBody.innerHTML = "";
+    if(!cuentas.length){
+        modalBody.innerHTML = "<div class='alert alert-info'>Aún no ha agregado ninguna cuenta bancaria</div>";
+        return;
+    }
+    const noEdit = cuentas[0].noEdit ? true : false;
+    cuentas.forEach((c, ix)=>{
+        c.ix = ix;
+        modalBody.appendChild(htmlStringToElement(setCuentaBancariaHtmlRaw(c, noEdit)));
+    })
+}
+
+function setCuentaBancariaHtmlRaw(cc, noEdit){
+    return `<div class="col-sm-12 cuenta" data-id="${cc.id}">
+            <h4>Cuenta <span class="cuenta-num">${++cc.ix}</span>
+                ${!noEdit ? `<img src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id})"/>`:''}
+            </h4>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Banco
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${banks.find(b=>b.id===Number(cc.bancoId)).nombre}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Titular
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${cc.titular}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Tipo Documento
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${_tpdocs.find(b=>b.id===Number(cc.titularTipoDoc)).nombre}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Documento
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${cc.titularNumDoc}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Cuenta Soles
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${cc.numeroSoles}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Cuenta Dólares
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${cc.numeroDolares}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Interbancario Soles
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${cc.interbancarioSoles}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Interbancario Dólares
+                    </label>
+                    <input class="form-control" readonly="readonly" value="${cc.interbancarioDolares}">
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function verCuentasBancarias(){
+    $('#myModalCC').modal();
+    mostrarCuentasBancarias(ccBancarias);
+}
+
+function setHeightForModals(arrModalIds){
+    arrModalIds.forEach(e=>{
+        //Modals
+        const mdlCcs = document.getElementById(e);
+        const body = mdlCcs.querySelector('.modal-body');
+        body.style.maxHeight = ($(window).height()-220)+"px";
+        body.style.overflowY ="auto";
+        if($(window).width()<720){
+            mdlCcs.firstElementChild.style.width = ($(window).width()-15)+"px";
+        } else{
+            mdlCcs.firstElementChild.style.width = "720px";
+        }
+    })
+}

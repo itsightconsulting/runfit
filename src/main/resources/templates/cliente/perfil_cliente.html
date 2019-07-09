@@ -406,7 +406,7 @@
                                                 <label >¿En que forma estás?<br/>¡Dinos la verdad eh!</label>
                                             </div>
                                             <div class="rango bg-slide">
-                                                <input id="FormaInicial" name="FormaInicial" type="range" value="0" data-aka="Seleccione que tan en forma se encuentra" disabled="true"/><img class="desc-range" th:src="@{/img/public/slider_text.png}+'?'+${version}"/>
+                                                <input id="FormaInicial" name="FormaInicial" type="range" value="0" data-aka="Seleccione que tan en forma se encuentra" disabled="true"/><img class="desc-range" th:src="@{/img/slider_text_in.png}+'?'+${version}"/>
                                             </div>
                                         </li>
                                         <li>
@@ -1121,7 +1121,7 @@
         const imc = data.imc;
         const peso= data.peso;
         const talla = data.talla;
-    
+
         //Condicion Anatomica
         const condicionAnatomica = JSON.parse(data.condicionAnatomica);
         const flagPadeceDolor =  condicionAnatomica.flagPadeceDolor  ? "Sí" : "No";

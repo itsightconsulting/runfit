@@ -5,8 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class Salud implements Serializable
- {
+public class Salud implements Serializable {
 
     private Boolean flagEnfermedad;
     private Boolean flagFumador;
@@ -32,4 +31,5 @@ public class Salud implements Serializable
     private String contactosEmergencia;
     private String historialDeportivoAnt;
     private String historialDeportivoAct;
+
 }

@@ -2,33 +2,15 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="myModalCC" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background: #a8fa00;color: white">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-15x fa-close"></i></button>
-                    <h3 class="modal-title">Cuenta Bancaria</h3>
+                <div class="modal-header" style="background: #000000;color: white">
+                    <h4 class="modal-title">Cuentas Bancarias</h4>
                 </div>
                 <div class="modal-body" style="background: white;height: 34%;overflow-y: auto">
-                    <div class="col-sm-12" id="CuentaBancariaUnica">
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Banco:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-nom-banco"></span></div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Titular de la cuenta:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-titular"></span></div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Cuenta soles: </strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cs"></span></div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-md-5 col-xs-12"><strong>Interbancario soles:</strong></div>
-                            <div class="col col-md-7 col-xs-12"><span class="cc-cis"></span></div>
-                        </div>
-                        <input id="ModalCuentaBancoId" type="hidden"/>
+                    <div class="row" id="ModalCCs">
                     </div>
                 </div>
-                <div class="modal-footer text-center" style="background: #a8fa00;">
-                    <i class="fa fa-fw fa-2x fa-trash-o" style="cursor:pointer;" onclick="eliminarCuentaBanco()" title="Eliminar cuenta bancaria"></i>
+                <div class="modal-footer text-center" style="background: #000000;">
+                    <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><i class="fa fa-fw fa-close" title="Cerrar"></i></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

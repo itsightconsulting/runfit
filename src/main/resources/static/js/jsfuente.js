@@ -143,6 +143,8 @@ const _ubigeoPeLi = [{ub:"150101", nom:"Lima"}, {ub:"150102", nom:"Ancon"}, {ub:
 const regexMail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const banks = [
     {id: 1,nombre:	"Banco de Comercio"}, {id: 2,nombre:	"Banco de Crédito del Perú(BCP)"}, {id: 3,nombre:	"Banco Interamericano de Finanzas (BanBif)"}, {id: 4,nombre:	"Banco Pichincha"}, {id: 5,nombre:	"BBVA Continental"}, {id: 6,nombre:	"Citibank Perú"}, {id: 7,nombre:	"Interbank"}, {id: 8,nombre:	"Mi Banco"}, {id: 9,nombre:	"Scotiabank Perú"}, {id: 10,nombre:	"Banco GNB Perú"}, {id: 11,nombre:	"Banco Falabella"}, {id: 12,nombre:	"Banco Ripley"}, {id: 13,nombre:	"Banco Santander Perú"}, {id: 14,nombre:	"Banco Azteca"}, {id: 15,nombre:	"Banco Cencosud"}, {id: 16,nombre:	"ICBC PERU BANK"}];
+const _tpdocs = [
+    {id: 1,nombre:	"DNI"}, {id: 2,nombre:	"CE"}, {id: 3,nombre:	"RUC"}];
 
 function limpiarMainForm() {
     $('#frm_registro').trigger("reset");

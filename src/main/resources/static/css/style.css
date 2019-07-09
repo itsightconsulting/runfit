@@ -1490,3 +1490,7 @@ section #moreFav {
     fill: #ddf515 !important;
   }
 
+.svg-wrap{
+  cursor: pointer;
+}
+
