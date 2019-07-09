@@ -470,7 +470,7 @@ footer li a span.fa{
 }
 
 @media only screen and (max-width: 400px) {
-  .col-xs-6 {
+  footer .col-xs-6 {
     display: block;
     width: 100%;
     text-align: center;
@@ -930,6 +930,27 @@ h1 {
   border-bottom: 4px solid #a8fa00
 }
 
+<<<<<<< HEAD
+.trainers-form .tab-contenido{
+  display: none;
+}
+
+ul.tabs {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+  width: 100%;
+}
+.trainers-form .tab-contenido{
+  display: none;
+}
+
+.trainers-form .tab-contenido.current{
+  display: inherit;
+}
+
+=======
+>>>>>>> 7a9cab2ee7a29b3d152d8b6aeca4857f8bb2361d
 .trainers-form ul.counter {
   list-style: none
 }
@@ -1425,6 +1446,9 @@ h1 {
   .trainers-form input.price {
     width: 90px !important
   }
+  .tab-link.col-xs-6 {
+    padding: 0;
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -1463,6 +1487,12 @@ h1 {
   .trainers-form ul.nav-tabs {
     margin-top: 70px;
     text-align: center;
+  }
+  .tabs .tab-link .btn-black {
+    min-width: auto;
+    font-size: 13px;
+    padding: 15px;
+    width: 100%;
   }
   .trainers-form ul.nav-tabs li {
     margin-right: 12px;
@@ -2827,8 +2857,8 @@ img.tibial {
   .steps .step {
     right: 0;
     margin: 0 auto;
-    width: 110px;
-    height: 110px
+    width: 108px;
+    height: 108px
   }
   .steps .step .curve {
     left: 33px;
