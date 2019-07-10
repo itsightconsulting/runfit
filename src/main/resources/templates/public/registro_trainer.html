@@ -100,12 +100,9 @@
                                     <input class="form-control" name="Especialidad" id="Especialidad" data-aka="Especialidad" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                    <select class="form-control hidden" id="DisciplinaId" name="DisciplinaId"
-                                            data-aka="Deporte o actividades"
-                                            multiple="multiple" style=" height:80px !important;">
-                                        <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
-                                    </select>
+                                    <label>DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
+                                    <input class="form-control mg-bt-10 inp-disciplina" id="Disciplinas" name="Disciplinas" type="text" placeholder="Ej: Running"/>
+                                    <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-disciplina', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                 </div>
                                 <div class="form-group">
                                     <label>ACERCA DE MÍ<span class="obligatorio">*</span></label>
@@ -696,7 +693,6 @@
         document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
 
         document.querySelector('input[name="FormaTrabajo"]').checked = true;
-        Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
 
         //Estudios
         const inpEst = document.querySelector('.inp-estudio');
@@ -782,7 +778,7 @@
     function generateBody(){
         const obj = getFormData($('#frm_registro'));
         obj.sexo = Number($('input[name="Sexo"]:checked').val());
-        obj.disciplinaIds = $('#DisciplinaId').val().join('|');
+        /*obj.disciplinasIds = $('#DisciplinaId').val().join('|');*/
 
         //Ubigeo
         obj.paisId = 604;
@@ -794,6 +790,7 @@
         obj.correo = document.getElementById('Correo').value;
         obj.username = document.getElementById('Username').value;
         obj.password = document.getElementById('Password').value;
+        obj.disciplinas = getValuesByClass('inp-disciplina');
         obj.idiomas = $('#Idiomas').val().join('|');
         obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
         obj.especialidades = getValuesByClass('inp-esp-domino');
@@ -920,6 +917,10 @@
                 Resultados: {
                     required: true,
                     rangelength: [20, 90]
+                },
+                Disciplinas:{
+                    required: true,
+                    rangelength: [3, 80]
                 },
                 Horario: {
                     rangelength: [8, 150]

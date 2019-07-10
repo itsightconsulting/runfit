@@ -222,7 +222,6 @@ public class PublicoController extends BaseController {
             return new ModelAndView(ViewConstant.MAIN_INF_N);
         }
 
-        model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
@@ -257,7 +256,6 @@ public class PublicoController extends BaseController {
             return new ModelAndView(ViewConstant.MAIN_INF_N);
         }
 
-        model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_EMPRESA);

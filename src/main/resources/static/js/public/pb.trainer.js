@@ -189,7 +189,7 @@ function clickListenerTabService(e) {
         const id = input.getAttribute('data-id');
         selServicioId = Number(id);
         const svcFocus = tabService.querySelector('.svc-focus');
-        if(id === svcFocus.getAttribute('data-id')){
+        if(id === svcFocus.getAttribute('data-id') && servicios.length>1){
             return;
         }
         svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";

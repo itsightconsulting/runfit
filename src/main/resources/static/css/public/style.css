@@ -968,7 +968,6 @@ h1 {
   border-bottom: 4px solid #a8fa00
 }
 
-<<<<<<< HEAD
 .trainers-form .tab-contenido{
   display: none;
 }
@@ -987,8 +986,6 @@ ul.tabs {
   display: inherit;
 }
 
-=======
->>>>>>> 7a9cab2ee7a29b3d152d8b6aeca4857f8bb2361d
 .trainers-form ul.counter {
   list-style: none
 }
@@ -3986,4 +3983,9 @@ section.trainers-form {
 
 body.modal-open {
   overflow: hidden;
+}
+
+.check-success{
+  height: 50px;
+  width: 50px
 }

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
-import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
-import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +16,6 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -140,14 +137,6 @@ public class Trainer extends AuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainer")
     private List<AudioTrainer> lstAudioTrainer;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "TrainerDisciplina",joinColumns = {
-        @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
-    }, inverseJoinColumns = {
-        @JoinColumn(name = "DisciplinaId")
-    })
-    private List<Disciplina> disciplinas = new ArrayList<>();
-
     @Transient
     private String password;
 
@@ -225,15 +214,5 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Override
     public int hashCode() {
         return 31;
-    }
-
-    public void addDisciplina(Disciplina disciplina) {
-        disciplinas.add(disciplina);
-        disciplina.getTrainers().add(this);
-    }
-
-    public void removeDisciplina(Disciplina disciplina) {
-        disciplinas.remove(disciplina);
-        disciplina.getTrainers().remove(this);
     }
 }

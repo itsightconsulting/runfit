@@ -316,8 +316,6 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
         refUpload.setTrainerId(Integer.parseInt(trainerId));
-        //Registrando las disciplinas
-        disciplinaService.guardarMultipleTrainerDisciplina(trainer.getId(), trainerFicha.getDisciplinaIds());
         Correo correo;
         String cuerpo;
         //Obtener cuerpo del correo para la plataforma

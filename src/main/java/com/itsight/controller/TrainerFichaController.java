@@ -111,7 +111,6 @@ public class TrainerFichaController extends BaseController {
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
         model.addAttribute("hshTrainerId", hshTrainerId);
-        model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
         return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
     }
 
@@ -162,7 +161,6 @@ public class TrainerFichaController extends BaseController {
         } else {
             Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
             if(flag == null){
-                model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
                 return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
             }//Si entra acá es porque ya ha sido observado, nunca entrará aca cuando haya sido aprobado debido a la primera
             //validación antes de esta
@@ -187,7 +185,6 @@ public class TrainerFichaController extends BaseController {
         } else {
             Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
             if(flag == null){
-                model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
                 model.addAttribute("hshTrainerId", Parseador.getEncodeHash32Id("rf-aprobacion", trainerId));
                 return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER_EMP);
             }//Si entra acá es porque ya ha sido observado, nunca entrará aca cuando haya sido aprobado debido a la primera
@@ -340,7 +337,6 @@ public class TrainerFichaController extends BaseController {
             String hshVerEmpTrainerId = Parseador.getEncodeHash32Id("rf-aprobacion", empTraId);
             model.addAttribute("hshVerEmpTrainerId", hshVerEmpTrainerId);
             model.addAttribute("hshEmpTrainerId", nuevoHshEmpTraId);
-            model.addAttribute("disciplinas", disciplinaService.findAll());
             model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
             return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
         }
