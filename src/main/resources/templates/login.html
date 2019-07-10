@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#servletContext.getAttribute('version')}">
+      th:with="version = ${#servletContext.getAttribute('version')}" xmlns:javascript="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="_csrf" th:attr="content=${_csrf.token}"/>
     <!-- default header name is X-CSRF-TOKEN -->
@@ -36,7 +36,7 @@
             display: none;
         }
         .help-block{
-            color: #E54C4B;
+            color: #b1afaf;
             font-size: 0.85em;
             padding: 0 0 10px 30px;
             display: block;
@@ -196,6 +196,12 @@
 
             // Messages for form validation
             messages: {
+                username : {
+                    required: "Por favor ingresa tu nombre de usuario"
+                },
+                password: {
+                    required: "Por favor ingresa tu password"
+                }
             },
 
             // Do not change code below

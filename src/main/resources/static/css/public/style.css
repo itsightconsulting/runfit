@@ -71,7 +71,7 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 1
+  z-index: -1
 }
 
 .login .avatar {
@@ -108,6 +108,7 @@
   padding-left: 35px;
   position: relative;
   margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .login .form-group span {
@@ -131,7 +132,7 @@
   width: 100%;
   padding: 6px 15px;
   border-bottom: 1px solid;
-  margin-bottom: 15px
+  margin-bottom: 10px
 }
 
 .login .login-sesion-alt .form-group  input ,
@@ -143,14 +144,28 @@
   width: 90%;
   padding: 6px 15px;
   border-bottom: 1px solid;
-  margin-bottom: 15px
+  margin-bottom: 5px;
+}
+
+
+.login .login-sesion .form-group  input ,
+.login .login-register .form-group  input
+{
+  color: #a8fa00;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  padding: 6px 15px;
+  border-bottom: 1px solid;
+  margin-bottom: 5px;
 }
 
 .login .form-group a {
   color: #fff;
   font-size: 12px;
   margin-bottom: 25px;
-  display: block
+  display: block;
+  text-align: left;
 }
 
 .login .actions p {
@@ -205,7 +220,6 @@
   padding: 12px;
   font-size: 12px;
   text-align: center;
-  width: 100%;
   margin-bottom: 15px;
   border: 0;
   cursor:pointer;
@@ -432,7 +446,7 @@
     max-height: 40px
   }
   .login .form-group input {
-    border-bottom: none;
+    border-bottom: 1px solid;
     padding-left: 0;
   }
   .login .form-group label {

@@ -33,7 +33,7 @@ import static com.itsight.util.Utilitarios.encoderPassword;
 
 
 @Service
-@Transactional
+@Transactional(noRollbackFor = Exception.class)
 public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> implements VisitanteService {
 
     private static final Logger logger = LogManager.getLogger(VisitanteServiceImpl.class);
