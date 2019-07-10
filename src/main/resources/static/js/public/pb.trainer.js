@@ -172,10 +172,7 @@ function eliminarPaqueteDeServicio(){
     const t = tabService.querySelector('#Tarifarios .tarifa-svc-pick');
     if(t){
         const tId = Number(t.getAttribute('data-id'));
-        const s = servicios.find(s=>s.id===selServicioId);
-        s.tarifarios = s.tarifarios.filter(t=>t.id!==tId);
-        cleanPaqueteCampos();
-        t.remove();
+        eliminarTarifa(tId);
     }else{
         $.smallBox({
             color: 'alert',
@@ -192,9 +189,17 @@ function clickListenerTabService(e) {
         const id = input.getAttribute('data-id');
         selServicioId = Number(id);
         const svcFocus = tabService.querySelector('.svc-focus');
+        if(id === svcFocus.getAttribute('data-id')){
+            return;
+        }
         svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
         clases.add('svc-focus');
         mostrarDetalleServicio(selServicioId);
+        //No mostramos los iconos de eliminar y editar
+        const subTab = Number(document.querySelector('.sub-menu-selected').getAttribute('data-op'));
+        if(subTab === 2){
+            return;
+        }
         const notHidden = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
         if(notHidden){notHidden.classList.add('hidden')}
         tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
@@ -210,10 +215,15 @@ function clickListenerTabService(e) {
         const svcFocus = tabService.querySelector('.tarifa-svc-pick');
         svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
         padre.classList.add('tarifa-svc-pick');
-        const abuelo = padre.parentElement;
+        /*const abuelo = padre.parentElement;
         abuelo.querySelectorAll('.edit').forEach(e=>e.classList.add('hidden'));
-        padre.querySelector('.edit').classList.remove('hidden');
+        padre.querySelector('.edit').classList.remove('hidden');*/
         mostrarDetalleTarifaSvc(Number(tarifaId));
+        //Agregando el data id
+        const butonEdit = document.querySelector('button.edit-tar-svc');
+        const butonDel = document.querySelector('button.del-tar-svc');
+        butonEdit.setAttribute('data-id', tarifaId);
+        butonDel.setAttribute('data-id', tarifaId);
     } else if(clases.contains('edit-svc')){
         const svcId = Number(input.getAttribute('data-id'));
         editarServicio(svcId);
@@ -223,10 +233,10 @@ function clickListenerTabService(e) {
     } else if(clases.contains('edit-tar-svc')){
         const tId = Number(input.getAttribute('data-id'));
         editarTarifa(tId);
-    } else if(clases.contains('del-tar-svc')){
+    } /*else if(clases.contains('del-tar-svc')){
         const tId = Number(input.getAttribute('data-id'));
         eliminarTarifa(tId);
-    }else if(clases.contains('fa-plus-cs')){
+    }*/ else if(clases.contains('fa-plus-cs')){
         clases.toggle('fa-chevron-up');
         clases.toggle('fa-chevron-down');
     } else if(clases.contains('info-pago')){
@@ -319,21 +329,27 @@ function bodyClickEventListener(e){
         const svcBasics = document.querySelector('#SvcCamposBasicos');
         const tarBasics = document.querySelector('#contentTarifario');
         const svcEdit = document.querySelector('.svc-focus').parentElement.querySelector('a.edit');
+        const sbTarifario = document.querySelector('.st-tarifario');
+        const tarifarios = document.getElementById('Tarifarios');
         const opc = Number(input.getAttribute('data-op'));
         document.querySelector('.sub-menu-selected').classList.remove('sub-menu-selected');
         input.classList.add('sub-menu-selected');
         if(opc === 1){
-            svcBasics.classList.remove('hidden');
+            $(svcBasics).hide().fadeIn().removeClass('hidden');
             btnsServicio.classList.remove('hidden');
             svcEdit.classList.remove('hidden');
             tarBasics.classList.add('hidden');
             subTitleTarifario.classList.add('hidden');
-        }else{
+            sbTarifario.classList.add('hidden');
+            tarifarios.classList.add('hidden');
+        } else {
             svcBasics.classList.add('hidden');
             btnsServicio.classList.add('hidden');
             svcEdit.classList.add('hidden');
             tarBasics.classList.remove('hidden');
             subTitleTarifario.classList.remove('hidden');
+            sbTarifario.classList.remove('hidden');
+            tarifarios.classList.remove('hidden');
         }
     }
 }
@@ -557,20 +573,7 @@ function modalEventos(){
         }
     })
 
-    setHeightForModals();
-}
-
-function setHeightForModals(){
-    //Modal Cuentas Bancarias
-    const mdlCcs = document.getElementById('myModalCC');
-    const body = mdlCcs.querySelector('#ModalCCs');
-    body.style.maxHeight = ($(window).height()-220)+"px";
-    body.style.overflowY ="auto";
-    if($(window).width()<720){
-        mdlCcs.firstElementChild.style.width = ($(window).width()-15)+"px";
-    }else{
-        mdlCcs.firstElementChild.style.width = "720px";
-    }
+    setHeightForModals(['myModalCC']);
 }
 
 function populateBancos(){
@@ -601,6 +604,10 @@ function cleanPaqueteCampos(){
     document.querySelector('#txtCantidadMeses').value = 0;
     document.querySelector('#txtCantidadSesiones').value = 0;
     document.querySelector('#PrecioPaquete').value = '0.00';
+    document.querySelector('#Moneda').selectedIndex = 0;
+    const frecuencia = document.querySelector('#FrecuenciaPaquete');
+    frecuencia.selectedIndex = 0;
+    $(frecuencia).multiselect('rebuild');
 }
 
 function cleanCuentaBanCampos(){
@@ -711,6 +718,7 @@ function getTarifa(){
     tar.personas = document.querySelector('#txtCantidadPersonas').value.trim();
     tar.meses = document.querySelector('#txtCantidadMeses').value.trim();
     tar.sesiones = document.querySelector('#txtCantidadSesiones').value.trim();
+    tar.monedaId = document.querySelector('#Moneda').value.trim();
     tar.valid = false;
 
     const jQvalidate = Array.from(document.querySelectorAll('#contentTarifario input')).filter(e=>!$(e).valid()).length == 0 ? true : false;
@@ -767,6 +775,7 @@ function mostrarDetalleServicio(servicioId){
     setIncluyeDelServicio(svc.incluye);
     setFileTermCond();
     setTarifarios(svc.tarifarios);
+    cleanPaqueteCampos();
 }
 
 function setFileTermCond(){
@@ -823,6 +832,7 @@ function editarTarifa(tId){
         tarifa.personas = t.personas;
         tarifa.sesiones = t.sesiones;
         tarifa.precio = t.precio;
+        tarifa.monedaId = t.monedaId;
         tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
         $.smallBox({color: "#111509",content: '<i class="fa fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
     } else{
@@ -980,6 +990,7 @@ function mostrarDetalleTarifaSvc(tarifaId){
     document.querySelector('#txtCantidadMeses').value = t.meses;
     document.querySelector('#txtCantidadSesiones').value = t.sesiones;
     document.querySelector('#PrecioPaquete').value = t.precio;
+    document.querySelector('#Moneda').value = t.monedaId;
     $('#FrecuenciaPaquete').multiselect('refresh');
     $('.del-tar-svc').tooltip();
     $('.edit-tar-svc').tooltip();
@@ -1025,10 +1036,6 @@ function putTarifario(id, nombre){
                         <a href="javascript:void(0)" class="tarifa-svc">
                             <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
-                        </a>
-                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);">
-                            <img title="Confirmar modificaciones" style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
-                            <img title="Eliminar" style="margin: 0px 0px 5px" class="del-tar-svc" data-id="${id}" src="${_ctx}img/iconos/icon_trash.svg">
                         </a>
                     </div>`
 }

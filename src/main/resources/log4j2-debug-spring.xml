@@ -28,7 +28,7 @@
               smtpHost="smtp.gmail.com"
               smtpPort="465"
               smtpUsername="contoso.peru@gmail.com"
-              smtpPassword="p1ls3n@147"
+              smtpPassword="p1ls3n@1477"
               smtpProtocol="smtps"
               smtpDebug="true"
               bufferSize="2">

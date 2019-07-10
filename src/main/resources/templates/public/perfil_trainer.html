@@ -6,6 +6,13 @@
   <title>Perfil trainer específico | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+    <style>
+        .txt-tarifario-right{
+            padding: 0px !important;
+            color: black !important;
+            text-align: right;
+        }
+    </style>
 </head>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -148,6 +155,18 @@
                             <a href="#" target="_blank">Y2</a>
                         </div>
                     </div>
+                    <div th:if="${porAprobar}" class="form-group div-aprobacion">
+                        <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                        <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
+                        <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
+                        <div class="hidden" id="SeccionCorreccion">
+                            <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
+                            <div style="text-align: right">
+                                <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
+                                    <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
+                            </div>
+                        </div>
+                    </div>
                   </form>
                 </div>
                 <div class="tab-pane fade" id="contact">
@@ -237,12 +256,24 @@
                           <!-- DETALLE PAQUETE -->
                           <div class="clase-tarifario collapse in" id="contentTarifario">
                               <div class="form-group txt-tar">
-                                  <label for="NombreTarifario">NOMBRE</label>
-                                  <span  id="NombreTarifario" name="NombreTarifario"></span>
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>NOMBRE:</label>
+                                      </div>
+                                      <div class="col-xs-5">
+                                          <label id="NombreTarifario" class="txt-tarifario-right"></label>
+                                      </div>
+                                  </div>
                               </div>
                               <div class="form-group txt-tar">
-                                  <label for="FrecuenciaPaquete">FRECUENCIA</label>
-                                  <span id="FrecuenciaPaquete"></span>
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>FRECUENCIA:</label>
+                                      </div>
+                                      <div class="col-xs-5">
+                                          <label id="FrecuenciaPaquete" class=" txt-tarifario-right"></label>
+                                      </div>
+                                  </div>
                               </div>
                               <div class="form-group txt-tar">
                                   <div class="row">
@@ -299,20 +330,20 @@
                           </div>
                           <!-- END DETALLE PAQUETE -->
                           <!-- END TARIFARIOS-->
-                          <h4>INFORMACIÓN DE PAGO</h4>
+                          <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
                           <div class="row">
                               <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1" style="padding-right: 30px"><img th:src="@{/img/mastercard.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2" style="padding-right: 30px"><img th:src="@{/img/visa.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3" style="padding-right: 30px"><img th:src="@{/img/amex.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img th:src="@{/img/money.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2"><img th:src="@{/img/mastercard.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3"><img th:src="@{/img/visa.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4"><img th:src="@{/img/amex.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5"><img th:src="@{/img/diners-club.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
                               </div>
                           </div>
-                          <div class="form-group" id="CuentaBanco">
-
-                          </div>
+                          <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
+                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                          </h4>
                           <div class="form-group hidden" id="divNotaFinal">
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
@@ -320,19 +351,6 @@
                           <button id="btnElegir" class="btn btn-default btn-black hidden" type="button">INSCRÍBETE</button>
                       </form>
                   </div>
-                <hr>
-                <div th:if="${porAprobar}" class="form-group div-aprobacion">
-                    <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                    <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
-                    <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
-                    <div class="hidden" id="SeccionCorreccion">
-                        <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
-                        <div style="text-align: right">
-                            <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
-                                <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
-                        </div>
-                    </div>
-                </div>
               </div>
             </div>
           </div>
@@ -477,9 +495,6 @@
                             <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
-                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
-                            <img style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
-                        </a>
                     </div>`
       }
 
@@ -502,11 +517,7 @@
         getTrainer();
         checkFrom();
         constraintsValidation();
-        modalOptionHidden();
-      }
-
-      function modalOptionHidden(){
-          document.querySelector('#myModalCC .modal-footer').classList.add('hidden');
+        setHeightForModals(['myModalCC']);
       }
 
       function checkFrom(){
@@ -724,7 +735,7 @@
                   })
                   servicios = res;
                   reconstruirServicios(servicios);
-                  reconstruirTarifario(servicios[0].tarifarios);
+                  setTarifarios(servicios[0].tarifarios)
                   setFileTermCond(servicios[0]);
                   if($('#Tarifarios .tarifa-svc')[0]){
                       $('#Tarifarios .tarifa-svc')[0].click();
@@ -793,7 +804,7 @@
         reconstruirLista(res, t.resultados);
         let niveles = t.niveles.split("|");
         document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
-        //mostrarMediosPago(t.mediosPago, t.cuentas);
+        mostrarMediosPago(t.mediosPago, t.cuentas);
 
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
@@ -979,31 +990,41 @@
       }
 
       function reconstruirTarifario(tarifas){
-          tarifas.forEach((t, ix)=>{
-                        t.id = ix;
-                        document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
+          if(tarifas && tarifas.length){
+              tarifas.forEach((t, ix)=>{
+                  t.id = ix;
+                  document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-3 col-xs-4 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
                                     <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                                     <h6 class="tarifa-svc">${t.nombre}</h6>
                                 </a>
                             </div>`))});
+          }
       }
 
       function mostrarMediosPago(mediosPago, cuentas){
+
+        //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+        if(cuentas){
+            const ccs = JSON.parse(cuentas);
+            if(ccs.length){
+                //Importante para que en el modal no aparezca el ícono imagen de eliminar
+                ccs[0].noEdit = true;
+                ccBancarias = ccs;
+            }else{
+                document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+            }
+        }
+
+        if(!mediosPago){
+            document.querySelector('.title-metodo-pago').classList.add('hidden');
+            return;
+        }
         const ccs = mediosPago.split("|");
         ccs.forEach(id=>{
             tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
-        })
-
-        if(cuentas != undefined){
-            cuentas = JSON.parse(cuentas);
-            ccBancarias = cuentas;
-            const mePagos = document.getElementById('MediosPagosAgregados');
-            cuentas.forEach(c=>{
-                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
-            });
-        }
+        });
       }
 
       function setValoracion(canPerValoracion, totalValoracion){

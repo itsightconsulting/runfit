@@ -15,5 +15,6 @@ public class Tarifario implements Serializable {
     private Integer sesiones;
     private String frecuencia;
     private Double precio;
+    private int monedaId;
 
 }
