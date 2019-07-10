@@ -612,11 +612,14 @@
             "Rocío Flores, campeona sudamericana 4x100 m (2017)",
             "Michael Barros, campeón en natación 4x200 (2016)",
             "Entrenador del año (2015)"].forEach(e => agregarInputDinamico(inpRes, 4, 'inp-resultado', 90).value = e);
+        document.querySelector('#Disciplinas').value = "Running";
         document.querySelector('#Resultados').value = "Juan Pérez, campeón en natación 100 m libres (2017)";
         document.querySelector('#CentroTrabajo').value = 'AQUALAB - Av. Nicolás de Ribera 145, San Isidro';
         document.querySelector('#Telefono').value = `017776666`;
         document.querySelector('#NumeroDocumento').value = `23232323`;
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
+        document.querySelector('input[name="FormaTrabajo"]').checked = true;
+
         //Servicios
         document.querySelector('#NombreServicio').value = "Performance PRO";
         document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
@@ -648,9 +651,8 @@
         document.getElementById('TitularCuenta').value = "Dennys Gorina Maymir";
         document.getElementById('NumeroCuentaSoles').value = "194-91022548-0-66";
         document.getElementById('InterbancarioSoles').value = "00219419102254806693";
-        document.getElementById('btnNuevaInfoPago').click();
+        document.getElementById('btnNuevaInfoPago').click();*/
         document.querySelector('#inpTermCond').checked = true;
-        document.querySelector('input[name="FormaTrabajo"]').checked = true;*/
     }
 
     function generateBody(){
@@ -825,6 +827,7 @@
                     pwcheck: true
                 },
                 NombreServicio:{
+                    letterandnumber: true,
                     rangelength: [2, 50],
                 },
                 PrimerIncluyeServicio:{
@@ -837,6 +840,7 @@
                     rangelength: [20, 1000]
                 },
                 NombreTarifario:{
+                    letterandnumber: true,
                     rangelength: [2, 30],
                 },
                 txtCantidadPersonas:{

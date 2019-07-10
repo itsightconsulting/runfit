@@ -3857,6 +3857,10 @@ input[type="checkbox"] ~ em{
   display: none !important;
 }
 
+select:not([type="multiple"]) ~ em{
+  display: none !important;
+}
+
 label.checkbox{
   padding-left: 10px;
 }

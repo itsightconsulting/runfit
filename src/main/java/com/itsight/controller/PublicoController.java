@@ -17,6 +17,7 @@ import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Enums.Msg;
+import com.itsight.util.Parseador;
 import com.itsight.util.RSA_Encryption;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -351,6 +352,15 @@ public class PublicoController extends BaseController {
 
         securityUserService.updateFlagEnabled(securityUser.getId(), securityUser.isEnabled());
         model.addAttribute("msg", Msg.CUENTA_VERIFICADA.get());
+        return new ModelAndView(ViewConstant.MAIN_INF_P);
+    }
+
+    @GetMapping("/informativo")
+    public ModelAndView informativo(
+            @RequestParam String g,
+            @RequestParam String te,
+            Model model){
+        model.addAttribute("msg", Parseador.getDecodeBase64(g));
         return new ModelAndView(ViewConstant.MAIN_INF_P);
     }
 }

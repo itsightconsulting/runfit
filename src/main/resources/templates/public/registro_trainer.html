@@ -673,6 +673,7 @@
         document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
 
         document.querySelector('input[name="FormaTrabajo"]').checked = true;
+        document.querySelector('#Disciplinas').value = "Running";
 
         //Estudios
         const inpEst = document.querySelector('.inp-estudio');
@@ -709,8 +710,9 @@
         document.querySelector('#Telefono').value = `017776666`;
         document.querySelector('#NumeroDocumento').value = `23232323`;
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
+        document.querySelector('input[name="FormaTrabajo"]').checked = true;
 
-        /*//Servicios
+        //Servicios
         document.querySelector('#NombreServicio').value = "Performance PRO";
         document.querySelector('#DescripcionServicio').value = "Es un programa de entrenamiento integral; orientado, metodológicamente, a mejorar los niveles de velocidad, creado en base a las necesidades técnicas, biomecánicas y fisiológicas del corredor. \n\nHacemos énfasis en la técnica de carrera, ejercicios de fuerza, flexibilidad, resistencia y velocidad, con el objetivo de alcanzar el máximo desempeño de manera saludable y segura.";
         document.querySelector('#ServicioInfAdic').value = 'Las master-class se llevarán a cabo en la pista atlética “Luis Gálvez Chipoco” (Av. San Martín s/n, Parque Municipal, Barranco) en el horario de: 5:40am a 7:10am. La escuela informará con anticipación las fechas de las sesiones.\n' +
@@ -733,7 +735,7 @@
                 agregarTextareaDinamico(inpSvcInc, 7, 'inp-svc-incluye').firstElementChild.value = e});
         document.getElementById('btnNuevoServicio').click();
 
-        //Tarifario al servicio agregado anterior
+        /*//Tarifario al servicio agregado anterior
         document.getElementById('NombreTarifario').value = "De amateur a profesional";
         document.getElementById('txtCantidadPersonas').value = "1";
         document.getElementById('txtCantidadMeses').value = "4";
@@ -959,7 +961,8 @@
                     pwcheck: true
                 },
                 NombreServicio:{
-                    rangelength: [2, 50],
+                    letterandnumber: true,
+                    rangelength: [2, 50]
                 },
                 PrimerIncluyeServicio:{
                     rangelength: [8, 10*50]
@@ -971,6 +974,7 @@
                     rangelength: [20, 1000]
                 },
                 NombreTarifario:{
+                    letterandnumber: true,
                     rangelength: [2, 30],
                 },
                 txtCantidadPersonas:{

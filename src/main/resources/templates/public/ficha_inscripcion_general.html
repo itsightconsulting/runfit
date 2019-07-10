@@ -428,8 +428,8 @@
                     <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
                     <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
                       <option value="1">Buenos</option>
-                      <option value="2">Malos</option>
-                      <option value="3">Regulares</option>
+                      <option value="2">Regulares</option>
+                      <option value="3">Malos</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -564,7 +564,7 @@
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>Queremos conocer tus frecuencias cardiacas:<span class="obligatorio">*</span></label>
+                    <label>Queremos conocer tus frecuencias cardiacas:</label>
                     <p class="form-group-subtitle">Frecuencia cardiaca basal:
                       <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca basal se refiere a las pulsaciones que una persona tiene por minuto en estado de reposo"></i>
                     </p>
@@ -1468,14 +1468,12 @@
 
           },
           FrecuenciaCardiaca: {
-            required: true,
             min: 40,
             max: 130,
             rangelength:[2 ,3],
             digits: true
           },
           FrecuenciaCardiacaMaxima: {
-            required: true,
             min: 100,
             max: 220,
             rangelength:[2  ,3],
@@ -1485,9 +1483,6 @@
             required: true,
             digits: true,
             min: 0
-          },
-          CondicionMejora: {
-            required: true
           },
           TiempoUnKilometro: {
             required: true

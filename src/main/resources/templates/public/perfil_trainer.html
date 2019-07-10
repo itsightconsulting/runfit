@@ -126,23 +126,12 @@
                     </div>
                     <div class="form-group hidden" id="lblRedes">
                         <label>REDES SOCIALES</label>
-                    </div>
-                    <div class="form-group rs hidden" id="RsFb">
-                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
-                        <div class="col-xs-11 no_padding">
-                            <a href="#" target="_blank">FB</a>
-                        </div>
-                    </div>
-                    <div class="form-group rs hidden" id="RsIn">
-                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
-                        <div class="col-xs-11 no_padding">
-                            <a href="#" target="_blank">INS</a>
-                        </div>
-                    </div>
-                    <div class="form-group rs hidden" id="RsYo">
-                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
-                        <div class="col-xs-11 no_padding">
-                            <a href="#" target="_blank">Y2</a>
+                        <div class="form-group rs">
+                            <div class="col-xs-12 no_padding">
+                                <a href="#" target="_blank" id="RsFb"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"/></a>
+                                <a href="#" target="_blank" id="RsIn"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"/></a>
+                                <a href="#" target="_blank" id="RsYo"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"/></a>
+                            </div>
                         </div>
                     </div>
                     <div th:if="${porAprobar}" class="form-group div-aprobacion">
@@ -666,7 +655,6 @@
           success: function (res) {
             $perfil = res;
             recrearPerfil(res);
-            getDisciplinasAsync(res.id);
             getServiciosAsync(res.id, res.tipoTrainerId);
             checkTab();
           }, error: (xhr) => {
@@ -677,26 +665,6 @@
           }, complete: () => {
           }
         })
-      }
-
-      function getDisciplinasAsync(trainerId){
-          if(btnAprobarTrainer === null) {
-              $.ajax({
-                  type: 'GET',
-                  url: _ctx + 'p/trainer/get/disciplinas/' + trainerId,
-                  dataType: 'json',
-                  noOne: true,
-                  success: function (res) {
-                      setDisciplinas(res);
-                  }, error: (xhr) => {
-                      if (xhr.status == 404) {
-                          window.location.href = _ctx + "p/recurso-no-encontrado";
-                      }
-                      exception(xhr);
-                  }, complete: () => {
-                  }
-              })
-          }
       }
 
       function getServiciosAsync(trainerId, ttId){
@@ -860,45 +828,6 @@
                   });
                   map.panTo(new google.maps.LatLng(lat, lng));
               }, 1000);
-          }
-      }
-
-      function checkRedesAndNota(t){
-          if(t.redes != undefined && t.redes.length > 4){
-              const existsFb = t.redes.includes('fb:');
-              if(existsFb){
-                  const r = document.querySelector('#RsFb');
-                  r.classList.remove('hidden');
-                  const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
-                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                  r.querySelector('a').href = f;
-                  r.querySelector('a').textContent = f;
-              }
-              const existsIn = t.redes.includes('in:');
-              if(existsIn){
-                  const r = document.querySelector('#RsIn');
-                  r.classList.remove('hidden');
-                  const pre = t.redes.slice(t.redes.indexOf("in:")+3);
-                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                  r.querySelector('a').href = f;
-                  r.querySelector('a').textContent = f;
-              }
-              const existsYo = t.redes.includes('yo:');
-              if(existsYo){
-                  const r = document.querySelector('#RsYo');
-                  r.classList.remove('hidden');
-                  const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
-                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                  r.querySelector('a').href = f;
-                  r.querySelector('a').textContent = f;
-              }
-              document.getElementById('lblRedes').classList.remove('hidden');
-          }
-
-
-          if(t.nota){
-              document.getElementById('divNotaFinal').classList.remove('hidden');
-              document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
           }
       }
 

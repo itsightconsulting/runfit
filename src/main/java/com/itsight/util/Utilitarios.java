@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import static com.itsight.util.Enums.MsgPeticion.*;
+import static com.itsight.util.Enums.MsgPeticion.FICHA_GENERAL;
+import static com.itsight.util.Enums.MsgPeticion.FICHA_RUNNER;
 
 public class Utilitarios {
 
