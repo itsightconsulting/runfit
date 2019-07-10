@@ -1,4 +1,3 @@
-const body = document.querySelector('body');
 const formRecuperacion = document.getElementById('recover-pass-form');
 const btnRecuperar = document.getElementById('btnRecuperar');
 const btnCambiar = document.getElementById('btnCambiar');
@@ -202,25 +201,25 @@ function registro() {
                 data: params,
                 success: function (data, textStatus) {
 
-                   setTimeout(()=>{
-                                $('.actions').addClass('hidden');
-                            $.SmartMessageBox({
-                                title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
-                                content: "" +
-                                    "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
-                                buttons: '[SALIR]'
-                            }, function (ButtonPressed) {
-                                if(ButtonPressed){
-                                    window.location.href = _ctx + "login";
-                                }
-                            })
-                    }, 700)
+                    setTimeout(()=>{
+                            $('.actions').addClass('hidden');
+                        $.SmartMessageBox({
+                            title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                            content: "" +
+                                "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
+                            buttons: '[SALIR]'
+                        }, function (ButtonPressed) {
+                            if(ButtonPressed){
+                                window.location.href = _ctx + "login";
+                            }
+                        })
+                }, 700)
                 },
                 error: function (xhr) {
 
                     const mensaje = xhr.responseJSON.message;
 
-                    $('#divSmallBoxes').css('z-index','100000');
+                        $('#divSmallBoxes').css('z-index','100000');
 
 
                         $.smallBox({
@@ -229,10 +228,10 @@ function registro() {
                             timeout: 4500,
                             color:  '#cc4d4d',
                             icon: "fa fa-exclamation-circle"
-                       })
+                        })
 
 
-                    },
+                },
                 complete: function () {
                 }
             });
