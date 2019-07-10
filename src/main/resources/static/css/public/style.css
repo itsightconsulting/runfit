@@ -94,10 +94,20 @@
   max-width: 400px;
   margin: 0 auto
 }
+.login .login-sesion-alt,
+.login .login-register-alt {
+  position: relative;
+  z-index: 2;
+  padding: 25px;
+  box-sizing: border-box;
+  max-width: 400px;
+  margin: 0 auto
+}
 
 .login .form-group {
   padding-left: 35px;
-  position: relative
+  position: relative;
+  margin-top: 10px;
 }
 
 .login .form-group span {
@@ -119,6 +129,18 @@
   background: transparent;
   border: 0;
   width: 100%;
+  padding: 6px 15px;
+  border-bottom: 1px solid;
+  margin-bottom: 15px
+}
+
+.login .login-sesion-alt .form-group  input ,
+.login .login-register-alt .form-group  input
+{
+  color: #a8fa00;
+  background: transparent;
+  border: 0;
+  width: 90%;
   padding: 6px 15px;
   border-bottom: 1px solid;
   margin-bottom: 15px
@@ -149,6 +171,20 @@
   border: 0
 }
 
+.login .btn-guest-register {
+  background-color: #a8fa00;
+  display: block;
+  text-transform: uppercase;
+  color: #fff;
+  font-family: Gotham-Black, 'system-ui';
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  border: 0;
+  cursor: pointer;
+}
+
 .login .btn-face {
   background-color: #3B5998;
   display: block;
@@ -170,7 +206,8 @@
   text-align: center;
   width: 100%;
   margin-bottom: 15px;
-  border: 0
+  border: 0;
+  cursor:pointer;
 }
 
 .navbar {

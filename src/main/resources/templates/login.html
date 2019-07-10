@@ -37,6 +37,10 @@
         }
         .help-block{
             color: #E54C4B;
+            font-size: 0.85em;
+            padding: 0 0 10px 30px;
+            display: block;
+            text-align: justify;
         }
     </style>
 </head>
@@ -47,7 +51,7 @@
         <div class="avatar">
             <img th:src="@{/img/public/logo.png}+'?'+${version}"/>
         </div>
-        <div class="login-sesion">
+        <div class="login-sesion-alt">
             <form id="login-form" action="#" th:action="@{/loginCheck}" method="post">
                 <div class="form-group usuario"><span class="fa fa-user-o"></span>
                     <label>Usuario</label>
@@ -70,42 +74,49 @@
                 </div>
                 <div class="actions">
                     <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
-                    <a class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
+                    <a class="btn-nuevo" href="javascript:goRegisterAlt()">SOY NUEVO</a>
                 </div>
             </form>
         </div>
+         <div class="register-guest">
+            <form id="register-form" method="post">
 
-        <form id="register-form" method="post">
-
-        <div class="login-register hidden">
-            <div class="form-group usuario"><span class="fa fa-user-o"></span>
+        <div class="login-register-alt hidden">
+            <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
                 <label>Nombres</label>
                 <input id="Nombres" name="Nombres" type="text">
             </div>
-            <div class="form-group usuario"><span class="fa fa-user-o"></span>
+            <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
                 <label>Apellidos</label>
                 <input id="Apellidos" name="Apellidos" type="text">
             </div>
-            <div class="form-group mail"><span class="fa fa-envelope-o"></span>
+            <div class="form-group form-alt mail"><span class="fa fa-envelope-o"></span>
                 <label>Correo electrónico</label>
                 <input id="Correo" name="Correo" type="text">
             </div>
-            <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+            <div class="form-group form-alt password"><span class="fa fa-unlock-alt"></span>
                 <label>Contraseña</label>
                 <input id="PasswordRegister" name="PasswordRegister" type="password">
             </div>
-            <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+            <div class="form-group  password"><span class="fa fa-unlock-alt"></span>
                 <label>Confirmar Contraseña</label>
                 <input id="PasswordConfirmation" name="PasswordConfirmation"  type="password">
             </div>
             <div class="actions">
-                <button class="btn-login" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
-                <p>¿Ya es miembro RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
+                <button class="btn-guest-register" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
+                <p>¿Ya es miembro de RunFit?</p><a class="btn-nuevo" href="javascript:goLoginAlt()">INICIAR SESIÓN</a>
             </div>
 
+          </div>
+
          </form>
+         </div>
+
         </div>
-    </div>
+
+
+
+</body>
 <!--================================================== -->
 
 <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
@@ -113,6 +124,9 @@
 
 <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!--Remueve los 2 scrollers verticales -->
+
 
 <script th:inline="javascript">
     /*<![CDATA[*/

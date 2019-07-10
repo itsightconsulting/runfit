@@ -110,6 +110,7 @@ FichaSet = (function(){
             document.querySelectorAll('#DistanciaRutina input').forEach(v=>{v.value == maxDistancia ? v.checked=true : '';})
         },
         setTotalSemanas: () => {
+
             const fechaInicio = parseFromStringToDate($('#MacroFechaInicio').val());
             const fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
@@ -249,7 +250,7 @@ FichaDOMQueries = (function(){
 MacroCiclo = (function(){
     return {
         comprobar: (e)=>{
-            if(MacroValidacion.principal() && MacroValidacion.basicos()) {
+            if( MacroValidacion.principal() && MacroValidacion.basicos() && $('#frm_registro').valid() ) {
 
                 if(e != null)
                 blockButton(e.target);
@@ -444,7 +445,6 @@ MacroCiclo = (function(){
 
             $slideType = 3;//Para el  correcto funcionamiento del regulador de intensidades/vel
             $('.slider').slider();
-
             $("div.slider-horizontal > div.slider-track").css("background-color","#1acd49");
             $("#TotalPeriodizacion1").parent().addClass("state-success");
             $("#TotalVelocidad1").parent().addClass("state-success");
@@ -626,6 +626,8 @@ MacroCiclo = (function(){
 })();
 
 MacroValidacion = (function(){
+
+
     return {
         principal: ()=>{
             let validado = false;
@@ -736,6 +738,8 @@ MacroValidacion = (function(){
             return true;
         },
         cleanDistribucion: ()=>{
+
+
             document.querySelectorAll('.periodizacion-calc').forEach(v=>v.value = 0);
             document.querySelectorAll('.velocidad-calc').forEach(v=>v.value = 0);
             document.querySelectorAll('.cadencia-calc').forEach(v=>v.value = 0);
@@ -770,39 +774,9 @@ MacroValidacion = (function(){
             t44.parentElement.classList.remove('state-success');
         },
         formulario: ()=>{
-            $.validator.addMethod('validos', function (value, element, param) {//segundos
-                return param.includes(Number(value));
-            }, '> Valor inválido');
 
-            $.validator.addMethod('csTiempo', function (value, element, param) {//segundos
-                return value.toSeconds() > param.toSeconds();
-            }, '> {0}');
 
-            $.validator.addMethod("eqGreaterThanToday",
-                function(value) {
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return parseFromStringToDate(value) >= new Date().setHours(0, 0, 0, 0);
-                    }
-                    return isNaN(value) && isNaN($(value).val());
-                },'Debe ser mayor o igual a la fecha de hoy');
-
-            $.validator.addMethod("greaterThanDate",
-                function(value, element, params) {
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return new Date(value) > new Date($(params).val());
-                    }
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) > Number($(params).val()));
-                }, 'Debe ser mayor a la fecha inicio');
-
-            $.validator.addMethod("miniumDifference",
-                function(value, element, params) {
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return moment(parseFromStringToDate(value)).diff(parseFromStringToDate($(params).val()), 'days') > 40;//7 weeks
-                    }
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) > Number($(params).val()));
-                }, 'Rutinas mínimas de 6 semanas, es por ello que se requiere una fecha mayor');
+            const arrayDay = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sábado"];
 
             $("#frm_registro").validate({
                 errorClass: errorClass,
@@ -819,101 +793,172 @@ MacroValidacion = (function(){
                 rules: {
                     FrecuenciaCardiacaMinima: {
                         required: true,
-                        min: 0,
-                        maxlength: 3,
+                        min: 40,
+                        max: 130,
+                        rangelength:[2  ,3],
+                        digits: true
                     },
                     FrecuenciaCardiacaMaxima: {
                         required: true,
-                        min: 0,
+                        min: 100,
+                        max: 220,
                         maxlength: 3,
                     },
                     NivelAtleta : {
-                        required: true,
+                        required: true
                     },
                     DistanciaRutina : {
-                        required: true,
+                        required: true
                     },
                     MacroFechaInicio: {
                         required: true,
-                        eqGreaterThanToday: true,
+                        greaterThanDate: new Date(),
+                        isSpecificDay : 1
+
                     },
                     MacroFechaFin: {
                         required: true,
-                        miniumDifference: "#MacroFechaInicio",
-                        greaterThanDate: "#MacroFechaInicio",
+                        minimumDifference: function(){
+                            return  $('#MacroFechaInicio').val()
+                        },
+                        maximumDifference: function(){
+                            return  $('#MacroFechaInicio').val()
+                        },
+                        lessThanDate:  function(){
+                            return addYearstoDate(new Date(),2);
+                        },
+                        isSpecificDay : 0
                     },
                     DistanciaControl: {
-                        required: true,
-                        validos: [2, 4, 10, 21, 42],
+                        required: true
                     },
                     TiempoControl: {
                         required: true,
-                        csTiempo: "00:01:30",
+                        greaterThanSeconds: function(){
+                            return $('#DistanciaCompetencia').val() == "2" ? "00:05:00" : $('#DistanciaCompetencia').val() == "4" ? "00:10:00" : $('#DistanciaCompetencia').val() == "10" ? "00:25:00" : $('#DistanciaCompetencia').val() == "21" ? "01:04:00" : "02:05:00";
+                        }
                     },
                     CadenciaControl: {
                         required: true,
-                        min: 1,
+                        min: 50,
+                        max: 300
                     },
                     TcsControl: {
                         required: true,
-                        min: 1
+                        min: 110,
+                        max: 400
                     },
                     FactorDesentrenamientoControl: {
                         required: true,
                         min: 1,
+                        max: 100
                     },
                     TiempoDesentrControl: {
-                        required: true,
-                        csTiempo: function(){
-                            return $('#TiempoControl').val();
-                        },
-
+                        required: true
                     },
                     DistanciaCompetencia: {
                         required: true,
-                        validos: [10, 21, 42],
                     },
                     TiempoCompetencia: {
                         required: true,
-                        csTiempo: function(){
-                            return $('#DistanciaCompetencia').val() == "10" ? "00:25:00" : $('#DistanciaCompetencia').val() == "21" ? "01:04:21" : "02:00:10";
+                        greaterThanSeconds: function(){
+                            return $('#DistanciaCompetencia').val() == "10" ? "00:25:00" : $('#DistanciaCompetencia').val() == "21" ? "01:04:00" : "02:05:00";
                         },
                     },
                     CadenciaCompetencia: {
                         required: true,
-                        min: 0,
+                        min: 0
                     },
                     TcsCompetencia: {
                         required: true,
-                        min: 0,
+                        min: 0
                     },
-                    FactorMejoria: {
-                        required: true,
-                        min: 0.00001,
+                     TotalPeriodizacion1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    },
+                    TotalVelocidad1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    },
+                    TotalCadencia1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    },
+                    TotalTcs1: {
+                        required:true,
+                        min: 100,
+                        max: 100
+                    } ,
+                    TotalPeriodizacion2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
+                    },
+                    TotalVelocidad2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
+                    },
+                    TotalCadencia2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
+                    },
+                    TotalTcs2: {
+                        min:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        },
+                        max:  function(){
+                            return parseInt($('#MacroTotalSemanas').text());
+                        }
                     }
                 },
                 messages: {
                     FrecuenciaCardiacaMinima: {
                         required: "El campo es obligatorio",
-                        min: $.validator.format("Valor mínimo 0"),
+                        min: $.validator.format("Valor mínimo {0}"),
+                        max: $.validator.format("Valor máximo {0}"),
                         maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
                     },
                     FrecuenciaCardiacaMaxima: {
                         required: "El campo es obligatorio",
-                        min: $.validator.format("Valor mínimo 0"),
+                        min: $.validator.format("Valor mínimo {0}"),
+                        max: $.validator.format("Valor máximo {0}"),
                         maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
                     },
                     NivelAtleta : {
                         required: "El campo es obligatorio",
                     },
                     DistanciaRutina : {
-                        required: "El campo es obligatorio",
+                        required: "El campo es obligatorio"
                     },
                     MacroFechaInicio: {
                         required: "El campo es obligatorio",
+                        greaterThanSeconds: "prueba",
+                        greaterThanDate : "Ingrese una fecha igual o mayor a la de hoy",
+                        isSpecificDay : function (e) {
+                            return "Se requiere una fecha que corresponda al día " + arrayDay[e];
+                        }
                     },
                     MacroFechaFin: {
                         required: "El campo es obligatorio",
+                        isSpecificDay : function (e) {
+                            return "Se requiere una fecha que corresponda al día " + arrayDay[e];
+                        }
+
                     },
                     DistanciaControl: {
                         required: "El campo es obligatorio",
@@ -923,11 +968,11 @@ MacroValidacion = (function(){
                     },
                     CadenciaControl: {
                         required: "El campo es obligatorio",
-                        min: "Mínimo valor {0}",
+                        min: "Mínimo valor {0}"
                     },
                     TcsControl: {
                         required: "El campo es obligatorio",
-                        min: "Mínimo valor {0}",
+                        min: "Mínimo valor {0}"
                     },
                     FactorDesentrenamientoControl: {
                         required: "El campo es obligatorio",
@@ -941,6 +986,7 @@ MacroValidacion = (function(){
                     },
                     TiempoCompetencia: {
                         required: "El campo es obligatorio",
+                        greaterThanSeconds : ">{0}"
                     },
                     CadenciaCompetencia: {
                         required: "El campo es obligatorio",
@@ -953,6 +999,38 @@ MacroValidacion = (function(){
                     FactorMejoria: {
                         required: "El campo es obligatorio",
                         min: "Mínimo valor {0}",
+                    },
+                    TotalPeriodizacion1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalVelocidad1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalCadencia1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalTcs1: {
+                        min: "Total debe ser {0}%",
+                        max: "Total debe ser {0}%"
+                    },
+                    TotalPeriodizacion2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
+                    },
+                    TotalVelocidad2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
+                    },
+                    TotalCadencia2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
+                    },
+                    TotalTcs2: {
+                        min: "Total debe ser {0}",
+                        max: "Total debe ser {0}"
                     }
                 },
                 submitHandler: function () {
@@ -1889,8 +1967,6 @@ FichaSeeder = (function(){
             document.querySelector('#CadenciaControl').value = 174;
             factorDesentrenamientoControl.value = 3;
             document.querySelector('#TcsControl').value = 182;
-
-
             document.querySelector('#TiempoCompetencia').value = "04:10:00";
             document.querySelector('#CadenciaCompetencia').value = 185;
             document.querySelector('#TiempoDesentrControl').value =  String(tiempoControl.value.toSeconds() + (Number(tiempoControl.value.toSeconds()) * Number(factorDesentrenamientoControl.value).toPercentage())).toHHMMSSM();
@@ -1905,6 +1981,7 @@ CalcProyecciones = (function(){
             if(!input.hasAttribute('readonly')) {
                 const valor = input.value;
                 const tipo = input.getAttribute('data-type');
+
                 if (MacroValidacion.onEdicionProyecciones(input, valor, tipo, tipoProyeccion)) {
                     const ix = Number(input.getAttribute('data-index'));
                     const contProyecciones = FichaDOMQueries.getProyecciones();
@@ -1939,6 +2016,7 @@ CalcProyecciones = (function(){
 
                     eleTot1.value = roundNumber(tot1, 0);
                     eleTot2.value = roundNumber(tot2, 0);
+
                     if(tot1 == 100){
                         eleTot1.parentElement.classList.add('state-success');
                         eleTot1.parentElement.classList.remove('state-error');
@@ -1992,6 +2070,8 @@ CalcProyecciones = (function(){
             const estadisticas = CalcProyecciones.informacionSemanas();
             if(cant == estadisticas.semanas) return 100;
             let situacion = estadisticas.tipoCalculo;
+
+
             if (situacion == 1) {
                 if(index == 3){
                     --cant;

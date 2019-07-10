@@ -45,6 +45,8 @@ const fFinMacro = document.querySelector('#MacroFechaFin');
 const bgBarMainGraph = ["#ed8989c7","#4fd46bc4","#87ceebbd","#519da4a6"];
 const bgMantaIntensidad = ["gold", "gray", "skyblue", "gray"];
 
+
+
 $(function () {
     init();
 })
@@ -215,6 +217,9 @@ function obtenerKilometrajeBaseBD(distancia, nivel){
 }
 
 function principalesEventosTabFichaTecnica(e){
+
+
+
     const input = e.target;
     const clases = input.classList;
 
@@ -244,6 +249,7 @@ function principalesEventosTabFichaTecnica(e){
         document.querySelector('#PorcentajesIntensidad').classList.toggle('hidden');
         clases.toggle('hidden');
     }else if(clases.contains('periodizacion-calc')) {
+
         input.select();
     }else if(clases.contains('velocidad-calc')) {
         input.select();
@@ -257,17 +263,23 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     const input = e.target;
     const clases = input.classList;
 
+
+
     if(clases.contains('periodizacion-calc')){
         CalcProyecciones.calcular(input, 1);
+
     }
     else if(clases.contains('velocidad-calc')){
         CalcProyecciones.calcular(input, 2);
+
     }
     else if(clases.contains('cadencia-calc')){
         CalcProyecciones.calcular(input, 3);
+
     }
     else if(clases.contains('tcs-calc')){
         CalcProyecciones.calcular(input, 4);
+
     }
     else if(clases.contains('tiempo-control')){
 
@@ -275,6 +287,7 @@ function principalesEventosFocusOutTabFichaTecnica(e){
     else if(clases.contains('factor-desentrenamiento')){
 
     }
+
 }
 
 function guardarRutina(rutina, btn, interval){

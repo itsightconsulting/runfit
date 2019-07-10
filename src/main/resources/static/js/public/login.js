@@ -17,6 +17,7 @@ function init(){
 
 
 
+
 }
 
 function eventos(){
@@ -33,7 +34,9 @@ function eventos(){
 
     body.addEventListener('focusout', bodyFocusOutEventListener);
     body.addEventListener('keyup', bodyKeyupEventListener);
+
 }
+
 
 function bodyFocusOutEventListener(e){
     const input = e.target;
@@ -154,9 +157,20 @@ function goRegister(){
     $(".login-register").removeClass('hidden');
 }
 
+function goRegisterAlt(){
+    $(".login-sesion-alt").fadeOut();
+    $(".login-register-alt").fadeIn();
+    $(".login-register-alt").removeClass('hidden');
+}
+
 function goLogin() {
     $(".login-register").fadeOut();
     $(".login-sesion").fadeIn();
+}
+
+function goLoginAlt() {
+    $(".login-register-alt").fadeOut();
+    $(".login-sesion-alt").fadeIn();
 }
 
 function customErrorHandler(xhr, input){
@@ -191,6 +205,7 @@ function registro() {
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 url: _ctx+'p/visitante/registro',
                 dataType: "json",
+                blockLoading: true,
                 data: params,
                 success: function (data, textStatus) {
 
@@ -263,7 +278,8 @@ function validacionFormularioVisitante(){
             },
             PasswordRegister: {
                 required: true,
-                rangelength: [8, 30]
+                rangelength: [8, 30],
+                pwcheck: true
             },
             PasswordConfirmation: {
                 required: true,
