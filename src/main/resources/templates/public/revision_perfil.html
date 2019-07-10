@@ -66,9 +66,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                    <ul id="Disciplinas" class="list-description">
-                                    </ul>
+                                    <label>DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
+                                    <input class="form-control mg-bt-10 inp-disciplina" id="Disciplinas" name="Disciplinas" type="text" placeholder="Ej: Running"/>
+                                    <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-disciplina', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                 </div>
                                 <div class="form-group">
                                     <label>ACERCA DE MÍ<span class="obligatorio">*</span></label>
@@ -839,6 +839,13 @@
         let formasTra = t.formasTrabajo.split("|");
         const divFT = document.querySelector('#FormasTrabajo');
         formasTra.forEach(i=> divFT.querySelector(`input[value="${i}"]`).checked = true);
+
+        let inpDis = document.querySelector('#Disciplinas');
+        const plusDis = inpDis.nextElementSibling;
+        const arrDisciplinas= t.disciplinas.split("|");
+        inpDis.value = arrDisciplinas[0];
+        arrDisciplinas.slice(1).forEach(e => agregarInputDinamico(plusDis, 20, 'inp-disciplina', 80).value = e);
+
         if(ttId == TipoTrainer.PARTICULAR || ttId == TipoTrainer.DE_EMPRESA){
             document.querySelector('#NombreFull').value = t.nombreCompleto;
             document.querySelector(`input[name="Sexo"][value="${t.sexo}"]`).checked = true;
@@ -1379,6 +1386,10 @@
             rules: {
                 Sexo:{
                     required: true
+                },
+                Disciplinas:{
+                    required: true,
+                    rangelength: [3, 80]
                 },
                 Especialidad:{
                     required: true,

@@ -708,18 +708,6 @@
           })
       }
 
-      function setDisciplinas(arr) {
-          const div = document.getElementById('Disciplina');
-          const objArr = Array.from(arr).map(e =>{ return {id: e.split(',')[0], nm: e.split(',')[1]}});
-          objArr.forEach(e=> {
-              div.appendChild(htmlStringToElement(`
-              <li>
-                  <p data-disc-id="${e.id}">${e.nm}</p>
-              </li>
-              `));
-          })
-      }
-
       function checkTabStaff(staffGaleria, id, ttId){
         if(ttId == 1){
             return;
@@ -764,6 +752,9 @@
         document.querySelector('#Niveles').appendChild(htmlStringToElement('<ul class="list-description">'+niveles.map(e=>`<li><p>${_niveles.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         mostrarMediosPago(t.mediosPago, t.cuentas);
 
+        let disciplinas = document.querySelector('#Disciplinas');
+        reconstruirLista(disciplinas, t.disciplinas);
+
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
@@ -772,15 +763,13 @@
             }
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
-            let disciplinas = document.querySelector('#Disciplinas');
-            reconstruirLista(disciplinas, t.disciplinas);
             let est = document.querySelector('#Estudios');
             reconstruirLista(est, t.estudios);
             let exp = document.querySelector('#Experiencias');
             reconstruirLista(exp, t.experiencias);
             let espc = document.querySelector('#Especialidades');
             reconstruirLista(espc, t.especialidades);
-        }else{
+        } else {
             document.querySelector('#NombreFull').textContent = t.nombreCompleto.substr(0, t.nombreCompleto.indexOf(" xxx"));
             document.querySelector('#dvEspecialidad').classList.add('hidden');
             document.querySelector('#dvEstudios').classList.add('hidden');

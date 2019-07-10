@@ -577,6 +577,9 @@
         }
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
+        let disciplinas = document.querySelector('#Disciplinas');
+        reconstruirLista(disciplinas, t.disciplinas);
+
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;

@@ -711,7 +711,6 @@ function generateRandomMail(){
                     if (options.type === 'GET' && options.noOne !== undefined) {
 
                     } else {
-                        //Cierra el overlay smartNotification
                         $('#bot1-Msg1').click();
                     }
                 }

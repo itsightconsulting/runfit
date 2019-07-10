@@ -295,7 +295,7 @@
       </div>
       </div>
       <div class="col-md-9">
-              <h4>${nombreFinal}<span class="title">${ttId == 1 ? e.especialidad : ''}</span><span class="location">${_ubigeoPeLi.find(o=>o.ub === e.ubigeo).nom} - Lima</span></h4>
+              <h4>${nombreFinal}<span class="title">${ttId == 1 ? e.especialidad : ''}</span><span class="location">${_ubigeoPeLi.find(o=>o.ub === e.ubigeo) ? _ubigeoPeLi.find(o=>o.ub === e.ubigeo).nom: "Falta extender ubigeo"} - Lima</span></h4>
       <p>${e.acerca}</p>
       <button class="btn btn-default btn-black" type="button" onclick="verPerfil('${nomLink}')">VER PERFIL</button>
       <button class="btn btn-default btn-white" type="button" onclick="verPerfilDirectServices('${nomLink}')">VER SERVICIOS</button>

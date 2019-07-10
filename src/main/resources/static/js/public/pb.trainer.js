@@ -429,6 +429,7 @@ function tycChangeEventListener(e, input, clases){
 }
 
 function uploadFotoPerfil(d){
+
     //submit the form here
     const hshId = d.res;
     const rdmUUID = d.rdm;
@@ -453,13 +454,13 @@ function uploadFotoPerfil(d){
             contentType: false,
             processData: false,
             dataType: 'json',
-            xhr: function() {
+            /*xhr: function() {
                 const myXhr = $.ajaxSettings.xhr();
                 if(myXhr.upload){
                     myXhr.upload.addEventListener('progress', progress, false);
                 }
                 return myXhr;
-            },
+            },*/
             success: function (res) {
                 alertaFinalByTipoTrainer(res);
             },
@@ -474,8 +475,6 @@ function uploadFotoPerfil(d){
         });
     }
 }
-
-
 
 function init(){
     nextTabButton();
