@@ -320,7 +320,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.):</label>
+                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL:</label>
                                       </div>
                                       <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
                                           <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
@@ -435,7 +435,7 @@
           document.querySelector('#txtCantidadPersonas').value = t.personas;
           document.querySelector('#txtCantidadMeses').value = t.meses;
           document.querySelector('#txtCantidadSesiones').value = t.sesiones;
-          document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
+          document.querySelector('#PrecioPaquete').value = (t.monedaId === 1 ? 'S/. ' : '$ ')+ parseFloat(t.precio).toFixed(2);
       }
 
       function mostrarDetalleServicio(servicioId){
