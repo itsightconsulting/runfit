@@ -353,7 +353,7 @@ Calc = (function(){
             //Se evalua extremos
             const ZEMaxFinal1 = FZ3Max.toSeconds() > LZ3Max.toSeconds() ? FZ3Max : LZ3Max;
             const ZEMinFinal1 = FZ3Min.toSeconds() > LZ3Min.toSeconds() ? FZ3Min : LZ3Min;
-
+1
             const ZEMaxFinal2 = FZ3Max.toSeconds() < LZ3Max.toSeconds() ? FZ3Max : LZ3Max;
             const ZEMinFinal2 = FZ3Min.toSeconds() < LZ3Min.toSeconds() ? FZ3Min : LZ3Min;
 
@@ -367,7 +367,6 @@ Calc = (function(){
         },
         getFactorMejoria: (metricasVelocidades, base)=>{
 
-            debugger
             const ixMV = base.distancia == 10 ? 4 : base.distancia == 15 ? 5 : base.distancia == 21 ? 6 : 7;
 
             return ((1 - (metricasVelocidades[ixMV].indicadores[base.numSem - 1].p.toSeconds() / metricasVelocidades[ixMV].indicadores[0].p.toSeconds())) * 100).toFixed(1);

@@ -899,3 +899,13 @@ function actualizarConfiguracionCliente(e){
     });
 }
 
+
+function addYearstoDate(date,years) {
+
+    date.setFullYear(date.getFullYear() + years);
+    date.setDate(date.getDate()-1)
+
+    return date;
+
+}
+
