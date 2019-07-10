@@ -3984,7 +3984,21 @@ body.modal-open {
   overflow: hidden;
 }
 
-.check-success{
+.check-success {
   height: 50px;
   width: 50px
+}
+
+.botTempo-hd{
+  display: none;
+}
+
+.botTempo:hover{
+  cursor: pointer;
+  background: white;
+  color: #000;
+}
+
+.btn-login{
+  cursor: pointer;
 }

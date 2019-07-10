@@ -160,7 +160,7 @@
                                               <div class="col col-md-12 text-center" style="padding-bottom:15px">
                                                   <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                                                       <h6>Standard</h6>
-                                                      <img class="div-fichas" src="https://image.flaticon.com/icons/svg/1600/1600247.svg" alt="" style="width: 64px">
+                                                      <img class="div-fichas" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="" style="width: 64px">
                                                   </div>
                                                   <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
                                                       <h6>Running</h6>
@@ -687,6 +687,7 @@
                         //Subir imgen
                         uploadFotoPerfil(d, body);
                     }, error: (xhr) => {
+                        $("#frm_registro :input").prop("disabled", false);
                         exception(xhr);
                     }, complete: () => {
                         document.querySelectorAll('input[type="checkbox"][name="SvcCheck"]:checked').forEach(e => e.checked = false);

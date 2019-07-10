@@ -550,6 +550,7 @@
                     }
                     document.getElementById('HshEmpTrainerId').value = d.res;
                 }, error: (xhr) => {
+                    $("#frm_registro :input").prop("disabled", false);
                     exception(xhr);
                 }, complete: () => {
                 }
@@ -827,11 +828,26 @@
                     rangelength: [6, 60],
                     lettersonly: true,
                 },
-                NumeroCuentaSoles:{
+                TitularNumDoc:{
+                    digits: true,
+                    rangelength: [8, 13],
+                    customnumdoc: function(){
+                        return $('#TitularTipoDoc').val();
+                    }
+                },
+                NumeroSoles:{
                     pattern: "[0-9]{3,}[0-9 -]*$",
                     rangelength: [10, 30]
                 },
                 InterbancarioSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                NumeroDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioDolares:{
                     pattern: "[0-9]{3,}[0-9 -]*$",
                     rangelength: [10, 30]
                 },

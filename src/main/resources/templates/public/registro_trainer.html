@@ -647,7 +647,6 @@
         body.tipoTrainerId = 1;
 
         if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
-
             $("#frm_registro :input").prop("disabled", true);
             $.ajax({
                 type: 'POST',
@@ -661,10 +660,11 @@
                     //Subir imgen
                     if($galeria.length + tycFiles.length === 0){
                         uploadFotoPerfil(d, body);
-                    }else{
+                    } else {
                         uploadFotosPerfil(d, body)
                     }
                 }, error: (xhr) => {
+                    $("#frm_registro :input").prop("disabled", false);
                     exception(xhr);
                 }, complete: () => {
 
