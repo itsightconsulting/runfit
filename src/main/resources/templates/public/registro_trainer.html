@@ -13,26 +13,6 @@
         /*text-align: center;*/
     }
 
-    #FichasDisponibles .img-ficha {
-       width: 64px;
-    }
-
-    #FichasDisponibles .chk-ficha{
-        margin-top: 10px;
-    }
-
-    .checks.metodos-pago li{
-        /*text-align: center;*/
-        width: 25%;
-        margin-bottom: 6px;
-    }
-
-    .metodos-pago img{
-        /*text-align: center;*/
-        margin-left: 25px;
-        width: 64px;
-    }
-
     @media only screen and (max-width: 760px) {
         .checks.metodos-pago li{
             width: 40%;
@@ -547,32 +527,32 @@
                                         <button class="btn btn-default btn-black" type="button" id="btnNuevaInfoPago"><i class="fa fa-fw fa-plus-circle"></i> AGREGAR INFORMACIÓN PAGO</button>
                                     </div>
                                     <hr>
-                                        <div class="form-group" id="FichasDisponibles">
-                                            <label>SELECCIONAR FICHA DE INSCRIPCIÓN
-                                                <span class="obligatorio">*</span>
-                                                <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Puede seleccionar ambas fichas en caso usted trabaje con multiples disciplinas incluído running"></i>
-                                            </label>
-                                            <div class="row">
-                                                <ul class="checks">
-                                                    <div class="col-md-6 col-sm-6 col-xs-6-org">
-                                                        <li>
-                                                            <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
-                                                            <div class="chk-content chk-ficha">Standard
-                                                                <input type="checkbox" checked="checked" value="1" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
-                                                            </div>
-                                                        </li>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 col-xs-6-org">
-                                                        <li>
-                                                            <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
-                                                            <div class="chk-content chk-ficha">Running
-                                                                <input type="checkbox" value="2" name="FichaTrabajo" aria-invalid="false"><span class="checkmark"></span>
-                                                            </div>
-                                                        </li>
-                                                    </div>
-                                                </ul>
-                                            </div>
+                                    <div class="form-group" id="FichasDisponibles">
+                                        <label>SELECCIONAR FICHA DE INSCRIPCIÓN
+                                            <span class="obligatorio">*</span>
+                                            <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Puede seleccionar ambas fichas en caso usted trabaje con multiples disciplinas incluído running"></i>
+                                        </label>
+                                        <div class="row">
+                                            <ul class="checks">
+                                                <div class="col-md-6 col-sm-6 col-xs-6-org">
+                                                    <li>
+                                                        <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
+                                                        <div class="chk-content chk-ficha">Standard
+                                                            <input type="checkbox" checked="checked" value="1" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                        </div>
+                                                    </li>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-6-org">
+                                                    <li>
+                                                        <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
+                                                        <div class="chk-content chk-ficha">Running
+                                                            <input type="checkbox" value="2" name="FichaTrabajo" aria-invalid="false"><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </div>
+                                            </ul>
                                         </div>
+                                    </div>
                                     <div class="form-group">
                                         <label>NOTA
                                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="" data-original-title="Nota general sobre cualquier aspecto que desees remarcar y hacerle llegar al cliente"></i>

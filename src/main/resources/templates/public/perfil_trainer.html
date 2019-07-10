@@ -6,13 +6,6 @@
   <title>Perfil trainer específico | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-    <style>
-        .txt-tarifario-right{
-            padding: 0px !important;
-            color: black !important;
-            text-align: right;
-        }
-    </style>
 </head>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -811,6 +804,8 @@
             }
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
+            let disciplinas = document.querySelector('#Disciplinas');
+            reconstruirLista(disciplinas, t.disciplinas);
             let est = document.querySelector('#Estudios');
             reconstruirLista(est, t.estudios);
             let exp = document.querySelector('#Experiencias');
@@ -1001,7 +996,6 @@
       }
 
       function mostrarMediosPago(mediosPago, cuentas){
-
         //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
         if(cuentas){
             const ccs = JSON.parse(cuentas);
@@ -1009,7 +1003,7 @@
                 //Importante para que en el modal no aparezca el ícono imagen de eliminar
                 ccs[0].noEdit = true;
                 ccBancarias = ccs;
-            }else{
+            } else {
                 document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
             }
         }
@@ -1018,6 +1012,7 @@
             document.querySelector('.title-metodo-pago').classList.add('hidden');
             return;
         }
+
         const ccs = mediosPago.split("|");
         ccs.forEach(id=>{
             tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');

@@ -154,27 +154,30 @@
                                                   </ul>
                                               </div>
                                           </div>
-                                          <button data-ficha-id="0" style="margin-bottom: 20px" data-target="#FichasDisponibles" data-toggle="collapse"  id="btnElegirFicha" class="btn btn-default btn-white" type="button">SELECCIONAR FICHA DE INSCRIPCIÓN<span class="obligatorio">*</span></button>
-                                          <input type="hidden" id="FichaClienteId"/>
-                                          <div class="row collapse" id="FichasDisponibles">
-                                              <div class="col col-md-12 text-center" style="padding-bottom:15px">
-                                                  <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                      <h6>Standard</h6>
-                                                      <img class="div-fichas" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="" style="width: 64px">
-                                                  </div>
-                                                  <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                                                      <h6>Running</h6>
-                                                      <img class="div-fichas" th:src="@{/img/form_runner.png}+'?'+${version}" alt="" style="width: 64px">
-                                                  </div>
-                                                  <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top: 14px; text-align: left !important; font-size: 0.9em;">
-                                                      <div class="chk-content" onclick="javascript:document.getElementById('InpMultipleFicha').click();" style="font-size: 1em; !important">
-                                                          <a href="javascript:void(0)">
-                                                              Si ofreces servicios tanto de running como de otras disciplinas, debes elegir ambas fichas clickando aquí
-                                                          </a>
-                                                          <input id="InpMultipleFicha" type="checkbox"><span class="checkmark"></span>
+                                          <div class="form-group" id="FichasDisponibles">
+                                              <label>SELECCIONAR FICHA DE INSCRIPCIÓN
+                                                  <span class="obligatorio">*</span>
+                                                  <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Puede seleccionar ambas fichas en caso usted trabaje con multiples disciplinas incluído running"></i>
+                                              </label>
+                                              <div class="row">
+                                                  <ul class="checks">
+                                                      <div class="col-md-6 col-sm-6 col-xs-6-org">
+                                                          <li>
+                                                              <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
+                                                              <div class="chk-content chk-ficha">Standard
+                                                                  <input type="checkbox" checked="checked" value="1" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                              </div>
+                                                          </li>
                                                       </div>
-                                                  </div>
-                                                  <hr>
+                                                      <div class="col-md-6 col-sm-6 col-xs-6-org">
+                                                          <li>
+                                                              <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
+                                                              <div class="chk-content chk-ficha">Running
+                                                                  <input type="checkbox" value="2" name="FichaTrabajo" aria-invalid="false"><span class="checkmark"></span>
+                                                              </div>
+                                                          </li>
+                                                      </div>
+                                                  </ul>
                                               </div>
                                           </div>
                                   </div>
@@ -359,7 +362,6 @@
             btnGuardar.addEventListener('click', sendMainForm);
             inpImgPerfil.addEventListener('change', changeImgPerfil);
             inpImgPerfil.addEventListener('click', clickImgPerfiL);
-            inpMultipleFicha.addEventListener('click', clickMultipleFicha);
             btnVerPerEmpresa.addEventListener('click', clickRedireccionamientoPerfilEmpresa);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
@@ -665,8 +667,6 @@
                 body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
             }
 
-            body.sexo = Number($('input[name="Sexo"]:checked').val());
-            body.disciplinaIds = Array.from(document.getElementById('DisciplinaId').querySelectorAll("option:checked"),e=>e.value).join('|');
             body.tipoTrainerId = 3;
             body.svcIds = Array.from(document.querySelectorAll('input[type="checkbox"][name="SvcCheck"]:checked')).map(e=>e.value).join();
             if(body.svcIds === ""){
@@ -762,12 +762,6 @@
             document.querySelector('#NumeroDocumento').value = `23232323`;
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
-            Array.from(document.getElementById('DisciplinaId').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
-
-            setTimeout(()=>{
-                document.getElementById('btnElegirFicha').click();
-                setTimeout(()=>{document.querySelectorAll('.div-fichas')[1].click()}, 500)
-            }, 500);
 
             setTimeout(()=>{
                 document.querySelector('input[name="SvcCheck"]').checked = true;
@@ -781,6 +775,7 @@
 
         function generateBody(){
             const obj = getFormData($('#frm_registro'));
+            obj.sexo = Number($('input[name="Sexo"]:checked').val());
 
             //Ubigeo
             obj.paisId = 604;
@@ -792,6 +787,7 @@
             obj.correo = document.getElementById('Correo').value;
             obj.username = document.getElementById('Username').value;
             obj.password = document.getElementById('Password').value;
+            obj.disciplinas = getValuesByClass('inp-disciplina');
             obj.idiomas = $('#Idiomas').val().join('|');
             obj.niveles = getValuesConcatInpCheckbox('NivelClientes');
             obj.especialidades = getValuesByClass('inp-esp-domino');
@@ -799,7 +795,7 @@
             obj.experiencias = getValuesByClass('inp-experiencia');
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
-            obj.fichaClienteIds = inpMultipleFicha.checked ? "1|2" : Number(document.getElementById('btnElegirFicha').getAttribute('data-ficha-id'));
+            obj.fichaClienteIds = getValuesConcatInpCheckbox('FichaTrabajo');
             obj.nomPag = document.getElementById('NomPag').value;
 
             if(!obj.horario){

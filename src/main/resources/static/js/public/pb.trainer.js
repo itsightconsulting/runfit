@@ -428,16 +428,6 @@ function tycChangeEventListener(e, input, clases){
     }
 }
 
-function clickMultipleFicha(e){
-    const input = e.target;
-    if(input.checked){
-        btnElegirFicha.textContent = "FICHAS SELECCIONADAS: GENERAL Y RUNNING";
-    }else{
-        btnElegirFicha.innerHTML = "SELECCIONAR FICHA DE INSCRIPCIÓN<span class=\"obligatorio\">*</span>";
-    }
-    btnElegirFicha.click();
-}
-
 function uploadFotoPerfil(d){
     //submit the form here
     const hshId = d.res;

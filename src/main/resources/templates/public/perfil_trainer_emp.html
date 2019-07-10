@@ -181,12 +181,24 @@
                           <!-- DETALLE PAQUETE -->
                           <div class="clase-tarifario collapse in" id="contentTarifario">
                               <div class="form-group txt-tar">
-                                  <label for="NombreTarifario">NOMBRE</label>
-                                  <span  id="NombreTarifario" name="NombreTarifario"></span>
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>NOMBRE:</label>
+                                      </div>
+                                      <div class="col-xs-5">
+                                          <label id="NombreTarifario" class="txt-tarifario-right"></label>
+                                      </div>
+                                  </div>
                               </div>
                               <div class="form-group txt-tar">
-                                  <label for="FrecuenciaPaquete">FRECUENCIA</label>
-                                  <span id="FrecuenciaPaquete"></span>
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>FRECUENCIA:</label>
+                                      </div>
+                                      <div class="col-xs-5">
+                                          <label id="FrecuenciaPaquete" class=" txt-tarifario-right"></label>
+                                      </div>
+                                  </div>
                               </div>
                               <div class="form-group txt-tar">
                                   <div class="row">
@@ -233,7 +245,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.):</label>
+                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL:</label>
                                       </div>
                                       <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
                                           <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
@@ -243,7 +255,7 @@
                           </div>
                           <!-- END DETALLE PAQUETE -->
                           <!-- END TARIFARIOS-->
-                          <h4>MÉTODOS DE PAGO</h4>
+                          <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
                           <div class="row">
                               <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
                                   <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img th:src="@{/img/money.png}"></a>
@@ -254,9 +266,9 @@
                                   <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
                               </div>
                           </div>
-                          <div class="form-group" id="CuentaBanco">
-
-                          </div>
+                          <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
+                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                          </h4>
                           <div class="form-group hidden" id="divNotaFinal">
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
@@ -338,7 +350,7 @@
           document.querySelector('#txtCantidadPersonas').value = t.personas;
           document.querySelector('#txtCantidadMeses').value = t.meses;
           document.querySelector('#txtCantidadSesiones').value = t.sesiones;
-          document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
+          document.querySelector('#PrecioPaquete').value = (t.monedaId === 1 ? 'S/. ' : '$ ')+ parseFloat(t.precio).toFixed(2);
       }
 
       function mostrarDetalleServicio(servicioId){
@@ -749,19 +761,26 @@
       }
 
       function mostrarMediosPago(mediosPago, cuentas){
-        const ccs = mediosPago.split("|");
-        ccs.forEach(id=>{
-            tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
-        })
+          //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+          if(cuentas){
+              const ccs = JSON.parse(cuentas);
+              if(ccs.length){
+                  //Importante para que en el modal no aparezca el ícono imagen de eliminar
+                  ccs[0].noEdit = true;
+                  ccBancarias = ccs;
+              } else {
+                  document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+              }
+          }
 
-        if(cuentas != undefined){
-            cuentas = JSON.parse(cuentas);
-            ccBancarias = cuentas;
-            const mePagos = document.getElementById('MediosPagosAgregados');
-            cuentas.forEach(c=>{
-                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
-            });
-        }
+          if(!mediosPago){
+              document.querySelector('.title-metodo-pago').classList.add('hidden');
+              return;
+          }
+          const ccs = mediosPago.split("|");
+          ccs.forEach(id=>{
+              tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+          });
       }
 
       function irARegistrosTrainer(){
