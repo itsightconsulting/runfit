@@ -66,12 +66,9 @@
                                           <input class="form-control" name="Especialidad" id="Especialidad" data-aka="Especialidad" type="text">
                                       </div>
                                       <div class="form-group">
-                                          <label>ELIGE EL DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
-                                          <select class="form-control hidden" id="DisciplinaId" name="DisciplinaId"
-                                                  data-aka="Deporte o actividades"
-                                                  multiple="multiple" style=" height:80px !important;">
-                                              <option th:each="d: ${disciplinas}" th:value="${d.id}" th:text="${d.nombre}"></option>
-                                          </select>
+                                          <label>DEPORTE O ACTIVIDADES QUE REALIZAS<span class="obligatorio">*</span></label>
+                                          <input class="form-control mg-bt-10 inp-disciplina" id="Disciplinas" name="Disciplinas" type="text" placeholder="Ej: Running"/>
+                                          <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-disciplina', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                       </div>
                                       <div class="form-group">
                                           <label>ACERCA DE MÍ<span class="obligatorio">*</span></label>
@@ -951,6 +948,10 @@
                     Resultados: {
                         required: true,
                         rangelength: [20, 90]
+                    },
+                    Disciplinas:{
+                        required: true,
+                        rangelength: [3, 80]
                     },
                     NivelClientes:{
                         required: true

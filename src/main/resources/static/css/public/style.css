@@ -3983,3 +3983,8 @@ section.trainers-form {
 body.modal-open {
   overflow: hidden;
 }
+
+.check-success{
+  height: 50px;
+  width: 50px
+}

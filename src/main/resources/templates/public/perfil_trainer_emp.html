@@ -49,11 +49,8 @@
                       <p id="Especialidad"></p>
                     </div>
                     <div class="form-group">
-                      <label>ELIGE DEPORTE O ACTIVIDADES QUE REALIZAS</label>
-                      <ul id="Disciplina" class="list-description">
-                          <li th:each="d : ${disciplinas}">
-                            <p th:attr="data-disc-id=${#strings.substringBefore(d, ',')}" th:text="${#strings.substringAfter(d, ',')}"></p>
-                          </li>
+                      <label>DEPORTE O ACTIVIDADES QUE REALIZAS</label>
+                      <ul id="Disciplinas" class="list-description">
                       </ul>
                     </div>
                     <div class="form-group">

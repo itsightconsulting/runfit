@@ -14,6 +14,7 @@ public class TrainerFichaPOJO implements Serializable {
     private Integer sexo;
     private String fichaClienteIds;
     private String especialidad;
+    private String disciplinas;
     private String acerca;
     private String idiomas;
     private String estudios;
@@ -61,12 +62,13 @@ public class TrainerFichaPOJO implements Serializable {
         this.rows = rows;
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, Integer sexo, String fichaClienteIds, String especialidad, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String horario, String miniGaleria, String nota, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String cuentas, String mediosPago, String mapCoordenadas, Double mapCircleRadio, String redes, String staffGaleria, Integer tipoTrainerId, String svcIds) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, Integer sexo, String fichaClienteIds, String especialidad, String disciplinas, String acerca, String idiomas, String estudios, String metodoTrabajo, String experiencias, String resultados, String niveles, String centroTrabajo, String especialidades, String formasTrabajo, String horario, String miniGaleria, String nota, String correo, String ubigeo, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String cuentas, String mediosPago, String mapCoordenadas, Double mapCircleRadio, String redes, String staffGaleria, Integer tipoTrainerId, String svcIds) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.sexo = sexo;
         this.fichaClienteIds = fichaClienteIds;
         this.especialidad = especialidad;
+        this.disciplinas = disciplinas;
         this.acerca = acerca;
         this.idiomas = idiomas;
         this.estudios = estudios;
