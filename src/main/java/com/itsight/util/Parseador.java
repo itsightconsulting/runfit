@@ -5,10 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.hashids.Hashids;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Locale;
 
@@ -101,5 +103,9 @@ public class Parseador {
 	public static Integer getDecodeHash16Id(String schema,  String hash){
 		Hashids rfIdHash = new Hashids(schema, 16);
 		return Integer.parseInt(String.valueOf(rfIdHash.decode(hash).length > 0 ? rfIdHash.decode(hash)[0] : 0));
+	}
+
+	public static String getDecodeBase64(String encode){
+		return new String(Base64.getDecoder().decode(encode), StandardCharsets.UTF_8);
 	}
 }

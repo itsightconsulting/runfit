@@ -786,3 +786,40 @@ function setHeightForModals(arrModalIds){
         }
     })
 }
+
+
+
+function checkRedesAndNota(t){
+    if(t.redes != undefined && t.redes.length > 4){
+        const existsFb = t.redes.includes('fb:');
+        const r = document.querySelector('#RsFb');
+        if(existsFb){
+            r.classList.remove('hidden');
+            const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
+            const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+            r.href = f;
+        }else{r.classList.add('hidden')}
+        const existsIn = t.redes.includes('in:');
+        const inst = document.querySelector('#RsIn');
+        if(existsIn){
+            inst.classList.remove('hidden');
+            const pre = t.redes.slice(t.redes.indexOf("in:")+3);
+            const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+            inst.href = f;
+        }else{inst.classList.add('hidden')}
+        const existsYo = t.redes.includes('yo:');
+        const yo = document.querySelector('#RsYo');
+        if(existsYo){
+            yo.classList.remove('hidden');
+            const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
+            const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
+            yo.href = f;
+        }else{yo.classList.add('hidden')}
+        document.getElementById('lblRedes').classList.remove('hidden');
+    }
+
+    if(t.nota){
+        document.getElementById('divNotaFinal').classList.remove('hidden');
+        document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
+    }
+}

@@ -805,8 +805,6 @@
                 if($perfil.tipoTrainerId !== TipoTrainer.DE_EMPRESA){
                     getServiciosAsync(res.id);
                     document.querySelector('li a[href="#service"]').parentElement.classList.remove('hidden');
-                }else{
-                    getDisciplinasAsync(res.id);
                 }
                 checkTab();
 
@@ -817,33 +815,6 @@
                 exception(xhr);
             }, complete: () => {
             }
-        })
-    }
-
-    function getDisciplinasAsync(trainerId){
-        $.ajax({
-            type: 'GET',
-            url: _ctx + 'p/trainer/get/disciplinas/' + trainerId,
-            dataType: 'json',
-            noOne: true,
-            success: function (res) {
-                setDisciplinas(res);
-            }, error: (xhr) => {
-                exception(xhr);
-            }, complete: () => {
-            }
-        })
-    }
-
-    function setDisciplinas(arr) {
-        const div = document.getElementById('Disciplina');
-        const objArr = Array.from(arr).map(e =>{ return {id: e.split(',')[0], nm: e.split(',')[1]}});
-        objArr.forEach(e=> {
-            div.appendChild(htmlStringToElement(`
-              <li>
-                  <p data-disc-id="${e.id}">${e.nm}</p>
-              </li>
-              `));
         })
     }
 
@@ -1468,6 +1439,7 @@
                     rangelength: [10,150],
                 },
                 NombreServicio:{
+                    letterandnumber: true,
                     rangelength: [2, 50],
                 },
                 PrimerIncluyeServicio:{
@@ -1480,8 +1452,8 @@
                     rangelength: [20, 1000]
                 },
                 NombreTarifario:{
+                    letterandnumber: true,
                     rangelength: [2, 30],
-                    lettersonly: true
                 },
                 txtCantidadPersonas:{
                     digits: true,
