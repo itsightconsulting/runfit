@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(noRollbackFor = Exception.class)
+@Transactional
 public class CorreoServiceImpl extends BaseServiceImpl<CorreoRepository> implements CorreoService {
 
     public CorreoServiceImpl(CorreoRepository repository) {

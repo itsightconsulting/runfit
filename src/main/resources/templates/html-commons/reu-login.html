@@ -17,7 +17,7 @@
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
             <div class="actions">
                 <button class="btn-login" id="btn-login" type="button" onclick="javascript:submitReuseLogin()">INGRESAR</button>
-                <button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
+                <button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo"  id="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
             </div>
         </form>
     </div>
@@ -27,26 +27,26 @@
             <div class="login-register hidden">
                 <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
                     <label>Nombres</label>
-                    <input id="Nombres" name="Nombres" type="text">
+                    <input id="NombresRegistro" name="NombresRegistro" type="text">
                 </div>
                 <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
                     <label>Apellidos</label>
-                    <input id="Apellidos" name="Apellidos" type="text">
+                    <input id="ApellidosRegistro" name="ApellidosRegistro" type="text">
                 </div>
                 <div class="form-group form-alt mail"><span class="fa fa-envelope-o"></span>
                     <label>Correo electrónico</label>
-                    <input id="Correo" name="Correo" type="text">
+                    <input id="CorreoRegistro" name="CorreoRegistro" type="text">
                 </div>
                 <div class="form-group form-alt password"><span class="fa fa-unlock-alt"></span>
                     <label>Contraseña</label>
-                    <input id="PasswordRegister" name="PasswordRegister" type="password">
+                    <input id="PasswordRegistro" name="PasswordRegistro" type="password">
                 </div>
                 <div class="form-group  password"><span class="fa fa-unlock-alt"></span>
                     <label>Confirmar Contraseña</label>
-                    <input id="PasswordConfirmation" name="PasswordConfirmation"  type="password">
+                    <input id="PasswordConfirmacion" name="PasswordConfirmacion"  type="password">
                 </div>
                 <div class="actions">
-                    <button class="btn-guest-register" id="btn-register" name="btn-register" type="button" onclick="javascript:registro()">REGISTRAR</button>
+                    <button class="btn-guest-register" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
                     <p>¿Ya es miembro de RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
                 </div>
 

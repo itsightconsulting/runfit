@@ -18,8 +18,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Base64;
 import java.util.HashSet;
@@ -33,7 +35,7 @@ import static com.itsight.util.Utilitarios.encoderPassword;
 
 
 @Service
-@Transactional(noRollbackFor = Exception.class)
+@Transactional
 public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> implements VisitanteService {
 
     private static final Logger logger = LogManager.getLogger(VisitanteServiceImpl.class);
@@ -79,6 +81,7 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
 
                 repository.save(obj);
 
+
                 String hshId = Parseador.getEncodeHash32Id(schema, obj.getId());
                 String b64sc = new String(Base64.getEncoder().encode(schema.getBytes()));
 
@@ -93,8 +96,7 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
                 return ""+obj.getId();
 
             } catch (Exception e) {
-                e.printStackTrace();
-
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "some error", e);
             }
 
         }else{
@@ -105,7 +107,7 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
 
         }
 
-            return Enums.ResponseCode.VF_USUARIO_REPETIDO.get();
+           // return Enums.ResponseCode.VF_USUARIO_REPETIDO.get();
     }
 
     @Override

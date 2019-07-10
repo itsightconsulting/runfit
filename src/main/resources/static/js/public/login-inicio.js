@@ -2,6 +2,7 @@ const formRecuperacion = document.getElementById('recover-pass-form');
 const btnRecuperar = document.getElementById('btnRecuperar');
 const btnCambiar = document.getElementById('btnCambiar');
 const btnRegistrar = document.getElementById('btn-register');
+const btnNuevo = document.getElementById('btn-nuevo');
 
 (function () {
     init();
@@ -12,7 +13,6 @@ const btnRegistrar = document.getElementById('btn-register');
 
 function init(){
     eventos();
-    validacionFormularioVisitante();
 
 
 
@@ -27,9 +27,15 @@ function eventos(){
         btnCambiar.addEventListener('click', preSendFormCambiar);
     }
 
-    if(btnRegistrar){//Finalizar recuperación password con el cambio
+    if(btnRegistrar){//Finalizar registro
         btnRegistrar.addEventListener('click', registro);
     }
+
+    if(btnNuevo){// Disparar validaciones en formulario de registro
+
+        btnNuevo.addEventListener('click', validacionFormularioVisitante);
+    }
+
 
     body.addEventListener('focusout', bodyFocusOutEventListener);
     body.addEventListener('keyup', bodyKeyupEventListener);
@@ -181,16 +187,26 @@ function customErrorHandler(xhr, input){
 function registro() {
 
 
-
     if ($("#register-form").valid()) {
         const params = getFormData($('#register-form'));
 
-        params.password = $('#PasswordRegister').val();
 
-       delete params.passwordRegister;
+       params.password = $('#PasswordRegistro').val();
+
+       delete params.passwordRegistro;
 
 
        console.log(params);
+
+       let registroParams ={
+                    nombres : params.nombresRegistro,
+                    apellidos : params.apellidosRegistro,
+                    correo :  params.correoRegistro,
+                    password: params.password
+
+       }
+
+       console.log(registroParams);
 
        $.ajax({
                 type: 'POST',
@@ -198,7 +214,7 @@ function registro() {
                 url: _ctx+'p/visitante/registro',
                 dataType: "json",
                 blockLoading: true,
-                data: params,
+                data: registroParams,
                 success: function (data, textStatus) {
 
                     setTimeout(()=>{
@@ -224,7 +240,7 @@ function registro() {
 
                         $.smallBox({
                             title: "Notificaciones Runfit",
-                            content: '<p>"+mensaje+"</p>',
+                            content: '<p>'+mensaje+'</p>',
                             timeout: 4500,
                             color:  '#cc4d4d',
                             icon: "fa fa-exclamation-circle"
@@ -239,6 +255,8 @@ function registro() {
 
 
         }
+
+
 }
 
 function validacionFormularioVisitante(){
@@ -255,34 +273,34 @@ function validacionFormularioVisitante(){
             $(element).addClass('valid');
         },
         rules: {
-            Nombres: {
+            NombresRegistro: {
                 required: true,
                 rangelength: [1, 30],
                 lettersonly:true
             },
-            Apellidos: {
+            ApellidosRegistro: {
                 required: true,
                 rangelength: [3, 30],
                 lettersonly: true
             },
-            Correo: {
+            CorreoRegistro: {
                 required: true,
                 rangelength: [7, 30],
                 emailValid:true
             },
-            PasswordRegister: {
+            PasswordRegistro: {
                 required: true,
                 rangelength: [8, 30],
                 pwcheck: true
             },
-            PasswordConfirmation: {
+            PasswordConfirmacion: {
                 required: true,
-                equalTo: "#PasswordRegister"
+                equalTo: "#PasswordRegistro"
             },
         },
         // Messages for form validation
         messages: {
-            PasswordConfirmation : {
+            PasswordConfirmacion : {
                 equalTo: 'Repite la misma contraseña'
             }
         },

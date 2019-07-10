@@ -3,6 +3,7 @@ const formRecuperacion = document.getElementById('recover-pass-form');
 const btnRecuperar = document.getElementById('btnRecuperar');
 const btnCambiar = document.getElementById('btnCambiar');
 const btnRegistrar = document.getElementById('btn-register');
+const btnNuevo = document.getElementById('btn-nuevo');
 
 (function () {
     init();
@@ -13,7 +14,6 @@ const btnRegistrar = document.getElementById('btn-register');
 
 function init(){
     eventos();
-    validacionFormularioVisitante();
 
 
 
@@ -30,6 +30,11 @@ function eventos(){
 
     if(btnRegistrar){//Finalizar recuperación password con el cambio
         btnRegistrar.addEventListener('click', registro);
+    }
+
+    if(btnNuevo){// Disparar validaciones en formulario de registro
+
+        btnNuevo.addEventListener('click', validacionFormularioVisitante);
     }
 
     body.addEventListener('focusout', bodyFocusOutEventListener);
@@ -225,7 +230,7 @@ function registro() {
 
                         $.smallBox({
                             title: "Notificaciones Runfit",
-                            content: '<p>"+mensaje+"</p>',
+                            content: '<p>'+mensaje+'</p>',
                             timeout: 4500,
                             color:  '#cc4d4d',
                             icon: "fa fa-exclamation-circle"
