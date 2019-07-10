@@ -709,6 +709,7 @@
                 }
             },
             error: function (xhr) {
+                $("#frm_registro :input").prop("disabled", false);
                 exception(xhr);
             },
             complete: function () {

@@ -17,20 +17,20 @@ public class CuentaPago implements Serializable {
     @NotNull
     private Integer bancoId;
     @NotBlank
-    @Size(min= 10,max = 40)
+    @Size(min= 10,max = 30)
     private String numeroSoles;
-    @Size(min= 10,max = 40)
+    @Size(min= 10,max = 30)
     private String numeroDolares;
     @NotBlank
-    @Size(min= 10,max = 50)
+    @Size(min= 10,max = 30)
     private String interbancarioSoles;
-    @Size(min= 10,max = 50)
+    @Size(min= 10,max = 30)
     private String interbancarioDolares;
     @NotBlank
-    @Size(min= 8,max = 80)
+    @Size(min= 6,max = 60)
     private String titular;
-    @Size(max = 40)
+    @Size(max = 20)
     private String titularTipoDoc;
-    @Size(min= 8,max = 16)
+    @Size(min= 8,max = 13)
     private String titularNumDoc;
 }

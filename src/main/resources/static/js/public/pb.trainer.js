@@ -101,10 +101,12 @@ function bodyFocusOutListenerOwn(e) {
 }
 
 function instanceInitTab(){
-    document.querySelector('.step-0'+initPageActive).classList.add('active');
-    document.querySelector('.inpts-'+initPageActive).classList.add('active');
-    //Si este metodo se ejecuta primero que los demás en el evento init, se interrumpe el proceso y el jquery validate no funciona
-    document.querySelector('.step-0'+initPageActive).click();
+    if(flag_form_populate){
+        document.querySelector('.step-0'+initPageActive).classList.add('active');
+        document.querySelector('.inpts-'+initPageActive).classList.add('active');
+        //Si este metodo se ejecuta primero que los demás en el evento init, se interrumpe el proceso y el jquery validate no funciona
+        document.querySelector('.step-0'+initPageActive).click();
+    }
 }
 
 function agregarServicio(){
@@ -424,16 +426,6 @@ function tycChangeEventListener(e, input, clases){
                 timeout: 3500})
         }
     }
-}
-
-function clickMultipleFicha(e){
-    const input = e.target;
-    if(input.checked){
-        btnElegirFicha.textContent = "FICHAS SELECCIONADAS: GENERAL Y RUNNING";
-    }else{
-        btnElegirFicha.innerHTML = "SELECCIONAR FICHA DE INSCRIPCIÓN<span class=\"obligatorio\">*</span>";
-    }
-    btnElegirFicha.click();
 }
 
 function uploadFotoPerfil(d){
