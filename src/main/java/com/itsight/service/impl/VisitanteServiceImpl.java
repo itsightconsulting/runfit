@@ -64,8 +64,6 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
 
         if (!securityUserRepository.findCorreoExist(visitanteDTO.getCorreo())) {
 
-            try {
-
                 Visitante obj = new Visitante();
                 String contraseñaEncrypt = encoderPassword(visitanteDTO.getPassword());
 
@@ -94,10 +92,6 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
                 emailService.enviarCorreoInformativo(correo.getAsunto(), correoDestinatario, cuerpo);
 
                 return ""+obj.getId();
-
-            } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "some error", e);
-            }
 
         }else{
 

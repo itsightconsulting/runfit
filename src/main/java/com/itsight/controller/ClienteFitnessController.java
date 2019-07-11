@@ -95,9 +95,9 @@ public class ClienteFitnessController {
     public @ResponseBody
     ResponseEntity<ClienteFitnessPOJO> obtenerInfoCompletaByClienteId(HttpSession session){
 
+
         Integer clienteId = (Integer) session.getAttribute("id");
         ClienteFitnessPOJO fichaClienteFitness = clienteFitnessProcedureInvoker.getById(clienteId);
-
 
         return new ResponseEntity<>(fichaClienteFitness, HttpStatus.OK);
     }

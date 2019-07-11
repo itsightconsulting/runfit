@@ -258,10 +258,7 @@
 
     function activarCliente(e){
 
-
-
         const clienteId = e;
-
         let filtroPeriodo = flagBusqueda ?  currentPeriodoSeleccionado  : defaultFilter;
 
 
@@ -293,7 +290,7 @@
 
 
 
-        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+mes+"</span>");
+        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+mes+" "+año+"</span>");
         $('#fechaListaSuspendidos').html( ""+mes+" "+año);
     }
 
@@ -583,7 +580,7 @@
                 <div class="col-sm-8"><img class="user" src="${_ctx}img/user.png">
                 <h4>${e.cliNombreCompleto}<span> ${moment(e.fechaCreacion).format("DD/MM/YYYY")}</span></h4>
             </div>
-            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#">ver perfil</a></div>
+            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#" onClick="document.location.href=getClientePerfil(${e.id});"  >ver perfil</a></div>
             </div>
             </li>`));
 
@@ -599,6 +596,16 @@
         calendariosuspendidos.appendChild(htmlStringToElement(`<h4> CALENDARIO ANUAL </h4>`));
 
 
+    }
+
+    function getClientePerfil(clienteId)
+    {
+        sessionStorage.setItem("currentSelectedClienteId" , clienteId);
+
+        let x = sessionStorage.getItem("currentSelectedClienteId");
+
+
+        return "/gestion/cliente-fitness/perfil";
     }
 
 

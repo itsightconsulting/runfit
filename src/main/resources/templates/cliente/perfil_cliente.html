@@ -1083,24 +1083,57 @@
 
     function cargarDataCliente(){
 
-        console.log("Hola");
-        $.ajax({
-            type: "GET",
-            url: _ctx + 'gestion/cliente-fitness/obtener/completo',
-            dataType: "json",
-            blockLoading: false,
-            success:  function(data){
-               setDataCliente(data);
+        let currentClienteId = sessionStorage.getItem("currentSelectedClienteId");
 
-            },
-            error:   function(xhr){
-                exception(xhr);
+        if(currentClienteId){
 
-            },
-            complete: function(){
 
-            }
-        })
+            $.ajax({
+                type: "GET",
+                url: _ctx + 'gestion/cliente-fitness/obtener/completo',
+                dataType: "json",
+                data:{id: currentClienteId},
+                blockLoading: false,
+                success:  function(data){
+                    setDataCliente(data);
+                    sessionStorage.removeItem("currentSelectedClienteId");
+
+                },
+                error:   function(xhr){
+                    exception(xhr);
+
+                },
+                complete: function(){
+
+                }
+            })
+
+
+        }
+        else{
+
+            $.ajax({
+                type: "GET",
+                url: _ctx + 'gestion/cliente-fitness/obtener/completo',
+                dataType: "json",
+                blockLoading: false,
+                success:  function(data){
+                    setDataCliente(data);
+
+                },
+                error:   function(xhr){
+                    exception(xhr);
+
+                },
+                complete: function(){
+
+                }
+            })
+
+
+        }
+
+
     }
 
 
