@@ -1252,6 +1252,10 @@ ul.tabs {
   padding-bottom: 9px;
 }
 
+.trainers-form .sub-menu[data-op="2"]{
+  padding-bottom: 12px !important;
+}
+
 .trainers-form #FichasDisponibles .img-ficha {
   width: 64px;
 }

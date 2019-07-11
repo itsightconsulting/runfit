@@ -22,6 +22,9 @@ CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
                   tipoTrainerId int,
                   rowz int) AS
 $func$
+
+select *,
+       CAST(count(*) over() as int) rowz from (
 select DISTINCT id,
        nombreCompleto,
        especialidad,
@@ -31,8 +34,7 @@ select DISTINCT id,
        totalValoracion,
        nomImgPerfil,
        nomPag,
-       tipoTrainerId,
-       CAST(count(*) over() as int) rowz
+       tipoTrainerId
 from (select
     ff.trainer_id id,
     concat(jt.nombres, ' ',jt.apellidos) nombreCompleto,
@@ -81,7 +83,10 @@ where
     ($7 IS NULL OR y.ubigeo = $7) AND
     ($8 IS NULL OR public.f_unaccent(LOWER(y.servicio)) LIKE public.f_unaccent(LOWER(CONCAT('%', $8,'%')))) AND
     ($9 IS NULL OR coalesce(totalValoracion/NULLIF(canPerValoracion,0), 0) >= $9) AND
-    y.fg = true
+    y.fg = true) as fx
     LIMIT $10
     OFFSET $11
 $func$ LANGUAGE sql;
+
+
+

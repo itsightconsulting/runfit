@@ -217,9 +217,6 @@ function clickListenerTabService(e) {
         const svcFocus = tabService.querySelector('.tarifa-svc-pick');
         svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
         padre.classList.add('tarifa-svc-pick');
-        /*const abuelo = padre.parentElement;
-        abuelo.querySelectorAll('.edit').forEach(e=>e.classList.add('hidden'));
-        padre.querySelector('.edit').classList.remove('hidden');*/
         mostrarDetalleTarifaSvc(Number(tarifaId));
         //Agregando el data id
         const butonEdit = document.querySelector('button.edit-tar-svc');

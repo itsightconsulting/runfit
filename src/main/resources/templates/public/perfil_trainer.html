@@ -462,7 +462,11 @@
               t.id = ix;
               dt.appendChild(
                   htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
-          })
+          });
+
+          if($('#Tarifarios .tarifa-svc')[0]){
+              $('#Tarifarios .tarifa-svc')[0].click();
+          }
       }
 
       function putTarifario(id, nombre){
@@ -695,9 +699,6 @@
                   reconstruirServicios(servicios);
                   setTarifarios(servicios[0].tarifarios)
                   setFileTermCond(servicios[0]);
-                  if($('#Tarifarios .tarifa-svc')[0]){
-                      $('#Tarifarios .tarifa-svc')[0].click();
-                  }
               }, error: (xhr) => {
                   if (xhr.status == 404) {
                       window.location.href = _ctx + "p/recurso-no-encontrado";

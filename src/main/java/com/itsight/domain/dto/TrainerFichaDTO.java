@@ -20,6 +20,9 @@ public class TrainerFichaDTO implements Serializable {
     @Positive
     @Max(3)
     private Integer sexo;
+    @NotNull
+    @Size(min = 3, max = 1620)
+    private String disciplinas;
     @Size(min=5, max = 80)
     private String especialidad;
     @Size(min = 80, max = 2000)

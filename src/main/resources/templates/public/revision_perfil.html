@@ -205,7 +205,11 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="service">
-                            <h4>MIS SERVICIOS</h4>
+                            <h4 class="sub-menus">
+                                <span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span>
+                                <span class="obligatorio">*</span>
+                                <span class="sub-menu" data-op="2" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span>
+                            </h4>
                             <div>
                                 <div class="ver-servicios">
                                 </div>
@@ -228,32 +232,44 @@
                                         <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
                                     </div>
                                     <div id="EnlaceTYC" class="form-group hidden">
-                                        <label>TÉRMINOS Y CONDICIONES:
-                                            <a href="#"><i rel="tooltip" title="Ver términos y condiciones" class="fa fa-fw fa-eye" data-target="#modalTYC" data-toggle="modal"></i></a>
+                                        <label class="title-icon-ver">TÉRMINOS Y CONDICIONES:
+                                            <i rel="tooltip" data-placement="bottom" data-original-title="Ver términos y condiciones" data-target="#modalTYC" data-toggle="modal"></i>
                                         </label>
                                     </div>
                                 </div>
-                                <h4 class="sub-title">TARIFARIO
+                                <h4 class="sub-title st-tarifario hidden">TARIFARIOS
                                     <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
-                                    <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
+                                    <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentTarifario" class="fa fa-chevron-up fa-plus-cs hidden" style="color: #a8fa00;float:right;"></i>
                                 </h4>
                                 <div class="row">
-                                    <div class="col col-md-12 text-center" id="Tarifarios">
+                                    <div class="col col-md-12 text-center hidden" id="Tarifarios">
                                     </div>
                                 </div>
-                                <div class="clase-tarifario collapse in" id="contentTarifario">
-                                    <div class="form-group">
-                                        <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
-                                        <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
+                                <div class="clase-tarifario collapse in hidden" id="contentTarifario">
+                                    <div class="form-group margin-bottom-12">
+                                        <div class="row">
+                                            <div class="col-md-4 col-xs-12">
+                                                <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
+                                            </div>
+                                            <div class="col-md-8 col-xs-12">
+                                                <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
-                                        <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
-                                            <option value="Diaria">Diaria</option>
-                                            <option value="Interdiaria">Interdiaria</option>
-                                            <option value="Semanal">Semanal</option>
-                                            <option value="Quincenal">Quincenal</option>
-                                        </select>
+                                    <div class="form-group margin-bottom-12">
+                                        <div class="row">
+                                            <div class="col-md-4 col-xs-12">
+                                                <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                            </div>
+                                            <div class="col-md-8 col-xs-12">
+                                                <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
+                                                    <option value="Diaria">Diaria</option>
+                                                    <option value="Interdiaria">Interdiaria</option>
+                                                    <option value="Semanal">Semanal</option>
+                                                    <option value="Quincenal">Quincenal</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
@@ -312,15 +328,30 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-7">
-                                                <label>PRECIO TOTAL(S/.)</label>
+                                                <label>MONEDA</label>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <select class="no-multi" style="display: inline" id="Moneda"><option value="1">S/.</option><option value="2">$</option></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <label>PRECIO TOTAL</label>
                                             </div>
                                             <div class="col-xs-5 text-right">
                                                 <input id="PrecioPaquete" name="PrecioPaquete" class="price" type="text" value="0.00">
                                             </div>
                                         </div>
                                     </div>
-                                <hr>
-                                <h4>MÉTODOS DE PAGO<span class="obligatorio">*</span></h4>
+                                    <div class="col-md-12 padding-0">
+                                        <div class="col-md-4 col-xs-12 padding-0">
+                                            <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button">
+                                                <i class="fa fa-pencil fa-fw"></i> EDITAR
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
                                 <div class="row">
                                     <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
                                         <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img th:src="@{/img/money.png}"></a>
@@ -331,44 +362,9 @@
                                         <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
                                     </div>
                                 </div>
-                                <div class="collapse in" id="contentInfoPago">
-                                    <div class="form-group info-cuenta hidden">
-                                        <select class="form-control" name="BancoId" id="BancoId">
-                                        </select>
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <input class="form-control" id="TitularCuenta" type="text" placeholder="Titular de la cuenta">
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <select class="form-control" id="TitularTipoDoc">
-                                            <option value="DNI">DNI</option>
-                                            <option value="CE">CE</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <input class="form-control" id="TitularNumDoc" type="text" placeholder="Número de documento de identidad">
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <input class="form-control" id="NumeroCuentaSoles" type="text" placeholder="Número de cuenta soles">
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <input class="form-control" id="NumeroCuentaDolares" type="text" placeholder="Número de cuenta dólares">
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <input class="form-control" id="InterbancarioSoles" type="text" placeholder="Número de código interbancario soles">
-                                    </div>
-                                    <div class="form-group info-cuenta hidden">
-                                        <input class="form-control" id="InterbancarioDolares" type="text" placeholder="Número de código interbancario dólares">
-                                    </div>
-                                    <div class="form-group info-tarjetas hidden">
-                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="1" class="img-cc cc-elegir" th:src="@{/img/mastercard.png}+'?'+${version}" style="width: 64px;"></a>
-                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="2" class="img-cc cc-elegir" th:src="@{/img/visa.png}+'?'+${version}" style="width: 64px;"></a>
-                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="3" class="img-cc cc-elegir" th:src="@{/img/amex.png}+'?'+${version}" style="width: 64px;"></a>
-                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="4" class="img-cc cc-elegir" th:src="@{/img/diners-club.png}+'?'+${version}" style="width: 64px;"></a>
-                                        <a href="javascript:void(0);" style="padding-right: 30px"><img data-id="5" class="img-cc cc-elegir" th:src="@{/img/discover.png}+'?'+${version}"></a>
-                                    </div>
-                                </div>
-                                <hr>
+                                <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
+                                    <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                                </h4>
                                 <input type="file" id="inpCondServicio" class="hide">
                                 <input type="hidden" id="FichaClienteId"/>
                                 <div class="form-group hidden" id="divNota">
@@ -377,7 +373,7 @@
                                     </label>
                                     <textarea class="form-control" id="Nota" name="Nota"></textarea>
                                 </div>
-                            </div>
+
                         </div>
 
                             </div>
@@ -438,6 +434,37 @@
         const input = e.target;
         const clases = input.classList;
         checkBoxAndRadioValidationEventListener(e, input, clases);
+
+        if(clases.contains('sub-menu')){
+            if(!servicios.length){
+                $.smallBox({timeout: 9000, color: 'alert', content: '<span><i class="fa fa-exclamation-circle fa-fw"></i>Los tarifarios van asociados a los servicios, es por ello que primero debe registrar un servicio y después volver a este menú</span>'})
+                return;
+            }
+            const subTitleTarifario = document.querySelector('.st-tarifario>i.fa-plus-cs');
+            const svcBasics = document.querySelector('#SvcCamposBasicos');
+            const tarBasics = document.querySelector('#contentTarifario');
+            const svcEdit = document.querySelector('.svc-focus').parentElement.querySelector('a.edit');
+            const sbTarifario = document.querySelector('.st-tarifario');
+            const tarifarios = document.getElementById('Tarifarios');
+            const opc = Number(input.getAttribute('data-op'));
+            document.querySelector('.sub-menu-selected').classList.remove('sub-menu-selected');
+            input.classList.add('sub-menu-selected');
+            if(opc === 1){
+                $(svcBasics).hide().fadeIn().removeClass('hidden');
+                svcEdit.classList.remove('hidden');
+                tarBasics.classList.add('hidden');
+                subTitleTarifario.classList.add('hidden');
+                sbTarifario.classList.add('hidden');
+                tarifarios.classList.add('hidden');
+            } else {
+                svcBasics.classList.add('hidden');
+                svcEdit.classList.add('hidden');
+                tarBasics.classList.remove('hidden');
+                subTitleTarifario.classList.remove('hidden');
+                sbTarifario.classList.remove('hidden');
+                tarifarios.classList.remove('hidden');
+            }
+        }
     }
 
     function clickListenerTabService(e) {
@@ -466,10 +493,10 @@
             const svcFocus = tabService.querySelector('.tarifa-svc-pick');
             svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
             padre.classList.add('tarifa-svc-pick');
-            const abuelo = padre.parentElement;
-            abuelo.querySelectorAll('.edit').forEach(e=>e.classList.add('hidden'));
-            padre.querySelector('.edit').classList.remove('hidden');
             mostrarDetalleTarifaSvc(Number(tarifaId));
+            //Agregando el data id
+            const butonEdit = document.querySelector('button.edit-tar-svc');
+            butonEdit.setAttribute('data-id', tarifaId);
         } else if(clases.contains('edit-svc')){
             const svcId = Number(input.getAttribute('data-id'));
             editarServicio(svcId);
@@ -1059,12 +1086,12 @@
     }
 
     function setFileTermCond(svc){
-        if(svc.condicionesServicioRuWeb){
+        if(svc.tycFile){
             document.getElementById('EnlaceTYC').classList.remove('hidden');
             const doc = document.createElement('embed');
             doc.type = "application/pdf";
             doc.style = "width: 100%; height: 100%";
-            doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.condicionesServicioRuWeb;
+            doc.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+"/"+svc.tycFile;
             document.getElementById('TYC').innerHTML = "";
             document.getElementById('TYC').appendChild(doc);
         } else {
@@ -1113,10 +1140,7 @@
                             <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
-                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
-                            <img style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
-                        </a>
-                    </div>`
+                    </div>`;
     }
 
     function mostrarDetalleTarifaSvc(tarifaId){
@@ -1126,6 +1150,8 @@
         document.querySelector('#txtCantidadMeses').value = t.meses;
         document.querySelector('#txtCantidadSesiones').value = t.sesiones;
         document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
+        document.querySelector('#Moneda').value = t.monedaId;
+        $('#FrecuenciaPaquete').multiselect('refresh');
     }
 
     function editarTarifa(tId){
@@ -1177,22 +1203,27 @@
     }
 
     function mostrarMediosPago(mediosPago, cuentas){
+        //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+        if(cuentas){
+            const ccs = JSON.parse(cuentas);
+            if(ccs.length){
+                //Importante para que en el modal no aparezca el ícono imagen de eliminar
+                ccs[0].noEdit = true;
+                ccBancarias = ccs;
+            } else {
+                document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+            }
+        }
+
         if(!mediosPago){
+            document.querySelector('.title-metodo-pago').classList.add('hidden');
             return;
         }
+
         const ccs = mediosPago.split("|");
         ccs.forEach(id=>{
             tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
-        })
-
-        if(cuentas != undefined){
-            cuentas = JSON.parse(cuentas);
-            ccBancarias = cuentas;
-            const mePagos = document.getElementById('MediosPagosAgregados');
-            cuentas.forEach(c=>{
-                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
-            });
-        }
+        });
     }
 
     function getRedesSociales(){
@@ -1276,6 +1307,7 @@
     function generateBodyToUpdate(){
         const obj = getFormData($('#frm_registro'));
 
+        obj.disciplinas = getValuesByClass('inp-disciplina');
         obj.idiomas = $('#Idiomas').val().join('|');
         obj.estudios = getValuesByClass('inp-estudio');
         obj.experiencias = getValuesByClass('inp-experiencia');
