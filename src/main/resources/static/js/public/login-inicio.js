@@ -1,8 +1,11 @@
+const body_ = document.querySelector('body');
 const formRecuperacion = document.getElementById('recover-pass-form');
 const btnRecuperar = document.getElementById('btnRecuperar');
 const btnCambiar = document.getElementById('btnCambiar');
 const btnRegistrar = document.getElementById('btn-register');
 const btnNuevo = document.getElementById('btn-nuevo');
+const btnStartUpIniciarSesion = document.getElementById('login_link');
+
 
 (function () {
     init();
@@ -36,9 +39,14 @@ function eventos(){
         btnNuevo.addEventListener('click', validacionFormularioVisitante);
     }
 
+    if(btnStartUpIniciarSesion){// Disparar login
 
-    body.addEventListener('focusout', bodyFocusOutEventListener);
-    body.addEventListener('keyup', bodyKeyupEventListener);
+        btnStartUpIniciarSesion.addEventListener('click', inicializarLoginForm);
+    }
+
+
+    body_.addEventListener('focusout', bodyFocusOutEventListener);
+    body_.addEventListener('keyup', bodyKeyupEventListener);
 
 }
 
@@ -233,7 +241,8 @@ function registro() {
                 },
                 error: function (xhr) {
 
-                    const mensaje = xhr.responseJSON.message;
+                        const mensaje = xhr.responseJSON.message;
+                        console.log(mensaje);
 
                         $('#divSmallBoxes').css('z-index','100000');
 
@@ -322,4 +331,13 @@ function getFormData($form) {
     });
 
     return indexed_array;
+}
+
+
+function inicializarLoginForm(){
+
+    document.querySelector('.login').classList.add('active');
+    $('html, body').css('overflowY', 'hidden');
+    goLogin();
+
 }

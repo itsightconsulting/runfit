@@ -91,13 +91,13 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/{nomPag:.+}")
-    public @ResponseBody ModelAndView getTrainerByUsername(){
+    public  ModelAndView getTrainerByUsername(){
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
     }
 
 
     @GetMapping("/get/revision/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerByIdRevision(Model model,
+    public  ModelAndView getTrainerByIdRevision(Model model,
                 @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
         Integer trainerId = getDecodeHashIdSecCustom("rf-aprobacion", hshTrainerId);
 
@@ -115,12 +115,11 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/get/revision/s/{nomPag:.+}")
-    public @ResponseBody ModelAndView getTrainerRevisionVistaByUsername(@PathVariable String nomPag, Model model){
+    public  ModelAndView getTrainerRevisionVistaByUsername(@PathVariable String nomPag, Model model){
         Boolean existsAuthorize = trainerFichaService.getFlagPermisoUpdByNomPag(nomPag);
         if(existsAuthorize == null){
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
-
         if(!existsAuthorize){
             model.addAttribute("msg", Enums.Msg.TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS.get());
             return new ModelAndView(ViewConstant.MAIN_INF_N);
@@ -147,7 +146,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/ver/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerById(Model model, @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
+    public ModelAndView getTrainerById(Model model, @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
         model.addAttribute("porAprobar", true);
         model.addAttribute("hshTrainerId", hshTrainerId);
         Integer trainerId = getDecodeHashIdSecCustom("rf-aprobacion", hshTrainerId);
@@ -170,7 +169,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/checkout/{hshPostTrainerId}/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerEmpresa(
+    public ModelAndView getTrainerEmpresa(
             Model model,
             @PathVariable(name = "hshPostTrainerId") String hshPostTrainerId,
             @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
