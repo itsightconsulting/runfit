@@ -821,9 +821,9 @@
 </div>
 <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+<script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
 <script th:inline="javascript">
   const initPageActive = 1;
-
   const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
   const stUbicacion = document.getElementById('stUbicacion');
   const frm = document.getElementById('frm_registro');
