@@ -1591,17 +1591,15 @@ ul.tabs {
     font-size: 16px;
     white-space: inherit
   }
-<<<<<<< HEAD
   .trainers-form .btn-black, .trainers-form .btn-white {
     max-width: 250px !important;
-=======
+  }
   .trainers-form .btn-tarifario {
     width: 100% !important;
   }
 
   .trainers-form .sub-menus span{
     font-size: 14px !important;
->>>>>>> 44dddecdc7ab0be65ba5ebec2d3066dce37ca8b2
   }
   /*21-06-19*/
   .rating-holder{
