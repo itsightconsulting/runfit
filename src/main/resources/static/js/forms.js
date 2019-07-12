@@ -645,9 +645,10 @@ function depYprovChange(depId, provId, pos){
         document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
         if(pos == 1){
             const dis = document.getElementById('Dis');
-            document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
+            dis.innerHTML = '<option value="">Seleccione provincia</option>';
+            $(dis).multiselect('rebuild');
         }
-        $(pos==1 ? '#Pro' : '#Dis').multiselect('rebuild');
+        $(pos == 1 ? '#Pro' : '#Dis').multiselect('rebuild');
     }).catch((err)=>{
         exception(err);
     });

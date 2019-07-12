@@ -1173,3 +1173,4 @@ function resetTarifarios(){
     cleanPaqueteCampos();
     Tarifarios.innerHTML = "";
 }
+

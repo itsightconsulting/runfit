@@ -184,6 +184,7 @@ public class Enums {
         USUARIO_NO_EXISTE("El usuario que ha ingresado no existe."),
         USUARIO_INACTIVO("El usuario que ha ingresado se encuentra inactivo."),
         ENLACE_CADUCADO("El enlace ha caducado"),
+        CAMBIO_PASSWORD_PASADO("Usted ya ha cambiado su contraseña anteriormente por lo que este link ya no funciona."),
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado");
 
         final String msg;

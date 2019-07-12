@@ -3,34 +3,27 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.SecurityUser;
 import com.itsight.domain.UsuarioRecover;
 import com.itsight.domain.dto.PasswordDTO;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.UsuarioRecoverRepository;
 import com.itsight.service.EmailService;
-import com.itsight.service.SecUserProcedureInvoker;
 import com.itsight.service.SecurityUserService;
-import com.itsight.service.impl.SecurityServiceImpl;
 import com.itsight.util.Enums;
-import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
+import static com.itsight.util.Enums.Msg.CAMBIO_PASSWORD_PASADO;
 import static com.itsight.util.Enums.Msg.ENLACE_CADUCADO;
 
 @Controller
@@ -123,10 +116,12 @@ public class AuthController extends BaseController {
         if(usurec == null){
             return ViewConstant.P_ERROR404;
         }
+
         if(!usurec.isFlagRecover()){
-            model.addAttribute("msg", ENLACE_CADUCADO.get());
+            model.addAttribute("msg", CAMBIO_PASSWORD_PASADO.get());
             return ViewConstant.MAIN_INF_N;
         }
+
         if(usurec.getFechaLimite().before(new Date())){
             model.addAttribute("msg", ENLACE_CADUCADO.get());
             return ViewConstant.MAIN_INF_N;

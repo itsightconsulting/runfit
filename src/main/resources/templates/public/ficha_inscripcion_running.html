@@ -1628,20 +1628,21 @@
       function bodyFocusOutEventListener(e){
         const input = e.target;
         if(input.tagName === "INPUT"){
-
           //Generación de IMC
-          var peso = $('#Peso').val();
-          var talla = $('#Talla').val();
+          if(input.id && input.id==="Peso" || input.id && input.id==="Talla"){
+            var peso = $('#Peso').val();
+            var talla = $('#Talla').val();
 
-          if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
+            if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
 
-            var tallaKg =  talla / 100;
-            var imc = peso / Math.pow(tallaKg,2);
-            imc = imc.toFixed(1);
-            $('#Imc').val(imc);
-          } else {
-            $('#Imc').val("");
+              var tallaKg =  talla / 100;
+              var imc = peso / Math.pow(tallaKg,2);
+              imc = imc.toFixed(1);
+              $('#Imc').val(imc);
+            } else {
+              $('#Imc').val("");
 
+            }
           }
           //Fin de generación de IMC
 
@@ -1868,29 +1869,6 @@
         return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
       }
 
-      function depYprovChange(depId, provId, pos){
-        const scpY = '&amp;';
-        const url = pos == 1 ? `p/ubigeo/get/peru-prov-by-dep?depId=${depId}` : `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${depId+scpY.substr(0,1)}provId=${provId}`;
-        fetch(_ctx+url)
-                .then(res=> {
-                          if(res.ok){
-                            return res.json();
-                          }
-                        }
-                ).then(res=>{
-          const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
-          const pfSel = pos == 1 ? '<option value="">Seleccione</option>' : '';
-          document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-          if(pos == 1){
-            const dis = document.getElementById('Dis');
-              document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
-          }
-          $(pos==1 ? '#Pro' : '#Dis').multiselect('rebuild');
-        }).catch((err)=>{
-          exception(err);
-        });
-      }
-
       function agregarInputDinamico(e){
         if(e.parentElement.children.length == 4){
           e.classList.add('hide');
@@ -2068,12 +2046,14 @@
             },
             Talla:{
               required: true,
-              digits : true,
+              number : true,
               rangelength: [2, 3],
               max: 280
             },
             Imc:{
-              required: true
+              required: true,
+              digits: true,
+              range: [1, 300]
             },
             FlagPadeceDolor:{
               required: true

@@ -561,8 +561,14 @@
                                         <textarea class="form-control" id="Nota" name="Nota"></textarea>
                                     </div>
                                     <div class="terms">
-                                        <div class="chk-content"><a class="ver-tyc" href="javascript:void(0)" onclick="javascript:abrirModalTermCond()">ACEPTO TÉRMINOS Y CONDICIONES<span class="obligatorio">*</span></a>
-                                            <input id="inpTermCond" name="inpTermCond" type="checkbox"><span class="checkmark"></span>
+                                        <div>
+                                            <ul class="checks">
+                                                <div class="chk-content">
+                                                    <a class="ver-tyc" href="javascript:void(0)" onclick="javascript:abrirModalTermCond()">ACEPTO TÉRMINOS Y CONDICIONES<span class="obligatorio">*</span></a>
+                                                    <input id="inpTermCond" name="inpTermCond" type="checkbox">
+                                                    <span class="checkmark"></span>
+                                                </div>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -583,8 +589,8 @@
 <!-- MODALS  -->
 <th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
 <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
-<script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
+<script th:src="@{/js/g_maps.js}+'?'+${version}"></script>
 <script th:src="@{/js/cropper.min.js}+'?'+${version}" type="text/javascript"></script>
 <script>
     function sendForm(){
@@ -1033,7 +1039,7 @@
                 inpCondServicio:{
                     extension: "pdf",
                 },
-                inpTermCond: {
+                inpTermCond:{
                     required: function(ele){
                         if(!ele.checked){
                             return true;

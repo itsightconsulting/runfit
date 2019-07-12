@@ -1033,25 +1033,22 @@
     if(input.tagName === "INPUT"){
 
       //Generación de IMC
+      if(input.id && input.id==="Peso" || input.id && input.id==="Talla"){
+        var peso = $('#Peso').val();
+        var talla = $('#Talla').val();
 
-       var peso = $('#Peso').val();
-       var talla = $('#Talla').val();
+        if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
 
-      if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
+          var tallaKg =  talla / 100;
+          var imc = peso / Math.pow(tallaKg,2);
+          imc = imc.toFixed(1);
+          $('#Imc').val(imc);
+        } else {
+          $('#Imc').val("");
 
-        var tallaKg =  talla / 100;
-        var imc = peso / Math.pow(tallaKg,2);
-            imc = imc.toFixed(1);
-
-
-         $('#Imc').val(imc);
-
-      }else{
-         $('#Imc').val("");
-
+        }
       }
-
-     //Fin de generación de IMC
+      //Fin de generación de IMC
 
       if(input.type==="text"){
          input.value = input.value.trim().replace(/ +/g, " ");
@@ -1353,7 +1350,9 @@
             max:280
           },
           Imc:{
-            required: true
+            required: true,
+            number: true,
+            range: [1, 300]
           },
           FlagPadeceDolor:{
             required: true
