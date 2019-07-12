@@ -7,23 +7,18 @@ import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
-import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.ClienteFitnessProcedureInvoker;
 import com.itsight.service.RedFitnessProcedureInvoker;
 import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;

@@ -10,6 +10,7 @@ import com.itsight.service.EmailService;
 import com.itsight.service.PostulanteTrainerService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,9 +177,9 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
     }
 
     @Override
-    public String decidir(Integer preTrainerId, Integer decisionId) throws CustomValidationException{
+    public String decidir(Integer preTrainerId, Integer decisionId, String secret) throws CustomValidationException{
         PostulanteTrainer preTrainer = findOne(preTrainerId);
-        if(preTrainer == null){
+        if(preTrainer == null || !secret.equals(preTrainer.getSchema())){
            return EMPTY_RESPONSE.get();
         }
 
@@ -241,12 +242,13 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
 
     @Override
     public void updateFlagCuentaConfirmada(Integer id, boolean flag, String receptor) {
-        repository.updateFlagCuentaConfirmada(id, flag);
+        String secret = Utilitarios.getRandomString(10);
+        repository.updateFlagCuentaConfirmadaAndSecret(id, flag, secret);
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
         //Envio de correo
         String hashId = Parseador.getEncodeHash32Id("rf-request", id);
-        String cuerpo = String.format(correo.getBody(), domainName, hashId);
+        String cuerpo = String.format(correo.getBody(), domainName, hashId, secret);
         emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
     }
 
