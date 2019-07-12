@@ -47,37 +47,37 @@ public class SecurityUserServiceImpl implements SecurityUserService {
 
     @Override
     public String recuperarPassword(String username) throws CustomValidationException {
-        Boolean isEnabled = securityUserRepository.findEnabledByUsername(username);
-        if(isEnabled == null){
+        String idAndEnabled = securityUserRepository.findIdAndEnabledByUsername(username);
+        if(idAndEnabled == null){
             throw new CustomValidationException(USUARIO_NO_EXISTE.get(), EX_VALIDATION_FAILED.get());
         }
+        Boolean isEnabled = Boolean.valueOf(idAndEnabled.split("\\|")[1]);
+
         if(!isEnabled){
             throw new CustomValidationException(USUARIO_INACTIVO.get(), EX_VALIDATION_FAILED.get());
         }
 
-        SecurityUser su =  securityUserRepository.findByUsername(username);
+        Integer secUserId =  Integer.parseInt(idAndEnabled.split("\\|")[0]);
 
-        UsuarioRecover usuRec = usuarioRecoverRepository.findById(su.getId()).orElse(null);
+        UsuarioRecover usuRec = usuarioRecoverRepository.findById(secUserId).orElse(null);
         Date nowPlusOne = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
         String schema = Utilitarios.getRandomString(10);
         if(usuRec == null){
-            usuarioRecoverRepository.save(new UsuarioRecover(su.getId(), schema, true, nowPlusOne));
+            usuarioRecoverRepository.save(new UsuarioRecover(secUserId, schema, true, nowPlusOne));
         } else {
             usuRec.setFlagRecover(true);
             usuRec.setSchema(schema);
             usuRec.setFechaLimite(nowPlusOne);
-            usuarioRecoverRepository.saveAndFlush(usuRec);
+            usuarioRecoverRepository.save(usuRec);
         }
 
-
-
-        String hshId = Parseador.getEncodeHash32Id(schema, su.getId());
+        String hshId = Parseador.getEncodeHash32Id(schema, secUserId);
         String b64sc = new String(Base64.getEncoder().encode(schema.getBytes()));
 
         Correo correo = correoService.findOne(INIT_CAMBIO_PASSWORD.get());
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), domainName, hshId, b64sc);
-        String correoDestinatario = securityUserRepository.getCorreoById(su.getId());
+        String correoDestinatario = securityUserRepository.getCorreoById(secUserId);
         emailService.enviarCorreoInformativo(correo.getAsunto(), correoDestinatario, cuerpo);
         return EXITO_GENERICA.get();
     }

@@ -91,13 +91,13 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/{nomPag:.+}")
-    public @ResponseBody ModelAndView getTrainerByUsername(){
+    public  ModelAndView getTrainerByUsername(){
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
     }
 
 
     @GetMapping("/get/revision/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerByIdRevision(Model model,
+    public  ModelAndView getTrainerByIdRevision(Model model,
                 @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
         Integer trainerId = getDecodeHashIdSecCustom("rf-aprobacion", hshTrainerId);
 
@@ -111,17 +111,15 @@ public class TrainerFichaController extends BaseController {
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
         model.addAttribute("hshTrainerId", hshTrainerId);
-        model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
         return new ModelAndView(ViewConstant.MAIN_REVISION_TRAINER);
     }
 
     @GetMapping("/get/revision/s/{nomPag:.+}")
-    public @ResponseBody ModelAndView getTrainerRevisionVistaByUsername(@PathVariable String nomPag, Model model){
+    public  ModelAndView getTrainerRevisionVistaByUsername(@PathVariable String nomPag, Model model){
         Boolean existsAuthorize = trainerFichaService.getFlagPermisoUpdByNomPag(nomPag);
         if(existsAuthorize == null){
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
-
         if(!existsAuthorize){
             model.addAttribute("msg", Enums.Msg.TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS.get());
             return new ModelAndView(ViewConstant.MAIN_INF_N);
@@ -148,7 +146,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/ver/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerById(Model model, @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
+    public ModelAndView getTrainerById(Model model, @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
         model.addAttribute("porAprobar", true);
         model.addAttribute("hshTrainerId", hshTrainerId);
         Integer trainerId = getDecodeHashIdSecCustom("rf-aprobacion", hshTrainerId);
@@ -162,7 +160,6 @@ public class TrainerFichaController extends BaseController {
         } else {
             Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
             if(flag == null){
-                model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
                 return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
             }//Si entra acá es porque ya ha sido observado, nunca entrará aca cuando haya sido aprobado debido a la primera
             //validación antes de esta
@@ -172,7 +169,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/checkout/{hshPostTrainerId}/{hshTrainerId}")
-    public @ResponseBody ModelAndView getTrainerEmpresa(
+    public ModelAndView getTrainerEmpresa(
             Model model,
             @PathVariable(name = "hshPostTrainerId") String hshPostTrainerId,
             @PathVariable(name = "hshTrainerId") String hshTrainerId) throws SecCustomValidationException {
@@ -187,7 +184,6 @@ public class TrainerFichaController extends BaseController {
         } else {
             Boolean flag = trainerFichaService.getFlagFichaAceptadaByTrainerId(trainerId);
             if(flag == null){
-                model.addAttribute("disciplinas", disciplinaService.obtenerDisciplinasByTrainerId(trainerId));
                 model.addAttribute("hshTrainerId", Parseador.getEncodeHash32Id("rf-aprobacion", trainerId));
                 return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER_EMP);
             }//Si entra acá es porque ya ha sido observado, nunca entrará aca cuando haya sido aprobado debido a la primera
@@ -340,7 +336,6 @@ public class TrainerFichaController extends BaseController {
             String hshVerEmpTrainerId = Parseador.getEncodeHash32Id("rf-aprobacion", empTraId);
             model.addAttribute("hshVerEmpTrainerId", hshVerEmpTrainerId);
             model.addAttribute("hshEmpTrainerId", nuevoHshEmpTraId);
-            model.addAttribute("disciplinas", disciplinaService.findAll());
             model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
             return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
         }

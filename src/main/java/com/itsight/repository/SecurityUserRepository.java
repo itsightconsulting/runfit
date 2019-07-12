@@ -58,4 +58,6 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     @Query(value = "update security_user set enabled=true where security_user_id in (select trainer_id from trainer_ficha where tr_emp_id = ?1)", nativeQuery = true)
     void updateMultipleEstadoByTrEmpId(Integer id);
 
+    @Query("SELECT CONCAT(S.id, '|', S.enabled) FROM SecurityUser S WHERE S.username = ?1")
+    String findIdAndEnabledByUsername(String username);
 }

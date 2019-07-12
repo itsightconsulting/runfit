@@ -91,7 +91,6 @@ public class TrainerController extends BaseController{
 
     @GetMapping("/empresa/agregar/trainer")
     public ModelAndView agregarTrainerAEmpresa(Model model){
-        model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
     }

@@ -107,9 +107,9 @@ public class TrainerDTO implements Serializable {
     private Double mapCircleRadio;
     @Size(max = 480)
     private String redes;
-    @NotBlank
-    @Size(max = 30)
-    private String disciplinaIds;
+    @NotNull
+    @Size(min = 3, max = 1620)
+    private String disciplinas;
 
     @NotNull
     @Positive

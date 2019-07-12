@@ -344,21 +344,6 @@ function spinnerSwitchTab(effect){
             "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='"+gifRunner+"'><div class='row text-center'></div>",
         buttons: '[]'
     }, function (ButtonPressed) {
-        if(ButtonPressed.trim() === ""){
-            setTimeout(()=>{
-                const msgBox = document.getElementById('MsgBoxBack');
-                if(msgBox){
-                    if(msgBox.children && msgBox.children.length>0){
-                        msgBox.children[0].remove();
-                    }
-                }
-            }, 150)
-        }
-        if (ButtonPressed === "Cancelar") {
-            setTimeout(()=>{
-                if(document.querySelector('.divMessageBox') != undefined) document.querySelector('.divMessageBox').classList.add('hidden');
-            }, 250);
-        }
     })
     return setTimeout(()=>{
         $('.MessageBoxButtonSection button').toggleClass('hidden');
@@ -372,14 +357,14 @@ function spinnerUpload(xhr) {
             "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +
             "<div class='progress' style='width:100%;'><div id='ProgressUpload' class='progress-bar bg-color-teal' data-transitiongoal='0'>0%</div></div>" +
             "<div class='row'><div class='row text-center'><i class='fa fa-spinner fa-spin fa-3x text-center'></i></div>",
-        buttons: '[Cancelar]'
+        buttons: '[]'
     }, function (ButtonPressed) {
-        if (ButtonPressed === "Cancelar") {
+        /*if (ButtonPressed === "Cancelar") {
             xhr.abort();
             setTimeout(()=>{
                 if(document.querySelector('.divMessageBox') != undefined) document.querySelector('.divMessageBox').classList.add('hidden');
             }, 250);
-        }
+        }*/
     })
 
     //Validamos en caso exista un modal de messageBox adicional borrarlo y solo dejar el último que se genero
@@ -666,6 +651,16 @@ function generateRandomMail(){
     return `pedro${t1}infante${t2}@gmail.com`;
 }
 
+(function modalHideScrollOnY(){
+    $('body .modal').on('shown.bs.modal', function () {
+        body.parentElement.style.overflowY = "hidden";
+    });
+
+    $('body .modal').on('hide.bs.modal', function () {
+        body.parentElement.style.overflowY = "auto";
+    });
+})();
+
 (function ajaxEvents(){
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
@@ -887,5 +882,15 @@ function actualizarConfiguracionCliente(e){
         },
         complete: function () {}
     });
+}
+
+
+function addYearstoDate(date,years) {
+
+    date.setFullYear(date.getFullYear() + years);
+    date.setDate(date.getDate()-1)
+
+    return date;
+
 }
 

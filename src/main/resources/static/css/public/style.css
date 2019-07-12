@@ -71,7 +71,7 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 1
+  z-index: -1
 }
 
 .login .avatar {
@@ -94,10 +94,21 @@
   max-width: 400px;
   margin: 0 auto
 }
+.login .login-sesion-alt,
+.login .login-register-alt {
+  position: relative;
+  z-index: 2;
+  padding: 25px;
+  box-sizing: border-box;
+  max-width: 400px;
+  margin: 0 auto
+}
 
 .login .form-group {
   padding-left: 35px;
-  position: relative
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .login .form-group span {
@@ -121,14 +132,40 @@
   width: 100%;
   padding: 6px 15px;
   border-bottom: 1px solid;
-  margin-bottom: 15px
+  margin-bottom: 10px
+}
+
+.login .login-sesion-alt .form-group  input ,
+.login .login-register-alt .form-group  input
+{
+  color: #a8fa00;
+  background: transparent;
+  border: 0;
+  width: 90%;
+  padding: 6px 15px;
+  border-bottom: 1px solid;
+  margin-bottom: 5px;
+}
+
+
+.login .login-sesion .form-group  input ,
+.login .login-register .form-group  input
+{
+  color: #a8fa00;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  padding: 6px 15px;
+  border-bottom: 1px solid;
+  margin-bottom: 5px;
 }
 
 .login .form-group a {
   color: #fff;
   font-size: 12px;
   margin-bottom: 25px;
-  display: block
+  display: block;
+  text-align: left;
 }
 
 .login .actions p {
@@ -146,7 +183,22 @@
   padding: 12px;
   width: 100%;
   margin-bottom: 15px;
-  border: 0
+  border: 0;
+  cursor: pointer;
+}
+
+.login .btn-guest-register {
+  background-color: #a8fa00;
+  display: block;
+  text-transform: uppercase;
+  color: #fff;
+  font-family: Gotham-Black, 'system-ui';
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  border: 0;
+  cursor: pointer;
 }
 
 .login .btn-face {
@@ -168,9 +220,17 @@
   padding: 12px;
   font-size: 12px;
   text-align: center;
-  width: 100%;
   margin-bottom: 15px;
-  border: 0
+  border: 0;
+  cursor:pointer;
+}
+
+.login .help-block{
+  color: #b1afaf !important;
+  font-size: 14px;
+  padding: 0 0 10px 30px;
+  display: block !important;
+  text-align: justify;
 }
 
 .navbar {
@@ -394,7 +454,7 @@
     max-height: 40px
   }
   .login .form-group input {
-    border-bottom: none;
+    border-bottom: 1px solid;
     padding-left: 0;
   }
   .login .form-group label {
@@ -473,6 +533,12 @@ footer li a span.fa{
   footer .col-xs-6 {
     display: block;
     width: 100%;
+    text-align: center;
+  }
+
+  .col-xs-6-org {
+    display: inline;
+    width: 50%;
     text-align: center;
   }
 }
@@ -924,7 +990,6 @@ h1 {
   border-bottom: 4px solid #a8fa00
 }
 
-<<<<<<< HEAD
 .trainers-form .tab-contenido{
   display: none;
 }
@@ -943,8 +1008,6 @@ ul.tabs {
   display: inherit;
 }
 
-=======
->>>>>>> 7a9cab2ee7a29b3d152d8b6aeca4857f8bb2361d
 .trainers-form ul.counter {
   list-style: none
 }
@@ -1165,6 +1228,48 @@ ul.tabs {
   color: #303030;
   border: 1px solid #303030;
   background-color: #fff
+}
+
+.trainers-form .btn-tarifario{
+  min-width: 160px !important;
+}
+
+
+.trainers-form .txt-tarifario-right{
+  padding: 0px !important;
+  color: black !important;
+  text-align: right;
+}
+
+.trainers-form .cc-elegido{
+  padding-right: 20px;
+}
+
+.trainers-form .cc-elegido> img{
+  width: 64px;padding-bottom: 10px;
+}
+
+.trainers-form .sub-menus span{
+  font-size: 15px;
+  font-family: Gotham-Black, 'system-ui';
+  cursor: pointer;
+}
+
+.trainers-form .sub-menu-selected{
+  border-bottom: 3px solid #A8FA00;
+  padding-bottom: 9px;
+}
+
+.trainers-form .sub-menu[data-op="2"]{
+  padding-bottom: 12px !important;
+}
+
+.trainers-form #FichasDisponibles .img-ficha {
+  width: 64px;
+}
+
+.trainers-form #FichasDisponibles .chk-ficha{
+  margin-top: 10px;
 }
 
 .trainers-form .terms {
@@ -1486,8 +1591,17 @@ ul.tabs {
     font-size: 16px;
     white-space: inherit
   }
+<<<<<<< HEAD
   .trainers-form .btn-black, .trainers-form .btn-white {
     max-width: 250px !important;
+=======
+  .trainers-form .btn-tarifario {
+    width: 100% !important;
+  }
+
+  .trainers-form .sub-menus span{
+    font-size: 14px !important;
+>>>>>>> 44dddecdc7ab0be65ba5ebec2d3066dce37ca8b2
   }
   /*21-06-19*/
   .rating-holder{
@@ -3303,6 +3417,18 @@ button.btn:hover {
   display: block
 }
 
+.checks.metodos-pago li{
+  /*text-align: center;*/
+  width: 25%;
+  margin-bottom: 6px;
+}
+
+.metodos-pago img{
+  /*text-align: center;*/
+  margin-left: 25px;
+  width: 64px;
+}
+
 hr {
   border-top: 1px solid #d3d3d3
 }
@@ -3676,10 +3802,6 @@ button.multiselect + ul{
   margin-top: 3px;
 }
 
-.del-tar-svc{
-  height: 29px;
-}
-
 .ficha-pick{
   border: 4px solid #a8fa00 !important;
 }
@@ -3689,8 +3811,12 @@ img.tarifa-svc {
 }
 
 .tarifa-svc-pick {
-  border-bottom: 5px solid #a8fa00;
-  border-radius: 20%;
+  /*border-bottom: 5px solid #a8fa00;
+  border-radius: 20%;*/
+}
+
+.tarifa-svc-pick h6{
+  color: #a8fa00
 }
 
 .txt-tar{
@@ -3754,6 +3880,10 @@ input[type="radio"] ~ em{
   display: none !important;
 }
 input[type="checkbox"] ~ em{
+  display: none !important;
+}
+
+select:not([type="multiple"]) ~ em{
   display: none !important;
 }
 
@@ -3841,6 +3971,18 @@ section.trainers-form {
   max-height: 540px;
 }
 
+#ModalCCs h4{
+  border-bottom: 1px dotted #d3d3d3;
+  margin: 0px 12px 15px;
+  padding: 10px 0px;
+}
+
+#ModalCCs h4>img{
+  height: 26px;
+  float: right;
+  cursor: pointer;
+}
+
 .chk-content .checkmark-musculo:after{
   height: 8px !important;
 
@@ -3908,4 +4050,27 @@ section.trainers-form {
 
 .margin-bottom-12{
   margin-bottom: 12px !important;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.check-success {
+  height: 50px;
+  width: 50px
+}
+
+.botTempo-hd{
+  display: none;
+}
+
+.botTempo:hover{
+  cursor: pointer;
+  background: white;
+  color: #000;
+}
+
+.btn-login{
+  cursor: pointer;
 }

@@ -17,6 +17,7 @@ import com.itsight.repository.SecurityUserRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Enums.Msg;
+import com.itsight.util.Parseador;
 import com.itsight.util.RSA_Encryption;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,7 +223,6 @@ public class PublicoController extends BaseController {
             return new ModelAndView(ViewConstant.MAIN_INF_N);
         }
 
-        model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER);
@@ -257,7 +257,6 @@ public class PublicoController extends BaseController {
             return new ModelAndView(ViewConstant.MAIN_INF_N);
         }
 
-        model.addAttribute("disciplinas", disciplinaService.findAll());
         model.addAttribute("postulante", post);
         model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_EMPRESA);
@@ -353,6 +352,15 @@ public class PublicoController extends BaseController {
 
         securityUserService.updateFlagEnabled(securityUser.getId(), securityUser.isEnabled());
         model.addAttribute("msg", Msg.CUENTA_VERIFICADA.get());
+        return new ModelAndView(ViewConstant.MAIN_INF_P);
+    }
+
+    @GetMapping("/informativo")
+    public ModelAndView informativo(
+            @RequestParam String g,
+            @RequestParam String te,
+            Model model){
+        model.addAttribute("msg", Parseador.getDecodeBase64(g));
         return new ModelAndView(ViewConstant.MAIN_INF_P);
     }
 }

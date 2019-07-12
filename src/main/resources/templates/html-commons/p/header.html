@@ -1,7 +1,7 @@
 <nav th:fragment="fg-header" class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="text-right view-only-desktop">
-            <p class="login_link" onclick="javascript:document.querySelector('.login').classList.add('active')">INICIAR SESIÓN</p>
+            <p class="login_link" id="login_link">INICIAR SESIÓN</p>
         </div>
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/p/inicio}"><img class="logo-header" th:src="@{/img/public/logo.png}+'?'+${version}"/></a>
@@ -59,7 +59,8 @@
             <div class="clearfix"></div>
             <li><a th:href="@{/p/postulacion/trainer}"> <span>EMPRENDE CON NOSOTROS</span></a></li>
         </ul><a class="cerrar-sesion-mobile" href="javascript:cerrarSesion();"><span class="fa fa-remove"></span>CERRAR SESIÓN</a>
-        <a class="iniciar-sesion-mobile" href="javascript:document.querySelector('.login').classList.add('active');"><span class="fa fa-sign-in"></span>INICIAR SESIÓN</a>
+        <a class="iniciar-sesion-mobile" href="javascript:document.querySelector('.login').classList.add('active');  $('html, body').css('overflowY', 'hidden');
+"><span class="fa fa-sign-in"></span>INICIAR SESIÓN</a>
     </div>
     <div id="menu" style="display: none">
         <div class="menu-desktop view-only-desktop">

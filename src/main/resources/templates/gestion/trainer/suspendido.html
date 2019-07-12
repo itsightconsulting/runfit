@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en-us"
       xmlns:th="http://www.thymeleaf.org"
@@ -6,6 +7,16 @@
     <title>Mis clientes</title>
     <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+
+    <style>
+        .help-block {
+            display: block;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #cf3239;
+        }
+
+    </style>
 </head>
 <style>
 
@@ -36,7 +47,6 @@
                             <div id="dvCalendario" class="col-md-5">
                                 <div class="panel-group">
                                     <div class="panel panel-default" id="calendarioSuspendidos">
-                                        <h4>calendario anual</h4>
 
                                     </div>
                                 </div>
@@ -69,6 +79,17 @@
                         </div>
                         <div class="item">2</div>
                         <div class="item">3</div>
+                        <div class="item">4</div>
+                        <div class="item">5</div>
+                        <div class="item">6</div>
+                        <div class="item">7</div>
+                        <div class="item">8</div>
+                        <div class="item">9</div>
+                        <div class="item">10</div>
+                        <div class="item">11</div>
+                        <div class="item">12</div>
+
+
                     </div>
                 </div>
             </section>
@@ -92,8 +113,8 @@
 
     $(function() {
         init();
-
     })
+
 
     function init(){
 
@@ -108,11 +129,40 @@
 
 
 
+
+
+
+
     }
 
-    function seleccionMesCalendario(){
 
+    function svgFillEvent(){
 
+        $('img[src$=".svg"]').each(function() {
+            let $img = $(this);
+            let imgURL = $img.attr('src');
+            let attributes = $img.prop("attributes");
+
+            console.log("a");
+
+            $.get(imgURL, function(data) {
+                // Get the SVG tag, ignore the rest
+                let $svg = jQuery(data).find('svg');
+
+                console.log("b");
+                // Remove any invalid XML tags
+                $svg = $svg.removeAttr('xmlns:a');
+
+                // Loop through IMG attributes and apply on SVG
+                $.each(attributes, function() {
+                    $svg.attr(this.name, this.value);
+                    console.log("c");
+                });
+
+                // Replace IMG with SVG
+                $img.replaceWith($svg);
+            }, 'xml');
+        });
     }
 
     function getDefaultDateQuery(){
@@ -126,6 +176,7 @@
     function getMonthFilterQuery(filter){
 
         const month = filter.slice(0,2);
+        const year = filter.slice(3,7);
 
         return year+"-"+month;
 
@@ -158,6 +209,8 @@
 
     function cargarClientesSuspendidos(periodoSeleccionado){
 
+        svgFillEvent();
+
 
         let month = periodoSeleccionado.slice(5,7);
         let monthIndex = parseInt(month)-1;
@@ -188,6 +241,7 @@
                     document.getElementById('listaSuspendidos').appendChild(noOne);
                 }else{
 
+
                     limpiarListado();
                     recrearListado(res);
 
@@ -205,10 +259,7 @@
 
     function activarCliente(e){
 
-
-
         const clienteId = e;
-
         let filtroPeriodo = flagBusqueda ?  currentPeriodoSeleccionado  : defaultFilter;
 
 
@@ -240,7 +291,7 @@
 
 
 
-        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+mes+"</span>");
+        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+mes+" "+año+"</span>");
         $('#fechaListaSuspendidos').html( ""+mes+" "+año);
     }
 
@@ -308,6 +359,8 @@
            dvCalendario.style.display ="block";
            dvClientes.style.display ="block";
 
+              cargarTituloCalendario();
+
            for (let i = 0; i < periodoObject.length; i++) {
 
                const año = periodoObject[i].year;
@@ -363,8 +416,9 @@
         const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
 
 
+
         calendarioSuspendidos.appendChild(htmlStringToElement(`<div class="panel-heading">
-                                                        <h3 class="panel-title" ><img class="svg" src="${_ctx}img/iconos-trainers/icon_calendar2.svg">${año}<a data-toggle="collapse" href="#collapse${index}"><img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></h3>
+                                                        <h3 class="panel-title" ><img class="svg" src="${_ctx}img/iconos-trainers/icon_calendar2.svg">${año}<a data-toggle="collapse" href="#collapse${index}"><img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg" onload="svgFillEvent()"></a></h3>
                                                           </div>`));
     }
 
@@ -495,6 +549,14 @@
     }
 
 
+    function getClienteSeleccionado(clienteId, redFitnessId){
+
+         return _ctx+"gestion/trainer/red/consultar/cliente?id="+clienteId+"&rfId="+redFitnessId;
+     }
+
+
+
+
     function limpiarListado(){
 
         const listaSuspendidos = document.getElementById('listaSuspendidos');
@@ -512,7 +574,6 @@
             calendariosuspendidos.removeChild(calendariosuspendidos.firstChild);
         }
 
-
     }
 
 
@@ -521,20 +582,35 @@
 
         const listaSuspendidos = document.getElementById('listaSuspendidos');
 
+        console.log(arr);
+
         arr.forEach((e)=>{
 
            listaSuspendidos.appendChild(htmlStringToElement(`<li>
             <div class="row">
                 <div class="col-sm-8"><img class="user" src="${_ctx}img/user.png">
-                <h4>${e.cliNombreCompleto}<span>${e.fechaCreacion}</span></h4>
+                <h4>${e.cliNombreCompleto}<span> ${moment(e.fechaCreacion).format("DD/MM/YYYY")}</span></h4>
             </div>
-            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#">ver perfil</a></div>
+            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#" onClick="document.location.href=getClienteSeleccionado(${e.cliId},${e.id});"  >ver perfil</a></div>
             </div>
             </li>`));
 
 
         })
     }
+
+    function cargarTituloCalendario(){
+
+        const calendariosuspendidos = document.getElementById('calendarioSuspendidos');
+
+
+        calendariosuspendidos.appendChild(htmlStringToElement(`<h4> CALENDARIO ANUAL </h4>`));
+
+
+    }
+
+
+
 
 
 </script>

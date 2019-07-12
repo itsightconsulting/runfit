@@ -30,7 +30,7 @@ import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/postulacion")
-public class PostulanteTrainerController {
+public class PostulanteTrainerController extends BaseController{
 
     private PostulanteTrainerService postulanteTrainerService;
 
@@ -88,7 +88,31 @@ public class PostulanteTrainerController {
 
         Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
         if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()) {
-            return jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId));
+            return jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId, ""));
+        }
+        throw new CustomValidationException(Enums.Msg.ELECCION_INVALIDA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @GetMapping("/decision/ml")
+    public ModelAndView decidirPostulacionByMail(
+            @RequestParam(value = "key") String preTrainerIdHash,
+            @RequestParam(value = "sc") String secret,
+            @RequestParam(value = "o") String eleccionId) throws CustomValidationException{
+
+        if(eleccionId.length() != 1){
+            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+        }
+
+        Integer parseEleccionId = Parseador.fromStringToInt(eleccionId);
+        if(parseEleccionId == -1) {
+            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+        }
+
+        Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
+        if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()) {
+            return new ModelAndView(ViewConstant.MAIN_INF_P,
+                "msg",
+                jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId, secret)));
         }
         throw new CustomValidationException(Enums.Msg.ELECCION_INVALIDA.get(), EX_VALIDATION_FAILED.get());
     }

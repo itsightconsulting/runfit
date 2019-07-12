@@ -6,6 +6,7 @@ import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.RuCliPOJO;
+import com.itsight.repository.ClienteFitnessRepository;
 import com.itsight.service.*;
 import com.itsight.service.impl.ClienteFitnessProcedureInvokerImpl;
 import com.itsight.util.Parseador;
@@ -98,8 +99,11 @@ public class ClienteFitnessController {
         Integer clienteId = (Integer) session.getAttribute("id");
         ClienteFitnessPOJO fichaClienteFitness = clienteFitnessProcedureInvoker.getById(clienteId);
 
-
         return new ResponseEntity<>(fichaClienteFitness, HttpStatus.OK);
     }
+
+
+
+
 
 }

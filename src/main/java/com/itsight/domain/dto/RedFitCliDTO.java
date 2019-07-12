@@ -69,10 +69,11 @@ public class RedFitCliDTO implements Serializable {
         this.rows = rows;
     }
 
-    public RedFitCliDTO(Integer id, String cliNombreCompleto, Date fechaCreacion) {
+    public RedFitCliDTO(Integer id, String cliNombreCompleto, Date fechaCreacion,Integer cliId) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.cliNombreCompleto = cliNombreCompleto;
+        this.cliId = cliId;
     }
 
     public RedFitCliDTO(List<String> mesesCliSuspendidos) {

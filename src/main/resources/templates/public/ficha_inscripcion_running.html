@@ -499,8 +499,8 @@
                         <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
                         <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
                           <option value="1">Buenos</option>
-                          <option value="2">Malos</option>
-                          <option value="3">Regulares</option>
+                          <option value="2">Regulares</option>
+                          <option value="3">Malos</option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -635,7 +635,7 @@
                       </li>
                       <li>
                         <div class="form-group">
-                          <label>Queremos conocer tus frecuencias cardiacas:<span class="obligatorio">*</span></label>
+                          <label>Queremos conocer tus frecuencias cardiacas:</label>
                           <p class="form-group-subtitle">Frecuencia cardiaca basal:
                             <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="La frecuencia cardíaca basal se refiere a las pulsaciones que una persona tiene por minuto en estado de reposo"></i>
                           </p>
@@ -950,7 +950,7 @@
                   <ol>
                     <li>
                       <div class="form-group">
-                        <label>¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
+                        <label>Cuéntanos, ¿Cuál es tu paso promedio actual por kilómetro?<span class="obligatorio">*</span></label>
                         <div class="input-time">
                           <input id="TiempoUnKilometro" name="TiempoUnKilometro" placeholder="Ej: 1:23:45" readonly="readonly" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text"/>
                         </div>
@@ -1371,6 +1371,8 @@
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+    <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
+
     <script th:inline="javascript">
       const initPageActive = 1;
       let $oculto = "";
@@ -1626,20 +1628,21 @@
       function bodyFocusOutEventListener(e){
         const input = e.target;
         if(input.tagName === "INPUT"){
-
           //Generación de IMC
-          var peso = $('#Peso').val();
-          var talla = $('#Talla').val();
+          if(input.id && input.id==="Peso" || input.id && input.id==="Talla"){
+            var peso = $('#Peso').val();
+            var talla = $('#Talla').val();
 
-          if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
+            if( !isNaN(parseFloat(peso)) && !isNaN(parseInt(talla)) ) {
 
-            var tallaKg =  talla / 100;
-            var imc = peso / Math.pow(tallaKg,2);
-            imc = imc.toFixed(1);
-            $('#Imc').val(imc);
-          } else {
-            $('#Imc').val("");
+              var tallaKg =  talla / 100;
+              var imc = peso / Math.pow(tallaKg,2);
+              imc = imc.toFixed(1);
+              $('#Imc').val(imc);
+            } else {
+              $('#Imc').val("");
 
+            }
           }
           //Fin de generación de IMC
 
@@ -1866,29 +1869,6 @@
         return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
       }
 
-      function depYprovChange(depId, provId, pos){
-        const scpY = '&amp;';
-        const url = pos == 1 ? `p/ubigeo/get/peru-prov-by-dep?depId=${depId}` : `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${depId+scpY.substr(0,1)}provId=${provId}`;
-        fetch(_ctx+url)
-                .then(res=> {
-                          if(res.ok){
-                            return res.json();
-                          }
-                        }
-                ).then(res=>{
-          const lstProOrDis = pos == 1 ? 'lstPro' : 'lstDis';
-          const pfSel = pos == 1 ? '<option value="">Seleccione</option>' : '';
-          document.getElementById(pos==1 ? 'Pro' : 'Dis').innerHTML = pfSel+res[lstProOrDis].map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-          if(pos == 1){
-            const dis = document.getElementById('Dis');
-              document.getElementById('Dis').innerHTML = '<option value="">Seleccione provincia</option>';
-          }
-          $(pos==1 ? '#Pro' : '#Dis').multiselect('rebuild');
-        }).catch((err)=>{
-          exception(err);
-        });
-      }
-
       function agregarInputDinamico(e){
         if(e.parentElement.children.length == 4){
           e.classList.add('hide');
@@ -1968,8 +1948,23 @@
               const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
               setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
             }else{
-              $(element).removeClass('state-success').addClass("state-error");
-              $(element).removeClass('valid');
+              if(element.type === 'select-one' && !element.classList.contains('no-multi')){
+                let msgError = "";
+                setTimeout(() => {
+                  const eleMsgError = document.querySelector(`#${element.name}-error`);
+                  if(eleMsgError != undefined){
+                    msgError = eleMsgError.textContent;
+                    eleMsgError.remove();
+                  }
+                }, 100);
+                const parentMutltiselect = element.parentElement;
+                const posibleEm = parentMutltiselect.nextElementSibling;
+                setTimeout(() => {posibleEm ? posibleEm.textContent = msgError:parentMutltiselect.insertAdjacentElement('afterend', htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
+              }else{
+                $(element).removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+              }
+
             }
           },
           unhighlight: function (element) {
@@ -1977,8 +1972,13 @@
               const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
               parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
             } else {
-              $(element).removeClass("state-error").addClass('state-success');
-              $(element).addClass('valid');
+              if(element.type === 'select-one' && !element.classList.contains('no-multi')) {
+                const parentRadios = element.parentElement.parentElement;
+                parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
+              } else {
+                $(element).removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+              }
             }
           },
           ignore: ".ignore",
@@ -2046,12 +2046,14 @@
             },
             Talla:{
               required: true,
-              digits : true,
+              number : true,
               rangelength: [2, 3],
               max: 280
             },
             Imc:{
-              required: true
+              required: true,
+              digits: true,
+              range: [1, 300]
             },
             FlagPadeceDolor:{
               required: true
@@ -2164,14 +2166,12 @@
               rangelength: [10, 500]
             },
             FrecuenciaCardiaca: {
-              required: true,
               min: 40,
               max: 130,
               rangelength:[2 ,3],
               digits: true
             },
             FrecuenciaCardiacaMaxima: {
-              required: true,
               min: 100,
               max: 220,
               rangelength:[2  ,3],
@@ -2181,9 +2181,6 @@
               required: true,
               digits: true,
               min: 0
-            },
-            CondicionMejora: {
-              required: true
             },
             TiempoUnKilometro: {
               required: true,

@@ -49,11 +49,8 @@
                       <p id="Especialidad"></p>
                     </div>
                     <div class="form-group">
-                      <label>ELIGE DEPORTE O ACTIVIDADES QUE REALIZAS</label>
-                      <ul id="Disciplina" class="list-description">
-                          <li th:each="d : ${disciplinas}">
-                            <p th:attr="data-disc-id=${#strings.substringBefore(d, ',')}" th:text="${#strings.substringAfter(d, ',')}"></p>
-                          </li>
+                      <label>DEPORTE O ACTIVIDADES QUE REALIZAS</label>
+                      <ul id="Disciplinas" class="list-description">
                       </ul>
                     </div>
                     <div class="form-group">
@@ -119,23 +116,12 @@
                     </div>
                     <div class="form-group hidden" id="lblRedes">
                         <label>REDES SOCIALES</label>
-                    </div>
-                    <div class="form-group rs hidden" id="RsFb">
-                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
-                        <div class="col-xs-11 no_padding">
-                            <a href="#" target="_blank">FB</a>
-                        </div>
-                    </div>
-                    <div class="form-group rs hidden" id="RsIn">
-                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
-                        <div class="col-xs-11 no_padding">
-                            <a href="#" target="_blank">INS</a>
-                        </div>
-                    </div>
-                    <div class="form-group rs hidden" id="RsYo">
-                        <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
-                        <div class="col-xs-11 no_padding">
-                            <a href="#" target="_blank">Y2</a>
+                        <div class="form-group rs">
+                            <div class="col-xs-12 no_padding">
+                                <a href="#" target="_blank" id="RsFb"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"/></a>
+                                <a href="#" target="_blank" id="RsIn"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"/></a>
+                                <a href="#" target="_blank" id="RsYo"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"/></a>
+                            </div>
                         </div>
                     </div>
                   </form>
@@ -184,12 +170,24 @@
                           <!-- DETALLE PAQUETE -->
                           <div class="clase-tarifario collapse in" id="contentTarifario">
                               <div class="form-group txt-tar">
-                                  <label for="NombreTarifario">NOMBRE</label>
-                                  <span  id="NombreTarifario" name="NombreTarifario"></span>
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>NOMBRE:</label>
+                                      </div>
+                                      <div class="col-xs-5">
+                                          <label id="NombreTarifario" class="txt-tarifario-right"></label>
+                                      </div>
+                                  </div>
                               </div>
                               <div class="form-group txt-tar">
-                                  <label for="FrecuenciaPaquete">FRECUENCIA</label>
-                                  <span id="FrecuenciaPaquete"></span>
+                                  <div class="row">
+                                      <div class="col-xs-7">
+                                          <label>FRECUENCIA:</label>
+                                      </div>
+                                      <div class="col-xs-5">
+                                          <label id="FrecuenciaPaquete" class=" txt-tarifario-right"></label>
+                                      </div>
+                                  </div>
                               </div>
                               <div class="form-group txt-tar">
                                   <div class="row">
@@ -236,7 +234,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL(S/.):</label>
+                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL:</label>
                                       </div>
                                       <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
                                           <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
@@ -246,20 +244,20 @@
                           </div>
                           <!-- END DETALLE PAQUETE -->
                           <!-- END TARIFARIOS-->
-                          <h4>MÉTODOS DE PAGO</h4>
+                          <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
                           <div class="row">
                               <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="0" style="padding-right: 30px"><img th:src="@{/img/money.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1" style="padding-right: 30px"><img th:src="@{/img/mastercard.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2" style="padding-right: 30px"><img th:src="@{/img/visa.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3" style="padding-right: 30px"><img th:src="@{/img/amex.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4" style="padding-right: 30px"><img th:src="@{/img/diners-club.png}" style="width: 64px;padding-bottom: 10px"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5" style="padding-right: 30px"><img th:src="@{/img/discover.png}" style="padding-bottom: 10px"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img th:src="@{/img/money.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2"><img th:src="@{/img/mastercard.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3"><img th:src="@{/img/visa.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4"><img th:src="@{/img/amex.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5"><img th:src="@{/img/diners-club.png}"></a>
+                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
                               </div>
                           </div>
-                          <div class="form-group" id="CuentaBanco">
-
-                          </div>
+                          <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
+                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                          </h4>
                           <div class="form-group hidden" id="divNotaFinal">
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
@@ -341,7 +339,7 @@
           document.querySelector('#txtCantidadPersonas').value = t.personas;
           document.querySelector('#txtCantidadMeses').value = t.meses;
           document.querySelector('#txtCantidadSesiones').value = t.sesiones;
-          document.querySelector('#PrecioPaquete').value = parseFloat(t.precio).toFixed(2);
+          document.querySelector('#PrecioPaquete').value = (t.monedaId === 1 ? 'S/. ' : '$ ')+ parseFloat(t.precio).toFixed(2);
       }
 
       function mostrarDetalleServicio(servicioId){
@@ -396,9 +394,6 @@
                         <a href="javascript:void(0)" class="tarifa-svc">
                             <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
-                        </a>
-                        <a data-placement="bottom" rel="tooltip" class="edit hidden" data-id="${id}" href="javascript:void(0);" title="Confirmar modificaciones al tarifario seleccionado">
-                            <img style="margin: 0px 0px 5px" class="edit-tar-svc" data-id="${id}" src="${_ctx}img/public/edit.png">
                         </a>
                     </div>`
       }
@@ -582,6 +577,9 @@
         }
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
+        let disciplinas = document.querySelector('#Disciplinas');
+        reconstruirLista(disciplinas, t.disciplinas);
+
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
             document.querySelector('#Especialidad').textContent = t.especialidad;
@@ -636,45 +634,6 @@
                   });
                   map.panTo(new google.maps.LatLng(lat, lng));
               }, 1000);
-          }
-      }
-
-      function checkRedesAndNota(t){
-          if(t.redes != undefined && t.redes.length > 4){
-              const existsFb = t.redes.includes('fb:');
-              if(existsFb){
-                  const r = document.querySelector('#RsFb');
-                  r.classList.remove('hidden');
-                  const pre = t.redes.slice(t.redes.indexOf("fb:")+3);
-                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                  r.querySelector('a').href = f;
-                  r.querySelector('a').textContent = f;
-              }
-              const existsIn = t.redes.includes('in:');
-              if(existsIn){
-                  const r = document.querySelector('#RsIn');
-                  r.classList.remove('hidden');
-                  const pre = t.redes.slice(t.redes.indexOf("in:")+3);
-                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                  r.querySelector('a').href = f;
-                  r.querySelector('a').textContent = f;
-              }
-              const existsYo = t.redes.includes('yo:');
-              if(existsYo){
-                  const r = document.querySelector('#RsYo');
-                  r.classList.remove('hidden');
-                  const pre = t.redes.slice(t.redes.indexOf("yo:")+3);
-                  const f = pre.includes("|") ? pre.slice(0, pre.indexOf("|")) : pre;
-                  r.querySelector('a').href = f;
-                  r.querySelector('a').textContent = f;
-              }
-              document.getElementById('lblRedes').classList.remove('hidden');
-          }
-
-
-          if(t.nota){
-              document.getElementById('divNotaFinal').classList.remove('hidden');
-              document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
           }
       }
 
@@ -755,19 +714,26 @@
       }
 
       function mostrarMediosPago(mediosPago, cuentas){
-        const ccs = mediosPago.split("|");
-        ccs.forEach(id=>{
-            tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
-        })
+          //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+          if(cuentas){
+              const ccs = JSON.parse(cuentas);
+              if(ccs.length){
+                  //Importante para que en el modal no aparezca el ícono imagen de eliminar
+                  ccs[0].noEdit = true;
+                  ccBancarias = ccs;
+              } else {
+                  document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+              }
+          }
 
-        if(cuentas != undefined){
-            cuentas = JSON.parse(cuentas);
-            ccBancarias = cuentas;
-            const mePagos = document.getElementById('MediosPagosAgregados');
-            cuentas.forEach(c=>{
-                mePagos.appendChild(htmlStringToElement(`<a href="javascript:void(0);" data-id="${c.bancoId}" style="padding-right: 30px"><img class="cc-bancaria" data-id="${c.bancoId}" src="${_ctx}img/bill.png" style="width: 64px;"></a>`));
-            });
-        }
+          if(!mediosPago){
+              document.querySelector('.title-metodo-pago').classList.add('hidden');
+              return;
+          }
+          const ccs = mediosPago.split("|");
+          ccs.forEach(id=>{
+              tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+          });
       }
 
       function irARegistrosTrainer(){

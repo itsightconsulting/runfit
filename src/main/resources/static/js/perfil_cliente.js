@@ -18,25 +18,37 @@ function init(){
 
 function cargarDataCliente(){
 
-  $.ajax({
-      type: "GET",
-      url: _ctx + 'gestion/cliente-fitness/obtener/completo',
-      dataType: "json",
-      blockLoading: false,
-      success:  function(data){
 
-         // generarDOMDataCliente(data);
+  if(!$('#pruebaData').val()){
+
+         console.log("a");
+          $.ajax({
+              type: "GET",
+              url: _ctx + 'gestion/cliente-fitness/obtener/completo',
+              dataType: "json",
+              blockLoading: false,
+              success:  function(data){
+                generarDOMDataCliente(data);
+              },
+              error:   function(xhr){
+                exception(xhr);
+
+              },
+              complete: function(){
+
+              }
+          })
+  }else{
+
+       console.log("b");
+
+      const dataCliente = JSON.parse($('#pruebaData').val());
+         console.log(dataCliente);
+         dataCliente ? generarDOMDataCliente(dataCliente) : "";
+  }
 
 
-      },
-      error:   function(xhr){
-         exception(xhr);
 
-      },
-      complete: function(){
-
-      }
-  })
 }
 
 
@@ -53,7 +65,6 @@ function generarDOMDataCliente(data) {
     const fechaCreacion = data.fechaCreacion.slice(0,10);
     const distrito = getDistritobyUbigeo(data.ubigeo);
 
-    console.log("a"+ distrito);
 
     dvDatosPersonales.appendChild(htmlStringToElement(`    
 

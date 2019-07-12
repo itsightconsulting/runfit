@@ -58,6 +58,7 @@ import java.util.UUID;
                                     @ColumnResult(name = "sexo", type = Integer.class),
                                     @ColumnResult(name = "fichaClienteIds", type = String.class),
                                     @ColumnResult(name = "especialidad", type = String.class),
+                                    @ColumnResult(name = "disciplinas", type = String.class),
                                     @ColumnResult(name = "acerca", type = String.class),
                                     @ColumnResult(name = "idiomas", type = String.class),
                                     @ColumnResult(name = "estudios", type = String.class),
@@ -116,6 +117,7 @@ import java.util.UUID;
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
+                              "\tf.disciplinas, \n" +
                               "\tf.especialidad, \n" +
                               "\tf.acerca,\n" +
                               "\tf.idiomas,\n" +
@@ -153,6 +155,7 @@ import java.util.UUID;
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.sexo, \n" +
                               "\tt.ficha_cliente_ids fichaClienteIds,\n" +
+                              "\tf.disciplinas, \n" +
                               "\tf.especialidad, \n" +
                               "\tf.acerca,\n" +
                               "\tf.idiomas,\n" +
@@ -224,6 +227,8 @@ public class TrainerFicha implements Serializable {
     private String metodoTrabajo;
     @Column(nullable = true, columnDefinition="TEXT")
     private String experiencias;
+    @Column(nullable = false, columnDefinition="TEXT")
+    private String disciplinas;
     @Column(nullable = false, columnDefinition="TEXT")
     private String resultados;
     @Column(nullable = false)

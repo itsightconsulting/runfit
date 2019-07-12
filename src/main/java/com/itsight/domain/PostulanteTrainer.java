@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -40,6 +41,9 @@ public class PostulanteTrainer {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String mensaje;
+
+    @Column
+    private String schema;
 
     @Column(nullable = false)
     private boolean flagRechazado;

@@ -85,6 +85,10 @@
 
                             <div class="col-md-12">
                                 <h4>Información personal</h4>
+
+
+                                <input type="text"  th:value="${clientData}" class="hidden" id="pruebaData">Test</input>
+
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -696,7 +700,7 @@
 
                                         <li>
                                             <div class="form-group">
-                                                <label >¿Cuéntanos, ¿cuál es tu paso promedio actual por kilómetro?</label>
+                                                <label >Cuéntanos, ¿Cuál es tu paso promedio actual por kilómetro?</label>
                                                 <input id="TiempoUnKilometro" name="TiempoUnKilometro" data-aka="Tiempo promedio por kilómetro" class="form-control" type="text" disabled="true"/>
                                             </div>
                                         </li>
@@ -1083,24 +1087,37 @@
 
     function cargarDataCliente(){
 
-        console.log("Hola");
-        $.ajax({
-            type: "GET",
-            url: _ctx + 'gestion/cliente-fitness/obtener/completo',
-            dataType: "json",
-            blockLoading: false,
-            success:  function(data){
-               setDataCliente(data);
+        if(!$('#pruebaData').val()) {
 
-            },
-            error:   function(xhr){
-                exception(xhr);
+            $.ajax({
+                type: "GET",
+                url: _ctx + 'gestion/cliente-fitness/obtener/completo',
+                dataType: "json",
+                blockLoading: false,
+                success: function (data) {
+                    setDataCliente(data);
 
-            },
-            complete: function(){
+                },
+                error: function (xhr) {
+                    exception(xhr);
 
-            }
-        })
+                },
+                complete: function () {
+
+                }
+            })
+
+        }else{
+
+            const dataCliente = JSON.parse($('#pruebaData').val());
+            console.log(dataCliente);
+
+            dataCliente ? setDataCliente(dataCliente) : "";
+
+
+        }
+
+
     }
 
 
@@ -1137,6 +1154,7 @@
 
 
         const salud = JSON.parse(data.salud);
+        console.log(salud);
 
         const flagHipertensionArt = salud.flagHiperTensionArt ? "Sí" : "No";
         const flagFumador = salud.flagFumador ? "Sí" :  "No";
@@ -1160,9 +1178,13 @@
         const desOperacion = salud.desOperacion;
         const flagHerDisOrCondCol = salud.flagHerDisOrCondCol ? "Sí" : "No";
         const desHerDisOrCondCol = salud.desHerDisOrCondCol;
-        const desPadVarios = salud.desPadVarios.split("|");
 
-        const contactosEmergencia = salud.contactosEmergencia.split(/(?:[|,_]| )+/);
+        let desPadVarios="";
+        salud.desPadVarios ? desPadVarios = salud.desPadVarios.split("|") : desPadVarios = "N.A";
+
+        let contactosEmergencia;
+        salud.contactosEmergencia ? contactosEmergencia  = salud.contactosEmergencia.split(/(?:[|,_]| )+/) : "Aún no se ha ingresado este dato";
+
         const histDeportAnt = salud.historialDeportivoAnt;
         const histDeportAct = salud.historialDeportivoAct;
         const frecuenciaCardiaca= condicionAnatomica.frecuenciaCardiaca;
@@ -1179,18 +1201,25 @@
         const diasSemanaCorriendo = data.diasSemanaCorriendo;
         const flagEstiramiento = data.flagEstiramiento ? "Sí" : "No";
         const flagCalentamiento = data.flagCalentamiento ? "Sí" : "No"  ;
-        const desgasteZapatilla = data.desgasteZapatilla.split("|");
+
+        let desgasteZapatilla;
+        data.desgasteZapatilla ? desgasteZapatilla = data.desgasteZapatilla.split("|") : desgasteZapatilla ="Aún no se ha ingresado el presente dato";
+
         const desgasteZapatillaOtro = data.desgasteZapatillaOtro;
         const musculosSensiblesOtro = condicionAnatomica.musculoSensiblesOtros;
-        const desTerPredom = data.desTerPredom.split("|");
+
+        let desTerPredom;
+        data.desTerPredom ? desTerPredom =   data.desTerPredom.split("|") : desTerPredom = "Aún no se ha ingresado el presente dato";
+
         const desTerPredomOtro = data.desTerPredomOtro;
         const desObjetivos = data.desObjetivos;
-        const tiempoDistancia = JSON.parse(data.tiempoDistancia);
+
+        let tiempoDistancia ="";
+        tiempoDistancia = JSON.parse(data.tiempoDistancia);
 
         const musculosSeleccionados = (condicionAnatomica.musculosSensibles);
         const competencias = JSON.parse(data.competencias);
         const fitElementos = data.fitElementos.split("|");
-
 
         flagFumador === "No" ?  ocultarSiguienteItem("FlagFumador") : "";
         flagAntFamInfOrHiper === "No" ? ocultarSiguienteItem("FlagAntFamInfOrHiper") : "";
@@ -1224,7 +1253,6 @@
         $('#DesLesion').val(desLesion);
         $('#RecomMedica').val(recomMedica);
         $('#FlagEmbarazo').text(flagEmbarazo);
-
         $('#FlagHiperTensionArt').text(flagHipertensionArt);
         $('#FlagFumador').text(flagFumador);
         $('#DesFumador').val(desFumador);
@@ -1261,7 +1289,7 @@
         $('#DesgasteZapatillaOtro').val(desgasteZapatillaOtro);
         $('#DesTerPredomOtro').val(desTerPredomOtro);
 
-        generarDesPadVarios(desPadVarios);
+        desPadVarios.length > 0 ? generarDesPadVarios(desPadVarios) : null;
         generarCondicionesMejora(condMejora);
         generarContactosEmergencia(contactosEmergencia);
         generarDesgasteZapatilla(desgasteZapatilla);
@@ -1271,6 +1299,7 @@
         llenarTablaCompetenciasSeleccionadas(competencias);
         seleccionarItemsFitness(fitElementos);
     }
+
 
 
     function ocultarSiguienteItem(item){
@@ -1370,11 +1399,14 @@
                                      type="text" disabled="true" value="${e}"/>
                                     `));
 
+
+
+            }else{
+
                 dvContactosEmergencia.appendChild(htmlStringToElement(`
                                     <label class="field-content">  Tlf. Móvil </label>
                                     `));
 
-            }else{
                 dvContactosEmergencia.appendChild(htmlStringToElement(`
                                     <input class="form-control" id="NumeroContacto${num/2}" name="NumeroContacto${num/2}"
                                      type="text" disabled="true" value="${e}"/>
@@ -1385,9 +1417,6 @@
 
                 dvContactosEmergencia.appendChild(htmlStringToElement(`<hr>`));
             }
-
-
-
 
 
 
@@ -1420,6 +1449,9 @@
 
 
     function generarDesPadVarios(desPadVarios){
+
+
+        console.log("a");
 
         const dvDesPadVarios = document.getElementById("dvDesPadVarios");
 

@@ -6,7 +6,24 @@
     <title>Inicio | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
+
+    <style>
+      .help-block{
+        color: #b1afaf;
+        font-size: 1em;
+        padding: 0 0 10px 30px;
+        display: block;
+        text-align: justify;
+      }
+
+      .hidden{
+        display: none;
+      }
+
+    </style>
   </head>
+
+
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
     <div th:replace="html-commons/reu-login :: fg-login"></div>
@@ -208,6 +225,7 @@
     </div>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
+
     <script th:inline="javascript">
       const body = document.querySelector('body');
       const pasos = document.querySelectorAll('section.entrena_correctamente ol.pasos>li');
@@ -266,5 +284,7 @@
         })
       }
     </script>
+
+
   </body>
 </html>

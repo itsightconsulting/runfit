@@ -1,9 +1,11 @@
-const body = document.querySelector('body');
+const body_ = document.querySelector('body');
 const formRecuperacion = document.getElementById('recover-pass-form');
 const btnRecuperar = document.getElementById('btnRecuperar');
 const btnCambiar = document.getElementById('btnCambiar');
 const btnRegistrar = document.getElementById('btn-register');
 const btnNuevo = document.getElementById('btn-nuevo');
+const btnStartUpIniciarSesion = document.getElementById('login_link');
+
 
 (function () {
     init();
@@ -28,7 +30,7 @@ function eventos(){
         btnCambiar.addEventListener('click', preSendFormCambiar);
     }
 
-    if(btnRegistrar){//Finalizar recuperación password con el cambio
+    if(btnRegistrar){//Finalizar registro
         btnRegistrar.addEventListener('click', registro);
     }
 
@@ -37,8 +39,14 @@ function eventos(){
         btnNuevo.addEventListener('click', validacionFormularioVisitante);
     }
 
-    body.addEventListener('focusout', bodyFocusOutEventListener);
-    body.addEventListener('keyup', bodyKeyupEventListener);
+    if(btnStartUpIniciarSesion){// Disparar login
+
+        btnStartUpIniciarSesion.addEventListener('click', inicializarLoginForm);
+    }
+
+
+    body_.addEventListener('focusout', bodyFocusOutEventListener);
+    body_.addEventListener('keyup', bodyKeyupEventListener);
 
 }
 
@@ -187,16 +195,26 @@ function customErrorHandler(xhr, input){
 function registro() {
 
 
-
     if ($("#register-form").valid()) {
         const params = getFormData($('#register-form'));
 
-        params.password = $('#PasswordRegister').val();
 
-       delete params.passwordRegister;
+       params.password = $('#PasswordRegistro').val();
+
+       delete params.passwordRegistro;
 
 
        console.log(params);
+
+       let registroParams ={
+                    nombres : params.nombresRegistro,
+                    apellidos : params.apellidosRegistro,
+                    correo :  params.correoRegistro,
+                    password: params.password
+
+       }
+
+       console.log(registroParams);
 
        $.ajax({
                 type: 'POST',
@@ -204,28 +222,29 @@ function registro() {
                 url: _ctx+'p/visitante/registro',
                 dataType: "json",
                 blockLoading: true,
-                data: params,
+                data: registroParams,
                 success: function (data, textStatus) {
 
-                   setTimeout(()=>{
-                                $('.actions').addClass('hidden');
-                            $.SmartMessageBox({
-                                title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
-                                content: "" +
-                                    "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
-                                buttons: '[SALIR]'
-                            }, function (ButtonPressed) {
-                                if(ButtonPressed){
-                                    window.location.href = _ctx + "login";
-                                }
-                            })
-                    }, 700)
+                    setTimeout(()=>{
+                            $('.actions').addClass('hidden');
+                        $.SmartMessageBox({
+                            title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                            content: "" +
+                                "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
+                            buttons: '[SALIR]'
+                        }, function (ButtonPressed) {
+                            if(ButtonPressed){
+                                window.location.href = _ctx + "login";
+                            }
+                        })
+                }, 700)
                 },
                 error: function (xhr) {
 
-                    const mensaje = xhr.responseJSON.message;
+                        const mensaje = xhr.responseJSON.message;
+                        console.log(mensaje);
 
-                    $('#divSmallBoxes').css('z-index','100000');
+                        $('#divSmallBoxes').css('z-index','100000');
 
 
                         $.smallBox({
@@ -234,10 +253,10 @@ function registro() {
                             timeout: 4500,
                             color:  '#cc4d4d',
                             icon: "fa fa-exclamation-circle"
-                       })
+                        })
 
 
-                    },
+                },
                 complete: function () {
                 }
             });
@@ -245,6 +264,8 @@ function registro() {
 
 
         }
+
+
 }
 
 function validacionFormularioVisitante(){
@@ -261,34 +282,34 @@ function validacionFormularioVisitante(){
             $(element).addClass('valid');
         },
         rules: {
-            Nombres: {
+            NombresRegistro: {
                 required: true,
                 rangelength: [1, 30],
                 lettersonly:true
             },
-            Apellidos: {
+            ApellidosRegistro: {
                 required: true,
                 rangelength: [3, 30],
                 lettersonly: true
             },
-            Correo: {
+            CorreoRegistro: {
                 required: true,
                 rangelength: [7, 30],
                 emailValid:true
             },
-            PasswordRegister: {
+            PasswordRegistro: {
                 required: true,
                 rangelength: [8, 30],
                 pwcheck: true
             },
-            PasswordConfirmation: {
+            PasswordConfirmacion: {
                 required: true,
-                equalTo: "#PasswordRegister"
+                equalTo: "#PasswordRegistro"
             },
         },
         // Messages for form validation
         messages: {
-            PasswordConfirmation : {
+            PasswordConfirmacion : {
                 equalTo: 'Repite la misma contraseña'
             }
         },
@@ -310,4 +331,13 @@ function getFormData($form) {
     });
 
     return indexed_array;
+}
+
+
+function inicializarLoginForm(){
+
+    document.querySelector('.login').classList.add('active');
+    $('html, body').css('overflowY', 'hidden');
+    goLogin();
+
 }
