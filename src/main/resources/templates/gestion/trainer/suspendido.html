@@ -241,6 +241,7 @@
                     document.getElementById('listaSuspendidos').appendChild(noOne);
                 }else{
 
+
                     limpiarListado();
                     recrearListado(res);
 
@@ -548,6 +549,14 @@
     }
 
 
+    function getClienteSeleccionado(clienteId, redFitnessId){
+
+         return _ctx+"gestion/trainer/red/consultar/cliente?id="+clienteId+"&rfId="+redFitnessId;
+     }
+
+
+
+
     function limpiarListado(){
 
         const listaSuspendidos = document.getElementById('listaSuspendidos');
@@ -573,6 +582,8 @@
 
         const listaSuspendidos = document.getElementById('listaSuspendidos');
 
+        console.log(arr);
+
         arr.forEach((e)=>{
 
            listaSuspendidos.appendChild(htmlStringToElement(`<li>
@@ -580,7 +591,7 @@
                 <div class="col-sm-8"><img class="user" src="${_ctx}img/user.png">
                 <h4>${e.cliNombreCompleto}<span> ${moment(e.fechaCreacion).format("DD/MM/YYYY")}</span></h4>
             </div>
-            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#" onClick="document.location.href=getClientePerfil(${e.id});"  >ver perfil</a></div>
+            <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#" onClick="document.location.href=getClienteSeleccionado(${e.cliId},${e.id});"  >ver perfil</a></div>
             </div>
             </li>`));
 
@@ -598,15 +609,7 @@
 
     }
 
-    function getClientePerfil(clienteId)
-    {
-        sessionStorage.setItem("currentSelectedClienteId" , clienteId);
 
-        let x = sessionStorage.getItem("currentSelectedClienteId");
-
-
-        return "/gestion/cliente-fitness/perfil";
-    }
 
 
 

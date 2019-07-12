@@ -85,6 +85,10 @@
 
                             <div class="col-md-12">
                                 <h4>Información personal</h4>
+
+
+                                <input type="text"  th:value="${clientData}" class="hidden" id="pruebaData">Test</input>
+
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -1083,36 +1087,8 @@
 
     function cargarDataCliente(){
 
-        let currentClienteId = sessionStorage.getItem("currentSelectedClienteId");
-
-        if(currentClienteId){
-
-
-            $.ajax({
-                type: "GET",
-                url: _ctx + 'gestion/cliente-fitness/obtener/completo',
-                dataType: "json",
-                data:{id: currentClienteId},
-                blockLoading: false,
-                success:  function(data){
-                    setDataCliente(data);
-                    sessionStorage.removeItem("currentSelectedClienteId");
-
-                },
-                error:   function(xhr){
-                    exception(xhr);
-
-                },
-                complete: function(){
-
-                }
-            })
-
-
-        }
-        else{
-
-            $.ajax({
+/*
+                 $.ajax({
                 type: "GET",
                 url: _ctx + 'gestion/cliente-fitness/obtener/completo',
                 dataType: "json",
@@ -1131,8 +1107,7 @@
             })
 
 
-        }
-
+*/
 
     }
 
@@ -1193,9 +1168,14 @@
         const desOperacion = salud.desOperacion;
         const flagHerDisOrCondCol = salud.flagHerDisOrCondCol ? "Sí" : "No";
         const desHerDisOrCondCol = salud.desHerDisOrCondCol;
-        const desPadVarios = salud.desPadVarios.split("|");
 
-        const contactosEmergencia = salud.contactosEmergencia.split(/(?:[|,_]| )+/);
+        if(salud.desPadVarios) {
+            const desPadVarios = salud.desPadVarios.split("|");
+        }
+
+        if(salud.contactosEmergencia){
+            const contactosEmergencia = salud.contactosEmergencia.split(/(?:[|,_]| )+/);
+        }
         const histDeportAnt = salud.historialDeportivoAnt;
         const histDeportAct = salud.historialDeportivoAct;
         const frecuenciaCardiaca= condicionAnatomica.frecuenciaCardiaca;
@@ -1212,13 +1192,24 @@
         const diasSemanaCorriendo = data.diasSemanaCorriendo;
         const flagEstiramiento = data.flagEstiramiento ? "Sí" : "No";
         const flagCalentamiento = data.flagCalentamiento ? "Sí" : "No"  ;
-        const desgasteZapatilla = data.desgasteZapatilla.split("|");
+
+        if(data.desgasteZapatilla){
+            const desgasteZapatilla = data.desgasteZapatilla.split("|");
+        }
         const desgasteZapatillaOtro = data.desgasteZapatillaOtro;
         const musculosSensiblesOtro = condicionAnatomica.musculoSensiblesOtros;
-        const desTerPredom = data.desTerPredom.split("|");
+
+        if(data.desTerPredom){
+            const desTerPredom = data.desTerPredom.split("|");
+
+        }
         const desTerPredomOtro = data.desTerPredomOtro;
         const desObjetivos = data.desObjetivos;
-        const tiempoDistancia = JSON.parse(data.tiempoDistancia);
+
+        if(data.tiempoDistancia){
+            const tiempoDistancia = JSON.parse('{"2":"01:10:01","4":"01:10:01","21":"01:10:01","42":"01:10:01"}');
+
+        }
 
         const musculosSeleccionados = (condicionAnatomica.musculosSensibles);
         const competencias = JSON.parse(data.competencias);

@@ -126,8 +126,6 @@ public class ClienteFullController {
         return new ModelAndView(ViewConstant.CLIENTE_MIS_RUTINAS);
     }
 
-
-
     @GetMapping(value = "/get/publicaciones")
     public @ResponseBody List<Post> obtenerMultimediaEntrenador(HttpSession session) {
         int id = (int)session.getAttribute("id");

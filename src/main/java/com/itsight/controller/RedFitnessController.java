@@ -1,17 +1,24 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
+import com.itsight.service.ClienteFitnessProcedureInvoker;
 import com.itsight.service.RedFitnessProcedureInvoker;
 import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,10 +36,15 @@ public class RedFitnessController {
 
     private RedFitnessProcedureInvoker redFitnessProcedureInvoker;
 
+    private ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker;
+
+
     @Autowired
-    public RedFitnessController(RedFitnessService redFitnessService, RedFitnessProcedureInvoker redFitnessProcedureInvoker) {
+    public RedFitnessController(RedFitnessService redFitnessService, RedFitnessProcedureInvoker redFitnessProcedureInvoker, ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker) {
         this.redFitnessService = redFitnessService;
         this.redFitnessProcedureInvoker = redFitnessProcedureInvoker;
+        this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
+
     }
 
     public RedFitnessController(RedFitnessService redFitnessService){
@@ -130,6 +142,23 @@ public class RedFitnessController {
         String infoPeriodoSuspendidos = redFitnessService.getMesesCliSuspendidos(trainerId);
 
         return infoPeriodoSuspendidos;
+
+    }
+
+
+    @GetMapping(value = "/consultar/cliente")
+    public ModelAndView obtenerInfoCompletaByClienteId(Model model,HttpSession session, @RequestParam(value = "id") Integer clienteId,@RequestParam(value = "rfId") Integer redFitnessId) throws JsonProcessingException {
+
+       Integer trainerId = (Integer) session.getAttribute("id");
+       Integer validTrainer = redFitnessService.findTrainerIdByIdAndRunnerId(redFitnessId,clienteId);
+
+       if(validTrainer.intValue() == trainerId.intValue()){
+           ClienteFitnessPOJO fichaClienteFitness = clienteFitnessProcedureInvoker.getById(clienteId);
+           model.addAttribute("clientData", new ObjectMapper().writeValueAsString(fichaClienteFitness));
+           return new ModelAndView(ViewConstant.CLIENTE_PERFIL);
+       }else{
+           return new ModelAndView(ViewConstant.P_ERROR404);
+       }
 
     }
 
