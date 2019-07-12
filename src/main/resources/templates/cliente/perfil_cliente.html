@@ -1087,27 +1087,36 @@
 
     function cargarDataCliente(){
 
-/*
-                 $.ajax({
+        if(!$('#pruebaData').val()) {
+
+            $.ajax({
                 type: "GET",
                 url: _ctx + 'gestion/cliente-fitness/obtener/completo',
                 dataType: "json",
                 blockLoading: false,
-                success:  function(data){
+                success: function (data) {
                     setDataCliente(data);
 
                 },
-                error:   function(xhr){
+                error: function (xhr) {
                     exception(xhr);
 
                 },
-                complete: function(){
+                complete: function () {
 
                 }
             })
 
+        }else{
 
-*/
+            const dataCliente = JSON.parse($('#pruebaData').val());
+            console.log(dataCliente);
+
+            dataCliente ? setDataCliente(dataCliente) : "";
+
+
+        }
+
 
     }
 
@@ -1145,6 +1154,7 @@
 
 
         const salud = JSON.parse(data.salud);
+        console.log(salud);
 
         const flagHipertensionArt = salud.flagHiperTensionArt ? "Sí" : "No";
         const flagFumador = salud.flagFumador ? "Sí" :  "No";
@@ -1169,13 +1179,12 @@
         const flagHerDisOrCondCol = salud.flagHerDisOrCondCol ? "Sí" : "No";
         const desHerDisOrCondCol = salud.desHerDisOrCondCol;
 
-        if(salud.desPadVarios) {
-            const desPadVarios = salud.desPadVarios.split("|");
-        }
+        let desPadVarios="";
+        salud.desPadVarios ? desPadVarios = salud.desPadVarios.split("|") : desPadVarios = "N.A";
 
-        if(salud.contactosEmergencia){
-            const contactosEmergencia = salud.contactosEmergencia.split(/(?:[|,_]| )+/);
-        }
+        let contactosEmergencia;
+        salud.contactosEmergencia ? contactosEmergencia  = salud.contactosEmergencia.split(/(?:[|,_]| )+/) : "Aún no se ha ingresado este dato";
+
         const histDeportAnt = salud.historialDeportivoAnt;
         const histDeportAct = salud.historialDeportivoAct;
         const frecuenciaCardiaca= condicionAnatomica.frecuenciaCardiaca;
@@ -1193,28 +1202,24 @@
         const flagEstiramiento = data.flagEstiramiento ? "Sí" : "No";
         const flagCalentamiento = data.flagCalentamiento ? "Sí" : "No"  ;
 
-        if(data.desgasteZapatilla){
-            const desgasteZapatilla = data.desgasteZapatilla.split("|");
-        }
+        let desgasteZapatilla;
+        data.desgasteZapatilla ? desgasteZapatilla = data.desgasteZapatilla.split("|") : desgasteZapatilla ="Aún no se ha ingresado el presente dato";
+
         const desgasteZapatillaOtro = data.desgasteZapatillaOtro;
         const musculosSensiblesOtro = condicionAnatomica.musculoSensiblesOtros;
 
-        if(data.desTerPredom){
-            const desTerPredom = data.desTerPredom.split("|");
+        let desTerPredom;
+        data.desTerPredom ? desTerPredom =   data.desTerPredom.split("|") : desTerPredom = "Aún no se ha ingresado el presente dato";
 
-        }
         const desTerPredomOtro = data.desTerPredomOtro;
         const desObjetivos = data.desObjetivos;
 
-        if(data.tiempoDistancia){
-            const tiempoDistancia = JSON.parse('{"2":"01:10:01","4":"01:10:01","21":"01:10:01","42":"01:10:01"}');
-
-        }
+        let tiempoDistancia ="";
+        tiempoDistancia = JSON.parse(data.tiempoDistancia);
 
         const musculosSeleccionados = (condicionAnatomica.musculosSensibles);
         const competencias = JSON.parse(data.competencias);
         const fitElementos = data.fitElementos.split("|");
-
 
         flagFumador === "No" ?  ocultarSiguienteItem("FlagFumador") : "";
         flagAntFamInfOrHiper === "No" ? ocultarSiguienteItem("FlagAntFamInfOrHiper") : "";
@@ -1248,7 +1253,6 @@
         $('#DesLesion').val(desLesion);
         $('#RecomMedica').val(recomMedica);
         $('#FlagEmbarazo').text(flagEmbarazo);
-
         $('#FlagHiperTensionArt').text(flagHipertensionArt);
         $('#FlagFumador').text(flagFumador);
         $('#DesFumador').val(desFumador);
@@ -1285,7 +1289,7 @@
         $('#DesgasteZapatillaOtro').val(desgasteZapatillaOtro);
         $('#DesTerPredomOtro').val(desTerPredomOtro);
 
-        generarDesPadVarios(desPadVarios);
+        desPadVarios.length > 0 ? generarDesPadVarios(desPadVarios) : null;
         generarCondicionesMejora(condMejora);
         generarContactosEmergencia(contactosEmergencia);
         generarDesgasteZapatilla(desgasteZapatilla);
@@ -1295,6 +1299,7 @@
         llenarTablaCompetenciasSeleccionadas(competencias);
         seleccionarItemsFitness(fitElementos);
     }
+
 
 
     function ocultarSiguienteItem(item){
@@ -1394,11 +1399,14 @@
                                      type="text" disabled="true" value="${e}"/>
                                     `));
 
+
+
+            }else{
+
                 dvContactosEmergencia.appendChild(htmlStringToElement(`
                                     <label class="field-content">  Tlf. Móvil </label>
                                     `));
 
-            }else{
                 dvContactosEmergencia.appendChild(htmlStringToElement(`
                                     <input class="form-control" id="NumeroContacto${num/2}" name="NumeroContacto${num/2}"
                                      type="text" disabled="true" value="${e}"/>
@@ -1409,9 +1417,6 @@
 
                 dvContactosEmergencia.appendChild(htmlStringToElement(`<hr>`));
             }
-
-
-
 
 
 
@@ -1444,6 +1449,9 @@
 
 
     function generarDesPadVarios(desPadVarios){
+
+
+        console.log("a");
 
         const dvDesPadVarios = document.getElementById("dvDesPadVarios");
 
