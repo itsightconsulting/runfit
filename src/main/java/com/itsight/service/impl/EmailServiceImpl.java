@@ -91,13 +91,13 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
     public void enviarCorreoInformativoVariosBbc(String asunto, String receptores, String contenido) {
         MimeMessagePreparator preparator;
         try {
-            boolean isProdOrHku = profile.equals("production") || profile.equals("herokudev");
+            boolean isProdOrHku = profile.equals("production") || profile.equals("development");
             if(isProdOrHku) {
                 //Receptor
-                if(profile.equals("herokudev")){
-                    receptores = "monica.diaz@itsight.pe";
+                if(profile.equals("development")){
+                    receptores = "contoso.peru@gmail.com";
                     preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
-                }else{
+                } else{
                     preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
                 }
                 emailSender.send(preparator);
