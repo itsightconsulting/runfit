@@ -1,16 +1,14 @@
 package com.itsight.controller;
 
 import com.itsight.advice.CustomValidationException;
+import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.BandejaTemporal;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.domain.SecurityUser;
-import com.itsight.domain.Visitante;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
-import com.itsight.domain.jsonb.Parametro;
-import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.repository.IdiomaRepository;
 import com.itsight.repository.SecurityUserRepository;
@@ -21,13 +19,10 @@ import com.itsight.util.Parseador;
 import com.itsight.util.RSA_Encryption;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.itsight.advice.SecCustomValidationException;
-
 
 import javax.validation.Valid;
 import java.util.Base64;
@@ -181,7 +176,7 @@ public class PublicoController extends BaseController {
             return new ModelAndView(ViewConstant.MAIN_INF_P);
         }
 
-        postulanteTrainerService.updateFlagCuentaConfirmada(post.getId(), true, post.getCorreo());
+        postulanteTrainerService.updateFlagCuentaConfirmada(post, true);
         model.addAttribute("msg", Msg.CUENTA_VERIFICADA.get());
         return new ModelAndView(ViewConstant.MAIN_INF_P);
     }

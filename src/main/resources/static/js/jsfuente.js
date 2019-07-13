@@ -96,7 +96,7 @@ const EstadoPlan = Object.freeze({
 const TipoDato = Object.freeze({
     PORCENTUAL: 1,
     NUMERICO: 2,
-})
+});
 
 const TipoRutina = Object.freeze({
     ESPECIFICA:   1,
@@ -894,3 +894,18 @@ function addYearstoDate(date,years) {
 
 }
 
+if(typeof body !== 'undefined'){
+    body.addEventListener('click', (e)=>{
+        const input = e.target;
+        const clases = input.classList;
+        if(input.tagName === 'BUTTON' && clases.contains('botTempo')){
+            input.setAttribute('disabled', 'disabled');
+            if(input.previousElementSibling){
+                input.previousElementSibling.setAttribute('disabled', 'disabled');
+            }
+            if(input.nextElementSibling){
+                input.nextElementSibling.setAttribute('disabled', 'disabled');
+            }
+        }
+    })
+}

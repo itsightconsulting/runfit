@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.PostulanteTrainer;
@@ -75,7 +76,7 @@ public class PostulanteTrainerController extends BaseController{
     @PutMapping("/decision")
     public @ResponseBody String decidirPostulacion(
             @RequestParam(value = "key") String preTrainerIdHash,
-            @RequestParam(value = "o") String eleccionId) throws CustomValidationException{
+            @RequestParam(value = "o") String eleccionId) throws CustomValidationException {
 
         if(preTrainerIdHash.length() != 32 || eleccionId.length() != 1){
             throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
@@ -88,7 +89,7 @@ public class PostulanteTrainerController extends BaseController{
 
         Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
         if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()) {
-            return jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId, ""));
+            return jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId));
         }
         throw new CustomValidationException(Enums.Msg.ELECCION_INVALIDA.get(), EX_VALIDATION_FAILED.get());
     }
@@ -97,23 +98,21 @@ public class PostulanteTrainerController extends BaseController{
     public ModelAndView decidirPostulacionByMail(
             @RequestParam(value = "key") String preTrainerIdHash,
             @RequestParam(value = "sc") String secret,
-            @RequestParam(value = "o") String eleccionId) throws CustomValidationException{
+            @RequestParam(value = "o") String eleccionId) throws SecCustomValidationException {
 
         if(eleccionId.length() != 1){
-            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+            throw new SecCustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
         }
 
         Integer parseEleccionId = Parseador.fromStringToInt(eleccionId);
-        if(parseEleccionId == -1) {
-            throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+        if(parseEleccionId == -1){
+            throw new SecCustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
         }
 
-        Integer preTrainerId = Parseador.getDecodeHash32Id("rf-request", preTrainerIdHash);
-        if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()) {
-            return new ModelAndView(ViewConstant.MAIN_INF_P,
-                "msg",
-                jsonResponse(postulanteTrainerService.decidir(preTrainerId, parseEleccionId, secret)));
+        Integer preTrainerId = this.getDecodeHashIdSecCustom("rf-request", preTrainerIdHash);
+        if (preTrainerId > 0 && parseEleccionId == APROBADO.get() || parseEleccionId == DESAPROBADO.get()){
+            return postulanteTrainerService.decidir(preTrainerId, parseEleccionId, secret);
         }
-        throw new CustomValidationException(Enums.Msg.ELECCION_INVALIDA.get(), EX_VALIDATION_FAILED.get());
+        throw new SecCustomValidationException(Enums.Msg.ELECCION_INVALIDA.get(), EX_VALIDATION_FAILED.get());
     }
 }

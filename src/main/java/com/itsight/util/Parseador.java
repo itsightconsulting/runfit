@@ -108,4 +108,7 @@ public class Parseador {
 	public static String getDecodeBase64(String encode){
 		return new String(Base64.getDecoder().decode(encode), StandardCharsets.UTF_8);
 	}
+	public static String getEncodeBase64(String encode){
+		return new String(Base64.getEncoder().encode(encode.getBytes()), StandardCharsets.UTF_8);
+	}
 }

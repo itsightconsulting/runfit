@@ -60,4 +60,10 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
 
     @Query("SELECT CONCAT(S.id, '|', S.enabled) FROM SecurityUser S WHERE S.username = ?1")
     String findIdAndEnabledByUsername(String username);
+
+    @Query("SELECT CONCAT(S.username, '|', S.enabled) FROM SecurityUser S WHERE S.id = ?1")
+    String findUsernameAndEnabledById(Integer id);
+
+    @Query("SELECT S.username FROM SecurityUser S WHERE S.id = ?1")
+    String findUsernameById(Integer id);
 }

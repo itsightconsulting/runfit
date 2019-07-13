@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Correo;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.generic.BaseServiceImpl;
@@ -12,9 +13,10 @@ import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -22,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.itsight.constants.ViewConstant.MAIN_INF_N;
+import static com.itsight.constants.ViewConstant.MAIN_INF_P;
 import static com.itsight.util.Enums.Mail.POSTULACION_TRAINER;
 import static com.itsight.util.Enums.Mail.POSTULANTE_TRAINER_CONFIRMAR_CORREO;
 import static com.itsight.util.Enums.Msg.POSTULACION_NUEVA;
@@ -177,10 +181,10 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
     }
 
     @Override
-    public String decidir(Integer preTrainerId, Integer decisionId, String secret) throws CustomValidationException{
+    public String decidir(Integer preTrainerId, Integer decisionId) throws CustomValidationException {
         PostulanteTrainer preTrainer = findOne(preTrainerId);
-        if(preTrainer == null || !secret.equals(preTrainer.getSchema())){
-           return EMPTY_RESPONSE.get();
+        if(preTrainer == null){
+            return EMPTY_RESPONSE.get();
         }
 
         if(!preTrainer.isFlagCuentaConfirmada()){
@@ -236,20 +240,88 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
     }
 
     @Override
+    public ModelAndView decidir(Integer preTrainerId, Integer decisionId, String secret) {
+        PostulanteTrainer preTrainer = findOne(preTrainerId);
+        if(preTrainer == null || !secret.equals(preTrainer.getSchema())){
+            return new ModelAndView(ViewConstant.P_ERROR404, HttpStatus.NOT_FOUND);
+        }
+
+        if(!preTrainer.isFlagCuentaConfirmada()){
+            return new ModelAndView(MAIN_INF_P, "msg", Enums.Msg.POSTULANTE_MAIL_SC.get());
+        }
+
+        if(preTrainer.isFlagAceptado()){
+            return new ModelAndView(MAIN_INF_P, "msg", Enums.Msg.POSTULANTE_ACEPTADO_ANT.get());
+        }
+
+        if(preTrainer.isFlagRechazado() && new Date().before(preTrainer.getFechaLimiteAccion())){
+            return new ModelAndView(MAIN_INF_N, "msg", Enums.Msg.POSTULANTE_RECH_PV.get());
+        }
+
+        Date timestamp = new Date();
+        if(decisionId == 1){
+            preTrainer.setFechaAprobacion(timestamp);
+            //preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plusSeconds(10)));
+            preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(14, ChronoUnit.DAYS)));
+            preTrainer.setFlagAceptado(true);
+        }else {
+            preTrainer.setFechaRechazo(timestamp);
+            preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plus(90, ChronoUnit.DAYS)));
+            //preTrainer.setFechaLimiteAccion(Date.from(Instant.now().plusSeconds(30)));
+            preTrainer.setFlagRechazado(true);
+        }
+        //Save
+        repository.save(preTrainer);
+
+        //Receptor
+        String receptor = preTrainer.getCorreo();
+
+        //Envio de correo
+        String hshId = Parseador.getEncodeHash32Id("rf-request", preTrainer.getId());
+        if(decisionId == 1) {
+            Integer tipoTrainerId = preTrainer.getTipoTrainerId();
+            String rutaSegunTipoTrainer;
+            if(tipoTrainerId == Enums.TipoTrainer.PARTICULAR.get()){
+                rutaSegunTipoTrainer = "trainer";
+            }else{
+                rutaSegunTipoTrainer = "empresa";
+            }
+            Correo mail = correoService.findOne(4);
+            emailService.enviarCorreoInformativo(mail.getAsunto(), receptor,
+                    String.format(mail.getBody(), domainName, rutaSegunTipoTrainer, hshId));
+        } else {
+            Correo mail = correoService.findOne(5);
+            emailService.enviarCorreoInformativo(mail.getAsunto(),
+                    receptor,
+                    mail.getBody());
+        }
+        String msg =  decisionId == 1 ? Enums.Msg.POSTULANTE_ACEP.get() : Enums.Msg.POSTULANTE_RECH.get();
+        return new ModelAndView(MAIN_INF_P, "msg", msg);
+    }
+
+    @Override
     public void updateFlagRegistradoById(Integer id, boolean flag) {
         repository.updateFlagRegistradoById(id, flag);
     }
 
     @Override
-    public void updateFlagCuentaConfirmada(Integer id, boolean flag, String receptor) {
+    public void updateFlagCuentaConfirmada(PostulanteTrainer post, boolean flag) {
         String secret = Utilitarios.getRandomString(10);
-        repository.updateFlagCuentaConfirmadaAndSecret(id, flag, secret);
+        repository.updateFlagCuentaConfirmadaAndSecret(post.getId(), flag, secret);
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(POSTULACION_TRAINER.get());
         //Envio de correo
-        String hashId = Parseador.getEncodeHash32Id("rf-request", id);
-        String cuerpo = String.format(correo.getBody(), domainName, hashId, secret);
-        emailService.enviarCorreoInformativo(correo.getAsunto(), receptor, cuerpo);
+        String hashId = Parseador.getEncodeHash32Id("rf-request", post.getId());
+        String cuerpo = String.format(correo.getBody(),
+                                        domainName,
+                                        hashId,
+                                        secret,
+                                        post.getNombreFull(),
+                                        post.getMovil(),
+                                        post.getCorreo(),
+                                        post.getMensaje(),
+                                        post.getTipoTrainerId() == 1 ? "Independiente" : "Empresa");
+        emailService.enviarCorreoInformativo(correo.getAsunto(), post.getCorreo(), cuerpo);
     }
 
     @Override

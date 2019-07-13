@@ -76,9 +76,12 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
             }
 
             if(profile.equals("development")){
-                Integer ixUrl = contenido.indexOf("href=");
+                receptor = "contoso.peru@gmail.com";
+                preparator = mimeMessagePreparator(asunto, receptor, contenido);
+                emailSender.send(preparator);
+                /*Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
-                bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));
+                bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));*/
             }
 
         } catch (MailException ex) {
@@ -91,17 +94,19 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
     public void enviarCorreoInformativoVariosBbc(String asunto, String receptores, String contenido) {
         MimeMessagePreparator preparator;
         try {
-            boolean isProdOrHku = profile.equals("production") || profile.equals("development");
-            if(isProdOrHku) {
-                //Receptor
-                if(profile.equals("development")){
-                    receptores = "contoso.peru@gmail.com";
-                    preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
-                } else{
-                    preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
-                }
+            if(profile.equals("production")){
+                preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptores, contenido);
                 emailSender.send(preparator);
-            } else {
+                return;
+            }
+            //Block development/qa
+            if(profile.equals("qa-azure")){
+                String receptorDev = "monica.diaz@itsight.pe";
+                preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptorDev, contenido);
+                emailSender.send(preparator);
+            }
+
+            if(profile.equals("development")){
                 Integer ixUrl = contenido.indexOf("href=");
                 String url = ixUrl == -1 ? "" : contenido.substring(contenido.indexOf("href=")+6).split("'")[0];
                 bandejaTemporalRepository.save(new BandejaTemporal(asunto, contenido, url));

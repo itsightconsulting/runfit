@@ -1,7 +1,9 @@
 package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
+import com.itsight.domain.dto.AprobacionDTO;
 import com.itsight.domain.dto.RefUploadIds;
 import com.itsight.domain.dto.TrainerDTO;
 import com.itsight.domain.dto.UsuGenDTO;
@@ -29,17 +31,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.itsight.constants.ViewConstant.MAIN_INF_N;
+import static com.itsight.constants.ViewConstant.P_ERROR404;
 import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Mail.*;
-import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
-import static com.itsight.util.Enums.Msg.POSTULANTE_ULTIMA_ETAPA;
+import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
-import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
-import static com.itsight.util.Enums.TipoTrainer.PARA_EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.*;
 import static com.itsight.util.Enums.TipoUsuario.ENTRENADOR;
 
 @Service
@@ -319,11 +325,33 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         Correo correo;
         String cuerpo;
         //Obtener cuerpo del correo para la plataforma
-        if(trainerFicha.getTipoTrainerId() != PARA_EMPRESA.get()){
+
+        if(tipoTrainerId == PARTICULAR.get()) {
             correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());
             //Envio de correo
+            String imagen = "https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/"+trainer.getId()+"/"+obj.getUuidFp()+JPEG.get();
             String hashId = Parseador.getEncodeHash32Id("rf-aprobacion", trainer.getId());
-            cuerpo = String.format(correo.getBody(), domainName, hashId);
+            String tipoTrainer = tipoTrainerId == Enums.TipoTrainer.PARTICULAR.get() ? "Independiente" : "Empresa";
+
+            String
+                    urlQuery = UriComponentsBuilder.newInstance()
+                    .query("hshId={0}")
+                    .query("nm={0}")
+                    .query("ml={0}")
+                    .query("ttId={0}")
+                    .buildAndExpand(hashId,
+                                Parseador.getEncodeBase64(trainer.getUsername()),
+                                Parseador.getEncodeBase64(trainer.getCorreo()),
+                                tipoTrainerId)
+                    .getQuery();
+
+            cuerpo = String.format(correo.getBody(),
+                                    domainName,
+                                    hashId,
+                                    urlQuery,
+                                    trainer.getNombreCompleto(),
+                                    tipoTrainer,
+                                    imagen);
             String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
             emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
         }
@@ -450,6 +478,37 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         //Envio de correo
         String cuerpo = String.format(correo.getBody(), domainName);
         emailService.enviarCorreoInformativo(correo.getAsunto(), destinatario, cuerpo);
+    }
+
+    @Override
+    public ModelAndView actualizarFlagActivoByIdAndNotificacionSec(AprobacionDTO aprob, Integer id, boolean flag) {
+        String usernameAndEnable = securityUserRepository.findUsernameAndEnabledById(id);
+        if (usernameAndEnable == null) {
+            return new ModelAndView(P_ERROR404);
+        }
+        if(!usernameAndEnable.split("\\|")[0].equals(aprob.getNm())){
+            return new ModelAndView(P_ERROR404);
+        }
+
+        if(Boolean.valueOf(usernameAndEnable.split("\\|")[1])){
+            return new ModelAndView(MAIN_INF_N, "msg", APROBACION_FINAL_PERFIL_TRAINER_RE.get());
+        }
+        repository.updateFlagActivoById(id, flag);
+        securityUserRepository.updateEstadoById(id, flag);
+        if(aprob.getTtId() == EMPRESA.get()){
+            repository.updateMultipleEstadoByTrEmpId(id);
+            securityUserRepository.updateMultipleEstadoByTrEmpId(id);
+        }
+
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(PERFIL_TRAINER_APROBADO.get());
+        //Envio de correo
+        String cuerpo = String.format(correo.getBody(), domainName);
+        emailService.enviarCorreoInformativo(correo.getAsunto(), aprob.getMl(), cuerpo);
+        return new ModelAndView(
+                ViewConstant.MAIN_INF_P,
+                "msg",
+                APROBACION_FINAL_PERFIL_TRAINER.get());
     }
 
     @Override

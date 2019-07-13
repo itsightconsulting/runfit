@@ -2,13 +2,12 @@ package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.Correo;
+import com.itsight.domain.Trainer;
 import com.itsight.domain.TrainerFicha;
-import com.itsight.domain.dto.PerfilObsDTO;
-import com.itsight.domain.dto.ServicioDTO;
-import com.itsight.domain.dto.TrainerDTO;
-import com.itsight.domain.dto.TrainerFichaDTO;
+import com.itsight.domain.dto.*;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
+import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.TrainerFichaRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
@@ -16,14 +15,14 @@ import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-import static com.itsight.util.Enums.Mail.PERFIL_CHECK_OBS_SUBS;
-import static com.itsight.util.Enums.Mail.PERFIL_POST_OBS;
+import static com.itsight.util.Enums.FileExt.JPEG;
+import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.OBS_PERFIL_TRAINER;
-import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
-import static com.itsight.util.Enums.TipoTrainer.PARA_EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.*;
 
 @Service
 @Transactional
@@ -37,6 +36,8 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
 
     private ServicioService servicioService;
 
+    private SecurityUserRepository securityUserRepository;
+
     @Value("${domain.name}")
     private String domainName;
 
@@ -44,12 +45,14 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
                 EmailService emailService,
                 CorreoService correoService,
                 ParametroService parametroService,
-                ServicioService servicioService) {
+                ServicioService servicioService,
+                SecurityUserRepository securityUserRepository) {
         super(repository);
         this.emailService = emailService;
         this.correoService = correoService;
         this.parametroService = parametroService;
         this.servicioService = servicioService;
+        this.securityUserRepository = securityUserRepository;
     }
 
     @Override
@@ -230,5 +233,43 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     @Override
     public Boolean getFlagPermisoUpdByNomPag(String nomPag) {
         return repository.getFlagPermisoUpdByNomPag(nomPag);
+    }
+
+    @Override
+    public String enviarFichaTrainerEmpresa(TrainerEmpresaDTO trainer, Integer trainerId) {
+        Integer tipoTrainerId = EMPRESA.get();
+        String username = securityUserRepository.findUsernameById(trainerId);
+        Correo correo;
+        String cuerpo;
+        //Obtener cuerpo del correo para la plataforma
+
+        correo = correoService.findOne(ULTIMA_ETAPA_POSTULANTE.get());
+        //Envio de correo
+        String imagen = "https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/"+ trainerId+"/"+trainer.getImgPerfil();
+        String hashId = Parseador.getEncodeHash32Id("rf-aprobacion", trainerId);
+        String tipoTrainer = "Empresa";
+
+        String
+                urlQuery = UriComponentsBuilder.newInstance()
+                .query("hshId={0}")
+                .query("nm={0}")
+                .query("ml={0}")
+                .query("ttId={0}")
+                .buildAndExpand(hashId,
+                        Parseador.getEncodeBase64(username),
+                        Parseador.getEncodeBase64(trainer.getCorreo()),
+                        tipoTrainerId)
+                .getQuery();
+
+        cuerpo = String.format(correo.getBody(),
+                domainName,
+                hashId,
+                urlQuery,
+                trainer.getNombre(),
+                tipoTrainer,
+                imagen);
+        String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+        emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
+        return "Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo.";
     }
 }

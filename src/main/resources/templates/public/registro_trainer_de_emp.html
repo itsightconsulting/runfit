@@ -509,7 +509,7 @@
 
         function clickRedireccionamientoPerfilEmpresa(){
             const arrUrl = window.location.href.split("/");
-            window.location.href = _ctx+"p/trainer/checkout/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2];
+            window.location.href = _ctx+"p/trainer/checkout/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2] + "#staff";
         }
 
         function changeImgPerfil(){
@@ -569,10 +569,11 @@
                         return myXhr;
                     },
                     success: function (data) {
-                        //Mensaje diferente por flujo particular
+                        /*//Mensaje diferente por flujo particular
                         data.res = "El asesor ha sido registrado correctamente y ya debe aperecer en el perfil principal de la empresa en el tab 'STAFF'. \n\n" +
                             "Puede seguir agregando tantos entrenadores como desee";
-                        reqSuccess(data, 3600000);
+                        reqSuccess(data, 3600000);*/
+                        $('#btnVerPerEmpresa').click();
                     },
                     error: (xhr)=>{
                         exception(xhr);

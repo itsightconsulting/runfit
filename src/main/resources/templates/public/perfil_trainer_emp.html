@@ -264,7 +264,8 @@
                           </div>
                           <input type="hidden" id="HshTrainerId" th:value="${hshTrainerId}">
                       </form>
-                  </div>
+                </div>
+                <button class="btn btn-default btn-black" type="button" id="btnGuardarGeneral">FINALIZAR REGISTRO</button>
                 <hr>
                 </div>
               </div>
@@ -274,6 +275,9 @@
       </section>
     </div>
     <!-- MODALS -->
+    <script th:inline="javascript">
+        const body = document.querySelector('body');
+    </script>
     <th:block th:insert="public/modals-trainer :: fg-modals-p-trainer"></th:block>
     <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
@@ -282,7 +286,7 @@
     <script th:inline="javascript">
       let $perfil = {};
       const tabService = document.getElementById('service');
-      const body = document.querySelector('body');
+      const btnGuardarGeneral = document.getElementById('btnGuardarGeneral');
       let ccBancarias = [];
       let servicios = [];
       let selServicioId = -1;
@@ -290,6 +294,7 @@
 
       (function () {
           tabService.addEventListener('click', clickListenerTabService);
+          btnGuardarGeneral.addEventListener('click', preGuardarGeneralEmpresa);
           init();
       })();
 
@@ -736,9 +741,51 @@
           });
       }
 
-      function irARegistrosTrainer(){
-        const arrUrl = window.location.href.split("/");
+      function irARegistrosTrainer() {
+        const arrUrl = window.location.href.replace("#staff", "").split("/");
         window.location.href = _ctx + "p/trainer/empresa/agregar/sub/" + arrUrl[arrUrl.length - 1] + "/"+ arrUrl[arrUrl.length - 2];
+      }
+
+      function preGuardarGeneralEmpresa(){
+          $.SmartMessageBox({
+              title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Mensajes Runfit</b>",
+              content: "<div class='font-md' style='font-size: 1.5em'>¿Desea finalizar el registro de sus asesores y enviar su perfil a la última aprobación? Por el contrario, " +
+                  "en caso aún le falte registrar nuevos entrenadores seleccione 'NO'.</div>",
+              buttons: '[NO][SI]'
+          }, function (ButtonPressed) {
+              if(ButtonPressed == 'SI'){
+                  enviarPerfilEmpresaFull();
+              }else{
+
+              }
+          });
+      }
+
+      function enviarPerfilEmpresaFull(){
+          const arrUrl = window.location.href.replace("#staff", "").split("/");
+          const data = {};
+          //xxx es comodin para el campo apellido en los trainers tipo empresa
+          data.nombre = $perfil.nombreCompleto.replace("xxx","").trim();
+          data.correo = $perfil.correo;
+          data.imgPerfil = $perfil.nomImgPerfil;
+          $.ajax({
+              type: 'POST',
+              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+              url: _ctx + 'p/trainer/empresa/enviar/'+arrUrl[arrUrl.length - 1],
+              data: data,
+              dataType: "json",
+              blockLoading: true,
+              success: function (data, textStatus) {
+                  if (textStatus == "success") {
+                      reqSuccess(data);
+                  }
+              },
+              error: function (xhr) {
+                  exception(xhr);
+              },
+              complete: function () {
+              }
+          });
       }
 
     </script>

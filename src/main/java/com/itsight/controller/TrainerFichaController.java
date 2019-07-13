@@ -26,12 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.management.Query;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Msg.*;
@@ -250,7 +247,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @PostMapping("/ultima-aprobacion/{hshTrainerId}/{correo}")
-    public @ResponseBody String ultimaAprobacionTrainer(
+    public @ResponseBody String ultimaAprobacionTrainerPost(
             @PathVariable(name = "hshTrainerId") String hshTrainerId,
             @PathVariable(name = "correo") String correo,
             @RequestParam(name = "tipoTrainerId") String tipoTrainerId) throws CustomValidationException {
@@ -264,6 +261,20 @@ public class TrainerFichaController extends BaseController {
             return jsonResponse(Enums.Msg.APROBACION_FINAL_PERFIL_TRAINER.get());
         }
         throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @GetMapping("/ultima-aprobacion")
+    public @ResponseBody ModelAndView ultimaAprobacionTrainer(@ModelAttribute AprobacionDTO aprob) throws CustomValidationException, SecCustomValidationException {
+        aprob.decode();//Decode Base64 props
+        Integer ttId = aprob.getTtId();
+        if(ttId<=0 || ttId>=4){
+            throw new SecCustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+        }
+        if(Validador.validarCorreo(aprob.getMl())){
+            Integer trainerId = getDecodeHashId("rf-aprobacion", aprob.getHshId());
+            return trainerService.actualizarFlagActivoByIdAndNotificacionSec(aprob, trainerId, true);
+        }
+        throw new SecCustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
     }
 
     @PostMapping("/registro/{hashPreTrainerId}")
@@ -366,5 +377,13 @@ public class TrainerFichaController extends BaseController {
                     finalUploadNames);
         }
         throw new CustomValidationException(VALIDACION_FALLIDA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @PostMapping("/empresa/enviar/{hshTrainerId}")
+    public @ResponseBody String enviarFichaTraEmpARevision(
+            @PathVariable(name = "hshTrainerId") String hshTrainerId,
+            @ModelAttribute TrainerEmpresaDTO trainer) throws CustomValidationException {
+        Integer trainerId = getDecodeHashId("rf-load-media", hshTrainerId);
+        return jsonResponse(trainerFichaService.enviarFichaTrainerEmpresa(trainer, trainerId));
     }
 }
