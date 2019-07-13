@@ -104,16 +104,144 @@
     const btnBuscarPeriodo = document.getElementById('btnBuscarPeriodo');
     const dvItems = document.getElementById('dvItemsSuspendidos');
     const dvCalendario = document.getElementById('dvCalendario');
-    const dvClientes = document.getElementById('dvClientes')
+    const dvClientes = document.getElementById('dvClientes');
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth()+1;
+    let currentSelectedYear = currentYear;
+    let currentSelectedMonth = currentMonth;
     let currentPeriodoSeleccionado;
     let defaultFilter;
-    let flagBusqueda = false;
-
-
+    let primerAñoTrainer;
+    let flagPresenteAñoSuspendido = false;
 
     $(function() {
         init();
     })
+
+    $( document ).ready(function() {
+
+        let owl = $('.owl-carousel');
+        owl.owlCarousel();
+
+        $('.owl-item').removeClass("active");
+        $('.owl-dot').each(function(index){
+
+        const num = index +1;
+         $(this).attr('value',num);
+        })
+
+        $('.owl-dot').removeClass("active");
+        $('.owl-prev').removeClass("disabled");
+        $('.owl-dot[value='+currentMonth+']').addClass("active");
+
+        $('.owl-dot').click(function(){
+            let selectedDate =parseFromStringToDate(`${currentSelectedYear}-${currentSelectedMonth}-01`);
+            let incrementador = parseInt($(this).val()) - currentSelectedMonth;
+            selectedDate.setMonth(selectedDate.getMonth() + incrementador);
+
+            if(selectedDate > currentDate){
+                return false;
+            }
+
+            else{
+
+            $('.owl-dot').removeClass('active');
+            $(this).addClass('active');
+            currentSelectedMonth =parseInt($(this).val());
+         //   visualizarMesSeleccion(currentSelectedMonth, currentSelectedYear);
+            let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+            cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+
+            return false;
+
+        }
+        })
+
+        $('.owl-prev').click(function() {
+
+            if (currentSelectedMonth === 1) {
+
+               if(currentSelectedYear - 1 < primerAñoTrainer){
+
+                    $('.owl-dot').removeClass('active');
+                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+
+
+                }else {
+                    currentSelectedYear--;
+                    currentSelectedMonth = 12;
+                    $('.owl-dot').removeClass('active');
+                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+                   let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                   cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+
+
+                }
+
+            } else {
+
+                currentSelectedMonth--;
+                $('.owl-dot').removeClass('active');
+                $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+                let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+
+
+            }
+         }
+        )
+
+
+
+        $('.owl-next').click(function(){
+
+            $('.owl-item').removeClass("active");
+
+            let selectedDate =parseFromStringToDate(`${currentSelectedYear}-${currentSelectedMonth}-01`);
+            selectedDate.setMonth(selectedDate.getMonth() + 1);
+
+            if(selectedDate > currentDate){
+                owl.trigger('prev.owl.carousel');
+                $('.owl-dot').removeClass('active');
+                $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+                return false;
+            }
+            else {
+
+                if (currentSelectedMonth === 12) {
+                    currentSelectedYear++;
+                    currentSelectedMonth = 1;
+                    $('.owl-dot').removeClass('active');
+                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+
+                    //deshabilito la función de avanzar al siguiente slide
+                    owl.trigger('prev.owl.carousel');
+                    owl.trigger('prev.owl.carousel');
+
+                    let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                    cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+
+
+                 //   return false;
+
+                } else {
+
+                    //deshabilito la función de avanzar al siguiente slide
+                    owl.trigger('prev.owl.carousel');
+                    currentSelectedMonth++;
+                    $('.owl-dot').removeClass('active');
+                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+                    let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                    cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+
+                 //   return false;
+                }
+
+            }
+          }
+        )
+    });
 
 
     function init(){
@@ -126,13 +254,6 @@
             busquedaSuspendidosporInput(evt);
         } ,false);
         validacionFiltroPeriodo();
-
-
-
-
-
-
-
     }
 
 
@@ -143,13 +264,11 @@
             let imgURL = $img.attr('src');
             let attributes = $img.prop("attributes");
 
-            console.log("a");
 
             $.get(imgURL, function(data) {
                 // Get the SVG tag, ignore the rest
                 let $svg = jQuery(data).find('svg');
 
-                console.log("b");
                 // Remove any invalid XML tags
                 $svg = $svg.removeAttr('xmlns:a');
 
@@ -167,8 +286,8 @@
 
     function getDefaultDateQuery(){
 
-        const CurrentDate = new Date();
-        const filterQuery= CurrentDate.getFullYear()+'-'+('0' + (CurrentDate.getMonth()+1)).slice(-2);
+        const filterQuery= currentYear +'-'+('0' + (currentMonth)).slice(-2);
+
 
         return filterQuery;
     }
@@ -204,7 +323,6 @@
 
     }
 
-    const monthNames = ["enero", "febrero", "marzo", "abril", "mayo","junio","julio", "agosto", "septiembre", "octubre", "noviembre","diciembre"];
 
 
     function cargarClientesSuspendidos(periodoSeleccionado){
@@ -213,9 +331,8 @@
 
 
         let month = periodoSeleccionado.slice(5,7);
-        let monthIndex = parseInt(month)-1;
-        const monthName =monthNames[monthIndex];
         const year = periodoSeleccionado.slice(0,4);
+
 
          $.ajax({
             type: 'GET',
@@ -226,9 +343,14 @@
             noOne: true,
             success: function (res) {
 
+                currentSelectedYear = parseInt(year);
+                currentSelectedMonth = parseInt(month);
+
+                $('.owl-dot').removeClass('active');
+                $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+
 
                 if(res.length === 0){
-
                     limpiarListado();
                     const noOne = document.createElement('div');
                     noOne.className = "";
@@ -236,23 +358,21 @@
                     noOne.style.color = "#a8fa00";
                     noOne.style.padding = "15px 0px";
                     noOne.style.textAlign = "center";
-
                     noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se cuenta con clientes suspendidos para este periodo";
                     document.getElementById('listaSuspendidos').appendChild(noOne);
-                }else{
+                    visualizarMesSeleccion(month,year);
 
+
+
+                }else{
 
                     limpiarListado();
                     recrearListado(res);
-
+                    visualizarMesSeleccion(month,year);
                 }
             }, error: (xhr) => {
-
                 exception(xhr);
             }, complete: () => {
-                 visualizarMesSeleccion(monthName,year);
-
-
              }
         })
     }
@@ -260,11 +380,6 @@
     function activarCliente(e){
 
         const clienteId = e;
-        let filtroPeriodo = flagBusqueda ?  currentPeriodoSeleccionado  : defaultFilter;
-
-
-        console.log(filtroPeriodo);
-
 
         $.ajax({
             type: 'PUT',
@@ -275,7 +390,10 @@
             noOne: true,
             success: function (res) {
 
-                cargarClientesSuspendidos(filtroPeriodo);
+
+                let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+s
             }
             , error: (xhr) => {
                 exception(xhr);
@@ -289,10 +407,11 @@
 
     function visualizarMesSeleccion(mes,año){
 
+        const monthNames = ["enero", "febrero", "marzo", "abril", "mayo","junio","julio", "agosto", "septiembre", "octubre", "noviembre","diciembre"];
 
 
-        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+mes+" "+año+"</span>");
-        $('#fechaListaSuspendidos').html( ""+mes+" "+año);
+        $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+monthNames[mes-1]+" "+año+"</span>");
+        $('#fechaListaSuspendidos').html( ""+monthNames[mes-1]+" "+año);
     }
 
     function busquedaSuspendidosporInput(){
@@ -301,12 +420,15 @@
       if ($("#filtroPeriodo-form").valid()) {
 
           const periodo = $('#inputPeriodo').val();
+
           const filtro = getMonthFilterQuery(periodo);
 
-          flagBusqueda = true;
           currentPeriodoSeleccionado = filtro;
           getPeriodosClientesSuspendidos();
           cargarClientesSuspendidos(filtro);
+
+
+
 
       }
     }
@@ -375,38 +497,75 @@
                    a.classList.add("suspension");
 
                }
+
+
+
            }
+
+           const dataCurrentYear = periodoObject.find(function(element){
+                                    return parseInt(element.year) === currentYear;
+           })
+
+
+           if(!dataCurrentYear){
+
+
+                cargarAños(currentYear, periodoObject.length+1);
+                cargarMeses(currentYear,periodoObject.length+1);
+            }
+
+
+            for (let i = currentMonth + 1; i <= 12; i++) {
+
+                const selector = "d" + ("0" + i).slice(-2) + currentYear;
+                console.log(selector);
+                const a = document.getElementById(selector);
+                a.classList.add("indebido");
+
+            }
+
+
+
+
 
        }else{
 
-               const noOne = document.createElement('div');
+           cargarTituloCalendario();
 
 
-               noOne.className = "row";
-               noOne.style.fontSize = "1.0em";
-               noOne.style.color = "#9D9D9D";
-               noOne.style.fontWeight = "bold";
-               noOne.style.padding = "15px 0px";
-               noOne.innerHTML = "<div class='col-md-12' style='text-align: center'><i class='fa fa-info-circle fa-fw'></i>Actualmente no se tienen clientes suspendidos </div>";
-
-               dvCalendario.style.display ="none";
-               dvClientes.style.display ="none";
-
-               dvItems.insertBefore(noOne, dvItems.firstChild);
+           cargarAños(currentYear, 1);
+           cargarMeses(currentYear,1);
 
 
+           for (let i = currentMonth + 1; i <= 12; i++) {
+
+               const selector = "d" + ("0" + i).slice(-2) + currentYear;
+               console.log(selector);
+               const a = document.getElementById(selector);
+               a.classList.add("indebido");
+
+           }
 
        }
 
         $(".mes").click(function(e){
 
            let periodo = e.target.id.slice(1);
+            console.log(periodo)
+
             periodo = getDBMonthQuery(periodo);
-            flagBusqueda = true;
-            currentPeriodoSeleccionado = periodo;
-            cargarClientesSuspendidos(periodo);
 
+            periodoDate =parseFromStringToDate(periodo+"-01");
 
+            if(periodoDate > currentDate){
+
+                return false;
+            }else {
+                currentPeriodoSeleccionado = periodo;
+
+                cargarClientesSuspendidos(periodo);
+
+            }
         });
 
     }
@@ -414,8 +573,6 @@
     function cargarAños(año,index)
     {
         const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
-
-
 
         calendarioSuspendidos.appendChild(htmlStringToElement(`<div class="panel-heading">
                                                         <h3 class="panel-title" ><img class="svg" src="${_ctx}img/iconos-trainers/icon_calendar2.svg">${año}<a data-toggle="collapse" href="#collapse${index}"><img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg" onload="svgFillEvent()"></a></h3>
@@ -426,6 +583,11 @@
     function cargarMeses(año,index){
 
         const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
+
+        index === 1 ? primerAñoTrainer = parseInt(año):"";
+
+        parseInt(año) === currentYear ?  flagPresenteAñoSuspendido : !flagPresenteAñoSuspendido;
+
 
         calendarioSuspendidos.appendChild(htmlStringToElement(`
          <div class="panel-collapse collapse" id="collapse${index}" data-value="${año}">
@@ -586,10 +748,13 @@
 
         arr.forEach((e)=>{
 
+            let date = e.fechaCreacion;
+            date = date.slice(0,10);
+
            listaSuspendidos.appendChild(htmlStringToElement(`<li>
             <div class="row">
                 <div class="col-sm-8"><img class="user" src="${_ctx}img/user.png">
-                <h4>${e.cliNombreCompleto}<span> ${moment(e.fechaCreacion).format("DD/MM/YYYY")}</span></h4>
+                <h4>${e.cliNombreCompleto}<span> ${date}</span></h4>
             </div>
             <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#" onClick="document.location.href=getClienteSeleccionado(${e.cliId},${e.id});"  >ver perfil</a></div>
             </div>

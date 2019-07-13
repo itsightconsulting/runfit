@@ -1478,6 +1478,10 @@ ul.tabs {
   border-radius: 50%
 }
 
+.modal .modal-dialog {
+  margin: auto;
+}
+
 @media only screen and (max-width: 1024px) {
   .trainers-form .avatar-form {
     top: -40px
@@ -1585,8 +1589,10 @@ ul.tabs {
   }
   .trainers-form .btn-black {
     font-size: 16px;
-    word-break: break-all;
     white-space: inherit
+  }
+  .trainers-form .btn-black, .trainers-form .btn-white {
+    max-width: 250px !important;
   }
   .trainers-form .btn-tarifario {
     width: 100% !important;
@@ -3340,7 +3346,7 @@ button.btn:hover {
 
 .checks li {
   display: inline-block;
-  margin-right: 25px
+  margin-right: 24px
 }
 
 .checks.mar-0 li {
@@ -3446,6 +3452,12 @@ hr {
   }
   .pad-right-middle {
     width: auto
+  }
+  .chk-content {
+    font-size: 14px;
+  }
+  .chk-content .checkmark {
+    top: 2px;
   }
 }
 

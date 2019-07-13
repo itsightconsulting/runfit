@@ -953,6 +953,11 @@ section#suspendidos .panel .list-group li .mes.suspension:hover {
 section#suspendidos .panel .list-group li .mes.suspension:after {
     content: " ";
     background-color: #a8fa00 !important; }
+section#suspendidos .panel .list-group li .mes.indebido:hover {
+    border-color: #615b5b !important; }
+section#suspendidos .panel .list-group li .mes.indebido:after {
+    content: " ";
+    background-color: #615b5b !important; }
 
 section#suspendidos .owl-nav {
     top: -112px; }
