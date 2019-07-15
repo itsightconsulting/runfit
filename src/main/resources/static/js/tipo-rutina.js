@@ -279,8 +279,6 @@
          });
 
         $("#frm_registro").validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -289,7 +287,6 @@
                 $(element).parent().removeClass("state-error").addClass('state-success');
                 $(element).addClass('valid');
             },
-            ignore: ".ignore",
             rules: {
                 Nombre: {
                     required: true,

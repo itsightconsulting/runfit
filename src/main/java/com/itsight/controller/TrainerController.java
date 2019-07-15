@@ -34,8 +34,6 @@ public class TrainerController extends BaseController{
 
     private PostService postService;
 
-    private DisciplinaService disciplinaService;
-
     private UbPeruService ubPeruService;
 
     private SecUserProcedureInvoker secUserProcedureInvoker;
@@ -46,7 +44,6 @@ public class TrainerController extends BaseController{
                              RolService rolService,
                              TipoDocumentoService tipoDocumentoService,
                              PostService postService,
-                             DisciplinaService disciplinaService,
                              UbPeruService ubPeruService,
                              SecUserProcedureInvoker secUserProcedureInvoker) {
         this.trainerService = trainerService;
@@ -54,7 +51,6 @@ public class TrainerController extends BaseController{
         this.tipoDocumentoService = tipoDocumentoService;
         this.rolService = rolService;
         this.postService = postService;
-        this.disciplinaService = disciplinaService;
         this.ubPeruService = ubPeruService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
     }

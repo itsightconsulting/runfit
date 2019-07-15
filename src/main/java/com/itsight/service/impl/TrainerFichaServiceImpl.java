@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Correo;
 import com.itsight.domain.Trainer;
 import com.itsight.domain.TrainerFicha;
@@ -270,6 +271,11 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
                 imagen);
         String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
         emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
-        return "Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo.";
+        return Enums.Msg.POSTULANTE_ULTIMA_ETAPA_EMP.get();
+    }
+
+    @Override
+    public Integer getTotalColaboradoresById(Integer trainerId) {
+        return repository.getTotalColaboradoresById(trainerId);
     }
 }

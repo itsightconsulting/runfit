@@ -180,6 +180,7 @@
                                                   </ul>
                                               </div>
                                           </div>
+                                          <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                                   </div>
                                   <div class="tab-pane fade inpts-2" id="contact">
                                       <div class="form-group">
@@ -263,6 +264,7 @@
                                       <div class="" style="padding-bottom: 10px; font-weight: 100;">
                                           <label id="NomPagFull"></label>
                                       </div>
+                                      <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                                   </div>
                                   <div class="tab-pane fade inpts-3" id="service">
                                       <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
@@ -286,15 +288,19 @@
                                               <p id="InfoAdicional"></p>
                                           </div>
                                           <hr>
+                                          <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
                                       </form>
                                   </div>
                                   <input type="hidden" id="HshVerEmpTrainerId" th:value="${hshVerEmpTrainerId}">
                                   <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
                               </div>
                           </form>
-                          <button class="btn btn-default btn-black" type="button" id="btnGuardar">GUARDAR</button>
+                          <div class="alert alert-info-cs">Si ya termino de registrar a todos sus colaboradores, regrese al
+                              menú principal mediante el ícono <i style="color:#17a2b8;" class="fa fa-arrow-circle-left fa-fw"></i> que se
+                              encuentra debajo de la foto de perfil de esta página
+                          </div>
+                    </div>
                   </div>
-              </div>
           </section>
       </div>
       <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
@@ -622,6 +628,7 @@
             constraintsValidation();
             instanceCropper();
             doMultiselectCheckBox();
+            nextTabButton();
             if(flag_form_populate){populateForm();}
         }
 
@@ -878,35 +885,6 @@
 
         function constraintsValidation() {
             $(frm).validate({
-                errorClass: errorClass,
-                errorElement: errorElement,
-                highlight: function (element) {
-                    if(element.type === 'radio' || element.type==='checkbox'){
-                        let msgError = "";
-                        setTimeout(() => {
-                            const eleMsgError = document.querySelector(`#${element.name}-error`);
-                            if(eleMsgError != undefined){
-                                msgError = eleMsgError.textContent;
-                                eleMsgError.remove();
-                            }
-                        }, 100);
-                        const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                        setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
-                    }else{
-                        $(element).removeClass('state-success').addClass("state-error");
-                        $(element).removeClass('valid');
-                    }
-                },
-                unhighlight: function (element) {
-                    if(element.type === 'radio' || element.type==='checkbox'){
-                        const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                        parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-                    } else {
-                        $(element).removeClass("state-error").addClass('state-success');
-                        $(element).addClass('valid');
-                    }
-                },
-                ignore: ".ignore",
                 rules: {
                     Nombres: {
                         required: true,
@@ -1058,6 +1036,14 @@
             const rules = $(frm).validate().settings.rules;
             Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
                 document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+            });
+        }
+
+        function nextTabButton() {
+            $('.btnNextTab').click(function(){
+                var header = $(".navbar-inverse").height();
+                $('.nav-tabs > .active').next('li').find('a').trigger('click');
+                $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
             });
         }
 

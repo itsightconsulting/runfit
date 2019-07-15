@@ -805,8 +805,6 @@ MacroValidacion = (function(){
                 }, 'Rutinas mínimas de 6 semanas, es por ello que se requiere una fecha mayor');
 
             $("#frm_registro").validate({
-                errorClass: errorClass,
-                errorElement: errorElement,
                 highlight: function (element) {
                     $(element).parent().removeClass('state-success').addClass("state-error");
                     $(element).removeClass('valid');
@@ -815,7 +813,6 @@ MacroValidacion = (function(){
                     $(element).parent().removeClass("state-error").addClass('state-success');
                     $(element).addClass('valid');
                 },
-                ignore: ".ignore",
                 rules: {
                     FrecuenciaCardiacaMinima: {
                         required: true,

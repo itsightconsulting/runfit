@@ -318,7 +318,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         obj.setExtFp(JPEG.get());
 
         //Registrando
-        String trainerId = registrar(trainer, String.valueOf(ENTRENADOR.ordinal()));
+        String trainerId = this.registrar(trainer, String.valueOf(ENTRENADOR.ordinal()));
         //Actualizando flag de la postulación
         postulanteTrainerService.updateFlagRegistradoById(trainerFicha.getPostulanteTrainerId(), true);
         refUpload.setTrainerId(Integer.parseInt(trainerId));

@@ -92,8 +92,6 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Column(precision = 6, scale = 2, nullable = false)
     private Double totalValoracion;
 
-    private Integer empresaId;
-
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TipoTrainerId", nullable = false, updatable = false)

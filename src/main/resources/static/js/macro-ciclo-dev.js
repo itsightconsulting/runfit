@@ -779,8 +779,6 @@ MacroValidacion = (function(){
             const arrayDay = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sábado"];
 
             $("#frm_registro").validate({
-                errorClass: errorClass,
-                errorElement: errorElement,
                 highlight: function (element) {
                     $(element).parent().removeClass('state-success').addClass("state-error");
                     $(element).removeClass('valid');
@@ -789,7 +787,6 @@ MacroValidacion = (function(){
                     $(element).parent().removeClass("state-error").addClass('state-success');
                     $(element).addClass('valid');
                 },
-                ignore: ".ignore",
                 rules: {
                     FrecuenciaCardiacaMinima: {
                         required: true,

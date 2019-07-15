@@ -345,7 +345,7 @@
                                     </div>
                                     <div class="col-md-12 padding-0">
                                         <div class="col-md-4 col-xs-12 padding-0">
-                                            <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button">
+                                            <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button" disabled="disabled">
                                                 <i class="fa fa-pencil fa-fw"></i> EDITAR
                                             </button>
                                         </div>
@@ -379,6 +379,7 @@
                             </div>
                         </div>
                         <div class="form-group div-actualizacion">
+                            <hr>
                             <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
                             <button class="btn btn-default btn-black" id="btnGuardar"><i class="fa fa-fw fa-check"></i>ACTUALIZAR Y ENVIAR</button>
                         </div>
@@ -477,6 +478,13 @@
             svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
             clases.add('svc-focus');
             mostrarDetalleServicio(selServicioId);
+            //No mostramos los iconos de eliminar y editar
+            const subTab = Number(document.querySelector('.sub-menu-selected').getAttribute('data-op'));
+            if(subTab === 2){
+                cleanPaqueteCampos();
+                document.querySelector('.edit-tar-svc').setAttribute('disabled', 'disabled');
+                return;
+            }
             const actualEdit = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
             if(actualEdit){
                 actualEdit.classList.add('hidden');
@@ -497,6 +505,7 @@
             //Agregando el data id
             const butonEdit = document.querySelector('button.edit-tar-svc');
             butonEdit.setAttribute('data-id', tarifaId);
+            butonEdit.removeAttribute('disabled');
         } else if(clases.contains('edit-svc')){
             const svcId = Number(input.getAttribute('data-id'));
             editarServicio(svcId);
@@ -706,6 +715,7 @@
         }
 
         $("#frm_registro :input").prop("disabled", true);
+        $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
 
         $.ajax({
             type: 'PUT',
@@ -724,19 +734,19 @@
                             reqSuccess({res: "Éxito, usted actualizó la ficha de su colaborador. Recuerde que para confirmar todos " +
                                     "los cambios y enviarlos para la revisión general deberá ir al perfil principal " +
                                     "y seleccionar desde allí el botón: ACTUALIZAR Y ENVIAR"},
-                                3600000);
+                                3600000, 1);
                         }else{
                             reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada." +
                                     " Le estaremos notificando los resultados. Gracias"},
-                                3600000);
+                                3600000, 1);//El último parametro abre una ventana emergente tipo modal con propiedad static-backgrop
                         }
-
                     }
                     document.querySelector('.div-actualizacion').classList.add('hidden');
                 }
             },
             error: function (xhr) {
                 $("#frm_registro :input").prop("disabled", false);
+                checkBoxes();//Activando los event handlers nuevamente
                 exception(xhr);
             },
             complete: function () {
@@ -811,7 +821,9 @@
                 error: (xhr)=>{
                     exception(xhr);
                 },
-                complete: ()=> {}
+                complete: ()=> {
+
+                }
             });
         }
     }
@@ -1125,9 +1137,9 @@
     function setTarifarios(tarifarios){
         const dt = document.getElementById('Tarifarios');
         dt.innerHTML = "";
-        tarifarios.forEach(t=>{
+        tarifarios.forEach((t, ix)=>{
             dt.appendChild(
-                htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
+                htmlStringToElement(`${putTarifario(ix, t.nombre)}`));
         })
     }
 
@@ -1144,7 +1156,14 @@
     }
 
     function mostrarDetalleTarifaSvc(tarifaId){
-        const t = servicios.find(v => v.id === selServicioId).tarifarios.find(t=>t.id === tarifaId);
+        //En este caso buscamos al tarifario no por id sino por el index que tiene en su respectivo arreglo
+        const t = servicios.find(v => v.id === selServicioId).tarifarios.find((t, ix)=>ix === tarifaId);
+        const slcFre = document.querySelector('#FrecuenciaPaquete');
+        Array.from(slcFre.options).forEach(v=>{
+            if(v.text === t.frecuencia){
+                document.querySelector('#FrecuenciaPaquete').selectedIndex = v.index;
+            }
+        });
         document.querySelector('#NombreTarifario').value = t.nombre;
         document.querySelector('#txtCantidadPersonas').value = t.personas;
         document.querySelector('#txtCantidadMeses').value = t.meses;
@@ -1155,17 +1174,18 @@
     }
 
     function editarTarifa(tId){
+        //tId == index
         const t = getTarifa();
         if(t.valid) {
             const svcAsociado = servicios.find(s=>s.id===selServicioId);
             const tarifarios = svcAsociado.tarifarios;
-            const isNomRepeat = tarifarios.filter(e=>e.id!==tId).find(e=>e.nombre === t.nombre);
+            const isNomRepeat = tarifarios.filter((e,ix)=>ix!==tId).find(e=>e.nombre === t.nombre);
             if(isNomRepeat){
                 $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Nombre del tarifario esta repetido, modificarlo</em>" ,timeout: 3500})
                 return;
             }
 
-            let tarifa = tarifarios.find(tar=>tar.id===tId);
+            let tarifa = tarifarios.find((e,ix)=>ix===tId);
 
             tarifa.nombre = t.nombre;
             tarifa.frecuencia = t.frecuencia;
@@ -1386,35 +1406,6 @@
 
     function constraintsValidation() {
         $(frm).validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
-            highlight: function (element) {
-                if(element.type === 'radio' || element.type==='checkbox'){
-                    let msgError = "";
-                    setTimeout(() => {
-                        const eleMsgError = document.querySelector(`#${element.name}-error`);
-                        if(eleMsgError != undefined){
-                            msgError = eleMsgError.textContent;
-                            eleMsgError.remove();
-                        }
-                    }, 100);
-                    const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                    setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
-                }else{
-                    $(element).removeClass('state-success').addClass("state-error");
-                    $(element).removeClass('valid');
-                }
-            },
-            unhighlight: function (element) {
-                if(element.type === 'radio' || element.type==='checkbox'){
-                    const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                    parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-                } else {
-                    $(element).removeClass("state-error").addClass('state-success');
-                    $(element).addClass('valid');
-                }
-            },
-            ignore: ".ignore",
             rules: {
                 Sexo:{
                     required: true

@@ -281,9 +281,7 @@ public class TrainerFichaController extends BaseController {
     public @ResponseBody String registroTrainer(
             @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId,
             @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException {
-
         Integer postTraId = 0;
-
         if(hashPreTrainerId.length() == 32){
             postTraId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
         }
@@ -385,5 +383,11 @@ public class TrainerFichaController extends BaseController {
             @ModelAttribute TrainerEmpresaDTO trainer) throws CustomValidationException {
         Integer trainerId = getDecodeHashId("rf-load-media", hshTrainerId);
         return jsonResponse(trainerFichaService.enviarFichaTrainerEmpresa(trainer, trainerId));
+    }
+
+    @GetMapping("/empresa/check/total/colaboradores/{hshTrainerId}")
+    public @ResponseBody String obtenerTotalColaboradoresEmpresaById(@PathVariable(name = "hshTrainerId") String hshTrainerId) throws CustomValidationException {
+        Integer trainerId = getDecodeHashId("rf-load-media", hshTrainerId);
+        return jsonResponse(String.valueOf(trainerFichaService.getTotalColaboradoresById(trainerId)));
     }
 }

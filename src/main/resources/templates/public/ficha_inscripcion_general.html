@@ -1255,35 +1255,6 @@
 
     function constraintsValidation() {
       $(frm).validate({
-        errorClass: errorClass,
-        errorElement: errorElement,
-        highlight: function (element) {
-          if(element.type === 'radio' || element.type==='checkbox'){
-            let msgError = "";
-            setTimeout(() => {
-              const eleMsgError = document.querySelector(`#${element.name}-error`);
-              if(eleMsgError != undefined){
-                msgError = eleMsgError.textContent;
-                eleMsgError.remove();
-              }
-            }, 100);
-            const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-            setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
-          }else{
-            $(element).removeClass('state-success').addClass("state-error");
-            $(element).removeClass('valid');
-          }
-        },
-        unhighlight: function (element) {
-          if(element.type === 'radio' || element.type==='checkbox'){
-            const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-            parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-          } else {
-            $(element).removeClass("state-error").addClass('state-success');
-            $(element).addClass('valid');
-          }
-        },
-        ignore: ".ignore",
         rules: {
           Nombres: {
             required: true,
