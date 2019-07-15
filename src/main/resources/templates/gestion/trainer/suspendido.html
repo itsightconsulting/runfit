@@ -13,7 +13,12 @@
             display: block;
             margin-top: 5px;
             margin-bottom: 10px;
-            color: #cf3239;
+            color: #de4747;
+            width: 420px;
+        }
+
+        .fa-2x {
+            font-size: 1.5em;
         }
 
     </style>
@@ -49,6 +54,22 @@
                                     <div class="panel panel-default" id="calendarioSuspendidos">
 
                                     </div>
+                                </div>
+
+                                <div id="colores_suspendidos">
+
+
+
+                          <!--          <span class='one'>Seleccionado</span>
+                                    <span class='two'>Con cliente(s) suspendido(s)</span>
+                                    <span class='three'>Sin cliente(s) suspendido(s)</span>
+                                    <span class='four'>Inválido</span>"> -->
+
+                                   <a   class="fa fa-question-circle fa-2x" title=" <h4>Guía- Calendario </h4>  <span class='one'>Seleccionado</span>
+                                    <span class='two'>Con cliente(s) suspendido(s)</span>
+                                    <span class='three'>Sin cliente(s) suspendido(s)</span>
+                                    <span class='four'>Inválido</span></div>" data-html="true" rel="tooltip"  data-placement="bottom" href="#"></a>
+
                                 </div>
                             </div>
                             <div id="dvClientes" class="col-md-7">
@@ -117,9 +138,12 @@
 
     $(function() {
         init();
+
     })
 
     $( document ).ready(function() {
+
+
 
         let owl = $('.owl-carousel');
         owl.owlCarousel();
@@ -143,56 +167,40 @@
             if(selectedDate > currentDate){
                 return false;
             }
-
             else{
+                $('.owl-dot').removeClass('active');
+                $(this).addClass('active');
+                currentSelectedMonth =parseInt($(this).val());
+             //   visualizarMesSeleccion(currentSelectedMonth, currentSelectedYear);
+                let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
 
-            $('.owl-dot').removeClass('active');
-            $(this).addClass('active');
-            currentSelectedMonth =parseInt($(this).val());
-         //   visualizarMesSeleccion(currentSelectedMonth, currentSelectedYear);
-            let formatoMes = ('0' +currentSelectedMonth).slice(-2);
-            cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
-
-            return false;
-
+                return false;
         }
         })
 
         $('.owl-prev').click(function() {
 
+
             if (currentSelectedMonth === 1) {
 
                if(currentSelectedYear - 1 < primerAñoTrainer){
-
-                    $('.owl-dot').removeClass('active');
-                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-
-
+                  return false;
                 }else {
                     currentSelectedYear--;
                     currentSelectedMonth = 12;
-                    $('.owl-dot').removeClass('active');
-                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-                   let formatoMes = ('0' +currentSelectedMonth).slice(-2);
-                   cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
-
-
                 }
-
             } else {
-
                 currentSelectedMonth--;
+           }
+
                 $('.owl-dot').removeClass('active');
                 $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
                 let formatoMes = ('0' +currentSelectedMonth).slice(-2);
                 cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
 
-
             }
-         }
         )
-
-
 
         $('.owl-next').click(function(){
 
@@ -212,40 +220,26 @@
                 if (currentSelectedMonth === 12) {
                     currentSelectedYear++;
                     currentSelectedMonth = 1;
-                    $('.owl-dot').removeClass('active');
-                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-
                     //deshabilito la función de avanzar al siguiente slide
                     owl.trigger('prev.owl.carousel');
                     owl.trigger('prev.owl.carousel');
-
-                    let formatoMes = ('0' +currentSelectedMonth).slice(-2);
-                    cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
-
-
-                 //   return false;
 
                 } else {
-
                     //deshabilito la función de avanzar al siguiente slide
-                    owl.trigger('prev.owl.carousel');
                     currentSelectedMonth++;
-                    $('.owl-dot').removeClass('active');
-                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-                    let formatoMes = ('0' +currentSelectedMonth).slice(-2);
-                    cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
-
-                 //   return false;
+                    owl.trigger('prev.owl.carousel');
                 }
+            }
+            $('.owl-dot').removeClass('active');
+            $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+            let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+            cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
 
             }
-          }
         )
     });
 
-
     function init(){
-
         defaultFilter = getDefaultDateQuery();
         getPeriodosClientesSuspendidos();
         cargarClientesSuspendidos(defaultFilter);
@@ -254,6 +248,10 @@
             busquedaSuspendidosporInput(evt);
         } ,false);
         validacionFiltroPeriodo();
+
+        $('#colores_suspendidos').tooltip({
+            selector: "a[rel=tooltip]"
+        })
     }
 
 
@@ -275,7 +273,6 @@
                 // Loop through IMG attributes and apply on SVG
                 $.each(attributes, function() {
                     $svg.attr(this.name, this.value);
-                    console.log("c");
                 });
 
                 // Replace IMG with SVG
@@ -291,7 +288,6 @@
 
         return filterQuery;
     }
-
     function getMonthFilterQuery(filter){
 
         const month = filter.slice(0,2);
@@ -300,7 +296,6 @@
         return year+"-"+month;
 
    }
-
     function getDBMonthQuery(filter){
 
         const month = filter.slice(0,2);
@@ -311,28 +306,18 @@
 
     }
 
-
-
     function getMonthQuery(filter){
-
         const month = filter.slice(0,2);
         const year = filter.slice(3,7);
 
         return year+"-"+month;
-
-
     }
 
-
-
     function cargarClientesSuspendidos(periodoSeleccionado){
-
         svgFillEvent();
-
 
         let month = periodoSeleccionado.slice(5,7);
         const year = periodoSeleccionado.slice(0,4);
-
 
          $.ajax({
             type: 'GET',
@@ -349,7 +334,6 @@
                 $('.owl-dot').removeClass('active');
                 $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
 
-
                 if(res.length === 0){
                     limpiarListado();
                     const noOne = document.createElement('div');
@@ -360,19 +344,22 @@
                     noOne.style.textAlign = "center";
                     noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se cuenta con clientes suspendidos para este periodo";
                     document.getElementById('listaSuspendidos').appendChild(noOne);
-                    visualizarMesSeleccion(month,year);
-
-
-
                 }else{
 
                     limpiarListado();
                     recrearListado(res);
-                    visualizarMesSeleccion(month,year);
                 }
             }, error: (xhr) => {
                 exception(xhr);
             }, complete: () => {
+                 visualizarMesSeleccion(month,year);
+                 limpiarInputPeriodo();
+                 $('.help-block').hide();
+
+
+                $('.mes').removeClass("seleccionado");
+                $(`#d${month}${year}`).addClass("seleccionado");
+
              }
         })
     }
@@ -389,18 +376,13 @@
             blockLoading: false,
             noOne: true,
             success: function (res) {
-
-
                 let formatoMes = ('0' +currentSelectedMonth).slice(-2);
                 cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
-s
             }
             , error: (xhr) => {
                 exception(xhr);
             }, complete: () => {
-
                 getPeriodosClientesSuspendidos();
-
             }
         })
     }
@@ -408,8 +390,6 @@ s
     function visualizarMesSeleccion(mes,año){
 
         const monthNames = ["enero", "febrero", "marzo", "abril", "mayo","junio","julio", "agosto", "septiembre", "octubre", "noviembre","diciembre"];
-
-
         $('#tituloGestionSuspendidos').html( "suspendidos - <span>"+monthNames[mes-1]+" "+año+"</span>");
         $('#fechaListaSuspendidos').html( ""+monthNames[mes-1]+" "+año);
     }
@@ -420,20 +400,15 @@ s
       if ($("#filtroPeriodo-form").valid()) {
 
           const periodo = $('#inputPeriodo').val();
-
           const filtro = getMonthFilterQuery(periodo);
-
           currentPeriodoSeleccionado = filtro;
           getPeriodosClientesSuspendidos();
           cargarClientesSuspendidos(filtro);
-
-
-
-
       }
     }
 
     function validacionFiltroPeriodo(){
+
 
 
         $("#filtroPeriodo-form").validate({
@@ -450,32 +425,37 @@ s
             rules: {
                 inputPeriodo:{
                     required: true,
-                    monthInputValid: true
+                    monthInputValid: true,
+                    greaterThanDate: function() {
+                            return new Date(primerAñoTrainer,0,1);
+                    },
+                    lessThanDate: function(){
+                            return new Date();
+                    }
                 }
             },
             // Messages for form validation
             messages: {
+                inputPeriodo:{
+                    greaterThanDate: function(e){
 
+                         return("No se tienen registros para el año indicado .Se requiere un mes a partir del año  " + moment(e).format('YYYY')) + "(Formato : MM/YYYY)";
+                    },
+                    lessThanDate: function(e){
+
+                        return("Se requiere un mes menor o igual al mes actual");
+                    }
+                }
             },
             // Do not change code below
             errorPlacement: function (error, element) {
                 error.insertAfter(element.parent());
             }
         });
-
-
-
     }
 
-
     function cargarPeriodosClientesSuspendidos(data){
-
-
-
        const periodoObject = getPeriodoObject(data);
-
-       console.log(periodoObject);
-
        if(periodoObject[0].year !== "") {
 
            dvCalendario.style.display ="block";
@@ -495,85 +475,43 @@ s
                    const selector = "d" + ("0" + mes).slice(-2) + año;
                    const a = document.getElementById(selector);
                    a.classList.add("suspension");
-
-               }
-
-
-
+              }
            }
 
            const dataCurrentYear = periodoObject.find(function(element){
                                     return parseInt(element.year) === currentYear;
            })
 
-
            if(!dataCurrentYear){
-
-
                 cargarAños(currentYear, periodoObject.length+1);
                 cargarMeses(currentYear,periodoObject.length+1);
             }
 
-
-            for (let i = currentMonth + 1; i <= 12; i++) {
-
+           for (let i = currentMonth + 1; i <= 12; i++) {
                 const selector = "d" + ("0" + i).slice(-2) + currentYear;
-                console.log(selector);
                 const a = document.getElementById(selector);
                 a.classList.add("indebido");
-
             }
 
-
-
-
-
        }else{
-
            cargarTituloCalendario();
-
-
            cargarAños(currentYear, 1);
            cargarMeses(currentYear,1);
 
-
            for (let i = currentMonth + 1; i <= 12; i++) {
-
                const selector = "d" + ("0" + i).slice(-2) + currentYear;
-               console.log(selector);
                const a = document.getElementById(selector);
                a.classList.add("indebido");
-
            }
-
        }
 
-        $(".mes").click(function(e){
-
-           let periodo = e.target.id.slice(1);
-            console.log(periodo)
-
-            periodo = getDBMonthQuery(periodo);
-
-            periodoDate =parseFromStringToDate(periodo+"-01");
-
-            if(periodoDate > currentDate){
-
-                return false;
-            }else {
-                currentPeriodoSeleccionado = periodo;
-
-                cargarClientesSuspendidos(periodo);
-
-            }
-        });
+         mesCalendarioClickEvent();
 
     }
 
     function cargarAños(año,index)
     {
         const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
-
         calendarioSuspendidos.appendChild(htmlStringToElement(`<div class="panel-heading">
                                                         <h3 class="panel-title" ><img class="svg" src="${_ctx}img/iconos-trainers/icon_calendar2.svg">${año}<a data-toggle="collapse" href="#collapse${index}"><img class="arrow svg" src="${_ctx}img/iconos-trainers/icon_flecha2.svg" onload="svgFillEvent()"></a></h3>
                                                           </div>`));
@@ -583,11 +521,8 @@ s
     function cargarMeses(año,index){
 
         const calendarioSuspendidos = document.getElementById('calendarioSuspendidos');
-
         index === 1 ? primerAñoTrainer = parseInt(año):"";
-
         parseInt(año) === currentYear ?  flagPresenteAñoSuspendido : !flagPresenteAñoSuspendido;
-
 
         calendarioSuspendidos.appendChild(htmlStringToElement(`
          <div class="panel-collapse collapse" id="collapse${index}" data-value="${año}">
@@ -650,20 +585,13 @@ s
 
     function getPeriodoObject(data) {
 
-        console.log(data);
-
         let infoPeriodos = data;
 
         infoPeriodos = data.split(',');
-
-
         let periodoObject=[];
 
-        for(var i = 0; i<infoPeriodos.length;i++){
-
-
+        for(let i = 0; i<infoPeriodos.length;i++){
             const index =periodoObject.findIndex( x =>  x.year === infoPeriodos[i].slice(0,4));
-
 
             if(index === -1){
                 let mes = infoPeriodos[i].slice(4,6);
@@ -672,7 +600,6 @@ s
                 periodoObject.push(periodo);
             }
             else{
-
                 let mes = infoPeriodos[i].slice(4,6);
                 mes = parseInt(mes);
                 periodoObject[index].meses.push(mes);
@@ -680,8 +607,6 @@ s
         }
 
         return periodoObject;
-
-
     }
 
 
@@ -698,16 +623,8 @@ s
            , error: (xhr) => {
            }, complete: () => {
 
-
-
            }
-
-
-
        });
-
-
-
     }
 
 
@@ -716,9 +633,6 @@ s
          return _ctx+"gestion/trainer/red/consultar/cliente?id="+clienteId+"&rfId="+redFitnessId;
      }
 
-
-
-
     function limpiarListado(){
 
         const listaSuspendidos = document.getElementById('listaSuspendidos');
@@ -726,61 +640,61 @@ s
         while (listaSuspendidos.firstChild) {
             listaSuspendidos.removeChild(listaSuspendidos.firstChild);
         }
-
     }
 
     function limpiarCalendario(){
-
         const calendariosuspendidos = document.getElementById('calendarioSuspendidos');
         while (calendariosuspendidos.firstChild) {
             calendariosuspendidos.removeChild(calendariosuspendidos.firstChild);
         }
-
-    }
-
-
+   }
 
     function recrearListado(arr){
 
         const listaSuspendidos = document.getElementById('listaSuspendidos');
 
-        console.log(arr);
-
         arr.forEach((e)=>{
-
             let date = e.fechaCreacion;
             date = date.slice(0,10);
 
            listaSuspendidos.appendChild(htmlStringToElement(`<li>
             <div class="row">
-                <div class="col-sm-8"><img class="user" src="${_ctx}img/user.png">
+                <div class="col-sm-8"><img class="user" src="${_ctx}img/user_avatar.png">
                 <h4>${e.cliNombreCompleto}<span> ${date}</span></h4>
             </div>
             <div class="col-sm-4"><a class="btn_Activar" href="javascript:;"  onclick="activarCliente(${e.id}); return false;">activar</a><a href="#" onClick="document.location.href=getClienteSeleccionado(${e.cliId},${e.id});"  >ver perfil</a></div>
             </div>
             </li>`));
-
-
         })
     }
 
     function cargarTituloCalendario(){
-
         const calendariosuspendidos = document.getElementById('calendarioSuspendidos');
-
-
         calendariosuspendidos.appendChild(htmlStringToElement(`<h4> CALENDARIO ANUAL </h4>`));
+    }
 
+    function mesCalendarioClickEvent(){
+
+        $(".mes").click(function(e){
+            let periodo = e.target.id.slice(1);
+            periodo = getDBMonthQuery(periodo);
+            periodoDate =parseFromStringToDate(periodo+"-01");
+
+            if(periodoDate > currentDate){
+                return false;
+            }else {
+                currentPeriodoSeleccionado = periodo;
+                cargarClientesSuspendidos(periodo);
+            }
+        });
 
     }
 
-
-
-
+    function limpiarInputPeriodo(){
+        $('#inputPeriodo').val('');
+    }
 
 </script>
-
-
 
 </body>
 </html>

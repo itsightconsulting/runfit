@@ -105,7 +105,8 @@ h2.title_carousel {
     font-family: GothamHTF-Bold;
     margin-bottom: 30px;
     display: inline-block;
-    width: 100%; }
+    width: 100%;
+    font-size: 25px;}
 h2.title_carousel span {
     font-family: GothamHTF-Light; }
 h2.title_carousel.dots {
@@ -167,6 +168,9 @@ select {
     border: none;
     border-radius: 15px;
     padding: 6.1px 12px; }
+
+section#suspendidos .input-group button {
+     width:105px;}
 
 .owl-nav {
     position: absolute;
@@ -870,7 +874,8 @@ section#suspendidos .title_carousel {
     margin-bottom: 75px; }
 
 section#suspendidos .input-group input {
-    background: url("../img/calendar.png") no-repeat 4% #fff !important; }
+    background: url("../img/calendar.png") no-repeat 4% #fff !important;
+    width: 305px; }
 
 section#suspendidos .panel {
     background-color: transparent;
@@ -948,22 +953,63 @@ section#suspendidos .panel .list-group li .mes:after {
     left: 0;
     right: 0;
     margin: auto; }
+
+section#suspendidos .panel .list-group li .mes.seleccionado{
+     border-color: #a8fa00;
+}
+section#suspendidos .panel .list-group li .mes.seleccionado{
+    border-color: #a8fa00!important;
+}
+section#suspendidos .panel .list-group li .mes.seleccionado:hover:after{
+    border-color: #a8fa00!important;
+}
+
+section#suspendidos .panel .list-group li .mes.seleccionado:after {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    background-color: #a8fa00 !important;
+    border-radius: 50%;
+    border-color: #a8fa00;
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    margin: auto; }
+
 section#suspendidos .panel .list-group li .mes.suspension:hover {
-    border-color: #a8fa00 !important; }
+    border-color: #ffffff; }
 section#suspendidos .panel .list-group li .mes.suspension:after {
     content: " ";
-    background-color: #a8fa00 !important; }
+    background-color: #ffffff; }
 section#suspendidos .panel .list-group li .mes.indebido:hover {
     border-color: #615b5b !important; }
 section#suspendidos .panel .list-group li .mes.indebido:after {
     content: " ";
     background-color: #615b5b !important; }
 
+section#suspendidos .colorSuspendido :after {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    background-color: #a8fa00 !important;
+    border-radius: 50%;
+    border-color: #a8fa00;
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    margin: auto; }
+
+
+
 section#suspendidos .owl-nav {
     top: -112px; }
 section#suspendidos .owl-nav .owl-prev {
     background: url(../img/arrow-left.png) no-repeat center;
-    margin-right: 40%; }
+    margin-right: 44%; }
 section#suspendidos .owl-nav .owl-next {
     background: url(../img/arrow-right.png) no-repeat center; }
 
@@ -1019,3 +1065,40 @@ section#suspendidos ul.users li a.btn_Activar {
     margin-bottom: 14px;
     border-radius: 15px;
     text-decoration: none; }
+
+
+#colores_suspendidos span {
+    display: block;
+    margin: 1px 3px 0px 0px;
+}
+
+#colores_suspendidos {
+    margin-top: 20px;
+    height: 500px;
+    text-align: right;
+}
+
+section#suspendidos #colores_suspendidos a{
+    color: #a8fa00;
+}
+
+span:before {
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.one:before {
+    background: #a8fa00;
+}
+.two:before {
+    background: #ffffff;
+}
+.three:before {
+    background: #cf3239;
+}
+.four:before {
+    background: #615b5b;
+}

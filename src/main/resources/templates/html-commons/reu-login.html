@@ -1,6 +1,5 @@
 <div th:fragment="fg-login" class="login">
-    <a class="back" href="javascript:void(0)" onclick="javascript:document.querySelector('.login').classList.remove('active'); $('html, body').css('overflowY', 'auto');
-"><span class="fa fa-chevron-left"></span></a>
+    <a class="back" href="javascript:void(0)" id="hide_login_link"><span class="fa fa-chevron-left"></span></a>
     <div class="login-bg"></div>
     <div class="avatar"><img th:src="@{/img/public/logo.png}"></div>
     <div class="login-sesion">
@@ -17,7 +16,7 @@
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
             <div class="actions">
                 <button class="btn-login" id="btn-login" type="button" onclick="javascript:submitReuseLogin()">INGRESAR</button>
-                <!--<button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo"  id="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>-->
+                <button class="btn-face" type="button">INGRESA CON FACEBOOK</button><a class="btn-nuevo"  id="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
             </div>
         </form>
     </div>
