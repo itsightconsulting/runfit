@@ -351,7 +351,7 @@ function spinnerSwitchTab(effect){
 }
 
 function spinnerUpload(xhr) {
-    $.SmartMessageBox({
+   $.SmartMessageBox({
         title: "<i class='fa fa-bullhorn'></i> Notificación",
         content: "" +
             "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +
@@ -488,6 +488,11 @@ function parseFromStringToDate(dateString) {
 function parseFromStringToDate2(dateString) {
     var dt = dateString.split("/");
     return new Date(dt[2].substr(0, 4), Number(dt[1]) - 1, dt[0]);
+}
+
+function parseFromStringMonthToDate(dateString) {
+    var dt = dateString.split("/");
+    return new Date(dt[1], Number(dt[0]) - 1, 1);
 }
 
 function spinnerHTMLRaw() {

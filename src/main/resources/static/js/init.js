@@ -129,13 +129,10 @@ function owlCarouselVideoteca() {
                 1280: {
                     items: 4,
                     slideBy: 1
-
-
                 }
             }
         });
         //   function getIndex(event) {
-
         //   }
         owl.on('changed.owl.carousel', function(event) {
             console.log(event.item.index);

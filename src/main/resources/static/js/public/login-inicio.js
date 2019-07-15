@@ -5,6 +5,7 @@ const btnCambiar = document.getElementById('btnCambiar');
 const btnRegistrar = document.getElementById('btn-register');
 const btnNuevo = document.getElementById('btn-nuevo');
 const btnStartUpIniciarSesion = document.getElementById('login_link');
+const btnHideIniciarSesion = document.getElementById('hide_login_link');
 
 
 (function () {
@@ -42,6 +43,12 @@ function eventos(){
     if(btnStartUpIniciarSesion){// Disparar login
 
         btnStartUpIniciarSesion.addEventListener('click', inicializarLoginForm);
+    }
+
+
+    if(btnHideIniciarSesion){// Disparar login
+
+        btnHideIniciarSesion.addEventListener('click', ocultarLoginForm);
     }
 
 
@@ -169,11 +176,15 @@ function goRegisterAlt(){
     $(".login-sesion-alt").fadeOut();
     $(".login-register-alt").fadeIn();
     $(".login-register-alt").removeClass('hidden');
+    $(".help-block").remove();
+
+
 }
 
 function goLoginAlt() {
     $(".login-register-alt").fadeOut();
     $(".login-sesion-alt").fadeIn();
+    $(".help-block").remove();
 }
 
 function customErrorHandler(xhr, input){
@@ -336,8 +347,16 @@ function getFormData($form) {
 
 function inicializarLoginForm(){
 
-    document.querySelector('.login').classList.add('active');
-    $('html, body').css('overflowY', 'hidden');
+    $('.login').addClass('active');
+ //   $('html, body').css('overflowY', 'hidden');
     goLogin();
+
+}
+
+function ocultarLoginForm(){
+
+    $('.login').removeClass('active');
+  //  $('html, body').css('overflowY', 'auto');
+
 
 }

@@ -161,11 +161,15 @@ function goRegisterAlt(){
     $(".login-sesion-alt").fadeOut();
     $(".login-register-alt").fadeIn();
     $(".login-register-alt").removeClass('hidden');
+    $(".help-block").remove();
+
 }
 
 function goLoginAlt() {
     $(".login-register-alt").fadeOut();
     $(".login-sesion-alt").fadeIn();
+    $(".help-block").remove();
+
 }
 
 function customErrorHandler(xhr, input){

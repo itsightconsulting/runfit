@@ -62,16 +62,17 @@
 }
 
 .login.active {
-  left: 0
+  left: 0;
+  overflow-y: hidden;
 }
 
 .login .login-bg {
-  background-color: #303030;
-  opacity: .7;
+  background-color: #3a3a3a;
+  opacity: .6;
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: -1
+  z-index: -1;
 }
 
 .login .avatar {
@@ -108,7 +109,7 @@
   padding-left: 35px;
   position: relative;
   margin-top: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .login .form-group span {
@@ -125,7 +126,7 @@
   text-transform: uppercase
 }
 
-.login .form-group input {
+/*.login .form-group input {
   color: #a8fa00;
   background: transparent;
   border: 0;
@@ -133,7 +134,7 @@
   padding: 6px 15px;
   border-bottom: 1px solid;
   margin-bottom: 10px
-}
+}*/
 
 .login .login-sesion-alt .form-group  input ,
 .login .login-register-alt .form-group  input
@@ -144,20 +145,20 @@
   width: 90%;
   padding: 6px 15px;
   border-bottom: 1px solid;
-  margin-bottom: 5px;
+
 }
 
 
 .login .login-sesion .form-group  input ,
 .login .login-register .form-group  input
 {
-  color: #a8fa00;
+  color: #a6f503;
   background: transparent;
   border: 0;
   width: 100%;
   padding: 6px 15px;
   border-bottom: 1px solid;
-  margin-bottom: 5px;
+
 }
 
 .login .form-group a {
@@ -175,7 +176,7 @@
 }
 
 .login .btn-login {
-  background-color: #a8fa00;
+  background-color: #81bc07;
   display: block;
   text-transform: uppercase;
   color: #fff;
@@ -226,7 +227,7 @@
 }
 
 .login .help-block{
-  color: #b1afaf !important;
+  color: #ea3535 !important;
   font-size: 14px;
   padding: 0 0 10px 30px;
   display: block !important;
@@ -454,8 +455,8 @@
     max-height: 40px
   }
   .login .form-group input {
-    border-bottom: 1px solid;
-    padding-left: 0;
+    border: none !important;
+    padding-left: 0 !important;
   }
   .login .form-group label {
     font-size: 12px;
@@ -630,7 +631,8 @@ footer li a span.fa{
   box-sizing: border-box;
   padding: 70px 0 45px;
   background: url(/img/public/entrena-bg.jpg) top center no-repeat;
-  background-size: cover
+  background-size: cover;
+  background-position: right;
 }
 
 .entrena_correctamente .title_section {
@@ -1857,7 +1859,8 @@ ul.tabs {
 }
 
 .quienes-somos p {
-  margin: 15px auto 50px
+  margin: 15px auto 50px;
+  text-align: justify;
 }
 
 .time-line ol {
@@ -1923,7 +1926,8 @@ ul.tabs {
 .time-line ol li .item p {
   max-width: 430px;
   padding-right: 15px;
-  margin-top: 15px
+  margin-top: 15px;
+  text-align: justify;
 }
 
 .time-line ol li .item img {
@@ -3252,7 +3256,9 @@ body {
   padding: 0;
   margin: 0;
   overflow-x: hidden;
-  background: #fff
+  background: #fff;
+  height:100%;
+
 }
 
 .container {
@@ -3466,7 +3472,7 @@ hr {
     font-size: 25px
   }
   .description {
-    font-size: 16px
+    font-size: 14px
   }
   .emprende-form .bg-image {
     display: none
@@ -3941,6 +3947,10 @@ section.trainers-form {
   line-height: 1;
   color: #fff;
   opacity: .8;
+}
+
+.modal .carousel-control {
+  background: none;
 }
 
 .button-remover{
