@@ -7,10 +7,17 @@ const btnNuevo = document.getElementById('btn-nuevo');
 
 (function () {
     init();
+
+
+
 })();
 
 function init(){
     eventos();
+
+
+
+
 }
 
 function eventos(){
@@ -150,20 +157,18 @@ function sendFormCambiar(){
 }
 
 
-function goRegister(){
-
+function goRegisterAlt(){
     $(".login-sesion-alt").fadeOut();
     $(".login-register-alt").fadeIn();
     $(".login-register-alt").removeClass('hidden');
-    $(".login.active .help-block").remove();
+    $(".help-block").remove();
 
 }
 
-function goLogin() {
-
+function goLoginAlt() {
     $(".login-register-alt").fadeOut();
     $(".login-sesion-alt").fadeIn();
-    $(".login.active .help-block").remove();
+    $(".help-block").remove();
 
 }
 

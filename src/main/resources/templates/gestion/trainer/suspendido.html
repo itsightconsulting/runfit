@@ -252,8 +252,6 @@
         $('#colores_suspendidos').tooltip({
             selector: "a[rel=tooltip]"
         })
-
-        $("#filtroPeriodo-form").focusout(focusOutInputPeriodoEvent);
     }
 
 
@@ -356,7 +354,7 @@
             }, complete: () => {
                  visualizarMesSeleccion(month,year);
                  limpiarInputPeriodo();
-                 $('section#suspendidos .help-block').hide();
+                 $('.help-block').hide();
 
 
                 $('.mes').removeClass("seleccionado");
@@ -428,16 +426,26 @@
                 inputPeriodo:{
                     required: true,
                     monthInputValid: true,
-                    greaterThanMonth: function() {
+                    greaterThanDate: function() {
                             return new Date(primerAñoTrainer,0,1);
                     },
-                    lessThanMonth: function(){
-                        return new Date();
+                    lessThanDate: function(){
+                            return new Date();
                     }
                 }
             },
             // Messages for form validation
             messages: {
+                inputPeriodo:{
+                    greaterThanDate: function(e){
+
+                         return("No se tienen registros para el año indicado .Se requiere un mes a partir del año  " + moment(e).format('YYYY')) + "(Formato : MM/YYYY)";
+                    },
+                    lessThanDate: function(e){
+
+                        return("Se requiere un mes menor o igual al mes actual");
+                    }
+                }
             },
             // Do not change code below
             errorPlacement: function (error, element) {
@@ -684,11 +692,6 @@
 
     function limpiarInputPeriodo(){
         $('#inputPeriodo').val('');
-    }
-
-    function focusOutInputPeriodoEvent(){
-        $('.owl-dot').removeClass('active');
-        $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
     }
 
 </script>

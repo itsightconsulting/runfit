@@ -1082,23 +1082,14 @@ section#suspendidos #colores_suspendidos a{
     color: #a8fa00;
 }
 
-section#suspendidos span:before {
+span:before {
     content: "";
-    display: none;
+    display: inline-block;
     width: 15px;
     height: 15px;
     border-radius: 50%;
     margin-right: 5px;
 }
-
-span:before {
-     content: "";
-     display: inline-block;
-     width: 15px;
-     height: 15px;
-     border-radius: 50%;
-     margin-right: 5px;
- }
 .one:before {
     background: #a8fa00;
 }
