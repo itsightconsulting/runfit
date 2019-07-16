@@ -917,6 +917,10 @@ h1 {
   margin: 0 auto
 }
 
+.avatar-form .fa-trainer-emp {
+  cursor: pointer;
+}
+
 .trainers-form {
   margin-bottom: 80px;
   position: relative;
@@ -3144,7 +3148,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .menu_mobile .avatar img {
-  margin: 35px auto
+  margin: 20px auto
 }
 
 .menu_mobile .avatar p.name {
@@ -3152,13 +3156,15 @@ input[type=range]:focus::-ms-fill-upper {
   font-family: Gotham-Black, 'system-ui';
   color: #a8fa00;
   text-transform: uppercase;
-  font-size: 18px
+  font-size: 18px;
+  display: none;
 }
 
 .menu_mobile .avatar p.email {
   color: #fff;
   text-transform: uppercase;
-  font-size: 11px
+  font-size: 11px;
+  display: none;
 }
 
 .menu_mobile ul.header-options {
@@ -3472,7 +3478,7 @@ hr {
     font-size: 25px
   }
   .description {
-    font-size: 14px
+    font-size: 16px
   }
   .emprende-form .bg-image {
     display: none
@@ -4081,4 +4087,10 @@ body.modal-open {
 
 .btn-login{
   cursor: pointer;
+}
+
+.alert-info-cs{
+  color: #303030;
+  background-color: #ffffff;
+  border-color: #bce8f1;
 }
