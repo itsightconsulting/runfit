@@ -448,14 +448,12 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-4 col-xs-12 padding-0">
-                                                <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" type="button">
+                                                <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" disabled="disabled" type="button">
                                                     <i class="fa fa-pencil fa-fw"></i> EDITAR
                                                 </button>
                                             </div>
-                                            <div class="col-md-4 padding-0">
-                                                <button class="btn btn-default btn-white btn-tarifario" id="btnEliminarPaquete" type="button">
                                             <div class="col-md-4 col-xs-12 padding-0">
-                                                <button class="btn btn-default btn-white btn-tarifario del-tar-svc" id="btnEliminarPaquete" type="button">
+                                                <button class="btn btn-default btn-white btn-tarifario del-tar-svc" id="btnEliminarPaquete" disabled="disabled" type="button">
                                                     <i class="fa fa-trash fa-fw"></i>
                                                     ELIMINAR
                                                 </button>
@@ -565,7 +563,7 @@
                                     <div class="terms">
                                         <div>
                                             <ul class="checks">
-                                                <div class="chk-content">
+                                                <div class="chk-content chk-tyc">
                                                     <a class="ver-tyc" href="javascript:void(0)" onclick="javascript:abrirModalTermCond()">ACEPTO TÉRMINOS Y CONDICIONES<span class="obligatorio">*</span></a>
                                                     <input id="inpTermCond" name="inpTermCond" type="checkbox">
                                                     <span class="checkmark"></span>
@@ -637,6 +635,8 @@
 
         if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
             $("#frm_registro :input").prop("disabled", true);
+            $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
+            document.querySelector('.ver-tyc').onclick = null;//Desactivamos en openModalTYC
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
@@ -654,6 +654,7 @@
                     }
                 }, error: (xhr) => {
                     $("#frm_registro :input").prop("disabled", false);
+                    checkBoxes();//Activando los event handlers nuevamente
                     exception(xhr);
                 }, complete: () => {
 
@@ -833,37 +834,8 @@
         return obj;
     }
 
-    function constraintsValidation() {
+    function constraintsValidation(){
         $(frm).validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
-            highlight: function (element) {
-                if(element.type === 'radio' || element.type==='checkbox'){
-                    let msgError = "";
-                    setTimeout(() => {
-                        const eleMsgError = document.querySelector(`#${element.name}-error`);
-                        if(eleMsgError != undefined){
-                            msgError = eleMsgError.textContent;
-                            eleMsgError.remove();
-                        }
-                    }, 100);
-                    const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                    setTimeout(() => {parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').textContent = msgError : parentRadios.append(htmlStringToElement(`<em style="color: #E54C4B;">${msgError}</em>`))}, 200);
-                }else{
-                    $(element).removeClass('state-success').addClass("state-error");
-                    $(element).removeClass('valid');
-                }
-            },
-            unhighlight: function (element) {
-                if(element.type === 'radio' || element.type==='checkbox'){
-                    const parentRadios = element.parentElement.parentElement.parentElement.parentElement;
-                    parentRadios.querySelector('em') != undefined ? parentRadios.querySelector('em').remove() : '';
-                } else {
-                    $(element).removeClass("state-error").addClass('state-success');
-                    $(element).addClass('valid');
-                }
-            },
-            ignore: ".ignore",
             rules: {
                 Nombres: {
                     required: true,

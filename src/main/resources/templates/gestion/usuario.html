@@ -155,16 +155,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <section class="col col-2">
-                                                    <label class="label">Código País: </label>
-                                                    <label class="input"><i class="icon-prepend fa fa-globe"></i>
-                                                        <input id="CodPais" name="CodPais" type="text"
-                                                               placeholder="Código país" maxlength="3"
-                                                               required="required"/>
-                                                        <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                    </label>
-                                                </section>
-                                                <section class="col col-2">
+                                                <section class="col col-3">
                                                     <label class="label">Teléfono Móvil: </label>
                                                     <label class="input"><i class="icon-append fa fa-mobile"></i>
                                                         <input id="Movil" name="Movil" type="text"
@@ -173,7 +164,7 @@
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     </label>
                                                 </section>
-                                                <section class="col col-2">
+                                                <section class="col col-3">
                                                     <label class="label">Teléfono Fijo: </label>
                                                     <label class="input"><i class="icon-append fa fa-phone"></i>
                                                         <input id="Telefono" name="Telefono" type="text"
@@ -458,7 +449,6 @@
             let params = getFormData($('#frm_registro'));
             const roles = [];
             params.flagActivo = $('#FlagActivo').is(':checked');
-            params.movil = $('#CodPais').val().trim() + ' ' + params.movil;
             Array.from($('.checkbox input[type="checkbox"]')).forEach((v)=>{
                 if(v.checked) roles.push(v.getAttribute('data-id'));
             })
@@ -544,7 +534,6 @@
                     $("#TipoDocumentoId").val(data.tipoDocumento);
                     $("#Correo").val(data.correo);
                     $("#Movil").val(data.movil);
-                    //$("#CodPais").val(data.movil.split(" ")[0]);
                     $("#Username").val(data.username);
                     $("#Apellidos").val(data.apellidos);
                     $("#NumeroDocumento").val(data.numeroDocumento);
@@ -803,8 +792,6 @@
 
     function validarRegistros() {
         $("#frm_registro").validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -813,7 +800,6 @@
                 $(element).parent().removeClass("state-error").addClass('state-success');
                 $(element).addClass('valid');
             },
-            ignore: ".ignore",
             rules: {
                 Nombres: {
                     required: true,
@@ -834,9 +820,6 @@
                 NumeroDocumento:{
                     required: true,
                     maxlength: $("#NumeroDocumento").prop("maxlength"),
-                },
-                CodPais: {
-                    digits: true,
                 },
                 Username: {
                     required: true,
@@ -893,11 +876,6 @@
                     required: "El campo es obligatorio",
                     maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
                 },
-                CodPais: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
-                    number: "Este campo solo permite números"
-                },
                 Username: {
                     required: "<i class='form-control-feedback glyphicon glyphicon-remove'></i>El campo es obligatorio",
                     maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
@@ -928,8 +906,6 @@
         });
 
         $("#frm_cambio").validate({
-            errorClass: errorClass,
-            errorElement: errorElement,
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -938,7 +914,6 @@
                 $(element).parent().removeClass("state-error").addClass('state-success');
                 $(element).addClass('valid');
             },
-            ignore: ".ignore",
             rules: {
                 NuevaPassword: {
                     required: true,

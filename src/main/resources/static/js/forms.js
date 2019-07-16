@@ -824,3 +824,16 @@ function checkRedesAndNota(t){
         document.getElementById('NotaFinal').innerHTML =  t.nota.replace(/\r?\n/g, '<br />');
     }
 }
+
+function cleanPaqueteCampos(){
+    document.querySelector('#NombreTarifario').value = "";
+    document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
+    document.querySelector('#txtCantidadPersonas').value = 0;
+    document.querySelector('#txtCantidadMeses').value = 0;
+    document.querySelector('#txtCantidadSesiones').value = 0;
+    document.querySelector('#PrecioPaquete').value = '0.00';
+    document.querySelector('#Moneda').selectedIndex = 0;
+    const frecuencia = document.querySelector('#FrecuenciaPaquete');
+    frecuencia.selectedIndex = 0;
+    $(frecuencia).multiselect('rebuild');
+}

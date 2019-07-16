@@ -48,7 +48,6 @@ function specificCheckBoxes(id) {
 }
 
 function checkBoxes() {
-
     $(".chk-content").click(function() {
         var _self = $(this).find('input');
         var tipoElemento = _self.attr("type");
@@ -460,7 +459,6 @@ function hideNavBar(){
 function validLoginForm(){
         $("#login-form").validate({
             // Rules for form validation}
-            ignore: ".ignore",
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');

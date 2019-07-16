@@ -23,7 +23,7 @@
               <div class="avatar-form">
                 <div class="avatar-form-content" id="ImagenPerfil">
                     <img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/>
-                    <i rel="tooltip" onclick="irARegistrosTrainer();" title="Clickea aquí para registrar un nuevo trainer para la empresa" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-arrow-circle-right"></i>
+                    <i rel="tooltip" onclick="irARegistrosTrainer();" title="Clickea aquí para registrar un nuevo trainer para la empresa" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-arrow-circle-right fa-trainer-emp"></i>
                     </div>
               </div>
             </div>
@@ -544,8 +544,9 @@
         if(ttId == 1){
             return;
         }
+          document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
+
         if(staffGaleria){
-            document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
             const divStaffs = document.getElementById('Staffs');
             const s = staffGaleria;
             s.split("|").forEach(e=>{
@@ -747,22 +748,66 @@
       }
 
       function preGuardarGeneralEmpresa(){
-          $.SmartMessageBox({
-              title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Mensajes Runfit</b>",
-              content: "<div class='font-md' style='font-size: 1.5em'>¿Desea finalizar el registro de sus asesores y enviar su perfil a la última aprobación? Por el contrario, " +
-                  "en caso aún le falte registrar nuevos entrenadores seleccione 'NO'.</div>",
-              buttons: '[NO][SI]'
-          }, function (ButtonPressed) {
-              if(ButtonPressed == 'SI'){
-                  enviarPerfilEmpresaFull();
-              }else{
-
+          checkHasTrainers().then((cant)=>{
+              if(Number(cant) === 0){
+                  $.smallBox({color: 'alert', content:
+                          '<span><i class="fa fa-exclamation-circle fa-fw"></i>' +
+                          'No puede enviar su ficha a revisión ya que usted aún no ha registrado a ningún colaborador,' +
+                          ' para que pueda registrar a uno por favor seleccion el ícono ' +
+                          '<i class="fa fa-arrow-circle-right fa-fw" style="color: #17a2b8;"></i>' +
+                          ' que se encuentra debajo de su foto de perfil. Gracias</span>',
+                            timeout: 12000});
+                  return;
               }
-          });
+              $.SmartMessageBox({
+                  title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Runfit Notifications</b>",
+                  content: "<div class='font-md' style='font-size: 1.5em'>" +
+                      "¿Desea finalizar el registro de sus asesores y enviar su perfil a una última aprobación? Por el contrario, " +
+                      "en caso aún le falte registrar nuevos entrenadores seleccione 'NO'.</div>",
+                  buttons: '[NO][SI]'
+              }, function (ButtonPressed) {
+                  if(ButtonPressed == 'SI'){
+                      enviarPerfilEmpresaFull();
+                  }else{
+
+                  }
+              });
+          })
+
+      }
+
+      async function checkHasTrainers(){
+          const arrUrl = window.location.href.replace("#staff", "").split("/");
+          const hsh = arrUrl[arrUrl.length - 1];
+
+          return new Promise((res, rej)=>{
+              $('#btnGuardarGeneral').attr('disabled', true);
+              $('#btnGuardarGeneral').html('Cargando...<i class="fa fa-spinner fa-spin fa-fw"></i>');
+              $.ajax({
+                  type: 'GET',
+                  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                  url: _ctx + 'p/trainer/empresa/check/total/colaboradores/'+hsh,
+                  dataType: "json",
+                  blockLoading: false,
+                  noOne: true,
+                  success: function (data) {
+                      res(data.res);
+                  },
+                  error: function (xhr) {
+                      exception(xhr);
+                      rej(xhr);
+                  },
+                  complete: function () {
+                      $('#btnGuardarGeneral').attr('disabled', false);
+                      $('#btnGuardarGeneral').text('FINALIZAR REGISTRO');
+                  }
+              });
+          })
       }
 
       function enviarPerfilEmpresaFull(){
           const arrUrl = window.location.href.replace("#staff", "").split("/");
+          const hsh = arrUrl[arrUrl.length - 1];
           const data = {};
           //xxx es comodin para el campo apellido en los trainers tipo empresa
           data.nombre = $perfil.nombreCompleto.replace("xxx","").trim();
@@ -771,13 +816,26 @@
           $.ajax({
               type: 'POST',
               contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-              url: _ctx + 'p/trainer/empresa/enviar/'+arrUrl[arrUrl.length - 1],
+              url: _ctx + 'p/trainer/empresa/enviar/'+hsh,
               data: data,
               dataType: "json",
               blockLoading: true,
-              success: function (data, textStatus) {
-                  if (textStatus == "success") {
-                      reqSuccess(data);
+              success: function (data) {
+                  if(data.res){
+                      setTimeout(()=>{
+                          $.SmartMessageBox({
+                              title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Runfit Notifications</b>",
+                              content: "<div class='font-md' style='font-size: 1.5em'>" +
+                                  data.res+"</div>",
+                              buttons: '[OK]'
+                          }, function (ButtonPressed) {
+                              if(ButtonPressed == 'OK'){
+                                  window.location.href = _ctx+"login";
+                              } else {
+
+                              }
+                          });
+                      }, 1000);
                   }
               },
               error: function (xhr) {

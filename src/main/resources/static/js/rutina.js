@@ -1524,8 +1524,6 @@ DiaOpc = (function(){
         },
         validarGuardaMiniPlantilla:()=>{
             $("#frm_nueva_mini").validate({
-                errorClass: errorClass,
-                errorElement: errorElement,
                 highlight: function (element) {
                     $(element).parent().removeClass('state-success').addClass("state-error");
                     $(element).removeClass('valid');
@@ -1534,7 +1532,6 @@ DiaOpc = (function(){
                     $(element).parent().removeClass("state-error").addClass('state-success');
                     $(element).addClass('valid');
                 },
-                ignore: ".ignore",
                 rules: {
                     SubCategoriaId: {
                         required: true,

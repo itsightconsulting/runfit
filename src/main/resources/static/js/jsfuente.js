@@ -191,15 +191,32 @@ function irListado(x) {
     });
 }
 
-function reqSuccess(r, timeout){
+function reqSuccess(r, timeout, withoutEscape){
     const miliseconds = timeout !== undefined ? timeout : 10000;
     if(isNaN(r.res)){
         const msg = r.res;
-        $("#frm_registro :input").prop("disabled", true);
-        $.smallBox({content: "<i class='fa fa-check'></i> "+msg,
-                    color: '#111509',
-                    timeout: miliseconds
-        });
+        if(withoutEscape){
+            setTimeout(()=>{
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Runfit Notifications</b>",
+                    content: "<div class='font-md' style='font-size: 1.5em'>" +
+                        msg+"</div>",
+                    buttons: '[OK]'
+                }, function (ButtonPressed) {
+                    if(ButtonPressed == 'OK'){
+                        window.location.href = _ctx+"p/inicio";
+                    } else {
+
+                    }
+                });
+            }, 500);
+        } else {
+            $("#frm_registro :input").prop("disabled", true);
+            $.smallBox({content: "<i class='fa fa-check'></i> "+msg,
+                color: '#111509',
+                timeout: miliseconds
+            });
+        }
     } else{
         $.smallBox({});
     }
@@ -351,7 +368,7 @@ function spinnerSwitchTab(effect){
 }
 
 function spinnerUpload(xhr) {
-   $.SmartMessageBox({
+    $.SmartMessageBox({
         title: "<i class='fa fa-bullhorn'></i> Notificación",
         content: "" +
             "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +

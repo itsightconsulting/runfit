@@ -200,6 +200,8 @@ function clickListenerTabService(e) {
         //No mostramos los iconos de eliminar y editar
         const subTab = Number(document.querySelector('.sub-menu-selected').getAttribute('data-op'));
         if(subTab === 2){
+            document.querySelector('.edit-tar-svc').setAttribute('disabled', 'disabled');
+            document.querySelector('.del-tar-svc').setAttribute('disabled', 'disabled');
             return;
         }
         const notHidden = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
@@ -223,6 +225,8 @@ function clickListenerTabService(e) {
         const butonDel = document.querySelector('button.del-tar-svc');
         butonEdit.setAttribute('data-id', tarifaId);
         butonDel.setAttribute('data-id', tarifaId);
+        butonEdit.removeAttribute('disabled');
+        butonDel.removeAttribute('disabled');
     } else if(clases.contains('edit-svc')){
         const svcId = Number(input.getAttribute('data-id'));
         editarServicio(svcId);
@@ -315,7 +319,10 @@ function bodyClickEventListener(e){
     }
 
     if(clases.contains('ver-tyc')){
-        input.nextElementSibling.checked = !input.nextElementSibling.checked;
+        if(!btnGuardar.disabled){
+            const check = input.nextElementSibling;
+            check.checked = !check.checked;
+        }
     }
 
     if(clases.contains('sub-menu')){
@@ -341,6 +348,13 @@ function bodyClickEventListener(e){
             subTitleTarifario.classList.add('hidden');
             sbTarifario.classList.add('hidden');
             tarifarios.classList.add('hidden');
+            cleanPaqueteCampos();
+            const tarPick = document.querySelector('.tarifa-svc-pick');
+            if(tarPick){
+                tarPick.classList.remove('tarifa-svc-pick');
+            }
+            document.querySelector('.edit-tar-svc').setAttribute('disabled', 'disabled');
+            document.querySelector('.del-tar-svc').setAttribute('disabled', 'disabled');
         } else {
             svcBasics.classList.add('hidden');
             btnsServicio.classList.add('hidden');
@@ -451,13 +465,13 @@ function uploadFotoPerfil(d){
             contentType: false,
             processData: false,
             dataType: 'json',
-            /*xhr: function() {
+            xhr: function() {
                 const myXhr = $.ajaxSettings.xhr();
                 if(myXhr.upload){
                     myXhr.upload.addEventListener('progress', progress, false);
                 }
                 return myXhr;
-            },*/
+            },
             success: function (res) {
                 alertaFinalByTipoTrainer(res);
             },
@@ -466,8 +480,7 @@ function uploadFotoPerfil(d){
             },
             complete: ()=> {
                 //Solo aplica para registro trainer como empresa
-                $('.step-04').click();
-                $(window).scrollTop(0);
+                completeTrainerEmpresa();
             }
         });
     }
@@ -583,19 +596,6 @@ function checkExistsInfoPago(o){
     }else{
         metodosPago.push(o);
     }
-}
-
-function cleanPaqueteCampos(){
-    document.querySelector('#NombreTarifario').value = "";
-    document.querySelector('#FrecuenciaPaquete').selectedIndex = 0;
-    document.querySelector('#txtCantidadPersonas').value = 0;
-    document.querySelector('#txtCantidadMeses').value = 0;
-    document.querySelector('#txtCantidadSesiones').value = 0;
-    document.querySelector('#PrecioPaquete').value = '0.00';
-    document.querySelector('#Moneda').selectedIndex = 0;
-    const frecuencia = document.querySelector('#FrecuenciaPaquete');
-    frecuencia.selectedIndex = 0;
-    $(frecuencia).multiselect('rebuild');
 }
 
 function cleanCuentaBanCampos(){
@@ -1101,14 +1101,17 @@ function uploadFotosPerfil(d){
 
 function alertaFinalByTipoTrainer(r){
     if($regTipo == TipoTrainer.EMPRESA){
-        const msg = r.res;
+        const msg = "Registro correcto. Ahora ya puede proceder a registrar a sus colaboradores y cuando termine de hacerlo " +
+            "deberá enviar su ficha de empresa para una última revisión mediante el botón 'FINALIZAR REGISTRO' que encontrará " +
+            "en la parte baja de cualquier sección de esta página.";
+
         $("#frm_registro :input").prop("disabled", true);
-        $.smallBox({content: "<i class='fa fa-check'></i> "+msg + "<br>Además ya puede proceder a registrar a sus colaboradores.",
+        $.smallBox({content: "<i class='fa fa-check'></i> "+msg,
             color: '#111509',
             timeout: 3600000
         });
     }else{
-        reqSuccess(r, 3600000);
+        reqSuccess(r, 3600000, 1);
     }
 }
 
@@ -1172,5 +1175,20 @@ function resetServicios(){
 function resetTarifarios(){
     cleanPaqueteCampos();
     Tarifarios.innerHTML = "";
+}
+
+
+
+function completeTrainerEmpresa(){
+    if($('.step-04')[0]){
+        $('.step-04').click();
+        $(window).scrollTop(0);
+        document.querySelectorAll('.tab-pane').forEach((e)=>{
+            if(e.id !== 'staff'){
+                let clase = Array.from(e.classList).filter(e=>e.startsWith('inpts-'))[0]
+                e.classList.remove(clase);
+            }
+        });
+    }
 }
 

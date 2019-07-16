@@ -38,4 +38,6 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
     Boolean getFlagPermisoUpdByNomPag(String nomPag);
 
     String enviarFichaTrainerEmpresa(TrainerEmpresaDTO trainer, Integer trainerId);
+
+    Integer getTotalColaboradoresById(Integer trainerId);
 }

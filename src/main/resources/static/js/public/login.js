@@ -250,7 +250,6 @@ function validacionFormularioVisitante(){
 
     $("#register-form").validate({
         // Rules for form validation}
-        ignore: ".ignore",
         highlight: function (element) {
             $(element).parent().removeClass('state-success').addClass("state-error");
             $(element).removeClass('valid');
