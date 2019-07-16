@@ -172,19 +172,19 @@ function sendFormCambiar(){
 }
 
 
-function goRegisterAlt(){
-    $(".login-sesion-alt").fadeOut();
-    $(".login-register-alt").fadeIn();
-    $(".login-register-alt").removeClass('hidden');
-    $(".help-block").remove();
+function goRegister(){
+    $(".login-sesion").fadeOut();
+    $(".login-register").fadeIn();
+    $(".login-register").removeClass('hidden');
+    $(".login.active .help-block").remove();
 
 
 }
 
-function goLoginAlt() {
-    $(".login-register-alt").fadeOut();
-    $(".login-sesion-alt").fadeIn();
-    $(".help-block").remove();
+function goLogin() {
+    $(".login-register").fadeOut();
+    $(".login-sesion").fadeIn();
+    $(".login.active .help-block").remove();
 }
 
 function customErrorHandler(xhr, input){
@@ -348,7 +348,7 @@ function getFormData($form) {
 function inicializarLoginForm(){
 
     $('.login').addClass('active');
- //   $('html, body').css('overflowY', 'hidden');
+    $('html, body').css('overflowY', 'hidden');
     goLogin();
 
 }
@@ -356,7 +356,7 @@ function inicializarLoginForm(){
 function ocultarLoginForm(){
 
     $('.login').removeClass('active');
-  //  $('html, body').css('overflowY', 'auto');
+    $('html, body').css('overflowY', 'auto');
 
 
 }
