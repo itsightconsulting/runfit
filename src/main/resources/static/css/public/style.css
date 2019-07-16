@@ -34,8 +34,8 @@
 }
 
 @font-face {
-    font-family: Montserrat-SemiBold;
-    src: url(../../fonts/Montserrat-SemiBold.otf)
+  font-family: Montserrat-SemiBold;
+  src: url(../../fonts/Montserrat-SemiBold.otf)
 }
 
 .login {
@@ -476,7 +476,7 @@ footer {
 }
 
 footer .col-md-4 {
-    padding-left: 75px;
+  padding-left: 75px;
 }
 
 footer .title_footer {
@@ -525,9 +525,9 @@ footer li a span.fa{
 }
 
 @media only screen and (max-width: 800px) {
-    footer .col-md-4 {
-        padding-left: 15px;
-    }
+  footer .col-md-4 {
+    padding-left: 15px;
+  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1096,7 +1096,7 @@ ul.tabs {
   font-family: Gotham-HTF-Bold, 'system-ui';
   color: #686868;
   display: block;
-    padding-right: 40px;
+  padding-right: 40px;
 }
 
 .trainers-form .form-group input,
@@ -1109,12 +1109,12 @@ ul.tabs {
 }
 
 .trainers-form .form-group .add {
-    /*display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 5px;
-    color: #a8fa00;*/
-    color: #a8fa00;
+  /*display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: #a8fa00;*/
+  color: #a8fa00;
 }
 
 
@@ -1362,8 +1362,8 @@ ul.tabs {
 .emprende-form h3 {
   font-family: Gotham-HTF-Black-Italic;
   margin-bottom: 30px;
-    margin: 0;
-    border: none;
+  margin: 0;
+  border: none;
 }
 
 .emprende-form h3 span {
@@ -3263,8 +3263,6 @@ body {
   margin: 0;
   overflow-x: hidden;
   background: #fff;
-  height:100%;
-
 }
 
 .container {
@@ -3922,12 +3920,12 @@ span.input-group-btn{
 }
 
 .full-100 ~  div > button{
-    width: 100% !important;
-    text-align: left;
+  width: 100% !important;
+  text-align: left;
 }
 
 textarea.inp-svc-incluye{
-    height: 74px !important;
+  height: 74px !important;
 }
 
 input.form-control ~ em {
@@ -3962,20 +3960,20 @@ section.trainers-form {
 .button-remover{
   width: 500px;
   height: 120px;
- }
+}
 
 .img-remover {
-     display: block !important;
-     height: 40px !important;
-     width: 40px !important;
-     margin-top: 5px;
-     margin-left: auto;
-     padding-top: 5px;
-     padding-bottom: 5px;
-     margin-right: auto;
-     border-radius: 50%;
-     border: 2px solid #000000;
- }
+  display: block !important;
+  height: 40px !important;
+  width: 40px !important;
+  margin-top: 5px;
+  margin-left: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-right: auto;
+  border-radius: 50%;
+  border: 2px solid #000000;
+}
 
 .cc-elegido{
   cursor: default;

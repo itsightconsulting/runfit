@@ -37,74 +37,74 @@
     </style>
 </head>
 <body>
-    <div class="login active">
-        <a class="back" th:href="@{/p/inicio}"><span class="fa fa-chevron-left"></span></a>
-        <div class="login-bg"></div>
-        <div class="avatar">
-            <img th:src="@{/img/public/logo.png}+'?'+${version}"/>
-        </div>
-        <div class="login-sesion-alt">
-            <form id="login-form" action="#" th:action="@{/loginCheck}" method="post">
-                <div class="form-group usuario"><span class="fa fa-user-o"></span>
-                    <label>Usuario</label>
-                    <input type="text" id="username" name="username" placeholder="Username" maxlength="30"/>
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<div class="login active">
+    <a class="back" th:href="@{/p/inicio}"><span class="fa fa-chevron-left"></span></a>
+    <div class="login-bg"></div>
+    <div class="avatar">
+        <img th:src="@{/img/public/logo.png}+'?'+${version}"/>
+    </div>
+    <div class="login-sesion-alt">
+        <form id="login-form" action="#" th:action="@{/loginCheck}" method="post">
+            <div class="form-group usuario"><span class="fa fa-user-o"></span>
+                <label>Usuario</label>
+                <input type="text" id="username" name="username" placeholder="Username" maxlength="30"/>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </div>
+            <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+                <label>Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Password" maxlength="30"/>
+            </div>
+            <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
+            <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+                    class="fa fa-fw fa-warning"></i> Inválido username, password o cuenta inactiva
+            </div>
+            <div th:if="${error =='disabled'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+                    class="fa fa-fw fa-warning"></i> Cuenta inactiva
+            </div>
+            <div th:if="${error =='expired'}" class="alert alert-danger" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+                    class="fa fa-fw fa-warning"></i> Inválido cliente o password
+            </div>
+            <div class="actions">
+                <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
+                <a id="btn-nuevo" class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
+            </div>
+        </form>
+    </div>
+    <div class="register-guest">
+        <form id="register-form" method="post">
+
+            <div class="login-register-alt hidden">
+                <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
+                    <label>Nombres</label>
+                    <input id="Nombres" name="Nombres" type="text">
                 </div>
-                <div class="form-group password"><span class="fa fa-unlock-alt"></span>
+                <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
+                    <label>Apellidos</label>
+                    <input id="Apellidos" name="Apellidos" type="text">
+                </div>
+                <div class="form-group form-alt mail"><span class="fa fa-envelope-o"></span>
+                    <label>Correo electrónico</label>
+                    <input id="Correo" name="Correo" type="text">
+                </div>
+                <div class="form-group form-alt password"><span class="fa fa-unlock-alt"></span>
                     <label>Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="Password" maxlength="30"/>
+                    <input id="PasswordRegister" name="PasswordRegister" type="password">
                 </div>
-                <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
-                <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
-                        class="fa fa-fw fa-warning"></i> Inválido username, password o cuenta inactiva
-                </div>
-                <div th:if="${error =='disabled'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
-                        class="fa fa-fw fa-warning"></i> Cuenta inactiva
-                </div>
-                <div th:if="${error =='expired'}" class="alert alert-danger" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
-                        class="fa fa-fw fa-warning"></i> Inválido cliente o password
+                <div class="form-group  password"><span class="fa fa-unlock-alt"></span>
+                    <label>Confirmar Contraseña</label>
+                    <input id="PasswordConfirmation" name="PasswordConfirmation"  type="password">
                 </div>
                 <div class="actions">
-                    <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
-                    <a id="btn-nuevo" class="btn-nuevo" href="javascript:goRegisterAlt()">SOY NUEVO</a>
+                    <button class="btn-guest-register" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
+                    <p>¿Ya es miembro de RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
                 </div>
-            </form>
-        </div>
-         <div class="register-guest">
-            <form id="register-form" method="post">
 
-                <div class="login-register-alt hidden">
-                    <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
-                        <label>Nombres</label>
-                        <input id="Nombres" name="Nombres" type="text">
-                    </div>
-                    <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
-                        <label>Apellidos</label>
-                        <input id="Apellidos" name="Apellidos" type="text">
-                    </div>
-                    <div class="form-group form-alt mail"><span class="fa fa-envelope-o"></span>
-                        <label>Correo electrónico</label>
-                        <input id="Correo" name="Correo" type="text">
-                    </div>
-                    <div class="form-group form-alt password"><span class="fa fa-unlock-alt"></span>
-                        <label>Contraseña</label>
-                        <input id="PasswordRegister" name="PasswordRegister" type="password">
-                    </div>
-                    <div class="form-group  password"><span class="fa fa-unlock-alt"></span>
-                        <label>Confirmar Contraseña</label>
-                        <input id="PasswordConfirmation" name="PasswordConfirmation"  type="password">
-                    </div>
-                    <div class="actions">
-                        <button class="btn-guest-register" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
-                        <p>¿Ya es miembro de RunFit?</p><a class="btn-nuevo" href="javascript:goLoginAlt()">INICIAR SESIÓN</a>
-                    </div>
+            </div>
 
-                  </div>
+        </form>
+    </div>
 
-         </form>
-         </div>
-
-        </div>
+</div>
 
 
 
@@ -137,15 +137,15 @@
 <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
 
 
-    <!-- BOOTSTRAP JS -->
-    <script th:src="@{/js/bootstrap/bootstrap.min.js}+'?'+${version}"></script>
-    <script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
-    <script th:src="@{/js/forms.js}+'?'+${version}"></script>
-    <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
+<!-- BOOTSTRAP JS -->
+<script th:src="@{/js/bootstrap/bootstrap.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/jsfuente.js}+'?'+${version}"></script>
+<script th:src="@{/js/forms.js}+'?'+${version}"></script>
+<script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
 
-    <!-- JQUERY VALIDATE -->
-    <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
-    <script th:src="@{/js/public/login.js}+'?'+${version}"></script>
+<!-- JQUERY VALIDATE -->
+<script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/public/login.js}+'?'+${version}"></script>
 
 
 <script>
@@ -166,6 +166,7 @@
         // Validation
         $("#login-form").validate({
             // Rules for form validation}
+            errorClass: 'help-block',
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');

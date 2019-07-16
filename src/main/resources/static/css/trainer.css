@@ -170,7 +170,7 @@ select {
     padding: 6.1px 12px; }
 
 section#suspendidos .input-group button {
-     width:105px;}
+    width:105px;}
 
 .owl-nav {
     position: absolute;
@@ -955,7 +955,7 @@ section#suspendidos .panel .list-group li .mes:after {
     margin: auto; }
 
 section#suspendidos .panel .list-group li .mes.seleccionado{
-     border-color: #a8fa00;
+    border-color: #a8fa00;
 }
 section#suspendidos .panel .list-group li .mes.seleccionado{
     border-color: #a8fa00!important;
@@ -1080,6 +1080,15 @@ section#suspendidos ul.users li a.btn_Activar {
 
 section#suspendidos #colores_suspendidos a{
     color: #a8fa00;
+}
+
+section#suspendidos span:before {
+    content: "";
+    display: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 5px;
 }
 
 span:before {

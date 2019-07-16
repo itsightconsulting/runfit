@@ -459,6 +459,7 @@ function hideNavBar(){
 function validLoginForm(){
         $("#login-form").validate({
             // Rules for form validation}
+            errorClass: 'help-block',
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');

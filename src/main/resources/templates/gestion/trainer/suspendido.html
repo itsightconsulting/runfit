@@ -10,11 +10,12 @@
 
     <style>
         .help-block {
-            display: block;
+            display: block !important;
             margin-top: 5px;
             margin-bottom: 10px;
             color: #de4747;
             width: 420px;
+            font-size: 1.1em;
         }
 
         .fa-2x {
@@ -44,37 +45,37 @@
 
 
         </header>
-            <section id="suspendidos">
-                <div class="container-t">
-                    <h2 id="tituloGestionSuspendidos" class="title_carousel"></h2>
-                    <div class="owl-carousel owl-theme" id="carouselSuspendidos">
-                        <div class="item row" id="dvItemsSuspendidos">
-                            <div id="dvCalendario" class="col-md-5">
-                                <div class="panel-group">
-                                    <div class="panel panel-default" id="calendarioSuspendidos">
+        <section id="suspendidos">
+            <div class="container-t">
+                <h2 id="tituloGestionSuspendidos" class="title_carousel"></h2>
+                <div class="owl-carousel owl-theme" id="carouselSuspendidos">
+                    <div class="item row" id="dvItemsSuspendidos">
+                        <div id="dvCalendario" class="col-md-5">
+                            <div class="panel-group">
+                                <div class="panel panel-default" id="calendarioSuspendidos">
 
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div id="colores_suspendidos">
+                            <div id="colores_suspendidos">
 
 
 
-                          <!--          <span class='one'>Seleccionado</span>
-                                    <span class='two'>Con cliente(s) suspendido(s)</span>
-                                    <span class='three'>Sin cliente(s) suspendido(s)</span>
-                                    <span class='four'>Inválido</span>"> -->
+                                <!--          <span class='one'>Seleccionado</span>
+                                          <span class='two'>Con cliente(s) suspendido(s)</span>
+                                          <span class='three'>Sin cliente(s) suspendido(s)</span>
+                                          <span class='four'>Inválido</span>"> -->
 
-                                   <a   class="fa fa-question-circle fa-2x" title=" <h4>Guía- Calendario </h4>  <span class='one'>Seleccionado</span>
+                                <a   class="fa fa-question-circle fa-2x" title=" <h4>Guía- Calendario </h4>  <span class='one'>Seleccionado</span>
                                     <span class='two'>Con cliente(s) suspendido(s)</span>
                                     <span class='three'>Sin cliente(s) suspendido(s)</span>
                                     <span class='four'>Inválido</span></div>" data-html="true" rel="tooltip"  data-placement="bottom" href="#"></a>
 
-                                </div>
                             </div>
-                            <div id="dvClientes" class="col-md-7">
+                        </div>
+                        <div id="dvClientes" class="col-md-7">
 
-                             <form id="filtroPeriodo-form" method="get">
+                            <form id="filtroPeriodo-form" method="get">
                                 <div class="input-group">
                                     <input id="inputPeriodo" name="inputPeriodo" class="form-control" type="text" placeholder="EJEMPLO 01 / 2019">
                                     <div class="input-group-btn">
@@ -82,38 +83,38 @@
                                     </div>
 
                                 </div>
-                             </form>
+                            </form>
 
                             <h3 id="fechaListaSuspendidos" class="date">enero 2019</h3>
 
-                                <div id="dvSuspendidos">
+                            <div id="dvSuspendidos">
 
-                                    <ul id="listaSuspendidos" class="users">
+                                <ul id="listaSuspendidos" class="users">
 
-                                     </ul>
-
-
-                                </div>
+                                </ul>
 
 
                             </div>
+
+
                         </div>
-                        <div class="item">2</div>
-                        <div class="item">3</div>
-                        <div class="item">4</div>
-                        <div class="item">5</div>
-                        <div class="item">6</div>
-                        <div class="item">7</div>
-                        <div class="item">8</div>
-                        <div class="item">9</div>
-                        <div class="item">10</div>
-                        <div class="item">11</div>
-                        <div class="item">12</div>
-
-
                     </div>
+                    <div class="item">2</div>
+                    <div class="item">3</div>
+                    <div class="item">4</div>
+                    <div class="item">5</div>
+                    <div class="item">6</div>
+                    <div class="item">7</div>
+                    <div class="item">8</div>
+                    <div class="item">9</div>
+                    <div class="item">10</div>
+                    <div class="item">11</div>
+                    <div class="item">12</div>
+
+
                 </div>
-            </section>
+            </div>
+        </section>
 
     </div>
 </div>
@@ -151,8 +152,8 @@
         $('.owl-item').removeClass("active");
         $('.owl-dot').each(function(index){
 
-        const num = index +1;
-         $(this).attr('value',num);
+            const num = index +1;
+            $(this).attr('value',num);
         })
 
         $('.owl-dot').removeClass("active");
@@ -171,28 +172,28 @@
                 $('.owl-dot').removeClass('active');
                 $(this).addClass('active');
                 currentSelectedMonth =parseInt($(this).val());
-             //   visualizarMesSeleccion(currentSelectedMonth, currentSelectedYear);
+                //   visualizarMesSeleccion(currentSelectedMonth, currentSelectedYear);
                 let formatoMes = ('0' +currentSelectedMonth).slice(-2);
                 cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
 
                 return false;
-        }
+            }
         })
 
         $('.owl-prev').click(function() {
 
 
-            if (currentSelectedMonth === 1) {
+                if (currentSelectedMonth === 1) {
 
-               if(currentSelectedYear - 1 < primerAñoTrainer){
-                  return false;
-                }else {
-                    currentSelectedYear--;
-                    currentSelectedMonth = 12;
+                    if(currentSelectedYear - 1 < primerAñoTrainer){
+                        return false;
+                    }else {
+                        currentSelectedYear--;
+                        currentSelectedMonth = 12;
+                    }
+                } else {
+                    currentSelectedMonth--;
                 }
-            } else {
-                currentSelectedMonth--;
-           }
 
                 $('.owl-dot').removeClass('active');
                 $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
@@ -204,36 +205,36 @@
 
         $('.owl-next').click(function(){
 
-            $('.owl-item').removeClass("active");
+                $('.owl-item').removeClass("active");
 
-            let selectedDate =parseFromStringToDate(`${currentSelectedYear}-${currentSelectedMonth}-01`);
-            selectedDate.setMonth(selectedDate.getMonth() + 1);
+                let selectedDate =parseFromStringToDate(`${currentSelectedYear}-${currentSelectedMonth}-01`);
+                selectedDate.setMonth(selectedDate.getMonth() + 1);
 
-            if(selectedDate > currentDate){
-                owl.trigger('prev.owl.carousel');
+                if(selectedDate > currentDate){
+                    owl.trigger('prev.owl.carousel');
+                    $('.owl-dot').removeClass('active');
+                    $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
+                    return false;
+                }
+                else {
+
+                    if (currentSelectedMonth === 12) {
+                        currentSelectedYear++;
+                        currentSelectedMonth = 1;
+                        //deshabilito la función de avanzar al siguiente slide
+                        owl.trigger('prev.owl.carousel');
+                        owl.trigger('prev.owl.carousel');
+
+                    } else {
+                        //deshabilito la función de avanzar al siguiente slide
+                        currentSelectedMonth++;
+                        owl.trigger('prev.owl.carousel');
+                    }
+                }
                 $('.owl-dot').removeClass('active');
                 $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-                return false;
-            }
-            else {
-
-                if (currentSelectedMonth === 12) {
-                    currentSelectedYear++;
-                    currentSelectedMonth = 1;
-                    //deshabilito la función de avanzar al siguiente slide
-                    owl.trigger('prev.owl.carousel');
-                    owl.trigger('prev.owl.carousel');
-
-                } else {
-                    //deshabilito la función de avanzar al siguiente slide
-                    currentSelectedMonth++;
-                    owl.trigger('prev.owl.carousel');
-                }
-            }
-            $('.owl-dot').removeClass('active');
-            $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
-            let formatoMes = ('0' +currentSelectedMonth).slice(-2);
-            cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
+                let formatoMes = ('0' +currentSelectedMonth).slice(-2);
+                cargarClientesSuspendidos(`${currentSelectedYear}-${formatoMes}`);
 
             }
         )
@@ -252,6 +253,8 @@
         $('#colores_suspendidos').tooltip({
             selector: "a[rel=tooltip]"
         })
+
+        $("#filtroPeriodo-form").focusout(focusOutInputPeriodoEvent);
     }
 
 
@@ -295,7 +298,7 @@
 
         return year+"-"+month;
 
-   }
+    }
     function getDBMonthQuery(filter){
 
         const month = filter.slice(0,2);
@@ -319,7 +322,7 @@
         let month = periodoSeleccionado.slice(5,7);
         const year = periodoSeleccionado.slice(0,4);
 
-         $.ajax({
+        $.ajax({
             type: 'GET',
             url: _ctx + 'gestion/trainer/red/suspendidos/obtener',
             dataType: 'json',
@@ -352,15 +355,15 @@
             }, error: (xhr) => {
                 exception(xhr);
             }, complete: () => {
-                 visualizarMesSeleccion(month,year);
-                 limpiarInputPeriodo();
-                 $('.help-block').hide();
+                visualizarMesSeleccion(month,year);
+                limpiarInputPeriodo();
+                $('section#suspendidos .help-block').hide();
 
 
                 $('.mes').removeClass("seleccionado");
                 $(`#d${month}${year}`).addClass("seleccionado");
 
-             }
+            }
         })
     }
 
@@ -397,14 +400,14 @@
     function busquedaSuspendidosporInput(){
 
 
-      if ($("#filtroPeriodo-form").valid()) {
+        if ($("#filtroPeriodo-form").valid()) {
 
-          const periodo = $('#inputPeriodo').val();
-          const filtro = getMonthFilterQuery(periodo);
-          currentPeriodoSeleccionado = filtro;
-          getPeriodosClientesSuspendidos();
-          cargarClientesSuspendidos(filtro);
-      }
+            const periodo = $('#inputPeriodo').val();
+            const filtro = getMonthFilterQuery(periodo);
+            currentPeriodoSeleccionado = filtro;
+            getPeriodosClientesSuspendidos();
+            cargarClientesSuspendidos(filtro);
+        }
     }
 
     function validacionFiltroPeriodo(){
@@ -413,7 +416,7 @@
 
         $("#filtroPeriodo-form").validate({
             // Rules for form validation}
-            ignore: ".ignore",
+            errorClass: 'help-block',
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -426,26 +429,16 @@
                 inputPeriodo:{
                     required: true,
                     monthInputValid: true,
-                    greaterThanDate: function() {
-                            return new Date(primerAñoTrainer,0,1);
+                    greaterThanMonth: function() {
+                        return new Date(primerAñoTrainer,0,1);
                     },
-                    lessThanDate: function(){
-                            return new Date();
+                    lessThanMonth: function(){
+                        return new Date();
                     }
                 }
             },
             // Messages for form validation
             messages: {
-                inputPeriodo:{
-                    greaterThanDate: function(e){
-
-                         return("No se tienen registros para el año indicado .Se requiere un mes a partir del año  " + moment(e).format('YYYY')) + "(Formato : MM/YYYY)";
-                    },
-                    lessThanDate: function(e){
-
-                        return("Se requiere un mes menor o igual al mes actual");
-                    }
-                }
             },
             // Do not change code below
             errorPlacement: function (error, element) {
@@ -455,57 +448,57 @@
     }
 
     function cargarPeriodosClientesSuspendidos(data){
-       const periodoObject = getPeriodoObject(data);
-       if(periodoObject[0].year !== "") {
+        const periodoObject = getPeriodoObject(data);
+        if(periodoObject[0].year !== "") {
 
-           dvCalendario.style.display ="block";
-           dvClientes.style.display ="block";
+            dvCalendario.style.display ="block";
+            dvClientes.style.display ="block";
 
-              cargarTituloCalendario();
+            cargarTituloCalendario();
 
-           for (let i = 0; i < periodoObject.length; i++) {
+            for (let i = 0; i < periodoObject.length; i++) {
 
-               const año = periodoObject[i].year;
-               cargarAños(periodoObject[i].year, i + 1);
-               cargarMeses(periodoObject[i].year, i + 1);
+                const año = periodoObject[i].year;
+                cargarAños(periodoObject[i].year, i + 1);
+                cargarMeses(periodoObject[i].year, i + 1);
 
-               for (let j = 0; j < periodoObject[i].meses.length; j++) {
+                for (let j = 0; j < periodoObject[i].meses.length; j++) {
 
-                   const mes = periodoObject[i].meses[j];
-                   const selector = "d" + ("0" + mes).slice(-2) + año;
-                   const a = document.getElementById(selector);
-                   a.classList.add("suspension");
-              }
-           }
+                    const mes = periodoObject[i].meses[j];
+                    const selector = "d" + ("0" + mes).slice(-2) + año;
+                    const a = document.getElementById(selector);
+                    a.classList.add("suspension");
+                }
+            }
 
-           const dataCurrentYear = periodoObject.find(function(element){
-                                    return parseInt(element.year) === currentYear;
-           })
+            const dataCurrentYear = periodoObject.find(function(element){
+                return parseInt(element.year) === currentYear;
+            })
 
-           if(!dataCurrentYear){
+            if(!dataCurrentYear){
                 cargarAños(currentYear, periodoObject.length+1);
                 cargarMeses(currentYear,periodoObject.length+1);
             }
 
-           for (let i = currentMonth + 1; i <= 12; i++) {
+            for (let i = currentMonth + 1; i <= 12; i++) {
                 const selector = "d" + ("0" + i).slice(-2) + currentYear;
                 const a = document.getElementById(selector);
                 a.classList.add("indebido");
             }
 
-       }else{
-           cargarTituloCalendario();
-           cargarAños(currentYear, 1);
-           cargarMeses(currentYear,1);
+        }else{
+            cargarTituloCalendario();
+            cargarAños(currentYear, 1);
+            cargarMeses(currentYear,1);
 
-           for (let i = currentMonth + 1; i <= 12; i++) {
-               const selector = "d" + ("0" + i).slice(-2) + currentYear;
-               const a = document.getElementById(selector);
-               a.classList.add("indebido");
-           }
-       }
+            for (let i = currentMonth + 1; i <= 12; i++) {
+                const selector = "d" + ("0" + i).slice(-2) + currentYear;
+                const a = document.getElementById(selector);
+                a.classList.add("indebido");
+            }
+        }
 
-         mesCalendarioClickEvent();
+        mesCalendarioClickEvent();
 
     }
 
@@ -612,26 +605,26 @@
 
     function getPeriodosClientesSuspendidos (){
 
-       $.ajax({
-           type:"GET",
-           url: _ctx + 'gestion/trainer/red/suspendidos/obtener/periodos',
-           success: function (data) {
-               limpiarCalendario();
-               cargarPeriodosClientesSuspendidos(data);
+        $.ajax({
+            type:"GET",
+            url: _ctx + 'gestion/trainer/red/suspendidos/obtener/periodos',
+            success: function (data) {
+                limpiarCalendario();
+                cargarPeriodosClientesSuspendidos(data);
 
-           }
-           , error: (xhr) => {
-           }, complete: () => {
+            }
+            , error: (xhr) => {
+            }, complete: () => {
 
-           }
-       });
+            }
+        });
     }
 
 
     function getClienteSeleccionado(clienteId, redFitnessId){
 
-         return _ctx+"gestion/trainer/red/consultar/cliente?id="+clienteId+"&rfId="+redFitnessId;
-     }
+        return _ctx+"gestion/trainer/red/consultar/cliente?id="+clienteId+"&rfId="+redFitnessId;
+    }
 
     function limpiarListado(){
 
@@ -647,7 +640,7 @@
         while (calendariosuspendidos.firstChild) {
             calendariosuspendidos.removeChild(calendariosuspendidos.firstChild);
         }
-   }
+    }
 
     function recrearListado(arr){
 
@@ -657,7 +650,7 @@
             let date = e.fechaCreacion;
             date = date.slice(0,10);
 
-           listaSuspendidos.appendChild(htmlStringToElement(`<li>
+            listaSuspendidos.appendChild(htmlStringToElement(`<li>
             <div class="row">
                 <div class="col-sm-8"><img class="user" src="${_ctx}img/user_avatar.png">
                 <h4>${e.cliNombreCompleto}<span> ${date}</span></h4>
@@ -692,6 +685,11 @@
 
     function limpiarInputPeriodo(){
         $('#inputPeriodo').val('');
+    }
+
+    function focusOutInputPeriodoEvent(){
+        $('.owl-dot').removeClass('active');
+        $('.owl-dot[value=' + currentSelectedMonth + ']').addClass('active');
     }
 
 </script>

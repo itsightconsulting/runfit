@@ -7,17 +7,10 @@ const btnNuevo = document.getElementById('btn-nuevo');
 
 (function () {
     init();
-
-
-
 })();
 
 function init(){
     eventos();
-
-
-
-
 }
 
 function eventos(){
@@ -157,18 +150,20 @@ function sendFormCambiar(){
 }
 
 
-function goRegisterAlt(){
+function goRegister(){
+
     $(".login-sesion-alt").fadeOut();
     $(".login-register-alt").fadeIn();
     $(".login-register-alt").removeClass('hidden');
-    $(".help-block").remove();
+    $(".login.active .help-block").remove();
 
 }
 
-function goLoginAlt() {
+function goLogin() {
+
     $(".login-register-alt").fadeOut();
     $(".login-sesion-alt").fadeIn();
-    $(".help-block").remove();
+    $(".login.active .help-block").remove();
 
 }
 
@@ -197,64 +192,65 @@ function registro() {
 
         params.password = $('#PasswordRegister').val();
 
-       delete params.passwordRegister;
+        delete params.passwordRegister;
 
 
-       console.log(params);
+        console.log(params);
 
-       $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                url: _ctx+'p/visitante/registro',
-                dataType: "json",
-                blockLoading: true,
-                data: params,
-                success: function (data, textStatus) {
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: _ctx+'p/visitante/registro',
+            dataType: "json",
+            blockLoading: true,
+            data: params,
+            success: function (data, textStatus) {
 
-                   setTimeout(()=>{
-                                $('.actions').addClass('hidden');
-                            $.SmartMessageBox({
-                                title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
-                                content: "" +
-                                    "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
-                                buttons: '[SALIR]'
-                            }, function (ButtonPressed) {
-                                if(ButtonPressed){
-                                    window.location.href = _ctx + "login";
-                                }
-                            })
-                    }, 700)
-                },
-                error: function (xhr) {
+                setTimeout(()=>{
+                    $('.actions').addClass('hidden');
+                    $.SmartMessageBox({
+                        title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                        content: "" +
+                            "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
+                        buttons: '[SALIR]'
+                    }, function (ButtonPressed) {
+                        if(ButtonPressed){
+                            window.location.href = _ctx + "login";
+                        }
+                    })
+                }, 700)
+            },
+            error: function (xhr) {
 
-                    const mensaje = xhr.responseJSON.message;
+                const mensaje = xhr.responseJSON.message;
 
-                    $('#divSmallBoxes').css('z-index','100000');
-
-
-                        $.smallBox({
-                            title: "Notificaciones Runfit",
-                            content: '<p>'+mensaje+'</p>',
-                            timeout: 4500,
-                            color:  '#cc4d4d',
-                            icon: "fa fa-exclamation-circle"
-                       })
+                $('#divSmallBoxes').css('z-index','100000');
 
 
-                    },
-                complete: function () {
-                }
-            });
+                $.smallBox({
+                    title: "Notificaciones Runfit",
+                    content: '<p>'+mensaje+'</p>',
+                    timeout: 4500,
+                    color:  '#cc4d4d',
+                    icon: "fa fa-exclamation-circle"
+                })
+
+
+            },
+            complete: function () {
+            }
+        });
 
 
 
-        }
+    }
 }
 
 function validacionFormularioVisitante(){
 
     $("#register-form").validate({
         // Rules for form validation}
+        errorClass: 'help-block',
         highlight: function (element) {
             $(element).parent().removeClass('state-success').addClass("state-error");
             $(element).removeClass('valid');

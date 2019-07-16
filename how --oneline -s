@@ -1,0 +1,285 @@
+[33mcommit 7d7b7595ee375036ed2e4a95f63a81133374b9f1[m
+Merge: 8747b6c f863b94
+Author: jchaconm <josejch11@gmail.com>
+Date:   Tue Jul 16 11:43:49 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 8747b6cb9f1705b82b988afe2bf796668b1626e4[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Tue Jul 16 11:43:43 2019 -0500
+
+    correcciones suspendidos / login
+
+[33mcommit f863b949a7b01518b4fdf617892b71b7309ad029[m
+Author: peterzinho16 <peterpaul.0194@gmail.com>
+Date:   Tue Jul 16 00:29:13 2019 -0500
+
+    modulo y correo csv
+
+[33mcommit b10067936d7db17e8a8fc32ba2094d5eea8516e3[m
+Author: peterzinho16 <peterpaul.0194@gmail.com>
+Date:   Mon Jul 15 23:24:00 2019 -0500
+
+    merges
+
+[33mcommit 314340f2ae6c1aa1802459aff7a68b89dd1a5bf3[m
+Author: peterzinho16 <peterpaul.0194@gmail.com>
+Date:   Mon Jul 15 21:58:52 2019 -0500
+
+    merge
+
+[33mcommit ea35baf0101f20f5c40d252b2484b6646de8b788[m
+Merge: 5cfe4fc ebf0b8e
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Mon Jul 15 18:43:20 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 5cfe4fc12cf244ffd13a41ff7a46db9ad8324df8[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Mon Jul 15 18:43:08 2019 -0500
+
+    bugs and refactoriación
+
+[33mcommit ebf0b8efec37fc424a022d0b6a774eac59f99399[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Mon Jul 15 18:38:00 2019 -0500
+
+    correcciones login / clientes suspendidos
+
+[33mcommit 0835a1d4aa3e1833f42a283dae2a8839f1b397bb[m
+Author: Valeria <valeria.cuellar@itsight.pe>
+Date:   Fri Jul 12 20:06:51 2019 -0500
+
+    vrc
+
+[33mcommit 5edc1855a66a5ca454219eaa3ab071a1b9b50438[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Fri Jul 12 19:57:37 2019 -0500
+
+    last
+
+[33mcommit cd24e3e6d6044291e9e801246d0d3399347b9122[m
+Merge: 21c40e6 e262e8a
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Fri Jul 12 19:50:12 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 21c40e6478d1072928efe9f050bf0ef13bc8bb89[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Fri Jul 12 19:49:43 2019 -0500
+
+    flujo de trainer modificado para aprobaciones via correo
+
+[33mcommit e262e8aca58ae2f8cb349b69acf7536bfef722ed[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Fri Jul 12 19:01:27 2019 -0500
+
+    correccion suspendidos
+
+[33mcommit c7341f97985f2e17bfc605be13bf6288e7a40799[m
+Author: Valeria <valeria.cuellar@itsight.pe>
+Date:   Fri Jul 12 15:02:02 2019 -0500
+
+    vrc
+
+[33mcommit aa7c9f06822bb9c54e31fa27dc9a3139d264b9d4[m
+Merge: ab0a92a 44dddec
+Author: Valeria <valeria.cuellar@itsight.pe>
+Date:   Fri Jul 12 14:52:54 2019 -0500
+
+    vrc
+
+[33mcommit ab0a92a98d400714aba47513bb3aa10ab78680a7[m
+Author: Valeria <valeria.cuellar@itsight.pe>
+Date:   Fri Jul 12 14:50:31 2019 -0500
+
+    vrc
+
+[33mcommit 44dddecdc7ab0be65ba5ebec2d3066dce37ca8b2[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Fri Jul 12 11:06:54 2019 -0500
+
+    correcciones ficha cliente
+
+[33mcommit 95cea808e2ac22474a474f73e929719ce11b7a19[m
+Author: peterzinho16 <peterpaul.0194@gmail.com>
+Date:   Fri Jul 12 00:35:51 2019 -0500
+
+    postulacion trainer
+
+[33mcommit 738e5fde6481af4f12712f63b45be8e8e5742e0c[m
+Merge: 238d676 3439a7f
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Thu Jul 11 19:20:21 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 238d6766a2d2cd8af6e2ded3d80485176324bfb3[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Thu Jul 11 19:19:53 2019 -0500
+
+    bugs
+
+[33mcommit 3439a7fa73cc5777fa07e53edabb1eaac7d69ae3[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Thu Jul 11 18:36:53 2019 -0500
+
+    correcciones login
+
+[33mcommit e8dd7ec87e7e5b94c1938748f4d592cdf1bd42aa[m
+Merge: 868760f 82f9091
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Thu Jul 11 15:55:00 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 868760f5a40ff7cbfafa0a15e5457c72b879bddb[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Thu Jul 11 15:54:42 2019 -0500
+
+    correccion de bugs
+
+[33mcommit 82f909161fb3196ae278170dda3732a7fe74b3af[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Thu Jul 11 10:06:35 2019 -0500
+
+    correcciones suspendidos
+
+[33mcommit ca2651de58b19abecdf60b03957647796daba3da[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Wed Jul 10 18:07:26 2019 -0500
+
+    disciplinas trainer
+
+[33mcommit d6fcfd69271fe96882ad46e76cf228bdebed6be1[m
+Merge: d500691 66d6d5a
+Author: jchaconm <josejch11@gmail.com>
+Date:   Wed Jul 10 17:39:50 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit d50069163a9a642ed8a648ffbd71fc412a9b09d2[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Wed Jul 10 17:39:45 2019 -0500
+
+    correccion login inicio
+
+[33mcommit 66d6d5aa74bda63e155e9031c0e09528b3391192[m
+Merge: eef4d63 61ed0af
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Wed Jul 10 16:20:48 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit eef4d63dafa9d4b6d2bbd3d3feefe48d009ebe2a[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Wed Jul 10 16:18:21 2019 -0500
+
+    pase
+
+[33mcommit 61ed0af000df755092767bff3e2750006628f017[m
+Merge: 018bce1 7ab4067
+Author: jchaconm <josejch11@gmail.com>
+Date:   Wed Jul 10 14:20:58 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 018bce1b56ef4dca6da07430535e9f3cd8c0d7dd[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Wed Jul 10 14:19:58 2019 -0500
+
+    correcciones login
+
+[33mcommit 7ab4067353e3e4d2c5a023b10b1db0cd5889dcff[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Wed Jul 10 12:56:17 2019 -0500
+
+    formulario trainer empresa
+
+[33mcommit 2880d4f51848debfc5ca678efc9a3665dab98ebb[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Wed Jul 10 11:14:21 2019 -0500
+
+    forms trainer
+
+[33mcommit 0fdc5cddc35e0552a808757ac8587d6575005538[m
+Merge: 15396a6 30b8a5c
+Author: jchaconm <josejch11@gmail.com>
+Date:   Wed Jul 10 09:55:51 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit 15396a64b50503f10737b03df1aa565fc4713818[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Wed Jul 10 09:55:42 2019 -0500
+
+    cambios bugs
+
+[33mcommit 30b8a5c21a3163600bcb3bd3b034cd8094418079[m
+Author: peterzinho16 <peterpaul.0194@gmail.com>
+Date:   Wed Jul 10 01:28:46 2019 -0500
+
+    relacion de * to * de trainer-disciplina eliminada
+
+[33mcommit a0a2c0a58423fcccd591de2b502ac769e0eb962d[m
+Merge: c911d83 1bf10e8
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Tue Jul 9 19:59:10 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit c911d83753769d534ce0c532dfa59ca873a3c185[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Tue Jul 9 19:58:36 2019 -0500
+
+    ficha trainer
+
+[33mcommit 1bf10e8d97097531617fcda187c5c3ff7a7778e2[m
+Merge: cfaba5c 5428c17
+Author: jchaconm <josejch11@gmail.com>
+Date:   Tue Jul 9 19:09:47 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit cfaba5cedfa366523f833aa867ff5cd2ebfa635d[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Tue Jul 9 19:09:43 2019 -0500
+
+    correcciones login / plantilla rutina
+
+[33mcommit 32d18073806a8f53d956be0dcd17a6b63c6a2ffe[m
+Author: jchaconm <josejch11@gmail.com>
+Date:   Tue Jul 9 19:09:37 2019 -0500
+
+    correcciones login / plantilla rutina
+
+[33mcommit 5428c17692ca245a11b7a19981100321e3d8af3a[m
+Merge: cae9678 3df2c09
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Tue Jul 9 18:11:48 2019 -0500
+
+    Merge branch 'master' of https://github.com/itsightconsulting/runfit
+
+[33mcommit cae9678bd7c48b39b704566a49875adb6a1d03b1[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Tue Jul 9 18:11:06 2019 -0500
+
+    tarifario/servicio registro trainer
+
+[33mcommit 3df2c0980105461b8e6c4d0df60743a00ed39914[m
+Merge: 223c005 7a9cab2
+Author: Valeria <valeria.cuellar@itsight.pe>
+Date:   Tue Jul 9 17:48:44 2019 -0500
+
+    vrc
+
+[33mcommit 7a9cab2ee7a29b3d152d8b6aeca4857f8bb2361d[m
+Author: PC <peterpaul.0194@gmail.com>
+Date:   Mon Jul 8 19:40:11 2019 -0500
+
+    registro trainer fix
+
+[33mcommit a66d6e1a9e
