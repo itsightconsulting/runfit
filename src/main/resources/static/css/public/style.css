@@ -2038,13 +2038,13 @@ ul.tabs {
 
 .owl-carousel .owl-nav .owl-prev {
   position: absolute;
-  right: -25px;
+  left: -25px;
   font-size: 20px
 }
 
 .owl-carousel .owl-nav .owl-next {
   position: absolute;
-  left: -25px;
+  right: -25px;
   font-size: 20px
 }
 

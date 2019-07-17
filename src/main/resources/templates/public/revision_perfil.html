@@ -477,7 +477,33 @@
                 tarifarios.classList.remove('hidden');
             }
 
+        } else if(clases.contains('img-remover')){
+            preEliminarImagenGaleria(input);
         }
+    }
+
+    function preEliminarImagenGaleria(input){
+        const imgName = input.getAttribute('data-name');
+        const ordenSlide = Number(input.parentElement.previousElementSibling.getAttribute('data-slide-to'));
+        const onclick = `eliminarImagenGaleria("${imgName}", ${ordenSlide})`;
+        $.smallBox({
+            content: "¿Estás seguro de querer eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onclick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+            color: "#296191",
+            timeout: 10000,
+            icon: "fa fa-bell swing animated",
+            iconSmall: "",
+        });
+    }
+
+    function eliminarImagenGaleria(imgName, ordenSlide){
+        console.log(imgName);
+        document.querySelector(`a[href="#myGallery"][data-slide-to="${ordenSlide}"]`).parentElement.parentElement.remove();
+        $.smallBox({});
+        const srcs = Array.from(document.querySelectorAll('.img-gal')).map(e=>{
+            const arrURL = e.src.split("/");
+            return arrURL[arrURL.length - 1];
+        });
+        poblarCaruselAlter(srcs, 'ImgsGaleria', `https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${$perfil.id}/`);
     }
 
     function clickListenerTabService(e) {
@@ -1378,6 +1404,10 @@
             finalExtension = inpImgPerfil.files[0].name.substring(inpImgPerfil.files[0].name.lastIndexOf("."));
         }
         obj.imgExt = finalExtension;
+        obj.miniGaleria = Array.from(document.querySelectorAll('#ImgsGaleria img.img-gal')).map(e=>{
+            const src = e.src.split("/");
+            return src[src.length-1];
+        }).join('|');
         if(!obj.horario){
             delete obj['horario'];
         }

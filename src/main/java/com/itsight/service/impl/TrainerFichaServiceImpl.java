@@ -180,6 +180,7 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     @Override
     public String actualizarObservacionesPerfil(TrainerFichaDTO trainerFicha, Integer id) throws JsonProcessingException {
         int tipoTrainerId = trainerFicha.getTipoTrainerId();
+        repository.actualizarMiniGaleriaById(trainerFicha.getMiniGaleria(), id);
         repository.actualizarFichaByTrainerId(trainerFicha.getSexo(), trainerFicha.getDisciplinas(), trainerFicha.getAcerca(), trainerFicha.getCentroTrabajo(), trainerFicha.getEspecialidad(), trainerFicha.getEspecialidades(), trainerFicha.getEstudios(), trainerFicha.getExperiencias(),  trainerFicha.getFormasTrabajo(), trainerFicha.getHorario(), trainerFicha.getIdiomas(), trainerFicha.getMetodoTrabajo(), trainerFicha.getNiveles(), trainerFicha.getNota(), trainerFicha.getRedes(), trainerFicha.getResultados(), id);
         //Actualizando servicios
         if(!trainerFicha.getServicios().isEmpty()){

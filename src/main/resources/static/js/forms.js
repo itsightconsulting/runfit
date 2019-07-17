@@ -95,6 +95,22 @@ function readURLCs(input, img, ix, mainDivId, nomImg) {
 function poblarCarusel(srcs, mainDivId, baseSrc) {
     const dvCarusel = document.createElement('div');
     const mainDiv = document.querySelector('#'+mainDivId);
+    if(mainDiv.firstElementChild){
+        mainDiv.firstElementChild.remove();
+    }
+
+    const modal = document.querySelector('#myGallery');
+    const galeriaModal = modal.querySelector('.carousel-inner');
+    if(galeriaModal.hasChildNodes()){
+        galeriaModal.innerHTML = "";
+    }
+    const indicadoresGaleria = modal.querySelector('.carousel-indicators');
+
+    if(indicadoresGaleria.hasChildNodes()){
+        indicadoresGaleria.innerHTML = "";
+    }
+
+
     Array.from(srcs).forEach((src,i)=>{
         let img = document.createElement('img');
         img.src = baseSrc + src;
@@ -109,43 +125,92 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
         let enlace = document.createElement('a');
         enlace.href="#myGallery";
         enlace.setAttribute('data-slide-to', i);
-        enlace.appendChild(img)
+        enlace.appendChild(img);
+
+        //Añadiendo botón eliminar
+        let btnEliminarImagenGaleria =
+            htmlStringToElement(`<a class="boton-remover">
+                <img data-name="${src}" src="${_ctx}img/remove.png" class="img-remover" data-nom="andy-bn.png">
+             </a>`);
 
         dvItem.appendChild(enlace);
+        dvItem.appendChild(btnEliminarImagenGaleria);
         dvCarusel.appendChild(dvItem);
-        const modal = document.querySelector('#myGallery');
-        const galeriaModal = modal.querySelector('.carousel-inner');
+
+        // ---- MODAL ----
         galeriaModal.appendChild(htmlStringToElement(`
                                                                 <div class="item ${i== 0 ? 'active':''}"> 
                                                                     <img src="${baseSrc + src}" style="display: block;margin: auto"/>
                                                                     <div class="carousel-caption">
                                                                     </div>
                                                                 </div>`));
-        const indicadoresGaleria = modal.querySelector('.carousel-indicators');
         indicadoresGaleria.appendChild(htmlStringToElement(`<li data-target="#myGallery" data-slide-to="${i}" class=""></li>`));
-    })
+    });
 
     mainDiv.appendChild(dvCarusel);
     galeriaPerfilCarousel();
 }
-function uploadImgs(input, mainDivId) {
 
+function poblarCaruselAlter(srcs, mainDivId, baseSrc) {
+
+    const modal = document.querySelector('#myGallery');
+    const galeriaModal = modal.querySelector('.carousel-inner');
+    if(galeriaModal.hasChildNodes()){
+        galeriaModal.innerHTML = "";
+    }
+    const indicadoresGaleria = modal.querySelector('.carousel-indicators');
+
+    if(indicadoresGaleria.hasChildNodes()){
+        indicadoresGaleria.innerHTML = "";
+    }
+
+
+    Array.from(srcs).forEach((src,i)=>{
+
+        // ---- MODAL ----
+        galeriaModal.appendChild(
+            htmlStringToElement(`
+                <div class="item ${i== 0 ? 'active':''}"> 
+                    <img src="${baseSrc + src}" style="display: block;margin: auto"/>
+                    <div class="carousel-caption">
+                    </div>
+                </div>`));
+        indicadoresGaleria.appendChild(htmlStringToElement(`<li data-target="#myGallery" data-slide-to="${i}" class=""></li>`));
+    });
+
+    document.querySelectorAll('.img-gal').forEach((e, ix)=>{
+        e.parentElement.setAttribute('data-slide-to', Number(ix));
+    })
+    //mainDiv.appendChild(dvCarusel);
+    //galeriaPerfilCarousel();
+}
+
+function uploadImgs(input, mainDivId) {
+    let nomImgsFailed = '';
     $(input).change(function () {
-        for(let i=0; i<this.files.length; i++){
+        /*for(let i=0; i<this.files.length; i++){
             $galeria.push(this.files[i]);
-        }
+        }*/
         //submit the form here
-        var file, imgTemp;
+        var file;
         for(let i=0; i<input.files.length;i++){
+            let imgTemp;
             let img = document.createElement('img');
             if ((file = this.files[i])) {
                 imgTemp = new Image();
                 imgTemp.onload = function () {
-                    const nameImg = input.files[i].name;
                     //Previsualizar
-                    readURLCs($(input)[0], img, i, mainDivId, nameImg);
+                    const nameImg = input.files[i].name;
+                    if(imgTemp.height > 400){
+                        $galeria.push(file);
+                        readURLCs($(input)[0], img, i, mainDivId, nameImg);
+                    }else{
+                        nomImgsFailed+='<br>'+nameImg;
+                        $.smallBox({color: 'alert', content: 'La imagen debe tener un alto mínimo de 400px: '+nomImgsFailed});
+                    }
+
                 };
-                imgTemp.onerror = function () {
+                imgTemp.onerror = function (){
                     $(input).val("");
                     $.smallBox({
                         content: "<i> No se ha seleccionado una imagen válida!</i>",
@@ -425,7 +490,7 @@ function  galeriaPerfilCarousel() {
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,
-          nav: false,
+          nav: true,
           rtl: false,
           autoWidth: true,
           rewind: true,
@@ -445,17 +510,17 @@ function  galeriaPerfilCarousel() {
           }
       })
 
-    $(".owl-prev").empty()
-    $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
-    $(".owl-next").empty()
-    $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
+    $(".owl-prev").empty();
+    $(".owl-prev").append('<span class="fa fa-chevron-left"></span>');
+    $(".owl-next").empty();
+    $(".owl-next").append('<span class="fa fa-chevron-right"></span>');
 
   } else{
     $('.owl-carousel').owlCarousel({
           loop: false,
           margin: 15,
-          nav: false,
-          rtl: true,
+          nav: true,
+          rtl: false,
           autoWidth: true,
           rewind: true,
           responsive: {
@@ -472,11 +537,10 @@ function  galeriaPerfilCarousel() {
           }
       });
 
-    $(".owl-stage").css({"right":"70px"});
-    $(".owl-prev").empty()
-    $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
-    $(".owl-next").empty()
-    $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
+    $(".owl-prev").empty();
+    $(".owl-prev").append('<span class="fa fa-chevron-left"></span>');
+    $(".owl-next").empty();
+    $(".owl-next").append('<span class="fa fa-chevron-right"></span>')
 
   }
 }
