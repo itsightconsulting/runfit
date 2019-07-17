@@ -16,6 +16,17 @@ function time_line() {
     }
 }
 
+function number_time_line() {
+    var total = $(".steps ol>li").length;
+    var estilos;
+    for (var i = 0; i < total; i++) {
+        $(".steps ol>li")[i].className += " cbp_tmtimeline_number_" + (i) + "";
+        estilos = ".cbp_tmtimeline_number_" + i + ":before{content: '" + (i + 1) + "'}";
+        $("html").append("<style>" + estilos + "</style>");
+    }
+}
+
+
 function HorizontalEnum_EntrenaCorrectamente() {
     var ancho = $(".entrena_correctamente ol").width();
     var item = $(".entrena_correctamente ol li").width();
@@ -411,6 +422,7 @@ $(function() {
     openMenuMobile();
     tabColaboradores();
     time_line();
+    number_time_line();
     day_of_week();
     carousel();
     checkBoxes();

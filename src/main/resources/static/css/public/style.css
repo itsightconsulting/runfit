@@ -615,7 +615,8 @@ footer li a span.fa{
   max-width: 300px;
   margin-right: auto;
   margin-left: auto;
-  margin-bottom: 30px
+  margin-bottom: 30px;
+  font-family: Montserrat-Regular;
 }
 
 @media only screen and (max-width: 800px) {
@@ -632,7 +633,11 @@ footer li a span.fa{
   padding: 70px 0 45px;
   background: url(/img/public/entrena-bg.jpg) top center no-repeat;
   background-size: cover;
-  background-position: right;
+  background-position: center;
+}
+
+.entrena_correctamente {
+  padding: 45px 0;
 }
 
 .entrena_correctamente .title_section {
@@ -754,7 +759,8 @@ footer li a span.fa{
 
 @media only screen and (max-width: 800px) {
   .entrena_correctamente .title_section {
-    font-size: 24px
+    font-size: 18px;
+    margin: 0;
   }
   .entrena_correctamente .description_section {
     font-size: 15px
@@ -1486,6 +1492,12 @@ ul.tabs {
 
 .modal .modal-dialog {
   margin: auto;
+  width: 70%;
+}
+
+.btn-group-crop .btn-black {
+  margin: 20px 20px 0;
+  min-width: 180px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -1538,6 +1550,15 @@ ul.tabs {
 }
 
 @media only screen and (max-width: 800px) {
+  .modal .modal-dialog {
+    width: 80%;
+  }
+  .btn-group-crop .btn-black {
+    width: 100%;
+    border-radius: 10px !important;
+    margin: 5px;
+    min-width: auto;
+  }
   .trainers-form .avatar-form {
     top: 0px
   }
@@ -2629,8 +2650,8 @@ ul.tabs {
 }
 
 .steps ol>li::before {
-  content: counter(item);
-  counter-increment: item;
+  /*content: counter(item);
+  counter-increment: item;*/
   width: 33px;
   height: 33px;
   padding: 4px;
@@ -3124,7 +3145,8 @@ input[type=range]:focus::-ms-fill-upper {
   top: 0;
   z-index: 3;
   background: url(/img/public/home.jpg) top center no-repeat #fff;
-  box-sizing: border-box
+  box-sizing: border-box;
+  overflow: auto;
 }
 
 .menu_mobile.active {
@@ -3191,7 +3213,8 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
   z-index: 3;
   padding-left: 45px;
-  margin-top: 15px
+  margin-top: 15px;
+  margin-bottom: 50px;
 }
 
 .menu_mobile ul.options li {
@@ -3222,14 +3245,15 @@ input[type=range]:focus::-ms-fill-upper {
 
 .menu_mobile .cerrar-sesion-mobile, .menu_mobile .iniciar-sesion-mobile {
   width: 100%;
-  display: block;
-  position: absolute;
-  bottom: 15px;
+  position: relative;
+  bottom: 0;
   z-index: 3;
   padding: 0 15px;
   color: #fff;
   font-size: 11px;
-  text-transform: uppercase
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  display: inline-block;
 }
 
 .menu_mobile .cerrar-sesion-mobile .fa, .menu_mobile .iniciar-sesion-mobile .fa {
@@ -3532,6 +3556,12 @@ hr {
   .tyc .datos-pago span i {
     position: relative;
     display: block
+  }
+  .MessageBoxMiddle .MsgTitle {
+    font-size: 20px;
+  }
+  .font-md {
+    font-size: 14px;
   }
 }
 
