@@ -47,7 +47,7 @@
   transition: all .75s;
   top: 0;
   z-index: 99999;
-  background: url(/img/public/home.jpg) top center no-repeat #fff;
+  background: url(/img/bg_login.jpg) top right no-repeat #fff;
   box-sizing: border-box;
   background-size: cover;
 }
@@ -777,7 +777,7 @@ footer li a span.fa{
   .entrena_correctamente ol li {
     padding: 0;
     float: left;
-    margin-bottom: 56px
+    margin-bottom: 30px
   }
   .entrena_correctamente ol li::before {
     width: 40px;
@@ -1244,8 +1244,12 @@ ul.tabs {
 
 .trainers-form .btn-tarifario{
   min-width: 160px !important;
+  margin-right: 15px;
 }
 
+.trainers-form .btn-tarifario:last-child{
+  margin-right: 0px;
+}
 
 .trainers-form .txt-tarifario-right{
   padding: 0px !important;
@@ -1617,12 +1621,6 @@ ul.tabs {
   .trainers-form .btn-black {
     font-size: 16px;
     white-space: inherit
-  }
-  .trainers-form .btn-black, .trainers-form .btn-white {
-    max-width: 250px !important;
-  }
-  .trainers-form .btn-tarifario {
-    width: 100% !important;
   }
 
   .trainers-form .sub-menus span{
@@ -3144,13 +3142,21 @@ input[type=range]:focus::-ms-fill-upper {
   transition: all .75s;
   top: 0;
   z-index: 3;
-  background: url(/img/public/home.jpg) top center no-repeat #fff;
+  background: url(/img/bg_login.jpg) center right no-repeat #fff;
+  background-size: auto;
   box-sizing: border-box;
   overflow: auto;
+  background-size: cover;
 }
 
 .menu_mobile.active {
   left: 0
+}
+
+.menu_mobile .header-mobile {
+  height: 100%;
+  min-height: 570px;
+  position: relative;
 }
 
 .menu_mobile .bg-opacity {
@@ -3192,7 +3198,8 @@ input[type=range]:focus::-ms-fill-upper {
 .menu_mobile ul.header-options {
   padding: 15px 10px 15px 15px;
   position: relative;
-  z-index: 3
+  z-index: 3;
+  list-style: none;
 }
 
 .menu_mobile ul.header-options li a {
@@ -3245,7 +3252,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .menu_mobile .cerrar-sesion-mobile, .menu_mobile .iniciar-sesion-mobile {
   width: 100%;
-  position: relative;
+  position: absolute;
   bottom: 0;
   z-index: 3;
   padding: 0 15px;

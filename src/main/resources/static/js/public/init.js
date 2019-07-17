@@ -383,9 +383,11 @@ function openMenuMobile() {
     $("span.hamburguer").click(function () {
         var menu = $(".menu_mobile")
         if (menu.hasClass('active')) {
-            menu.removeClass('active')
+            menu.removeClass('active');
+            $("html,body").css('overflow','auto');
         } else {
-            menu.addClass('active')
+            menu.addClass('active');
+            $("html,body").css('overflow','hidden');
         }
     })
 }
