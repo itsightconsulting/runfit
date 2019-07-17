@@ -40,19 +40,18 @@ function uploadImg(input, img) {
 
 const imgTemps = [];
 const nomImgsGaleria = [];
-
 function readURLCs(input, img, ix, mainDivId, nomImg) {
     nomImgsGaleria.push(nomImg);
     if (input.files && input.files[ix]) {
         var reader = new FileReader();
 
-        reader.onload = function (e) {
+        reader.onloadend = function (e) {
             $(img).attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[ix]);
-        imgTemps.push(img);
-        if(input.files.length == ix+1){
 
+        imgTemps.push(img);
+        if(imgTemps.length === $galeria.length){
             var dvCarusel =  generarDOMCarousel(imgTemps, nomImgsGaleria);
             const mainDiv = document.querySelector('#'+mainDivId);
             if(mainDiv.children.length == 1){
