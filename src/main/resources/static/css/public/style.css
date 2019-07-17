@@ -3803,11 +3803,19 @@ button.multiselect + ul{
 }
 
 .ver-servicios .del-svc{
-  height: 29px;
+  height: 32px;
 }
 
 .ver-servicios .edit-svc{
-  margin-top: 3px;
+  height: 32px;
+}
+
+.trainers-form .del-tyc-svc{
+  height: 32px;
+  top: 0px;
+  position: relative;
+  vertical-align: text-bottom !important;
+  cursor: pointer;
 }
 
 .ficha-pick{

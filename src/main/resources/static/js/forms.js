@@ -1,5 +1,5 @@
 function uploadAndShow(input, img){
-    uploadImg(input, img)
+    uploadImg(input, img);
 }
 
 function readURL(input, img) {
@@ -483,7 +483,6 @@ function  galeriaPerfilCarousel() {
 }
 
 function generarDOMCarousel(imgTemps, nomImgsGaleria){
-
  const dvCarusel = document.createElement('div');
             dvCarusel.className = 'owl-carousel owl-theme carousel-img';
             imgTemps.forEach( (v,index)=>{
@@ -778,11 +777,12 @@ function setHeightForModals(arrModalIds){
         //Modals
         const mdlCcs = document.getElementById(e);
         const body = mdlCcs.querySelector('.modal-body');
+        body.style.height = ($(window).height()-220)+"px";
         body.style.maxHeight = ($(window).height()-220)+"px";
         body.style.overflowY ="auto";
         if($(window).width()<720){
             mdlCcs.firstElementChild.style.width = ($(window).width()-15)+"px";
-        } else{
+        } else {
             mdlCcs.firstElementChild.style.width = "720px";
         }
     })

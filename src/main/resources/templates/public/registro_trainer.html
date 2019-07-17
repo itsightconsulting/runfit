@@ -333,6 +333,7 @@
                                                 id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
                                             <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                         </button>
+                                        <img class="del-tyc-svc hidden" rel="tooltip" title="Remover archivo T&C" src="/img/iconos/icon_trash.svg">
                                     </div>
                                     <h4 class="sub-title st-tarifario hidden">TARIFARIOS
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
@@ -379,7 +380,7 @@
                                                             <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
                                                         </li>
                                                         <li class="result">
-                                                            <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                            <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0">
                                                         </li>
                                                         <li class="count">
                                                             <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
@@ -397,7 +398,7 @@
                                                             <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
                                                         </li>
                                                         <li class="result">
-                                                            <input class="counter-input" disabled="disabled" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
+                                                            <input class="counter-input" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
                                                         </li>
                                                         <li class="count">
                                                             <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
@@ -415,7 +416,7 @@
                                                             <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
                                                         </li>
                                                         <li class="result">
-                                                            <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
+                                                            <input class="counter-input" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
                                                         </li>
                                                         <li class="count">
                                                             <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
@@ -925,11 +926,11 @@
                 NumeroDocumento: {
                     required: true,
                     digits: true,
-                    rangelength: [8, 13],
                     customnumdoc: function(){
                         const val = $('#TipoDocumento').val();
                         return val;
-                    }
+                    },
+                    rangelength: [8, 12]
                 },
                 Username:{
                     required: true,
@@ -1048,6 +1049,12 @@
                     },
                 },
                 txtCantidadPersonas:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadPersonas').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadPersonas" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadPersonas').tooltip();
@@ -1056,6 +1063,12 @@
                     }
                 },
                 txtCantidadMeses:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadMeses').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadMeses" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadMeses').tooltip();
@@ -1064,6 +1077,12 @@
                     }
                 },
                 txtCantidadSesiones:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadSesiones').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadSesiones').tooltip();

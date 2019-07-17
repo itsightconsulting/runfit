@@ -903,6 +903,12 @@
     btnGuardar.addEventListener('click', sendMainForm);
     document.querySelector('body').addEventListener('click', bodyClickEventListener);
     document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
+    document.querySelector('body').addEventListener('keydown', (e)=>{
+      const input = e.target;
+      if(input.id === 'Username' || input.id === 'Correo'){
+        input.previousElementSibling.previousElementSibling.classList.add('hidden');
+      }
+    });
   }
 
   function tooltipsOn(){
@@ -1274,11 +1280,11 @@
           NumeroDocumento: {
             required: true,
             digits: true,
-            rangelength: [8, 13],
             customnumdoc: function(){
                           const val = $('#TipoDocumentoId').val();
                           return val;
-            }
+            },
+            rangelength: [8, 12],
           },
           Correo: {
             required: true,

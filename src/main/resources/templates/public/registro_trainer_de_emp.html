@@ -371,7 +371,13 @@
             btnVerPerEmpresa.addEventListener('click', clickRedireccionamientoPerfilEmpresa);
             document.querySelectorAll('a[rel="tooltip"]').forEach(e=>{
                 $(e).tooltip();
-            })
+            });
+            body.addEventListener('keydown', (e)=>{
+                const input = e.target;
+                if(input.id === 'Username' || input.id === 'Correo'){
+                    input.previousElementSibling.previousElementSibling.classList.add('hidden');
+                }
+            });
             init();
         })();
 
@@ -961,11 +967,11 @@
                     NumeroDocumento: {
                         required: true,
                         digits: true,
-                        rangelength: [8, 13],
                         customnumdoc: function(){
                             const val = $('#TipoDocumento').val();
                             return val;
-                        }
+                        },
+                        rangelength: [8, 12],
                     },
                     Username:{
                         required: true,

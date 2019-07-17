@@ -134,18 +134,6 @@
                             </div>
                         </div>
                     </div>
-                    <div th:if="${porAprobar}" class="form-group div-aprobacion">
-                        <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                        <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
-                        <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
-                        <div class="hidden" id="SeccionCorreccion">
-                            <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
-                            <div style="text-align: right">
-                                <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
-                                    <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
-                            </div>
-                        </div>
-                    </div>
                   </form>
                 </div>
                 <div class="tab-pane fade" id="contact">
@@ -329,6 +317,18 @@
                           </div>
                           <button id="btnElegir" class="btn btn-default btn-black hidden" type="button">INSCRÍBETE</button>
                       </form>
+                  </div>
+                  <div th:if="${porAprobar}" class="form-group div-aprobacion">
+                      <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                      <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
+                      <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
+                      <div class="hidden" id="SeccionCorreccion">
+                          <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
+                          <div style="text-align: right">
+                              <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
+                                  <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
+                          </div>
+                      </div>
                   </div>
               </div>
             </div>

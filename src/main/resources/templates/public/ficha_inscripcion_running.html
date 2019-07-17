@@ -1480,6 +1480,10 @@
                 $oculto = Array.from(input.parentElement.parentElement.querySelectorAll('input')).map(e => e.value).join(':');
               }, 50);
           }
+
+          if(input.id === 'Username' || input.id === 'Correo'){
+            input.previousElementSibling.previousElementSibling.classList.add('hidden');
+          }
         });
       }
 
@@ -1952,12 +1956,12 @@
             },
             NumeroDocumento: {
               required: true,
-              digits: true,
-              rangelength: [8, 13],
+              digits:  true,
               customnumdoc: function(){
                 const val = $('#TipoDocumentoId').val();
                 return val;
-              }
+              },
+              rangelength: [8, 12],
             },
             Correo: {
               required: true,

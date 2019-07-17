@@ -282,7 +282,7 @@
                                                         <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
                                                     </li>
                                                     <li class="result">
-                                                        <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                        <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0">
                                                     </li>
                                                     <li class="count">
                                                         <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
@@ -300,7 +300,7 @@
                                                         <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
                                                     </li>
                                                     <li class="result">
-                                                        <input class="counter-input" disabled="disabled" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
+                                                        <input class="counter-input" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
                                                     </li>
                                                     <li class="count">
                                                         <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
@@ -318,7 +318,7 @@
                                                         <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
                                                     </li>
                                                     <li class="result">
-                                                        <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
+                                                        <input class="counter-input" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
                                                     </li>
                                                     <li class="count">
                                                         <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
@@ -443,6 +443,7 @@
             }
             const subTitleTarifario = document.querySelector('.st-tarifario>i.fa-plus-cs');
             const svcBasics = document.querySelector('#SvcCamposBasicos');
+            const titleTar = document.querySelector('.st-tarifario');
             const tarBasics = document.querySelector('#contentTarifario');
             const svcEdit = document.querySelector('.svc-focus').parentElement.querySelector('a.edit');
             const sbTarifario = document.querySelector('.st-tarifario');
@@ -456,15 +457,26 @@
                 tarBasics.classList.add('hidden');
                 subTitleTarifario.classList.add('hidden');
                 sbTarifario.classList.add('hidden');
+                titleTar.classList.add('hidden');
                 tarifarios.classList.add('hidden');
             } else {
+                //CheckTarifarios
+                const tar = servicios.find(e=>e.id===selServicioId).tarifarios;
+                if (!tar || !tar.length) {
+                    titleTar.classList.add('hidden');
+                    tarBasics.classList.add('hidden');
+                } else {
+                    titleTar.classList.remove('hidden');
+                    tarBasics.classList.remove('hidden');
+                }
+
                 svcBasics.classList.add('hidden');
                 svcEdit.classList.add('hidden');
-                tarBasics.classList.remove('hidden');
                 subTitleTarifario.classList.remove('hidden');
                 sbTarifario.classList.remove('hidden');
                 tarifarios.classList.remove('hidden');
             }
+
         }
     }
 
@@ -483,6 +495,18 @@
             if(subTab === 2){
                 cleanPaqueteCampos();
                 document.querySelector('.edit-tar-svc').setAttribute('disabled', 'disabled');
+                //CheckTarifarios
+                const tarBasics = document.querySelector('#contentTarifario');
+                const titleTar = document.querySelector('.st-tarifario');
+                const tar = servicios.find(e=>e.id===selServicioId).tarifarios;
+                if (tar && tar.length) {
+                    tarBasics.classList.remove('hidden');
+                    titleTar.classList.remove('hidden');
+                } else {
+                    tarBasics.classList.add('hidden');
+                    titleTar.classList.add('hidden');
+
+                }
                 return;
             }
             const actualEdit = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
@@ -490,6 +514,7 @@
                 actualEdit.classList.add('hidden');
             }
             tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
+
         } else if(clases.contains('tarifa-svc')) {
             let padre = {};
             if(input.tagName === "IMG" || input.tagName === "H6"){
@@ -1023,8 +1048,8 @@
         svcs.forEach((svc, ix)=>{
             const element = htmlStringToElement(
                 `<div class="form-group editar">
-                            <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);" title="Confirmar modificaciones al servicio">
-                                <img class="edit-svc" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
+                            <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);" title="Guardar modificaciones al servicio">
+                                <img class="edit-svc" data-id="${svc.id}" src="${_ctx}img/iconos/icon_disquete.svg">
                             </a>
                             <label class="servicio" data-id="${svc.id}">${svc.nombre}</label>
                         </div>`);
@@ -1529,6 +1554,12 @@
                     },
                 },
                 txtCantidadPersonas:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadPersonas').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadPersonas" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadPersonas').tooltip();
@@ -1537,6 +1568,12 @@
                     }
                 },
                 txtCantidadMeses:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadMeses').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadMeses" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadMeses').tooltip();
@@ -1545,6 +1582,12 @@
                     }
                 },
                 txtCantidadSesiones:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadSesiones').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadSesiones').tooltip();

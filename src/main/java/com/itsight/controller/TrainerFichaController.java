@@ -151,6 +151,7 @@ public class TrainerFichaController extends BaseController {
         if(isActived == null){
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
+
         if(isActived){
             model.addAttribute("msg", PERFIL_APROBADO_ANTERIORMENTE.get());
             return new ModelAndView(ViewConstant.MAIN_INF_N);

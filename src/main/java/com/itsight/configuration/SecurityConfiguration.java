@@ -1,5 +1,6 @@
 package com.itsight.configuration;
 
+import com.itsight.component.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -60,7 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/bienvenido")
-                .failureUrl("/login?error=error").permitAll()
+                .failureHandler(customAuthenticationFailureHandler())
+                //.failureUrl("/login?error=error").permitAll()
                 .and()
                 .logout()
                 .deleteCookies("SESSION")
@@ -84,6 +87,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         SessionRegistry sessionRegistry = new SessionRegistryImpl();
 
         return sessionRegistry;
+    }
+
+    @Bean
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
 }
