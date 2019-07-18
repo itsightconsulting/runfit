@@ -279,12 +279,6 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
             redFitnessService.save(rf);
             emailService.enviarCorreoInformativo("Nuevo cliente Runfit", cliente.getCorreoTrainer(), "<h1>Tienes un nuevo cliente</h1>");
         }
-        //Enviando correo al nuevo cliente
-        //Obtener cuerpo del correo
-        Correo correo = correoService.findOne(NUEVO_CLIENTE.get());
-        //Envio de correo
-        String cuerpo = String.format(correo.getBody(), cliente.getUsername(), cliente.getPassword(), domainName);
-        emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), cuerpo);
         return ResponseCode.REGISTRO.get();
     }
 

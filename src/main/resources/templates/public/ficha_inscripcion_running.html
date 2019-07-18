@@ -2177,7 +2177,7 @@
             },
             Username: {
               required: true,
-              pattern: "[a-z]{3,}[0-9]*$",
+              usernameOrEmail: true,
               rangelength: [7, 30],
             },
             Password: {

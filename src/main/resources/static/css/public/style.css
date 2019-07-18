@@ -2399,7 +2399,8 @@ ul.tabs {
 
 .steps ul.distance li input {
   width: 100%;
-  padding: 10px
+  padding: 10px;
+  text-align: center;
 }
 
 .steps ul.distance li p {

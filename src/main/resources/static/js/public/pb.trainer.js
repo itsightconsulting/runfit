@@ -90,10 +90,10 @@ function finalSendForm(){
             title: "<i class='fa fa-bullhorn'></i> Runfit Notification",
             content: "" +
                 "<br/><h4>Antes de proceder con el registro, se ha detectado que usted no ha registrado ningún tarifario a su(s) servicio(s). " +
-                "¿Deseas agregar Tarifarios para su(s) servicio(s)?</h4>",
+                "¿Deseas seguir sin agregar tarifarios para su(s) servicio(s)?</h4>",
             buttons: '[NO][SI]'
         }, function (ButtonPressed) {
-            if (ButtonPressed === "SI") {
+            if (ButtonPressed === "NO") {
                 //Ir a la parte de arriba de la página
                 const header = $(".navbar-inverse").height();
                 $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');

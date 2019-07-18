@@ -92,7 +92,7 @@ function readURLCs(input, img, ix, mainDivId, nomImg) {
  }
 }
 
-function poblarCarusel(srcs, mainDivId, baseSrc) {
+function poblarCarusel(srcs, mainDivId, baseSrc, noOptionDelete) {
     const dvCarusel = document.createElement('div');
     const mainDiv = document.querySelector('#'+mainDivId);
     if(mainDiv.firstElementChild){
@@ -128,13 +128,19 @@ function poblarCarusel(srcs, mainDivId, baseSrc) {
         enlace.appendChild(img);
 
         //Añadiendo botón eliminar
-        let btnEliminarImagenGaleria =
-            htmlStringToElement(`<a class="boton-remover">
-                <img data-name="${src}" src="${_ctx}img/remove.png" class="img-remover" data-nom="andy-bn.png">
-             </a>`);
+        let btnEliminarImagenGaleria = '';
+
+        if(!noOptionDelete){
+            btnEliminarImagenGaleria = htmlStringToElement(`<a class="boton-remover">
+                                             <img data-name="${src}" src="${_ctx}img/remove.png" class="img-remover" data-nom="andy-bn.png">
+                                          </a>`);
+        }
+
 
         dvItem.appendChild(enlace);
-        dvItem.appendChild(btnEliminarImagenGaleria);
+        if(!noOptionDelete){
+            dvItem.appendChild(btnEliminarImagenGaleria);
+        }
         dvCarusel.appendChild(dvItem);
 
         // ---- MODAL ----
@@ -186,12 +192,12 @@ function poblarCaruselAlter(srcs, mainDivId, baseSrc) {
 }
 
 function uploadImgs(input, mainDivId) {
-    let nomImgsFailed = '';
     $(input).change(function () {
         /*for(let i=0; i<this.files.length; i++){
             $galeria.push(this.files[i]);
         }*/
         //submit the form here
+        let nomImgsFailed = '';
         var file;
         for(let i=0; i<input.files.length;i++){
             let imgTemp;
@@ -199,14 +205,21 @@ function uploadImgs(input, mainDivId) {
             if ((file = this.files[i])) {
                 imgTemp = new Image();
                 imgTemp.onload = function () {
+                    const type = input.files[i].type;
+                    if(type.includes("svg")){
+                        $.smallBox({
+                                color: 'alert',
+                                content: 'No puede subir imágenes de tipo SVG'});
+                        return;
+                    }
                     //Previsualizar
                     const nameImg = input.files[i].name;
-                    if(imgTemp.height > 400){
-                        $galeria.push(file);
+                    if(imgTemp.height >= 100){
+                        $galeria.push(input.files[i]);
                         readURLCs($(input)[0], img, i, mainDivId, nameImg);
-                    }else{
+                    } else{
                         nomImgsFailed+='<br>'+nameImg;
-                        $.smallBox({color: 'alert', content: 'La imagen debe tener un alto mínimo de 400px: '+nomImgsFailed});
+                        $.smallBox({color: 'alert', content: 'La(s) imagen(es) debe(n) tener un alto mínimo de 300px: '+nomImgsFailed});
                     }
 
                 };

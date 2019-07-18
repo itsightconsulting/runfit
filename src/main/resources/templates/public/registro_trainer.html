@@ -787,15 +787,9 @@
         obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
         obj.fichaClienteIds = getValuesConcatInpCheckbox('FichaTrabajo');
         obj.mediosPago = getValuesConcatInpCheckbox('MetodoPago');
-        const rdmNum = Math.floor(Math.random() * 100);
-        const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
         obj.servicios = servicios;
         obj.cuentas = ccBancarias;
-        if(flag_form_populate){
-            obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
-        }else{
-            obj.nomPag = document.getElementById('NomPag').value;
-        }
+        obj.nomPag = document.getElementById('NomPag').value;
 
         obj.nota = document.getElementById('Nota').value;
         const redes = getRedesSociales();
@@ -928,7 +922,7 @@
                 },
                 Username:{
                     required: true,
-                    pattern: "[a-z]{3,}[0-9]*$",
+                    usernameOrEmail: true,
                     rangelength: [7, 30],
                 },
                 Password:{
@@ -1003,7 +997,7 @@
                     rangelength: [4, 40]
                 },
                 InpImgPerfil:{
-                    extension: "jpg|jpeg|png",
+                    extension: "jpg|jpeg|png|bmp",
                 },
                 inpCondServicio:{
                     extension: "pdf",

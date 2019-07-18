@@ -9,18 +9,14 @@ const btnHideIniciarSesion = document.getElementById('hide_login_link');
 
 
 (function () {
-    init();
-
-
-
+    //Solo para login temporal
+    if(body_.querySelector('.login')){
+        init();
+    }
 })();
 
 function init(){
     eventos();
-
-
-
-
 }
 
 function eventos(){
@@ -36,24 +32,20 @@ function eventos(){
     }
 
     if(btnNuevo){// Disparar validaciones en formulario de registro
-
         btnNuevo.addEventListener('click', validacionFormularioVisitante);
     }
 
     if(btnStartUpIniciarSesion){// Disparar login
-
         btnStartUpIniciarSesion.addEventListener('click', inicializarLoginForm);
     }
 
 
     if(btnHideIniciarSesion){// Disparar login
-
         btnHideIniciarSesion.addEventListener('click', ocultarLoginForm);
     }
 
-
-    body_.addEventListener('focusout', bodyFocusOutEventListener);
-    body_.addEventListener('keyup', bodyKeyupEventListener);
+    body_.querySelector('.login').addEventListener('focusout', bodyFocusOutEventListener);
+    body_.querySelector('.login').addEventListener('keyup', bodyKeyupEventListener);
 
 }
 

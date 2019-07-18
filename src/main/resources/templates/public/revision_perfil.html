@@ -1414,6 +1414,13 @@
         if(!obj.nota){
             delete obj.nota;
         }
+
+        //Validando lista servicios con el fin de pasar la validación en caso no se haya especificado el campo infoAdicional
+        obj.servicios.forEach(e=>{
+            if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
+                delete e.infoAdicional;
+            }
+        });
         return obj;
     }
 
