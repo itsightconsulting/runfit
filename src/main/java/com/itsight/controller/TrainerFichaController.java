@@ -87,6 +87,11 @@ public class TrainerFichaController extends BaseController {
         return trainerProcedureInvoker.findAllByDynamic(query);
     }
 
+    @GetMapping("/get/all/nom-ubigeo")
+    public @ResponseBody String obtenerTodosLosNombreUbigeo(){
+        return trainerService.getAllDistinctNomUbigeoAsString();
+    }
+
     @GetMapping("/{nomPag:.+}")
     public  ModelAndView getTrainerByUsername(){
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);

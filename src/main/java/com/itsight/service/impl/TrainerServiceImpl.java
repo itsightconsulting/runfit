@@ -604,4 +604,9 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     public UsuGenDTO getForCookieById(Integer id) {
         return repository.getForCookieById(id);
     }
+
+    @Override
+    public String getAllDistinctNomUbigeoAsString() {
+        return repository.getAllDistinctNomUbigeoAsString();
+    }
 }
