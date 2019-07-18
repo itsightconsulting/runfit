@@ -273,6 +273,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 trainerFicha.getMovil(), trainerFicha.getUsername().toLowerCase(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), false);
         trainer.setPais(trainerFicha.getPaisId());
         trainer.setUbigeo(trainerFicha.getUbigeo());
+        trainer.setNomUbigeo(trainerFicha.getNomUbigeo());
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
         trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteIds()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)

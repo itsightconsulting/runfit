@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="form-group" id="Estudios">
                                         <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-estudio" id="EstudiosCertificaciones" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                        <input class="form-control mg-bt-10 inp-estudio" id="EstudiosCertificaciones" name="EstudiosCertificaciones" type="text" placeholder="Ej: Licenciado en cultura física y deporte"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-estudio', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group">
@@ -104,12 +104,12 @@
                                     </div>
                                     <div class="form-group" id="ExpLaboral">
                                         <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-experiencia" id="Experiencias" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                        <input class="form-control mg-bt-10 inp-experiencia" id="Experiencias" name="Experiencias" type="text" placeholder="Ej: Entrenador en AquaLab (2013 – hasta la fecha)"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-experiencia', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group" id="Logros">
                                         <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-resultado" id="Resultados" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                        <input class="form-control mg-bt-10 inp-resultado" id="Resultados" name="Resultados" type="text" placeholder="Ej: Campeón en natación 100 m libres (2017)"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-resultado', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group" id="dvHorario">
@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="form-group" id="Especialidades">
                                         <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-esp-domino" id="EspecDomino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                        <input class="form-control mg-bt-10 inp-esp-domino" id="EspecDomino" name="EspecDomino" type="text" placeholder="Ej: Entrenamiento uno a uno"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-esp-domino', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group">
@@ -314,7 +314,7 @@
                                         </div>
                                         <div class="form-group list-counter" id="MainIncluyeServicios">
                                             <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                            <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                                            <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                                             <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                         </div>
                                         <div class="form-group">
@@ -770,6 +770,10 @@
         //Ubigeo
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+        const dep = document.getElementById('Dep').options[document.getElementById('Dep').selectedIndex].textContent;
+        const pro = document.getElementById('Pro').options[document.getElementById('Pro').selectedIndex].textContent;
+        const dis = document.getElementById('Dis').options[document.getElementById('Dis').selectedIndex].textContent;
+        obj.nomUbigeo = dep + "|" + pro + "|" + dis;
         obj.telefono = document.getElementById('Telefono').value;
         obj.movil = document.getElementById('Movil').value;
         obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;

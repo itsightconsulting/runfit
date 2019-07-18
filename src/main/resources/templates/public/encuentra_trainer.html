@@ -28,16 +28,13 @@
             <div class="col-md-4">  
               <div class="form-group">
                 <label>UTILIZA PALABRAS CLAVES</label>
-                <input class="form-control" id="Acerca" name="Acerca" type="text" placeholder="Ejem: Trail, circuitos, funcional..." maxlength="30">
+                <input class="form-control" id="Acerca" name="Acerca" type="text" placeholder="Ej: Trail, circuitos, funcional..." maxlength="30">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label>UBICACIÓN</label>
-                <select class="form-control hidden" id="Ubigeo" name="Ubigeo">
-                  <option value="">TODOS</option>
-                  <option th:each="dis : ${peLiDistritos.lstDis}" th:value="${dis.cod}" th:text="${dis.ubNombre}"></option>
-                </select>
+                <input class="form-control" id="Ubigeo" name="Ubigeo" type="text" placeholder="Ej: Ciudad, provincia o distrito" maxlength="30">
               </div>
             </div>
           </div>
@@ -158,6 +155,7 @@
     <th:block th:insert="html-commons/p/js :: fg-js"></th:block>
     <script th:src="@{/js/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js}+'?'+${version}"></script>
     <script th:inline="javascript">
+        const body = document.querySelector('body');
       const btnLimpiar = document.getElementById('btnLimpiar');
       const btnBuscar = document.getElementById('btnBuscar');
       const initLimit = 10;
@@ -181,7 +179,8 @@
             });
         });
         btnBuscar.addEventListener('click', busquedaDinamica);
-        init();
+        document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
+          init();
       })();
 
       function init(){
@@ -208,10 +207,7 @@
           if(!d[key]){
             delete d[key];
           };
-        })
-        if(d.hasOwnProperty("ubigeo")){
-          d.ubigeo = "1501"+d.ubigeo;//Prefix Lima Perú
-        }
+        });
 
         d.limit = queryParams.limit;
         d.offset = queryParams.offset;
@@ -295,7 +291,7 @@
       </div>
       </div>
       <div class="col-md-9">
-              <h4>${nombreFinal}<span class="title">${ttId == 1 ? e.especialidad : ''}</span><span class="location">${_ubigeoPeLi.find(o=>o.ub === e.ubigeo) ? _ubigeoPeLi.find(o=>o.ub === e.ubigeo).nom: "Falta extender ubigeo"} - Lima</span></h4>
+              <h4>${nombreFinal}<span class="title">${ttId == 1 ? e.especialidad : ''}</span><span class="location">${e.nomUbigeo ? e.nomUbigeo.split("|").join(' - ') : 'LIMA - LIMA'}</span></h4>
       <p>${e.acerca}</p>
       <button class="btn btn-default btn-black" type="button" onclick="verPerfil('${nomLink}')">VER PERFIL</button>
       <button class="btn btn-default btn-white" type="button" onclick="verPerfilDirectServices('${nomLink}')">VER SERVICIOS</button>
@@ -326,6 +322,17 @@
           }
         });
       }
+
+        function bodyFocusOutEventListener(e){
+            const input = e.target;
+                if(input.type==="text") {
+                    input.value = input.value.trim().replace(/ +/g, " ");
+                }
+
+                if(input.tagName === "TEXTAREA"){
+                    input.value = input.value.trim();
+                }
+        }
     </script>
   </body>
 </html>

@@ -29,7 +29,7 @@ public class TrainerQueryDTO implements Serializable {
     @Positive
     @Max(value = 3)
     private Integer sexo;
-    @Size(min = 6, max = 6)
+    @Size(max = 30)
     private String ubigeo;
     @Size(min = 2, max = 30)
     private String servicio;

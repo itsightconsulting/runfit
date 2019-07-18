@@ -36,6 +36,7 @@ import java.util.UUID;
                     @ColumnResult(name = "nombreCompleto", type = String.class),
                     @ColumnResult(name = "especialidad", type = String.class),
                     @ColumnResult(name = "ubigeo", type = String.class),
+                    @ColumnResult(name = "nomUbigeo", type = String.class),
                     @ColumnResult(name = "acerca", type = String.class),
                     @ColumnResult(name = "canPerValoracion", type = Integer.class),
                     @ColumnResult(name = "totalValoracion", type = Double.class),
@@ -97,6 +98,7 @@ import java.util.UUID;
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.especialidad, \n" +
                               "\tt.ubigeo, \n" +
+                              "\tt.nomUbigeo, \n" +
                               "\tf.acerca, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +

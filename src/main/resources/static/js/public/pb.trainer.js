@@ -715,7 +715,7 @@ function cleanCamposServicio(){
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
+                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                           </div>
                                           <div class="form-group">
@@ -1052,7 +1052,7 @@ function setIncluyeDelServicio(incluidos){
     } else {
         mainIncluidos.innerHTML =
             `<label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" maxlength="500" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" maxlength="500" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                      <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>`;
         const firstInput = mainIncluidos.querySelector('textarea');
         const btnPlus = mainIncluidos.querySelector('a');
@@ -1208,7 +1208,7 @@ function resetServicios(){
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
+                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                           </div>
                                           <div class="form-group">
