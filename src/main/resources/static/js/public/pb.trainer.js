@@ -86,6 +86,22 @@ function finalSendForm(){
     if(existsTarifario){
         sendForm();
     }else{
+        const header = $(".navbar-inverse").height();
+
+        if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
+        }else{
+            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+            $.smallBox({color: 'alert',
+                content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
+                timeout: 5000});
+            return;
+        }
+        if(servicios.length === 0){
+            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+            $.smallBox({content: "<i class='fa fa-fw fa-exclamation-circle'></i>Debe agregar por lo menos un servicio mediante el botón 'AGREGAR SERVICIO'", color: "alert"});
+            return;
+        }
+
         $.SmartMessageBox({
             title: "<i class='fa fa-bullhorn'></i> Runfit Notification",
             content: "" +
@@ -715,7 +731,7 @@ function cleanCamposServicio(){
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
+                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                           </div>
                                           <div class="form-group">
@@ -1052,7 +1068,7 @@ function setIncluyeDelServicio(incluidos){
     } else {
         mainIncluidos.innerHTML =
             `<label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" maxlength="500" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" maxlength="500" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                      <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>`;
         const firstInput = mainIncluidos.querySelector('textarea');
         const btnPlus = mainIncluidos.querySelector('a');
@@ -1208,7 +1224,7 @@ function resetServicios(){
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
+                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                           </div>
                                           <div class="form-group">

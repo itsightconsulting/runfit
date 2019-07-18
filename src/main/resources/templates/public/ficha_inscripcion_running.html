@@ -1288,7 +1288,7 @@
                     <li>
                       <div class="form-group">
                         <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
-                        <div class="login-register">
+                        <div class="credentials-register">
                           <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
                             <label style="width: 110px !important;" for="Username">Usuario</label>
                             <div>
@@ -1911,7 +1911,7 @@
                 = nuevaAgregada.querySelector('.inp-distancia');
         inpDistancia.setAttribute('name', "InpDistancia"+rowNum);
         inpDistancia.setAttribute('data-aka', "DISTANCIA DE COMPETENCIA");
-        $(inpDistancia).rules("add",{required: true, number: true, rangelength: [5, 40]});
+        $(inpDistancia).rules("add",{required: true, number: true});
 
         const inpTiempoComp = nuevaAgregada.querySelector('.inp-tiempo');
         inpTiempoComp.setAttribute('name', "TiempoComp"+rowNum);

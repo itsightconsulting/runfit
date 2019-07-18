@@ -80,7 +80,9 @@ public class AdministradorController {
     }
 
     @PostMapping(value = "/agregar")
-    public @ResponseBody String nuevo(@ModelAttribute Administrador administrador, @RequestParam(required = false) String perfilId, @RequestParam String tipoDocumentoId,  @RequestParam String rols) throws CustomValidationException {
+    public @ResponseBody String nuevo(@ModelAttribute Administrador administrador,
+                                      @RequestParam String tipoDocumentoId,
+                                      @RequestParam(required = false) String rols) throws CustomValidationException {
         administrador.setTipoDocumento(Integer.parseInt(tipoDocumentoId));
         if (administrador.getId() == 0) {
             return administradorService.registrar(administrador, rols);

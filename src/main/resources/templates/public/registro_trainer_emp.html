@@ -270,7 +270,7 @@
                                         </div>
                                         <div class="form-group list-counter" id="MainIncluyeServicios">
                                             <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                            <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                                            <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                                             <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                         </div>
                                         <div class="form-group">
@@ -536,10 +536,6 @@
 <script>
     function sendForm(){
         $regTipo = TipoTrainer.EMPRESA;
-        if(servicios.length === 0){
-            $.smallBox({content: "Debe agregar por lo menos un servicio", color: "alert"});
-            return;
-        }
         const arrURL = window.location.href.split("/");
         const hshId = arrURL[arrURL.length-1];
         const body = generateBody();
@@ -567,39 +563,33 @@
             body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
         }
         body.sexo = 3;
-        body.tipoTrainerId = 2;
+        body.tipoTrainerId = TipoTrainer.EMPRESA;
 
-        if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
-            $("#frm_registro :input").prop("disabled", true);
-            $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
-            document.querySelector('.ver-tyc').onclick = null;//Desactivamos en openModalTYC
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: _ctx + 'p/trainer/registro/'+hshId,
-                dataType: 'json',
-                data: JSON.stringify(body),
-                blockLoading: false,
-                bridgeMultipart: true,
-                success: (d)=> {
-                    //Subir imgen
-                    if($galeria.length + tycFiles.length === 0){
-                        uploadFotoPerfil(d, body);
-                    }else{
-                        uploadFotosPerfil(d, body);
-                    }
-                    document.getElementById('HshEmpTrainerId').value = d.res;
-                }, error: (xhr) => {
-                    $("#frm_registro :input").prop("disabled", false);
-                    exception(xhr);
-                }, complete: () => {
+        $("#frm_registro :input").prop("disabled", true);
+        $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
+        document.querySelector('.ver-tyc').onclick = null;//Desactivamos en openModalTYC
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: _ctx + 'p/trainer/registro/'+hshId,
+            dataType: 'json',
+            data: JSON.stringify(body),
+            blockLoading: false,
+            bridgeMultipart: true,
+            success: (d)=> {
+                //Subir imgen
+                if($galeria.length + tycFiles.length === 0){
+                    uploadFotoPerfil(d, body);
+                }else{
+                    uploadFotosPerfil(d, body);
                 }
-            })
-        }else{
-            $.smallBox({color: 'alert',
-                content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
-                timeout: 5000});
-        }
+                document.getElementById('HshEmpTrainerId').value = d.res;
+            }, error: (xhr) => {
+                $("#frm_registro :input").prop("disabled", false);
+                exception(xhr);
+            }, complete: () => {
+            }
+        });
     }
 
     function populateForm(){
@@ -812,13 +802,22 @@
                     pwcheck: true
                 },
                 NombreServicio:{
+                    required: function(){
+                        return !servicios.length
+                    },
                     letterandnumber: true,
                     rangelength: [2, 50],
                 },
                 PrimerIncluyeServicio:{
+                    required: function(){
+                        return !servicios.length
+                    },
                     rangelength: [8, 10*50]
                 },
                 DescripcionServicio:{
+                    required: function(){
+                        return !servicios.length
+                    },
                     rangelength: [80, 2000]
                 },
                 ServicioInfAdic:{
