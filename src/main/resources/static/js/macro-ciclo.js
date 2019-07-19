@@ -52,11 +52,11 @@ FichaGet = (function(){
             basico.numSem = Number(document.querySelector('#MacroTotalSemanas').textContent);
             basico.periodizacion = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="2"]')).map(v=>{if(v.value>0) return Number(v.value)});
             basico.distribucionPorcentaje = Array.from(proyecciones.querySelectorAll('.periodizacion-calc[data-type="1"]')).map(v=>{if(v.value>0) return Number(v.value)/100;});
-            basico.distancia = Number(document.querySelector('#DistanciaRutina input:checked').value);
+            basico.distancia = basico.distancia ? Number(document.querySelector('#DistanciaRutina input:checked').value) : '';
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;
             basico.fechaFin = document.querySelector('#MacroFechaFin').value;
-            $kilometrajeBase.length == 0 ? obtenerKilometrajeBaseBD(basico.distancia, basico.nivelAtleta) : "";//En caso no tengamos el kilometrajeMaestro, lo consultamos
+            $kilometrajeBase.length == 0 ? "" :obtenerKilometrajeBaseBD(basico.distancia, basico.nivelAtleta) : "";//En caso no tengamos el kilometrajeMaestro, lo consultamos
             return basico;
         },
     }
@@ -391,6 +391,10 @@ MacroCiclo = (function(){
         },
         instanciarInformacionTemporada: (base)=>{
             //base.periodizacion.push(base.distancia == 10 ? 1 : base.distancia == 21 ? 2 : 3);//42: 3 semanas;
+
+            console.log("aaa");
+            console.log(base);
+
             const allKms = Array.from(document.querySelectorAll('#PorcentajesKilometraje label.kms')).map(v=>{return Number(v.textContent)});
             const sumKms = allKms.reduce((a,b)=>{return a+b});
             const kmsParts = base.periodizacion.map((v)=>{
@@ -416,18 +420,25 @@ MacroCiclo = (function(){
         },
         instanciarInformacionTemporadaPost: ()=>{
             const base = FichaGet.obtenerBase();
+
+            console.log(base);
             base.periodizacion.push(MacroCicloGet.obtenerAdicionalSemsPT(base.distancia));
 
             const allKms = $ruConsolidado.dtGrafico.map(({kms})=>kms);
+
             const sumKms = allKms.reduce((a,b)=>{return a+b});
             const kmsParts = base.periodizacion.map((v)=>{
                 return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
             });
+
+            console.log("atento",base.periodizacion);
+
             base.porcentajesKms = [];
             const kiloTotal = document.querySelector('#KilometrajeTotal');
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
             kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
             document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
+
                 if(base.periodizacion[i] != undefined) {
                     const kmsEsp = parseFloat(kmsParts[i].reduce((a, b) => {
                         return a + b
@@ -1172,9 +1183,11 @@ MCGraficoData = (function(){
     }
 })();
 MCGrafico = (function(){
+
+
     return {
-        temporada: (data)=>{
-            data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.perc, bullet: v.bullet, avance: v.avance}});
+      temporada: (data)=>{
+          data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.perc, bullet: v.bullet, avance: v.avance}});
             const avances =  data.filter(v=>{//Provisional
                 return (v.avance != undefined)
             }).map(({avance})=>avance);

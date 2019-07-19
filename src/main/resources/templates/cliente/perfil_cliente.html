@@ -20,6 +20,8 @@
             color: #cf3239 !important;
         }
 
+
+
          input[type=time]::-webkit-datetime-edit-ampm-field {
              display: none !important;
          }
@@ -34,6 +36,7 @@
 
         #DivSvgSkeleton .tooltip.fade{
             top: 0px !important;
+            font-size: 20px;
         }
 
         #DivSvgSkeleton .tooltip-arrow{
@@ -48,6 +51,12 @@
         input.marca-referencial{
             cursor: pointer !important;
         }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -55,10 +64,6 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
     <div id="wrapper">
-
-
-
-
             <section class="steps">
                 <div class="container">
                     <div class="row">
@@ -87,7 +92,7 @@
                                 <h4>Información personal</h4>
 
 
-                                <input type="text"  th:value="${clientData}" class="hidden" id="pruebaData">Test</input>
+                                <input type="text"  th:value="${clientData}" class="hidden" id="pruebaData"></input>
 
                             </div>
                             <div class="row">
@@ -114,14 +119,14 @@
                                         <li>
                                             <div class="form-group more-inputs">
 
-                                               <div>
+                                               <div class="form-group">
                                                 <label > Documento de Identidad</label>
 
                                                 <input id="TipoDocumento" name="TipoDocumento" class="form-control" type="text" disabled="true"/>
 
                                                </div>
 
-                                                <div>
+                                                <div class="form-group">
 
                                                  <label > Número de Documento</label>
 
@@ -135,13 +140,13 @@
                                             <div class="form-group more-inputs">
                                                 <h5>Datos de Contacto</h5>
 
-                                                <div>
-                                                    <label >Correo</label>
+                                                <div class="form-group">
+                                                    <label >Correo Electrónico</label>
                                                     <input id="Correo" name="Correo" class="form-control" type="text" disabled="true"/>
                                                 </div>
 
-                                                <div>
-                                                   <label >Movil</label>
+                                                <div class="form-group">
+                                                   <label >Móvil</label>
                                                    <input id="Movil" name="Movil" class="form-control" type="text" disabled="true"/></div>
                                                 </div>
                                         </li>
@@ -173,18 +178,18 @@
                                             <div class="form-group more-inputs">
 
                                                     <h5>Medidas</h5>
-                                                    <div>
+                                                    <div class="form-group">
                                                         <label >Peso (Kg)</label>
                                                         <input id="Peso" name="Peso" class="form-control" type="text" disabled="true"/>
                                                     </div>
 
-                                                    <div>
+                                                    <div class="form-group">
                                                         <label >Talla (cm)</label>
                                                         <input id="Talla" name="Talla" class="form-control" type="text" disabled="true"/>
                                                     </div>
 
 
-                                                    <div>
+                                                    <div class="form-group">
                                                          <label >IMC</label>
                                                         <input id="Imc" name="Imc" class="form-control" type="text" disabled="true"/>
                                                     </div>
@@ -378,9 +383,6 @@
                                                 <label >En caso de emergencia llamar a: </label>
 
 
-
-
-
                                             </div>
                                             <h5>Historial deportivo</h5>
                                             <div class="form-group">
@@ -456,7 +458,7 @@
                                                         <ul class="checks ul-msc-r">
                                                         </ul>
                                                     </div>
-                                                    <div class="col col-md-12" style="color: #fff">Seleccionar:</div>
+                                                    <div class="col col-md-12" style="color: #fff">Su selección:</div>
                                                 </div>
                                             </div>
                                             <div class="cuerpos row">

@@ -107,5 +107,7 @@ public class ViewConstant {
     public static final String CLIENTE_NOVEDADES = "cliente/novedades";
     public static final String CLIENTE_MIS_RUTINAS = "cliente/mis_rutinas";
     public static final String CLIENTE_PERFIL = "cliente/perfil_cliente";
+    public static final String CLIENTE_RUTINA_CONSOLIDADO = "cliente/rutina_consolidado";
+
 
 }

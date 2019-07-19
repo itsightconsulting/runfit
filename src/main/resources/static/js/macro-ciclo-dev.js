@@ -402,10 +402,14 @@ MacroCiclo = (function(){
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
             kiloTotal.querySelector('span').textContent = base.numSem+" semanas";
             document.querySelectorAll('#InicialMacro .dist-etapa').forEach((v,i)=>{
+
+                console.log(kmsParts[i]);
                 if(base.periodizacion[i] != undefined) {
                     const kmsEsp = parseFloat(kmsParts[i].reduce((a, b) => {
                         return a + b
                     }))
+
+                    console.log(kmsEsp);
                     v.querySelector('h1').textContent = kmsEsp.toFixed(1);
                     v.querySelector('span').textContent = base.periodizacion[i] + " semanas";
                     base.porcentajesKms.push(((kmsEsp * 100) / sumKms).toFixed(2));
@@ -1089,8 +1093,12 @@ MacroSeccion = (function(){
                         return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3 dt-ix${ii+1}">${v.ind[i]}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
                     }).join('')}</div></div>`:`<i class="hidden col-md-11">${mVC.map((v,ii)=>{ return `<i class="col-md-3 dt-ix${ii+1}">${v.ind[i]}</i>`}).join('')}</i>`;
                 }).join('')}${rgs}</div>`);
+
+
+                console.log(rgs);
         },
         velocidadesByDistancia: (mVC)=>{
+
             //Calculando el porcentaje de mejora de velocidad y seteandolo
             document.querySelector('#PorcMejoraVel').textContent = parseNumberToDecimal((((((mVC[7].indicadores[0].p.toSeconds())*42)/((mVC[7].indicadores[(mVC[7].indicadores.length)-1].p.toSeconds())*42)))-1)*100,1) + " %";
 
@@ -1110,6 +1118,9 @@ MacroSeccion = (function(){
                                     return (i+1)%4 == 0 ?`${ii==0?'<div class="col-md-6 col-sm-6 padding-bottom-5">':''}<div class="col col-md-3 col-sm-3">${v.indicadores[i].p}</div>${ii==3?'</div><div class="col-md-6 col-sm-6 padding-bottom-5">':''}${ii==7?'</div>':''}`:'';
                                 }).join('')}</div></div>`:'';
                     }).join('')}</div>`);
+
+       
+
         },
         cadencia2: (metricas)=>{
             const porcMejora = parseNumberToDecimal(((((metricas[metricas.length - 1]) / metricas[0])-1)*100), 1) + " %";
@@ -1252,7 +1263,11 @@ MCGraficoData = (function(){
 MCGrafico = (function(){
     return {
         temporada: (data)=>{
+            console.log(data);
             data = data.map(v=>{return {kms: v.kms, color: v.color, perc: v.perc, bullet: v.bullet, avance: v.avance}});
+
+            console.log(data);
+
             const avances =  data.filter(v=>{//Provisional
                 return (v.avance != undefined)
             }).map(({avance})=>avance);
@@ -1671,7 +1686,9 @@ MCGrafico = (function(){
         },
         miniPorcentual: (dF)=>{
 
-            MCGrafico.cesDemoCircularGraphs();
+
+            console.log(dF);
+            //MCGrafico.cesDemoCircularGraphs();
 
             let ctx = document.getElementById('MiniGraficoDistribucion').getContext('2d');
 

@@ -1,0 +1,363 @@
+
+.container {
+    max-width: 1079px;
+    padding: 40px 30px;
+}
+
+.col-md-3{
+    padding: 0px;
+}
+
+section#consolidado h2.metric-title {
+    color: #ffffff;
+    font-family: GothamHTF-Bold;
+    text-align: center;
+    font-size: 35px;
+}
+
+.etapa-rutina  label {
+    font-weight: normal;
+}
+
+.etapa-rutina  label {
+    font-weight: normal;
+}
+
+ div label .svg {
+    width: 20px;
+    height: 22px;
+    fill: #9d9d9d;
+    margin-right: 14px;
+    top: 3px;
+    position: relative;
+}
+
+.etapa-rutina  label .svg.semana-temporada {
+    width: 20px;
+    height: 22px;
+    fill: #9d9d9d;
+    margin-right: 14px;
+    top: -2px;
+    position: relative;
+}
+
+div  label .svg.red-icon {
+    width: 20px;
+    height: 22px;
+    fill: #cf3239;
+    margin-right: 14px;
+    top: 3px;
+    position: relative;
+}
+
+div  label .svg.white-icon {
+    width: 20px;
+    height: 22px;
+    fill: #ffffff;
+    margin-right: 14px;
+    top: 3px;
+    position: relative;
+}
+
+
+
+.etapa-rutina label strong {
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.etapa-rutina  {
+    font-size: 16px;
+    font-family: GothamHTF-Book;
+    text-transform: uppercase;
+    border-bottom: 1px solid #3d3f41;
+    padding: 14px 20px;
+    line-height: 27px;
+}
+
+.etapa-rutina.semana-temporada  {
+    font-size: 16px;
+    font-family: GothamHTF-Book;
+    text-transform: uppercase;
+    border-bottom: 1px solid #3d3f41;
+    padding: 14px 20px 58px;
+}
+
+
+.etapa-rutina.light-green *  {
+    color: #c9ea83;
+}
+.etapa-rutina.light-green hr {
+    border-color: #c9ea83;
+}
+
+
+.etapa-rutina.green *  {
+    color: #a8fa00;
+}
+.etapa-rutina.green hr {
+    border-color: #a8fa00;
+}
+
+.etapa-rutina.green *  {
+    color: #a8fa00;
+}
+.etapa-rutina.green hr {
+    border-color: #a8fa00;
+}
+
+.etapa-rutina.hlight-green * {
+    color: #9bbd4f;
+}
+
+.etapa-rutina.hlight-green hr {
+    border-color: #9bbd4f;
+}
+
+.etapa-rutina.grey * {
+    color: #c2ccac;
+}
+
+.etapa-rutina.grey hr {
+    border-color: #c2ccac;
+}
+
+.etapa-rutina p {
+    font-size: 17px;
+    margin-left: 34px;
+}
+
+.etapa-rutina label.semana-temporada strong {
+    font-size: 30px;
+}
+
+.etapa-rutina p strong {
+    font-family: GothamHTF-Bold;
+}
+
+
+.etapa-rutina strong {
+    font-size: 30px;
+}
+
+hr.semanas {
+    border-top-width: 10px;
+    border-radius: 20px;
+    margin: 0 40px 20px 0;
+}
+
+hr.semanas-fixed {
+    border-top-width: 10px;
+    border-radius: 20px;
+    margin: 0 40px 17px 0;
+}
+
+.total-km p {
+    font-size: 30px;
+    margin-left: 34px;
+}
+
+.total-km label {
+    font-size: 11px;
+}
+
+.total-km strong {
+    font-size: 22px;
+}
+
+.total-km p strong {
+    font-size: 30px;
+}
+.total-km  {
+    font-size: 16px;
+    font-family: GothamHTF-Book;
+    text-transform: uppercase;
+    border-bottom: 1px solid #3d3f41;
+    padding: 50px 20px;
+    line-height: 27px;
+}
+
+.total-km.green *  {
+    color: #a8fa00;
+}
+
+
+.distribucion-km  {
+    font-family: GothamHTF-Bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid #3d3f41;
+    padding: 20px 20px;
+    line-height: 27px;
+    color: #ffffff;
+
+}
+
+.distribucion-km strong {
+    font-size: 18px;
+}
+
+.total-km div{
+    padding: 40px 0px;
+    border-right: 2px solid #3d3f41;
+}
+
+
+
+.etapa-km p {
+    font-size: 25px;
+    margin-left: 34px;
+}
+
+.etapa-km label {
+    font-size: 11px;
+}
+
+.etapa-km label strong {
+    font-size: 22px;
+}
+
+
+.etapa-km  {
+    font-size: 16px;
+    font-family: GothamHTF-Book;
+    text-transform: uppercase;
+    padding-top: 20px;
+    line-height: 27px;
+}
+
+.etapa-km.green *  {
+    color: #a8fa00;
+}
+.etapa-km.hlight-green * {
+    color: #9bbd4f;
+}
+.etapa-km.grey * {
+    color: #c2ccac;
+}
+
+.etapa-km.light-green * {
+    color: #c9ea83;
+}
+
+.etapas-superior{
+    padding-top: 25px;
+}
+
+.mejora-metricas{
+    border: 1px solid #565a4d;
+    border-radius: 5px;
+    width: 203px;
+    float:left;
+    margin-right: 20px;
+
+}
+
+.mejora-metricas p{
+    color: #ffffff;
+    padding: 0 30px 34px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 17px;
+    font-family: GothamHTF-Book;
+
+}
+
+
+.mejora-metricas p.mejora-longitud{
+    padding: 0 30px 10px;
+
+
+}
+
+#consolidado .col-md-8 {
+    padding: 20px 0 0;
+}
+.mejora-metricas .svg{
+    width: 20px;
+    height: 22px;
+    fill: #ffffff;
+    left: 177px;
+    top: 10px;
+    position: relative;
+}
+
+.periodo-cadencia{
+    padding-left: 20px;
+    border-right: 1px solid #565a4d;
+    color: #c2ccac;
+    font-family: GothamHTF-Book;
+    padding-bottom: 15px;
+
+}
+
+.dato-cadencia {
+    color: #ffff;
+    font-weight: bold;
+    padding-left: 45px;
+    font-family: GothamHTF-Book;
+}
+
+.mejora-metricas .porcentaje-mejora p {
+    color: #c2ccac;
+    position: relative;
+   /* top: 65px;*/
+    padding: 0;
+    right: 15px;
+    font-size: 14px;
+}
+
+.mejora-metricas .porcentaje-mejora strong {
+    color: #a8fa00;
+    font-size: 22px;
+}
+
+.dv-mejora-vel{
+    padding-top: 20px;
+}
+
+.dv-mejora-vel .col-md-6, .tabla-mejora-vel  .col-sm-6 {
+    position: relative;
+    min-height: 1px;
+    padding-left: 0;
+    padding-right: 0;
+}
+.mejora-velocidad {
+    font-weight: bold;
+    color: #ffffff;
+    padding: 5px 18px 20px;
+    text-align: center;
+}
+
+.mejora-velocidad .container-fluid{
+    padding: 0 0 10px;
+}
+
+.header-met-vel{
+
+    /* background: #4fd46b; */
+    color: #a8fa00;
+    font-size: 28px;
+    /* border-bottom: 3px solid #baf3c6; */
+    /* border-right: 1px solid; */
+    line-height: 1.2;
+    text-align: center;
+}
+
+
+.header-met-vel p{
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
+.porc-mejora-vel{
+    padding-left: 18px;
+    font-size: 18px;
+    color: #c2ccac;
+}
+
+
+.porc-mejora-vel strong{
+    font-size: 25px;
+    color: #a8fa00;
+}

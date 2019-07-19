@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/cliente-rutina-consolidado.css}+'?'+${version}">
+
+    <style>
+        #indicadorCirculo1,#indicadorCirculo3{
+            color: #d6ff58 !important;
+        }
+        #indicadorCirculo2,#indicadorCirculo4{
+            color: #cf3239 !important;
+        }
+
+    </style>
+</head>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+<div id="main-content">
+    <div id="wrapper">
+        <div>
+            <header>
+         <div class="text-center">
+                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="img/iconos/icon_hamburger.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="img/logo.png" alt=""></a>
+                    <h4 class="user">
+                        <img class="svg" src="img/iconos/icon_perfil.svg"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+                </div>
+             <br>
+            </header>
+
+
+       <section id="consolidado">
+          <div class="container">
+            <div class="rutina-cli">
+                    <h2 class="metric-title"> TEMPORADA </h2>
+
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            <canvas id="GraficoTemporada" height="350"></canvas>
+                        </div>
+                    </div>
+
+                   <div class="row periodizacion">
+
+                    <div class="col-md-3">
+                        <div class="etapa-rutina light-green">
+
+                            <hr class="semanas">
+                            <label>
+                                <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>GENERAL</strong>
+                            </label>
+                            <p> <strong class="etapa-sem"> 0 </strong> semanas</p>
+                        </div>
+                    </div>
+
+                       <div class="col-md-3">
+                           <div class="etapa-rutina hlight-green">
+
+                               <hr class="semanas">
+                               <label>
+                                   <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>ESPECÍFICA</strong>
+                               </label>
+                               <p> <strong class="etapa-sem">0 </strong> semanas</p>
+                           </div>
+                       </div>
+
+                       <div class="col-md-3">
+                           <div class="etapa-rutina green">
+
+                               <hr class="semanas">
+                               <label>
+                                   <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>COMPETITIVA</strong>
+                               </label>
+                               <p> <strong class="etapa-sem">0 </strong> semanas</p>
+                           </div>
+                       </div>
+
+                       <div class="col-md-3">
+                           <div class="etapa-rutina semana-temporada grey">
+
+                               <hr class="semanas-fixed ">
+                               <label class="semana-temporada">
+                                   <img class="svg semana-temporada" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/>
+                                   <strong class="etapa-sem">0 </strong> semanas
+                               </label>
+                           </div>
+                       </div>
+
+
+
+
+
+                    <hr>
+                    <div class="clearfix"></div>
+                 </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            <div class="total-km green">
+                               <div>
+                                <label>
+                                    <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>KM</strong> TOTAL
+                                </label>
+                                <p> <strong class="km-value">1648  </strong>   KM</p>
+                               </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="row">
+                              <div class="etapas-superior">
+                                <div class="col-xs-6">
+
+                                    <div class="etapa-km light-green">
+
+                                        <label>
+                                            <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>KM</strong> GENERAL
+                                        </label>
+                                        <p> <strong class="km-value">0  </strong>   KM</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-6">
+                                    <div class="etapa-km hlight-green">
+
+                                        <label>
+                                            <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>KM</strong> ESPECÍFICA <label>
+                                        <p> <strong class="km-value">0  </strong>   KM</p>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-6">
+
+                                    <div class="etapa-km green">
+
+                                        <label>
+                                            <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>KM</strong> COMPETITIVO
+                                        </label>
+                                        <p> <strong class="km-value">0  </strong>   KM</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-6">
+                                    <div class="etapa-km grey">
+
+                                        <label>
+                                            <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>KM</strong> TRÁNSITO
+                                        </label>
+                                        <p> <strong class="km-value">0  </strong>   KM</p>
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+
+
+                        <div class="col-md-3">
+                            <div class="distribucion-km">
+                                <label>
+                                    <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>DISTRIBUCIÓN</strong>
+                                </label>
+
+                                <canvas id="MiniGraficoDistribucion" width="230" height="180"></canvas>
+
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="row">
+                         <div class="col-md-8">
+                             <div id="mejora-cadencia" class="mejora-metricas">
+                                 <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/>
+                                 <p> MEJORAS DE LA CADENCIA</p>
+                             </div>
+
+                             <div id="mejora-tcs" class="mejora-metricas">
+                                 <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/>
+                                 <p> MEJORAS EN T.C.S</p>
+                            </div>
+                             <div id="mejora-longitud" class="mejora-metricas">
+                                 <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/>
+                                  <p class="mejora-longitud"> MEJORAS EN LA LONGITUD DEL PASO</p>
+                             </div>
+
+
+                         </div>
+                    </div>
+
+                 <div class="dv-mejora-vel">
+
+                     <h2 class="metric-title"> MEJORAS DE VELOCIDAD POR DISTANCIA </h2>
+
+                   <div class="tb-mejora-vel">
+                     <div class="row">
+                        <div class="col col-md-1 col-sm-1">
+                            <div class="container-fluid text-align-center padding-o-bottom-10">
+                                <div style="padding-bottom: 3px"></div>
+                            </div>
+                        </div>
+                        <div class="col col-md-11 col-sm-11">
+                            <div class="container-fluid text-align-center padding-o-bottom-10" style="margin-right: 10px !important;">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">200 <p>mt (min) </p> </div>
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">400 <p>mt (min) </p></div>
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">800 <p>mt (min) </p></div>
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">1K</div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">10K</div>
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">15K</div>
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">21K</div>
+                                    <div class="col col-md-3 col-sm-3 header-met-vel">42K</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div id="mejora-velocidad" class="mejora-velocidad">
+
+                        </div>
+
+
+                    </div>
+
+                   </div>
+
+                 </div>
+
+
+            </div>
+
+          </div>
+       </section>
+
+          </div>
+    </div>
+</div>
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+<!-- CUSTOM NOTIFICATION -->
+<script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
+<script th:src="@{/js/rf-cli-rutina.js}+'?'+${version}"></script>
+<script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
+<script th:src="@{/js/rutina_consolidado.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
+
+</body>
+</html>
