@@ -87,6 +87,11 @@ public class TrainerFichaController extends BaseController {
         return trainerProcedureInvoker.findAllByDynamic(query);
     }
 
+    @GetMapping("/get/all/nom-ubigeo")
+    public @ResponseBody String obtenerTodosLosNombreUbigeo(){
+        return trainerService.getAllDistinctNomUbigeoAsString();
+    }
+
     @GetMapping("/{nomPag:.+}")
     public  ModelAndView getTrainerByUsername(){
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
@@ -151,6 +156,7 @@ public class TrainerFichaController extends BaseController {
         if(isActived == null){
             return new ModelAndView(ViewConstant.P_ERROR404);
         }
+
         if(isActived){
             model.addAttribute("msg", PERFIL_APROBADO_ANTERIORMENTE.get());
             return new ModelAndView(ViewConstant.MAIN_INF_N);

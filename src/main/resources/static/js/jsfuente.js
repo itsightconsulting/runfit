@@ -120,6 +120,12 @@ const TipoTrainer = Object.freeze({
     DE_EMPRESA:   3,
 });
 
+const TipoUsuario = Object.freeze({
+    ADMINISTRADOR:   1,
+    TRAINER:   2,
+    CLIENTE:   3,
+});
+
 const ResponseCode = Object.freeze({
     REGISTRO: -1,
     ACTUALIZACION: -2,
@@ -171,8 +177,11 @@ function detail_hide() {
 }
 
 function irRegistro(wildcard) {
+    console.log('....r0');
+
     $('#btnNuevo').css('display', 'none');
     $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        console.log('....r1');
         $('#view_list').hide();
 
         $("#view_register").show().removeClass().addClass('fadeInLeftBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
@@ -182,11 +191,16 @@ function irRegistro(wildcard) {
 }
 
 function irListado(x) {
+    console.log('....0');
     x[0]["defaultValue"] = 0;//EQUALS TO HIDDEN ID
     $('#view_register').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        console.log('.....1');
+
         $('#view_register').hide();
         $('#btnNuevo').css('display', 'block');
+        console.log('.....1.1');
         $("#view_list").show().removeClass().addClass('fadeInLeft' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            console.log('.....2');
         });
     });
 }
@@ -720,14 +734,14 @@ function generateRandomMail(){
             } else {
                 if ((options.type === 'POST' || options.type === 'PUT') && !options.blockLoading) {
                     if (!options.bridgeMultipart) {
-                        $('#btnGuardar').removeAttr('disabled');
-                        $('#btnGuardar').text($defaulTextButton);
-                    } else {
-                        //$('#btnGuardar').text($defaulTextButton);
+
                     }
 
                     if($("#btnGuardar")[0]){
-                        $("#btnGuardar")[0].textContent = $defaulTextButton;
+                        $('#btnGuardar').removeAttr('disabled');
+                        if($defaulTextButton){
+                            $("#btnGuardar")[0].textContent = $defaulTextButton;
+                        }
                     }
                 } else {
                     if (options.type === 'GET' && options.noOne !== undefined) {
@@ -916,18 +930,21 @@ function addYearstoDate(date,years) {
 
 }
 
-if(typeof body !== 'undefined'){
-    body.addEventListener('click', (e)=>{
-        const input = e.target;
-        const clases = input.classList;
-        if(input.tagName === 'BUTTON' && clases.contains('botTempo')){
-            input.setAttribute('disabled', 'disabled');
-            if(input.previousElementSibling){
-                input.previousElementSibling.setAttribute('disabled', 'disabled');
+$(document).ready(()=>{
+    if(typeof body !== 'undefined'){
+        body.addEventListener('click', (e)=>{
+            const input = e.target;
+            const clases = input.classList;
+            if(input.tagName === 'BUTTON' && clases.contains('botTempo')){
+                input.setAttribute('disabled', 'disabled');
+                if(input.previousElementSibling){
+                    input.previousElementSibling.setAttribute('disabled', 'disabled');
+                }
+                if(input.nextElementSibling){
+                    input.nextElementSibling.setAttribute('disabled', 'disabled');
+                }
             }
-            if(input.nextElementSibling){
-                input.nextElementSibling.setAttribute('disabled', 'disabled');
-            }
-        }
-    })
-}
+        })
+    }
+})
+

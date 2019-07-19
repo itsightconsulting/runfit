@@ -1,3 +1,44 @@
+.smart-form {
+
+}
+
 .smart-form input[readonly]{
 	background-color: #eee !important;
+}
+
+.smart-form .i-checked{
+	position: absolute;
+	font-size: 1.5em;
+	margin-top: 9px;
+	margin-left: -30px;
+}
+
+.smart-form .i-checked-verified{
+	position: absolute;
+	font-size: 1.5em;
+	margin-top: 9px;
+	color: #7dc27d;
+	left: -7px;
+}
+.smart-form .req{
+	color: #A90329;
+	font-weight: bold;
+}
+
+#view_list #frm_busqueda input {
+	border-radius: 10px !important;
+}
+
+#view_list #frm_busqueda select {
+	border-radius: 10px !important;
+}
+
+.botTempo-hd{
+	display: none;
+}
+
+.botTempo:hover{
+	cursor: pointer;
+	background: white;
+	color: #000;
 }

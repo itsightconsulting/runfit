@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="form-group" id="Estudios">
                                         <label>ESTUDIOS Y CERTIFICACIONES<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-estudio" id="EstudiosCertificaciones" name="EstudiosCertificaciones" type="text" placeholder="Ejem: Licenciado en cultura física y deporte"/>
+                                        <input class="form-control mg-bt-10 inp-estudio" id="EstudiosCertificaciones" name="EstudiosCertificaciones" type="text" placeholder="Ej: Licenciado en cultura física y deporte"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-estudio', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group">
@@ -104,12 +104,12 @@
                                     </div>
                                     <div class="form-group" id="ExpLaboral">
                                         <label>EXPERIENCIA LABORAL<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-experiencia" id="Experiencias" name="Experiencias" type="text" placeholder="Ejem: Entrenador en AquaLab (2013 – hasta la fecha)"/>
+                                        <input class="form-control mg-bt-10 inp-experiencia" id="Experiencias" name="Experiencias" type="text" placeholder="Ej: Entrenador en AquaLab (2013 – hasta la fecha)"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-experiencia', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group" id="Logros">
                                         <label>RESULTADOS OBTENIDOS COMO PROFESIONAL<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-resultado" id="Resultados" name="Resultados" type="text" placeholder="Ejem: Campeón en natación 100 m libres (2017)"/>
+                                        <input class="form-control mg-bt-10 inp-resultado" id="Resultados" name="Resultados" type="text" placeholder="Ej: Campeón en natación 100 m libres (2017)"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-resultado', 90)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group" id="dvHorario">
@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="form-group" id="Especialidades">
                                         <label>ESPECIALIDADES QUE DOMINO<span class="obligatorio">*</span></label>
-                                        <input class="form-control mg-bt-10 inp-esp-domino" id="EspecDomino" name="EspecDomino" type="text" placeholder="Ejem: Entrenamiento uno a uno"/>
+                                        <input class="form-control mg-bt-10 inp-esp-domino" id="EspecDomino" name="EspecDomino" type="text" placeholder="Ej: Entrenamiento uno a uno"/>
                                         <a href="javascript:void(0);" class="add" onclick="javascript:agregarInputDinamico(this, 20, 'inp-esp-domino', 80)"><i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                     </div>
                                     <div class="form-group">
@@ -314,7 +314,7 @@
                                         </div>
                                         <div class="form-group list-counter" id="MainIncluyeServicios">
                                             <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                            <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                                            <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                                             <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                         </div>
                                         <div class="form-group">
@@ -333,6 +333,7 @@
                                                 id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
                                             <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                         </button>
+                                        <img class="del-tyc-svc hidden" rel="tooltip" title="Remover archivo T&C" src="/img/iconos/icon_trash.svg">
                                     </div>
                                     <h4 class="sub-title st-tarifario hidden">TARIFARIOS
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="Los tarifarios van asociados a algún servicio es por ello que antes de agregar un tarifario debe agregar un servicio"></i>
@@ -379,7 +380,7 @@
                                                             <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadPersonas')"><span class="fa fa-plus"></span></button>
                                                         </li>
                                                         <li class="result">
-                                                            <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0" disabled="disabled">
+                                                            <input class="counter-input" id="txtCantidadPersonas" name="txtCantidadPersonas" type="text" value="0">
                                                         </li>
                                                         <li class="count">
                                                             <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadPersonas')"><span class="fa fa-minus"></span></button>
@@ -397,7 +398,7 @@
                                                             <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadMeses')"><span class="fa fa-plus"></span></button>
                                                         </li>
                                                         <li class="result">
-                                                            <input class="counter-input" disabled="disabled" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
+                                                            <input class="counter-input" id="txtCantidadMeses" name="txtCantidadMeses" type="text" value="0">
                                                         </li>
                                                         <li class="count">
                                                             <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadMeses')"><span class="fa fa-minus"></span></button>
@@ -415,7 +416,7 @@
                                                             <button class="counter-round" type="button" onclick="acumuladorMas('txtCantidadSesiones')"><span class="fa fa-plus"></span></button>
                                                         </li>
                                                         <li class="result">
-                                                            <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
+                                                            <input class="counter-input" id="txtCantidadSesiones" name="txtCantidadSesiones" type="text" value="0">
                                                         </li>
                                                         <li class="count">
                                                             <button class="counter-round" type="button" onclick="acumuladorMenos('txtCantidadSesiones')"><span class="fa fa-minus"></span></button>
@@ -441,23 +442,17 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 padding-0">
-                                            <div class="col-md-4 col-xs-12 padding-0">
-                                                <button class="btn btn-default btn-black btn-tarifario" id="btnNuevaTarifa" type="button">
-                                                    <i class="fa fa-plus-circle fa-fw"></i>
-                                                    AGREGAR
-                                                </button>
-                                            </div>
-                                            <div class="col-md-4 col-xs-12 padding-0">
-                                                <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" disabled="disabled" type="button">
-                                                    <i class="fa fa-pencil fa-fw"></i> EDITAR
-                                                </button>
-                                            </div>
-                                            <div class="col-md-4 col-xs-12 padding-0">
-                                                <button class="btn btn-default btn-white btn-tarifario del-tar-svc" id="btnEliminarPaquete" disabled="disabled" type="button">
-                                                    <i class="fa fa-trash fa-fw"></i>
-                                                    ELIMINAR
-                                                </button>
-                                            </div>
+                                            <button class="btn btn-default btn-black btn-tarifario" id="btnNuevaTarifa" type="button">
+                                                <i class="fa fa-plus-circle fa-fw"></i>
+                                                AGREGAR
+                                            </button>
+                                            <button class="btn btn-default btn-white btn-tarifario edit-tar-svc" id="btnEditarPaquete" disabled="disabled" type="button">
+                                                <i class="fa fa-pencil fa-fw"></i> EDITAR
+                                            </button>
+                                            <button class="btn btn-default btn-white btn-tarifario del-tar-svc" id="btnEliminarPaquete" disabled="disabled" type="button">
+                                                <i class="fa fa-trash fa-fw"></i>
+                                                ELIMINAR
+                                            </button>
                                         </div>
                                     </div>
                                     <h4>MÉTODOS DE PAGO
@@ -595,10 +590,7 @@
 <script>
     function sendForm(){
         $regTipo = TipoTrainer.PARTICULAR;
-        if(servicios.length === 0){
-            $.smallBox({content: "Debe agregar por lo menos un servicio", color: "alert"});
-            return;
-        }
+
         const arrURL = window.location.href.split("/");
         const hshId = arrURL[arrURL.length-1];
         const body = generateBody();
@@ -631,40 +623,34 @@
             body.mapCircleRadio = document.getElementById('RadioCirculo').textContent.trim();
         }
 
-        body.tipoTrainerId = 1;
+        body.tipoTrainerId = TipoTrainer.PARTICULAR;
 
-        if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
-            $("#frm_registro :input").prop("disabled", true);
-            $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
-            document.querySelector('.ver-tyc').onclick = null;//Desactivamos en openModalTYC
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: _ctx + 'p/trainer/registro/'+hshId,
-                dataType: 'json',
-                data: JSON.stringify(body),
-                blockLoading: false,
-                bridgeMultipart: true,
-                success: (d)=> {
-                    //Subir imgen
-                    if($galeria.length + tycFiles.length === 0){
-                        uploadFotoPerfil(d, body);
-                    } else {
-                        uploadFotosPerfil(d, body);
-                    }
-                }, error: (xhr) => {
-                    $("#frm_registro :input").prop("disabled", false);
-                    checkBoxes();//Activando los event handlers nuevamente
-                    exception(xhr);
-                }, complete: () => {
-
+        $("#frm_registro :input").prop("disabled", true);
+        $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
+        document.querySelector('.ver-tyc').onclick = null;//Desactivamos en openModalTYC
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: _ctx + 'p/trainer/registro/'+hshId,
+            dataType: 'json',
+            data: JSON.stringify(body),
+            blockLoading: false,
+            bridgeMultipart: true,
+            success: (d)=> {
+                //Subir imgen
+                if($galeria.length + tycFiles.length === 0){
+                    uploadFotoPerfil(d, body);
+                } else {
+                    uploadFotosPerfil(d, body);
                 }
-            });
-        }else{
-            $.smallBox({color: 'alert',
-                content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
-                timeout: 5000});
-        }
+            }, error: (xhr) => {
+                $("#frm_registro :input").prop("disabled", false);
+                checkBoxes();//Activando los event handlers nuevamente
+                exception(xhr);
+            }, complete: () => {
+
+            }
+        });
     }
 
     function populateForm(){
@@ -775,6 +761,10 @@
         //Ubigeo
         obj.paisId = 604;
         obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+        const dep = document.getElementById('Dep').options[document.getElementById('Dep').selectedIndex].textContent;
+        const pro = document.getElementById('Pro').options[document.getElementById('Pro').selectedIndex].textContent;
+        const dis = document.getElementById('Dis').options[document.getElementById('Dis').selectedIndex].textContent;
+        obj.nomUbigeo = dep + "|" + pro + "|" + dis;
         obj.telefono = document.getElementById('Telefono').value;
         obj.movil = document.getElementById('Movil').value;
         obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;
@@ -792,15 +782,9 @@
         obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
         obj.fichaClienteIds = getValuesConcatInpCheckbox('FichaTrabajo');
         obj.mediosPago = getValuesConcatInpCheckbox('MetodoPago');
-        const rdmNum = Math.floor(Math.random() * 100);
-        const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
         obj.servicios = servicios;
         obj.cuentas = ccBancarias;
-        if(flag_form_populate){
-            obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
-        }else{
-            obj.nomPag = document.getElementById('NomPag').value;
-        }
+        obj.nomPag = document.getElementById('NomPag').value;
 
         obj.nota = document.getElementById('Nota').value;
         const redes = getRedesSociales();
@@ -841,7 +825,6 @@
                     required: true,
                     rangelength: [3, 30],
                     lettersonly: true
-
                 },
                 Apellidos: {
                     required: true,
@@ -915,7 +898,7 @@
                 },
                 Telefono:{
                     digits: true,
-                    rangelength: [7, 11]
+                    rangelength: [7, 9]
                 },
                 Movil:{
                     required: true,
@@ -925,15 +908,15 @@
                 NumeroDocumento: {
                     required: true,
                     digits: true,
-                    rangelength: [8, 13],
                     customnumdoc: function(){
                         const val = $('#TipoDocumento').val();
                         return val;
-                    }
+                    },
+                    rangelength: [8, 12]
                 },
                 Username:{
                     required: true,
-                    pattern: "[a-z]{3,}[0-9]*$",
+                    usernameOrEmail: true,
                     rangelength: [7, 30],
                 },
                 Password:{
@@ -942,13 +925,22 @@
                     pwcheck: true
                 },
                 NombreServicio:{
+                    required: function(){
+                        return !servicios.length
+                    },
                     letterandnumber: true,
                     rangelength: [2, 50]
                 },
                 PrimerIncluyeServicio:{
+                    required: function(){
+                        return !servicios.length
+                    },
                     rangelength: [8, 10*50]
                 },
                 DescripcionServicio:{
+                    required: function(){
+                        return !servicios.length
+                    },
                     rangelength: [80, 2000]
                 },
                 ServicioInfAdic:{
@@ -1008,7 +1000,7 @@
                     rangelength: [4, 40]
                 },
                 InpImgPerfil:{
-                    extension: "jpg|jpeg|png",
+                    extension: "jpg|jpeg|png|bmp",
                 },
                 inpCondServicio:{
                     extension: "pdf",
@@ -1048,6 +1040,12 @@
                     },
                 },
                 txtCantidadPersonas:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadPersonas').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadPersonas" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadPersonas').tooltip();
@@ -1056,6 +1054,12 @@
                     }
                 },
                 txtCantidadMeses:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadMeses').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadMeses" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadMeses').tooltip();
@@ -1064,6 +1068,12 @@
                     }
                 },
                 txtCantidadSesiones:{
+                    digits: function(){
+                        setTimeout(() => {
+                            $('#IcoTxtCantidadSesiones').tooltip();
+                        }, 200);
+                        return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe ingresar solo números" style="color: #c46a69"></i>';
+                    },
                     min: function(){
                         setTimeout(() => {
                             $('#IcoTxtCantidadSesiones').tooltip();

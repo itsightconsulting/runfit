@@ -30,6 +30,7 @@ public class TrainerFichaPOJO implements Serializable {
     private String nota;
     private String correo;
     private String ubigeo;
+    private String nomUbigeo;
     private int canPerValoracion;
     private Double totalValoracion;
     private String nomImgPerfil;
@@ -48,11 +49,12 @@ public class TrainerFichaPOJO implements Serializable {
     public TrainerFichaPOJO() {
     }
 
-    public TrainerFichaPOJO(int id, String nombreCompleto, String especialidad, String ubigeo, String acerca, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String nomPag, Integer tipoTrainerId, Integer rows) {
+    public TrainerFichaPOJO(int id, String nombreCompleto, String especialidad, String ubigeo, String nomUbigeo, String acerca, int canPerValoracion, Double totalValoracion, String nomImgPerfil, String nomPag, Integer tipoTrainerId, Integer rows) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.especialidad = especialidad;
         this.ubigeo = ubigeo;
+        this.nomUbigeo = nomUbigeo;
         this.acerca = acerca;
         this.canPerValoracion = canPerValoracion;
         this.totalValoracion = totalValoracion;

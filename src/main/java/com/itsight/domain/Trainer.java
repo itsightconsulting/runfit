@@ -85,6 +85,9 @@ public class Trainer extends AuditingEntity implements Serializable {
     @Column
     private String ubigeo;
 
+    @Column
+    private String nomUbigeo;
+
     @Column(nullable = false)
     private Integer canPerValoracion;
 

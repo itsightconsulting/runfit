@@ -14,6 +14,7 @@ CREATE OR REPLACE FUNCTION func_trainers_q_dynamic_where(
                   nombreCompleto text,
                   especialidad text,
                   ubigeo text,
+                  nomUbigeo text,
                   acerca text,
                   canPerValoracion int,
                   totalValoracion double precision,
@@ -29,6 +30,7 @@ select DISTINCT id,
        nombreCompleto,
        especialidad,
        ubigeo,
+       nomUbigeo,
        acerca,
        canPerValoracion,
        totalValoracion,
@@ -40,6 +42,7 @@ from (select
     concat(jt.nombres, ' ',jt.apellidos) nombreCompleto,
     especialidad,
     ubigeo,
+    nom_ubigeo nomUbigeo,
     acerca,
     can_per_valoracion canPerValoracion,
     total_valoracion totalValoracion,
@@ -80,7 +83,7 @@ where
     ($4 IS NULL OR public.f_unaccent(LOWER(concat(y.nombreCompleto))) LIKE public.f_unaccent(LOWER(CONCAT('%',$4,'%')))) AND
     ($5 IS NULL OR public.f_unaccent(LOWER(y.acerca)) LIKE public.f_unaccent(LOWER(CONCAT('%',$5,'%')))) AND
     ($6 IS NULL OR y.sexo = $6) AND
-    ($7 IS NULL OR y.ubigeo = $7) AND
+    ($7 IS NULL OR public.f_unaccent(LOWER(y.nomUbigeo)) LIKE public.f_unaccent(LOWER(CONCAT('%',$7,'%')))) AND
     ($8 IS NULL OR public.f_unaccent(LOWER(y.servicio)) LIKE public.f_unaccent(LOWER(CONCAT('%', $8,'%')))) AND
     ($9 IS NULL OR coalesce(totalValoracion/NULLIF(canPerValoracion,0), 0) >= $9) AND
     y.fg = true) as fx

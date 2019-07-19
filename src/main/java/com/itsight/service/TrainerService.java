@@ -35,4 +35,6 @@ public interface TrainerService extends BaseService<Trainer, Integer> {
     String getUsernameById(int id);
 
     UsuGenDTO getForCookieById(Integer id);
+
+    String getAllDistinctNomUbigeoAsString();
 }

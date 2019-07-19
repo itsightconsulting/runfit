@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,10 +84,16 @@ public class SecurityUserController {
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody String desactivar(
-                @RequestParam(value = "id") int id,
-                @RequestParam(value = "tipoUsuario") int tipoUsuario,
-                @RequestParam String username,
-                @RequestParam boolean flagActivo) {
+            @RequestParam(value = "id") int id,
+            @RequestParam(value = "tipoUsuario") int tipoUsuario,
+            @RequestParam String username,
+            @RequestParam boolean flagActivo,
+            HttpSession session){
+        Integer myId = (Integer) session.getAttribute("id");
+        if(id == myId){
+            return "-9";
+        }
+
         try {
             if(tipoUsuario == 1)
                 administradorService.actualizarFlagActivoById(id, flagActivo);

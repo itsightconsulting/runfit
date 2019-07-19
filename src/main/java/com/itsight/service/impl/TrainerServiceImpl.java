@@ -251,8 +251,8 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                     }
 
                     //Enviando correo al nuevo trainer
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(trainer.getUsername(), originalPassword, ENTRENADOR.ordinal(), domainName);
-                    emailService.enviarCorreoInformativo("Bienvenido a la familia", trainer.getCorreo(), sb.toString());
+                    //StringBuilder sb = MailContents.contenidoNuevoUsuario(trainer.getUsername(), originalPassword, ENTRENADOR.ordinal(), domainName);
+                    //emailService.enviarCorreoInformativo("Bienvenido a la familia", trainer.getCorreo(), sb.toString());
                     return trainer.getId().toString();
             } catch (Exception e){
                 e.printStackTrace();
@@ -273,6 +273,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
                 trainerFicha.getMovil(), trainerFicha.getUsername().toLowerCase(), trainerFicha.getDocumento(), true, trainerFicha.getTipoDocumentoId(), false);
         trainer.setPais(trainerFicha.getPaisId());
         trainer.setUbigeo(trainerFicha.getUbigeo());
+        trainer.setNomUbigeo(trainerFicha.getNomUbigeo());
         trainer.setCanPerValoracion(0);
         trainer.setTotalValoracion(0.0);
         trainer.setFichaClienteIds(String.valueOf(trainerFicha.getFichaClienteIds()));//Tipo de fichas disponibles para trabajar(Running, general, boxeo, etc)
@@ -500,6 +501,13 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
             securityUserRepository.updateMultipleEstadoByTrEmpId(id);
         }
 
+        /*//Enviando correo al nuevo cliente
+        //Obtener cuerpo del correo
+        Correo correo = correoService.findOne(NUEVO_CLIENTE.get());
+        //Envio de correo
+        String cuerpo = String.format(correo.getBody(), cliente.getUsername(), cliente.getPassword(), domainName);
+        emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), cuerpo);*/
+
         //Obtener cuerpo del correo
         Correo correo = correoService.findOne(PERFIL_TRAINER_APROBADO.get());
         //Envio de correo
@@ -595,5 +603,10 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
     @Override
     public UsuGenDTO getForCookieById(Integer id) {
         return repository.getForCookieById(id);
+    }
+
+    @Override
+    public String getAllDistinctNomUbigeoAsString() {
+        return repository.getAllDistinctNomUbigeoAsString();
     }
 }

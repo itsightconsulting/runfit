@@ -52,6 +52,12 @@ const body = document.querySelector('body');
         document.getElementById('NomPagFull').textContent =
             window.location.protocol+"//"+ window.location.host +"/p/trainer/" +e.target.value.trim();
     });
+    body.addEventListener('keydown', (e)=>{
+        const input = e.target;
+        if(input.id === 'Username' || input.id === 'Correo'){
+            input.previousElementSibling.previousElementSibling.classList.add('hidden');
+        }
+    });
     init();
 })();
 
@@ -69,10 +75,56 @@ function sendMainForm(e){
     const checkList2 = validationByNumSheet(2);
     const checkList3 = validationByNumSheet(3);
     if(checkList1.isValid && checkList2.isValid && checkList3.isValid){
-        sendForm();
-    }else {
+        finalSendForm();
+    } else {
         smallBoxAlertValidation(checkList1.inputs.concat(checkList2.inputs).concat(checkList3.inputs));
     }
+}
+
+function finalSendForm(){
+    const existsTarifario = servicios.filter(e=>e.tarifarios && e.tarifarios.length).length>0;
+    if(existsTarifario){
+        sendForm();
+    }else{
+        const header = $(".navbar-inverse").height();
+
+        if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
+        }else{
+            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+            $.smallBox({color: 'alert',
+                content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
+                timeout: 5000});
+            return;
+        }
+        if(servicios.length === 0){
+            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+            $.smallBox({content: "<i class='fa fa-fw fa-exclamation-circle'></i>Debe agregar por lo menos un servicio mediante el botón 'AGREGAR SERVICIO'", color: "alert"});
+            return;
+        }
+
+        $.SmartMessageBox({
+            title: "<i class='fa fa-bullhorn'></i> Runfit Notification",
+            content: "" +
+                "<br/><h4>Antes de proceder con el registro, se ha detectado que usted no ha registrado ningún tarifario a su(s) servicio(s). " +
+                "¿Deseas seguir sin agregar tarifarios para su(s) servicio(s)?</h4>",
+            buttons: '[NO][SI]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "NO") {
+                //Ir a la parte de arriba de la página
+                const header = $(".navbar-inverse").height();
+                $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+                setTimeout(() => {
+                    document.querySelector('.sub-menu[data-op="2"]').click();
+                }, 700);
+            } else {
+                setTimeout(() => {
+                    sendForm();
+                }, 500);
+            }
+        });
+    }
+
+
 }
 
 function bodyFocusOutListenerOwn(e) {
@@ -130,6 +182,8 @@ function agregarServicio(){
         //tabService.querySelector('.servicio.svc-focus').click();
         Tarifarios.innerHTML = "";
         agregarInputTermCond();
+        const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
+        btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C';
     } else {
         $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 2500})
     }
@@ -191,7 +245,7 @@ function clickListenerTabService(e) {
         const id = input.getAttribute('data-id');
         selServicioId = Number(id);
         const svcFocus = tabService.querySelector('.svc-focus');
-        if(id === svcFocus.getAttribute('data-id') && servicios.length>1){
+        if(svcFocus && id === svcFocus.getAttribute('data-id') && servicios.length>1){
             return;
         }
         svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
@@ -236,7 +290,15 @@ function clickListenerTabService(e) {
     } else if(clases.contains('edit-tar-svc')){
         const tId = Number(input.getAttribute('data-id'));
         editarTarifa(tId);
-    } /*else if(clases.contains('del-tar-svc')){
+    } else if(clases.contains('del-tyc-svc')){
+        termConSvc = termConSvc.filter(e=>e.servicioId!== selServicioId);
+        document.querySelector('#btnSubirCondServicio').innerHTML =
+            "<i class=\"fa fa-cloud-upload fa-fw\"></i>" +" ADJUNTAR T&C";
+        $.smallBox({content: 'Acaba de remover el archivo de T&C del servicio con éxito.'});
+        document.getElementById('inpCondServicio'+selServicioId).value = null;
+        document.querySelector('.del-tyc-svc').classList.add('hidden');
+    }
+    /*else if(clases.contains('del-tar-svc')){
         const tId = Number(input.getAttribute('data-id'));
         eliminarTarifa(tId);
     }*/ else if(clases.contains('fa-plus-cs')){
@@ -391,11 +453,15 @@ function bodyChangeEventListener(e){
 function checkingValidExtension(input){
     if($(frm).validate().settings.rules[input.name]){
         const extensiones = $(frm).validate().settings.rules[input.name].extension.split("|");
-        const fileExt = input.files[0].type.split("/")[1];
+        let fileExt = input.files[0];
+        if(!fileExt){
+            return false;
+        }
+        fileExt = fileExt.type.split("/")[1];
         const exists = extensiones.filter(ext => ext === fileExt);
         if(exists.length){
             return true;
-        }else{
+        } else {
             const ext = $(frm).validate().settings.rules[input.name].extension.toUpperCase();
             input.value = "";
             $.smallBox({
@@ -431,6 +497,7 @@ function tycChangeEventListener(e, input, clases){
                 nomFile = nomFile.substring(0, 16).trim()+"...";
             }
             btnSubirCondServicio.innerHTML = "<i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+            document.querySelector('.del-tyc-svc').classList.remove('hidden');
         } else {
             $.smallBox({color: "rgb(204, 77, 77)",
                 content: "<i class='fa fa-fw fa-exclamation-circle'></i><em>Ha ocurrido un error al cargar su archivo. Por favor omita este paso pora ahora</em>" ,
@@ -498,6 +565,7 @@ function init(){
     if(flag_form_populate){populateForm();}
     $('span[rel="tooltip"]').tooltip();
     instanceInitTab();
+    $('img.del-tyc-svc').tooltip();
 }
 
 function mainSeeders(){
@@ -572,7 +640,7 @@ function modalEventos(){
                 minContainerHeight: image.height > window.innerHeight * 0.8 ? window.innerHeight * 0.8 : image.height
             });
         }
-    })
+    });
 
     setHeightForModals(['myModalCC']);
 }
@@ -641,13 +709,17 @@ function addServiceAndcleanCampos(svc){
     const element = htmlStringToElement(
         `<div class="form-group editar">
                             <a class="edit hidden" data-id="${svc.id}" href="javascript:void(0);">
-                                <img class="edit-svc" title="Confirmar modificaciones al servicio" data-id="${svc.id}" src="${_ctx}img/public/edit.png">
+                                <img class="edit-svc" title="Guardar modificaciones al servicio" data-id="${svc.id}" src="${_ctx}img/iconos/icon_disquete.svg">
                                 <img class="del-svc" title="Eliminar" data-id="${svc.id}" src="${_ctx}img/iconos/icon_trash.svg">
                             </a>
                             <label class="servicio svc-focus" data-id="${svc.id}">${svc.nombre}</label>
                         </div>`);
     const resumenServicios = document.querySelector('.ver-servicios');
     resumenServicios.appendChild(element);
+    cleanCamposServicio();
+}
+
+function cleanCamposServicio(){
     const divCamposBasicos = document.querySelector('#SvcCamposBasicos');
     const htmlBasics = `<div class="form-group">
                                               <label>NOMBRE DEL SERVICIO<span class="obligatorio">*</span></label>
@@ -659,7 +731,7 @@ function addServiceAndcleanCampos(svc){
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
+                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                           </div>
                                           <div class="form-group">
@@ -775,9 +847,12 @@ function setFileTermCond(){
             nomFile = nomFile.substring(0, 16).trim()+"...";
         }
         btnSubirCondServicio.innerHTML = "<i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
+        document.querySelector('.del-tyc-svc').classList.remove('hidden');
     }else{
+        document.querySelector('.del-tyc-svc').classList.add('hidden');
         btnSubirCondServicio.innerHTML = '<i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C';
     }
+    $(btnSubirCondServicio).attr('onclick', 'javascript:document.getElementById(\'inpCondServicio'+selServicioId+'\').click()');
     $(btnSubirCondServicio).tooltip();
 }
 
@@ -799,6 +874,7 @@ function editarServicio(svcId){
     }else {
         $.smallBox({color: 'alert', content: '<i class="fa fa-exclamation-circle fa-fw"></i><i>El servicio seleccionado no se ha guardado correctamente</i>'});
     }
+    cleanCamposServicio();
 }
 
 function editarTarifa(tId){
@@ -992,7 +1068,7 @@ function setIncluyeDelServicio(incluidos){
     } else {
         mainIncluidos.innerHTML =
             `<label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" maxlength="500" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
+                     <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" maxlength="500" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales."></textarea></li>
                      <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>`;
         const firstInput = mainIncluidos.querySelector('textarea');
         const btnPlus = mainIncluidos.querySelector('a');
@@ -1148,7 +1224,7 @@ function resetServicios(){
                                           </div>
                                           <div class="form-group list-counter" id="MainIncluyeServicios">
                                               <label>QUE INCLUYE<span class="obligatorio">*</span></label>
-                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" placeholder="Ejem: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
+                                              <li><textarea class="form-control mg-bt-10 inp-svc-incluye" id="PrimerIncluyeServicio" name="PrimerIncluyeServicio" data-aka="QUE INCLUYE EL SERVICIO" placeholder="Ej: Tendrás cuatro master-class iniciales para mejorar tu técnica de carrera en sesiones grupales." maxlength="500"></textarea></li>
                                               <a href="javascript:void(0);" class="add" onclick="javascript:agregarTextareaDinamico(this, 10, 'inp-svc-incluye', 500)">&nbsp;<i title="Agregar" class="fa fa-15x fa-plus pull-right"></i></a>
                                           </div>
                                           <div class="form-group">

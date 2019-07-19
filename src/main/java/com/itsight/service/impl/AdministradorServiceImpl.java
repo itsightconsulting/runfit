@@ -166,8 +166,8 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
         if (securityUserRepository.findByUsername(administrador.getUsername()) == null) {
             try{
                     String originalPassword = administrador.getPassword();
-                    String[] arrRoles = rols.split(",");
-                    List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(Parseador.stringArrayToIntArray(arrRoles)));
+                    Integer[] rolAdmin = new Integer[]{1};//ROLE_ADMIN
+                    List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(rolAdmin));
                     List<Rol> lstJsonRoles = lstRoles.stream()
                             .map(rol -> new Rol(rol.getId(), rol.getRol()))
                             .collect(Collectors.toList());
@@ -194,7 +194,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
                     //Enviando correo al nuevo administrador
                     StringBuilder sb = MailContents.contenidoNuevoUsuario(administrador.getUsername(), originalPassword, ADMINISTRADOR.ordinal(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", administrador.getCorreo(), sb.toString());
-                    return ResponseCode.REGISTRO.get()+','+String.valueOf(administrador.getId())+','+flagTrainer;
+                    return ResponseCode.REGISTRO.get()+','+administrador.getId()+','+flagTrainer;
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -206,79 +206,20 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
     public String actualizar(Administrador administrador, String rols) {
         // TODO Auto-generated method stub
         try {
+            Integer[] rolAdmin = new Integer[]{1};//ROLE_ADMIN
+            List<com.itsight.domain.Rol> lstRoles = rolService.findByIdsIn(Arrays.asList(rolAdmin));
+            List<Rol> lstJsonRoles = lstRoles.stream()
+                    .map(rol -> new Rol(rol.getId(), rol.getRol()))
+                    .collect(Collectors.toList());
+
             Administrador qAdministrador = repository.findById(administrador.getId()).orElse(null);
             administrador.setFechaUltimoAcceso(qAdministrador.getFechaUltimoAcceso());
             administrador.setCreador(qAdministrador.getCreador());
             administrador.setRowVersion(qAdministrador.getRowVersion());
-            administrador.setRoles(qAdministrador.getRoles());
+            administrador.setRoles(lstJsonRoles);
             administrador.setCorreo(qAdministrador.getCorreo());
             administrador.setFlagEliminado(qAdministrador.isFlagEliminado());
 
-            // - Verificando si hubo cambio de roles -
-            //Los roles antiguos
-            Integer[] rolesIniciales = administrador.getRoles().stream().map(rol -> rol.getId()).toArray(Integer[]::new);
-            //rols representa los roles que vienen de la vista como un string separados con ","
-            //Los roles nuevos
-            Integer[] rolesFinales = Parseador.stringArrayToIntArray(rols.split(","));
-
-            List<Integer> noRequierenActualizacion = new ArrayList<>();
-            List<Integer> debenEliminarse = new ArrayList<>();
-            List<Integer> nuevosInsert = new ArrayList<>();
-
-            //En esta parte verificamos la diferencia entre los roles iniciales(A) y los finales(B) separando la interseccion de estos en una lista y los sobrantes
-            // de (A) en otra para su posterior eliminacion
-            for (int i = 0; i < rolesIniciales.length; i++) {
-                boolean coincide = false;
-                for (int ii = 0; ii < rolesFinales.length; ii++) {
-                    if (rolesIniciales[i] == rolesFinales[ii]) {
-                        coincide = true;
-                        noRequierenActualizacion.add(rolesIniciales[i]);
-                    }
-                }
-                if (!coincide)
-                    debenEliminarse.add(rolesIniciales[i]);
-            }
-            //Ahora ayudandonos de la interseccion(noRequierenActualizacion: C) obtenemos los sobrantes de (B) que serán los que al final se insertarán al ser estos ineditos
-            for (int i = 0; i < rolesFinales.length; i++) {
-                boolean coincide = false;
-                for (Integer in: noRequierenActualizacion) {
-                    if(in == rolesFinales[i])
-                        coincide = true;
-                }
-                //Si no es interseccion de (B) y (C) = nuevos a insertar
-                if(!coincide)
-                    nuevosInsert.add(rolesFinales[i]);
-            }
-
-            List<Rol> lstRolesNueva = new ArrayList<>();
-            if(nuevosInsert.size()>0)
-                for (Integer n : nuevosInsert){
-                com.itsight.domain.Rol rol = rolService.findOne(n);
-                securityRoleRepository.save(new SecurityRole(rol.getRol(), administrador.getId()));
-                lstRolesNueva.add(new Rol(n, rol.getRol()));
-                }
-
-            if(debenEliminarse.size()>0) {
-                for (Integer n : debenEliminarse) {
-                    com.itsight.domain.Rol rol = rolService.findOne(n);
-                    Integer id = securityRoleRepository.findBySecurityUserIdAndRole(qAdministrador.getId(), rol.getRol()).getId();
-                    securityRoleRepository.deleteById(id);
-                }
-                //Agregamos a la nueva lista creada solo los roles que se mantendrán de esta forma indirectamente
-                //Ya estaremos borrando de la columna jsonb los que ya se hayan eliminado de la tabla
-                for (Rol r: administrador.getRoles()) {
-                    for (Integer x : noRequierenActualizacion){
-                        if(r.getId() == x){
-                            lstRolesNueva.add(r);
-                        }
-                    }
-                }
-            }else{//En caso no se elimine ningun roles transfiere todos los roles "antiguos" a una nueva lista
-                //que posiblemente ya tenga algunos elementos en el caso se hayan agregado nuevos roles
-                lstRolesNueva.addAll(administrador.getRoles());
-            }
-            //Finalmente volvemos a setear los roles con la nueva lista y guardamos
-            administrador.setRoles(lstRolesNueva);
             if(qAdministrador.isFlagActivo() != administrador.isFlagActivo())
                 securityUserRepository.updateEstadoByUsername(administrador.getUsername(), administrador.isFlagActivo());
             repository.saveAndFlush(administrador);

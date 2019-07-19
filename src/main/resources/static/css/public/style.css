@@ -47,7 +47,7 @@
   transition: all .75s;
   top: 0;
   z-index: 99999;
-  background: url(/img/public/home.jpg) top center no-repeat #fff;
+  background: url(/img/bg_login.jpg) top right no-repeat #fff;
   box-sizing: border-box;
   background-size: cover;
 }
@@ -615,7 +615,8 @@ footer li a span.fa{
   max-width: 300px;
   margin-right: auto;
   margin-left: auto;
-  margin-bottom: 30px
+  margin-bottom: 30px;
+  font-family: Montserrat-Regular;
 }
 
 @media only screen and (max-width: 800px) {
@@ -632,7 +633,11 @@ footer li a span.fa{
   padding: 70px 0 45px;
   background: url(/img/public/entrena-bg.jpg) top center no-repeat;
   background-size: cover;
-  background-position: right;
+  background-position: center;
+}
+
+.entrena_correctamente {
+  padding: 45px 0;
 }
 
 .entrena_correctamente .title_section {
@@ -754,7 +759,8 @@ footer li a span.fa{
 
 @media only screen and (max-width: 800px) {
   .entrena_correctamente .title_section {
-    font-size: 24px
+    font-size: 18px;
+    margin: 0;
   }
   .entrena_correctamente .description_section {
     font-size: 15px
@@ -771,7 +777,7 @@ footer li a span.fa{
   .entrena_correctamente ol li {
     padding: 0;
     float: left;
-    margin-bottom: 56px
+    margin-bottom: 30px
   }
   .entrena_correctamente ol li::before {
     width: 40px;
@@ -1238,8 +1244,12 @@ ul.tabs {
 
 .trainers-form .btn-tarifario{
   min-width: 160px !important;
+  margin-right: 15px;
 }
 
+.trainers-form .btn-tarifario:last-child{
+  margin-right: 0px;
+}
 
 .trainers-form .txt-tarifario-right{
   padding: 0px !important;
@@ -1486,6 +1496,12 @@ ul.tabs {
 
 .modal .modal-dialog {
   margin: auto;
+  width: 70%;
+}
+
+.btn-group-crop .btn-black {
+  margin: 20px 20px 0;
+  min-width: 180px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -1538,6 +1554,15 @@ ul.tabs {
 }
 
 @media only screen and (max-width: 800px) {
+  .modal .modal-dialog {
+    width: 80%;
+  }
+  .btn-group-crop .btn-black {
+    width: 100%;
+    border-radius: 10px !important;
+    margin: 5px;
+    min-width: auto;
+  }
   .trainers-form .avatar-form {
     top: 0px
   }
@@ -1596,12 +1621,6 @@ ul.tabs {
   .trainers-form .btn-black {
     font-size: 16px;
     white-space: inherit
-  }
-  .trainers-form .btn-black, .trainers-form .btn-white {
-    max-width: 250px !important;
-  }
-  .trainers-form .btn-tarifario {
-    width: 100% !important;
   }
 
   .trainers-form .sub-menus span{
@@ -2017,13 +2036,13 @@ ul.tabs {
 
 .owl-carousel .owl-nav .owl-prev {
   position: absolute;
-  right: -25px;
+  left: -25px;
   font-size: 20px
 }
 
 .owl-carousel .owl-nav .owl-next {
   position: absolute;
-  left: -25px;
+  right: -25px;
   font-size: 20px
 }
 
@@ -2380,7 +2399,8 @@ ul.tabs {
 
 .steps ul.distance li input {
   width: 100%;
-  padding: 10px
+  padding: 10px;
+  text-align: center;
 }
 
 .steps ul.distance li p {
@@ -2629,8 +2649,8 @@ ul.tabs {
 }
 
 .steps ol>li::before {
-  content: counter(item);
-  counter-increment: item;
+  /*content: counter(item);
+  counter-increment: item;*/
   width: 33px;
   height: 33px;
   padding: 4px;
@@ -3123,12 +3143,21 @@ input[type=range]:focus::-ms-fill-upper {
   transition: all .75s;
   top: 0;
   z-index: 3;
-  background: url(/img/public/home.jpg) top center no-repeat #fff;
-  box-sizing: border-box
+  background: url(/img/bg_login.jpg) center right no-repeat #fff;
+  background-size: auto;
+  box-sizing: border-box;
+  overflow: auto;
+  background-size: cover;
 }
 
 .menu_mobile.active {
   left: 0
+}
+
+.menu_mobile .header-mobile {
+  height: 100%;
+  min-height: 570px;
+  position: relative;
 }
 
 .menu_mobile .bg-opacity {
@@ -3170,7 +3199,8 @@ input[type=range]:focus::-ms-fill-upper {
 .menu_mobile ul.header-options {
   padding: 15px 10px 15px 15px;
   position: relative;
-  z-index: 3
+  z-index: 3;
+  list-style: none;
 }
 
 .menu_mobile ul.header-options li a {
@@ -3191,7 +3221,8 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
   z-index: 3;
   padding-left: 45px;
-  margin-top: 15px
+  margin-top: 15px;
+  margin-bottom: 50px;
 }
 
 .menu_mobile ul.options li {
@@ -3222,14 +3253,15 @@ input[type=range]:focus::-ms-fill-upper {
 
 .menu_mobile .cerrar-sesion-mobile, .menu_mobile .iniciar-sesion-mobile {
   width: 100%;
-  display: block;
   position: absolute;
-  bottom: 15px;
+  bottom: 0;
   z-index: 3;
   padding: 0 15px;
   color: #fff;
   font-size: 11px;
-  text-transform: uppercase
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  display: inline-block;
 }
 
 .menu_mobile .cerrar-sesion-mobile .fa, .menu_mobile .iniciar-sesion-mobile .fa {
@@ -3533,6 +3565,12 @@ hr {
     position: relative;
     display: block
   }
+  .MessageBoxMiddle .MsgTitle {
+    font-size: 20px;
+  }
+  .font-md {
+    font-size: 14px;
+  }
 }
 
 /* ESTILOS ADICIONALES A LOS ESTILOS BASE DEL DISEÑO */
@@ -3803,11 +3841,19 @@ button.multiselect + ul{
 }
 
 .ver-servicios .del-svc{
-  height: 29px;
+  height: 32px;
 }
 
 .ver-servicios .edit-svc{
-  margin-top: 3px;
+  height: 32px;
+}
+
+.trainers-form .del-tyc-svc{
+  height: 32px;
+  top: 0px;
+  position: relative;
+  vertical-align: text-bottom !important;
+  cursor: pointer;
 }
 
 .ficha-pick{

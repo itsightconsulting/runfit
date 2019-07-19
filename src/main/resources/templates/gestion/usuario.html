@@ -37,7 +37,7 @@
                                 </h1>
                             </div>
                             <div class="col-sm-8 col-md-8 col-lg-8">
-                                <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
+                                <h1><a id="btnNuevo" href="javascript:void(0)" class="btn btn-primary btn-circle btn-lg"
                                        style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
                             </div>
                         </div>
@@ -130,10 +130,10 @@
                                             <div class="row">
                                                 <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
                                                     <section class="">
-                                                        <label class="label">Nombres: </label>
+                                                        <label class="label">Nombres<span class="req">*</span> </label>
                                                         <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                             <input id="Nombres" name="Nombres" type="text"
-                                                                   placeholder="Nombres" class="" maxlength="44"
+                                                                   placeholder="Nombres" class=""
                                                                    autocomplete="off"/>
                                                             <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                             <input id="Id" name="Id" type="hidden" value="0"/>
@@ -144,7 +144,7 @@
                                             <div class="row">
                                                 <div class="col col-sx-12 col-sm-12 col-md-12 col-lg-12">
                                                     <section class="">
-                                                        <label class="label">Apellidos: </label>
+                                                        <label class="label">Apellidos<span class="req">*</span> </label>
                                                         <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                             <input id="Apellidos" name="Apellidos" type="text"
                                                                    placeholder="Apellidos" class="" maxlength="24"
@@ -156,7 +156,7 @@
                                             </div>
                                             <div class="row">
                                                 <section class="col col-3">
-                                                    <label class="label">Teléfono Móvil: </label>
+                                                    <label class="label">Móvil<span class="req">*</span></label>
                                                     <label class="input"><i class="icon-append fa fa-mobile"></i>
                                                         <input id="Movil" name="Movil" type="text"
                                                                placeholder="Teléfono Móvil" maxlength="12"
@@ -165,7 +165,7 @@
                                                     </label>
                                                 </section>
                                                 <section class="col col-3">
-                                                    <label class="label">Teléfono Fijo: </label>
+                                                    <label class="label">Teléfono </label>
                                                     <label class="input"><i class="icon-append fa fa-phone"></i>
                                                         <input id="Telefono" name="Telefono" type="text"
                                                                placeholder="Teléfono Fijo" maxlength="12"/>
@@ -173,18 +173,22 @@
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Correo Electrónico: </label>
-                                                    <label class="input"><i class="icon-append fa fa-envelope-o"></i>
+                                                    <label class="label">Correo Electrónico<span class="req">*</span> </label>
+                                                    <div>
+                                                        <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                                        <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                                        <label class="input"><i class="icon-append fa fa-envelope-o"></i>
                                                         <input id="Correo" name="Correo" type="text"
                                                                placeholder="Correo electrónico" class=""
                                                                maxlength="60"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                    </label>
+                                                        </label>
+                                                    </div>
                                                 </section>
                                             </div>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Tipo Documento: </label>
+                                                    <label class="label">Tipo Documento<span class="req">*</span> </label>
                                                     <label class="input">
                                                         <select id="TipoDocumentoId" name="TipoDocumentoId" class="form-control">
                                                             <option value="">-- Seleccione --</option>
@@ -195,7 +199,7 @@
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Número de Documento: </label>
+                                                    <label class="label">Número de Documento<span class="req">*</span> </label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="NumeroDocumento" name="NumeroDocumento" type="text"
                                                                placeholder="Número de documento" class="" maxlength="11"
@@ -206,16 +210,21 @@
                                             </div>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Nombre de usuario: </label>
-                                                    <label class="input"><i class="icon-append fa fa-user"></i>
-                                                        <input id="Username" name="Username" type="text"
-                                                               placeholder="Nombre de cliente" class="" maxlength="60"
-                                                               autocomplete="off"/>
+                                                    <label class="label">Nombre de usuario<span class="req">*</span> </label>
+                                                    <div>
+                                                        <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                                        <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                                        <label class="input"><i class="icon-append fa fa-user"></i>
+                                                            <input id="Username" name="Username" type="text"
+                                                                   placeholder="Nombre de cliente" class="" maxlength="60"
+                                                                   autocomplete="off"/>
+
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
-                                                    </label>
+                                                        </label>
+                                                    </div>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Perfil: </label>
+                                                    <label class="label">Perfil<span class="req">*</span> </label>
                                                     <label class="input">
                                                         <select id="PerfilId" name="PerfilId" class="form-control">
                                                             <option value="">-- Seleccione --</option>
@@ -228,7 +237,7 @@
                                             </div>
                                             <div class="row" id="PassUser">
                                                 <section class="col col-6">
-                                                    <label class="label margin txt-color">Contraseña: </label>
+                                                    <label class="label margin txt-color">Contraseña<span class="req">*</span> </label>
                                                     <label class="input"><i class="icon-append fa fa-lock"></i>
                                                         <input id="Password" name="Password" type="password"
                                                                placeholder="Password" class="" maxlength="24"
@@ -237,7 +246,7 @@
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Confirmar Password: </label>
+                                                    <label class="label">Confirmar Password<span class="req">*</span> </label>
                                                     <label class="input"><i class="icon-append fa fa-lock"></i>
                                                         <input id="CheckPassword" name="CheckPassword" type="password"
                                                                placeholder="Confirmar password" class=""
@@ -248,7 +257,7 @@
                                             </div>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Roles:</label>
+                                                    <!--<label class="label">Roles:</label>
                                                     <div class="col">
                                                         <div class="col col-4 padding-5"
                                                              th:each="r : ${lstRol}">
@@ -258,14 +267,14 @@
                                                                 <i></i> <span
                                                                     th:text="${r.nombre}"></span></label>
                                                         </div>
-                                                    </div>
-                                                    <div class="col txt-color-redLight">
+                                                    </div>-->
+                                                    <!--<div class="col txt-color-redLight">
                                                         <input type="hidden" name="CheckRoles"/>
-                                                    </div>
+                                                    </div>-->
                                                 </section>
                                                 <section class="col col-6">
                                                     <div class="inline-group">
-                                                        <label class="label">Estado Inicial: </label>
+                                                        <label class="label">Estado Inicial<span class="req">*</span> </label>
                                                         <label class="radio">
                                                             <input type="radio" id="FlagActivo" name="FlagActivo"
                                                                    checked="checked"/>
@@ -344,6 +353,8 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     const body = document.querySelector('body');
+    const frm = document.getElementById('frm_registro');
+    const verifiedNames = [];
     var $table = $('#tblRegistros');
     var $index = $('#Id');
 
@@ -356,14 +367,21 @@
         validarRegistros();
         init();
 
-        $("#btnNuevo").click(function () {
+        $("#btnNuevo").click(function () {//Debe respetarse el orden de ejecución para el correcto funcionamiento
             $('#Operacion').text('Registrar');
             $('#Username').removeAttr('readonly');
             $('#Correo').removeAttr('readonly');
-            $('#PerfilId').removeAttr('disabled');
+
             $('#PerfilId').removeAttr('style');
             $('#PassUser').css('display', '');
             irRegistro();
+            $('.i-checked-verified').addClass('hidden');
+            $('#frm_registro input').removeAttr('readonly');
+            $('#frm_registro select').removeAttr('disabled');
+            $('#btnGuardar').removeAttr('disabled');
+            $('#PerfilId').val(1);
+            $('#PerfilId').attr('disabled','disabled');
+
         });
 
         $("#btnGuardar").click(function () {
@@ -375,6 +393,8 @@
         });
 
         $("#btnCancelar").click(function () {
+            $('#PerfilId').val("");
+            $('#PerfilId').removeAttr('disabled');
             irListado($index);
         });
 
@@ -386,23 +406,46 @@
             e.preventDefault();
         });
 
-        $('#Correo').on('focusout', validarCorreo);
-        $('#Username').on('focusout', validarUsername);
-
         modalsEventos();
 
     });
 
     function init(){
-        body.addEventListener('click', (e)=>{
-            const input = e.target;
-            const clases = input.classList;
-            if(input.tagName === "BUTTON"){
-                if(clases.contains('botTempo')){
-                    input.setAttribute('disabled', 'disabled');
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+
+            if(input.name === "Correo"){
+                input.value = input.value.trim().replace(/ +/g, "");
+                if($(input).valid()){
+                    if(!verifiedNames.includes(input.value)){
+                        if(!input.readOnly){
+                            validUniqueEmailOrUsernameOrNomPag(input, 'correo');
+                        }
+                    }
                 }
             }
-        })
+            if(input.name === "Username"){
+                if($(input).valid()){
+                    if(!verifiedNames.includes(input.value)){
+                        if(!input.readOnly) {
+                            validUniqueEmailOrUsernameOrNomPag(input, 'username');
+                        }
+                    }
+                }
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
     }
 
     function listarRegistros() {
@@ -429,7 +472,6 @@
             }
             let entidad = perfil == "0" ? "usuario" : perfil == "2" ? "trainer" : perfil == "3" ? "cliente" : "administrador";
             perfil = entidad == "usuario" ? "" : perfil;
-
             $table.bootstrapTable({
                 url: _ctx + 'gestion/'+entidad+'/obtenerListado/' + comodin + '/' + estado + '/' + perfil,
                 pagination: true,
@@ -445,74 +487,71 @@
     }
 
     function registro() {
-        if ($("#frm_registro").valid()) {
-            let params = getFormData($('#frm_registro'));
-            const roles = [];
+        if ($(frm).valid()) {
+            let params = getFormData($(frm));
             params.flagActivo = $('#FlagActivo').is(':checked');
-            Array.from($('.checkbox input[type="checkbox"]')).forEach((v)=>{
-                if(v.checked) roles.push(v.getAttribute('data-id'));
-            })
-            params.rols = roles.join();
-            //validarCorreo al ser un metodo de un eventListener, por defecto envia el elemento como parametro en la primera posicion y
-            // para hacer el metodo reutilizable es necesario enviarle en el primer argumento un valor cualsea(para el caso null)
-            const promise = new Promise((resolve, reject) => validarCorreo(null, resolve, reject));
             params.perfilId = $('#PerfilId').val();
-            const tipoUsuarioUrl = params.perfilId == 2 ? 'trainer' : params.perfilId == 3 ? 'cliente' : 'administrador';
+            //Solo se podrá editar a los administradores
+            const tipoUsuarioUrl = 'administrador';
             if(params.perfilId !=1){
-                $.smallBox({color: 'alert', content: 'Por este medio solo puede registrar Administradores, elija del listado de Perfil a Administrador'})
+                $.smallBox({color: 'alert', content: 'Por este medio solo puede registrar Administradores, elija del listado a un perfil Administrador'})
                 return;
             }
 
-            //Luego esperamos que la promesa se cumpla con resolve para finalmente registrar
-            promise.then(()=>{
-                const promise2 = new Promise((resolve, reject) => validarUsername(null, resolve, reject));
-                promise2.then(()=>{
-                    $.ajax({
-                        type: 'POST',
-                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                        url: _ctx + 'gestion/'+tipoUsuarioUrl+'/agregar',
-                        dataType: "text",
-                        blockLoading: true,
-                        noOne: false,
-                        data: params,
-                        success: function (data, textStatus) {
-                            if (textStatus == "success") {
-                                if (data == "-150") {
-                                    $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",});
-                                } else if (data == "-2") {
-                                    $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
-                                    irListado($index);
-                                    listarRegistros();
-                                } else if(data.split(',')[0] == "-1"){
-                                    $.smallBox({});
-                                    irListado($index);
-                                    listarRegistros();
-                                }
-                            }
-                        },
-                        error: function (xhr) {
-                            exception(xhr);
-                        },
-                        complete: function () {
-                            limpiarBusqueda();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: _ctx + 'gestion/'+tipoUsuarioUrl+'/agregar',
+                dataType: "text",
+                blockLoading: true,
+                noOne: false,
+                data: params,
+                success: function (data, textStatus) {
+                    if (textStatus == "success") {
+                        if (data == "-150") {
+                            $.smallBox({color: "alert", content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",});
+                        } else if (data == "-2") {
+                            $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
+                            irListado($index);
+                            listarRegistros();
+                        } else if(data.split(',')[0] == "-1"){
+                            $.smallBox({});
+                            irListado($index);
+                            listarRegistros();
                         }
-                    });
-                }).catch((e)=>{})//En caso la validación de username sea incorrecta hacemos algo más(para el caso ya no es necesario)
-            }).catch((e)=>{})//En caso la validación de correo sea incorrecta hacemos algo más(para el caso ya no es necesario)
+                    }
+                },
+                error: function (xhr) {
+                    exception(xhr);
+                },
+                complete: function () {
+                    limpiarBusqueda();
+                }
+            });
         }
     }
 
     function editar(id, tp) {
         irRegistro();
         $('#Operacion').text('Actualizar');
-        $('#Username').attr('readonly', 'readonly');
-        $('#PerfilId').attr('disabled', 'disabled');
-        $('#PerfilId').css('background-color', '#eee');
-        $('#Correo').attr('readonly', 'readonly');
 
         var params = new Object();
         params.id = id;
         params.tipoUsuario = tp === "Cliente" ? 3 : tp === "Trainer" ? 2 : 1;
+
+        if(params.tipoUsuario != TipoUsuario.ADMINISTRADOR){
+            $('#btnGuardar').attr('disabled', 'disabled');
+            $('#frm_registro input').attr('readonly', 'readonly');
+            $('#frm_registro select').attr('disabled', 'disabled');
+        }else {
+            $('#btnGuardar').removeAttr('disabled');
+            $('#frm_registro input').removeAttr('readonly');
+            $('#frm_registro select').removeAttr('disabled');
+            $('#PerfilId').attr('disabled', 'disabled');
+            $('#Username').attr('readonly', 'readonly');
+            $('#Correo').attr('readonly', 'readonly');
+        }
+        $('#PerfilId').val(params.tipoUsuario);
 
         $.ajax({
             type: 'GET',
@@ -553,6 +592,7 @@
             },
             complete: function () {
                 $('#PassUser').css('display', 'none');
+                $('.i-checked-verified').addClass('hidden');
                 limpiarBusqueda();
             }
         });
@@ -580,14 +620,22 @@
                     data: params,
                     success: function (data, textStatus) {
                         if (textStatus == "success") {
-                            $.smallBox({
-                                content: "<i> Se actualizó el registro...</i>",
-                            });
+                            if(data === -9){
+                                $.smallBox({
+                                    color: "alert",
+                                    content: "<i> No puede actualizar el estado de su mismo usuario...</i>",
+                                });
+                            } else{
+                                $.smallBox({
+                                    content: "<i> Se actualizó el registro...</i>",
+                                });
 
-                            actualStatus == "Activo" ?
-                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
-                                :
-                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                                actualStatus == "Activo" ?
+                                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                    :
+                                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                            }
+
 
                         }
                     },
@@ -601,97 +649,6 @@
             } else {
             }
         });
-    }
-
-    function validarCorreo(e, resolve, reject){
-        const correo = document.querySelector('#Correo');
-        if(!correo.readOnly) {//Para obviar esta validación en las actualizaciones
-
-            if (correo.parentElement.classList.contains('state-success') && regexMail.test(correo.value.trim())) {
-                let params = {};
-                params.correo = correo.value.trim();
-                $.ajax({
-                    type: 'GET',
-                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/validacion-correo',
-                    dataType: "json",
-                    data: params,
-                    success: function (data) {
-                        let res = data;
-                        if (!res) {
-                            correo.parentElement.classList.add('state-success');
-                            correo.parentElement.classList.remove('state-error');
-                            if(document.querySelector('#Correo-error') != null){document.querySelector('#Correo-error').style.display = 'none';}
-                            if (resolve != undefined) resolve('success');//Se ejecuta cuando una prosema fue hecha
-                        } else {
-                            correo.parentElement.classList.remove('state-success');
-                            correo.parentElement.classList.add('state-error');
-                            if(document.querySelector('#Correo-error') != null){
-                                document.querySelector('#Correo-error').innerHTML = '<b>El correo ingresado ya se encuentra registrado</b>';
-                                document.querySelector('#Correo-error').style.display = '';
-                            }else{
-                                $.smallBox({color: "alert", content: "<b><i>El correo ingresado ya se encuentra registrado...</i></b>"});
-                            }
-
-                            if (reject != undefined) reject('fail');//Se ejecuta cuando una prosema fue hecha
-                        }
-                    },
-                    error: function (xhr) {
-                        if (resolve != undefined) resolve('fail-success')//Nos saltamos la validación en caso de error
-                        exception(xhr);
-                    },
-                    complete: function () {
-                    }
-                })
-            }
-        }else{
-            if(resolve != undefined) resolve('success');//Para cumplir la promesa y que la actualización siga su curso
-        }
-    }
-
-    function validarUsername(e, resolve, reject){
-        const username = document.querySelector('#Username');
-        if(!username.readOnly) {//Para obviar esta validación en las actualizaciones
-            if (username.parentElement.classList.contains('state-success')) {
-                let params = {};
-                params.username = username.value.trim();
-                $.ajax({
-                    type: 'GET',
-                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    url: _ctx + 'gestion/usuario/validacion-username',
-                    dataType: "json",
-                    data: params,
-                    success: function (data) {
-                        let res = data;
-                        if (!res) {
-                            username.parentElement.classList.add('state-success');
-                            username.parentElement.classList.remove('state-error');
-                            if(document.querySelector('#Username-error') != null){document.querySelector('#Username-error').style.display = 'none';}
-                            if (resolve != undefined) resolve('success');//Se ejecuta cuando una prosema fue hecha
-                        } else {
-                            username.parentElement.classList.remove('state-success');
-                            username.parentElement.classList.add('state-error');
-                            if(document.querySelector('#Username-error') != null){
-                                document.querySelector('#Username-error').innerHTML = '<b>El username ingresado ya se encuentra registrado</b>';
-                                document.querySelector('#Username-error').style.display = '';
-                            }else{
-                                $.smallBox({color: "alert", content: "<b><i>El username ingresado ya se encuentra registrado...</i></b>"});
-                            }
-
-                            if (reject != undefined) reject('fail');//Se ejecuta cuando una prosema fue hecha
-                        }
-                    },
-                    error: function (xhr) {
-                        if (resolve != undefined) resolve('fail-success')//Nos saltamos la validación en caso de error
-                        exception(xhr);
-                    },
-                    complete: function () {
-                    }
-                })
-            }
-        }else{
-            if(resolve != undefined) resolve('success');//Para cumplir la promesa y que la actualización siga su curso
-        }
     }
 
     function cambiarContrasena(id, username, tipoUsuario) {
@@ -803,33 +760,47 @@
             rules: {
                 Nombres: {
                     required: true,
-                    maxlength: $("#Nombres").prop("maxlength"),
+                    rangelength: [3, 30],
+                    lettersonly: true
                 },
                 Apellidos: {
                     required: true,
-                    maxlength: $("#Apellidos").prop("maxlength"),
+                    rangelength: [3, 30],
+                    lettersonly: true
                 },
                 Correo: {
                     required: true,
-                    emailAddress: true,
-                    maxlength: $("#Correo").prop("maxlength"),
+                    emailValid: true,
+                    rangelength: [7, 40],
                 },
                 Movil: {
+                    required: true,
                     digits: true,
+                    rangelength: [9,11]
+                },
+                Telefono:{
+                    digits: true,
+                    rangelength: [7,9]
                 },
                 NumeroDocumento:{
                     required: true,
-                    maxlength: $("#NumeroDocumento").prop("maxlength"),
+                    digits:  true,
+                    customnumdoc: function(){
+                        const val = $('#TipoDocumentoId').val();
+                        return val;
+                    },
+                    rangelength: [8, 12],
                 },
                 Username: {
                     required: true,
-                    maxlength: $("#Username").prop("maxlength"),
+                    usernameOrEmail: true,
+                    rangelength: [7, 30],
                 },
                 Password: {
                     required: () => {
                         return $('#Id').val() > 0 ? false : true
                     },
-                    maxlength: $("#Password").prop("maxlength"),
+                    rangelength: [8, 30],
                     pwcheck: true,
                 },
                 CheckPassword: {
@@ -839,47 +810,20 @@
                     required: true,
                     digits: true,
                 },
-                TipoDocumentoId: {
-                    required: true,
-                    digits: true,
-                },
-                CheckRoles: {
-                    required: () => {
-                        rs = $('input:checkbox:checked').length > 0 ? false : true;
-                        if (rs) {
-                            $('.checkbox').addClass('state-error');
-                            return true
-                        } else return false;
-                    }
-                }
-            },
-            messages: {
-                Nombres: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
-                Apellidos: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
-                Correo: {
-                    required: "El campo es obligatorio",
-                    emailAddress: "Formato inválido",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
-                },
-                Movil: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
-                    number: "Este campo solo permite números"
+                TipoDocumentoId:{
+                    required: true
                 },
                 NumeroDocumento: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
+                    required: true,
+                    digits:  true,
+                    customnumdoc: function(){
+                        const val = $('#TipoDocumentoId').val();
+                        return val;
+                    },
+                    rangelength: [8, 12],
                 },
-                Username: {
-                    required: "<i class='form-control-feedback glyphicon glyphicon-remove'></i>El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
+            },
+            messages: {
                 Password: {
                     required: "El campo es obligatorio",
                     maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
@@ -888,17 +832,6 @@
                 CheckPassword: {
                     equalTo: "Por favor ingresar la misma password nuevamente",
                 },
-                PerfilId: {
-                    required: "El campo es obligatorio",
-                    digits: "Seleccione un perfil válido",
-                },
-                TipoDocumentoId: {
-                    required: "El campo es obligatorio",
-                    digits: "Seleccione un tipo de documento válido",
-                },
-                CheckRoles: {
-                    required: "Debe seleccionar por lo menos un rol",
-                }
             },
             submitHandler: function () {
                 registro();
@@ -935,7 +868,15 @@
             submitHandler: function () {
 
             }
+
+
         })
+
+        //Seteando los Maxlength según rangelength property
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        });
     }
 
     function MostrarRequisitosPassword() {

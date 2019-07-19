@@ -168,7 +168,7 @@ public class Enums {
         POSTULANTE_ACEP("Ha <strong>APROBADO</strong> al candidato con éxito"),
         POSTULANTE_RECH("Ha <strong>RECHAZADO</strong> al candidato con éxito"),
         POSTULANTE_ULTIMA_ETAPA("Registro correcto. Pronto revisaremos su perfil para una aprobación final. Usted será notificado a su correo, gracias por su tiempo."),
-        POSTULANTE_YA_REG("Usted ya ha usado este link para registrarse, sino recuerda sus credenciales puede recuperarlas en la opción olvidó contraseña: <a href='/login'>aquí</a>"),
+        POSTULANTE_YA_REG("Usted ya ha usado este link para registrarse, sino recuerda sus credenciales puede recuperarlas en la opción olvidó contraseña: <a href='/p/recuperar/password'>aquí</a>"),
         POST_LINK_EXP_PR("El vínculo ha expirado, para poder registrarse debe comunicarse con la plataforma, en la parte inferior de la página encontrará un apartado con datos de contacto."),
         CONTACTO_TRAINER("El asesor ha sido notificado y pronto se pondrá en contacto. Que tenga usted un buen día!"),
         CONSULTA_CONTACTO_ENVIADA("Su consulta ha sido enviada, tan pronto como podamos, atenderemos su consulta. Gracias por comunicarse con nosotros."),

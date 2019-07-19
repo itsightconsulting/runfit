@@ -16,8 +16,8 @@
         </div><!-- /.modal-dialog -->
     </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper" data-backdrop="static">
-        <div class="modal-dialog" role="document" style="width: 70%">
-            <div class="modal-content" style="width: 100%">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                 <div class="modal-header" style="background: #000000;text-align: center;border:none">
                     <button id="btnCerrarRecorteFotoPerfil" type="button"  data-dismiss="modal" class="close-modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
@@ -30,12 +30,12 @@
                     <div class="row" id="actions">
                         <div class="col-md-12 docs-buttons">
                             <div class="btn-group btn-group-crop">
-                                <button style="margin: 20px 20px 10px;border-radius: 5px; min-width: 180px" data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
                                             <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
                                                 <i class="fa fa-check-circle fa-fw"></i>Confirmar
                                             </span>
                                 </button>
-                                <button style="margin: 20px 20px 10px;border-radius: 5px; min-width: 180px" onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
                                             <span class="docs-tooltip" data-toggle="tooltip" title="">
                                                 <i class="fa fa-refresh fa-fw"></i>Cambiar
                                             </span>
@@ -69,12 +69,12 @@
     <div class="modal fade slide in" id="myModal" data-backdrop="static">
         <div class="modal-dialog modal-lg" style="margin-top: 30px;">
             <div class="modal-content" style="background-color: transparent;box-shadow: none;border: none;">
-                <div class="modal-header" style="border: none">
+                <div class="modal-header" style="border: none;background-color: #000;">
                     <button class="btn btn-default btn-white" data-dismiss="modal" title="Cerrar" type="button" style="float: right;"> CERRAR
                         <i class="fa-fw fa fa-close"></i>
                     </button>
                 </div>
-                <div class="modal-body" style="padding: 0px !important">
+                <div class="modal-body" style="padding: 0px !important;background-color: #fff;">
                     <div id="myGallery" class="carousel slide" data-interval="false">
                         <ol class="carousel-indicators">
                         </ol>

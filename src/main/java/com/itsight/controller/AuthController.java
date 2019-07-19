@@ -29,21 +29,14 @@ import static com.itsight.util.Enums.Msg.ENLACE_CADUCADO;
 @Controller
 public class AuthController extends BaseController {
 
-    private SecurityUserRepository securityUserRepository;
-
-    private EmailService emailService;
-
     private UsuarioRecoverRepository usuarioRecoverRepository;
 
     private SecurityUserService securityUserService;
 
     @Autowired
-    public AuthController(SecurityUserRepository securityUserRepository,
-                          EmailService emailService,
+    public AuthController(
                           UsuarioRecoverRepository usuarioRecoverRepository,
                           SecurityUserService securityUserService) {
-        this.securityUserRepository = securityUserRepository;
-        this.emailService = emailService;
         this.usuarioRecoverRepository = usuarioRecoverRepository;
         this.securityUserService = securityUserService;
     }
@@ -67,7 +60,10 @@ public class AuthController extends BaseController {
     public String welcome(){
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for (GrantedAuthority authority: authorities){
-            if(authority.getAuthority().equals("ROLE_TRAINER") || authority.getAuthority().equals("ROLE_ADMIN"))
+            if(authority.getAuthority().equals("ROLE_ADMIN")){
+                return "redirect:/"+ViewConstant.MAIN_USUARIO;
+            }
+            if(authority.getAuthority().equals("ROLE_TRAINER"))
                 return ViewConstant.MAIN_TRAINER_RED;
             if(authority.getAuthority().equals("ROLE_RUNNER") || authority.getAuthority().equals("ROLE_STORE"))
                 return ViewConstant.CLIENTE_INDEX;

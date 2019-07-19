@@ -517,9 +517,11 @@ a.fav:hover .svg, a.fav.selected .svg {
     color: #a8fa00;
     font-family: GothamHTF-Light; }
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr th.prev {
-    background: url("../img/arrow-left.png") no-repeat center; }
+    background: url("../img/arrow-left.png") no-repeat center;
+    background-size: contain;}
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr th.next {
-    background: url("../img/arrow-right.png") no-repeat center; }
+    background: url("../img/arrow-right.png") no-repeat center;
+      background-size: contain;}
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr:last-child th {
     padding: 40px 5px 8px; }
   .datepicker_inline .bootstrap-datetimepicker-widget table tbody td {
@@ -933,7 +935,7 @@ section.ritmos_tiempo .box_tiempo {
     text-align: center; }
     #carousel-semanal .owl-nav .owl-prev {
       outline: none;
-      background: url(../img/arrow-left2.png) no-repeat center;
+      background: url(../img/arrow-left.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;
@@ -941,7 +943,7 @@ section.ritmos_tiempo .box_tiempo {
       background-size: contain; }
     #carousel-semanal .owl-nav .owl-next {
       outline: none;
-      background: url(../img/arrow-right2.png) no-repeat center;
+      background: url(../img/arrow-right.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;

@@ -88,4 +88,8 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
 
     @Query(value = "SELECT COUNT(*) FROM TrainerFicha T WHERE T.trEmpId=?1")
     Integer getTotalColaboradoresById(Integer trainerId);
+
+    @Modifying
+    @Query(value = "UPDATE TrainerFicha T SET T.miniGaleria = ?1 WHERE T.trainer.id = ?2")
+    void actualizarMiniGaleriaById(String miniGaleria, Integer id);
 }

@@ -49,6 +49,9 @@ public class TrainerDTO implements Serializable {
     @Size(max = 10)
     @NotBlank
     private String ubigeo;
+    @Size(max = 255)
+    @NotBlank
+    private String nomUbigeo;
     @Size(min = 80, max = 2000)
     @NotNull
     private String acerca;
