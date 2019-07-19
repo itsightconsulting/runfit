@@ -4,9 +4,7 @@ Ficha = (function(){
     return {
         instanciar: (ficha)=>{
             const comps = ficha.competencias;
-            console.log(ficha.competencias);
             $fechasCompetencia = comps.map(v=>{return {nombre: v.nombre, prioridad: v.prioridad, fecha: parseFromStringToDate2(v.fecha)}}).sort((a, b)=>{return a.fecha - b.fecha;});
-
             $('#Nombres').val(atob(getParamFromURL("nm")));
             $('#ApellidoPaterno').val(atob(getParamFromURL("nm")));
             $('#FechaNacimiento').val(atob(getParamFromURL("fn")));
@@ -56,7 +54,7 @@ FichaGet = (function(){
             basico.nivelAtleta = Number(document.querySelector('#NivelAtleta input:checked').value);
             basico.fechaInicio = document.querySelector('#MacroFechaInicio').value;
             basico.fechaFin = document.querySelector('#MacroFechaFin').value;
-            $kilometrajeBase.length == 0 ? "" :obtenerKilometrajeBaseBD(basico.distancia, basico.nivelAtleta) : "";//En caso no tengamos el kilometrajeMaestro, lo consultamos
+            $kilometrajeBase.length == 0 ? obtenerKilometrajeBaseBD(basico.distancia, basico.nivelAtleta) : "";//En caso no tengamos el kilometrajeMaestro, lo consultamos
             return basico;
         },
     }
@@ -430,9 +428,6 @@ MacroCiclo = (function(){
             const kmsParts = base.periodizacion.map((v)=>{
                 return allKms.splice(0, v);//Cada vez el arreglo va perdiendo elementos y por eso siempre hacemos que se corte desde 0
             });
-
-            console.log("atento",base.periodizacion);
-
             base.porcentajesKms = [];
             const kiloTotal = document.querySelector('#KilometrajeTotal');
             kiloTotal.querySelector('h1').textContent = parseFloat(sumKms).toFixed(1);
