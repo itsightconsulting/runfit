@@ -620,14 +620,22 @@
                     data: params,
                     success: function (data, textStatus) {
                         if (textStatus == "success") {
-                            $.smallBox({
-                                content: "<i> Se actualizó el registro...</i>",
-                            });
+                            if(data === -9){
+                                $.smallBox({
+                                    color: "alert",
+                                    content: "<i> No puede actualizar el estado de su mismo usuario...</i>",
+                                });
+                            } else{
+                                $.smallBox({
+                                    content: "<i> Se actualizó el registro...</i>",
+                                });
 
-                            actualStatus == "Activo" ?
-                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
-                                :
-                                document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                                actualStatus == "Activo" ?
+                                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML = '<span class="label label-danger">Inactivo</span>'
+                                    :
+                                    document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').innerHTML= '<span class="label label-success">Activo</span>'
+                            }
+
 
                         }
                     },
@@ -770,9 +778,9 @@
                     digits: true,
                     rangelength: [9,11]
                 },
-                Telefono: {
+                Telefono:{
                     digits: true,
-                    rangelength: [7,11]
+                    rangelength: [7,9]
                 },
                 NumeroDocumento:{
                     required: true,
