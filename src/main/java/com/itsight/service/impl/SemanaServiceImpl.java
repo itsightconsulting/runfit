@@ -227,7 +227,7 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
 
     @Override
     public List<Semana> findByRutinaIdOrderByIdDesc(Integer rutinaId, int semanaIx) {
-        return repository.findByRutinaIdOrderByIdDesc(rutinaId, PageRequest.of(1, semanaIx));
+        return repository.findByRutinaIdOrderByIdDesc(rutinaId, PageRequest.of(1, semanaIx ));
     }
 
     @Override
@@ -239,4 +239,8 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
         Integer semanaId = rutinaRepository.findSemanaIdByIndex(rutinaId, semanaIx+1);
         return repository.findOneWithDays(semanaId);
     }
+
+
+
+
 }

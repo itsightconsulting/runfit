@@ -4,7 +4,9 @@ import com.itsight.domain.RuConsolidado;
 import com.itsight.domain.Rutina;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RuConsolidadoRepository;
+import com.itsight.repository.RutinaRepository;
 import com.itsight.service.RuConsolidadoService;
+import com.itsight.service.SemanaService;
 import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,14 @@ import java.util.List;
 @Transactional
 public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepository> implements RuConsolidadoService {
 
+    RutinaRepository rutinaRepository;
+    SemanaService semanaService;
+
     @Autowired
     public RuConsolidadoServiceImpl(RuConsolidadoRepository repository){
+
         super(repository);
+
     }
 
     @Override
@@ -55,6 +62,7 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
     public List<RuConsolidado> findAll() {
         return repository.findAll();
     }
+
 
     @Override
     public List<RuConsolidado> findByNombre(String nombre) {
@@ -112,4 +120,9 @@ public class RuConsolidadoServiceImpl extends BaseServiceImpl<RuConsolidadoRepos
     public void updateMatrizMejoraVelocidades(Integer rutinaId, String mVz) {
         repository.updateMatrizMejoraVelocidades(rutinaId, mVz);
     }
+
+
+
+
+
 }

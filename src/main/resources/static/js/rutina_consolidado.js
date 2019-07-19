@@ -11,14 +11,21 @@ $(function() {
 
 function init(){
 
-    obtenerRutinaConsolidado();
+   // $('#modalGuardarMini').modal('show');
+
+    const favRutinaId = Number(getCookie("GLL_FAV_RUTINA"));
+
+    obtenerRutinaConsolidado(favRutinaId);
 }
 
 
-function obtenerRutinaConsolidado(){
+function obtenerRutinaConsolidado(rutinaId){
+
+      if(!rutinaId){ rutinaId = 0}
 
       $.ajax({
       type: "GET",
+      data:{rutinaId : rutinaId},
       url: _ctx + "cliente/rutina/consolidado/obtener",
       success: function (data) {
           cargarTablaVelocidad(data);
@@ -26,15 +33,20 @@ function obtenerRutinaConsolidado(){
           cargarTablaLongitudPaso(data);
           cargarTablaTCS(data);
           graficoTemporada(data.dtGrafico);
-
-
           const periodizacion =  getSemanasEtapas(data);
           const etapasPorc = calcularPorcentajesEtapas(periodizacion);
 
+          graficoDistribucionEtapa(etapasPorc);
+          cargarInfoPeriodizacion(periodizacion);
+          cargarInfoKmEtapas(data);
+          cargarProyeccionCompetencia(data);
 
-           graficoDistribucionEtapa(etapasPorc);
-           cargarInfoPeriodizacion(periodizacion);
-           cargarInfoKmEtapas(data);
+          const rutinaId = data.rutina.id;
+          const semTr = Number(data.general.distancia == 10 ? 1 : data.general.distancia == 21 ? 2 : 3);
+          const totalSemanas =  Number(data.rutina.totalSemanas);
+          const semanaIx = totalSemanas - semTr;
+
+          obtenerMetricaIntensidad(rutinaId, semanaIx);
 
         }
         , error: (xhr) => {
@@ -43,6 +55,37 @@ function obtenerRutinaConsolidado(){
         }
     });
 }
+
+
+function obtenerMetricaIntensidad(rutinaId, semanaIx){
+
+    $.ajax({
+        type: "GET",
+        url: _ctx + "cliente/rutina/consolidado/intensidad",
+        dataType: 'json',
+        data:{
+            rutinaId: rutinaId,
+            semanaIx: semanaIx
+        },
+        success: function (data) {
+
+         const metricas = JSON.parse(data.metricas);
+         const Z4 = metricas.find( function(element){
+                                    return element.nombre === "Z4"
+            });
+
+
+
+          $('#intensidadValue').html(Z4.min + "-" + Z4.max);
+
+        }
+        , error: (xhr) => {
+        }, complete: () => {
+
+        }
+    });
+}
+
 
 function cargarTablaVelocidad(data){
 
@@ -141,7 +184,6 @@ function cargarTablaLongitudPaso(data){
 
 function timeStringtoSeconds(time){
 
-    console.log(time);
     const a = time.split(':');
     const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
 
@@ -680,8 +722,6 @@ function graficoDistribucionEtapa(etapasPorc){
 
    function cargarInfoPeriodizacion(periodizacion){
 
-        console.log
-
        document.querySelectorAll('#consolidado .etapa-rutina')
            .forEach((v,i)=>{
                v.querySelector('strong.etapa-sem').textContent = periodizacion[i];
@@ -690,4 +730,33 @@ function graficoDistribucionEtapa(etapasPorc){
 
 
    }
+
+
+   function cargarProyeccionCompetencia(data){
+
+    const distancia = data.general.disCompetencia ;
+    const pasoSubida = data.stats.pasoSubida;
+    const pasoBajada = data.stats.pasoBajada;
+    const pasoPlano = data.stats.pasoPlano;
+    const pasoPromedioSegundos = ((timeStringtoSeconds(pasoSubida) + timeStringtoSeconds(pasoBajada) + timeStringtoSeconds(pasoPlano))/3 );
+    const pasoPromedio = new Date(pasoPromedioSegundos * 1000).toISOString().substr(11, 8);
+    const cadencia = data.general.cadCompetencia;
+    const tcs = data.general.tcsCompetencia;
+    const longitudPaso = data.stats.lonPasoCompActual;
+    const tiempoProyectado = data.general.tieCompetencia;
+    const datosProyeccion =
+                           `<div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> DISTANCIA </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${distancia}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> PASO PROMEDIO </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${pasoPromedio}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> PASO EN SUBIDA </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${pasoSubida}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> PASO EN BAJADA </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${pasoBajada}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> PASO EN PLANO </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${pasoPlano}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> CADENCIA </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${cadencia}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> T.C.S </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${tcs}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> LONGITUD DEL PASO  </div><div class="col col-md-4 col-sm-4 dato-proyeccion">${longitudPaso}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> TIEMPO PROYECTADO</div><div class="col col-md-4 col-sm-4 dato-proyeccion">${tiempoProyectado}</div></div>
+                            <div class="row"><div class="col col-md-8 col-sm-8 factor-proyeccion"> INTENSIDAD</div><div id="intensidadValue" class="col col-md-4 col-sm-4 dato-proyeccion"></div></div> `;
+
+    $('#proyeccionCompetencia').append(datosProyeccion) ;
+
+}
 

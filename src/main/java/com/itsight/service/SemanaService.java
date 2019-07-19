@@ -24,4 +24,5 @@ public interface SemanaService extends BaseService<Semana, Integer> {
     List<Semana> findByRutinaIdOrderByIdDesc(Integer rutinaId, int semanaIx);
 
     Semana findOneWithDaysEspById(Integer rutinaId, int semanaIx) throws CustomValidationException;
+
 }

@@ -76,7 +76,7 @@
 
                                <hr class="semanas">
                                <label>
-                                   <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>COMPETITIVA</strong>
+                                   <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda2.svg}+'?'+${version}"/><strong>COMPETITIVA</strong>
                                </label>
                                <p> <strong class="etapa-sem">0 </strong> semanas</p>
                            </div>
@@ -108,7 +108,7 @@
                             <div class="total-km green">
                                <div>
                                 <label>
-                                    <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>KM</strong> TOTAL
+                                    <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda2.svg}+'?'+${version}"/><strong>KM</strong> TOTAL
                                 </label>
                                 <p> <strong class="km-value">1648  </strong>   KM</p>
                                </div>
@@ -200,6 +200,31 @@
 
 
                          </div>
+
+                         <div class="col-md-4">
+
+                             <div id="proyeccionCompetencia" class="proyeccion-competencia">
+
+
+                                 <img class="svg red-icon" th:src="@{/img/iconos/icon_ayuda2.svg}+'?'+${version}"/>
+                                 <div class="proyeccion-title">
+
+                                        <img class="svg medalla" th:src="@{/img/iconos/medal-solid.svg}+'?'+${version}"/>
+
+                                         <label>
+                                             <strong>PROYECCIÓN PARA EL DÍA DE LA COMPETENCIA </strong> </label>
+                                     </div>
+
+
+
+                                </div>
+
+
+                             </div>
+
+
+
+                         </div>
                     </div>
 
                  <div class="dv-mejora-vel">
@@ -251,7 +276,12 @@
 
           </div>
     </div>
-</div>
+
+
+
+
+
+
 <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
 <!-- CUSTOM NOTIFICATION -->
 <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>

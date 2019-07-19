@@ -7,4 +7,6 @@ public interface RuConsolidadoService extends BaseService<RuConsolidado, Integer
 
     void updateMatrizMejoraVelocidades(Integer rutinaId, String mVz);
 
+
+
 }

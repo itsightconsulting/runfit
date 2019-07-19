@@ -61,4 +61,6 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @Query(value="SELECT string_agg(PS.periodo,',') mesesCliSuspendidos FROM (SELECT DISTINCT to_char(RF.fecha_creacion,'YYYYMM') AS periodo FROM red_fitness RF INNER JOIN cliente C ON rf.cliente_id = c.security_user_id  WHERE RF.trainer_id = ?1 AND RF.flag_activo = false ORDER BY periodo ASC) PS",nativeQuery = true)
     String getMesesCliSuspendidos(Integer trainerId);
 
+
+
 }
