@@ -913,3 +913,27 @@ function cleanPaqueteCampos(){
     frecuencia.selectedIndex = 0;
     $(frecuencia).multiselect('rebuild');
 }
+
+function checkingValidExtension(input){
+    if($(frm).validate().settings.rules[input.name]){
+        const extensiones = $(frm).validate().settings.rules[input.name].extension.split("|");
+        let fileExt = input.files[0];
+
+        if(!fileExt){
+            return false;
+        }
+        fileExt = fileExt.type.split("/")[1];
+        const exists = extensiones.filter(ext => ext === fileExt);
+        if(exists.length){
+            return true;
+        } else {
+            const ext = $(frm).validate().settings.rules[input.name].extension.toUpperCase();
+            input.value = "";
+            $.smallBox({
+                color: 'alert',
+                content: `<i class="fa fa-fw fa-exclamation-circle"></i>Solo se permite cargar archivos de tipo: ${ext}`
+            });
+            return false;
+        }
+    }
+}

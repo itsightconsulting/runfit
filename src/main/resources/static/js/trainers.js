@@ -93,8 +93,13 @@ function hideMenuMobile(){
 function carouselPlanElegido() {
   $(document).ready(function() {
     var owl = $("#planElegido"),
+
         // rangeArr = [],
         inputType =$("input[type=range]");
+    //Si no existe ese id no ejecutamos el resto
+    if(!owl[0]){
+        return;
+    }
     owl.owlCarousel({
       'loop': false,
       margin: 10,
@@ -134,8 +139,7 @@ function carouselPlanElegido() {
     });
     $("input").on("change", function(e) {
       e.preventDefault();
-      console.log(inputType.val());
-     
+
       $('.owl-carousel').trigger('to.owl.carousel', [inputType.val(),1,true]);
   
     });
@@ -146,8 +150,7 @@ function carouselPlanElegido() {
       $(this).parents( ".owl-item" ).addClass('selected');
     });
   });
-     
-  
+
 }
 
 function carouselPlanes() {
@@ -155,6 +158,10 @@ function carouselPlanes() {
         var owl = $("#planesCarousel"),
             // rangeArr = [],
             inputType =$("input[type=range]");
+        //Si no existe ese id no ejecutamos el resto
+        if(!owl[0]){
+            return;
+        }
         owl.owlCarousel({
           loop: false,
           margin: 10,

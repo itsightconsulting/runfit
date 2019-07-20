@@ -433,44 +433,30 @@ function bodyChangeEventListener(e){
     const input = e.target;
     const clases = input.classList;
     if(input.id === "InpImgPerfil"){
-        const isValid = checkingValidExtension(input);
-        if(isValid){
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+        const minHeight = $(frm).validate().settings.rules[input.name].minHeight;
+        const imgTemp = new Image();
+        imgTemp.onload = function () {
+            if(imgTemp.height < minHeight){
+                $.smallBox({color: 'alert', content: 'La imagen debe tener un alto mínimo de 220px: '});
+            }else{
+                const isValid = checkingValidExtension(input);
+                if(isValid){
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $(imgPerfil).attr('src', e.target.result);
+                        reader.onload = function (e) {
+                            $(imgPerfil).attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
+                    $('#myModalCropper').modal('show');
                 }
-                reader.readAsDataURL(input.files[0]);
             }
-            //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
-            $('#myModalCropper').modal('show');
-        }
+        };
+        imgTemp.src = _URL.createObjectURL(input.files[0]);
     }
     tycChangeEventListener(e, input, clases);
-}
-
-function checkingValidExtension(input){
-    if($(frm).validate().settings.rules[input.name]){
-        const extensiones = $(frm).validate().settings.rules[input.name].extension.split("|");
-        let fileExt = input.files[0];
-        if(!fileExt){
-            return false;
-        }
-        fileExt = fileExt.type.split("/")[1];
-        const exists = extensiones.filter(ext => ext === fileExt);
-        if(exists.length){
-            return true;
-        } else {
-            const ext = $(frm).validate().settings.rules[input.name].extension.toUpperCase();
-            input.value = "";
-            $.smallBox({
-                color: 'alert',
-                content: `<i class="fa fa-fw fa-exclamation-circle"></i>Solo se permite cargar archivos de tipo: ${ext}`
-            })
-            return false;
-        }
-    }
 }
 
 function tycChangeEventListener(e, input, clases){

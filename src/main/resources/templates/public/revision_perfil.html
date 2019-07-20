@@ -20,7 +20,7 @@
             <div class="container">
                 <div class="col-md-5">
                     <div class="avatar-form">
-                        <input type="file" id="InpImgPerfil">
+                        <input type="file" id="InpImgPerfil" name="InpImgPerfil">
                         <div class="avatar-form-content img-container">
                             <img id="FinalImagenRecortada" title="Cambiar foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                             <i rel="tooltip" title="Si desea actualizar la imagen de perfil, clickee sobre la imagen actual 📸" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-exclamation-circle"></i>
@@ -421,11 +421,10 @@
     const body = document.querySelector('body');
 
     (function () {
-        uploadAndShow(inpImgPerfil, imgPerfil);
-        inpImgPerfil.addEventListener('change', changeImgPerfil);
         inpImgPerfil.addEventListener('click', clickImgPerfiL);
         body.addEventListener('click', bodyClickEventListener);
         body.addEventListener('focusout', bodyFocusOutEventListener);
+        body.addEventListener('change', bodyChangeEventListener);
         tabService.addEventListener('click', clickListenerTabService);
         btnGuardar.addEventListener('click', actualizarPerfil);
         init();
@@ -479,6 +478,35 @@
 
         } else if(clases.contains('img-remover')){
             preEliminarImagenGaleria(input);
+        }
+    }
+
+    function bodyChangeEventListener(e){
+        const input = e.target;
+
+        if(input.id === "InpImgPerfil"){
+            const minHeight = $(frm).validate().settings.rules[input.name].minHeight;
+            const imgTemp = new Image();
+            imgTemp.onload = function () {
+                if(imgTemp.height < minHeight){
+                    $.smallBox({color: 'alert', content: 'La imagen debe tener un alto mínimo de 220px: '});
+                }else{
+                    const isValid = checkingValidExtension(input);
+                    if(isValid){
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $(imgPerfil).attr('src', e.target.result);
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                        //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
+                        $('#myModalCropper').modal('show');
+                    }
+                }
+            };
+            imgTemp.src = _URL.createObjectURL(input.files[0]);
         }
     }
 
@@ -704,10 +732,6 @@
             e.preventDefault();
             $('#myModalCropper').modal('show');
         }
-    }
-
-    function changeImgPerfil(){
-        $('#myModalCropper').modal('show');
     }
 
     function checkTab(){
@@ -1570,7 +1594,11 @@
                 },
                 Nota: {
                     rangelength: [10, 400]
-                }
+                },
+                InpImgPerfil:{
+                    extension: "jpg|jpeg|png",
+                    minHeight: 220
+                },
             },
             messages: {
                 Username: {

@@ -275,42 +275,36 @@
                           </li>
                         </ul>
                       </div>
-                    </li>
-                    <li>
                       <div class="form-group">
                         <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
                         <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                       </div>
-                    </li>
-                    <li>
                       <div class="form-group block-checks">
                         <label>Cuando realizas actividad física, el dolor está presente:</label>
                         <ul class="checks">
                           <li>
-                            <div class="chk-content">Siempre (incluso en reposo)
-                              <input type="checkbox" name="MomDolor" data-aka="Momento donde el dolor se hace presente" value="1" checked="checked"/><span class="checkmark"></span>
+                            <div class="chk-content chk-mom-dolor">Siempre (incluso en reposo)
+                              <input type="radio" name="MomDolor" data-aka="Momento donde el dolor se hace presente" value="1"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
-                            <div class="chk-content">Al correr
-                              <input type="checkbox" name="MomDolor" value="2"/><span class="checkmark"></span>
+                            <div class="chk-content chk-mom-dolor">Al correr
+                              <input type="radio" name="MomDolor" value="2"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
-                            <div class="chk-content">Después de correr
-                              <input type="checkbox" name="MomDolor" value="3"/><span class="checkmark"></span>
+                            <div class="chk-content chk-mom-dolor">Después de correr
+                              <input type="radio" name="MomDolor" value="3"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
                       </div>
-                    </li>
-                    <li>
-                      <div class="form-group block-checks">
-                        <label>Al correr el dolor empieza:</label>
+                      <div class="form-group block-checks hidden" id="DivDolCorrer">
+                        <label>Al correr el dolor empieza:<span class="obligatorio"></span></label>
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Al inicio
-                              <input type="checkbox" name="MomDolorIni" data-aka="Momento del dolor" value="1" checked="checked"/><span class="checkmark"></span>
+                              <input type="checkbox" name="MomDolorIni" data-aka="Momento del dolor" value="1"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1597,6 +1591,14 @@
                 validarSeleccionNA(prev,"DesPadVarios","4");
               }
             }
+
+            if(prev.name === "MomDolor"){
+              if(prev.value === "1" || prev.value === "2"){
+                $('#DivDolCorrer').removeClass('hidden');
+              }else{
+                $('#DivDolCorrer').addClass('hidden');
+              }
+            }
           }
 
           if(clases.contains('chk-content')){
@@ -1608,7 +1610,17 @@
             if(inpPadeceDe){
               validarSeleccionNA(inpPadeceDe,"DesPadVarios","4");
             }
+
+            if(clases.contains('chk-mom-dolor')){
+              const inp = input.firstElementChild;
+              if(inp.value === "1" || inp.value === "2"){
+                $('#DivDolCorrer').removeClass('hidden');
+              }else{
+                $('#DivDolCorrer').addClass('hidden');
+              }
+            }
           }
+
         }
         /* END elementos a disposición*/
 

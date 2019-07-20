@@ -2,6 +2,7 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
@@ -90,7 +91,12 @@ public class RedFitnessController {
     String enviarCorreoATodosLosRunners(
             @RequestParam String asunto,
             @RequestParam String cuerpo,
-            HttpSession session) {
+            HttpSession session) throws CustomValidationException {
+        if(cuerpo.length()>2000){
+            throw new CustomValidationException(
+                    Enums.Msg.VALIDACION_FALLIDA+", se permiten máximo 2000 caracteres",
+                    Enums.ResponseCode.EX_VALIDATION_FAILED.get());
+        }
         Integer trainerId = (Integer) session.getAttribute("id");
         return Utilitarios.jsonResponse(redFitnessService.enviarNotificacionGeneral(trainerId, asunto, cuerpo));
     }

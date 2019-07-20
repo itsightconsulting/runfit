@@ -20,8 +20,8 @@
     }
 
     .popover{
-        max-width: 400px;
-        min-width: 300px;
+        max-width: 400px !important;
+        min-width: 140px !important;
     }
 </style>
 <body>
@@ -70,10 +70,10 @@
                                         data-align="center" data-width="5%">Notas
                                     </th>
                                     <th data-formatter="formatterFechaInicialPlanificacion" data-field="fechaInicialPlanificacion" data-halign="center" data-valign="middle"
-                                        data-align="center" data-width="10%"><img class="svg" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
+                                        data-align="center" data-width="10%"><img class="svg" title="Fecha inicio de planificación" rel="tooltip" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
                                     </th>
                                     <th data-formatter="formatterFechaFinalPlanificacion" data-field="fechaFinalPlanificacion" data-halign="center" data-valign="middle"
-                                        data-align="center" data-width="10%"><img class="svg" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
+                                        data-align="center" data-width="10%"><img class="svg" title="Fecha fin de planificación" rel="tooltip" th:src="@{/img/iconos/icon_calendar.svg}+'?'+${version}">
                                     </th>
                                     <th data-formatter="linkFormatter" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="25%">Nombre y apellidos
@@ -85,7 +85,7 @@
                                         data-width="5%">Plantillas
                                     </th>
                                     <th data-formatter="fttMeses" data-halign="center" data-valign="middle" data-align="center"
-                                        data-width="10%">Meses
+                                        data-width="10%">Historial
                                     </th>
                                     <th data-formatter="fttTemporada" data-halign="center" data-valign="middle" data-align="center"
                                         data-width="10%">Temporada
@@ -108,7 +108,7 @@
     <!-- END MAIN CONTENT -->
 </div>
 <!-- MODALS -->
-<div class="modal fade" id="mdlNota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlNota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background: black">
@@ -117,10 +117,10 @@
             </div>
             <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
                 <div class="">
-                    <textarea name="NotaCliente" id="NotaCliente" cols="30" rows="3" class="form-control" maxlength="255"></textarea>
+                    <textarea name="NotaCliente" id="NotaCliente" cols="30" rows="3" class="form-control" maxlength="200"></textarea>
                 </div>
                 <br>
-                <em>Máximo 255 caracteres</em>
+                <em>Máximo 200 caracteres</em>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-md" onclick="actualizarNota()">GUARDAR CAMBIOS</button>
@@ -129,7 +129,7 @@
     </div>
 </div>
 <!-- MODAL MOSTRAR RUTINAS PLANTILLA -->
-<div class="modal fade" id="myModalPlantillas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalPlantillas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header txt-color-white bg-color-teal">
@@ -149,7 +149,7 @@
 </div>
 <!-- END MODAL CREAR MINI RUTINA -->
 <!-- MODAL PARA RUTINAS DE TIPO GENERAL -->
-<div class="modal fade" id="myModalRutGen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalRutGen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header txt-color-white bg-color-teal">
@@ -158,29 +158,31 @@
 
             </div>
             <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
-                <div class="row">
-                    <div class="col col-md-12">
-                        <div class="col col-md-6">
-                            <label for="RutFechaInicio">Fecha Inicio:</label>
-                            <input id="RutFechaInicio" type="date" class="form-control">
+                <form id="frm_nue_rut_gen" action="javascript:void(0);">
+                    <div class="row">
+                        <div class="col col-md-12">
+                            <div class="col col-md-6">
+                                <label for="RutFechaInicio">Fecha inicio:</label>
+                                <input id="RutFechaInicio" name="RutFechaInicio" type="date" class="form-control">
+                            </div>
+                            <div class="col col-md-6">
+                                <label for="RutFechaFinal">Fecha fin:</label>
+                                <input id="RutFechaFinal" name="RutFechaFinal" type="date" class="form-control">
+                            </div>
+                            <div style="margin-top:10px" class="row text-center col-md-12 padding-top-10">Total semanas: <span id="MacroTotalSemanas">0</span></div>
                         </div>
-                        <div class="col col-md-6">
-                            <label for="RutFechaFinal">Fecha Inicio:</label>
-                            <input id="RutFechaFinal" type="date" class="form-control">
-                        </div>
-                        <div style="" class="row text-center col-md-12 padding-top-10">Total semanas: <span id="MacroTotalSemanas">0</span></div>
                     </div>
-                </div>
+                </form>
                 <div id="spRaw4" class="form-group">
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="crearPrimeraRutinaGeneral()" class="btn btn-primary">CREAR RUTINA</button>
+                <button onclick="crearPrimeraRutinaGeneral(this)" class="btn btn-primary">CREAR RUTINA</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="mdlCorreoGeneral" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlCorreoGeneral" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background: black">
@@ -188,17 +190,19 @@
                 <h4 class="modal-title text-align-center"><strong>NOTIFICAR</strong></h4>
             </div>
             <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
-                <div class="form-group">
-                    <label class="">ASUNTO:</label>
-                    <input name="CPAsunto" id="CPAsunto"class="form-control">
-                </div>
-                <div class="form-group">
-                    <label class="">MENSAJE:</label>
-                    <textarea name="CPCuerpo" id="CPCuerpo" cols="30" rows="8" class="form-control"></textarea>
-                </div>
-                <input type="number" id="InpTipoNotificacion" class="hidden">
-                <input type="text" id="InpCliId" class="hidden">
-                <input type="text" id="InpCliCorreo" class="hidden">
+                <form id="frm_notif_gen" action="javascript:void(0);">
+                    <div class="form-group">
+                        <label class="">ASUNTO:</label>
+                        <input name="CPAsunto" id="CPAsunto" maxlength="100" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="">MENSAJE:</label>
+                        <textarea name="CPCuerpo" id="CPCuerpo" maxlength="2000" cols="30" rows="8" class="form-control"></textarea>
+                    </div>
+                    <input type="number" id="InpTipoNotificacion" class="hidden">
+                    <input type="text" id="InpCliId" class="hidden">
+                    <input type="text" id="InpCliCorreo" class="hidden">
+                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-md" onclick="enviarNotificacion()">ENVIAR NOTIFICACIÓN</button>
@@ -206,7 +210,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="mdlPrimerChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlPrimerChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background: black">
@@ -224,7 +228,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="mdlChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlChat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background: black">
@@ -244,7 +248,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="mdlNuevaRutina" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlNuevaRutina" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background: black">
@@ -319,7 +323,10 @@
             if(e.target.classList.contains('botTempo')){
                 e.target.setAttribute('disabled', 'disabled');
             }
-        })
+        });
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+        document.querySelector('body').addEventListener('change', bodyChangeEventListener);
+
 
         $("#btnNuevo").click(function () {
             irRegistro();
@@ -334,6 +341,33 @@
         });
 
     });
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
+
+    function bodyChangeEventListener(e) {
+        const input = e.target;
+
+        if (input.tagName === "INPUT") {
+            if (input.type === "date") {
+                if ($(input).valid()) {
+                    if (input.nextElementSibling && input.nextElementSibling.tagName === "EM") {
+                        input.nextElementSibling.remove();
+                    }
+                }
+            }
+        }
+    }
 
     function preNotificacionPersonal(rfId, cliId, cliCorreo){
 
@@ -370,7 +404,10 @@
             dataType: 'json',
             data: {msg: msj},
             success: ()=>{
-                dvChat.appendChild(htmlStringToElement(`<div class="chat-rg">${msj}</div>`));
+                dvChat.appendChild(htmlStringToElement(`
+                    <div class="chat-rg">${msj}
+                        <i class="fa fa-check pull-right"></i>
+                    </div>`));
                 $('#ChatSms').val('');
             },
             error: (err)=>{
@@ -383,14 +420,24 @@
     function reconstruirChat(chat){
         const dvChat = document.querySelector('#ChatBody');
         dvChat.innerHTML = "";
-        chat.mensajes.forEach(c=>{
-            dvChat.appendChild(htmlStringToElement(`<div class="chat-${c.esSalida ? 'lf':'rg'}">${c.msg}</div>`));
+        //Antes estaba c.esSalida en vez de ix%2
+        //<div class="chat-${c.esSalida ? 'lf':'rg'}">${c.msg}
+        //<i class="fa fa-check${ix%2===0 ? 'pull-right':''}"></i>
+
+
+        chat.mensajes.forEach((c, ix)=>{
+            dvChat.appendChild(htmlStringToElement(`
+                <div class="chat-${c.esSalida ? 'lf':'rg'}">${c.msg}
+                    <i class="fa fa-check pull-right"></i>
+                </div>`));
         });
         $('#mdlChat').modal('show');
     }
 
     function preNotificacionGeneral(){
         $('#mdlCorreoGeneral').modal('show');
+        document.querySelector('#CPAsunto').value = "";
+        document.querySelector('#CPCuerpo').value = "";
         document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.GENERAL;
     }
 
@@ -405,7 +452,11 @@
             urlDiff = 'personal';
         }
 
+        //Se valida antes de proseguir con el envio de la notificación
         if(tipoNotificacion === TipoNotificacion.GENERAL){
+            if(!$('#frm_notif_gen').valid()){
+                return;
+            }
             data.asunto = $('#CPAsunto').val();
             data.cuerpo = $('#CPCuerpo').val().replace(/\r?\n/g, '<br />').trim();
             urlDiff = 'general';
@@ -480,6 +531,7 @@
         $('#RutFechaInicio').val(dateToString(dt));
         $('#RutFechaFinal').val(dateToString(dt));
         modalEventos();
+        constraintsValidation();
     }
 
     function modalEventos(){
@@ -501,7 +553,7 @@
         const fechaFin = parseFromStringToDate(fFinRutGen.value);
         const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
         const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
-        document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+        document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.floor(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
     }
 
     function eventosGeneralesFocusOut(e){
@@ -655,7 +707,7 @@
 
     function fttNota(v, row, ix){
         let opciones = '';
-        let nota = row.nota == null?"":row.nota;
+        let nota = row.nota == null?"":row.nota.length>100 ? row.nota.substr(0,100).trim()+"..." : row.nota;
         if(nota == ""){
             opciones = `<img data-redfit-id="${row.id}" style="fill:#9d9d9d !important;" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
         }else{
@@ -797,7 +849,11 @@
         $('#myModalRutGen').modal('show');
     }
 
-    function crearPrimeraRutinaGeneral(){
+    function crearPrimeraRutinaGeneral(input){
+        input.setAttribute('disabled', 'disabled');
+        if(!$('#frm_nue_rut_gen').valid()){
+            return;
+        }
         const rutina = getBasicosNueRutGen();
         rutina.redFitnessId = typeof objForRutina.redFitId === 'undefined' ? objForRutina.id : objForRutina.redFitId;
         rutina.clienteId = objForRutina.cliId;
@@ -809,7 +865,8 @@
             contentType: "application/json",
             url: _ctx + "gestion/rutina/nueva/general",
             dataType: "json",
-            bridgeMultipart: false,
+            blockLoading: true,
+            noOne: false,
             data: JSON.stringify(rutina),
             success: function (data) {
                 const id = data.res;
@@ -817,11 +874,13 @@
                 window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn;//res.id para el caso = redFitnessId;
             },
             error: function (xhr) {
+                input.removeAttribute('disabled');
                 exception(xhr);
             },
-            complete: function () {}
-        })
+            complete: function () {
 
+            }
+        });
     }
 
     function getBasicosNueRutGen(){
@@ -1225,6 +1284,59 @@
 
     function exportarListadoAExcel(){
         new myExcelXML(users).downLoad();
+    }
+
+    function constraintsValidation(){
+
+        let nowDatePlusOne = new Date();
+        nowDatePlusOne.setDate(nowDatePlusOne.getDate()+1);
+        nowDatePlusOne = parseFromStringToDate(getFechaFormatoString(nowDatePlusOne));
+        let miniumPlusDaysForValidRoutine = 7*6//6 Semanas mínimo
+
+        $('#frm_notif_gen').validate({
+            rules:{
+                CPAsunto: {
+                    required: true,
+                    rangelength: [5, 100],
+                    letterandnumber: true
+                },
+                CPCuerpo: {
+                    required: true,
+                    rangelength: [5, 2000],
+                }
+            },
+            messages:{
+
+            }
+        });
+
+        $('#frm_nue_rut_gen').validate({
+            rules:{
+                RutFechaInicio: {
+                    greaterThanDate: nowDatePlusOne,
+                    isSpecificDay : 1
+                },
+                RutFechaFinal: {
+                    minimumDifference: function(){
+                        return  $('#RutFechaInicio').val()
+                    },
+                    maximumDifference: function(){
+                        return  $('#RutFechaInicio').val()
+                    },
+                    greaterThanDate: function(){
+                        const final = parseFromStringToDate($('#RutFechaInicio').val());
+                        final.setDate(final.getDate()+(miniumPlusDaysForValidRoutine-1));
+                        return parseFromStringToDate(getFechaFormatoString(final));
+                    },
+                    isSpecificDay : 0
+                }
+            },
+            messages:{
+
+            }
+        })
+
+
     }
 </script>
 
