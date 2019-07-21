@@ -102,4 +102,12 @@ public class UserSsoDTO implements Serializable {
     public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 }
