@@ -2,7 +2,10 @@ package com.itsight;
 
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.UserSsoDTO;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.web.bind.annotation.*;
@@ -159,19 +162,19 @@ public class RestDemoController {
 
     @GetMapping("")
     public @ResponseBody
-    ModelAndView listaPX(@RequestParam(required=false) String token, @RequestParam(required=false) String error, ModelAndView modelAndView) {
+    ModelAndView listaPX(@RequestParam(required=false) String token, @RequestParam(required=false) String error) {
         if(error != null && error.length()>0){
-            return new ModelAndView(ViewConstant.P_ERROR404);
+            return new ModelAndView(ViewConstant.MAIN_INF_N, "msg", error);
         }
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
         HttpEntity<String> entities = new HttpEntity<>(headers);
-        ResponseEntity<UserSsoDTO> responseObj = restTemplate.exchange("http://127.0.0.1:8080/user/me", HttpMethod.GET, entities, UserSsoDTO.class);
+        //heroku url http://127.0.0.1:8080/user/me
+        ResponseEntity<UserSsoDTO> responseObj = restTemplate.exchange("https://gentle-earth-11801.herokuapp.com/user/me", HttpMethod.GET, entities, UserSsoDTO.class);
         UserSsoDTO userBySso = responseObj.getBody();
         ModelAndView mav = new ModelAndView(ViewConstant.LOGIN);
         mav.addObject("usso", userBySso);
         return mav;
     }
-
 }
