@@ -38,11 +38,19 @@
 </head>
 <body>
 <div class="login active">
-    <a class="back" th:href="@{/p/inicio}"><span class="fa fa-chevron-left"></span></a>
+    <a class="back" th:classappend="${usso != null ? 'hidden': ''}"
+    th:href="@{/p/inicio}"><span class="fa fa-chevron-left"></span></a>
     <div class="avatar">
         <img th:src="@{/img/public/logo.png}+'?'+${version}"/>
     </div>
-    <div class="login-sesion-alt">
+    <th:block th:if="${usso != null}">
+    <div id="SsoLogin" class="" style="
+        text-align: center;
+        color: #a8fa00;">
+        <i class="fa fa-spinner fa-spin fa-4x"></i>
+    </div>
+    </th:block>
+    <div class="login-sesion-alt" th:classappend="${usso != null ? 'hidden': ''}">
         <form id="login-form" action="#" th:action="@{/loginCheck}" method="post">
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Usuario</label>
@@ -51,7 +59,7 @@
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Contraseña</label>
-                <input type="password" th:value="${usso != null ? 'runfit123oauth' : ''}" id="password" name="password" placeholder="Password" maxlength="30"/>
+                <input type="password" th:value="${usso != null ? usso.secret : ''}" id="password" name="password" placeholder="Password" maxlength="30"/>
             </div>
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
             <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
@@ -150,6 +158,8 @@
 
 
 <script>
+    const ssoLogin = document.getElementById('SsoLogin');
+
     $(function () {
 
         const btnLogin = document.getElementById('btn-login');
@@ -207,6 +217,10 @@
             document.querySelector('input[name="username"]').value = "trainer1@runfit.pe";
             document.querySelector('input[name="password"]').value = "runfit";
             document.getElementById('login-form').submit();
+        }
+
+        if(ssoLogin){
+            btnLogin.click();
         }
     });
 
