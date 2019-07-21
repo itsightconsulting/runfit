@@ -18,6 +18,8 @@ public class UserSsoDTO implements Serializable {
 
     private String password;
 
+    private String secret;
+
     private AuthProvider provider;
 
     private String providerId;
@@ -25,13 +27,14 @@ public class UserSsoDTO implements Serializable {
     public UserSsoDTO() {
     }
 
-    public UserSsoDTO(Long id, String name, String email, String imageUrl, Boolean emailVerified, String password, AuthProvider provider, String providerId) {
+    public UserSsoDTO(Long id, String name, String email, String imageUrl, Boolean emailVerified, String password, String secret, AuthProvider provider, String providerId) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.imageUrl = imageUrl;
         this.emailVerified = emailVerified;
         this.password = password;
+        this.secret = secret;
         this.provider = provider;
         this.providerId = providerId;
     }
