@@ -1,17 +1,19 @@
 package com.itsight;
 
+import com.itsight.constants.ViewConstant;
+import com.itsight.domain.dto.UserSsoDTO;
+import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/oauth2/redirect")
 public class RestDemoController {
 
     /*@Autowired
@@ -154,4 +156,22 @@ public class RestDemoController {
         System.out.println(result.get("returnvalue"));
         return "1";
     }
+
+    @GetMapping("")
+    public @ResponseBody
+    ModelAndView listaPX(@RequestParam(required=false) String token, @RequestParam(required=false) String error, ModelAndView modelAndView) {
+        if(error != null && error.length()>0){
+            return new ModelAndView(ViewConstant.P_ERROR404);
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<String> entities = new HttpEntity<>(headers);
+        ResponseEntity<UserSsoDTO> responseObj = restTemplate.exchange("http://127.0.0.1:8080/user/me", HttpMethod.GET, entities, UserSsoDTO.class);
+        UserSsoDTO userBySso = responseObj.getBody();
+        ModelAndView mav = new ModelAndView(ViewConstant.LOGIN);
+        mav.addObject("usso", userBySso);
+        return mav;
+    }
+
 }

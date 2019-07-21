@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // TODO Auto-generated method stub
         //http.csrf().disable();
-        http.authorizeRequests().antMatchers("/rest/**", "/p/**", "/postulacion/**").permitAll();
+        http.authorizeRequests().antMatchers("/rest/**", "/oauth2/**","/p/**", "/postulacion/**").permitAll();
         //http.addFilterAfter(new AjaxAuthenticationFilter(), BasicAuthenticationFilter.class);
         http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()

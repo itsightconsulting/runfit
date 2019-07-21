@@ -46,7 +46,7 @@ public interface SecurityUserRepository extends JpaRepository<SecurityUser, Inte
     void actualizarPassword(String password, Integer id);
 
     @Query("SELECT S.id FROM SecurityUser S WHERE S.username = ?1")
-    Integer findUsernameByUsername(String username);
+    Integer findUsernameExists(String username);
 
     @Procedure(name = "fn_validacion_correo")
     Boolean findCorreoExist(@Param("_correo") String correo);

@@ -249,7 +249,7 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
 
     @Override
     public String validarUsername(String username) {
-        return securityUserRepository.findUsernameByUsername(username)==null?"1":"0";
+        return securityUserRepository.findUsernameExists(username)==null?"1":"0";
     }
 
     @Override

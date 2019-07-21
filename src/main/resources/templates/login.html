@@ -46,12 +46,12 @@
         <form id="login-form" action="#" th:action="@{/loginCheck}" method="post">
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Username" maxlength="30"/>
+                <input type="text" th:value="${usso != null ? usso.email : ''}" id="username" name="username" placeholder="Username" maxlength="30"/>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Password" maxlength="30"/>
+                <input type="password" th:value="${usso != null ? 'runfit123oauth' : ''}" id="password" name="password" placeholder="Password" maxlength="30"/>
             </div>
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
             <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
@@ -65,6 +65,8 @@
             </div>
             <div class="actions">
                 <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
+                <button class="btn-face" type="button"
+                onclick="javascript: window.location.href = 'http://52.186.67.112:8070/oauth2/authorize/facebook?redirect_uri=http://52.186.67.112:8080/oauth2/redirect'">INGRESA CON FACEBOOK</button>
                 <a id="btn-nuevo" class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
             </div>
         </form>
