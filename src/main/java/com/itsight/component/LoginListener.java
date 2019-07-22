@@ -77,7 +77,7 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
 
                 String favRutId = configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name());
-                if(!favRutId.equals("")){
+                if(favRutId != null && !favRutId.equals("")){
                     response.addCookie(
                             createCookie(GLL_FAV_RUTINA.name(),
                             Parseador.getEncodeHash32Id(
