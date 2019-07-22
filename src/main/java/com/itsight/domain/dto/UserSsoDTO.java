@@ -110,19 +110,4 @@ public class UserSsoDTO implements Serializable {
     public void setSecret(String secret) {
         this.secret = secret;
     }
-
-    @Override
-    public String toString() {
-        return "UserSsoDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", emailVerified=" + emailVerified +
-                ", password='" + password + '\'' +
-                ", secret='" + secret + '\'' +
-                ", provider=" + provider +
-                ", providerId='" + providerId + '\'' +
-                '}';
-    }
 }
