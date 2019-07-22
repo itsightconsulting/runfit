@@ -485,11 +485,11 @@ function validLoginForm(){
             rules: {
                 username: {
                     required: true,
+                    rangelength: [7, 40]
                 },
                 password: {
                     required: true,
-                    minlength: 5,
-                    maxlength: 20
+                    rangelength: [8, 30]
                 }
             },
             // Messages for form validation

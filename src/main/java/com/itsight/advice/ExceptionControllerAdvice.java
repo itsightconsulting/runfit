@@ -59,18 +59,19 @@ public class ExceptionControllerAdvice {
         return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public @ResponseBody
-    ResponseEntity<String> handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
+    public @ResponseBody ErrorResponse handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
         ConstraintViolationException exx = (ConstraintViolationException) ex.getCause();
         LOGGER.warn(ex.getMostSpecificCause());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        if(!exx.getSQLException().getSQLState().equals("23505")){
-            return new ResponseEntity<>(EX_SQL_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
+        String sqlStateCode = exx.getSQLException().getSQLState();
+        if(!sqlStateCode.equals("23505")){
+            return new ErrorResponse(EX_SQL_EXCEPTION.get(), sqlStateCode);
         }else{
-            return new ResponseEntity<>("No puede insertar nombres ya registrados", HttpStatus.BAD_REQUEST);
+            return new ErrorResponse("No puede insertar nombres ya registrados", sqlStateCode);
         }
     }
 

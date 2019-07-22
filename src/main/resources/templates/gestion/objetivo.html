@@ -102,20 +102,20 @@
                                         <fieldset>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Nombre: </label>
+                                                    <label class="label">Nombre<span class="req">*</span></label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="Nombre" name="Nombre" type="text"
-                                                               placeholder="Nombre" class="" maxlength="38"
+                                                               placeholder="Nombre" class=""
                                                                autocomplete="off"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                         <input id="Id" name="Id" type="hidden" value="0"/>
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Descripción: </label>
+                                                    <label class="label">Descripción<span class="req">*</span></label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="Descripcion" name="Descripcion" type="text"
-                                                               placeholder="Descripción" class="" maxlength="140"
+                                                               placeholder="Descripción" class=""
                                                                autocomplete="off"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     </label>
@@ -203,6 +203,8 @@ you can add as many as you like
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const body = document.querySelector('body');
+    const frm = document.querySelector('#frm_registro');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
 
@@ -212,6 +214,7 @@ you can add as many as you like
     $(function () {
 
         pageSetUp();
+        init();
         listarRegistros();
 
         //V A L I D A T E
@@ -239,6 +242,23 @@ you can add as many as you like
         });
 
     });
+
+    function init(){
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
 
     function listarRegistros() {
 
@@ -271,9 +291,9 @@ you can add as many as you like
     }
 
     function registro() {
-        if ($("#frm_registro").valid()) {
+        if ($(frm).valid()) {
 
-            var params = getFormData($("#frm_registro"));
+            var params = getFormData($(frm));
             params.flagActivo = $('#FlagActivo').is(':checked');
 
             $.ajax({
@@ -282,6 +302,8 @@ you can add as many as you like
                 url: _ctx + 'gestion/objetivo/agregar',
                 dataType: "json",
                 data: params,
+                blockLoading: true,
+                noOne: false,
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
                         if (data == "-9") {
@@ -302,10 +324,15 @@ you can add as many as you like
                 error: function (xhr) {
                     exception(xhr);
                 },
-                complete: function () {
-                    limpiarBusqueda();
-                    irListado($index);
-                    listarRegistros();
+                complete: function (xhr) {
+                    if(xhr.status === 200){
+                        limpiarBusqueda();
+                        irListado($index);
+                        listarRegistros();
+                    }else{
+                        $('#Nombre')[0].parentElement.classList.add('state-error');
+                        $('#Nombre')[0].parentElement.classList.remove('state-success');
+                    }
                 }
             });
         }
@@ -398,7 +425,7 @@ you can add as many as you like
         return desactivar;
     }
 
-    function isActived(value, row, index) {
+    function isActived(value, row) {
         if (row.flagActivo) {
             return '<span class="label label-success">Activo</span>';
         } else {
@@ -407,7 +434,7 @@ you can add as many as you like
     }
 
     function validarRegistros() {
-        $("#frm_registro").validate({
+        $(frm).validate({
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -419,26 +446,26 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    maxlength: $("#Nombre").prop("maxlength"),
+                    rangelength: [2, 50],
+                    lettersonly: true
                 },
                 Descripcion: {
                     required: true,
-                    maxlength: $("#Descripcion").prop("maxlength"),
+                    rangelength: [2, 50],
+                    lettersonly: true
                 },
             },
             messages: {
-                Nombre: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
-                Descripcion: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
             },
             submitHandler: function () {
                 registro();
             }
+        });
+
+        //Seteando los Maxlength según rangelength property
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
     /*]]>*/

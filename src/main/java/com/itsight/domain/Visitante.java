@@ -34,7 +34,6 @@ public class Visitante {
     @Column(name = "Correo", unique = true, updatable = false)
     private String correo;
 
-
     @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

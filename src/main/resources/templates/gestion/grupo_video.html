@@ -171,7 +171,7 @@
 </div>
 <!-- MODALS -->
 <!-- MODAL VISUALIZACION IMAGEN-->
-<div class="modal fade" id="myModalImagen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalImagen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-body">
@@ -235,6 +235,7 @@ you can add as many as you like
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const body = document.querySelector('body');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
     let objEdicion = {};

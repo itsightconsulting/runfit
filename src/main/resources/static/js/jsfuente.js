@@ -293,13 +293,22 @@ function exception(xhr, errorName) {
                         });
                         smallBoxAlertValidation2(errors);
                     }else{
-
+                        if(typeof xhr.responseJSON == 'object' && typeof xhr.responseJSON.message !== 'undefined'){
+                            $.smallBox({
+                                content: "<i> "+xhr.responseJSON.message+"</i>",
+                                color: "#8a6d3b",
+                                iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                                timeout: 5000,
+                            });
+                        }else{
                             $.smallBox({
                                 content: "<i> Usted ha realizado una petición incorrecta...</i>",
                                 color: "#8a6d3b",
                                 iconSmall: "fa fa-info fa-3x fadeInRight animated",
                                 timeout: 5000,
                             });
+                        }
+
 
                     }
                 } else if(xhr["status"] === 409){
