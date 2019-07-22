@@ -173,6 +173,7 @@ public class RestDemoController {
         //heroku url http://127.0.0.1:8080/user/me
         ResponseEntity<UserSsoDTO> responseObj = restTemplate.exchange("https://gentle-earth-11801.herokuapp.com/user/me", HttpMethod.GET, entities, UserSsoDTO.class);
         UserSsoDTO userBySso = responseObj.getBody();
+        System.out.println(responseObj.getBody().toString());
         ModelAndView mav = new ModelAndView(ViewConstant.LOGIN);
         mav.addObject("usso", userBySso);
         return mav;
