@@ -242,7 +242,7 @@ you can add as many as you like
     $(function () {
 
         pageSetUp();
-        init()
+        init();
         listarRegistros();
 
         //V A L I D A T E
@@ -329,20 +329,18 @@ you can add as many as you like
                 data: params,
                 blockLoading: true,
                 noOne: false,
-                success: function (data, textStatus) {
-                    if (textStatus == "success") {
-                        if (data == "-9") {
-                            $.smallBox({
-                                content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",
-                                timeout: 4500,
-                                color: "alert",
-                            });
-                        }
-                        if (params.id > 0) {
-                            $.smallBox({
-                                content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
-                            });
-                        }
+                success: function (data) {
+                    if (data == "-9") {
+                        $.smallBox({
+                            content: "<i> La operación ha fallado debido a que el nombre de cliente ya existe en el sistema...</i>",
+                            timeout: 4500,
+                            color: "alert",
+                        });
+                    }
+                    if (params.id > 0) {
+                        $.smallBox({
+                            content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
+                        });
                     }
                 },
                 error: function (xhr) {

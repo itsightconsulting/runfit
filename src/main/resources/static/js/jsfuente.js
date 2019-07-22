@@ -177,7 +177,6 @@ function detail_hide() {
 }
 
 function irRegistro(wildcard) {
-    console.log('....r0');
 
     $('#btnNuevo').css('display', 'none');
     $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
@@ -191,11 +190,8 @@ function irRegistro(wildcard) {
 }
 
 function irListado(x) {
-    console.log('....0');
     x[0]["defaultValue"] = 0;//EQUALS TO HIDDEN ID
     $('#view_register').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        console.log('.....1');
-
         $('#view_register').hide();
         $('#btnNuevo').css('display', 'block');
         console.log('.....1.1');
@@ -955,5 +951,9 @@ $(document).ready(()=>{
             }
         })
     }
-})
+});
+
+function getTimestampUnix(){
+    return new Date().getTime();
+}
 

@@ -437,7 +437,7 @@ function bodyChangeEventListener(e){
         const imgTemp = new Image();
         imgTemp.onload = function () {
             if(imgTemp.height < minHeight){
-                $.smallBox({color: 'alert', content: 'La imagen debe tener un alto mínimo de 220px: '});
+                $.smallBox({color: 'alert', content: `La imagen debe tener un alto mínimo de ${minHeight}px`});
             }else{
                 const isValid = checkingValidExtension(input);
                 if(isValid){

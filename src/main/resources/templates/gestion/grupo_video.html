@@ -109,17 +109,17 @@
                                     <form id="frm_registro" class="smart-form">
                                         <fieldset class="">
                                             <section class="">
-                                                <label class="label">Nombre: </label>
+                                                <label class="label">Nombre<span class="req">*</span></label>
                                                 <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                     <input id="Nombre" name="Nombre" type="text" placeholder="Nombre"
-                                                           class="" maxlength="30" autocomplete="off"/>
+                                                           class="" autocomplete="off"/>
                                                     <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     <input id="Id" name="Id" type="hidden" value="0"/>
                                                     <input id="NombreMedia" type="hidden" value=""/>
                                                 </label>
                                             </section>
                                             <section class="">
-                                                <label class="label">Imagen: </label>
+                                                <label class="label">Imagen<span class="req">*</span></label>
                                                 <div class="input input-file">
                                                     <label class="input"><i class="icon-append fa fa-image"></i>
                                                         <input id="UploadImage" name="UploadImage" type="file"
@@ -236,6 +236,7 @@ you can add as many as you like
 <script th:inline="javascript">
     /*<![CDATA[*/
     const body = document.querySelector('body');
+    const frm = document.querySelector('#frm_registro');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
     let objEdicion = {};
@@ -243,6 +244,7 @@ you can add as many as you like
     $(function () {
 
         pageSetUp();
+        init();
         listarRegistros();
         subirImagen();
 
@@ -280,6 +282,23 @@ you can add as many as you like
 
     });
 
+    function init(){
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
+
     function listarRegistros() {
 
         if ($("#frm_busqueda").valid()) {
@@ -311,11 +330,14 @@ you can add as many as you like
     }
 
     function registro() {
-        if ($("#frm_registro").valid()) {
-            var params = getFormData($("#frm_registro"))
+        if ($(frm).valid()) {
+            $('#frm_registro input').attr('readonly', true);
+            $('#frm_registro button').attr('disabled', true);
+
+            var params = getFormData($(frm));
             params.flagActivo = $('#FlagActivo').is(':checked');
             var fileImagenGrupo = $("#UploadImage").get(0);
-            params.extImg = getFileExtension(fileImagenGrupo.files[0].name);
+            params.extImg = ".jpg";
 
             $.ajax({
                 type: 'POST',
@@ -323,22 +345,40 @@ you can add as many as you like
                 url: _ctx + 'gestion/grupo-video/agregar',
                 dataType: "json",
                 data: params,
-                success: function (res, textStatus) {
-                    if(objEdicion.id){
-                        const res = {};
-                        res.rdm = objEdicion.rutaWeb.split(".")[0];
-                        res.res = objEdicion.id;
-                        addImage(res);
-                    }else{
-                        addImage(res);
-                    }
+                blockLoading: true,
+                noOne: false,
+                success: function (res) {
+                    const gvId = objEdicion.id;
+                    setTimeout(() => {
+                        if(gvId){
+                            if (fileImagenGrupo.files[0] != null) {
+                                addImage(res);
+                            }else{
+                                $.smallBox({content: 'Actualización exitosa'});
+                                irListado($index);
+                                listarRegistros();
+                                $('#frm_registro input').removeAttr('readonly', true);
+                                $('#frm_registro button').removeAttr('disabled', true);
+                            }
+                        }else{
+                            addImage(res);
+                        }
+                    }, 400);
+
                 },
                 error: function (xhr) {
+                    $('#frm_registro input').removeAttr('readonly', true);
+                    $('#frm_registro button').removeAttr('disabled', true);
                     exception(xhr);
                 },
-                complete: function () {
+                complete: function (xhr) {
                     objEdicion = {};
-                    limpiarBusqueda();
+                    if(xhr.status === 200) {
+                        limpiarBusqueda();
+                    } else{
+                        $('#Nombre')[0].parentElement.classList.add('state-error');
+                        $('#Nombre')[0].parentElement.classList.remove('state-success');
+                    }
                 }
             });
         }
@@ -367,7 +407,8 @@ you can add as many as you like
                         :
                         $('#FlagActivoOff').prop('checked', true);
                     //Previsualizando la imagen
-                    var rutaWeb = data.id + "/" + data.rutaWeb;
+                    const version = getTimestampUnix();
+                    var rutaWeb = data.id + "/" + data.uuid+data.extImg +'?'+version;
                     $('#ImagenGrupo').attr('src', 'https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/'+rutaWeb);
                 }
             },
@@ -431,13 +472,10 @@ you can add as many as you like
         const grupoVideoId = d.res;
         const rdmUUID = d.rdm;
         var fileImagenGrupo = $("#UploadImage").get(0);
-        var files = fileImagenGrupo.files;
-        if (files[0] != null) {
-
-            var data = new FormData();
-            data.append("imagen", fileImagenGrupo.files[0]);
-            data.append("grupoId", grupoVideoId);
-            data.append("randomUUID", rdmUUID);
+        var data = new FormData();
+        data.append("imagen", fileImagenGrupo.files[0]);
+        data.append("grupoId", grupoVideoId);
+        data.append("randomUUID", rdmUUID);
 
             $.ajax({
                 type: 'POST',
@@ -445,6 +483,8 @@ you can add as many as you like
                 data: data,
                 contentType: false,
                 processData: false,
+                blockLoading: true,
+                noOne: false,
                 xhr: function () {
                     var myXhr = $.ajaxSettings.xhr();
                     if (myXhr.upload) {
@@ -463,15 +503,10 @@ you can add as many as you like
                 complete: function () {
                     listarRegistros();
                     irListado($index);
+                    $('#frm_registro input').removeAttr('readonly', true);
+                    $('#frm_registro button').removeAttr('disabled', true);
                 }
             });
-        } else {
-            if (initId > 0) {
-                $.smallBox({content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",});
-                listarRegistros();
-                irListado($index);
-            }
-        }
         $('#ImagenGrupo').attr('src', _ctx + 'img/upload-empty.png');
     }
 
@@ -494,9 +529,16 @@ you can add as many as you like
             var file, img;
             if ((file = this.files[0])) {
                 img = new Image();
+                const minHeight = $(frm).validate().settings.rules[this.name].minHeight;
+                const input = this;
                 img.onload = function () {
-                    //Previsualizar
-                    readURL($("#UploadImage")[0]);
+                    if(img.height < minHeight){
+                        $.smallBox({color: 'alert', content: `La imagen debe tener un alto mínimo de ${minHeight}px`});
+                        input.value = null;
+                    }else {
+                        //Previsualizar
+                        readURL($("#UploadImage")[0]);
+                    }
                 };
                 img.onerror = function () {
                     $('#UploadImage').val("");
@@ -517,10 +559,12 @@ you can add as many as you like
     }
 
     function Opciones(value, row, index) {
+        const version = getTimestampUnix();
+        const rutaWeb = row.id + "/" + row.uuid + row.extImg + '?'+version;
         var opciones =
             `<a href='#' onclick='javascript:desactivar(${row.id},${index});' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp
-		            		 <a href='#' data-toggle="modal" data-target="#myModalImagen" onclick='javascript:visualizar("${row.id+'/'+row.rutaWeb}");' title='Visualizar imagen'><i class='fa fa-eye fa-2x'></i></a> &nbsp
-		            		 <a class='font-sx' href='https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${row.id+'/'+row.rutaWeb}' title='Descargar imagen'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
+		            		 <a href='#' data-toggle="modal" data-target="#myModalImagen" onclick='javascript:visualizar("${rutaWeb}");' title='Visualizar imagen'><i class='fa fa-eye fa-2x'></i></a> &nbsp
+		            		 <a class='font-sx' href='https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${rutaWeb}' title='Descargar imagen'><i class='fa fa-download fa-2x'></i></a> &nbsp`;
         return opciones;
     }
 
@@ -533,7 +577,7 @@ you can add as many as you like
     }
 
     function validarRegistros() {
-        $("#frm_registro").validate({
+        $(frm).validate({
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -545,25 +589,30 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    maxlength: $("#Nombre").prop("maxlength"),
+                    rangelength: [2, 50],
+                    lettersonly: true
                 },
                 UploadImage: {
                     required: () => {
                         return $('#Id').val() > 0 ? false : true;
                     },
+                    extension: "jpg|jpeg|png|bmp",
+                    minHeight: 220,
                 },
             },
             messages: {
-                Nombre: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
-                },
                 UploadImage: {
                     required: "La subida de la imagen es obligatoria",
                 }
             },
             submitHandler: function () {
             }
+        });
+
+        //Seteando los Maxlength según rangelength property
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
 

@@ -54,7 +54,7 @@ public class Cliente extends AuditingEntity implements Serializable {
     @Column(nullable = false)
     private String numeroDocumento;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String correo;
 
     @Column(length = 16)

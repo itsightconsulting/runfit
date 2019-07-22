@@ -33,7 +33,7 @@ public class PostulanteTrainer {
     @Column(nullable = false)
     private String nombreFull;
 
-    @Column(unique = true, nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String correo;
 
     @Column(nullable = false)

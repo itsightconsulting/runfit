@@ -72,8 +72,11 @@ public interface BaseService<T, V> {
         if (!file.isEmpty()) {
 
             String extension;
-            if(file.getOriginalFilename().equals("blob")){
-                extension = "." + credentials.getExtension();
+            if(credentials.getExtension() != null && !credentials.getExtension().equals("")){
+                extension = credentials.getExtension();
+            //}
+            //if(file.getOriginalFilename().equals("blob")){
+            //    extension = "." + credentials.getExtension();//Al enum JPEG='.jpg' se le hace un substring a partir de 1
             } else {
                 extension = "."+file.getContentType().split("/")[1];
             }
@@ -99,6 +102,7 @@ public interface BaseService<T, V> {
 
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(file.getSize());
+                /*metadata.setContentDisposition("attachment");*/
 
                 PutObjectRequest request = new PutObjectRequest(
                     credentials.getBucket(),
@@ -143,8 +147,8 @@ public interface BaseService<T, V> {
             if (!file.isEmpty()) {
                 String extension;
 
-                if(file.getOriginalFilename().equals("blob")){
-                    extension = "." + credentials.getExtension();
+                if(file.getOriginalFilename().equals("blob")){//Aquí es necesario mantener el else file.getContentType() ya que mediante este metodo se podrían subir diferentes tipos de archivos(imgs,pdfs,docs)
+                    extension = credentials.getExtension();
                 }else{
                     if(file.getContentType().startsWith("image")){
                         extension = JPEG.get();

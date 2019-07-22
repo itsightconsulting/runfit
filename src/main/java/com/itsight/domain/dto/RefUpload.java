@@ -21,6 +21,6 @@ public class RefUpload {
 
     public void setExtFile(String extFile) {
         this.uuid = UUID.randomUUID();
-        this.extFile = "."+extFile;
+        this.extFile = extFile;
     }
 }

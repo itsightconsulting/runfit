@@ -15,7 +15,7 @@ public class Parametro {
     @Column(name = "ParametroId")
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String clave;
 
     @Column(nullable = false)

@@ -726,7 +726,7 @@ function instanciarGrupoVideos(effImg){
                     let rawHTMLCabecera = '';
                     rawHTMLCabecera +='<div class="container-fluid padding-0">'
                     data.forEach(grupoVideo => {
-                        const rrWeb = grupoVideo.id+"/"+grupoVideo.rutaWeb;
+                        const rrWeb = grupoVideo.id+"/"+grupoVideo.uuid + grupoVideo.extImg;
                         rawHTMLCabecera +=
                             `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="container-fluid padding-0">

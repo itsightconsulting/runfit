@@ -41,7 +41,7 @@ public class GrupoVideo implements Identifiable {
     @Column(name = "GrupoVideoId")
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nombre;
 
     @Column()

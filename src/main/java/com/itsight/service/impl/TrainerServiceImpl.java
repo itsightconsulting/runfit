@@ -20,7 +20,6 @@ import com.itsight.repository.TrainerRepository;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Enums.ResponseCode;
-import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
@@ -34,8 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,7 +42,8 @@ import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Mail.*;
 import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
-import static com.itsight.util.Enums.TipoTrainer.*;
+import static com.itsight.util.Enums.TipoTrainer.EMPRESA;
+import static com.itsight.util.Enums.TipoTrainer.PARTICULAR;
 import static com.itsight.util.Enums.TipoUsuario.ENTRENADOR;
 
 @Service

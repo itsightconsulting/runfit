@@ -6,6 +6,7 @@ import com.itsight.domain.GrupoVideo;
 import com.itsight.domain.dto.RefUpload;
 import com.itsight.domain.dto.RefUploadIds;
 import com.itsight.service.GrupoVideoService;
+import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
+import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
 import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
 import static com.itsight.util.Utilitarios.jsonResponse;
@@ -71,7 +73,7 @@ public class GrupoVideoController extends BaseController {
             return jsonResponse(String.valueOf(refUpload.getId()),
                     refUpload.getUuid().toString());
         }
-        return jsonResponse(grupoVideoService.actualizar(grupoVideo, null));
+        return grupoVideoService.actualizar(grupoVideo, null);
     }
 
     @PutMapping(value = "/desactivar")
@@ -91,7 +93,7 @@ public class GrupoVideoController extends BaseController {
             @RequestPart MultipartFile imagen,
             @RequestParam(value = "grupoId") Integer grupoId,
             @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return jsonResponse(grupoVideoService.subirFile(imagen, grupoId, uuid, null));
+        return jsonResponse(grupoVideoService.subirFile(imagen, grupoId, uuid, JPEG.get()));
     }
 
     private void guardarFile(MultipartFile file, int grupoId) {

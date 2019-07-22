@@ -31,7 +31,7 @@ public class Visitante {
     @Column(name = "Apellidos", nullable = false)
     private String apellidos;
 
-    @Column(name = "Correo", unique = true, updatable = false)
+    @Column(name = "Correo", updatable = false)
     private String correo;
 
     @JsonManagedReference

@@ -158,7 +158,7 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
         entity.setRutaReal(qGrupoVideo.getRutaReal());
         entity.setUuid(qGrupoVideo.getUuid());
         repository.saveAndFlush(entity);
-        return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(entity.getId()));
+        return Utilitarios.jsonResponse(String.valueOf(entity.getId()), qGrupoVideo.getUuid().toString());
     }
 
     @Override

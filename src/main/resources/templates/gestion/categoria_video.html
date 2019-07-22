@@ -60,7 +60,7 @@
                                         <div class="col-md-2 mrg">
                                             <select name="GrupoVideo" id="GrupoVideo" class="form-control input-sm ignore">
                                                 <option value="">-- Todos --</option>
-                                                <option th:each="t : ${lstGrupoVideo}" th:value="${t.id}"
+                                                <option th:if="${t.flagActivo}" th:each="t : ${lstGrupoVideo}" th:value="${t.id}"
                                                         th:text="${t.nombre}"/>
                                             </select>
                                         </div>
@@ -123,10 +123,10 @@
                                         <fieldset>
                                             <div class="">
                                                 <section class="">
-                                                    <label class="label">Nombre: </label>
+                                                    <label class="label">Nombre<span class="req">*</span></label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="Nombre" name="Nombre" type="text"
-                                                               placeholder="Nombre" class="" maxlength="38"
+                                                               placeholder="Nombre" class=""
                                                                autocomplete="off"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                         <input id="Id" name="Id" type="hidden" value="0"/>
@@ -134,7 +134,7 @@
                                                 </section>
                                             </div>
                                             <section class="">
-                                                <label class="label">Categoría Ejercicio: </label>
+                                                <label class="label">Categoría Ejercicio<span class="req">*</span></label>
                                                 <label class="input">
                                                     <select id="GrupoVideoId" name="GrupoVideoId"
                                                             class="form-control">
@@ -227,12 +227,15 @@ you can add as many as you like
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const body = document.querySelector('body');
+    const frm = document.querySelector('#frm_registro');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
 
     $(function () {
 
         pageSetUp();
+        init();
         listarRegistros();
 
         //V A L I D A T E
@@ -261,6 +264,23 @@ you can add as many as you like
         });
 
     });
+
+    function init(){
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
 
     function listarRegistros() {
 
@@ -298,10 +318,10 @@ you can add as many as you like
     }
 
     function registro() {
-        if ($("#frm_registro").valid()) {
+        if ($(frm).valid()) {
             var $btn = $("#btnGuardar");
             $btn.button('loading');
-            var params = getFormData($("#frm_registro"))
+            var params = getFormData($(frm))
             params.flagActivo = $('#FlagActivo').is(':checked');
             $.ajax({
                 type: 'POST',
@@ -309,6 +329,8 @@ you can add as many as you like
                 url: _ctx + 'gestion/categoria-video/agregar',
                 dataType: "json",
                 data: params,
+                blockLoading: true,
+                noOne: false,
                 success: function (res, textStatus) {
                     data = res.res;
                     if (textStatus == "success") {
@@ -437,7 +459,7 @@ you can add as many as you like
     }
 
     function validarRegistros() {
-        $("#frm_registro").validate({
+        $(frm).validate({
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -449,7 +471,8 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    maxlength: $("#Nombre").prop("maxlength"),
+                    rangelength: [2, 50],
+                    lettersonly: true
                 },
                 GrupoVideoId:{
                     required: true,

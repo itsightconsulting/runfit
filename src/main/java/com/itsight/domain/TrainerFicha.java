@@ -259,7 +259,7 @@ public class TrainerFicha implements Serializable {
     @Column(nullable = false, updatable = false)
     private String extFp;
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String nomPag;
 
     @Column(nullable = true)
