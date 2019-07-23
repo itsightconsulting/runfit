@@ -36,7 +36,7 @@ public class CategoriaVideoController {
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal(Model model) {
-        model.addAttribute("lstGrupoVideo", grupoVideoService.findAll());
+        model.addAttribute("lstGrupoVideo", grupoVideoService.findByFlagActivo(true));
         return new ModelAndView(ViewConstant.MAIN_ASSETS_CATEGORIA_VIDEO);
     }
 
