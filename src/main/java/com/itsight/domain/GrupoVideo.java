@@ -48,9 +48,6 @@ public class GrupoVideo implements Identifiable {
     private String rutaWeb;
 
     @Column()
-    private String rutaReal;
-
-    @Column()
     private UUID uuid;
 
     @Column()
@@ -83,12 +80,11 @@ public class GrupoVideo implements Identifiable {
         this.forest = new BagForest(forestId);
     }
 
-    public GrupoVideo(String nombre, Integer forestId, boolean flagActivo, String rutaWeb, String rutaReal, UUID uuid) {
+    public GrupoVideo(String nombre, Integer forestId, boolean flagActivo, String rutaWeb, UUID uuid) {
         this.nombre = nombre;
         this.forest = new BagForest(forestId);
         this.flagActivo = flagActivo;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.uuid = uuid;
     }
 

@@ -53,7 +53,7 @@
                                                for="txtFiltro"><b>Nombre:</b></label>
                                         <div class="col-md-3">
                                             <input id="txtFiltro" type="text" placeholder="Búsqueda por nombre"
-                                                   class="form-control"/></div>
+                                                   class="form-control" maxlength="50"/></div>
                                         <label class="col-md-1 control-label-left"><b>Estado:</b></label>
                                         <div class="col-md-2 mrg">
                                             <select name="Estado" id="Estado" class="form-control input-sm ignore">
@@ -376,8 +376,18 @@ you can add as many as you like
                     if(xhr.status === 200) {
                         limpiarBusqueda();
                     } else{
-                        $('#Nombre')[0].parentElement.classList.add('state-error');
-                        $('#Nombre')[0].parentElement.classList.remove('state-success');
+                        if(xhr.status === 400){
+                            //Excepción de nombre duplicado
+                            $('#Nombre')[0].parentElement.classList.add('state-error');
+                            $('#Nombre')[0].parentElement.classList.remove('state-success');
+                        }else{//Excepción de flag inactivo en records con dependencias
+                            $('label.radio')[1].style.color = "red";
+                            $('label.radio')[1].style.fontWeight = "bold";
+                            setTimeout(() => {
+                                $('label.radio')[1].style.color = "";
+                                $('label.radio')[1].style.fontWeight = "";
+                            }, 4000);
+                        }
                     }
                 }
             });
@@ -492,10 +502,8 @@ you can add as many as you like
                     }
                     return myXhr;
                 },
-                success: function (data, textStatus) {
-                    if (textStatus == "success") {
-                        $.smallBox({});
-                    }
+                success: function () {
+                    $.smallBox({});
                 },
                 error: function (xhr) {
                     exception(xhr);
@@ -523,7 +531,7 @@ you can add as many as you like
 
     function subirImagen() {
 
-        $("#UploadImage").change(function () {
+        $("#UploadImage").change(function (e) {
 
             //submit the form here
             var file, img;
@@ -532,6 +540,13 @@ you can add as many as you like
                 const minHeight = $(frm).validate().settings.rules[this.name].minHeight;
                 const input = this;
                 img.onload = function () {
+                    if(file.type.includes("svg")){
+                        e.target.value = null;
+                        $.smallBox({
+                            color: 'alert',
+                            content: 'No puede subir imágenes de tipo SVG'});
+                        return;
+                    }
                     if(img.height < minHeight){
                         $.smallBox({color: 'alert', content: `La imagen debe tener un alto mínimo de ${minHeight}px`});
                         input.value = null;
@@ -589,7 +604,7 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    rangelength: [2, 50],
+                    rangelength: [2, 100],
                     lettersonly: true
                 },
                 UploadImage: {
@@ -597,7 +612,7 @@ you can add as many as you like
                         return $('#Id').val() > 0 ? false : true;
                     },
                     extension: "jpg|jpeg|png|bmp",
-                    minHeight: 220,
+                    minHeight: 2,
                 },
             },
             messages: {

@@ -9,4 +9,5 @@ public interface SubCategoriaVideoService extends BaseService<SubCategoriaVideo,
 
     List<SubCategoriaVideo> listarPorCategoria(Integer categoriaVideoId);
 
+    boolean checkHaveChildrenById(Integer id);
 }

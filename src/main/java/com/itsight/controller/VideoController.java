@@ -84,17 +84,14 @@ public class VideoController {
     public @ResponseBody
     String nuevo(
             @ModelAttribute Video video,
-            @RequestParam String subCategoriaVideoId) {
+            @RequestParam String subCategoriaVideoId) throws CustomValidationException {
         video.setSubCatVideo(Integer.parseInt(subCategoriaVideoId));
         if (video.getId() == 0) {
             RefUpload refUpload = videoService.registrarConSubida(video);
             return jsonResponse(String.valueOf(refUpload.getId()),
                     refUpload.getUuid().toString());
         }
-        Video qVideo = videoService.findOne(video.getId());
-        video.setRutaReal(qVideo.getRutaReal());
-        videoService.update(video);
-        return jsonResponse(String.valueOf(qVideo.getId()));
+        return videoService.actualizar(video, null);
     }
 
     @PutMapping(value = "/desactivar")

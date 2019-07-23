@@ -157,7 +157,6 @@ public class ProductoController {
                     Video video = new Video();
                     video.setNombre(file.getOriginalFilename());
                     video.setRutaWeb("/" + id + "/" + uuid + extension);
-                    video.setRutaReal(fullPath);
                     video.setUuid(uuid);
                     //video.setTipoVideo(1);//DE TIPO PRESENTACION
                     videoService.save(video);

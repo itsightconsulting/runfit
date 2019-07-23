@@ -187,7 +187,8 @@ public class Enums {
         ENLACE_CADUCADO("El enlace ha caducado"),
         CAMBIO_PASSWORD_PASADO("Usted ya ha cambiado su contraseña anteriormente por lo que este link ya no funciona."),
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado"),
-        POSTULANTE_ULTIMA_ETAPA_EMP("Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo. Gracias!");
+        POSTULANTE_ULTIMA_ETAPA_EMP("Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo. Gracias!"),
+        FLAG_BLOQUEADO_TIENE_DEPS("No puede actualizar el ESTADO del registro ya que este se encuentra asociado a un tabla hijo");
 
         final String msg;
 

@@ -32,7 +32,7 @@ public interface SubCategoriaVideoRepository extends JpaRepository<SubCategoriaV
     @Query(value = "UPDATE SubCategoriaVideo E SET E.flagActivo =?2 WHERE E.id = ?1")
     void updateFlagActivoById(Integer id, boolean flagActivo);
 
-    @Query("SELECT new SubCategoriaVideo(E.id, E.nombre) FROM SubCategoriaVideo E WHERE E.categoriaVideo.id = ?1 ORDER BY 1")
+    @Query("SELECT new SubCategoriaVideo(E.id, E.nombre) FROM SubCategoriaVideo E WHERE E.categoriaVideo.id = ?1 AND E.flagActivo=true ORDER BY 1")
     List<SubCategoriaVideo> findByCategoriaId(Integer categoriaId);
 
     @Modifying
@@ -58,4 +58,9 @@ public interface SubCategoriaVideoRepository extends JpaRepository<SubCategoriaV
     @Query("SELECT new SubCategoriaVideo(E.id, E.nombre, E.flagActivo, E.categoriaVideo.id, E.categoriaVideo.nombre) FROM SubCategoriaVideo E " +
             "WHERE E.categoriaVideo.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND E.flagActivo = ?3 ORDER BY 1")
     List<SubCategoriaVideo> findAllByCategoriaVideoIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(Integer categoriaVideoId, String comodin, Boolean flagActivo);
+
+    @Query(value = "SELECT CASE WHEN COUNT(*) = 0 THEN false ELSE true END  " +
+            "FROM video WHERE sub_categoria_video_id = ?1",
+            nativeQuery = true)
+    boolean checkHaveChildrenById(Integer id);
 }

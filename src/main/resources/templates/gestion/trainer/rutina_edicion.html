@@ -1472,6 +1472,7 @@ you can add as many as you like
 <script th:src="@{/js/calendario-lateral.js}+'?'+${version}"></script>
 <script th:inline="javascript">
     const totalsegundos = 3600;
+    const body = document.querySelector('body');
     /*<![CDATA[*/
     pageSetUp();
     /*let recorder;

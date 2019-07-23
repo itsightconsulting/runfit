@@ -36,8 +36,6 @@ public class VideoDTO implements Identifiable {
 
     private String rutaWeb;
 
-    private String rutaReal;
-
     private String peso;
 
     private String duracion;
@@ -53,10 +51,9 @@ public class VideoDTO implements Identifiable {
         this.id = id;
     }
 
-    public VideoDTO(String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, int subCatVideoId) {
+    public VideoDTO(String nombre, String rutaWeb, String peso, String duracion, UUID uuid, int subCatVideoId) {
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.peso = peso;
         this.duracion = duracion;
         this.uuid = uuid;
@@ -77,7 +74,6 @@ public class VideoDTO implements Identifiable {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", rutaWeb='" + rutaWeb + '\'' +
-                ", rutaReal='" + rutaReal + '\'' +
                 ", peso='" + peso + '\'' +
                 ", duracion='" + duracion + '\'' +
                 ", uuid=" + uuid +

@@ -65,4 +65,9 @@ public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, 
     @Query(value = "INSERT INTO bag_forest (id) VALUES(2)",nativeQuery = true)
     void insertArtificio();
 
+    @Query(value = "SELECT CASE WHEN COUNT(*) = 0 THEN false ELSE true END  " +
+            "FROM sub_categoria_video WHERE categoria_video_id = ?1",
+            nativeQuery = true)
+    boolean checkHaveChildrenById(Integer id);
+
 }

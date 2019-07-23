@@ -54,7 +54,7 @@
                                                for="txtFiltro"><b>Nombre:</b></label>
                                         <div class="col-md-3">
                                             <input id="txtFiltro" type="text" placeholder="Búsqueda por nombre"
-                                                   class="form-control"/>
+                                                   class="form-control" maxlength="50"/>
                                         </div>
                                         <label class="col-md-1 control-label-left"><b>Categoría:</b></label>
                                         <div class="col-md-2 mrg">
@@ -124,10 +124,10 @@
                                         <fieldset>
                                             <div class="">
                                                 <section class="">
-                                                    <label class="label">Nombre: </label>
+                                                    <label class="label">Nombre<span class="req">*</span></label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="Nombre" name="Nombre" type="text"
-                                                               placeholder="Nombre" class="" maxlength="38"
+                                                               placeholder="Nombre" class=""
                                                                autocomplete="off"/>
                                                         <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                         <input id="Id" name="Id" type="hidden" value="0"/>
@@ -135,10 +135,10 @@
                                                 </section>
                                             </div>
                                             <section class="">
-                                                <label class="label">Categoría Video: </label>
+                                                <label class="label">Categoría Video<span class="req">*</span></label>
                                                 <label class="input">
                                                     <select id="CategoriaVideoId" name="CategoriaVideoId" class="form-control">
-                                                        <option value="" selected="selected"> -- Todos -- </option>
+                                                        <option value="" selected="selected"> -- Seleccione -- </option>
                                                         <optgroup th:each="c: ${lstGrupoVideo}" th:label="${c.nombre}">
                                                             <option th:each="sb : ${c.lstCategoriaVideo}" th:value="${sb.id}" th:text="${sb.nombre}">Alaska</option>
                                                         </optgroup>
@@ -228,12 +228,15 @@ you can add as many as you like
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const body = document.querySelector('body');
+    const frm = document.querySelector('#frm_registro');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
 
     $(function () {
 
         pageSetUp();
+        init();
         listarRegistros();
 
         //V A L I D A T E
@@ -260,8 +263,24 @@ you can add as many as you like
         $('#frm_busqueda').submit(function (e) {
             e.preventDefault();
         });
-
     });
+
+    function init(){
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
 
     function listarRegistros() {
 
@@ -299,8 +318,8 @@ you can add as many as you like
     }
 
     function registro() {
-        if ($("#frm_registro").valid()) {
-            const params = getFormData($("#frm_registro"))
+        if ($(frm).valid()) {
+            const params = getFormData($(frm))
             params.flagActivo = $('#FlagActivo').is(':checked');
             $.ajax({
                 type: 'POST',
@@ -308,6 +327,8 @@ you can add as many as you like
                 url: _ctx + 'gestion/sub-categoria-video/agregar',
                 dataType: "json",
                 data: params,
+                blockLoading: true,
+                noOne: false,
                 success: function (data, textStatus) {
                     if (textStatus == "success") {
                         if (data == "-1") {
@@ -318,24 +339,45 @@ you can add as many as you like
                             $.smallBox({
                                 content: "<i class='fa fa-child'></i> <i>Actualización exitosa...!</i>",
                             });
-                        }else{
-                            notificacionesRutinaSegunResponseCode(data);
                         }
                     }
                 },
                 error: function (xhr) {
+                    const res = xhr.responseJSON;
+                    if(res){
+                        if(res.code){
+                            if(res.code === "23505"){
+                                res.message += " en la categoría de video elegida";
+                            }
+                        }
+                    }
                     exception(xhr);
                 },
-                complete: function() {
-                    limpiarBusqueda();
-                    irListado($index);
-                    listarRegistros();
+                complete: function(xhr) {
+                    if(xhr.status === 200) {
+                        limpiarBusqueda();
+                        irListado($index);
+                        listarRegistros();
+                    } else{
+                        if(xhr.status === 400){
+                            //Excepción de nombre duplicado
+                            $('#Nombre')[0].parentElement.classList.add('state-error');
+                            $('#Nombre')[0].parentElement.classList.remove('state-success');
+                        }else{//Excepción de flag inactivo en records con dependencias
+                            $('label.radio')[1].style.color = "red";
+                            $('label.radio')[1].style.fontWeight = "bold";
+                            setTimeout(() => {
+                                $('label.radio')[1].style.color = "";
+                                $('label.radio')[1].style.fontWeight = "";
+                            }, 4000);
+                        }
+                    }
                 }
             });
         }
     }
 
-    function editar(id) {
+    function editar(id, categoriaVideoId) {
         $('#Operacion').text('Actualizar');
         irRegistro();
         var param = new Object();
@@ -347,17 +389,14 @@ you can add as many as you like
             url: _ctx + 'gestion/sub-categoria-video/obtener',
             dataType: "json",
             data: param,
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    $("#Id").val(data.id);
-                    $("#Nombre").val(data.nombre);
-                    $("#CategoriaVideoId").val(data.grupoVideoId);
-                    data["flagActivo"] === true ?
-                        $('#FlagActivo').prop('checked', true)
-                        :
-                        $('#FlagActivoOff').prop('checked', true);
-
-                }
+            success: function (data) {
+                $("#Id").val(data.id);
+                $("#Nombre").val(data.nombre);
+                $("#CategoriaVideoId").val(categoriaVideoId);
+                data["flagActivo"] === true ?
+                    $('#FlagActivo').prop('checked', true)
+                    :
+                    $('#FlagActivoOff').prop('checked', true);
             },
             error: function (xhr) {
                 exception(xhr);
@@ -412,7 +451,8 @@ you can add as many as you like
     }
 
     function linkFormatter(value, row, index) {
-        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombre + '</a>', value);
+        const categoriaVideoId = row.categoriaId;
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +','+categoriaVideoId+ ')" title="Editar">' + row.nombre + '</a>', value);
     }
 
     function Opciones(value, row, index) {
@@ -432,7 +472,7 @@ you can add as many as you like
     }
 
     function validarRegistros() {
-        $("#frm_registro").validate({
+        $(frm).validate({
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -444,7 +484,8 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    maxlength: $("#Nombre").prop("maxlength"),
+                    rangelength: [2, 100],
+                    lettersonly: true
                 },
                 CategoriaVideoId:{
                     required: true,
@@ -452,16 +493,19 @@ you can add as many as you like
                 }
             },
             messages: {
-                Nombre: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres."),
-                },CategoriaVideoId:{
+                CategoriaVideoId:{
                     required: "El campo es obligatorio",
                     number: "El valor seleccionado es incorrecto",
                 }
             },
             submitHandler: function () {
             }
+        });
+
+        //Seteando los Maxlength según rangelength property
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
     /*]]>*/

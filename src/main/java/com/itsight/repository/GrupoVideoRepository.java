@@ -17,7 +17,7 @@ public interface GrupoVideoRepository extends JpaRepository<GrupoVideo, Integer>
     @EntityGraph(value = "grupoVideo")
     List<GrupoVideo> findAll();
 
-    @Query("SELECT DISTINCT C FROM GrupoVideo C JOIN FETCH C.lstCategoriaVideo ORDER BY 1 ASC ")
+    @Query("SELECT DISTINCT C FROM GrupoVideo C JOIN FETCH C.lstCategoriaVideo CV WHERE CV.flagActivo=true ORDER BY 1 ASC ")
     List<GrupoVideo> findDistinctByOrderById();
 
     @EntityGraph(value = "grupoVideo")
@@ -39,4 +39,8 @@ public interface GrupoVideoRepository extends JpaRepository<GrupoVideo, Integer>
     @Query(value = "UPDATE GrupoVideo C SET C.flagActivo =?2 WHERE C.id = ?1")
     void updateFlagActivoById(Integer id, boolean flagActivo);
 
+    @Query(value = "SELECT CASE WHEN COUNT(*) = 0 THEN false ELSE true END  " +
+                   "FROM categoria_video WHERE grupo_video_id = ?1",
+            nativeQuery = true)
+    boolean checkHaveChildrenById(Integer id);
 }

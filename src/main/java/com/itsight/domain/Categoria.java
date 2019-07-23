@@ -38,9 +38,6 @@ public class Categoria {
     private String rutaWeb;
 
     @Column(nullable = true)
-    private String rutaReal;
-
-    @Column(nullable = true)
     private UUID uuid;
 
     @Column(nullable = false)
@@ -63,13 +60,12 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public Categoria(Integer id, String nombre, String descripcion, boolean flagActivo, String rutaWeb, String rutaReal, UUID uuid) {
+    public Categoria(Integer id, String nombre, String descripcion, boolean flagActivo, String rutaWeb, UUID uuid) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.flagActivo = flagActivo;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.uuid = uuid;
     }
 

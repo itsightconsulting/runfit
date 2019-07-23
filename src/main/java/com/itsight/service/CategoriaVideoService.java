@@ -11,4 +11,6 @@ public interface CategoriaVideoService extends BaseService<CategoriaVideo, Integ
     void insertArtificio();
 
     List<CategoriaVideo> findAllByOrderById();
+
+    boolean checkHaveChildrenById(Integer id);
 }

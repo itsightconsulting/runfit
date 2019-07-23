@@ -127,7 +127,6 @@ public class CategoriaEjercicioServiceImpl extends BaseServiceImpl<CategoriaEjer
         entity.setForest(1);//Padre-artificio|Valor final
         CategoriaEjercicio qCatEjercicio = repository.findById(entity.getId()).orElse(null);
         entity.setRutaWeb(qCatEjercicio.getRutaWeb());
-        entity.setRutaReal(qCatEjercicio.getRutaReal());
         repository.saveAndFlush(entity);
         return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(repository.save(entity).getId()));
     }

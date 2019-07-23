@@ -114,7 +114,6 @@ public class CategoriaController {
                 // Agregando la ruta a la base de datos
 
                 Categoria qCategoria = categoriaService.findOne(categoriaId);
-                qCategoria.setRutaReal(fullPath);
                 qCategoria.setRutaWeb("/" + categoriaId + "/" + uuid + extension);
                 qCategoria.setUuid(uuid);
 

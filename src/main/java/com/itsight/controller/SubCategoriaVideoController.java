@@ -2,6 +2,8 @@ package com.itsight.controller;
 
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.CategoriaVideo;
+import com.itsight.domain.GrupoVideo;
 import com.itsight.domain.SubCategoriaVideo;
 import com.itsight.service.GrupoVideoService;
 import com.itsight.service.SubCategoriaVideoService;
@@ -17,8 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
-import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+import static com.itsight.util.Enums.Msg.FLAG_BLOQUEADO_TIENE_DEPS;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
 @RequestMapping("/gestion/sub-categoria-video")
@@ -69,10 +71,10 @@ public class SubCategoriaVideoController {
     String nuevo(@ModelAttribute @Valid SubCategoriaVideo subCategoriaVideo,
                  @RequestParam int categoriaVideoId,
                  BindingResult bindingResult) throws CustomValidationException {
+        subCategoriaVideo.setCategoriaVideo(new CategoriaVideo(categoriaVideoId));
         if(!bindingResult.hasErrors()){
             if (subCategoriaVideo.getId() == 0) {
-                SubCategoriaVideo obj = new SubCategoriaVideo(subCategoriaVideo.getNombre(), categoriaVideoId);
-                return subCategoriaVideoService.registrar(obj, null);
+                return subCategoriaVideoService.registrar(subCategoriaVideo, null);
             }
             return subCategoriaVideoService.actualizar(subCategoriaVideo, null);
         }
@@ -81,12 +83,18 @@ public class SubCategoriaVideoController {
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody
-    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
-        try {
+    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) throws CustomValidationException {
+        if(flagActivo){
             subCategoriaVideoService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();
-        } catch (Exception e) {
-            return EX_GENERIC.get();
         }
+
+        boolean hasChildren = subCategoriaVideoService.checkHaveChildrenById(id);
+
+        if(!hasChildren){
+            subCategoriaVideoService.actualizarFlagActivoById(id, flagActivo);
+            return EXITO_GENERICA.get();
+        }
+        throw new CustomValidationException(FLAG_BLOQUEADO_TIENE_DEPS.get(), EX_VALIDATION_FAILED.get());
     }
 }

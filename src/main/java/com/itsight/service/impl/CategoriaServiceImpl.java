@@ -126,7 +126,6 @@ public class CategoriaServiceImpl extends BaseServiceImpl<CategoriaRepository> i
     public String actualizar(Categoria entity, String wildcard) {
         // TODO Auto-generated method stub
         Categoria qCategoria = repository.findById(entity.getId()).orElse(null);
-        entity.setRutaReal(qCategoria.getRutaReal());
         entity.setRutaWeb(qCategoria.getRutaWeb());
         entity.setUuid(qCategoria.getUuid());
         return customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(entity.getId()));

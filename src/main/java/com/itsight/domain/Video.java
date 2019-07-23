@@ -62,9 +62,6 @@ public class Video extends AuditingEntity implements Identifiable {
     private String rutaWeb;
 
     @Column()
-    private String rutaReal;
-
-    @Column()
     private String peso;
 
     @Column()
@@ -102,10 +99,9 @@ public class Video extends AuditingEntity implements Identifiable {
         this.id = id;
     }
 
-    public Video(String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, int subCatVideoId, boolean flagActivo) {
+    public Video(String nombre, String rutaWeb, String peso, String duracion, UUID uuid, int subCatVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.peso = peso;
         this.duracion = duracion;
         this.uuid = uuid;
@@ -113,21 +109,19 @@ public class Video extends AuditingEntity implements Identifiable {
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(String nombre, String rutaWeb, String rutaReal, String peso, UUID uuid, Integer subCatVideoId, boolean flagActivo) {
+    public Video(String nombre, String rutaWeb, String peso, UUID uuid, Integer subCatVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.peso = peso;
         this.uuid = uuid;
         this.subCatVideo = new SubCategoriaVideo(subCatVideoId);
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(Integer id, String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
+    public Video(Integer id, String nombre, String rutaWeb, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
         this.id = id;
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.peso = peso;
         this.duracion = duracion;
         this.uuid = uuid;

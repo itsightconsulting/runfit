@@ -54,9 +54,9 @@
                                                for="txtFiltro"><b>Nombre:</b></label>
                                         <div class="col-md-3">
                                             <input id="txtFiltro" type="text" placeholder="Búsqueda por nombre"
-                                                   class="form-control"/>
+                                                   class="form-control" maxlength="50"/>
                                         </div>
-                                        <label class="col-md-1 control-label-left"><b>Categoría:</b></label>
+                                        <label class="col-md-1 control-label-left" style="padding-top: 0px"><b>Grupo Video:</b></label>
                                         <div class="col-md-2 mrg">
                                             <select name="GrupoVideo" id="GrupoVideo" class="form-control input-sm ignore">
                                                 <option value="">-- Todos --</option>
@@ -134,7 +134,7 @@
                                                 </section>
                                             </div>
                                             <section class="">
-                                                <label class="label">Categoría Ejercicio<span class="req">*</span></label>
+                                                <label class="label">Grupo Video<span class="req">*</span></label>
                                                 <label class="input">
                                                     <select id="GrupoVideoId" name="GrupoVideoId"
                                                             class="form-control">
@@ -332,7 +332,7 @@ you can add as many as you like
                 blockLoading: true,
                 noOne: false,
                 success: function (res, textStatus) {
-                    data = res.res;
+                    const data = res.res;
                     if (textStatus == "success") {
                         if (data == "-9") {
                             $.smallBox({
@@ -350,19 +350,42 @@ you can add as many as you like
                     }
                 },
                 error: function (xhr) {
+                    const res = xhr.responseJSON;
+                    if(res){
+                        if(res.code){
+                            if(res.code === "23505"){
+                                res.message += " en el grupo de video elegido";
+                            }
+                        }
+                    }
                     exception(xhr);
                 },
-                complete: function() {
-                    limpiarBusqueda();
-                    irListado($index);
-                    listarRegistros();
+                complete: function(xhr) {
+                    if(xhr.status === 200) {
+                        limpiarBusqueda();
+                        irListado($index);
+                        listarRegistros();
+                    } else{
+                        if(xhr.status === 400){
+                            //Excepción de nombre duplicado
+                            $('#Nombre')[0].parentElement.classList.add('state-error');
+                            $('#Nombre')[0].parentElement.classList.remove('state-success');
+                        }else{//Excepción de flag inactivo en records con dependencias
+                            $('label.radio')[1].style.color = "red";
+                            $('label.radio')[1].style.fontWeight = "bold";
+                            setTimeout(() => {
+                                $('label.radio')[1].style.color = "";
+                                $('label.radio')[1].style.fontWeight = "";
+                            }, 4000);
+                        }
+                    }
                     $btn.button('reset');
                 }
             });
         }
     }
 
-    function editar(id) {
+    function editar(id, grupoVideoId) {
         $('#Operacion').text('Actualizar');
         irRegistro();
         var param = new Object();
@@ -374,17 +397,14 @@ you can add as many as you like
             url: _ctx + 'gestion/categoria-video/obtener',
             dataType: "json",
             data: param,
-            success: function (data, textStatus) {
-                if (textStatus == "success") {
-                    $("#Id").val(data.id);
-                    $("#Nombre").val(data.nombre);
-                    $("#GrupoVideoId").val(data.grupoVideoId);
-                    data["flagActivo"] === true ?
-                        $('#FlagActivo').prop('checked', true)
-                        :
-                        $('#FlagActivoOff').prop('checked', true);
-
-                }
+            success: function (data) {
+                $("#Id").val(data.id);
+                $("#Nombre").val(data.nombre);
+                $("#GrupoVideoId").val(grupoVideoId);
+                data["flagActivo"] === true ?
+                    $('#FlagActivo').prop('checked', true)
+                    :
+                    $('#FlagActivoOff').prop('checked', true);
             },
             error: function (xhr) {
                 exception(xhr);
@@ -439,7 +459,7 @@ you can add as many as you like
     }
 
     function linkFormatter(value, row, index) {
-        return String('<a class="" href="#" onclick="javascript:editar(' + row.id + ')" title="Editar">' + row.nombre + '</a>', value);
+        return String('<a class="" href="#" onclick="javascript:editar(' + row.id +','+row.grupoVideoId+ ')" title="Editar">' + row.nombre + '</a>', value);
     }
 
     function Opciones(value, row, index) {
@@ -471,7 +491,7 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    rangelength: [2, 50],
+                    rangelength: [2, 100],
                     lettersonly: true
                 },
                 GrupoVideoId:{
@@ -490,6 +510,12 @@ you can add as many as you like
             },
             submitHandler: function () {
             }
+        });
+
+        //Seteando los Maxlength según rangelength property
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
     /*]]>*/

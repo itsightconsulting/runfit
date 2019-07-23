@@ -56,7 +56,7 @@ public interface BaseService<T, V> {
 
     String registrar(T entity, String wildcard) throws CustomValidationException;
 
-    String actualizar(T entity, String wildcard);
+    String actualizar(T entity, String wildcard) throws CustomValidationException;
 
     void actualizarFlagActivoById(V id, boolean flagActivo);
 

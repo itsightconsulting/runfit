@@ -351,8 +351,7 @@ function getFormData($form) {
 
 function agregarModalParaVisualizacionImagen() {
 
-    var modalImagenServer = document.createElement('div');
-    modalImagenServer.innerHTML = `<div class="modal fade" id="myModalImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    var modalImagenServer = `<div class="modal fade" id="myModalImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					  <div class="modal-dialog modal-lg">
 					    <div class="modal-content">
 					      <div class="modal-header">
@@ -368,7 +367,7 @@ function agregarModalParaVisualizacionImagen() {
 					    </div>
 					  </div>
 		</div>`;
-    document.body.append(modalImagenServer);
+    document.body.appendChild(htmlStringToElement(modalImagenServer));
 }
 
 function spinnerSwitchTab(effect){

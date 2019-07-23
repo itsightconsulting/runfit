@@ -1,5 +1,7 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
+import com.itsight.domain.CategoriaVideo;
 import com.itsight.domain.SubCategoriaVideo;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.SubCategoriaVideoRepository;
@@ -9,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.itsight.util.Enums.Msg.FLAG_BLOQUEADO_TIENE_DEPS;
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
 @Transactional
@@ -132,8 +137,18 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     }
 
     @Override
-    public String actualizar(SubCategoriaVideo entity, String wildcard) {
-        // TODO Auto-generated method stub
+    public String actualizar(SubCategoriaVideo entity, String wildcard) throws CustomValidationException {
+        SubCategoriaVideo qSubCategoriaVideo = repository.getOne(entity.getId());
+        //Revisando si esta cambiando el flagActivo y bloqueandolo en caso tenga records dependientes
+        if(qSubCategoriaVideo.isFlagActivo()!=entity.isFlagActivo()){
+            if(!entity.isFlagActivo()){
+                boolean hasChildren = checkHaveChildrenById(entity.getId());
+                if(hasChildren){
+                    throw new CustomValidationException(FLAG_BLOQUEADO_TIENE_DEPS.get(), EX_VALIDATION_FAILED.get());
+                }
+            }
+        }
+        repository.saveAndFlush(entity);
         return Enums.ResponseCode.ACTUALIZACION.get();
     }
 
@@ -147,4 +162,10 @@ public class SubCategoriaVideoServiceImpl extends BaseServiceImpl<SubCategoriaVi
     public List<SubCategoriaVideo> listarPorCategoria(Integer categoriaVideoId) {
         return repository.findByCategoriaId(categoriaVideoId);
     }
+
+    @Override
+    public boolean checkHaveChildrenById(Integer id) {
+        return repository.checkHaveChildrenById(id);
+    }
+
 }

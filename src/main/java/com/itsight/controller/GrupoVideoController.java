@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.itsight.util.Enums.FileExt.JPEG;
-import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
-import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+import static com.itsight.util.Enums.Msg.FLAG_BLOQUEADO_TIENE_DEPS;
+import static com.itsight.util.Enums.Msg.VALIDACION_FALLIDA;
+import static com.itsight.util.Enums.ResponseCode.*;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
@@ -78,13 +79,19 @@ public class GrupoVideoController extends BaseController {
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody
-    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
-        try {
+    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) throws CustomValidationException {
+        if(flagActivo){
             grupoVideoService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();
-        } catch (Exception e) {
-            return EX_GENERIC.get();
         }
+
+        boolean hasChildren = grupoVideoService.checkHaveChildrenById(id);
+
+        if(!hasChildren){
+            grupoVideoService.actualizarFlagActivoById(id, flagActivo);
+            return EXITO_GENERICA.get();
+        }
+        throw new CustomValidationException(FLAG_BLOQUEADO_TIENE_DEPS.get(), EX_VALIDATION_FAILED.get());
     }
 
     @RequestMapping(value = "/upload/imagen/{rdmUUID}", method = RequestMethod.POST)
@@ -111,7 +118,6 @@ public class GrupoVideoController extends BaseController {
                 // Agregando la ruta a la base de datos
 
                 GrupoVideo qCategoria = grupoVideoService.findOne(grupoId);
-                qCategoria.setRutaReal(fullPath);
                 qCategoria.setRutaWeb("/" + grupoId + "/" + uuid + extension);
                 qCategoria.setUuid(uuid);
 

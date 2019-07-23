@@ -52,7 +52,7 @@
                                                for="txtFiltro"><b>Nombre:</b></label>
                                         <div class="col-md-3">
                                             <input name="Filtro" id="txtFiltro" type="text"
-                                                   class="form-control input-sm ignore" maxlength="24"
+                                                   class="form-control input-sm ignore" maxlength="50"
                                                    placeholder="Ingresa un nombre"/>
                                         </div>
                                         <label class="col-md-1 control-label-left"
@@ -351,7 +351,7 @@ you can add as many as you like
                         irListado($index);
                         listarRegistros();
                         limpiarBusqueda();
-                    }else{
+                    } else {
                         $('#Nombre')[0].parentElement.classList.add('state-error');
                         $('#Nombre')[0].parentElement.classList.remove('state-success');
                     }
@@ -471,12 +471,12 @@ you can add as many as you like
             rules: {
                 Nombre: {
                     required: true,
-                    rangelength: [2, 50],
+                    rangelength: [2, 100],
                     lettersonly: true
                 },
                 Descripcion: {
                     required: true,
-                    rangelength: [2, 50],
+                    rangelength: [2, 100],
                     lettersonly: true
                 },
             },

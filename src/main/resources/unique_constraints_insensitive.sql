@@ -1,5 +1,7 @@
 CREATE UNIQUE INDEX uk_grupo_video_ic_nombre on grupo_video (lower(nombre));
 CREATE UNIQUE INDEX uk_categoria_video_ic_nombre_n_gv_id on categoria_video (lower(nombre), grupo_video_id);
+CREATE UNIQUE INDEX uk_sub_categoria_video_ic_nombre_n_cv_id on sub_categoria_video (lower(nombre), categoria_video_id);
+CREATE UNIQUE INDEX uk_video_ic_nombre_n_scv_id on video (lower(nombre), sub_categoria_video_id);
 CREATE UNIQUE INDEX uk_security_user_ic_username on runfit.public.security_user (lower(runfit.public.security_user.username));
 CREATE UNIQUE INDEX uk_postulante_trainer_ic_correo on runfit.public.postulante_trainer (lower(correo));
 CREATE UNIQUE INDEX uk_trainer_ic_correo on runfit.public.trainer (lower(correo));

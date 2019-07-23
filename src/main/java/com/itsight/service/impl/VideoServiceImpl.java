@@ -1,7 +1,6 @@
 package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
-import com.itsight.domain.GrupoVideo;
 import com.itsight.domain.Video;
 import com.itsight.domain.dto.RefUpload;
 import com.itsight.domain.dto.VideoDTO;
@@ -9,6 +8,7 @@ import com.itsight.domain.pojo.AwsStresPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoRepository;
 import com.itsight.service.VideoService;
+import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -160,7 +160,12 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     @Override
     public String actualizar(Video entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+
+        Video qVideo = this.findOne(entity.getId());
+        entity.setRutaWeb(qVideo.getRutaWeb());
+        entity.setUuid(qVideo.getUuid());
+        this.update(entity);
+        return Utilitarios.jsonResponse(String.valueOf(entity.getId()), qVideo.getUuid().toString());
     }
 
     @Override

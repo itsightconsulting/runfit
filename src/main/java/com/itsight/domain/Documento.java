@@ -40,9 +40,6 @@ public class Documento extends AuditingEntity {
     private String rutaWeb;
 
     @Column(nullable = true)
-    private String rutaReal;
-
-    @Column(nullable = true)
     private String peso;
 
     @Column(nullable = true)
