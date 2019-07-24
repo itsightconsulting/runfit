@@ -5,9 +5,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
@@ -112,6 +110,8 @@ public interface BaseService<T, V> {
 
                 Upload upload = tm.upload(request);
                 upload.waitForCompletion();
+                S3Object obj = amazonS3.getObject(new GetObjectRequest(credentials.getBucket(),fullPath));
+                System.out.println(obj.getObjectMetadata().getVersionId());
                 return true;
             } catch (IllegalStateException e) {
                 logger.warn(e.getMessage());
