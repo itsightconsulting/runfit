@@ -949,7 +949,7 @@ function generandoVideosCuerpo(subCatVideo){
         rawVideosHTML += `<a class="elegir-video padding-7-no-left" href="javascript:void(0);">
                           <i id="livideo${v.id}" title="Agregar a favoritos" class="fa fa-star fa-fw ck-favorito-video padding-top-3" data-selected="0" data-id="${v.id}"></i>
                           <i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i>
-                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb}" data-index="${v.id}">
+                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb+'?v'+v.version}" data-index="${v.id}">
                           </i>${v.nombre}</a>`;
     })
     return rawVideosHTML;

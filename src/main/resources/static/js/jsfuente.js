@@ -180,7 +180,7 @@ function irRegistro(wildcard) {
 
     $('#btnNuevo').css('display', 'none');
     $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        console.log('....r1');
+        //console.log('....r1');
         $('#view_list').hide();
 
         $("#view_register").show().removeClass().addClass('fadeInLeftBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
@@ -194,9 +194,9 @@ function irListado(x) {
     $('#view_register').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         $('#view_register').hide();
         $('#btnNuevo').css('display', 'block');
-        console.log('.....1.1');
+        //console.log('.....1.1');
         $("#view_list").show().removeClass().addClass('fadeInLeft' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            console.log('.....2');
+            //console.log('.....2');
         });
     });
 }

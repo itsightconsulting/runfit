@@ -1269,6 +1269,7 @@
             tarifa.sesiones = t.sesiones;
             tarifa.precio = t.precio;
             tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
+            cleanPaqueteCampos();
             $.smallBox({color: "#111509",content: '<i class="fa fa-fw fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
         } else{
             $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000})

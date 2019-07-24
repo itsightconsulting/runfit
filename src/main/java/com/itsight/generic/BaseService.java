@@ -68,7 +68,6 @@ public interface BaseService<T, V> {
 
     default boolean uploadImageToAws3(MultipartFile file, AwsStresPOJO credentials, final Logger logger) {
         if (!file.isEmpty()) {
-
             String extension;
             if(credentials.getExtension() != null && !credentials.getExtension().equals("")){
                 extension = credentials.getExtension();
@@ -110,8 +109,8 @@ public interface BaseService<T, V> {
 
                 Upload upload = tm.upload(request);
                 upload.waitForCompletion();
-                S3Object obj = amazonS3.getObject(new GetObjectRequest(credentials.getBucket(),fullPath));
-                System.out.println(obj.getObjectMetadata().getVersionId());
+                /*S3Object obj = amazonS3.getObject(new GetObjectRequest(credentials.getBucket(),fullPath));
+                System.out.println(obj.getObjectMetadata().getVersionId());*/
                 return true;
             } catch (IllegalStateException e) {
                 logger.warn(e.getMessage());

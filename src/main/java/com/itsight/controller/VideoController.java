@@ -6,7 +6,9 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.*;
+import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.service.GrupoVideoService;
+import com.itsight.service.VideoProcedureInvoker;
 import com.itsight.service.VideoService;
 import com.itsight.util.ClassId;
 import com.itsight.util.EntityGraphBuilder;
@@ -14,7 +16,6 @@ import com.itsight.util.EntityVisitor;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,11 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 import static com.itsight.util.Utilitarios.jsonResponse;
 
@@ -45,11 +43,16 @@ public class VideoController {
 
     private GrupoVideoService grupoVideoService;
 
+    private VideoProcedureInvoker videoProcedureInvoker;
+
     @Autowired
-    public VideoController(VideoService videoService, GrupoVideoService grupoVideoService) {
+    public VideoController(VideoService videoService,
+                           GrupoVideoService grupoVideoService,
+                           VideoProcedureInvoker videoProcedureInvoker) {
         // TODO Auto-generated constructor stub
         this.videoService = videoService;
         this.grupoVideoService = grupoVideoService;
+        this.videoProcedureInvoker = videoProcedureInvoker;
     }
 
     @GetMapping(value = "")
@@ -74,10 +77,22 @@ public class VideoController {
         return videoService.listarPorFiltro(comodin, estado, subCatVideo);
     }
 
+    @GetMapping("/obtenerListado/dinamico")
+    public @ResponseBody ResPaginationDTO getAllVideosByDynamic(@ModelAttribute @Valid VideoQueryDTO query){
+        List<VideoPOJO> lstRed = videoProcedureInvoker.findAllByDynamic(query);
+        return new ResPaginationDTO(lstRed, lstRed.isEmpty() ? 0 : lstRed.get(0).getRows());
+    }
+
     @GetMapping(value = "/obtener")
     public @ResponseBody
     Video obtenerPorId(@RequestParam(value = "id") int videoId) {
         return videoService.findOneWithFT(videoId);
+    }
+
+    @GetMapping(value = "/obtener/full")
+    public @ResponseBody
+    VideoPOJO obtenerPorIdFull(@RequestParam(value = "id") int videoId) {
+        return videoService.obtenerFullById(videoId);
     }
 
     @PostMapping(value = "/agregar")

@@ -67,7 +67,7 @@
                                     </section>
                                     <section class="col col-2">
                                         <label class="label"><b>Categoría: </b></label>
-                                        <select style="width:100%" class="select2 form-control" id="CategoriaVideo">
+                                        <select style="width:100%" class="select2 form-control" id="CategoriaVideo" name="CategoriaVideo">
                                             <option value="" selected="selected"> -- Seleccione -- </option>
                                             <optgroup th:each="c: ${lstGrupoVideo}" th:label="${c.nombre}">
                                                 <option th:each="sb : ${c.lstCategoriaVideo}" th:value="${sb.id}" th:text="${sb.nombre}">Alaska</option>
@@ -76,7 +76,7 @@
                                     </section>
                                     <section class="col col-2">
                                         <label class="label"><b>Sub Categoría:</b> </label>
-                                        <select name="SubTipo" id="SubCategoriaVideo" class="form-control">
+                                        <select id="SubCategoriaVideo" name="SubCategoriaVideo" class="form-control">
                                             <option value="" selected="selected"> -- Seleccione -- </option>
                                         </select>
                                     </section>
@@ -153,10 +153,9 @@
                                                     </select>
                                                     <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     <div class="alert alert-success" id="MsgActualizarSubCat" display="">
-                                                            <em style="color: #666; font-weight: bold;">Seleccionar solo en caso se vaya a cambiar de sub categoría al video</em>
+                                                            <em style="color: #666; font-weight: bold;">Seleccionar solo en caso se vaya a actualizar de sub categoría al video</em>
                                                     </div>
                                                 </label>
-
                                             </section>
                                             <section class="">
                                                 <label class="label">Sub Categoría<span class="req">*</span></label>
@@ -238,14 +237,19 @@
                 <!-- MODALS -->
                 <!-- MODAL VISUALIZACION DE VIDEO -->
                 <div class="modal fade" id="myModalVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-md">
-                        <div class="">
+                     aria-hidden="true" data-backdrop="static">
+                    <div class="modal-header text-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR VIDEO</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-dialog modal-md">
                             <div class="">
-                                <video id="somevid" controls="" autoplay="" controlsList="nodownload" width="100%"
-                                       height="100%">
-                                    <source id="VideoReproduccion" src="" type="video/mp4"/>
-                                </video>
+                                <div class="">
+                                    <video id="somevid" controls="" autoplay="" controlsList="nodownload" width="100%"
+                                           height="100%">
+                                        <source id="VideoReproduccion" src="" type="video/mp4"/>
+                                    </video>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -331,6 +335,7 @@
 
     function init(){
         body.addEventListener('focusout', bodyFocusOutEventListener);
+        body.addEventListener('change', bodyChangeEventListener);
     }
 
     function bodyFocusOutEventListener(e){
@@ -343,6 +348,23 @@
 
         if(input.tagName === "TEXTAREA"){
             input.value = input.value.trim();
+        }
+    }
+
+    function bodyChangeEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+
+        if(input.tagName === "SELECT"){
+            if(!input.name){
+                return;
+            }
+            if(input.name === 'CategoriaVideo'){
+                if(input.value === ""){
+                    const subCat = document.getElementById('SubCategoriaVideo');
+                    subCat.innerHTML = '<option value="" selected="selected"> -- Seleccione -- </option>';
+                }
+            }
         }
     }
 
@@ -388,26 +410,20 @@
         if ($("#frm_busqueda").valid()) {
             $table.bootstrapTable('destroy');
 
-            var comodin = $("#txtFiltro").val();
-            var estado = $("#Estado").val();
-            var subCatVideo = $("#SubCategoriaVideo").val();
-
-
-            if (comodin == null || comodin == "") {
-                comodin = "0";
-            }
-            if (estado == null) {
-                estado = "-1";
-            }
-            if (subCatVideo == null || subCatVideo == "") {
-                subCatVideo = "0";
-            }
+            const data = getFormData($("#frm_busqueda"));
 
             $table.bootstrapTable({
-                url: _ctx + 'gestion/video/obtenerListado/' + comodin + '/' + estado + '/' + subCatVideo,
+                url: _ctx + 'gestion/video/obtenerListado/dinamico',
                 pagination: true,
-                sidePagination: 'client',
+                sidePagination: 'server',
                 pageSize: 10,
+                queryParams: (res)=> {
+                    res.flag = data.estado !== "-1" ? data.estado : null;
+                    res.nombre = data.txtFiltro !== "" ? data.txtFiltro : null;
+                    res.catVideoId = data.categoriaVideo !== "" ? data.categoriaVideo : null;
+                    res.subCatVideoId = data.subCategoriaVideo !== "" ? data.subCategoriaVideo : null;
+                    return res;
+                },
                 onLoadSuccess: function (data) {
                 },
                 onLoadError: function (xhr) {
@@ -495,7 +511,7 @@
         $.ajax({
             type: 'GET',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/video/obtener',
+            url: _ctx + 'gestion/video/obtener/full',
             dataType: "json",
             data: param,
             success: function (data, textStatus) {
@@ -509,7 +525,7 @@
 
                     $("#SubCategoriaVideoId").append(`<option value=${data.subCatVideoId}>${data.nombreSubCat}</option>`);
                     $("#SubCategoriaVideoId").val(data.subCatVideoId);
-                    $('#CategoriaVideoId').addClass('ignore');
+                    $('#CategoriaVideoId').val(data.catVideoId);
 
                     data.flagActivo === true ?
                         $('#FlagActivo').prop('checked', true)

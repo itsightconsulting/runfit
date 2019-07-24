@@ -1,17 +1,17 @@
 nombre, rutaWeb, peso, duracion, uuid, subCatVideoId, flagActivo
-Sent con apoyo en un pie,9eb007f0-5bb0-4495-a841-860fea3401fb.mp4,2.19 MB,00:00:29,9eb007f0-5bb0-4495-a841-860fea3401fb,1,true
-Sent balanceando,a2fecbaf-b92e-4673-b5bb-77fba738647e.mp4,1.65 MB,00:00:26,a2fecbaf-b92e-4673-b5bb-77fba738647e,8,true
-Ext de pierna isométrica, 24cdcaaf-a5f0-4c3d-8cf0-19b31fe8a54b.mp4,691.3 KB,00:00:15,24cdcaaf-a5f0-4c3d-8cf0-19b31fe8a54b,15,true
-Salt excéntrico N 2,022c1e9e-f4f4-43e7-b32f-a783bcdc9569.mp4,1.05 MB,00:00:12,022c1e9e-f4f4-43e7-b32f-a783bcdc9569,73,true
-Salto excéntrico N 1,8e344abc-6e8b-4d88-a143-7fb62b8ba9b6.mp4,1.62 MB,00:00:20,8e344abc-6e8b-4d88-a143-7fb62b8ba9b6,80,true
-Salt excéntrico N 3,ac7aeb24-db41-4f8f-b04a-e569aa6533c3.mp4,1.19 MB,00:00:13,ac7aeb24-db41-4f8f-b04a-e569aa6533c3,87,true
-Lounges hands up M A,6e00fea1-bb2e-4218-bfb7-59c9e525868d.mp4,3.09 MB,00:00:13,6e00fea1-bb2e-4218-bfb7-59c9e525868d,127,true
-Lunges con caída,b45ced42-1a48-4cbc-9f20-13ef9870e758.mp4,1.22 MB,00:00:17,b45ced42-1a48-4cbc-9f20-13ef9870e758,134,true
-Lounges hands up,a449f218-74b2-41c4-9607-04f2a9103cc3.mp4,3.09 MB,00:00:13,a449f218-74b2-41c4-9607-04f2a9103cc3,141,true
-Ext de pierna sentado,edb83320-0d56-4632-9fa1-afd73e59fa87.mp4,1.93 MB,00:00:37,edb83320-0d56-4632-9fa1-afd73e59fa87,175,true
-Arrancada con marcha,48e73dd7-db55-46bf-b39f-01b7b481b415.mp4,1.43 MB,00:00:15,48e73dd7-db55-46bf-b39f-01b7b481b415,182,true
-Asalto atrás isométrico,6b384bc7-79d5-4e0f-935d-c45ab428fa96.mp4,2.21 MB,00:00:26,6b384bc7-79d5-4e0f-935d-c45ab428fa96,189,true
-Sent con manos atrás,3215521e-2fef-44a9-b2b2-79a4b2f1edc1.mp4,1.24 MB,00:00:24,3215521e-2fef-44a9-b2b2-79a4b2f1edc1,235,true
-Sentadillas profund,3a876e6d-18c7-4886-9d6d-b1ae9f669a4a.mp4,2 MB,00:00:23,3a876e6d-18c7-4886-9d6d-b1ae9f669a4a,241,true
-Sentadillas abiertas,59f7bd3c-f75c-48e9-a3d5-54e3333f6e2e.mp4,2.2 MB,00:00:29,59f7bd3c-f75c-48e9-a3d5-54e3333f6e2e,249,true
-Arrancadas N 1,7fa96daa-a357-4c4c-be8e-cc3680570ec6.mp4,1.72 MB,00:00:24,7fa96daa-a357-4c4c-be8e-cc3680570ec6,1,true
+Sent con apoyo en un pie,9eb007f0-5bb0-4495-a841-860fea3401fb.mp4,2.19 MB,00:00:29,9eb007f0-5bb0-4495-a841-860fea3401fb,1,1,true
+Sent balanceando,a2fecbaf-b92e-4673-b5bb-77fba738647e.mp4,1.65 MB,00:00:26,a2fecbaf-b92e-4673-b5bb-77fba738647e,1,8,true
+Ext de pierna isométrica, 24cdcaaf-a5f0-4c3d-8cf0-19b31fe8a54b.mp4,691.3 KB,00:00:15,24cdcaaf-a5f0-4c3d-8cf0-19b31fe8a54b,1,15,true
+Salt excéntrico N 2,022c1e9e-f4f4-43e7-b32f-a783bcdc9569.mp4,1.05 MB,00:00:12,022c1e9e-f4f4-43e7-b32f-a783bcdc9569,1,73,true
+Salto excéntrico N 1,8e344abc-6e8b-4d88-a143-7fb62b8ba9b6.mp4,1.62 MB,00:00:20,8e344abc-6e8b-4d88-a143-7fb62b8ba9b6,1,80,true
+Salt excéntrico N 3,ac7aeb24-db41-4f8f-b04a-e569aa6533c3.mp4,1.19 MB,00:00:13,ac7aeb24-db41-4f8f-b04a-e569aa6533c3,1,87,true
+Lounges hands up M A,6e00fea1-bb2e-4218-bfb7-59c9e525868d.mp4,3.09 MB,00:00:13,6e00fea1-bb2e-4218-bfb7-59c9e525868d,1,127,true
+Lunges con caída,b45ced42-1a48-4cbc-9f20-13ef9870e758.mp4,1.22 MB,00:00:17,b45ced42-1a48-4cbc-9f20-13ef9870e758,1,134,true
+Lounges hands up,a449f218-74b2-41c4-9607-04f2a9103cc3.mp4,3.09 MB,00:00:13,a449f218-74b2-41c4-9607-04f2a9103cc3,1,141,true
+Ext de pierna sentado,edb83320-0d56-4632-9fa1-afd73e59fa87.mp4,1.93 MB,00:00:37,edb83320-0d56-4632-9fa1-afd73e59fa87,1,175,true
+Arrancada con marcha,48e73dd7-db55-46bf-b39f-01b7b481b415.mp4,1.43 MB,00:00:15,48e73dd7-db55-46bf-b39f-01b7b481b415,1,182,true
+Asalto atrás isométrico,6b384bc7-79d5-4e0f-935d-c45ab428fa96.mp4,2.21 MB,00:00:26,6b384bc7-79d5-4e0f-935d-c45ab428fa96,1,189,true
+Sent con manos atrás,3215521e-2fef-44a9-b2b2-79a4b2f1edc1.mp4,1.24 MB,00:00:24,3215521e-2fef-44a9-b2b2-79a4b2f1edc1,1,235,true
+Sentadillas profund,3a876e6d-18c7-4886-9d6d-b1ae9f669a4a.mp4,2 MB,00:00:23,3a876e6d-18c7-4886-9d6d-b1ae9f669a4a,1,241,true
+Sentadillas abiertas,59f7bd3c-f75c-48e9-a3d5-54e3333f6e2e.mp4,2.2 MB,00:00:29,59f7bd3c-f75c-48e9-a3d5-54e3333f6e2e,1,249,true
+Arrancadas N 1,7fa96daa-a357-4c4c-be8e-cc3680570ec6.mp4,1.72 MB,00:00:24,7fa96daa-a357-4c4c-be8e-cc3680570ec6,1,1,true

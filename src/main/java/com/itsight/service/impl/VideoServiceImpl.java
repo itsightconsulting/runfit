@@ -5,6 +5,7 @@ import com.itsight.domain.Video;
 import com.itsight.domain.dto.RefUpload;
 import com.itsight.domain.dto.VideoDTO;
 import com.itsight.domain.pojo.AwsStresPOJO;
+import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoRepository;
 import com.itsight.service.VideoService;
@@ -151,6 +152,7 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
         entity.setUuid(fileUpload.getUuid());
         entity.setExtFile(fileUpload.getExtFile());
         entity.setRutaWeb(fileUpload.getUuid()+fileUpload.getExtFile());
+        entity.setVersion(1);
         //Guardamos
         Video g = repository.save(entity);
         fileUpload.setId(g.getId());
@@ -164,6 +166,7 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
         Video qVideo = this.findOne(entity.getId());
         entity.setRutaWeb(qVideo.getRutaWeb());
         entity.setUuid(qVideo.getUuid());
+        entity.setVersion(qVideo.getVersion()+1);
         this.update(entity);
         return Utilitarios.jsonResponse(String.valueOf(entity.getId()), qVideo.getUuid().toString());
     }
@@ -197,5 +200,10 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
             return SUCCESS_SUBIDA_IMG.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_GENERICA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public VideoPOJO obtenerFullById(Integer id) {
+        return repository.getVideoById(id);
     }
 }

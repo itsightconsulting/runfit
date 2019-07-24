@@ -9,6 +9,8 @@ import com.itsight.domain.SecurityUser;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.CondicionMejoraDTO;
 import com.itsight.domain.dto.PostulanteTrainerDTO;
+import com.itsight.domain.dto.VideoQueryDTO;
+import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.repository.BandejaTemporalRepository;
 import com.itsight.repository.IdiomaRepository;
 import com.itsight.repository.SecurityUserRepository;
@@ -353,7 +355,6 @@ public class PublicoController extends BaseController {
     @GetMapping("/informativo")
     public ModelAndView informativo(
             @RequestParam String g,
-            @RequestParam String te,
             Model model){
         model.addAttribute("msg", Parseador.getDecodeBase64(g));
         return new ModelAndView(ViewConstant.MAIN_INF_P);

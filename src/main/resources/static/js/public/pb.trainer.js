@@ -245,9 +245,6 @@ function clickListenerTabService(e) {
         const id = input.getAttribute('data-id');
         selServicioId = Number(id);
         const svcFocus = tabService.querySelector('.svc-focus');
-        if(svcFocus && id === svcFocus.getAttribute('data-id') && servicios.length>1){
-            return;
-        }
         svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
         clases.add('svc-focus');
         mostrarDetalleServicio(selServicioId);
@@ -884,6 +881,7 @@ function editarTarifa(tId){
         tarifa.precio = t.precio;
         tarifa.monedaId = t.monedaId;
         tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
+        cleanPaqueteCampos();
         $.smallBox({color: "#111509",content: '<i class="fa fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
     } else{
         $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000})
