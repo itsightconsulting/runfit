@@ -296,6 +296,8 @@
             $('#MsgEditarArchivo').addClass('hidden');
             $('#MsgActualizarSubCat').addClass('hidden');
             $('#CategoriaVideoId').removeClass('ignore');
+            const subCat = document.getElementById('SubCategoriaVideoId');
+            subCat.innerHTML = '<option value="" selected="selected"> -- Seleccione -- </option>';
             irRegistro();
         });
 
@@ -643,14 +645,26 @@
     }
 
     function subirVideoChangeEvent() {
-
         $("#Video").change(function () {
             //submit the form here
             var file;
             if ((file = this.files[0])) {
-                objUrl = URL.createObjectURL(file);
+                const mbs = Number($(frm).validate().settings.rules[this.name].mbsMaxLength);
+                $(this).valid();
+                if(file.size > (Number(mbs) * 1024 * 1024)){
+                    $('#Peso').val('');
+                    $('#Duracion').val('');
+                    this.value = null;
+                    $.smallBox({color: 'alert', content: 'El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor o igual a '+mbs+'MB'});
+                    return;
+                }
+                const objUrl = URL.createObjectURL(file);
                 document.getElementById('Tiempo').setAttribute('src', objUrl);
                 $('#Peso').val(formatBytes(file.size, 2));
+                $('#Peso').valid();
+            }else{
+                $('#Peso').val('');
+                $('#Duracion').val('');
             }
         });
     }
@@ -668,7 +682,6 @@
     }
 
     function isActived(value, row) {
-
         if (row.flagActivo) {
             return '<span class="label label-success">Activo</span>';
         } else {
@@ -707,11 +720,12 @@
                         }
                         return true;
                     },
-                    extension: "mp4"
+                    extension: "mp4",
+                    mbsMaxLength: "64"
                 },
                 Peso: {
                     required: true,
-                    rangelength: [0, 11],
+                    rangelength: [0, 11]
                 }
             },
             messages: {

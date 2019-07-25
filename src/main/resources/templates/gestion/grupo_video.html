@@ -537,7 +537,14 @@ you can add as many as you like
             var file, img;
             if ((file = this.files[0])) {
                 img = new Image();
-                const minHeight = $(frm).validate().settings.rules[this.name].minHeight;
+                const rules = $(frm).validate().settings.rules[this.name];
+                const minHeight = rules.minHeight;
+                const mbs = Number(rules.mbsMaxLength);
+                if(file.size > (mbs*1024*1024)){
+                    this.value = null;
+                    $.smallBox({color: 'alert', content: 'El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor o igual a '+mbs+'MB'});
+                    return;
+                }
                 const input = this;
                 img.onload = function () {
                     if(file.type.includes("svg")){
@@ -613,6 +620,7 @@ you can add as many as you like
                     },
                     extension: "jpg|jpeg|png|bmp",
                     minHeight: 2,
+                    mbsMaxLength: "64"
                 },
             },
             messages: {

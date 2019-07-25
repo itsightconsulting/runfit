@@ -3,10 +3,12 @@ package com.itsight.advice;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
+import com.itsight.util.Enums;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,14 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
+import static com.itsight.util.Enums.Error.ARCHIVO_EXCEDE_MAX_PERMITIDO;
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String MAX_UPLOAD_FILE_SIZE;
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionControllerAdvice.class);
 
@@ -90,10 +96,10 @@ public class ExceptionControllerAdvice {
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return new ErrorResponse("1 El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor a.... 1", EX_MAX_UPLOAD_SIZE.get());
+        return new ErrorResponse(String.format(ARCHIVO_EXCEDE_MAX_PERMITIDO.get(), MAX_UPLOAD_FILE_SIZE), EX_MAX_UPLOAD_SIZE.get());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    /*@ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MultipartException.class)
     public @ResponseBody
     ErrorResponse handleErrorByFileSizeLimitExceededException(MultipartException ex) {
@@ -102,7 +108,7 @@ public class ExceptionControllerAdvice {
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
         return new ErrorResponse("2 El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor a.... 3", EX_MAX_SIZE_MULTIPART.get());
-    }
+    }*/
 
     @ExceptionHandler(NullPointerException.class)
     public @ResponseBody

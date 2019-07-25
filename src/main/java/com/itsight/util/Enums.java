@@ -146,6 +146,20 @@ public class Enums {
         }
     }
 
+    public enum Error{
+        ARCHIVO_EXCEDE_MAX_PERMITIDO("El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor o igual a %s");
+
+        final String msg;
+
+        Error(String msg){
+            this.msg = msg;
+        }
+
+        public String get(){
+            return msg;
+        }
+    }
+
     public enum Msg{
         REGISTRO_EXITOSO("Se ha registrado correctamente"),
         CORREO_REPETIDO("El correo ingresado ya se encuentra registrado en nuestra base de datos"),
