@@ -19,9 +19,6 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.BatchUpdateException;
-import java.sql.SQLIntegrityConstraintViolationException;
-
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @ControllerAdvice
@@ -75,6 +72,7 @@ public class ExceptionControllerAdvice {
         }
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(SQLGrammarException.class)
     public @ResponseBody
     ResponseEntity<String> handlerSQLGrammarException(SQLGrammarException ex) {
@@ -85,25 +83,25 @@ public class ExceptionControllerAdvice {
         return new ResponseEntity<>(EX_SQL_GRAMMAR_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
     }
 
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public @ResponseBody
-    String handleErrorByMaxUploadSizeExceededException(MultipartException ex) {
+    public @ResponseBody ErrorResponse handleErrorByMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return EX_MAX_UPLOAD_SIZE.get();
+        return new ErrorResponse("1 El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor a.... 1", EX_MAX_UPLOAD_SIZE.get());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MultipartException.class)
     public @ResponseBody
-    String handleErrorByFileSizeLimitExceededException(MultipartException ex) {
+    ErrorResponse handleErrorByFileSizeLimitExceededException(MultipartException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return EX_MAX_SIZE_MULTIPART.get();
+        return new ErrorResponse("2 El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor a.... 3", EX_MAX_SIZE_MULTIPART.get());
     }
 
     @ExceptionHandler(NullPointerException.class)
