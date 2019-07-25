@@ -631,9 +631,11 @@
             error: function (xhr) {
                 exception(xhr);
             },
-            complete: function () {
-                listarRegistros();
-                irListado($index);
+            complete: function (xhr) {
+                if(xhr.status === 200){
+                    listarRegistros();
+                    irListado($index);
+                }
                 $('#frm_registro input').removeAttr('readonly', true);
                 $('#frm_registro button').removeAttr('disabled', true);
             }
