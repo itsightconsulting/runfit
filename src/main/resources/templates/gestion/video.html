@@ -238,8 +238,8 @@
                 <!-- MODAL VISUALIZACION DE VIDEO -->
                 <div class="modal fade" id="myModalVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                      aria-hidden="true" data-backdrop="static">
-                    <div class="modal-header text-center">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR VIDEO</button>
+                    <div class="modal-header text-center" style="border: none !important">
+                        <a href="javascript:void(0)" data-dismiss="modal" title="Cerrar video"><i class="fa fa-close fa-2x txt-color-white"></i></a>
                     </div>
                     <div class="modal-body">
                         <div class="modal-dialog modal-md">
@@ -525,6 +525,7 @@
                     $("#Duracion").val(data.duracion);
                     $("#Peso").val(data.peso);
 
+                    $("#SubCategoriaVideoId").html('');
                     $("#SubCategoriaVideoId").append(`<option value=${data.subCatVideoId}>${data.nombreSubCat}</option>`);
                     $("#SubCategoriaVideoId").val(data.subCatVideoId);
                     $('#CategoriaVideoId').val(data.catVideoId);

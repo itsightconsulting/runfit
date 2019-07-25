@@ -1011,6 +1011,10 @@ function eliminarCuentaBanco(ccId){
         timeout: 12000});
 }
 
+function editarCuentaBanco(ccId){
+    const divCuenta = document.getElementById('ModalCCs').querySelector(`div.cuenta[data-id="${ccId}"]`);
+}
+
 function confirmarEliminarCB(ccId){
     const cbId = ccId;
     ccBancarias = ccBancarias.filter(c => c.id !== cbId);

@@ -347,7 +347,7 @@
                                         <div class="form-group margin-bottom-12">
                                             <div class="row">
                                                 <div class="col-md-4 col-xs-12">
-                                                    <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
+                                                    <label for="NombreTarifario">NOMBRE</label>
                                                 </div>
                                                 <div class="col-md-8 col-xs-12">
                                                     <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
@@ -357,7 +357,7 @@
                                         <div class="form-group margin-bottom-12">
                                             <div class="row">
                                                 <div class="col-md-4 col-xs-12">
-                                                    <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                                    <label for="FrecuenciaPaquete">FRECUENCIA</label>
                                                 </div>
                                                 <div class="col-md-8 col-xs-12">
                                                     <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
@@ -812,6 +812,22 @@
         obj.servicios.forEach(e=>{
             if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
                 delete e.infoAdicional;
+            }
+        });
+
+        //Validando lista cuentas con el fin de pasar la validación en caso no se haya especificado los campos cuenta interbancaria dolarés y cc dolarés
+        obj.cuentas.forEach(e=>{
+            if(typeof e.numeroSoles !== 'undefined' && e.numeroSoles === ""){
+                delete e.numeroSoles;
+            }
+            if(typeof e.numeroDolares !== 'undefined' && e.numeroDolares === ""){
+                delete e.numeroDolares;
+            }
+            if(typeof e.interbancarioSoles !== 'undefined' && e.interbancarioSoles === ""){
+                delete e.interbancarioSoles;
+            }
+            if(typeof e.interbancarioDolares !== 'undefined' && e.interbancarioDolares === ""){
+                delete e.interbancarioDolares;
             }
         });
 

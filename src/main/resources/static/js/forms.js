@@ -62,34 +62,45 @@ function readURLCs(input, img, ix, mainDivId, nomImg) {
 
             //EventListener para remover imagenes del carusel
            $('#ImgsGaleria').unbind().on( "click",".boton-remover",function(e){
-               const img = e.target;
-               const nomImg = img.getAttribute('data-nom');
-               nomImgsGaleria.forEach((e, ix)=>{
-                   if(e === nomImg){
-                       nomImgsGaleria.splice(ix, 1);
-                   }
-               })
-               $galeria.forEach((e, ix)=>{
-                   if(!nomImgsGaleria.find(g=>g === e.name)){
-                       $galeria.splice(ix, 1);
-                   }
-               })
-             e.preventDefault();
-
-             console.log(img.id);
-             var index = parseInt(img.id,10);
-             imgTemps.splice(index, 1);
-
-             $('.owl-carousel').remove();
-
-             var dvCarusel = generarDOMCarousel(imgTemps, nomImgsGaleria);
-
-             const mainDiv = document.querySelector('#'+mainDivId);
-             mainDiv.appendChild(dvCarusel);
-             galeriaPerfilCarousel();
+               const imgDeleteId = e.target.id;
+               const onClick = `confirmarEliminarDeGaleria(${imgDeleteId});`;
+               $.smallBox({
+                   content: "¿Estás seguro de eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onClick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+                   color: "#296191",
+                   timeout: 10000,
+                   icon: "fa fa-bell swing animated",
+                   iconSmall: "",
+               });
            });
     }
  }
+}
+
+function confirmarEliminarDeGaleria(id){
+    const img = document.querySelector(`img.img-remover[id="${id}"]`);
+    const nomImg = img.getAttribute('data-nom');
+    nomImgsGaleria.forEach((e, ix)=>{
+        if(e === nomImg){
+            nomImgsGaleria.splice(ix, 1);
+        }
+    });
+    $galeria.forEach((e, ix)=>{
+        if(!nomImgsGaleria.find(g=>g === e.name)){
+            $galeria.splice(ix, 1);
+        }
+    });
+
+    console.log(img.id);
+    var index = parseInt(img.id,10);
+    imgTemps.splice(index, 1);
+
+    $('.owl-carousel').remove();
+
+    var dvCarusel = generarDOMCarousel(imgTemps, nomImgsGaleria);
+
+    const mainDiv = document.querySelector('#ImgsGaleria');
+    mainDiv.appendChild(dvCarusel);
+    galeriaPerfilCarousel();
 }
 
 function poblarCarusel(srcs, mainDivId, baseSrc, noOptionDelete) {
@@ -771,9 +782,16 @@ function mostrarCuentasBancarias(cuentas){
 }
 
 function setCuentaBancariaHtmlRaw(cc, noEdit){
+    const banco = document.querySelector('#BancoId').cloneNode(true);
+    banco.name = banco.name + cc.ix;
+    banco.id = banco.id + cc.ix;
+    banco.classList.remove('hidden');
     return `<div class="col-sm-12 cuenta" data-id="${cc.id}">
             <h4>Cuenta <span class="cuenta-num">${++cc.ix}</span>
-                ${!noEdit ? `<img src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id})"/>`:''}
+                ${!noEdit ? 
+                    `<img src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id})" title="Eliminar cuenta bancaria"/>
+                     <img src="${_ctx}img/iconos/icon_disquete.svg" onclick="editarCuentaBanco(${cc.id})" title="Guardar cambios a cuenta bancaria"/>`
+                    :''}
             </h4>
             <div class="col col-md-6 col-xs-12">
                 <div class="form-group">
@@ -788,7 +806,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Titular
                     </label>
-                    <input class="form-control" readonly="readonly" value="${cc.titular}">
+                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.titular}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -804,7 +822,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Documento
                     </label>
-                    <input class="form-control" readonly="readonly" value="${cc.titularNumDoc}">
+                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.titularNumDoc ? cc.titularNumDoc : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -812,7 +830,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Cuenta Soles
                     </label>
-                    <input class="form-control" readonly="readonly" value="${cc.numeroSoles}">
+                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.numeroSoles ? cc.numeroSoles : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -820,7 +838,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Cuenta Dólares
                     </label>
-                    <input class="form-control" readonly="readonly" value="${cc.numeroDolares}">
+                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.numeroDolares ? cc.numeroDolares : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -828,7 +846,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Interbancario Soles
                     </label>
-                    <input class="form-control" readonly="readonly" value="${cc.interbancarioSoles}">
+                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.interbancarioSoles ? cc.interbancarioSoles : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -836,7 +854,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Interbancario Dólares
                     </label>
-                    <input class="form-control" readonly="readonly" value="${cc.interbancarioDolares}">
+                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.interbancarioDolares ? cc.interbancarioDolares : ''}">
                 </div>
             </div>
         </div>

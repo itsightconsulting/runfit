@@ -249,7 +249,7 @@
                                     <div class="form-group margin-bottom-12">
                                         <div class="row">
                                             <div class="col-md-4 col-xs-12">
-                                                <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
+                                                <label for="NombreTarifario">NOMBRE</label>
                                             </div>
                                             <div class="col-md-8 col-xs-12">
                                                 <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
@@ -259,7 +259,7 @@
                                     <div class="form-group margin-bottom-12">
                                         <div class="row">
                                             <div class="col-md-4 col-xs-12">
-                                                <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                                <label for="FrecuenciaPaquete">FRECUENCIA</label>
                                             </div>
                                             <div class="col-md-8 col-xs-12">
                                                 <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
@@ -516,7 +516,7 @@
         const ordenSlide = Number(input.parentElement.previousElementSibling.getAttribute('data-slide-to'));
         const onclick = `eliminarImagenGaleria("${imgName}", ${ordenSlide})`;
         $.smallBox({
-            content: "¿Estás seguro de querer eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onclick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+            content: "¿Estás seguro de eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onclick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
             color: "#296191",
             timeout: 10000,
             icon: "fa fa-bell swing animated",
