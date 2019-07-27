@@ -774,25 +774,163 @@ function mostrarCuentasBancarias(cuentas){
         modalBody.innerHTML = "<div class='alert alert-info'>Aún no ha agregado ninguna cuenta bancaria</div>";
         return;
     }
-    const noEdit = cuentas[0].noEdit ? true : false;
+    const noDelete = cuentas[0].noDelete ? true : false;
+    const rules = getCuentaBancariaRules();
     cuentas.forEach((c, ix)=>{
         c.ix = ix;
-        modalBody.appendChild(htmlStringToElement(setCuentaBancariaHtmlRaw(c, noEdit)));
-    })
+        modalBody.appendChild(htmlStringToElement(setCuentaBancariaHtmlRaw(c, noDelete, rules)));
+    });
 }
 
-function setCuentaBancariaHtmlRaw(cc, noEdit){
+function getCuentaBancariaRules(){
+    const rules = new Object();
+    rules.titularCuenta = 60;
+    rules.titularNumDoc = 12;
+    rules.numeroSoles = 30;
+    rules.numeroDolares = 30;
+    rules.interbancarioSoles = 30;
+    rules.interbancarioDolares = 30;
+    return rules;
+}
+
+
+function populateBancos(){
+    document.getElementById('BancoId').innerHTML = banks.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
+}
+
+function setCuentaBancariaHtmlRaw(cc, noDelete, rules){
     const banco = document.querySelector('#BancoId').cloneNode(true);
-    banco.name = banco.name + cc.ix;
-    banco.id = banco.id + cc.ix;
+    banco.name = "";
+    banco.id = "";
     banco.classList.remove('hidden');
-    return `<div class="col-sm-12 cuenta" data-id="${cc.id}">
-            <h4>Cuenta <span class="cuenta-num">${++cc.ix}</span>
-                ${!noEdit ? 
-                    `<img src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id})" title="Eliminar cuenta bancaria"/>
-                     <img src="${_ctx}img/iconos/icon_disquete.svg" onclick="editarCuentaBanco(${cc.id})" title="Guardar cambios a cuenta bancaria"/>`
-                    :''}
+    banco.classList.add('cc-banco');
+    banco.querySelector('option[value="' + cc.bancoId + '"]').setAttribute("selected", "selected");
+
+    const tipoDoc = document.querySelector('#TitularTipoDoc').cloneNode(true);
+    tipoDoc.name = "";
+    tipoDoc.id = "";
+    tipoDoc.classList.remove('hidden');
+    tipoDoc.classList.add('cc-tipo-doc');
+    tipoDoc.querySelector('option[value="' + cc.titularTipoDoc + '"]').setAttribute("selected", "selected");
+
+    return `<div class="col-sm-12 cuenta" data-id="${cc.id ? cc.id : cc.ix}">
+            <h4>Cuenta <span class="cuenta-num">${cc.ix + 1}</span>
+                <img class="${noDelete ? 'hidden' : ''}" src="${_ctx}img/iconos/icon_trash.svg" onclick="eliminarCuentaBanco(${cc.id ? cc.id : cc.ix})" title="Eliminar cuenta bancaria"/>
+                <img src="${_ctx}img/iconos/icon_disquete.svg" onclick="editarCuentaBancaria(${cc.id ? cc.id : cc.ix})" title="Guardar cambios a cuenta bancaria"/>
             </h4>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Banco<span class="obligatorio"></span>
+                    </label>
+                    ${banco.outerHTML}
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Titular<span class="obligatorio"></span>
+                    </label>
+                    <input name="TitularCuenta" class="form-control cc-titular" value="${cc.titular}" 
+                        maxlength="${rules.titularCuenta}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Tipo Documento
+                    </label>
+                    ${tipoDoc.outerHTML}
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Documento
+                    </label>
+                    <input name="TitularNumDoc" class="form-control cc-num-doc" value="${cc.titularNumDoc ? cc.titularNumDoc : ''}"
+                        maxlength="${rules.titularNumDoc}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Cuenta Soles
+                    </label>
+                    <input name="NumeroSoles" class="form-control cc-num-cs" value="${cc.numeroSoles ? cc.numeroSoles : ''}"
+                        maxlength="${rules.numeroSoles}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Cuenta Dólares
+                    </label>
+                    <input name="NumeroDolares" class="form-control cc-num-cd" value="${cc.numeroDolares ? cc.numeroDolares : ''}"
+                        maxlength="${rules.numeroDolares}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Interbancario Soles
+                    </label>
+                    <input name="InterbancarioSoles" class="form-control cc-num-ccis" value="${cc.interbancarioSoles ? cc.interbancarioSoles : ''}"
+                         maxlength="${rules.interbancarioSoles}">
+                </div>
+            </div>
+            <div class="col col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>
+                        Número Interbancario Dólares
+                    </label>
+                    <input name="InterbancarioDolares" class="form-control cc-num-ccid" value="${cc.interbancarioDolares ? cc.interbancarioDolares : ''}"
+                        maxlength="${rules.interbancarioDolares}">
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function editarCuentaBancaria(ccId){
+    const divCC = document.querySelector('#ModalCCs .cuenta[data-id="'+ccId+'"]');
+    const cuenta = {};
+    const val = Array.from(divCC.querySelectorAll('input.form-control')).filter(e=>$(e).valid() !== true).length ? false : true;
+    if(val){
+        cuenta.bancoId = divCC.querySelector('.cc-banco').value;
+        cuenta.titular = divCC.querySelector('.cc-titular').value;
+        cuenta.titularTipoDoc = divCC.querySelector('.cc-tipo-doc').value;
+        cuenta.titular = divCC.querySelector('.cc-titular').value;
+        cuenta.titularNumDoc = divCC.querySelector('.cc-num-doc').value;
+        cuenta.numeroSoles = divCC.querySelector('.cc-num-cs').value;
+        cuenta.numeroDolares = divCC.querySelector('.cc-num-cd').value;
+        cuenta.interbancarioSoles = divCC.querySelector('.cc-num-ccis').value;
+        cuenta.interbancarioDolares = divCC.querySelector('.cc-num-ccid').value;
+
+        const qCuenta = ccBancarias.find(e=>(e.id ? e.id : e.ix)==ccId);
+        qCuenta.bancoId = cuenta.bancoId;
+        qCuenta.titular = cuenta.titular;
+        qCuenta.titularTipoDoc = cuenta.titularTipoDoc;
+        qCuenta.titular = cuenta.titular;
+        qCuenta.titularNumDoc = cuenta.titularNumDoc;
+        qCuenta.numeroSoles = cuenta.numeroSoles;
+        qCuenta.numeroDolares = cuenta.numeroDolares;
+        qCuenta.interbancarioDolares = cuenta.interbancarioDolares;
+        qCuenta.interbancarioSoles = cuenta.interbancarioSoles;
+        $.smallBox({content: 'La cuenta se ha actualizado con éxito'});
+    }else{
+        $.smallBox({
+            color: 'alert',
+            content: 'Los nuevos datos de la cuenta son inválidos, revíselos!'}
+        );
+    }
+
+
+}
+
+function setCuentaBancariaHtmlRawNoOps(cc){
+    return `<div class="col-sm-12 cuenta" data-id="${cc.id}">
+            <h4>Cuenta <span class="cuenta-num">${++cc.ix}</span></h4>
             <div class="col col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>
@@ -806,7 +944,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Titular
                     </label>
-                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.titular}">
+                    <input class="form-control" readonly="readonly" value="${cc.titular}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -822,7 +960,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Documento
                     </label>
-                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.titularNumDoc ? cc.titularNumDoc : ''}">
+                    <input class="form-control" readonly="readonly" value="${cc.titularNumDoc ? cc.titularNumDoc : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -830,7 +968,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Cuenta Soles
                     </label>
-                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.numeroSoles ? cc.numeroSoles : ''}">
+                    <input class="form-control" readonly="readonly" value="${cc.numeroSoles ? cc.numeroSoles : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -838,7 +976,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Cuenta Dólares
                     </label>
-                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.numeroDolares ? cc.numeroDolares : ''}">
+                    <input class="form-control" readonly="readonly" value="${cc.numeroDolares ? cc.numeroDolares : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -846,7 +984,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Interbancario Soles
                     </label>
-                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.interbancarioSoles ? cc.interbancarioSoles : ''}">
+                    <input class="form-control" readonly="readonly" value="${cc.interbancarioSoles ? cc.interbancarioSoles : ''}">
                 </div>
             </div>
             <div class="col col-md-6 col-xs-12">
@@ -854,7 +992,7 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
                     <label>
                         Número Interbancario Dólares
                     </label>
-                    <input class="form-control"${noEdit ? ' readonly="readonly"':''} value="${cc.interbancarioDolares ? cc.interbancarioDolares : ''}">
+                    <input class="form-control" readonly="readonly" value="${cc.interbancarioDolares ? cc.interbancarioDolares : ''}">
                 </div>
             </div>
         </div>
@@ -864,6 +1002,16 @@ function setCuentaBancariaHtmlRaw(cc, noEdit){
 function verCuentasBancarias(){
     $('#myModalCC').modal();
     mostrarCuentasBancarias(ccBancarias);
+}
+
+function verCuentasBancariasNoOps(){
+    $('#myModalCC').modal();
+    const modalBody = document.getElementById('ModalCCs');
+    modalBody.innerHTML = "";
+    ccBancarias.forEach((c, ix)=>{
+        c.ix = ix;
+        modalBody.appendChild(htmlStringToElement(setCuentaBancariaHtmlRawNoOps(c)));
+    });
 }
 
 function setHeightForModals(arrModalIds){

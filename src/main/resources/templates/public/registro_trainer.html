@@ -989,7 +989,7 @@
                 },
                 TitularNumDoc:{
                     digits: true,
-                    rangelength: [8, 13],
+                    rangelength: [8, 12],
                     customnumdoc: function(){
                         return $('#TitularTipoDoc').val();
                     }
@@ -1104,6 +1104,12 @@
                 InterbancarioSoles:{
                     pattern: "Solo se permiten números y como separadores espacio y guión",
                 },
+                NumeroDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
                 inpTermCond:{
                     required: "Debe aceptar los términos y condiciones"
                 }
@@ -1113,6 +1119,53 @@
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        });
+
+        $('#frm_modal_ccs').validate({
+            rules:{
+                TitularCuenta:{
+                    rangelength: [6, 60],
+                    lettersonly: true,
+                },
+                TitularNumDoc:{
+                    digits: true,
+                    rangelength: [8, 12],
+                    customnumdoc: function(e){
+                        const tipoDoc = e.parentElement.parentElement.parentElement.querySelector('.cc-tipo-doc');
+                        return tipoDoc.value;
+                    }
+                },
+                NumeroSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                NumeroDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+            },
+            messages:{
+                NumeroSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                NumeroDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+            }
         });
     }
 

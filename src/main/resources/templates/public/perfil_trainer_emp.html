@@ -256,7 +256,7 @@
                               </div>
                           </div>
                           <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
-                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancariasNoOps();"></i>
                           </h4>
                           <div class="form-group hidden" id="divNotaFinal">
                               <label>Nota</label>
@@ -725,7 +725,7 @@
               const ccs = JSON.parse(cuentas);
               if(ccs.length){
                   //Importante para que en el modal no aparezca el ícono imagen de eliminar
-                  ccs[0].noEdit = true;
+                  ccs[0].noDelete = true;
                   ccBancarias = ccs;
               } else {
                   document.querySelector('.title-cuentas-bancarias').classList.add('hidden');

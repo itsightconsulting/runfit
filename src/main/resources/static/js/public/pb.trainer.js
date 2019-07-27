@@ -628,10 +628,6 @@ function modalEventos(){
     setHeightForModals(['myModalCC']);
 }
 
-function populateBancos(){
-    document.getElementById('BancoId').innerHTML = banks.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
-}
-
 function getAsStringIncluyeServices(){
     return Array.from(document.querySelectorAll('#MainIncluyeServicios textarea')).map(v=>v.value  !==  "" ? v.value : "").filter(v=>v.trim()!=="").join('|');
 }
@@ -1009,10 +1005,6 @@ function eliminarCuentaBanco(ccId){
         content: "<em>¿Estás seguro de eliminar esta cuenta bancaria?</em><br><br>" +
             "<div class='text-center'><button type='button'"+methodClick+" class='btn btn-danger' style='margin: 10px'>SI</button><button type='button' class='btn btn-primary' style='margin: 10px'>NO</button></div>" ,
         timeout: 12000});
-}
-
-function editarCuentaBanco(ccId){
-    const divCuenta = document.getElementById('ModalCCs').querySelector(`div.cuenta[data-id="${ccId}"]`);
 }
 
 function confirmarEliminarCB(ccId){

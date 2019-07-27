@@ -365,6 +365,15 @@
                                 <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
                                     <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
                                 </h4>
+                                <div class="hidden"><!-- NECESARIO PARA CLONARLO PARA LA EDICIÓN DE CUENTAS-->
+                                    <select class="form-control mg-bt-10 hidden" name="BancoId" id="BancoId">
+                                    </select>
+                                    <select class="form-control mg-bt-10 hidden" id="TitularTipoDoc">
+                                        <option value="1">DNI</option>
+                                        <option value="2">CE</option>
+                                        <option value="3">RUC</option>
+                                    </select>
+                                </div>
                                 <input type="file" id="inpCondServicio" class="hide">
                                 <input type="hidden" id="FichaClienteId"/>
                                 <div class="form-group hidden" id="divNota">
@@ -643,6 +652,7 @@
     function init(){
         instanceAllTooltip();
         getIdiomas();
+        populateBancos();
         modalEventos();
         getTrainer();
         constraintsValidation();
@@ -782,6 +792,7 @@
         const d = generateBodyToUpdate();
         d.trainerId = hshId;
         d.servicios = checkServicios();
+        d.cuentas = ccBancarias;
         d.tipoTrainerId = $perfil.tipoTrainerId;
         deleteSomePropertiesByTipoTraienerId(d);
         if(!d.centroTrabajo){
@@ -790,6 +801,22 @@
         if(!d.especialidad){
             delete d.especialidad;
         }
+
+        //Validando lista cuentas con el fin de pasar la validación en caso no se haya especificado los campos cuenta interbancaria dolarés y cc dolarés
+        d.cuentas.forEach(e=>{
+            if(typeof e.numeroSoles !== 'undefined' && e.numeroSoles === ""){
+                delete e.numeroSoles;
+            }
+            if(typeof e.numeroDolares !== 'undefined' && e.numeroDolares === ""){
+                delete e.numeroDolares;
+            }
+            if(typeof e.interbancarioSoles !== 'undefined' && e.interbancarioSoles === ""){
+                delete e.interbancarioSoles;
+            }
+            if(typeof e.interbancarioDolares !== 'undefined' && e.interbancarioDolares === ""){
+                delete e.interbancarioDolares;
+            }
+        });
 
         $("#frm_registro :input").prop("disabled", true);
         $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
@@ -1306,7 +1333,7 @@
             const ccs = JSON.parse(cuentas);
             if(ccs.length){
                 //Importante para que en el modal no aparezca el ícono imagen de eliminar
-                ccs[0].noEdit = true;
+                ccs[0].noDelete = true;
                 ccBancarias = ccs;
             } else {
                 document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
@@ -1673,19 +1700,60 @@
                         }, 200);
                         return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
                     }
-                },
-                NumeroCuentaSoles:{
-                    pattern: "Solo se permiten números y como separadores espacio y guión",
-                },
-                InterbancarioSoles:{
-                    pattern: "Solo se permiten números y como separadores espacio y guión",
-                },
+                }
             }
         });
 
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        });
+
+        $('#frm_modal_ccs').validate({
+            rules:{
+                TitularCuenta:{
+                    rangelength: [6, 60],
+                    lettersonly: true,
+                },
+                TitularNumDoc:{
+                    digits: true,
+                    rangelength: [8, 12],
+                    customnumdoc: function(e){
+                        const tipoDoc = e.parentElement.parentElement.parentElement.querySelector('.cc-tipo-doc');
+                        return tipoDoc.value;
+                    }
+                },
+                NumeroSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                NumeroDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+            },
+            messages:{
+                NumeroSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                NumeroDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+            }
         });
     }
 </script>

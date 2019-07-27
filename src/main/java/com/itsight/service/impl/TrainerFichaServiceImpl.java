@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Correo;
 import com.itsight.domain.Trainer;
@@ -188,6 +189,12 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
                 ServicioDTO s = trainerFicha.getServicios().get(i);
                 servicioService.actualizarByIdAndTrainerId(s.getId(), s.getNombre(), s.getDescripcion(), s.getIncluye(), s.getInfoAdicional(), s.getTarifarios(), id);
             }
+        }
+
+        if(trainerFicha.getTipoTrainerId() != PARA_EMPRESA.get()){
+            repository.actualizarCuentasGaleria(
+                new ObjectMapper().writeValueAsString(trainerFicha.getCuentas()) ,
+                id);
         }
 
         if(trainerFicha.getTipoTrainerId() != PARA_EMPRESA.get()){

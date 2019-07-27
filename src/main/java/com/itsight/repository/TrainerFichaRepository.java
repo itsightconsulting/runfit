@@ -92,4 +92,8 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
     @Modifying
     @Query(value = "UPDATE TrainerFicha T SET T.miniGaleria = ?1 WHERE T.trainer.id = ?2")
     void actualizarMiniGaleriaById(String miniGaleria, Integer id);
+
+    @Modifying
+    @Query(value = "UPDATE TrainerFicha T SET T.cuentas = ?1 WHERE T.trainer.id = ?2")
+    void actualizarCuentasGaleria(String cuentas, Integer id);
 }
