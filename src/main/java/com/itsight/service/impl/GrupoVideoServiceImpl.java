@@ -18,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_GENERICA;
-import static com.itsight.util.Enums.Msg.SUCCESS_SUBIDA_IMG;
+import static com.itsight.util.Enums.Msg.*;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
@@ -150,14 +149,23 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
     }
 
     @Override
-    public String actualizar(GrupoVideo entity, String wildcard) {
+    public String actualizar(GrupoVideo entity, String wildcard) throws CustomValidationException {
         // TODO Auto-generated method stub
         entity.setForest(2);//Padre-artificio|Valor final
         GrupoVideo qGrupoVideo = repository.getById(entity.getId());
+        //Revisando si esta cambiando el flagActivo y bloqueandolo en caso tenga records dependientes
+        if(qGrupoVideo.isFlagActivo()!=entity.isFlagActivo()){
+            if(!entity.isFlagActivo()){
+                boolean hasChildren = checkHaveChildrenById(entity.getId());
+                if(hasChildren){
+                    throw new CustomValidationException(FLAG_BLOQUEADO_TIENE_DEPS.get(), EX_VALIDATION_FAILED.get());
+                }
+            }
+        }
         entity.setRutaWeb(qGrupoVideo.getRutaWeb());
-        entity.setRutaReal(qGrupoVideo.getRutaReal());
+        entity.setUuid(qGrupoVideo.getUuid());
         repository.saveAndFlush(entity);
-        return Utilitarios.customResponse(Enums.ResponseCode.ACTUALIZACION.get(), String.valueOf(entity.getId()));
+        return Utilitarios.jsonResponse(String.valueOf(entity.getId()), qGrupoVideo.getUuid().toString());
     }
 
     @Override
@@ -178,5 +186,10 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
             return SUCCESS_SUBIDA_IMG.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_GENERICA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public boolean checkHaveChildrenById(int id) {
+        return repository.checkHaveChildrenById(id);
     }
 }

@@ -20,7 +20,7 @@
             <div class="container">
                 <div class="col-md-5">
                     <div class="avatar-form">
-                        <input type="file" id="InpImgPerfil">
+                        <input type="file" id="InpImgPerfil" name="InpImgPerfil">
                         <div class="avatar-form-content img-container">
                             <img id="FinalImagenRecortada" title="Cambiar foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                             <i rel="tooltip" title="Si desea actualizar la imagen de perfil, clickee sobre la imagen actual 📸" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-exclamation-circle"></i>
@@ -193,7 +193,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                         </div>
                         <div class="tab-pane fade" id="staff" style="padding: 0px 0px 20px">
                             <form>
@@ -249,7 +249,7 @@
                                     <div class="form-group margin-bottom-12">
                                         <div class="row">
                                             <div class="col-md-4 col-xs-12">
-                                                <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
+                                                <label for="NombreTarifario">NOMBRE</label>
                                             </div>
                                             <div class="col-md-8 col-xs-12">
                                                 <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
@@ -259,7 +259,7 @@
                                     <div class="form-group margin-bottom-12">
                                         <div class="row">
                                             <div class="col-md-4 col-xs-12">
-                                                <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                                <label for="FrecuenciaPaquete">FRECUENCIA</label>
                                             </div>
                                             <div class="col-md-8 col-xs-12">
                                                 <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
@@ -365,6 +365,15 @@
                                 <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
                                     <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
                                 </h4>
+                                <div class="hidden"><!-- NECESARIO PARA CLONARLO PARA LA EDICIÓN DE CUENTAS-->
+                                    <select class="form-control mg-bt-10 hidden" name="BancoId" id="BancoId">
+                                    </select>
+                                    <select class="form-control mg-bt-10 hidden" id="TitularTipoDoc">
+                                        <option value="1">DNI</option>
+                                        <option value="2">CE</option>
+                                        <option value="3">RUC</option>
+                                    </select>
+                                </div>
                                 <input type="file" id="inpCondServicio" class="hide">
                                 <input type="hidden" id="FichaClienteId"/>
                                 <div class="form-group hidden" id="divNota">
@@ -375,13 +384,14 @@
                                 </div>
 
                         </div>
-
+                            <div class="form-group div-actualizacion">
+                                <hr>
+                                <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                                <button class="btn btn-default btn-black" id="btnGuardar"><i class="fa fa-fw fa-check"></i>ACTUALIZAR Y ENVIAR</button>
                             </div>
-                        </div>
-                        <div class="form-group div-actualizacion">
-                            <hr>
-                            <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                            <button class="btn btn-default btn-black" id="btnGuardar"><i class="fa fa-fw fa-check"></i>ACTUALIZAR Y ENVIAR</button>
+                            </div>
+
+
                         </div>
                     </form>
                 </div>
@@ -421,11 +431,10 @@
     const body = document.querySelector('body');
 
     (function () {
-        uploadAndShow(inpImgPerfil, imgPerfil);
-        inpImgPerfil.addEventListener('change', changeImgPerfil);
         inpImgPerfil.addEventListener('click', clickImgPerfiL);
         body.addEventListener('click', bodyClickEventListener);
         body.addEventListener('focusout', bodyFocusOutEventListener);
+        body.addEventListener('change', bodyChangeEventListener);
         tabService.addEventListener('click', clickListenerTabService);
         btnGuardar.addEventListener('click', actualizarPerfil);
         init();
@@ -482,12 +491,41 @@
         }
     }
 
+    function bodyChangeEventListener(e){
+        const input = e.target;
+
+        if(input.id === "InpImgPerfil"){
+            const minHeight = $(frm).validate().settings.rules[input.name].minHeight;
+            const imgTemp = new Image();
+            imgTemp.onload = function () {
+                if(imgTemp.height < minHeight){
+                    $.smallBox({color: 'alert', content: 'La imagen debe tener un alto mínimo de 220px: '});
+                }else{
+                    const isValid = checkingValidExtension(input);
+                    if(isValid){
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $(imgPerfil).attr('src', e.target.result);
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                        //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
+                        $('#myModalCropper').modal('show');
+                    }
+                }
+            };
+            imgTemp.src = _URL.createObjectURL(input.files[0]);
+        }
+    }
+
     function preEliminarImagenGaleria(input){
         const imgName = input.getAttribute('data-name');
         const ordenSlide = Number(input.parentElement.previousElementSibling.getAttribute('data-slide-to'));
         const onclick = `eliminarImagenGaleria("${imgName}", ${ordenSlide})`;
         $.smallBox({
-            content: "¿Estás seguro de querer eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onclick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+            content: "¿Estás seguro de eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onclick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
             color: "#296191",
             timeout: 10000,
             icon: "fa fa-bell swing animated",
@@ -614,6 +652,7 @@
     function init(){
         instanceAllTooltip();
         getIdiomas();
+        populateBancos();
         modalEventos();
         getTrainer();
         constraintsValidation();
@@ -670,6 +709,7 @@
         }
         checkRevisionTrainerDeEmpresa();
         doMultiselectCheckBox();
+        nextTabButton();
     }
 
     function checkRevisionTrainerDeEmpresa(){
@@ -704,10 +744,6 @@
             e.preventDefault();
             $('#myModalCropper').modal('show');
         }
-    }
-
-    function changeImgPerfil(){
-        $('#myModalCropper').modal('show');
     }
 
     function checkTab(){
@@ -756,6 +792,7 @@
         const d = generateBodyToUpdate();
         d.trainerId = hshId;
         d.servicios = checkServicios();
+        d.cuentas = ccBancarias;
         d.tipoTrainerId = $perfil.tipoTrainerId;
         deleteSomePropertiesByTipoTraienerId(d);
         if(!d.centroTrabajo){
@@ -764,6 +801,22 @@
         if(!d.especialidad){
             delete d.especialidad;
         }
+
+        //Validando lista cuentas con el fin de pasar la validación en caso no se haya especificado los campos cuenta interbancaria dolarés y cc dolarés
+        d.cuentas.forEach(e=>{
+            if(typeof e.numeroSoles !== 'undefined' && e.numeroSoles === ""){
+                delete e.numeroSoles;
+            }
+            if(typeof e.numeroDolares !== 'undefined' && e.numeroDolares === ""){
+                delete e.numeroDolares;
+            }
+            if(typeof e.interbancarioSoles !== 'undefined' && e.interbancarioSoles === ""){
+                delete e.interbancarioSoles;
+            }
+            if(typeof e.interbancarioDolares !== 'undefined' && e.interbancarioDolares === ""){
+                delete e.interbancarioDolares;
+            }
+        });
 
         $("#frm_registro :input").prop("disabled", true);
         $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
@@ -1245,6 +1298,7 @@
             tarifa.sesiones = t.sesiones;
             tarifa.precio = t.precio;
             tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
+            cleanPaqueteCampos();
             $.smallBox({color: "#111509",content: '<i class="fa fa-fw fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
         } else{
             $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000})
@@ -1279,7 +1333,7 @@
             const ccs = JSON.parse(cuentas);
             if(ccs.length){
                 //Importante para que en el modal no aparezca el ícono imagen de eliminar
-                ccs[0].noEdit = true;
+                ccs[0].noDelete = true;
                 ccBancarias = ccs;
             } else {
                 document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
@@ -1430,6 +1484,17 @@
         inpImgPerfil.click();
     }
 
+    function nextTabButton() {
+        const lis = document.querySelectorAll('.nav.nav-tabs li');
+        $('.btnNextTab').click(function(){
+            var header = $(".navbar-inverse").height();
+            $(lis[lis.length-1]).find('a').trigger('click');
+            setTimeout(() => {
+                $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+            }, 100);
+        });
+    }
+
     function getServiciosAsync(trainerId){
         $.ajax({
             type: 'GET',
@@ -1570,7 +1635,11 @@
                 },
                 Nota: {
                     rangelength: [10, 400]
-                }
+                },
+                InpImgPerfil:{
+                    extension: "jpg|jpeg|png",
+                    minHeight: 220
+                },
             },
             messages: {
                 Username: {
@@ -1631,19 +1700,60 @@
                         }, 200);
                         return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
                     }
-                },
-                NumeroCuentaSoles:{
-                    pattern: "Solo se permiten números y como separadores espacio y guión",
-                },
-                InterbancarioSoles:{
-                    pattern: "Solo se permiten números y como separadores espacio y guión",
-                },
+                }
             }
         });
 
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        });
+
+        $('#frm_modal_ccs').validate({
+            rules:{
+                TitularCuenta:{
+                    rangelength: [6, 60],
+                    lettersonly: true,
+                },
+                TitularNumDoc:{
+                    digits: true,
+                    rangelength: [8, 12],
+                    customnumdoc: function(e){
+                        const tipoDoc = e.parentElement.parentElement.parentElement.querySelector('.cc-tipo-doc');
+                        return tipoDoc.value;
+                    }
+                },
+                NumeroSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                NumeroDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+            },
+            messages:{
+                NumeroSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                NumeroDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+            }
         });
     }
 </script>

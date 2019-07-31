@@ -303,7 +303,7 @@
                                         <div class="form-group margin-bottom-12">
                                             <div class="row">
                                                 <div class="col-md-4 col-xs-12">
-                                                    <label for="NombreTarifario">NOMBRE<span class="obligatorio">*</span></label>
+                                                    <label for="NombreTarifario">NOMBRE</label>
                                                 </div>
                                                 <div class="col-md-8 col-xs-12">
                                                     <input type="text" id="NombreTarifario" name="NombreTarifario" class="form-control">
@@ -313,7 +313,7 @@
                                         <div class="form-group margin-bottom-12">
                                             <div class="row">
                                                 <div class="col-md-4 col-xs-12">
-                                                    <label for="FrecuenciaPaquete">FRECUENCIA<span class="obligatorio">*</span></label>
+                                                    <label for="FrecuenciaPaquete">FRECUENCIA</label>
                                                 </div>
                                                 <div class="col-md-8 col-xs-12">
                                                     <select class="form-control full-100 hidden" id="FrecuenciaPaquete">
@@ -716,7 +716,23 @@
             if(typeof e.infoAdicional !== 'undefined' && e.infoAdicional === ""){
                 delete e.infoAdicional;
             }
-        })
+        });
+
+        //Validando lista cuentas con el fin de pasar la validación en caso no se haya especificado los campos cuenta interbancaria dolarés y cc dolarés
+        obj.cuentas.forEach(e=>{
+            if(typeof e.numeroSoles !== 'undefined' && e.numeroSoles === ""){
+                delete e.numeroSoles;
+            }
+            if(typeof e.numeroDolares !== 'undefined' && e.numeroDolares === ""){
+                delete e.numeroDolares;
+            }
+            if(typeof e.interbancarioSoles !== 'undefined' && e.interbancarioSoles === ""){
+                delete e.interbancarioSoles;
+            }
+            if(typeof e.interbancarioDolares !== 'undefined' && e.interbancarioDolares === ""){
+                delete e.interbancarioDolares;
+            }
+        });
         return obj;
     }
     function constraintsValidation() {
@@ -850,7 +866,7 @@
                 },
                 TitularNumDoc:{
                     digits: true,
-                    rangelength: [8, 13],
+                    rangelength: [8, 12],
                     customnumdoc: function(){
                         return $('#TitularTipoDoc').val();
                     }
@@ -878,6 +894,7 @@
                 },
                 InpImgPerfil:{
                     extension: "jpg|jpeg|png",
+                    minHeight: 220
                 },
                 inpCondServicio:{
                     extension: "pdf",
@@ -955,10 +972,16 @@
                         return '<i class="fa fa-fw fa-exclamation-circle" id="IcoTxtCantidadSesiones" title="Debe especificar un valor mayor a 0" style="color: #c46a69"></i>';
                     }
                 },
-                NumeroCuentaSoles:{
+                NumeroSoles:{
                     pattern: "Solo se permiten números y como separadores espacio y guión",
                 },
                 InterbancarioSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                NumeroDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioDolares:{
                     pattern: "Solo se permiten números y como separadores espacio y guión",
                 },
                 inpTermCond:{
@@ -969,6 +992,53 @@
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        });
+
+        $('#frm_modal_ccs').validate({
+            rules:{
+                TitularCuenta:{
+                    rangelength: [6, 60],
+                    lettersonly: true,
+                },
+                TitularNumDoc:{
+                    digits: true,
+                    rangelength: [8, 12],
+                    customnumdoc: function(e){
+                        const tipoDoc = e.parentElement.parentElement.parentElement.querySelector('.cc-tipo-doc');
+                        return tipoDoc.value;
+                    }
+                },
+                NumeroSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioSoles:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                NumeroDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+                InterbancarioDolares:{
+                    pattern: "[0-9]{3,}[0-9 -]*$",
+                    rangelength: [10, 30]
+                },
+            },
+            messages:{
+                NumeroSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioSoles:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                NumeroDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+                InterbancarioDolares:{
+                    pattern: "Solo se permiten números y como separadores espacio y guión",
+                },
+            }
         });
     }
 </script>

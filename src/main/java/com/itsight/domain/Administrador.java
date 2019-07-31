@@ -50,7 +50,7 @@ public class Administrador extends AuditingEntity implements Serializable {
     private String apellidos;
     @Column(nullable = false)
     private String numeroDocumento;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String correo;
     @Column(length = 16)
     private String telefono;

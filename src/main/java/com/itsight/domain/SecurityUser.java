@@ -127,7 +127,7 @@ public class SecurityUser{
     )
     @Column(name = "SecurityUserId")
     private Integer id;
-    @Column(name = "Username", unique = true, updatable = false)
+    @Column(name = "Username", nullable = false, updatable = false)
     private String username;
     @Column(name = "Password", nullable = false)
     private String password;

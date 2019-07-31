@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+import static com.itsight.util.Enums.Msg.FLAG_BLOQUEADO_TIENE_DEPS;
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @Controller
@@ -36,7 +37,7 @@ public class CategoriaVideoController {
     @GetMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView principal(Model model) {
-        model.addAttribute("lstGrupoVideo", grupoVideoService.findAll());
+        model.addAttribute("lstGrupoVideo", grupoVideoService.findByFlagActivo(true));
         return new ModelAndView(ViewConstant.MAIN_ASSETS_CATEGORIA_VIDEO);
     }
 
@@ -68,12 +69,18 @@ public class CategoriaVideoController {
 
     @PutMapping(value = "/desactivar")
     public @ResponseBody
-    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) {
-        try {
+    String desactivar(@RequestParam(value = "id") int id, @RequestParam boolean flagActivo) throws CustomValidationException {
+        if(flagActivo){
             categoriaVideoService.actualizarFlagActivoById(id, flagActivo);
             return EXITO_GENERICA.get();
-        } catch (Exception e) {
-            return EX_GENERIC.get();
         }
+
+        boolean hasChildren = categoriaVideoService.checkHaveChildrenById(id);
+
+        if(!hasChildren){
+            categoriaVideoService.actualizarFlagActivoById(id, flagActivo);
+            return EXITO_GENERICA.get();
+        }
+        throw new CustomValidationException(FLAG_BLOQUEADO_TIENE_DEPS.get(), EX_VALIDATION_FAILED.get());
     }
 }

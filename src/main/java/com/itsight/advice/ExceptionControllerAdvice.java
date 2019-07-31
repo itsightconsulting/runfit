@@ -3,10 +3,12 @@ package com.itsight.advice;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
+import com.itsight.util.Enums;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,14 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.BatchUpdateException;
-import java.sql.SQLIntegrityConstraintViolationException;
-
+import static com.itsight.util.Enums.Error.ARCHIVO_EXCEDE_MAX_PERMITIDO;
 import static com.itsight.util.Enums.ResponseCode.*;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String MAX_UPLOAD_FILE_SIZE;
 
     private static final Logger LOGGER = LogManager.getLogger(ExceptionControllerAdvice.class);
 
@@ -59,21 +62,23 @@ public class ExceptionControllerAdvice {
         return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public @ResponseBody
-    ResponseEntity<String> handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
+    public @ResponseBody ErrorResponse handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
         ConstraintViolationException exx = (ConstraintViolationException) ex.getCause();
         LOGGER.warn(ex.getMostSpecificCause());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        if(!exx.getSQLException().getSQLState().equals("23505")){
-            return new ResponseEntity<>(EX_SQL_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
+        String sqlStateCode = exx.getSQLException().getSQLState();
+        if(!sqlStateCode.equals("23505")){
+            return new ErrorResponse(EX_SQL_EXCEPTION.get(), sqlStateCode);
         }else{
-            return new ResponseEntity<>("No puede insertar nombres ya registrados", HttpStatus.BAD_REQUEST);
+            return new ErrorResponse("No puede insertar nombres ya registrados", sqlStateCode);
         }
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(SQLGrammarException.class)
     public @ResponseBody
     ResponseEntity<String> handlerSQLGrammarException(SQLGrammarException ex) {
@@ -84,26 +89,26 @@ public class ExceptionControllerAdvice {
         return new ResponseEntity<>(EX_SQL_GRAMMAR_EXCEPTION.get(), HttpStatus.BAD_REQUEST);
     }
 
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public @ResponseBody
-    String handleErrorByMaxUploadSizeExceededException(MultipartException ex) {
+    public @ResponseBody ErrorResponse handleErrorByMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return EX_MAX_UPLOAD_SIZE.get();
+        return new ErrorResponse(String.format(ARCHIVO_EXCEDE_MAX_PERMITIDO.get(), MAX_UPLOAD_FILE_SIZE), EX_MAX_UPLOAD_SIZE.get());
     }
 
+    /*@ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MultipartException.class)
     public @ResponseBody
-    String handleErrorByFileSizeLimitExceededException(MultipartException ex) {
+    ErrorResponse handleErrorByFileSizeLimitExceededException(MultipartException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return EX_MAX_SIZE_MULTIPART.get();
-    }
+        return new ErrorResponse("2 El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor a.... 3", EX_MAX_SIZE_MULTIPART.get());
+    }*/
 
     @ExceptionHandler(NullPointerException.class)
     public @ResponseBody

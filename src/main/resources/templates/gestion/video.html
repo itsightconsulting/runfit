@@ -52,7 +52,7 @@
                                         <label class="label"><b>Nombre: </b></label>
                                         <label class="input">
                                             <input id="txtFiltro" name="txtFiltro" type="text"
-                                                   placeholder="Ingresa nombre" class="" maxlength="30"
+                                                   placeholder="Ingresa nombre" class="" maxlength="50"
                                                    autocomplete="off"/>
                                             <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                         </label>
@@ -67,7 +67,7 @@
                                     </section>
                                     <section class="col col-2">
                                         <label class="label"><b>Categoría: </b></label>
-                                        <select style="width:100%" class="select2 form-control" id="CategoriaVideo">
+                                        <select style="width:100%" class="select2 form-control" id="CategoriaVideo" name="CategoriaVideo">
                                             <option value="" selected="selected"> -- Seleccione -- </option>
                                             <optgroup th:each="c: ${lstGrupoVideo}" th:label="${c.nombre}">
                                                 <option th:each="sb : ${c.lstCategoriaVideo}" th:value="${sb.id}" th:text="${sb.nombre}">Alaska</option>
@@ -76,7 +76,7 @@
                                     </section>
                                     <section class="col col-2">
                                         <label class="label"><b>Sub Categoría:</b> </label>
-                                        <select name="SubTipo" id="SubCategoriaVideo" class="form-control">
+                                        <select id="SubCategoriaVideo" name="SubCategoriaVideo" class="form-control">
                                             <option value="" selected="selected"> -- Seleccione -- </option>
                                         </select>
                                     </section>
@@ -133,17 +133,17 @@
                                     <form id="frm_registro" class="smart-form">
                                         <fieldset class="">
                                             <section class="">
-                                                <label class="label">Nombre: </label>
+                                                <label class="label">Nombre<span class="req">*</span></label>
                                                 <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                     <input id="Nombre" name="Nombre" type="text" placeholder="Nombre"
-                                                           class="" maxlength="30" autocomplete="off"/>
+                                                           class="" autocomplete="off"/>
                                                     <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     <input id="Id" name="Id" type="hidden" value="0"/>
                                                     <input id="NombreMedia" type="hidden" value=""/>
                                                 </label>
                                             </section>
                                             <section class="">
-                                                <label class="label">Categoría: </label>
+                                                <label class="label">Categoría<span class="req">*</span></label>
                                                 <label class="input">
                                                     <select class="form-control" id="CategoriaVideoId" name="CategoriaVideoId">
                                                         <option value="" selected="selected"> -- Seleccione -- </option>
@@ -153,13 +153,12 @@
                                                     </select>
                                                     <b class="tooltip tooltip-bottom-right">Obligatorio</b>
                                                     <div class="alert alert-success" id="MsgActualizarSubCat" display="">
-                                                            <em style="color: #666; font-weight: bold;">Seleccionar solo en caso se vaya a cambiar de sub categoría al video</em>
+                                                            <em style="color: #666; font-weight: bold;">Seleccionar solo en caso se vaya a actualizar de sub categoría al video</em>
                                                     </div>
                                                 </label>
-
                                             </section>
                                             <section class="">
-                                                <label class="label">Sub Categoría: </label>
+                                                <label class="label">Sub Categoría<span class="req">*</span></label>
                                                 <label class="input">
                                                     <select id="SubCategoriaVideoId" name="SubCategoriaVideoId"
                                                             class="form-control">
@@ -169,7 +168,7 @@
                                                 </label>
                                             </section>
                                             <section class="">
-                                                <label class="label">Video: <span id="Archivo"
+                                                <label class="label">Video<span class="req">*</span><span id="Archivo"
                                                                                   class="pull-right margin-right-5 hidden"><a
                                                         data-toggle="modal" data-target="#myModalVideo"
                                                         title="Reproducir" href="#" onclick="reproducirVideoModal();"
@@ -178,7 +177,7 @@
                                                 <div class="input input-file">
                                                     <label class="input"><i class="icon-append fa fa-film"></i>
                                                         <input id="Video" name="Video" type="file"
-                                                               accept=".mp4,.mpeg4,.mpg,.mpeg,.wmv" class="form-control"
+                                                               accept=".mp4" class="form-control"
                                                                data-show-preview="false" data-language="es"
                                                                data-show-upload="false"/>
                                                         <div class="alert alert-success hidden" id="MsgEditarArchivo">
@@ -190,16 +189,16 @@
                                             </section>
                                             <div class="row">
                                                 <section class="col col-6">
-                                                    <label class="label">Peso: </label>
+                                                    <label class="label">Peso<span class="req">*</span></label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
-                                                        <input id="Peso" name="Peso" type="text" maxlength="8"
+                                                        <input id="Peso" name="Peso" type="text"
                                                                class="form-control" data-show-preview="false"
                                                                data-language="es" data-show-upload="false"
                                                                readonly="readonly"/>
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
-                                                    <label class="label">Duración: </label>
+                                                    <label class="label">Duración</label>
                                                     <label class="input"><i class="icon-append fa fa-asterisk"></i>
                                                         <input id="Duracion" name="Duracion" type="text" maxlength="8"
                                                                class="form-control" data-show-preview="false"
@@ -238,14 +237,19 @@
                 <!-- MODALS -->
                 <!-- MODAL VISUALIZACION DE VIDEO -->
                 <div class="modal fade" id="myModalVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-md">
-                        <div class="">
+                     aria-hidden="true" data-backdrop="static">
+                    <div class="modal-header text-center" style="border: none !important">
+                        <a href="javascript:void(0)" data-dismiss="modal" title="Cerrar video"><i class="fa fa-close fa-2x txt-color-white"></i></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-dialog modal-md">
                             <div class="">
-                                <video id="somevid" controls="" autoplay="" controlsList="nodownload" width="100%"
-                                       height="100%">
-                                    <source id="VideoReproduccion" src="" type="video/mp4"/>
-                                </video>
+                                <div class="">
+                                    <video id="somevid" controls="" autoplay="" controlsList="nodownload" width="100%"
+                                           height="100%">
+                                        <source id="VideoReproduccion" src="" type="video/mp4"/>
+                                    </video>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -269,6 +273,8 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const body = document.querySelector('body');
+    const frm = document.querySelector('#frm_registro');
     var $table = $('#tblRegistros');
     var $index = $('#Id');
     let objEdicion = {};
@@ -276,6 +282,7 @@
     $(function () {
 
         pageSetUp();
+        init();
         listarRegistros();
         subirVideoChangeEvent();
 
@@ -289,6 +296,8 @@
             $('#MsgEditarArchivo').addClass('hidden');
             $('#MsgActualizarSubCat').addClass('hidden');
             $('#CategoriaVideoId').removeClass('ignore');
+            const subCat = document.getElementById('SubCategoriaVideoId');
+            subCat.innerHTML = '<option value="" selected="selected"> -- Seleccione -- </option>';
             irRegistro();
         });
 
@@ -325,6 +334,41 @@
         })
 
     });
+
+    function init(){
+        body.addEventListener('focusout', bodyFocusOutEventListener);
+        body.addEventListener('change', bodyChangeEventListener);
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.tagName === "INPUT"){
+            if(input.type==="text") {
+                input.value = input.value.trim().replace(/ +/g, " ");
+            }
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
+
+    function bodyChangeEventListener(e){
+        const input = e.target;
+        const clases = input.classList;
+
+        if(input.tagName === "SELECT"){
+            if(!input.name){
+                return;
+            }
+            if(input.name === 'CategoriaVideo'){
+                if(input.value === ""){
+                    const subCat = document.getElementById('SubCategoriaVideo');
+                    subCat.innerHTML = '<option value="" selected="selected"> -- Seleccione -- </option>';
+                }
+            }
+        }
+    }
 
     function cargarSubCategorias(cond){
         let params = {};
@@ -368,26 +412,20 @@
         if ($("#frm_busqueda").valid()) {
             $table.bootstrapTable('destroy');
 
-            var comodin = $("#txtFiltro").val();
-            var estado = $("#Estado").val();
-            var subCatVideo = $("#SubCategoriaVideo").val();
-
-
-            if (comodin == null || comodin == "") {
-                comodin = "0";
-            }
-            if (estado == null) {
-                estado = "-1";
-            }
-            if (subCatVideo == null || subCatVideo == "") {
-                subCatVideo = "0";
-            }
+            const data = getFormData($("#frm_busqueda"));
 
             $table.bootstrapTable({
-                url: _ctx + 'gestion/video/obtenerListado/' + comodin + '/' + estado + '/' + subCatVideo,
+                url: _ctx + 'gestion/video/obtenerListado/dinamico',
                 pagination: true,
-                sidePagination: 'client',
+                sidePagination: 'server',
                 pageSize: 10,
+                queryParams: (res)=> {
+                    res.flag = data.estado !== "-1" ? data.estado : null;
+                    res.nombre = data.txtFiltro !== "" ? data.txtFiltro : null;
+                    res.catVideoId = data.categoriaVideo !== "" ? data.categoriaVideo : null;
+                    res.subCatVideoId = data.subCategoriaVideo !== "" ? data.subCategoriaVideo : null;
+                    return res;
+                },
                 onLoadSuccess: function (data) {
                 },
                 onLoadError: function (xhr) {
@@ -398,11 +436,15 @@
     }
 
     function registro() {
-        if ($("#frm_registro").valid()) {
-            var params = getFormData($('#frm_registro'));
+        if ($(frm).valid()) {
+            $('#frm_registro input').attr('readonly', true);
+            $('#frm_registro button').attr('disabled', true);
+            var params = getFormData($(frm));
             params.flagActivo = $('#FlagActivo').is(':checked');
             var video = $("#Video").get(0);
-            params.extFile = getFileExtension(video.files[0].name);
+            if(video.files[0]){//Para que no se interrumpa en caso de edición
+                params.extFile = "."+getFileExtension(video.files[0].name);
+            }
 
             $.ajax({
                 type: 'POST',
@@ -410,22 +452,51 @@
                 url: _ctx + 'gestion/video/agregar',
                 dataType: "json",
                 data: params,
+                blockLoading: true,
+                noOne: false,
                 success: function (res) {
-                    if(objEdicion.id){
-                        const res = {};
-                        res.rdm = objEdicion.rutaWeb.split(".")[0];
-                        res.res = objEdicion.id;
-                        subirVideo(res);
-                    } else {
-                        subirVideo(res);
-                    }
+                    const vId = objEdicion.id;
+                    setTimeout(() => {
+                        if(vId){
+                            if (video.files[0] != null) {
+                                subirVideo(res);
+                            }else{
+                                $.smallBox({content: 'Actualización exitosa'});
+                                irListado($index);
+                                listarRegistros();
+                                $('#frm_registro input').removeAttr('readonly', true);
+                                $('#frm_registro button').removeAttr('disabled', true);
+                            }
+                        }else{
+                            subirVideo(res);
+                        }
+
+                    }, 400);
                 },
                 error: function (xhr) {
+                    $('#frm_registro input').removeAttr('readonly', true);
+                    $('#frm_registro button').removeAttr('disabled', true);
+                    const res = xhr.responseJSON;
+                    if(res){
+                        if(res.code){
+                            if(res.code === "23505"){
+                                res.message += " en la sub categoría elegida";
+                            }
+                        }
+                    }
                     exception(xhr);
                 },
-                complete: function () {
+                complete: function (xhr) {
                     objEdicion = {};
-                    limpiarBusqueda();
+                    if(xhr.status === 200) {
+                        limpiarBusqueda();
+                    } else{
+                        if(xhr.status === 400){
+                            //Excepción de nombre duplicado
+                            $('#Nombre')[0].parentElement.classList.add('state-error');
+                            $('#Nombre')[0].parentElement.classList.remove('state-success');
+                        }
+                    }
                 }
             });
         }
@@ -442,7 +513,7 @@
         $.ajax({
             type: 'GET',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: _ctx + 'gestion/video/obtener',
+            url: _ctx + 'gestion/video/obtener/full',
             dataType: "json",
             data: param,
             success: function (data, textStatus) {
@@ -454,9 +525,10 @@
                     $("#Duracion").val(data.duracion);
                     $("#Peso").val(data.peso);
 
+                    $("#SubCategoriaVideoId").html('');
                     $("#SubCategoriaVideoId").append(`<option value=${data.subCatVideoId}>${data.nombreSubCat}</option>`);
                     $("#SubCategoriaVideoId").val(data.subCatVideoId);
-                    $('#CategoriaVideoId').addClass('ignore');
+                    $('#CategoriaVideoId').val(data.catVideoId);
 
                     data.flagActivo === true ?
                         $('#FlagActivo').prop('checked', true)
@@ -527,7 +599,7 @@
 
     function reproducirVideoModal() {
         let route = $('#Archivo').attr('data-route');
-        $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${route}`;
+        $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${objEdicion.id}/${route}`;
         $("#VideoReproduccion").parent().get(0).load();
     }
 
@@ -536,59 +608,64 @@
         const rdmUUID = d.rdm;
         var video = $("#Video").get(0);
 
-        var files = video.files;
-        if (files[0] != null) {
+        var data = new FormData();
+        data.append("video", video.files[0]);
+        data.append("videoId", videoId);
+        data.append("randomUUID", rdmUUID);
 
-            var data = new FormData();
-            data.append("video", video.files[0]);
-            data.append("videoId", videoId);
-            data.append("randomUUID", rdmUUID);
-
-            $.ajax({
-                type: 'POST',
-                url: _ctx + 'gestion/video/upload/'+rdmUUID,
-                data: data,
-                contentType: false,
-                processData: false,
-                xhr: function () {
-                    var myXhr = $.ajaxSettings.xhr();
-                    if (myXhr.upload) {
-                        myXhr.upload.addEventListener('progress', progress, false);
-                    }
-
-                    return myXhr;
-                },
-                success: function (data, textStatus) {
-                    if (textStatus == "success") {
-                        $.smallBox({});
-                    }
-                },
-                error: function (xhr) {
-                    exception(xhr);
-                },
-                complete: function () {
+        $.ajax({
+            type: 'POST',
+            url: _ctx + 'gestion/video/upload/'+rdmUUID,
+            data: data,
+            contentType: false,
+            processData: false,
+            blockLoading: true,
+            noOne: false,
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', progress, false);
+                }
+                return myXhr;
+            },
+            success: function () {
+                $.smallBox({});
+            },
+            error: function (xhr) {
+                exception(xhr);
+            },
+            complete: function (xhr) {
+                if(xhr.status === 200){
                     listarRegistros();
                     irListado($index);
                 }
-            });
-
-        }else {
-            irListado($index);
-            listarRegistros();
-        }
+                $('#frm_registro input').removeAttr('readonly', true);
+                $('#frm_registro button').removeAttr('disabled', true);
+            }
+        });
     }
 
     function subirVideoChangeEvent() {
-
         $("#Video").change(function () {
             //submit the form here
             var file;
             if ((file = this.files[0])) {
-                if (file.name.match(/\.(avi|mp3|mp4|mpeg|ogg|mpeg4|mpg|wmv)$/i)) {
-                    objUrl = URL.createObjectURL(file);
-                    document.getElementById('Tiempo').setAttribute('src', objUrl);
-                    $('#Peso').val(formatBytes(file.size, 2));
+                const mbs = Number($(frm).validate().settings.rules[this.name].mbsMaxLength);
+                $(this).valid();
+                if(file.size > (Number(mbs) * 1024 * 1024)){
+                    $('#Peso').val('');
+                    $('#Duracion').val('');
+                    this.value = null;
+                    $.smallBox({color: 'alert', content: 'El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor o igual a '+mbs+'MB'});
+                    return;
                 }
+                const objUrl = URL.createObjectURL(file);
+                document.getElementById('Tiempo').setAttribute('src', objUrl);
+                $('#Peso').val(formatBytes(file.size, 2));
+                $('#Peso').valid();
+            }else{
+                $('#Peso').val('');
+                $('#Duracion').val('');
             }
         });
     }
@@ -606,7 +683,6 @@
     }
 
     function isActived(value, row) {
-
         if (row.flagActivo) {
             return '<span class="label label-success">Activo</span>';
         } else {
@@ -615,7 +691,7 @@
     }
 
     function validarRegistros() {
-        $("#frm_registro").validate({
+        $(frm).validate({
             highlight: function (element) {
                 $(element).parent().removeClass('state-success').addClass("state-error");
                 $(element).removeClass('valid');
@@ -627,7 +703,8 @@
             rules: {
                 Nombre: {
                     required: true,
-                    maxlength: $("#Nombre").prop("maxlength"),
+                    rangelength: [2, 100],
+                    lettersonly: true
                 },
                 CategoriaVideoId: {
                     required: true,
@@ -643,17 +720,16 @@
                             return false;
                         }
                         return true;
-                    }
+                    },
+                    extension: "mp4",
+                    mbsMaxLength: "64"
                 },
                 Peso: {
                     required: true,
+                    rangelength: [0, 11]
                 }
             },
             messages: {
-                Nombre: {
-                    required: "El campo es obligatorio",
-                    maxlength: $.validator.format("Este campo debe de tener como máximo {0} caracteres.")
-                },
                 CategoriaVideoId: {
                     required: "El campo es obligatorio",
                     digits: "Seleccione una categoría válida",
@@ -672,6 +748,12 @@
             submitHandler: function () {
                 registro();
             }
+        });
+
+        //Seteando los Maxlength según rangelength property
+        const rules = $(frm).validate().settings.rules;
+        Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
+            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
     }
 

@@ -1,6 +1,8 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.CategoriaVideo;
+import com.itsight.domain.GrupoVideo;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.CategoriaVideoRepository;
 import com.itsight.service.CategoriaVideoService;
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.itsight.util.Enums.Msg.FLAG_BLOQUEADO_TIENE_DEPS;
+import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
 @Transactional
@@ -134,7 +139,17 @@ public class CategoriaVideoServiceImpl extends BaseServiceImpl<CategoriaVideoRep
     }
 
     @Override
-    public String actualizar(CategoriaVideo entity, String wildcard) {
+    public String actualizar(CategoriaVideo entity, String wildcard) throws CustomValidationException {
+        CategoriaVideo qCategoriaVideo = repository.getById(entity.getId());
+        //Revisando si esta cambiando el flagActivo y bloqueandolo en caso tenga records dependientes
+        if(qCategoriaVideo.isFlagActivo()!=entity.isFlagActivo()){
+            if(!entity.isFlagActivo()){
+                boolean hasChildren = checkHaveChildrenById(entity.getId());
+                if(hasChildren){
+                    throw new CustomValidationException(FLAG_BLOQUEADO_TIENE_DEPS.get(), EX_VALIDATION_FAILED.get());
+                }
+            }
+        }
         repository.saveAndFlush(entity);
         return Utilitarios.customResponse(ResponseCode.ACTUALIZACION.get(), null);
     }
@@ -153,5 +168,10 @@ public class CategoriaVideoServiceImpl extends BaseServiceImpl<CategoriaVideoRep
     @Override
     public List<CategoriaVideo> findAllByOrderById() {
         return repository.findAllByOrderById();
+    }
+
+    @Override
+    public boolean checkHaveChildrenById(Integer id) {
+        return repository.checkHaveChildrenById(id);
     }
 }

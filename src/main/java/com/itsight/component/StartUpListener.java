@@ -6,7 +6,10 @@ import com.itsight.domain.Parametro;
 import com.itsight.domain.Rol;
 import com.itsight.domain.*;
 import com.itsight.domain.jsonb.*;
-import com.itsight.repository.*;
+import com.itsight.repository.BagForestRepository;
+import com.itsight.repository.IdiomaRepository;
+import com.itsight.repository.SecurityUserRepository;
+import com.itsight.repository.TipoDescuentoRepository;
 import com.itsight.service.*;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -15,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -119,9 +125,6 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     private ConfiguracionClienteService configuracionClienteService;
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
     private PaisService paisService;
 
     @Autowired
@@ -164,11 +167,16 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Value("${flag.populate}")
     private Boolean flagPopulate;
 
+    @Autowired
+    private JdbcTemplate jbJdbcTemplate;
+
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    private String ddlAuto;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-
         //Nos aseguramos que si los seeders ya han sido ejecutados nos saltemos su registro
-        if(tipoDocumentoService.findOne(1) == null){
+        if(ddlAuto.equals("create")){
             //Main Seeders
             addingObjectivesTable();
             addingCategoriaTable();
@@ -187,17 +195,15 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingDisciplinas();
             addingTipoTrainers();
             addingTipoRutina();
-            addingtipoCanalVentaToTable();
-            try {
-                addingUbPeru();
-                addingModulo();
-                addingCorreo();
-                addingBanco();
-                addingIdioma();
-            } catch (IOException ex){
-                ex.printStackTrace();
-            }
-            addingAudiosDemo();
+
+            //FROM FILES
+            addingUbPeru();
+            addingModulo();
+            addingCorreo();
+            addingBanco();
+            addingIdioma();
+
+            addingAudios();
 
             if(bagForestRepository.findById(1).orElse(null) == null) {
                 insertACategoriaEjercicio();
@@ -209,38 +215,36 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 insertAGrupoVideo();
                 insertACategoriaVideo();
                 insertASubCategoriaVideo();
-                try {
-                    addingVideo();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                addingVideo();
             }
         }
-
+        //UNIQUE CONSTRAINTS
+        creatingUniqueIndex();
         addingApplicationParameters();
         addingToContextSession();
         addingInitUsers();
         creatingFileDirectories();
+
     }
 
     public void insertACategoriaEjercicio() {
         subCategoriaEjercicioService.insertaArtificio();
         if(categoriaEjercicioService.findOne(1) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Velocidad",1, true, "/1/16817987-3932-41f2-afa7-3e60911d3f86.png", "C://WorkoutAppRepository/CategoriasEjercicio/1/16817987-3932-41f2-afa7-3e60911d3f86.png", UUID.fromString("16817987-3932-41f2-afa7-3e60911d3f86")));
+            new CategoriaEjercicio("Velocidad",1, true, "/1/16817987-3932-41f2-afa7-3e60911d3f86.png", UUID.fromString("16817987-3932-41f2-afa7-3e60911d3f86")));
         if(categoriaEjercicioService.findOne(2) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Fuerza",1, true, "/2/b46b3753-b9c8-4218-97b4-4b579b74d9ce.png", "C://WorkoutAppRepository/CategoriasEjercicio/2/b46b3753-b9c8-4218-97b4-4b579b74d9ce.png", UUID.fromString("b46b3753-b9c8-4218-97b4-4b579b74d9ce")));
+            new CategoriaEjercicio("Fuerza",1, true, "/2/b46b3753-b9c8-4218-97b4-4b579b74d9ce.png", UUID.fromString("b46b3753-b9c8-4218-97b4-4b579b74d9ce")));
         if(categoriaEjercicioService.findOne(3) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Resistencia",1, true, "/3/53454de7-b6a5-40f8-b0c5-eba7660b2712.png", "C://WorkoutAppRepository/CategoriasEjercicio/3/53454de7-b6a5-40f8-b0c5-eba7660b2712.png", UUID.fromString("53454de7-b6a5-40f8-b0c5-eba7660b2712")));
+            new CategoriaEjercicio("Resistencia",1, true, "/3/53454de7-b6a5-40f8-b0c5-eba7660b2712.png", UUID.fromString("53454de7-b6a5-40f8-b0c5-eba7660b2712")));
         if(categoriaEjercicioService.findOne(4) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Flexibilidad",1, true, "/4/19a46a87-1350-4880-b01d-1165bd42ce34.png", "C://WorkoutAppRepository/CategoriasEjercicio/4/19a46a87-1350-4880-b01d-1165bd42ce34.png", UUID.fromString("19a46a87-1350-4880-b01d-1165bd42ce34")));
+            new CategoriaEjercicio("Flexibilidad",1, true, "/4/19a46a87-1350-4880-b01d-1165bd42ce34.png", UUID.fromString("19a46a87-1350-4880-b01d-1165bd42ce34")));
         if(categoriaEjercicioService.findOne(5) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Abdominales",1, true, "/5/73631f11-ae6c-47fa-9955-8249d497e69a.png", "C://WorkoutAppRepository/CategoriasEjercicio/5/73631f11-ae6c-47fa-9955-8249d497e69a.png", UUID.fromString("73631f11-ae6c-47fa-9955-8249d497e69a")));
+            new CategoriaEjercicio("Abdominales",1, true, "/5/73631f11-ae6c-47fa-9955-8249d497e69a.png", UUID.fromString("73631f11-ae6c-47fa-9955-8249d497e69a")));
         if(categoriaEjercicioService.findOne(6) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Calentamiento",1, true, "/6/ea8fae11-7b03-402f-b1e4-91a0c8a3d90a.png", "C://WorkoutAppRepository/CategoriasEjercicio/6/ea8fae11-7b03-402f-b1e4-91a0c8a3d90a.png", UUID.fromString("ea8fae11-7b03-402f-b1e4-91a0c8a3d90a")));
+            new CategoriaEjercicio("Calentamiento",1, true, "/6/ea8fae11-7b03-402f-b1e4-91a0c8a3d90a.png", UUID.fromString("ea8fae11-7b03-402f-b1e4-91a0c8a3d90a")));
         if(categoriaEjercicioService.findOne(7) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Técnica",1, true, "/7/b66ba859-152d-4535-986f-78aa68859e78.png", "C://WorkoutAppRepository/CategoriasEjercicio/7/b66ba859-152d-4535-986f-78aa68859e78.png", UUID.fromString("b66ba859-152d-4535-986f-78aa68859e78")));
+            new CategoriaEjercicio("Técnica",1, true, "/7/b66ba859-152d-4535-986f-78aa68859e78.png", UUID.fromString("b66ba859-152d-4535-986f-78aa68859e78")));
         if(categoriaEjercicioService.findOne(8) == null) categoriaEjercicioService.save(
-            new CategoriaEjercicio("Otros",1, true, "/8/ac92e363-24d6-4f27-bee2-fdcba7988a4b.png", "C://WorkoutAppRepository/CategoriasEjercicio/8/ac92e363-24d6-4f27-bee2-fdcba7988a4b.png", UUID.fromString("ac92e363-24d6-4f27-bee2-fdcba7988a4b")));
+            new CategoriaEjercicio("Otros",1, true, "/8/ac92e363-24d6-4f27-bee2-fdcba7988a4b.png", UUID.fromString("ac92e363-24d6-4f27-bee2-fdcba7988a4b")));
     }
 
     public void insertASubCategoriaEjercicio() {
@@ -308,15 +312,15 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     public void insertAGrupoVideo(){
         categoriaVideoService.insertArtificio();
         if(grupoVideoService.findOne(1) == null) grupoVideoService.save(
-                new GrupoVideo("Fuerza tren inferior",2, true, "87e1bccc-5d86-4db0-a59a-0610553868a1.png", "", UUID.fromString("87e1bccc-5d86-4db0-a59a-0610553868a1")));
+                new GrupoVideo("Fuerza tren inferior",2, true, "87e1bccc-5d86-4db0-a59a-0610553868a1.png", UUID.fromString("87e1bccc-5d86-4db0-a59a-0610553868a1")));
         if(grupoVideoService.findOne(2) == null) grupoVideoService.save(
-                new GrupoVideo("Fuerza tren superior",2, true, "3110f934-4bdf-4b3a-a207-d5334ce31a5d.png", "", UUID.fromString("3110f934-4bdf-4b3a-a207-d5334ce31a5d")));
+                new GrupoVideo("Fuerza tren superior",2, true, "3110f934-4bdf-4b3a-a207-d5334ce31a5d.png", UUID.fromString("3110f934-4bdf-4b3a-a207-d5334ce31a5d")));
         if(grupoVideoService.findOne(3) == null) grupoVideoService.save(
-                new GrupoVideo("Técnicos",2, true, "ce5a818d-3032-4286-8b25-7bfe0dbde8be.png", "", UUID.fromString("ce5a818d-3032-4286-8b25-7bfe0dbde8be")));
+                new GrupoVideo("Técnicos",2, true, "ce5a818d-3032-4286-8b25-7bfe0dbde8be.png", UUID.fromString("ce5a818d-3032-4286-8b25-7bfe0dbde8be")));
         if(grupoVideoService.findOne(4) == null) grupoVideoService.save(
-                new GrupoVideo("Flexibilidad - Movilidad - Masajes",2, true, "e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f.png", "", UUID.fromString("e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f")));
+                new GrupoVideo("Flexibilidad - Movilidad - Masajes",2, true, "e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f.png", UUID.fromString("e22d1f51-b10d-4e9e-bd6b-fa85eefe8c6f")));
         if(grupoVideoService.findOne(5) == null) grupoVideoService.save(
-                new GrupoVideo("Propioceptivos",2, true, "741081a8-0156-4c20-8117-91c086188ef7.png", "", UUID.fromString("741081a8-0156-4c20-8117-91c086188ef7")));
+                new GrupoVideo("Propioceptivos",2, true, "741081a8-0156-4c20-8117-91c086188ef7.png", UUID.fromString("741081a8-0156-4c20-8117-91c086188ef7")));
     }
 
     public void insertACategoriaVideo() {
@@ -409,16 +413,16 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
     public void addingCategoriaTable() {
         if (categoriaService.findOne(1) == null) {
-            categoriaService.save(new Categoria(0, "Performance", "Performance", true, "/1/b94d05e5-8101-492d-9105-e32c75cf0ab0.png", "C://WorkoutAppRepository/Categorias/1/b94d05e5-8101-492d-9105-e32c75cf0ab0.png", UUID.fromString("b94d05e5-8101-492d-9105-e32c75cf0ab0")));
+            categoriaService.save(new Categoria(0, "Performance", "Performance", true, "/1/b94d05e5-8101-492d-9105-e32c75cf0ab0.png", UUID.fromString("b94d05e5-8101-492d-9105-e32c75cf0ab0")));
         }
         if (categoriaService.findOne(2) == null) {
-            categoriaService.save(new Categoria(0, "Técnica", "Técnica", true, "/2/5830a767-611f-4a3e-a2c5-34b5831afa88.jpg", "C://WorkoutAppRepository/Categorias/2/5830a767-611f-4a3e-a2c5-34b5831afa88.jpg", UUID.fromString("5830a767-611f-4a3e-a2c5-34b5831afa88")));
+            categoriaService.save(new Categoria(0, "Técnica", "Técnica", true, "/2/5830a767-611f-4a3e-a2c5-34b5831afa88.jpg", UUID.fromString("5830a767-611f-4a3e-a2c5-34b5831afa88")));
         }
         if (categoriaService.findOne(3) == null) {
-            categoriaService.save(new Categoria(0, "Fortalecimiento", "Fortalecimiento", true, "/3/61a3a05e-ec3c-48f0-b978-92ab3d1155f3.jpg", "C://WorkoutAppRepository/Categorias/3/61a3a05e-ec3c-48f0-b978-92ab3d1155f3.jpg", UUID.fromString("61a3a05e-ec3c-48f0-b978-92ab3d1155f3")));
+            categoriaService.save(new Categoria(0, "Fortalecimiento", "Fortalecimiento", true, "/3/61a3a05e-ec3c-48f0-b978-92ab3d1155f3.jpg", UUID.fromString("61a3a05e-ec3c-48f0-b978-92ab3d1155f3")));
         }
         if (categoriaService.findOne(4) == null) {
-            categoriaService.save(new Categoria(0, "Metodología", "Metodología", true, "/4/977fe861-828e-40a5-a4cf-509b1adb5fcb.jpg", "C://WorkoutAppRepository/Categorias/4/977fe861-828e-40a5-a4cf-509b1adb5fcb.jpg", UUID.fromString("977fe861-828e-40a5-a4cf-509b1adb5fcb")));
+            categoriaService.save(new Categoria(0, "Metodología", "Metodología", true, "/4/977fe861-828e-40a5-a4cf-509b1adb5fcb.jpg", UUID.fromString("977fe861-828e-40a5-a4cf-509b1adb5fcb")));
         }
     }
 
@@ -565,15 +569,15 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         }
     }
 
-    public void addingAudiosDemo(){
+    public void addingAudios(){
         if(audioService.findOne(1) == null) {
             List<TipoAudio> tiposAudio = tipoAudioService.findAll();
             int i = 0;
             for (TipoAudio ta : tiposAudio) {
-                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", "C://WorkoutAppRepository/Audios/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
-                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", "C://WorkoutAppRepository/Audios/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
-                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", "C://WorkoutAppRepository/Audios/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
-                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", "C://WorkoutAppRepository/Audios/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
+                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
+                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
+                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
+                audioService.save(new Audio("4 X  rept x 25'' de R " + (++i), "4 X  rept x 25'' de R " + (i), "12.30KB", "00:00:01", true, UUID.fromString("3ac011a8-90b7-46d2-9b87-795899174b79"), "/1/3ac011a8-90b7-46d2-9b87-795899174b79.mp3", ta.getId()));
             }
         }
     }
@@ -951,77 +955,103 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(tipoRutinaService.findOne(2) == null) tipoRutinaService.save(new TipoRutina("General"));
     }
 
-    public void addingUbPeru() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/ub_peru.csv").getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
-        String content = reader.lines().collect(Collectors.joining("\n"));
-        String[] lines = content.split("\n");
-        reader.close();
-        for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split(",");
-            if (ubPeruService.findById(line[0].trim()) == null) ubPeruService.save(new UbPeru(line[0].trim(), line[1].trim(), line[2].trim(), line[3].trim(), line[4].trim()));
+    public void addingUbPeru() {
+        try {
+            InputStream is = new ClassPathResource("static/seeds/ub_peru.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for (int i = 1; i < lines.length; i++) {
+                String[] line = lines[i].split(",");
+                if (ubPeruService.findById(line[0].trim()) == null)
+                    ubPeruService.save(new UbPeru(line[0].trim(), line[1].trim(), line[2].trim(), line[3].trim(), line[4].trim()));
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void addingModulo() {
+        try {
+            InputStream is = new ClassPathResource("static/seeds/modulo.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for(int i=1; i<lines.length;i++){
+                String[] line = lines[i].split(",");
+                if (moduloService.findOneByNombre(line[0].trim()) == null) moduloService.save(new Modulo(line[0].trim(), line[1].trim()));
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void addingModulo() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/modulo.csv").getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
-        String content = reader.lines().collect(Collectors.joining("\n"));
-        String[] lines = content.split("\n");
-        reader.close();
-        for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split(",");
-            if (moduloService.findOneByNombre(line[0].trim()) == null) moduloService.save(new Modulo(line[0].trim(), line[1].trim()));
+    public void addingCorreo() {
+        try{
+            InputStream is = new ClassPathResource("static/seeds/correo.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for(int i=1; i<lines.length;i++){
+                String[] line = lines[i].split("\\|");
+                if (correoService.findOne(i) == null) correoService.save(new Correo(line[0].trim(), line[1].trim(), Integer.parseInt(line[2].trim())));
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void addingCorreo() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/correo.csv").getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        String content = reader.lines().collect(Collectors.joining("\n"));
-        String[] lines = content.split("\n");
-        reader.close();
-        for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split("\\|");
-            if (correoService.findOne(i) == null) correoService.save(new Correo(line[0].trim(), line[1].trim(), Integer.parseInt(line[2].trim())));
-        }
-    }
-
-    public void addingBanco() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/banco.csv").getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        String content = reader.lines().collect(Collectors.joining("\n"));
-        String[] lines = content.split("\n");
-        reader.close();
-        for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split(",");
-            if (bancoService.findOne(i) == null) bancoService.save(new Banco(line[0].trim()));
+    public void addingBanco() {
+        try {
+            InputStream is = new ClassPathResource("static/seeds/banco.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for(int i=1; i<lines.length;i++){
+                String[] line = lines[i].split(",");
+                if (bancoService.findOne(i) == null) bancoService.save(new Banco(line[0].trim()));
+            }
+        } catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 
 
 
-    public void addingVideo() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/video.csv").getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        String content = reader.lines().collect(Collectors.joining("\n"));
-        String[] lines = content.split("\n");
-        reader.close();
-        for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split(",");
-            if(videoService.findOne(index++) == null) videoService.save(new Video(line[0].trim(), line[1].trim(), line[2].trim(), line[3].trim(),line[4].trim(), UUID.fromString(line[5].trim()), Integer.parseInt(line[6].trim()), Boolean.valueOf(line[7].trim())));
+    public void addingVideo() {
+        try{
+            InputStream is = new ClassPathResource("static/seeds/video.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for(int i=1; i<lines.length;i++){
+                String[] line = lines[i].split(",");
+                if(videoService.findOne(index++) == null) videoService.save(new Video(line[0].trim(), line[1].trim(), line[2].trim(),line[3].trim(), UUID.fromString(line[4].trim()), Integer.parseInt(line[5].trim()), Integer.parseInt(line[6].trim()), Boolean.valueOf(line[7].trim())));
+            }
+        } catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void addingIdioma() throws IOException {
-        InputStream is = new ClassPathResource("static/seeds/idioma.csv").getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        String content = reader.lines().collect(Collectors.joining("\n"));
-        String[] lines = content.split("\n");
-        reader.close();
-        for(int i=1; i<lines.length;i++){
-            String[] line = lines[i].split(",");
-            if (idiomaRepository.findById(i).orElse(null) == null) idiomaRepository.save(new Idioma(line[0].trim(), line[1].trim()));
+    public void addingIdioma() {
+        try{
+            InputStream is = new ClassPathResource("static/seeds/idioma.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for(int i=1; i<lines.length;i++){
+                String[] line = lines[i].split(",");
+                if (idiomaRepository.findById(i).orElse(null) == null) idiomaRepository.save(new Idioma(line[0].trim(), line[1].trim()));
+            }
+        } catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 
@@ -1257,5 +1287,26 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
                 "/Multimedia",
         };
         Utilitarios.createDirectoryStartUp(context.getAttribute("MAIN_ROUTE").toString(), childPaths);
+    }
+
+    public void creatingUniqueIndex() {
+        try{
+            if(ddlAuto.equals("create")){
+                InputStream is = new ClassPathResource("unique_constraints_insensitive.sql").getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                String content = reader.lines().collect(Collectors.joining("\n"));
+                String[] lines = content.split("\n");
+                reader.close();
+                for(int i=1; i<lines.length;i++){
+                    try {
+                        jbJdbcTemplate.execute(lines[i]);
+                    }catch (BadSqlGrammarException ex){
+                        System.out.println("ERROR: «"+lines[i]+"» YA EXISTE!");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -133,7 +133,6 @@ public class DocumentoServiceImpl extends BaseServiceImpl<DocumentoRepository> i
         Documento qDocumento = repository.getById(entity.getId());
         qDocumento.setNombre(entity.getNombre());
         qDocumento.setRutaWeb(entity.getRutaWeb());
-        qDocumento.setRutaReal(entity.getRutaReal());
         return customResponse(ACTUALIZACION.get(), String.valueOf(qDocumento.getId()));
 
     }

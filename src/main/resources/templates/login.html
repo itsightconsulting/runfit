@@ -38,20 +38,28 @@
 </head>
 <body>
 <div class="login active">
-    <a class="back" th:href="@{/p/inicio}"><span class="fa fa-chevron-left"></span></a>
+    <a class="back" th:classappend="${usso != null ? 'hidden': ''}"
+    th:href="@{/p/inicio}"><span class="fa fa-chevron-left"></span></a>
     <div class="avatar">
         <img th:src="@{/img/public/logo.png}+'?'+${version}"/>
     </div>
-    <div class="login-sesion-alt">
+    <th:block th:if="${usso != null}">
+    <div id="SsoLogin" class="" style="
+        text-align: center;
+        color: #a8fa00;">
+        <i class="fa fa-spinner fa-spin fa-4x"></i>
+    </div>
+    </th:block>
+    <div class="login-sesion-alt" th:classappend="${usso != null ? 'hidden': ''}">
         <form id="login-form" action="#" th:action="@{/loginCheck}" method="post">
             <div class="form-group usuario"><span class="fa fa-user-o"></span>
                 <label>Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Username" maxlength="30"/>
+                <input type="text" th:value="${usso != null ? usso.email : ''}" id="username" name="username" placeholder="Username" maxlength="40"/>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             </div>
             <div class="form-group password"><span class="fa fa-unlock-alt"></span>
                 <label>Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Password" maxlength="30"/>
+                <input type="password" th:value="${usso != null ? usso.secret : ''}" id="password" name="password" placeholder="Password" maxlength="30"/>
             </div>
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
             <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
@@ -65,6 +73,8 @@
             </div>
             <div class="actions">
                 <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
+                <button class="btn-face" type="button"
+                onclick="javascript: window.location.href = 'https://52.186.67.112:8081/oauth2/authorize/facebook?redirect_uri=http://52.186.67.112:8080/oauth2/redirect'">INGRESA CON FACEBOOK</button>
                 <a id="btn-nuevo" class="btn-nuevo" href="javascript:goRegister()">SOY NUEVO</a>
             </div>
         </form>
@@ -148,6 +158,8 @@
 
 
 <script>
+    const ssoLogin = document.getElementById('SsoLogin');
+
     $(function () {
 
         const btnLogin = document.getElementById('btn-login');
@@ -177,14 +189,13 @@
             rules: {
                 username: {
                     required: true,
-                    rangelength: [7, 30]
+                    rangelength: [7, 40]
                 },
                 password: {
                     required: true,
                     rangelength: [8, 30]
                 },
             },
-
             // Messages for form validation
             messages: {
                 username : {
@@ -205,6 +216,10 @@
             document.querySelector('input[name="username"]').value = "trainer1@runfit.pe";
             document.querySelector('input[name="password"]').value = "runfit";
             document.getElementById('login-form').submit();
+        }
+
+        if(ssoLogin){
+            btnLogin.click();
         }
     });
 

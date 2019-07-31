@@ -1111,3 +1111,44 @@ span:before {
 .four:before {
     background: #615b5b;
 }
+
+input.state-success, select.state-success, textarea.state-success{
+    border: 1px solid #a8fa00 !important;
+}
+input.state-error, select.state-error, textarea.state-error{
+    border: 1px solid #b7010d !important;
+}
+
+input.form-control ~ em {
+    color: #E54C4B
+}
+
+textarea.form-control ~ em {
+    color: #E54C4B
+}
+
+#ChatBody {
+    padding: 0px !important;
+}
+
+#ChatBody .chat-lf{
+    background: #eff0f1;
+    max-width: 75%;
+    margin-right: 25%;
+    padding: 5px 10px;
+    text-align: left;
+    border-radius: 15px;
+}
+
+#ChatBody .chat-rg{
+    background: rgba(0, 147, 255, 0.35);
+    max-width: 75%;
+    margin-left: 25%;
+    padding: 5px 10px;
+    text-align: right;
+    border-radius: 15px;
+}
+
+.chat-lf, .chat-rg{
+    margin-bottom: 7px;
+}

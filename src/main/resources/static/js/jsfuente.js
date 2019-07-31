@@ -179,11 +179,10 @@ function detail_hide() {
 }
 
 function irRegistro(wildcard) {
-    console.log('....r0');
 
     $('#btnNuevo').css('display', 'none');
     $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        console.log('....r1');
+        //console.log('....r1');
         $('#view_list').hide();
 
         $("#view_register").show().removeClass().addClass('fadeInLeftBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
@@ -193,16 +192,13 @@ function irRegistro(wildcard) {
 }
 
 function irListado(x) {
-    console.log('....0');
     x[0]["defaultValue"] = 0;//EQUALS TO HIDDEN ID
     $('#view_register').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        console.log('.....1');
-
         $('#view_register').hide();
         $('#btnNuevo').css('display', 'block');
-        console.log('.....1.1');
+        //console.log('.....1.1');
         $("#view_list").show().removeClass().addClass('fadeInLeft' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            console.log('.....2');
+            //console.log('.....2');
         });
     });
 }
@@ -295,13 +291,22 @@ function exception(xhr, errorName) {
                         });
                         smallBoxAlertValidation2(errors);
                     }else{
-
+                        if(typeof xhr.responseJSON == 'object' && typeof xhr.responseJSON.message !== 'undefined'){
+                            $.smallBox({
+                                content: "<i> "+xhr.responseJSON.message+"</i>",
+                                color: "#8a6d3b",
+                                iconSmall: "fa fa-info fa-3x fadeInRight animated",
+                                timeout: 5000,
+                            });
+                        }else{
                             $.smallBox({
                                 content: "<i> Usted ha realizado una petición incorrecta...</i>",
                                 color: "#8a6d3b",
                                 iconSmall: "fa fa-info fa-3x fadeInRight animated",
                                 timeout: 5000,
                             });
+                        }
+
 
                     }
                 } else if(xhr["status"] === 409){
@@ -348,8 +353,7 @@ function getFormData($form) {
 
 function agregarModalParaVisualizacionImagen() {
 
-    var modalImagenServer = document.createElement('div');
-    modalImagenServer.innerHTML = `<div class="modal fade" id="myModalImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    var modalImagenServer = `<div class="modal fade" id="myModalImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					  <div class="modal-dialog modal-lg">
 					    <div class="modal-content">
 					      <div class="modal-header">
@@ -365,7 +369,7 @@ function agregarModalParaVisualizacionImagen() {
 					    </div>
 					  </div>
 		</div>`;
-    document.body.append(modalImagenServer);
+    document.body.appendChild(htmlStringToElement(modalImagenServer));
 }
 
 function spinnerSwitchTab(effect){
@@ -948,5 +952,9 @@ $(document).ready(()=>{
             }
         })
     }
-})
+});
+
+function getTimestampUnix(){
+    return new Date().getTime();
+}
 

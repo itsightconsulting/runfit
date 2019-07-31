@@ -11,4 +11,6 @@ public interface GrupoVideoService extends BaseService<GrupoVideo, Integer> {
     List<GrupoVideo> encontrarGrupoConSusDepedencias();
 
     RefUpload registrarConSubida(GrupoVideo grupoVideo);
+
+    boolean checkHaveChildrenById(int id);
 }

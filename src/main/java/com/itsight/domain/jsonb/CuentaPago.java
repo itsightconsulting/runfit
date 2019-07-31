@@ -16,12 +16,10 @@ public class CuentaPago implements Serializable {
     @Positive
     @NotNull
     private Integer bancoId;
-    @NotBlank
     @Size(min= 10,max = 30)
     private String numeroSoles;
     @Size(min= 10,max = 30)
     private String numeroDolares;
-    @NotBlank
     @Size(min= 10,max = 30)
     private String interbancarioSoles;
     @Size(min= 10,max = 30)

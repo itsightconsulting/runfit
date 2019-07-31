@@ -146,6 +146,20 @@ public class Enums {
         }
     }
 
+    public enum Error{
+        ARCHIVO_EXCEDE_MAX_PERMITIDO("El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor o igual a %s");
+
+        final String msg;
+
+        Error(String msg){
+            this.msg = msg;
+        }
+
+        public String get(){
+            return msg;
+        }
+    }
+
     public enum Msg{
         REGISTRO_EXITOSO("Se ha registrado correctamente"),
         CORREO_REPETIDO("El correo ingresado ya se encuentra registrado en nuestra base de datos"),
@@ -188,7 +202,8 @@ public class Enums {
         ENLACE_CADUCADO("El enlace ha caducado"),
         CAMBIO_PASSWORD_PASADO("Usted ya ha cambiado su contraseña anteriormente por lo que este link ya no funciona."),
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado"),
-        POSTULANTE_ULTIMA_ETAPA_EMP("Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo. Gracias!");
+        POSTULANTE_ULTIMA_ETAPA_EMP("Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo. Gracias!"),
+        FLAG_BLOQUEADO_TIENE_DEPS("No puede actualizar el ESTADO del registro ya que este se encuentra asociado a un tabla hijo");
 
         final String msg;
 

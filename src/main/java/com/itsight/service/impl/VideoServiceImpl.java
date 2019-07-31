@@ -1,14 +1,15 @@
 package com.itsight.service.impl;
 
 import com.itsight.advice.CustomValidationException;
-import com.itsight.domain.GrupoVideo;
 import com.itsight.domain.Video;
 import com.itsight.domain.dto.RefUpload;
 import com.itsight.domain.dto.VideoDTO;
 import com.itsight.domain.pojo.AwsStresPOJO;
+import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoRepository;
 import com.itsight.service.VideoService;
+import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -151,6 +152,7 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
         entity.setUuid(fileUpload.getUuid());
         entity.setExtFile(fileUpload.getExtFile());
         entity.setRutaWeb(fileUpload.getUuid()+fileUpload.getExtFile());
+        entity.setVersion(1);
         //Guardamos
         Video g = repository.save(entity);
         fileUpload.setId(g.getId());
@@ -160,7 +162,13 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     @Override
     public String actualizar(Video entity, String wildcard) {
         // TODO Auto-generated method stub
-        return null;
+
+        Video qVideo = this.findOne(entity.getId());
+        entity.setRutaWeb(qVideo.getRutaWeb());
+        entity.setUuid(qVideo.getUuid());
+        entity.setVersion(qVideo.getVersion()+1);
+        this.update(entity);
+        return Utilitarios.jsonResponse(String.valueOf(entity.getId()), qVideo.getUuid().toString());
     }
 
     @Override
@@ -192,5 +200,10 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
             return SUCCESS_SUBIDA_IMG.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_GENERICA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public VideoPOJO obtenerFullById(Integer id) {
+        return repository.getVideoById(id);
     }
 }

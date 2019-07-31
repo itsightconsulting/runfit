@@ -82,7 +82,6 @@ public class AudioController {
             return audioService.registrar(audio, null);
         Audio qAudio = audioService.findOne(audio.getId());
         audio.setRutaWeb(qAudio.getRutaWeb());
-        audio.setRutaReal(qAudio.getRutaReal());
         return audioService.actualizar(audio, null);
 
     }
@@ -124,7 +123,6 @@ public class AudioController {
                 // Agregando la ruta a la base de datos
 
                 Audio qAudio = audioService.findOneWithFT(audioId);//findOneWithFT para este caso aplica a todas las ForeignKeys
-                qAudio.setRutaReal(fullPath);
                 qAudio.setRutaWeb("/" + audioId + "/" + uuid + extension);
                 qAudio.setUuid(uuid);
 

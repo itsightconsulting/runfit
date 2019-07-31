@@ -115,7 +115,7 @@ FichaSet = (function(){
             const fechaFin = parseFromStringToDate($('#MacroFechaFin').val());
             const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
             const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
-            document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.ceil(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+            document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.floor(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
             MacroValidacion.cleanDistribucion();
         },
         instanciarDatosFicha: (ficha)=>{

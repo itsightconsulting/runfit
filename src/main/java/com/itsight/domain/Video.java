@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.util.EntityVisitor;
 import com.itsight.util.Identifiable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -62,11 +66,9 @@ public class Video extends AuditingEntity implements Identifiable {
     private String rutaWeb;
 
     @Column()
-    private String rutaReal;
-
-    @Column()
     private String peso;
 
+    @Lazy()
     @Column()
     private String duracion;
 
@@ -75,6 +77,9 @@ public class Video extends AuditingEntity implements Identifiable {
 
     @Column(updatable = false)
     private String extFile;
+
+    @Column
+    private Integer version;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -102,10 +107,9 @@ public class Video extends AuditingEntity implements Identifiable {
         this.id = id;
     }
 
-    public Video(String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, int subCatVideoId, boolean flagActivo) {
+    public Video(String nombre, String rutaWeb, String peso, String duracion, UUID uuid, int subCatVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.peso = peso;
         this.duracion = duracion;
         this.uuid = uuid;
@@ -113,21 +117,30 @@ public class Video extends AuditingEntity implements Identifiable {
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(String nombre, String rutaWeb, String rutaReal, String peso, UUID uuid, Integer subCatVideoId, boolean flagActivo) {
+    public Video(String nombre, String rutaWeb, String peso, String duracion, UUID uuid, int version, int subCatVideoId, boolean flagActivo) {
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
+        this.peso = peso;
+        this.duracion = duracion;
+        this.uuid = uuid;
+        this.version = version;
+        this.subCatVideo = new SubCategoriaVideo(subCatVideoId);
+        this.setFlagActivo(flagActivo);
+    }
+
+    public Video(String nombre, String rutaWeb, String peso, UUID uuid, Integer subCatVideoId, boolean flagActivo) {
+        this.nombre = nombre;
+        this.rutaWeb = rutaWeb;
         this.peso = peso;
         this.uuid = uuid;
         this.subCatVideo = new SubCategoriaVideo(subCatVideoId);
         this.setFlagActivo(flagActivo);
     }
 
-    public Video(Integer id, String nombre, String rutaWeb, String rutaReal, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
+    public Video(Integer id, String nombre, String rutaWeb, String peso, String duracion, UUID uuid, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
         this.id = id;
         this.nombre = nombre;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.peso = peso;
         this.duracion = duracion;
         this.uuid = uuid;

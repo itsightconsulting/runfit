@@ -117,7 +117,6 @@ public class DocumentoController {
                 // Agregando la ruta a la base de datos
 
                 Documento qDocumento = documentoService.findOne(id);//findOneWithFT para este caso aplica a todas las ForeignKeys
-                qDocumento.setRutaReal(fullPath);
                 qDocumento.setRutaWeb("/" + id + "/" + uuid + extension);
                 qDocumento.setUuid(uuid);
 

@@ -28,7 +28,7 @@ public class TipoRutina {
     @Column(name="TipoRutinaId")
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nombre;
 
     @JsonBackReference

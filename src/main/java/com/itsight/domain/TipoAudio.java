@@ -1,5 +1,6 @@
 package com.itsight.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonAudioSerializer;
 
@@ -21,7 +22,7 @@ public class TipoAudio {
 
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nombre;
 
     @Size(max = 255)

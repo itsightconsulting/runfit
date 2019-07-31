@@ -105,7 +105,6 @@ public class CategoriaEjercicioController {
                 // Agregando la ruta a la base de datos
 
                 CategoriaEjercicio qCategoria = categoriaEjercicioService.findOne(categoriaId);
-                qCategoria.setRutaReal(fullPath);
                 qCategoria.setRutaWeb("/" + categoriaId + "/" + uuid + extension);
                 qCategoria.setUuid(uuid);
 

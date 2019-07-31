@@ -245,9 +245,6 @@ function clickListenerTabService(e) {
         const id = input.getAttribute('data-id');
         selServicioId = Number(id);
         const svcFocus = tabService.querySelector('.svc-focus');
-        if(svcFocus && id === svcFocus.getAttribute('data-id') && servicios.length>1){
-            return;
-        }
         svcFocus != undefined ? svcFocus.classList.remove('svc-focus') : "";
         clases.add('svc-focus');
         mostrarDetalleServicio(selServicioId);
@@ -433,44 +430,30 @@ function bodyChangeEventListener(e){
     const input = e.target;
     const clases = input.classList;
     if(input.id === "InpImgPerfil"){
-        const isValid = checkingValidExtension(input);
-        if(isValid){
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+        const minHeight = $(frm).validate().settings.rules[input.name].minHeight;
+        const imgTemp = new Image();
+        imgTemp.onload = function () {
+            if(imgTemp.height < minHeight){
+                $.smallBox({color: 'alert', content: `La imagen debe tener un alto mínimo de ${minHeight}px`});
+            }else{
+                const isValid = checkingValidExtension(input);
+                if(isValid){
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $(imgPerfil).attr('src', e.target.result);
+                        reader.onload = function (e) {
+                            $(imgPerfil).attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
+                    $('#myModalCropper').modal('show');
                 }
-                reader.readAsDataURL(input.files[0]);
             }
-            //Este modal tiene un evento on show, en ese evento se llama a la instancia del cropper
-            $('#myModalCropper').modal('show');
-        }
+        };
+        imgTemp.src = _URL.createObjectURL(input.files[0]);
     }
     tycChangeEventListener(e, input, clases);
-}
-
-function checkingValidExtension(input){
-    if($(frm).validate().settings.rules[input.name]){
-        const extensiones = $(frm).validate().settings.rules[input.name].extension.split("|");
-        let fileExt = input.files[0];
-        if(!fileExt){
-            return false;
-        }
-        fileExt = fileExt.type.split("/")[1];
-        const exists = extensiones.filter(ext => ext === fileExt);
-        if(exists.length){
-            return true;
-        } else {
-            const ext = $(frm).validate().settings.rules[input.name].extension.toUpperCase();
-            input.value = "";
-            $.smallBox({
-                color: 'alert',
-                content: `<i class="fa fa-fw fa-exclamation-circle"></i>Solo se permite cargar archivos de tipo: ${ext}`
-            })
-            return false;
-        }
-    }
 }
 
 function tycChangeEventListener(e, input, clases){
@@ -643,10 +626,6 @@ function modalEventos(){
     });
 
     setHeightForModals(['myModalCC']);
-}
-
-function populateBancos(){
-    document.getElementById('BancoId').innerHTML = banks.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
 }
 
 function getAsStringIncluyeServices(){
@@ -898,6 +877,7 @@ function editarTarifa(tId){
         tarifa.precio = t.precio;
         tarifa.monedaId = t.monedaId;
         tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
+        cleanPaqueteCampos();
         $.smallBox({color: "#111509",content: '<i class="fa fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
     } else{
         $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Los valores del tarifario ingresado son inválidos</em>" ,timeout: 5000})

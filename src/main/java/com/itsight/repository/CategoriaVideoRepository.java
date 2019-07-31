@@ -19,17 +19,19 @@ public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, 
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S ORDER BY 1")
     List<CategoriaVideo> findAll();
 
-    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S ORDER BY 1")
+    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, G.id, G.nombre) FROM CategoriaVideo S INNER JOIN S.grupoVideo G WHERE G.flagActivo=true ORDER BY 1")
     List<CategoriaVideo> findAllByOrderById();
 
-    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S " +
-            "WHERE S.flagActivo = ?1 ORDER BY 1")
+    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, G.id, G.nombre) FROM CategoriaVideo S " +
+            "INNER JOIN S.grupoVideo G WHERE G.flagActivo=true " +
+             "AND S.flagActivo = ?1 ORDER BY 1")
     List<CategoriaVideo> findAllByFlagActivoOrderById(Boolean flagActivo);
 
     List<CategoriaVideo> findAllByNombreContaining(String nombres);
 
-    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S " +
-            "WHERE LOWER(S.nombre) LIKE LOWER(CONCAT('%',?1,'%')) ORDER BY 1")
+    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, G.id, G.nombre) FROM CategoriaVideo S " +
+            "INNER JOIN S.grupoVideo G WHERE G.flagActivo=true " +
+            "AND LOWER(S.nombre) LIKE LOWER(CONCAT('%',?1,'%')) ORDER BY 1")
     List<CategoriaVideo> findAllByNombreContainingIgnoreCase(String nombre);
 
     List<CategoriaVideo> findAllByNombreContainingIgnoreCaseAndFlagActivo(String comodin, Boolean flagActivo);
@@ -46,8 +48,9 @@ public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, 
             "WHERE S.grupoVideo.id = ?1 AND S.flagActivo = ?2 ORDER BY 1")
     List<CategoriaVideo> findAllByCategoriaVideoIdAndFlagActivoOrderById(int grupoVideoId, Boolean flagActivo);
 
-    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S " +
-            "WHERE LOWER(S.nombre) LIKE LOWER(CONCAT('%',?1,'%')) AND S.flagActivo = ?2 ORDER BY 1")
+    @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, G.id, G.nombre) FROM CategoriaVideo S " +
+            "INNER JOIN S.grupoVideo G WHERE G.flagActivo=true " +
+            "AND LOWER(S.nombre) LIKE LOWER(CONCAT('%',?1,'%')) AND S.flagActivo = ?2 ORDER BY 1")
     List<CategoriaVideo> findAllByNombreContainingIgnoreCaseAndFlagActivoOrderById(String comodin, Boolean flagActivo);
 
     @Query("SELECT new CategoriaVideo(S.id, S.nombre, S.flagActivo, S.grupoVideo.id, S.grupoVideo.nombre) FROM CategoriaVideo S " +
@@ -61,5 +64,10 @@ public interface CategoriaVideoRepository extends JpaRepository<CategoriaVideo, 
     @Modifying
     @Query(value = "INSERT INTO bag_forest (id) VALUES(2)",nativeQuery = true)
     void insertArtificio();
+
+    @Query(value = "SELECT CASE WHEN COUNT(*) = 0 THEN false ELSE true END  " +
+            "FROM sub_categoria_video WHERE categoria_video_id = ?1",
+            nativeQuery = true)
+    boolean checkHaveChildrenById(Integer id);
 
 }

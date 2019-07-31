@@ -54,10 +54,6 @@ public class Audio extends AuditingEntity {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column
-    private String rutaReal;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column
     private String peso;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column
@@ -95,7 +91,7 @@ public class Audio extends AuditingEntity {
         this.id = id;
     }
 
-    public Audio(String nombre, String descripcion, String peso, String duracion, boolean flagActivo,UUID uuid, String rutaWeb, String rutaReal,int tpAudioId) {
+    public Audio(String nombre, String descripcion, String peso, String duracion, boolean flagActivo,UUID uuid, String rutaWeb,int tpAudioId) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.peso = peso;
@@ -103,7 +99,6 @@ public class Audio extends AuditingEntity {
         this.setFlagActivo(flagActivo);
         this.uuid = uuid;
         this.rutaWeb = rutaWeb;
-        this.rutaReal = rutaReal;
         this.tipoAudio = new TipoAudio(tpAudioId);
     }
 

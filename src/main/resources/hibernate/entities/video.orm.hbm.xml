@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                 http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+    <description>Extracted native queries for the project</description>
+    <!-- using Native SQL query -->
+    <named-native-query name="Video.getVideoById"
+                        result-set-mapping="getVideoById">
+        <query><![CDATA[
+            select v.video_id id,
+                   v.nombre,
+                   concat(v.ruta_web, '?v',v.version) rutaWeb,
+                   v.peso,
+                   v.duracion,
+                   v.uuid,
+                   v.flag_activo flagActivo,
+                   scv.sub_categoria_video_id subCatVideoId,
+                   scv.nombre nombreSubCat,
+                   cv.categoria_video_id catVideoId
+            from video v
+            inner join sub_categoria_video scv on v.sub_categoria_video_id = scv.sub_categoria_video_id
+            inner join categoria_video cv on scv.categoria_video_id = cv.categoria_video_id
+            where v.video_id = :video_id
+        ]]></query>
+    </named-native-query>
+    <sql-result-set-mapping name="getVideoById">
+        <constructor-result target-class="com.itsight.domain.pojo.VideoPOJO">
+            <column name="id" class="java.lang.Integer"/>
+            <column name="nombre" class="java.lang.String"/>
+            <column name="rutaWeb" class="java.lang.String"/>
+            <column name="peso" class="java.lang.String"/>
+            <column name="duracion" class="java.lang.String"/>
+            <column name="uuid" class="java.lang.String"/>
+            <column name="flagActivo" class="java.lang.Boolean"/>
+            <column name="subCatVideoId" class="java.lang.Integer"/>
+            <column name="nombreSubCat" class="java.lang.String"/>
+            <column name="catVideoId" class="java.lang.Integer"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+    <sql-result-set-mapping name="Video.getAllByDynamic">
+        <constructor-result target-class="com.itsight.domain.pojo.VideoPOJO">
+            <column name="id" class="java.lang.Integer"/>
+            <column name="nombre" class="java.lang.String"/>
+            <column name="rutaWeb" class="java.lang.String"/>
+            <column name="peso" class="java.lang.String"/>
+            <column name="duracion" class="java.lang.String"/>
+            <column name="uuid" class="java.lang.String"/>
+            <column name="flagActivo" class="java.lang.Boolean"/>
+            <column name="subCatId" class="java.lang.Integer"/>
+            <column name="nomSubCat" class="java.lang.String"/>
+            <column name="catId" class="java.lang.Integer"/>
+            <column name="nomCatVid" class="java.lang.String"/>
+            <column name="rows" class="java.lang.Integer"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+</entity-mappings>

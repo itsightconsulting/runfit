@@ -5,9 +5,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
@@ -56,7 +54,7 @@ public interface BaseService<T, V> {
 
     String registrar(T entity, String wildcard) throws CustomValidationException;
 
-    String actualizar(T entity, String wildcard);
+    String actualizar(T entity, String wildcard) throws CustomValidationException;
 
     void actualizarFlagActivoById(V id, boolean flagActivo);
 
@@ -70,10 +68,12 @@ public interface BaseService<T, V> {
 
     default boolean uploadImageToAws3(MultipartFile file, AwsStresPOJO credentials, final Logger logger) {
         if (!file.isEmpty()) {
-
             String extension;
-            if(file.getOriginalFilename().equals("blob")){
-                extension = "." + credentials.getExtension();
+            if(credentials.getExtension() != null && !credentials.getExtension().equals("")){
+                extension = credentials.getExtension();
+            //}
+            //if(file.getOriginalFilename().equals("blob")){
+            //    extension = "." + credentials.getExtension();//Al enum JPEG='.jpg' se le hace un substring a partir de 1
             } else {
                 extension = "."+file.getContentType().split("/")[1];
             }
@@ -99,6 +99,7 @@ public interface BaseService<T, V> {
 
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(file.getSize());
+                /*metadata.setContentDisposition("attachment");*/
 
                 PutObjectRequest request = new PutObjectRequest(
                     credentials.getBucket(),
@@ -108,6 +109,8 @@ public interface BaseService<T, V> {
 
                 Upload upload = tm.upload(request);
                 upload.waitForCompletion();
+                /*S3Object obj = amazonS3.getObject(new GetObjectRequest(credentials.getBucket(),fullPath));
+                System.out.println(obj.getObjectMetadata().getVersionId());*/
                 return true;
             } catch (IllegalStateException e) {
                 logger.warn(e.getMessage());
@@ -143,8 +146,8 @@ public interface BaseService<T, V> {
             if (!file.isEmpty()) {
                 String extension;
 
-                if(file.getOriginalFilename().equals("blob")){
-                    extension = "." + credentials.getExtension();
+                if(file.getOriginalFilename().equals("blob")){//Aquí es necesario mantener el else file.getContentType() ya que mediante este metodo se podrían subir diferentes tipos de archivos(imgs,pdfs,docs)
+                    extension = credentials.getExtension();
                 }else{
                     if(file.getContentType().startsWith("image")){
                         extension = JPEG.get();

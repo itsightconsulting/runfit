@@ -17,7 +17,7 @@ public class Modulo {
     @Column(name = "ModuloId")
     private Integer id;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String nombre;
 
     private String descripcion;
