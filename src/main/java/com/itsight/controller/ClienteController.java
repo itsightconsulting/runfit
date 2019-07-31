@@ -7,6 +7,7 @@ import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
+import com.itsight.service.ClienteProcedureInvoker;
 import com.itsight.service.ClienteService;
 import com.itsight.service.SecUserProcedureInvoker;
 import com.itsight.util.Enums;
@@ -26,11 +27,15 @@ public class ClienteController {
 
     private SecUserProcedureInvoker secUserProcedureInvoker;
 
+    private ClienteProcedureInvoker clienteProcedureInvoker;
+
     @Autowired
     public ClienteController(ClienteService clienteService,
-                             SecUserProcedureInvoker secUserProcedureInvoker) {
+                             SecUserProcedureInvoker secUserProcedureInvoker,
+                             ClienteProcedureInvoker clienteProcedureInvoker) {
         this.clienteService = clienteService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
+        this.clienteProcedureInvoker = clienteProcedureInvoker;
     }
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
@@ -62,5 +67,15 @@ public class ClienteController {
     @PostMapping(value = "/fitness/agregar")
     public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
         return clienteService.registroFull(cliente);
+    }
+
+
+    @GetMapping(value = "/distribucion-departamento")
+    public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoCliente(){
+
+     List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente();
+
+     return lstDistribucionCliente;
+
     }
 }

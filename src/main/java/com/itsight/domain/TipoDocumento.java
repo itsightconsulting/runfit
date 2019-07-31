@@ -58,5 +58,4 @@ public class TipoDocumento {
         this.lstCliente = lstCliente;
     }
 
-
 }

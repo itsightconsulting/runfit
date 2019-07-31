@@ -24,13 +24,16 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
+
+
+
     <div id="wrapper">
         <div>
             <header>
          <div class="text-center">
-                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="img/iconos/icon_hamburger.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="img/logo.png" alt=""></a>
+                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}+'?'+${version}"></button><a class="only_mobile" href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
                     <h4 class="user">
-                        <img class="svg" src="img/iconos/icon_perfil.svg"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+                        <img class="svg"  th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
                 </div>
              <br>
             </header>
@@ -101,7 +104,7 @@
                     <div class="clearfix"></div>
                  </div>
 
-                    <div class="row">
+                    <div class="row distribucion-km">
 
                         <div class="col-md-3">
 
@@ -117,6 +120,7 @@
 
                         <div class="col-md-6">
 
+                          <div class="dv-etapas-km">
                             <div class="row">
                               <div class="etapas-superior">
                                 <div class="col-xs-6">
@@ -166,9 +170,10 @@
                                 </div>
                             </div>
 
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="distribucion-km">
+                            <div class="distribucion-etapas-km">
                                 <label>
                                     <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>DISTRIBUCIÓN</strong>
                                 </label>
@@ -181,6 +186,49 @@
                         <hr>
                         <div class="clearfix"></div>
                     </div>
+
+
+                <div class="dv-mejora-vel">
+
+                    <h2 class="metric-title"> MEJORAS DE VELOCIDAD POR DISTANCIA </h2>
+
+                    <div class="tb-mejora-vel">
+                        <div class="row">
+                            <div class="col col-md-1 col-sm-1">
+                                <div class="container-fluid text-align-center padding-o-bottom-10">
+                                    <div style="padding-bottom: 3px"></div>
+                                </div>
+                            </div>
+                            <div class="col col-md-11 col-sm-11">
+                                <div class="container-fluid text-align-center padding-o-bottom-10" style="margin-right: 10px !important;">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">200 <p>mt (min) </p> </div>
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">400 <p>mt (min) </p></div>
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">800 <p>mt (min) </p></div>
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">1K</div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">10K</div>
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">15K</div>
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">21K</div>
+                                        <div class="col col-md-3 col-sm-3 header-met-vel">42K</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div id="mejora-velocidad" class="mejora-velocidad">
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
 
                     <div class="row">
                          <div class="col-md-8">
@@ -227,68 +275,28 @@
                          </div>
                     </div>
 
-                 <div class="dv-mejora-vel">
-
-                     <h2 class="metric-title"> MEJORAS DE VELOCIDAD POR DISTANCIA </h2>
-
-                   <div class="tb-mejora-vel">
-                     <div class="row">
-                        <div class="col col-md-1 col-sm-1">
-                            <div class="container-fluid text-align-center padding-o-bottom-10">
-                                <div style="padding-bottom: 3px"></div>
-                            </div>
-                        </div>
-                        <div class="col col-md-11 col-sm-11">
-                            <div class="container-fluid text-align-center padding-o-bottom-10" style="margin-right: 10px !important;">
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">200 <p>mt (min) </p> </div>
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">400 <p>mt (min) </p></div>
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">800 <p>mt (min) </p></div>
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">1K</div>
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">10K</div>
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">15K</div>
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">21K</div>
-                                    <div class="col col-md-3 col-sm-3 header-met-vel">42K</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="row">
-                        <div id="mejora-velocidad" class="mejora-velocidad">
-
-                        </div>
-
-
-                    </div>
-
-                   </div>
-
-                 </div>
-
 
             </div>
 
-          </div>
+
        </section>
 
-          </div>
+        </div>
+     </div>
+
     </div>
-
-
 
 
 
 
 <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
 <!-- CUSTOM NOTIFICATION -->
+
 <script th:src="@{/js/jquery.knob.js}+'?'+${version}"></script>
-<script th:src="@{/js/rf-cli-rutina.js}+'?'+${version}"></script>
-<script th:src="@{/js/dennys-workout/rf-cli-inicio.js}+'?'+${version}"></script>
-<script th:src="@{/js/rutina_consolidado.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/rutina_consolidado.js}+'?'+${version}"></script>
+
 
 </body>
+
 </html>

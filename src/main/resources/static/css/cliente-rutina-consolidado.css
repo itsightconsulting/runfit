@@ -172,7 +172,6 @@ hr.semanas-fixed {
     font-size: 16px;
     font-family: GothamHTF-Book;
     text-transform: uppercase;
-    border-bottom: 1px solid #3d3f41;
     padding: 50px 20px;
     line-height: 27px;
 }
@@ -185,11 +184,10 @@ hr.semanas-fixed {
 .distribucion-km  {
     font-family: GothamHTF-Bold;
     text-transform: uppercase;
-    border-bottom: 1px solid #3d3f41;
-    padding: 20px 20px;
+    padding: 0 20px 20px;
     line-height: 27px;
     color: #ffffff;
-
+    border-bottom: 1px solid #3d3f41;
 }
 
 .distribucion-km strong {
@@ -198,7 +196,6 @@ hr.semanas-fixed {
 
 .total-km div{
     padding: 40px 0px;
-    border-right: 2px solid #3d3f41;
 }
 
 
@@ -431,5 +428,17 @@ div #proyeccionCompetencia .proyeccion-title label{
     line-height: 1.7;
 }
 
+.dv-etapas-km{
+    padding-bottom: 32px;
+}
 
 
+
+#consolidado .distribucion-etapas-km .col-md-6 {
+    padding: 0;
+}
+
+.distribucion-etapas-km{
+    padding-top: 43px;
+
+}

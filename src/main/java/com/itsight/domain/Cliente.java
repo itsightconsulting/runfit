@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.jsonb.Rol;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
+import com.itsight.domain.pojo.ClientePOJO;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -38,6 +41,19 @@ import java.util.UUID;
         @NamedNativeQuery(query = "select nombres, apellidos, coalesce(cast(uuid_fp as text), '') uuidFp, ext_fp extFp from cliente c where c.security_user_id = ?1",
                 name = "Cliente.getForCookieById",
                 resultSetMapping = "findForCookieById")
+})
+
+@SqlResultSetMappings({
+        @SqlResultSetMapping(name = "resultMappingClienteDistribucionDepartamento",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ClientePOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "departamentoUb")
+                                        ,@ColumnResult(name = "qtyClientesByDepartamento")
+                                          }
+                        )
+                })
 })
 @EqualsAndHashCode(callSuper = false)
 public class Cliente extends AuditingEntity implements Serializable {

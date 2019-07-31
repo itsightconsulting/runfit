@@ -17,7 +17,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedReader;
@@ -159,6 +158,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private TipoRutinaService tipoRutinaService;
 
+    @Autowired
+    private TipoCanalVentaService tipoCanalVentaService;
+
     @Value("${flag.populate}")
     private Boolean flagPopulate;
 
@@ -185,6 +187,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingDisciplinas();
             addingTipoTrainers();
             addingTipoRutina();
+            addingtipoCanalVentaToTable();
             try {
                 addingUbPeru();
                 addingModulo();
@@ -604,6 +607,19 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(tipoDocumentoService.findOne(2) == null) tipoDocumentoService.save(new TipoDocumento("CE"));
         if(tipoDocumentoService.findOne(3) == null) tipoDocumentoService.save(new TipoDocumento("RUC"));
     }
+
+    public void addingtipoCanalVentaToTable(){
+        if(tipoCanalVentaService.findOne(1) == null) tipoCanalVentaService.save(new TipoCanalVenta("Por recomendación"));
+        if(tipoCanalVentaService.findOne(2) == null) tipoCanalVentaService.save(new TipoCanalVenta("Vía Correo"));
+        if(tipoCanalVentaService.findOne(3) == null) tipoCanalVentaService.save(new TipoCanalVenta("Google"));
+        if(tipoCanalVentaService.findOne(4) == null) tipoCanalVentaService.save(new TipoCanalVenta("Facebook"));
+        if(tipoCanalVentaService.findOne(5) == null) tipoCanalVentaService.save(new TipoCanalVenta("Twitter"));
+        if(tipoCanalVentaService.findOne(6) == null) tipoCanalVentaService.save(new TipoCanalVenta("Instagram"));
+        if(tipoCanalVentaService.findOne(7) == null) tipoCanalVentaService.save(new TipoCanalVenta("Otro"));
+
+    }
+
+
 
     public void addingConfiguracionGeneralToTable(){
         if(configuracionGeneralService.findOne(2) == null) configuracionGeneralService.save(new ConfiguracionGeneral("CONTROL_REP_VIDEO", "REPETICION",true, 3));
@@ -1178,7 +1194,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setMejoras(new ArrayList<>());
             cliFit.setFrecuenciaComunicacion(1);
             cliFit.setDiasSemanaCorriendo(1);
-            cliFit.setViaConexion(1);
+            cliFit.setTipoCanalVenta(new TipoCanalVenta(1));
             cliFit.setTalla(166);
             cliFit.setTiempoDistancia("{'2':'01:10:01','4':'01:10:01','21':'01:10:01','42':'01:10:01'}");
             List<CompetenciaRunner> comps = new ArrayList<>();

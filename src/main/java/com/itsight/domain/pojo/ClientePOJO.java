@@ -1,17 +1,16 @@
-package com.itsight.domain.dto;
+package com.itsight.domain.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.itsight.domain.dto.ClienteFitnessDTO;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Past;
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 
+
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ClienteDTO implements Serializable  {
+public class ClientePOJO {
     private Integer trainerId;
     private String nombres;
     private String apellidos;
@@ -37,5 +36,9 @@ public class ClienteDTO implements Serializable  {
     private BigInteger qtyClientesByDepartamento;
 
 
+    public ClientePOJO(String departamentoUb, BigInteger qtyClientesByDepartamento) {
+        this.departamentoUb = departamentoUb;
+        this.qtyClientesByDepartamento = qtyClientesByDepartamento;
+    }
 
 }

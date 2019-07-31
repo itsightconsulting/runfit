@@ -52,11 +52,19 @@ public class ClienteFitnessDTO implements Serializable {
     @Valid
     private String fitElementos;
     private Integer frecuenciaComunicacion;
-    private Integer viaConexion;
+    private Integer tipoCanalVentaId;
     private UsuarioDTO usuario;
     private String trainerId;
     private Object condicionAnatomicaObj;
     private String fichaId;
 
+    private String ubigeo;
+    private String fechaCreacion;
+
+
+
     public ClienteFitnessDTO(){}
+
+
+
 }

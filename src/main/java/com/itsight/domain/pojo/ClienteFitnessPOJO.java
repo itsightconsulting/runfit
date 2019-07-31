@@ -82,7 +82,9 @@ public class ClienteFitnessPOJO {
     private String tiempoUnKilometro;
 
 
-    private Integer viaConexion;
+    private Integer tipoCanalVentaId;
+
+
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaCreacion;
@@ -124,6 +126,8 @@ public class ClienteFitnessPOJO {
     private String ubigeo;
 
 
+    private Integer predeterminadaFichaId;
+
 
     public ClienteFitnessPOJO(
             Integer id,
@@ -150,7 +154,7 @@ public class ClienteFitnessPOJO {
             Integer talla,
             String tiempoDistancia,
             String tiempoUnKilometro,
-            Integer viaConexion,
+            Integer tipoCanalVentaId,
             Date fechaCreacion,
             Date fechaModificacion,
             boolean flagActivo,
@@ -214,7 +218,7 @@ public class ClienteFitnessPOJO {
 
                 this.tiempoUnKilometro = tiempoUnKilometro;
 
-                this.viaConexion = viaConexion;
+                this.tipoCanalVentaId = tipoCanalVentaId;
 
                 this.fechaCreacion = fechaCreacion;
 
@@ -244,4 +248,15 @@ public class ClienteFitnessPOJO {
     }
 
 
+    public ClienteFitnessPOJO(Integer id, Integer tipoCanalVentaId, String condicionAnatomica, Date fechaNacimiento, String ubigeo,  Integer sexo, Date fechaCreacion, Integer predeterminadaFichaId /*, */) {
+                this.id = id;
+                this.tipoCanalVentaId = tipoCanalVentaId;
+                this.condicionAnatomica = condicionAnatomica;
+                this.fechaNacimiento = fechaNacimiento;
+                this.ubigeo = ubigeo;
+                this.sexo = sexo;
+                this.fechaCreacion = fechaCreacion;
+                this.predeterminadaFichaId = predeterminadaFichaId;
+
+    }
 }

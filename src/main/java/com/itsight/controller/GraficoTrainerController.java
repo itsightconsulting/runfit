@@ -15,4 +15,12 @@ public class GraficoTrainerController {
         return new ModelAndView(ViewConstant.MAIN_DISTRIBUCION_RED_FITNESS);
     }
 
+
+    @GetMapping("/distribucion-mercado")
+    public ModelAndView getDistribucionMercado(){
+
+        return new ModelAndView(ViewConstant.MAIN_DISTRIBUCION_RED_FITNESS);
+    }
+
+
 }

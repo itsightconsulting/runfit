@@ -1,0 +1,340 @@
+@font-face {
+    font-family: Gotham-Black;
+    src: url(../../fonts/Gotham-Black.ttf)
+}
+
+@font-face {
+    font-family: Gotham-HTF-Bold;
+    src: url(../../fonts/Gotham-HTF-Bold.ttf)
+}
+
+@font-face {
+    font-family: Gotham-HTF-Black-Italic;
+    src: url(../../fonts/Gotham-HTF-Black-Italic.ttf)
+}
+
+@font-face {
+    font-family: Gotham-HTF-Black;
+    src: url(../../fonts/Gotham-HTF-Black.ttf)
+}
+
+@font-face {
+    font-family: Gotham-HTF-Book;
+    src: url(../../fonts/Gotham-HTF-Book.ttf)
+}
+
+@font-face {
+    font-family: Gotham-HTF-Medium;
+    src: url(../../fonts/Gotham-HTF-Medium.ttf)
+}
+
+@font-face {
+    font-family: Montserrat-Regular;
+    src: url(../../fonts/Montserrat-Regular.otf)
+}
+
+@font-face {
+    font-family: Montserrat-SemiBold;
+    src: url(../../fonts/Montserrat-SemiBold.otf)
+}
+
+
+.distribucion-edad{
+    padding-right: 10px;
+    padding-left: 10px;
+    border: 1px solid #565a4d;
+    border-radius: 5px;
+    color: #ffffff;
+    font-family: GothamHTF-Book;
+
+}
+
+.container {
+    max-width: 1079px;
+
+}
+
+.graph-title{
+    color: #ffffff;
+    font-family: GothamHTF-Bold;
+    margin-right: 40px;
+    margin-left: 40px;
+    text-align: center
+}
+
+
+p{
+    font-family: GothamHTF-Book;
+}
+
+
+.distribucion-edad p{
+    font-weight: 600;
+}
+
+
+.graph{
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.distribucion-edad canvas{
+    padding: 20px 25px 10px;
+}
+
+p.fem-age-prom, strong.fem-porc,p.fem-porc-age, .svg.fem{
+    color: #FF00EB;
+}
+
+p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
+    color: #0E70CA;
+}
+
+.graph strong {
+    font-size: 19px;
+}
+
+.graph-porc .svg{
+    height: 28px;
+    position: relative;
+    top: 8px;
+}
+
+.graph-porc{
+    padding-top: 25px;
+}
+
+.graph-porc p{
+    margin-bottom: 10px;
+    float: left;
+    position: relative;
+    margin-left: 17px;
+}
+
+.graph-porc div{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.graph-porc .svg{
+    float: left;
+}
+
+.graph-porc p.fem-range-porc{
+    color: #FF00EB;
+    font-size:18px;
+    top: 10px;
+}
+
+.graph-porc p.masc-range-porc{
+    color: #0E70CA;
+    font-size:18px;
+    top: 10px;
+}
+
+.graph-porc div p{
+    font-size:14px;
+    top: 12px;
+}
+
+
+.canal-venta .col-md-5{
+  padding-right: 0px;
+  padding-left: 0px;
+
+}
+
+.nombre-canal{
+  padding-top: 44px;
+  padding-left: 35px;
+  color: #c2ccac;
+  text-align: right;
+}
+
+.nombre-canal p{
+  margin-bottom: 15px;
+}
+
+
+.canal-graph{
+  padding-top: 30px;
+}
+
+
+.canal-porc-sexo svg , .tipo-servicio-porc svg{
+    height: 35px;
+}
+
+.canal-porc-sexo div, .tipo-servicio-porc div{
+  padding: 0;
+  color: #ffffff;
+}
+
+.canal-porc-fem, .canal-porc-masc{
+   padding-top: 2.5px;
+}
+
+.canal-porc-fem p, .canal-porc-masc p{
+    margin-bottom: 12px;
+}
+
+.servicio-porc-fem, .servicio-porc-masc{
+ padding-top : 5px !important;
+}
+
+.servicio-porc-fem p, .servicio-porc-masc p{
+    margin-bottom: 29px;
+}
+
+
+.canal-porc-masc,.canal-porc-fem{
+  padding-top: 2px;
+  line-height: 1.65;
+}
+
+.div-graf-row-2{
+    margin-top: 40px;
+    padding-top: 30px;
+    margin-left: 1px;
+    margin-right: 0px;
+    border-top: 1px solid #565a4d;
+}
+
+.canal-venta-title, .tipo-servicio-title{
+  margin-bottom: 20px;
+  padding-left: 40px;
+  color: #ffffff;
+  font-size: 18px;
+  font-family: GothamHTF-Bold;
+  width: 250px;
+}
+
+.dv-cond-fisica {
+    padding-top: 40px;
+    margin-bottom: 30px;
+
+}
+.dv-cond-fisica canvas{
+  display: inline-block;
+  float:left;
+}
+
+.dv-cond-fisica p{
+    text-align: center;
+}
+
+.cond-fisica-graphs{
+  padding-left: 28px;
+  padding-top: 30px;
+}
+
+.cond-fisica-porc p strong{
+  margin-left: 50px;
+  margin-right:40px;
+  font-size: 17px;
+}
+
+.dv-cond-fisica .masc p.cond-fisica-title{
+  color: #0E70CA;
+  font-size:18px;
+  font-family: GothamHTF-Bold;
+}
+
+
+.dv-cond-fisica .fem p.cond-fisica-title{
+  color: #FF00EB;
+  font-size:18px;
+  font-family: GothamHTF-Bold;
+}
+
+p.cond-fisica-porc{
+  color: #ffffff;
+  font-family: GothamHTF-Bold;
+}
+
+select{
+    background-color: #2A242C;
+    border-radius: 15px;
+    border: 1px solid;
+    height: 40px;
+    box-shadow: 0 0 0;
+    color: #a8fa00;
+    padding: 0 15px;
+    font-family: Gotham-HTF-Bold, 'system-ui';
+    font-size: 20px;
+}
+
+.select-year{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.distr-dpto-porcentajes {
+    margin-top: 11.45px;
+    font-size: 0.99em;
+}
+
+.distr-dpto-porcentajes p{
+    font-family: Gotham-HTF-Book, 'system-ui';
+    color: #a8fa00;
+    padding-top: 0.09px;
+    line-height: 1.35;
+    font-size: 1em;
+}
+
+
+.distr-dpto-title{
+    margin-bottom: 20px;
+    padding-left: 15px;
+    color: #ffffff;
+    font-size: 18px;
+    font-family: GothamHTF-Bold;
+    width: 350px;
+}
+
+.nombre-servicio{
+    padding-top: 40px;
+    line-height: 1.72;
+    padding-left: 35px;
+    color: #c2ccac;
+    text-align: right;
+}
+
+.nombre-servicio p{
+    margin-bottom: 27px;
+}
+
+.tipo-servicio-porc p{
+    color: #c2ccac;
+}
+
+.servicios-graph{
+    padding-top: 22px;
+}
+
+.div-graf-row-2 svg{
+   padding-left: 3px;
+}
+
+.dv-servicios{
+   padding-top: 80px;
+   padding-bottom: 80px;
+}
+
+.dv-ventas-servicios{
+  padding-top: 40px;
+}
+
+canvas{
+    margin: 0 auto;
+}
+
+.dv-vistas{
+    padding-top:60px;
+}
+
+.dv-vistas h5{
+    color: #ffffff;
+    font-family: Gotham-HTF-Book, 'system-ui';
+}
