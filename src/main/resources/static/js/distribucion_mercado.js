@@ -13,6 +13,8 @@ var dataClientes;
 
 let canalesVenta = ["Recomendación", "Vía correo", "Google", "Facebook", "Twitter", "Instagram", "Otro"];
 let serviciosTipos = ["Running", "General"];
+let arrColorFem = ['#FF00EB', '#c42bba', '#bc49b3', '#8c4b86', '#6b5269','#665e5e'];
+let arrColorMasc = ['#00b5f7','#358dea','#0667ce','#537daa','#6c84b2','#665e5e'];
 const selectYear = document.getElementById('graphYearFilter');
 let cantidadUsuarios;
 
@@ -375,8 +377,7 @@ function graficoCondFisicaBasicaMasc(arr) {
             labels: ["Básica","Otros"],
             datasets: [{
                 data: [arr[0] , total - arr[0]],
-                backgroundColor: ['#0E70CA', '#c2ccac'],
-                hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
+                backgroundColor: ['#00b5f7', '#c2ccac'],
                 borderColor: 'transparent',
             }],
         },
@@ -512,7 +513,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                 labels: ["Medio","Otros"],
                 datasets: [{
                     data: [arr[1] , total - arr[1]],
-                    backgroundColor: ['#0E70CA', '#c2ccac'],
+                    backgroundColor: ['#00b5f7', '#c2ccac'],
                     hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                     borderColor: 'transparent',
                 }],
@@ -649,7 +650,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
             labels: ["Avanzado","Otros"],
             datasets: [{
                 data: [arr[2] , total - arr[2]],
-                backgroundColor: ['#0E70CA', '#c2ccac'],
+                backgroundColor: ['#00b5f7', '#c2ccac'],
                 hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                 borderColor: 'transparent',
             }],
@@ -1210,8 +1211,7 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
             labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
             datasets: [{
                 data: ageRangesValues,
-                backgroundColor: ['#c9ea83', '#9bbd4f', '#a8fa00', '#c2ccac', "#4A4E3B5E","#E6F3FF"],
-                hoverBackgroundColor:  ["#E6F3FF", "#FAE1CE", "#EDFDE9", "#4A4E3B5E","#fffff","#fffff"],
+                backgroundColor: arrColorFem,
                 borderColor: 'transparent',
             }],
         },
@@ -1356,8 +1356,7 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
             labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
             datasets: [{
                 data: ageRangesValues,
-                backgroundColor: ['#c9ea83', '#9bbd4f', '#a8fa00', '#c2ccac', "#4A4E3B5E","#E6F3FF"],
-                hoverBackgroundColor:  ["#E6F3FF", "#FAE1CE", "#EDFDE9", "#4A4E3B5E","#fffff","#fffff"],
+                backgroundColor: arrColorMasc,
                 borderColor: 'transparent',
             }],
         },
@@ -1400,8 +1399,10 @@ function generarInfoDistribucionEdadMascDOM(dataMasc){
     $('.masc-porc').text(`${dataMasc.porcentajeMasc}%`);
     $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`);
 
-    $('.graph-porc .masc-range-porc').each( function(index) {$(this).html(`${dataMasc.porcentajeRangosMasc[index] }%`)});
+    $('.graph-porc .masc-range-porc').each( function(index) {$(this).html(`${dataMasc.porcentajeRangosMasc[index] }%`)
+                                                             $(this).css("color", arrColorMasc[index])});
 
+    $('.graph-porc svg.masc').each( function(index) {$(this).css("color", arrColorMasc[index])});
 
 
 }
@@ -1412,8 +1413,10 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
     $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`);
 
 
-    $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`)});
+    $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`);
+                                                          $(this).css("color", arrColorFem[index])});
 
+    $('.graph-porc svg.fem').each( function(index) {$(this).css("color", arrColorFem[index])});
 
 
 }
@@ -1536,7 +1539,7 @@ function graficoCanalesUsados(dataCanales){
                     barThickness : 15,
                     ticks:{
                       callback: function(value,index){return porcentajes[index]+ " %"},
-                      fontSize: 14,
+                      fontSize: 13,
                       fontColor: "#ff8402",
                       fontFamily: "GothamHTF-Book"
                     },
@@ -1772,7 +1775,7 @@ function graficoServiciosUsados(dataServicio){
                     barThickness : 15,
                     ticks:{
                         callback: function(value,index){return porcentajes[index]+ " %"},
-                        fontSize: 14,
+                        fontSize: 13,
                         fontColor: "#e04c51",
                         fontFamily: "GothamHTF-Book"
                     },
@@ -1964,7 +1967,8 @@ function graficoDistribucionDepartamento(dataDepartamento){
             scales: {
                 xAxes: [{
                     ticks: {
-                        display: false
+                        display: false,
+                        drawBorder: false
                     },
                     gridLines: {
                         display:false,
@@ -1974,8 +1978,8 @@ function graficoDistribucionDepartamento(dataDepartamento){
                 yAxes: [{
                     barThickness : 15,
                     ticks:{
-                        fontSize: 14,
-                        fontColor: "#a8fa00",
+                        fontSize: 13,
+                        fontColor: "#c2ccac",
                         fontFamily: "GothamHTF-Book"
                     },
                     gridLines: {
@@ -2198,6 +2202,7 @@ function generarPorcentajeTipoServicioSexoDOM(arr, index){
 
 function generarPorcentajeCondFisica(arr, sexo){
     const porcCondFisic =  getPorcentaje(arr);
+
     $(`.dv-cond-fisica .${sexo} .cond-fisica-porc`).each(
                  function(index){
                       $(this).html(`${porcCondFisic[index]}%`)
@@ -2243,7 +2248,7 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
         datasets: [
             {
                 label: "Hombres",
-                backgroundColor: "#0E70CA",
+                backgroundColor: "#00b5f7",
                 data: dataMasc
             }, {
                 label: "Mujeres",
@@ -2260,18 +2265,13 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
             barValueSpacing: 20,
             scales: {
                 yAxes: [{
-                    ticks: {
-                        min: 0,
-                    },
-                    gridLines: {
-                        display:false
-                    }
+                      display: false
                 }],
                 xAxes: [{
-                    barThickness : 20,
-                    gridLines: {
-                        display:false
-                    }
+                   gridLines: {
+                       display:false,
+                       drawBorder: false
+                   }
                 }]
             },
             hover:{
@@ -2280,7 +2280,7 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
             },
             legend: {
                 display: true,
-                position: "right",
+                position: "bottom",
                 align: "middle",
                 labels: {
                     fontColor: 'white',

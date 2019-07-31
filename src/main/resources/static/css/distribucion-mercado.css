@@ -38,7 +38,13 @@
     src: url(../../fonts/Montserrat-SemiBold.otf)
 }
 
+header{
+ display: flow-root;
+}
 
+.container{
+ padding-top:20px !important;
+}
 .distribucion-edad{
     padding-right: 10px;
     padding-left: 10px;
@@ -88,7 +94,7 @@ p.fem-age-prom, strong.fem-porc,p.fem-porc-age, .svg.fem{
 }
 
 p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
-    color: #0E70CA;
+    color: #00b5f7;
 }
 
 .graph strong {
@@ -128,7 +134,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .graph-porc p.masc-range-porc{
-    color: #0E70CA;
+    color: #00b5f7;
     font-size:18px;
     top: 10px;
 }
@@ -153,7 +159,8 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .nombre-canal p{
-  margin-bottom: 15px;
+  margin-bottom: 16.5px;
+  font-size: 13px;
 }
 
 
@@ -161,9 +168,12 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
   padding-top: 30px;
 }
 
+.canal-porc-sexo p{
+  font-size: 13px
+}
 
 .canal-porc-sexo svg , .tipo-servicio-porc svg{
-    height: 35px;
+  height: 35px;
 }
 
 .canal-porc-sexo div, .tipo-servicio-porc div{
@@ -172,15 +182,15 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .canal-porc-fem, .canal-porc-masc{
-   padding-top: 2.5px;
+    padding-top: 3px !important;
 }
 
 .canal-porc-fem p, .canal-porc-masc p{
-    margin-bottom: 12px;
+    margin-bottom: 13.2px;
 }
 
 .servicio-porc-fem, .servicio-porc-masc{
- padding-top : 5px !important;
+ padding-top : 1px !important;
 }
 
 .servicio-porc-fem p, .servicio-porc-masc p{
@@ -213,6 +223,10 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 .dv-cond-fisica {
     padding-top: 40px;
     margin-bottom: 30px;
+    margin-right: 30px;
+    margin-left: 35px;
+    margin-top: 30px;
+    border-top: 1px solid #565a4d;
 
 }
 .dv-cond-fisica canvas{
@@ -221,7 +235,11 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .dv-cond-fisica p{
-    text-align: center;
+  text-align: center;
+}
+
+.dv-cond-fisica .masc{
+  border-left: 1px solid #565a4d;
 }
 
 .cond-fisica-graphs{
@@ -236,7 +254,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .dv-cond-fisica .masc p.cond-fisica-title{
-  color: #0E70CA;
+  color: #00b5f7;
   font-size:18px;
   font-family: GothamHTF-Bold;
 }
@@ -279,8 +297,8 @@ select{
     font-family: Gotham-HTF-Book, 'system-ui';
     color: #a8fa00;
     padding-top: 0.09px;
-    line-height: 1.35;
-    font-size: 1em;
+    line-height: 1.27;
+    font-size: 0.95em;
 }
 
 
@@ -294,19 +312,21 @@ select{
 }
 
 .nombre-servicio{
-    padding-top: 40px;
+    padding-top: 39px;
     line-height: 1.72;
     padding-left: 35px;
     color: #c2ccac;
     text-align: right;
+    font-size: 13px;
 }
 
 .nombre-servicio p{
-    margin-bottom: 27px;
+    margin-bottom: 24px;
 }
 
 .tipo-servicio-porc p{
     color: #c2ccac;
+    font-size: 13px
 }
 
 .servicios-graph{
@@ -319,11 +339,15 @@ select{
 
 .dv-servicios{
    padding-top: 80px;
-   padding-bottom: 80px;
+   padding-bottom: 20px;
 }
 
 .dv-ventas-servicios{
-  padding-top: 40px;
+   padding-top: 40px;
+   margin-right: 20px;
+   margin-left: 17px;
+   border-top: 1px solid #565a4d;
+   margin-top: 30px;
 }
 
 canvas{
@@ -331,10 +355,29 @@ canvas{
 }
 
 .dv-vistas{
-    padding-top:60px;
+    margin-top:40px;
+    margin-right:35px;
+    margin-left:35px;
+    padding-top: 20px;
+    border-top: 1px solid #565a4d;
 }
 
 .dv-vistas h5{
     color: #ffffff;
     font-family: Gotham-HTF-Book, 'system-ui';
+}
+
+
+.graph-distr-departamento{
+    padding-left: 25px;
+}
+
+.dv-distr-dpto{
+    border-right: 1px solid #565a4d;
+}
+
+.hr-servicios{
+     border-color: #565a4d;
+     margin: 30px 2px 50px 25px;
+
 }
