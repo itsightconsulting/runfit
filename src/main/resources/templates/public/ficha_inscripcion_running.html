@@ -219,6 +219,7 @@
                       <div class="form-group">
                         <label>¿Cuál es tu estado civil?<span class="obligatorio">*</span></label>
                         <select class="form-control hidden" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
+                          <option value="">Selecione</option>
                           <option value="1">Soltera(o)</option>
                           <option value="2">Comprometida(o)</option>
                           <option value="3">Casada(o)</option>
@@ -237,7 +238,7 @@
                           </li>
                           <li>
                             <div class="chk-content" id="sxMujer">Femenino
-                              <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="Sexo" data-aka="Sexo" value="2"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -270,7 +271,7 @@
                           </li>
                           <li>
                             <div class="chk-content" id="FlagPadeceDolorNo">No
-                              <input type="radio" name="FlagPadeceDolor" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagPadeceDolor"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -343,7 +344,7 @@
                           </li>
                           <li>
                             <div class="chk-content">No
-                              <input type="radio" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagEmbarazo"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -378,7 +379,7 @@
                           </li>
                           <li>
                             <div class="chk-content">No
-                              <input name="FlagHiperTensionArt" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagHiperTensionArt" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -393,7 +394,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input type="radio" name="FlagFumador" value="0" data-ele-hd="#divDesFumador" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagFumador" value="0" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -412,7 +413,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input type="radio" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hipertensión" value="0" data-ele-hd="#FamInfOrHiper" checked="checked"/><span class="checkmark"></span>
+                              <input type="radio" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hipertensión" value="0" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -438,7 +439,7 @@
                           </li>
                           <li>
                             <div class="chk-content">No
-                              <input name="FlagResInsulina" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagResInsulina" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -453,7 +454,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input name="FlagAntFamDiabetes" type="radio" value="0" data-ele-hd="#FamDiabetico" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagAntFamDiabetes" type="radio" value="0" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -477,7 +478,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -492,6 +493,7 @@
                       <div class="form-group">
                         <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
                         <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
+                          <option value="">Seleccione</option>
                           <option value="1">Buenos</option>
                           <option value="2">Regulares</option>
                           <option value="3">Malos</option>
@@ -500,6 +502,7 @@
                       <div class="form-group">
                         <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
                         <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control hidden">
+                          <option value="">Seleccione</option>
                           <option value="1">Bajo</option>
                           <option value="2">Medio</option>
                           <option value="3">Alto</option>
@@ -522,7 +525,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input name="FlagEnfermedad" type="radio" value="0" data-ele-hd="#DesEnfermedad" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagEnfermedad" type="radio" value="0" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -540,7 +543,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input name="FlagAleMed" type="radio" value="0" data-ele-hd="#DesAleMed" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagAleMed" type="radio" value="0" data-ele-hd="#DesAleMed"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -558,7 +561,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input name="FlagOperacion" type="radio" value="0" data-ele-hd="#DesOperacion" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagOperacion" type="radio" value="0" data-ele-hd="#DesOperacion"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -576,7 +579,7 @@
                           </li>
                           <li>
                             <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                              <input name="FlagHerDisOrCondCol" type="radio" value="0" data-ele-hd="#DesHerDisOrCondCol" checked="checked"/><span class="checkmark"></span>
+                              <input name="FlagHerDisOrCondCol" type="radio" value="0" data-ele-hd="#DesHerDisOrCondCol"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -604,7 +607,7 @@
                           </li>
                           <li class="col-md-6">
                             <div class="chk-content">N.A.
-                              <input name="DesPadVarios" value="4" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesPadVarios" value="4" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -652,6 +655,7 @@
                         <div class="form-group">
                           <label>¿Cuál es el nivel de atleta con el que te identificarías?<span class="obligatorio">*</span></label>
                           <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control hidden">
+                            <option value="">Seleccione</option>
                             <option value="1">Básico</option>
                             <option value="2">Intermedio</option>
                             <option value="3">Avanzado</option>
@@ -960,6 +964,7 @@
                       <div class="form-group">
                         <label>¿Cuántos días corres a la semana?<span class="obligatorio">*</span></label>
                         <select id="DiasSemanaCorriendo" name="DiasSemanaCorriendo" data-aka="Seleccionar días a la semana que corres" class="form-control hidden">
+                          <option value="">Seleccione</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -977,7 +982,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input id="FlagCalentamiento" name="FlagCalentamiento" data-aka="Especificar si realiza calentamientos" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input id="FlagCalentamiento" name="FlagCalentamiento" data-aka="Especificar si realiza calentamientos" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -994,7 +999,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Si
-                              <input id="FlagEstiramiento" name="FlagEstiramiento" data-aka="Especificar si realiza estiramientos" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input id="FlagEstiramiento" name="FlagEstiramiento" data-aka="Especificar si realiza estiramientos" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1011,7 +1016,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Punta
-                              <input name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" value="Punta" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" value="Punta" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1051,7 +1056,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Asfalto
-                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="Asfalto" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="Asfalto" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -1272,7 +1277,7 @@
                           <li>
                             <div class="item text"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                               <div class="chk-content">Ninguna de las anteriores
-                                <input name="ItemsFitness" type="checkbox" value="9" checked="checked"/><span class="checkmark"></span>
+                                <input name="ItemsFitness" type="checkbox" value="9"/><span class="checkmark"></span>
                               </div>
                             </div>
                           </li>
@@ -1304,7 +1309,7 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Por recomendación
-                              <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio" checked="checked"/><span class="checkmark"></span>
+                              <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
@@ -2044,7 +2049,9 @@
               rangelength: [5, 500],
             },
             FlagEmbarazo: {
-              required: true
+              required: function(){
+                return document.querySelector('input[name="Sexo"][value="2"]').checked;
+              }
             },
             FlagHiperTensionArt: {
               required: true
@@ -2131,6 +2138,9 @@
             HistorialDeportivoAct: {
               required: true,
               rangelength: [10, 500]
+            },
+            NivelAtleta:{
+              required: true
             },
             FrecuenciaCardiaca: {
               min: 40,

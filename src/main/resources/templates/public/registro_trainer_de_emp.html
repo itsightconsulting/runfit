@@ -103,7 +103,7 @@
                                                   <ul class="checks">
                                                       <li>
                                                           <div class="chk-content">Principiante
-                                                              <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                              <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
                                                           </div>
                                                       </li>
                                                       <li>
@@ -165,7 +165,7 @@
                                                           <li>
                                                               <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
                                                               <div class="chk-content chk-ficha">Standard
-                                                                  <input type="checkbox" checked="checked" value="2" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                                  <input type="checkbox" value="2" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
                                                               </div>
                                                           </li>
                                                       </div>
@@ -199,7 +199,8 @@
                                       </div>
                                       <div class="form-group">
                                           <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                          <select class="form-control hidden" id="TipoDocumento" name="TipoDocumento">
+                                          <select class="form-control hidden" data-aka="TIPO DE DOCUMENTO" id="TipoDocumento" name="TipoDocumento">
+                                              <option value="">Seleccione</option>
                                               <option value="1">DNI</option>
                                               <option value="2">CE</option>
                                           </select>
@@ -984,6 +985,9 @@
                         required: true,
                         digits: true,
                         rangelength: [7, 13]
+                    },
+                    TipoDocumento:{
+                        required: true
                     },
                     NumeroDocumento: {
                         required: true,

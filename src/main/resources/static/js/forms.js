@@ -748,10 +748,9 @@ function getUbigeoPeruLim(){
                 }
             }
         ).then(res=>{
-        document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-        document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-        document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-        $('#Dep').val(15);
+        document.getElementById('Dep').innerHTML = '<option>Seleccione</option>'+res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        document.getElementById('Pro').innerHTML = '<option>Seleccione Departamento</option>';
+        document.getElementById('Dis').innerHTML = '<option>Seleccione Provincia</option>';
         $('#Dep').multiselect('rebuild');
         $('#Dis').multiselect('rebuild');
         $('#Pro').multiselect('rebuild');

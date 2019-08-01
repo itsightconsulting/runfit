@@ -81,7 +81,7 @@
                                         <ul class="checks">
                                             <li>
                                                 <div class="chk-content">Principiante
-                                                    <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                    <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
@@ -183,7 +183,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                    <select class="form-control hidden" id="TipoDocumento" name="TipoDocumento">
+                                    <select class="form-control hidden" data-aka="TIPO DE DOCUMENTO" id="TipoDocumento" name="TipoDocumento">
+                                        <option value="">Seleccione</option>
                                         <option value="1">DNI</option>
                                         <option value="2">CE</option>
                                         <option value="3">RUC</option>
@@ -797,6 +798,9 @@
                     required: true,
                     digits: true,
                     rangelength: [7, 13]
+                },
+                TipoDocumento:{
+                    required: true
                 },
                 NumeroDocumento: {
                     required: true,
