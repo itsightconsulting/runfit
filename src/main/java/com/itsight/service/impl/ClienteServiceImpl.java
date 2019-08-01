@@ -251,6 +251,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         BeanUtils.copyProperties(cliente, objCli);
 
         ClienteFitness objCliFit = new ClienteFitness();
+        objCliFit.setTipoCanalVenta((new TipoCanalVenta(cliente.getCliFit().getTipoCanalVentaId())));
         BeanUtils.copyProperties(cliente.getCliFit(), objCliFit);
         objCliFit.setCliente(objCli);
 

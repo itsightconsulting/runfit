@@ -170,6 +170,7 @@ public class Enums {
         RESOURCE_NOT_FOUND("Página no encontrada </br>Error 404"),
         CUENTA_YA_VERIFICADA("La cuenta ya ha sido verificada con anterioridad"),
         CUENTA_VERIFICADA("Su cuenta ha sido verificada satisfactoriamente, pronto recibirá un correo nuestro con el resultado de su postulación. Gracias por su tiempo."),
+        CUENTA_VISITANTE_VERIFICADA("Su cuenta ha sido verificada satisfactoriamente. Bienvenido a la familia RunFit , ya puede acceder a la plataforma. Gracias"),
         POSTULANTE_ACEPTADO_ANT("El postulante ha sido aceptado anteriormente"),
         POSTULANTE_RECHAZADO_ANT("El postulante ha sido rechazado anteriormente"),
         ELECCION_INVALIDA("Ha elegido una opción no válida inválida"),

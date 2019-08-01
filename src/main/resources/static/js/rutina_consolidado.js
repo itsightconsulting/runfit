@@ -1,21 +1,17 @@
 
-
 const bgBarMainGraph = ["#ed8989c7","#4fd46bc4","#87ceebbd","#519da4a6"];
 const bgMantaIntensidad = ["gold", "gray", "skyblue", "gray"];
+let $chartTemporada = {};
+let $chartMiniPorc ={};
 
 $(function() {
     init();
-
 })
-
 
 function init(){
 
-   // $('#modalGuardarMini').modal('show');
-
     const favRutinaId = Number(getCookie("GLL_FAV_RUTINA"));
-
-    obtenerRutinaConsolidado(favRutinaId);
+   obtenerRutinaConsolidado(favRutinaId);
 }
 
 
@@ -571,7 +567,6 @@ function graficoTemporada(data){
         }
     };
 }
-
 function graficoDistribucionEtapa(etapasPorc){
 
       //  MCGrafico.cesDemoCircularGraphs();
@@ -582,33 +577,6 @@ function graficoDistribucionEtapa(etapasPorc){
         if($chartMiniPorc.ctx != undefined){
             $chartMiniPorc.destroy();
         }
-
-        /*$chartTemporada = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: data.map((v, i)=>i+1),
-                datasets: [{
-                    label: 'Kilometraje',
-                    data: data.map(({kms})=>kms),
-                    borderColor: "grey",
-                    hoverBackgroundColor: 'rgba(57, 255, 163, 0.7)',
-                    yAxisID: 'y-axis-1',
-                    backgroundColor: data.map(({color})=>color)
-                    ,
-                }, {
-                    label: 'Intensidad',
-                    data: data.map(({perc})=>perc),
-                    yAxisID: 'y-axis-2',
-                    // Changes this dataset to become a line
-                    type: 'line',
-                    borderColor: '#a8fa00',
-                    backgroundColor: gradientFill,
-                    pointBorderColor: '#a8fa00',
-                    pointBackgroundColor: '#a8fa00',
-                    pointHoverBackgroundColor: 'a8fa00',
-                    pointHoverBorderColor: '#a8fa00',
-                    borderWidth: 1,
-                    fill: true*/
 
 
     $chartMiniPorc = new Chart(ctx, {

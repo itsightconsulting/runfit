@@ -169,14 +169,14 @@ function goRegister(){
     $(".login-register").fadeIn();
     $(".login-register").removeClass('hidden');
     $(".login.active .help-block").remove();
-
-
+    $('#login-form')[0].reset();
 }
 
 function goLogin() {
     $(".login-register").fadeOut();
     $(".login-sesion").fadeIn();
     $(".login.active .help-block").remove();
+    $('#register-form')[0].reset();
 }
 
 function customErrorHandler(xhr, input){
@@ -341,6 +341,7 @@ function inicializarLoginForm(){
 
     $('.login').addClass('active');
     $('html, body').css('overflowY', 'hidden');
+
     goLogin();
 
 }

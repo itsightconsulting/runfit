@@ -21,7 +21,6 @@ function cargarDataCliente(){
 
   if(!$('#pruebaData').val()){
 
-         console.log("a");
           $.ajax({
               type: "GET",
               url: _ctx + 'gestion/cliente-fitness/obtener/completo',

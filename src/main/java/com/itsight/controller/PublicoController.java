@@ -348,7 +348,7 @@ public class PublicoController extends BaseController {
         }
 
         securityUserService.updateFlagEnabled(securityUser.getId(), securityUser.isEnabled());
-        model.addAttribute("msg", Msg.CUENTA_VERIFICADA.get());
+        model.addAttribute("msg", Msg.CUENTA_VISITANTE_VERIFICADA.get());
         return new ModelAndView(ViewConstant.MAIN_INF_P);
     }
 

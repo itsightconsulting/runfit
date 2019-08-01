@@ -63,7 +63,7 @@
 
 .login.active {
   left: 0;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .login .login-bg {

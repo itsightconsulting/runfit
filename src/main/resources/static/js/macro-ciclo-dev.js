@@ -831,12 +831,13 @@ MacroValidacion = (function(){
                         isSpecificDay : 0
                     },
                     DistanciaControl: {
-                        required: true
+                        required: true,
+
                     },
                     TiempoControl: {
                         required: true,
                         greaterThanSeconds: function(){
-                            return $('#DistanciaCompetencia').val() == "2" ? "00:05:00" : $('#DistanciaCompetencia').val() == "4" ? "00:10:00" : $('#DistanciaCompetencia').val() == "10" ? "00:25:00" : $('#DistanciaCompetencia').val() == "21" ? "01:04:00" : "02:05:00";
+                            return $('#DistanciaControl').val() == "2" ? "00:05:00" : $('#DistanciaControl').val() == "4" ? "00:10:00" : $('#DistanciaControl').val() == "10" ? "00:25:00" : $('#DistanciaControl').val() == "21" ? "01:04:00" : "02:05:00";
                         }
                     },
                     CadenciaControl: {
@@ -986,8 +987,7 @@ MacroValidacion = (function(){
                         required: "El campo es obligatorio",
                     },
                     TiempoCompetencia: {
-                        required: "El campo es obligatorio",
-                        greaterThanSeconds : ">{0}"
+                        required: "El campo es obligatorio"
                     },
                     CadenciaCompetencia: {
                         required: "El campo es obligatorio",

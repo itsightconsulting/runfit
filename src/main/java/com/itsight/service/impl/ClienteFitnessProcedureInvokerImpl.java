@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -26,6 +27,13 @@ public class ClienteFitnessProcedureInvokerImpl implements ClienteFitnessProcedu
         storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
         storedProcedureQuery.setParameter(0, id);
         return (ClienteFitnessPOJO) storedProcedureQuery.getSingleResult();
+    }
+
+
+    @Override
+    public List<ClienteFitnessPOJO> getDistribucionMercadoData() {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distribucion_estadistica_cliente", "resultMappingClienteFitnessDistribucion");
+        return  storedProcedureQuery.getResultList();
     }
 
 

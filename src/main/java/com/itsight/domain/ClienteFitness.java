@@ -25,6 +25,7 @@ import java.util.List;
     }),
     @NamedEntityGraph(name = "clienteFitness")
 })
+
 @TypeDefs({
     @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
@@ -59,7 +60,7 @@ import java.util.List;
                                         @ColumnResult(name = "talla"),
                                         @ColumnResult(name = "tiempoDistancia"),
                                         @ColumnResult(name = "tiempoUnKilometro"),
-                                        @ColumnResult(name = "viaConexion"),
+                                        @ColumnResult(name = "tipoCanalVentaId"),
                                         @ColumnResult(name = "fechaCreacion"),
                                         @ColumnResult(name = "fechaModificacion"),
                                         @ColumnResult(name = "flagActivo"),
@@ -75,8 +76,29 @@ import java.util.List;
                                         @ColumnResult(name = "ubigeo")
                                 }
                         )
+                }),
+
+        @SqlResultSetMapping(name = "resultMappingClienteFitnessDistribucion",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ClienteFitnessPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "id"),
+                                        @ColumnResult(name = "tipoCanalVentaId"),
+                                        @ColumnResult(name = "condicionAnatomica"),
+                                        @ColumnResult(name = "fechaNacimiento"),
+                                        @ColumnResult(name = "ubigeo"),
+                                        @ColumnResult(name = "sexo"),
+                                        @ColumnResult(name = "fechaCreacion"),
+                                        @ColumnResult(name = "predeterminadaFichaId")
+                                        /*,
+
+                                        @ColumnResult(name = "predeterminadaFichaId")*/
+                                }
+                        )
                 })
 })
+
 
 @Entity
 @Data
@@ -151,14 +173,17 @@ public class ClienteFitness implements Serializable {
     @Column(nullable = false)
     private Integer frecuenciaComunicacion;
     @Column(nullable = false)
-    private Integer viaConexion;
-    @Column(nullable = false)
     private String tiempoDistancia;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", updatable = false)
     private Cliente cliente;
+
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TipoCanalVentaId")
+    private TipoCanalVenta TipoCanalVenta;
 
     public ClienteFitness(){}
 
@@ -169,5 +194,7 @@ public class ClienteFitness implements Serializable {
     public void setCliente(Integer cliId){
         this.cliente = new Cliente(cliId);
     }
+
+
 
 }

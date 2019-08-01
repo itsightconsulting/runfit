@@ -1309,37 +1309,41 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Por recomendación
+<<<<<<< HEAD
                               <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
+=======
+                              <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio" checked="checked" value="1"/><span class="checkmark"></span>
+>>>>>>> 9e712c9ace8efeea7afb85ae62f320ce86c9109f
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Vía correo
-                              <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                              <input name="ViaConexion" type="radio" value="2"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Google
-                              <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                              <input name="ViaConexion" type="radio" value="3"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Facebook
-                              <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                              <input name="ViaConexion" type="radio" value="4"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Twitter
-                              <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                              <input name="ViaConexion" type="radio" value="5" /><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Instagram
-                              <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                              <input name="ViaConexion" type="radio" value="6"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Otro
-                              <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                              <input name="ViaConexion" type="radio" value="7"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <input id="TrainerId" type="hidden" th:value="${trainerId}">
@@ -1787,7 +1791,7 @@
         obj.cliFit.desTerPredomOtro =  document.getElementById('DesTerPredomOtro').value;
         obj.cliFit.mejoras = getValuesCondicionMejora();
         obj.cliFit.frecuenciaComunicacion = 1;
-        obj.cliFit.viaConexion =  1;/*document.querySelector('input[name="ViaConexion"]:checked').parentElement.textContent.trim()*/
+        obj.cliFit.tipoCanalVentaId =  document.querySelector('input[name="ViaConexion"]:checked').value;
         obj.cliFit.tiempoDistancia = getTiemposDistancias();
         obj.cliFit.fichaId =  1;//Runner = 1
 
