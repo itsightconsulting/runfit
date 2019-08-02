@@ -53,7 +53,7 @@ public class RutinaHshController {
 
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")
-    @GetMapping(value = "/edicion")
+    @RequestMapping(value = "/edicion")
     public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) throws JsonProcessingException {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
@@ -78,7 +78,39 @@ public class RutinaHshController {
         return new ModelAndView(ViewConstant.ERROR404);
     }
 
-    @GetMapping(value = "/pre")
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @RequestMapping(value = "/edicion-historial")
+    public ModelAndView edicionRutinaHistorial( @RequestParam(name = "si") String semIndex, @RequestParam(name = "ri") String rutIndex,@RequestParam(name = "rn") String runnerId ,  Model model, HttpSession session) throws JsonProcessingException {
+        int redFitId =  (Integer) session.getAttribute("historialRedFitId");
+        int runneId =  (Integer) session.getAttribute("historialRunnerId");
+        int semanaIdx = (Integer.parseInt(Parseador.getDecodeBase64(semIndex))) -1;
+        int rutinaIdx = ((Integer) Parseador.getDecodeHash16Id("rf-rutina", rutIndex)) ;
+        if(redFitId > 0 && runneId > 0) {
+            Integer trainerId = (Integer) session.getAttribute("id");
+            Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+            if (trainerId.equals(qTrainerId)) {
+                //Se obtiene la última rutina del cliente
+                Rutina rutina = rutinaService.findByIndexRedFitness(redFitId,rutinaIdx);
+                if (rutina.getId() != null) {
+                    //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
+                    session.setAttribute("edicionRutinaId", rutina.getId());
+                    session.setAttribute("edicionUsuarioId", runneId);
+                    session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[semanaIdx]);
+                    session.setAttribute("semanaIds", rutina.getSemanaIds());
+                    model.addAttribute("rutina", new ObjectMapper().writeValueAsString(new RutinaPOJO(rutina)));
+                    model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
+                    return new ModelAndView(ViewConstant.MAIN_RUTINA_CLIENTE_EDICION);
+                }
+            }
+        }
+        return new ModelAndView(ViewConstant.ERROR404);
+    }
+
+
+
+
+    @RequestMapping(value = "/pre")
     public ModelAndView preAsignarRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, HttpSession session){
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);

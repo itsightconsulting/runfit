@@ -27,6 +27,8 @@ class Rutina {
     }
 
     initEspecificoDesdeRutina(num){
+
+        console.log("xs",num);
         this.mostrarSemana(this.semanas[num], num);
         this.completarFechasSemanas(true, num);
     }
@@ -811,9 +813,12 @@ RutinaGet = (function(){
             return semanas;
         },
         getKilometrajes: ()=>{
+            debugger
             const k = {};
             let kcalTotal = 0, kmPlanificado = 0;
             const sIx = Number($semActual.textContent)-1;
+
+
             $rutina.semanas[sIx].dias.forEach(v=>{
                 kcalTotal+=v.calorias;
             });

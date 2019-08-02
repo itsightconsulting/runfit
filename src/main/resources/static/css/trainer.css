@@ -926,7 +926,7 @@ section#suspendidos .panel .panel-heading a[aria-expanded="true"] .svg.arrow {
     -o-transform: rotate(-180deg); }
 section#suspendidos .panel .list-group {
     border: none; }
-section#suspendidos .panel .list-group li {
+section#suspendidos .panel .list-group li , section#historial .panel .list-group li  {
     background-color: transparent;
     border-color: #3d3f41;
     text-align: center; }
@@ -955,16 +955,19 @@ section#suspendidos .panel .list-group li .mes:after {
     margin: auto; }
 
 section#suspendidos .panel .list-group li .mes.seleccionado{
-    border-color: #a8fa00;
-}
-section#suspendidos .panel .list-group li .mes.seleccionado{
     border-color: #a8fa00!important;
 }
-section#suspendidos .panel .list-group li .mes.seleccionado:hover:after{
+section#suspendidos .panel .list-group li .mes.seleccionado:hover:after,
+section#historial .panel .list-group li .semana:hover:after{
     border-color: #a8fa00!important;
 }
 
-section#suspendidos .panel .list-group li .mes.seleccionado:after {
+section#historial .panel .list-group li .semana:hover{
+    border-color: #a8fa00!important;
+}
+
+section#suspendidos .panel .list-group li .mes.seleccionado:after ,
+section#historial .panel .list-group li .semana:after  {
     content: " ";
     width: 8px;
     height: 8px;
@@ -1002,8 +1005,6 @@ section#suspendidos .colorSuspendido :after {
     left: 0;
     right: 0;
     margin: auto; }
-
-
 
 section#suspendidos .owl-nav {
     top: -112px; }
@@ -1151,4 +1152,140 @@ textarea.form-control ~ em {
 
 .chat-lf, .chat-rg{
     margin-bottom: 7px;
+}
+
+
+section#historial .panel .list-group li .semana {
+    padding: 24px 10px 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    position: relative;
+    transition: .3s; }
+section#historial .panel .list-group li .semana:hover {
+    border-color: #CF3239; }
+section#historial .panel .list-group li .semana:hover:after {
+    display: block; }
+section#historial .panel .list-group li .semana:after {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    background-color: #CF3239;
+    border-radius: 50%;
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    margin: auto; }
+
+section#historial .panel .panel-heading h3 .svg.arrow {
+    float: right;
+    position: relative;
+    top: 4px;
+    margin-right: 0;
+    transform: rotate(0deg);
+    transition: all .5s;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s; }
+
+
+
+section#historial .input-group input {
+    background: url("../img/calendar.png") no-repeat 4% #fff !important;
+    width: 305px; }
+
+section#historial .panel {
+    background-color: transparent;
+    border-color: #3d3f41; }
+section#historial .panel h4 {
+    text-align: center;
+    font-size: 20px; }
+section#historial .panel .panel-heading {
+    background-color: transparent;
+    color: inherit;
+    border-top: 1px solid #3d3f41;
+    border-bottom: 1px solid #3d3f41;
+    padding: 20px 25px; }
+section#historial .panel .panel-heading h3 {
+    font-size: 30px;
+    color: #fff; }
+section#historial .panel .panel-heading h3 .svg {
+    width: 26px;
+    height: 26px;
+    fill: #9d9d9d;
+    margin-right: 15px;
+    position: relative;
+    top: 2px; }
+section#historial .panel .panel-heading h3 .svg .st4 {
+    stroke: #9d9d9d; }
+section#historial .panel .panel-heading h3 .svg.arrow {
+    float: right;
+    position: relative;
+    top: 4px;
+    margin-right: 0;
+    transform: rotate(0deg);
+    transition: all .5s;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s; }
+section#historial .panel .panel-heading a[aria-expanded="true"] .svg.arrow {
+    fill: #a8fa00;
+    transform: rotate(-180deg);
+    transition: all .5s;
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg); }
+section#historial .panel .list-group {
+    border: none; }
+
+section#historial .semana-no-data{
+    pointer-events: none;
+    border-radius: 10px;
+    background-color: #dcd7d726;
+    border: none !important;
+}
+
+
+section#historial .col-md-1{
+    margin-bottom: 5px;
+}
+section#historial .title-page {
+    text-align: center;
+    color:#ffffff;
+    font-family: GothamHTF-Bold;
+}
+
+section#historial p,strong{
+    font-size:17px;
+    color:#ffffff;
+}
+section#historial p{
+    font-family: GothamHTF-Book;
+}
+
+section#historial strong{
+    font-family: GothamHTF-Bold;
+}
+
+section#historial .periodo-rutina{
+    display: inline;
+    position: relative;
+    top: -6px;
+}
+
+section#historial .datos-cliente{
+   margin:40px 0;
 }

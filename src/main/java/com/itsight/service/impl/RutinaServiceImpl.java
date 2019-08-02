@@ -153,6 +153,27 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
     }
 
     @Override
+    public Rutina findByRedFitnessOrderByIdDesc(Integer redFitId) {
+        List<Rutina> lstRutina = repository.findFirstByRedFitnessIdOrderByIdDesc(redFitId,PageRequest.of(0,1));
+        return lstRutina.get(0);
+    }
+
+    @Override
+    public Rutina findByIndexRedFitness(Integer redFitId, Integer page) {
+        List<Rutina> lstRutina = repository.findFirstByRedFitnessIdOrderByIdDesc(redFitId,PageRequest.of( page,1));
+        return lstRutina.get(0);
+    }
+
+    @Override
+    public List<Rutina> findAllByRedFitnessOrderByIdDesc(Integer redFitId) {
+        List<Rutina> lstRutina = repository.findAllByRedFitnessIdOrderByIdDesc(redFitId);
+
+        return lstRutina;
+    }
+
+
+
+    @Override
     public Rutina findOneWithOneWeekById(Integer id) {
         return repository.findOneWithOneWeekById(id);
     }
@@ -167,7 +188,6 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         repository.updateTotalSemanas(id, totalSemanas);
     }
 
-    @Override
     public Integer obtenerRedFitnessIdById(Integer id) {
         return repository.findRedFitnessIdById(id);
     }

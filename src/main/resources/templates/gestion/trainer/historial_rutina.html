@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+
+    <style>
+        .help-block {
+            display: block !important;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #de4747;
+            width: 420px;
+            font-size: 1.1em;
+        }
+
+        .fa-2x {
+            font-size: 1.5em;
+        }
+
+    </style>
+</head>
+<style>
+
+
+</style>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+<div id="main-content">
+    <div id="wrapper">
+        <header>
+            <ul class="nav nav-pills">
+                <li class="active col-md-2"><a href="#">listado</a></li>
+                <li class="col-md-2"><a href="#">g. videos</a></li>
+                <li class="col-md-3"><a href="#">rutinario</a></li>
+                <li class="col-md-2"><a href="#">g. audios</a></li>
+                <li class="col-md-3"><a href="#">planes prediseñados</a></li>
+
+            </ul>
+
+
+        </header>
+        <section id="historial">
+            <div class="container">
+
+
+               <input type="text"  th:value="${rutinas}" class="hidden" id="pruebaData"></input>
+               <input type="text"  th:value="${nombreCliente}" class="hidden" id="pruebaData2"></input>
+
+             <div class="title-page  text-center">
+                    <h1>HISTORIAL DE TEMPORADAS</h1>
+
+             </div>
+
+             <div class="datos-cliente">
+
+                 <p class="nombre-cliente">  </p>
+
+                 <p class="fecha-nacimiento">  </p>
+
+             </div>
+
+                <div class="row-rutina" th:each="rutina, iter: ${rutinas}">
+                  <div class="panel-group">
+                     <div class="panel panel-default rutina" th:id="'dvRutinas' + ${iter.index}" th:attr="data-value=${rutina.totalSemanas}">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title" ><img class="svg" th:src="@{/img/iconos-trainers/icon_calendar2.svg}">  [[${rutina.nombre}]]  <p class="periodo-rutina">( De [[${rutina.fechaInicio}]]  a  [[${rutina.fechaFin}]]    ) </p>  <a data-toggle="collapse" th:href="@{'#collapse'+${iter.index}}"><img class="arrow svg" th:src="@{/img/iconos-trainers/icon_flecha2.svg}" onload="svgFillEvent()"/></a></h3>
+                    </div>
+
+                    <div class="panel-collapse collapse" th:id="'collapse' + ${iter.index}">
+                        <ul class="list-group">
+
+
+
+                        </ul>
+
+                    </div>
+
+
+
+                </div>
+               </div>
+
+            </div>
+        </section>
+
+    </div>
+</div>
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
+
+<script>
+    const btnBuscarPeriodo = document.getElementById('btnBuscarPeriodo');
+    const dvItems = document.getElementById('dvItemsSuspendidos');
+    const dvCalendario = document.getElementById('dvCalendario');
+    const dvClientes = document.getElementById('dvClientes');
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth()+1;
+    let currentSelectedYear = currentYear;
+    let currentSelectedMonth = currentMonth;
+    let currentPeriodoSeleccionado;
+    let defaultFilter;
+    let primerAñoTrainer;
+    let flagPresenteAñoSuspendido = false;
+
+    $(function() {
+        init();
+        semanaClickEventListener();
+
+    })
+
+    function init(){
+        setSemanas();
+        setDatosCliente();
+    }
+
+
+    function setDatosCliente() {
+
+         $('.nombre-cliente').html( '<strong> Cliente : </strong>' + atob(getParamFromURL("nm")));
+
+        $('.fecha-nacimiento').html( '<strong> Fecha de nacimiento : </strong>' + atob(getParamFromURL("fn")));
+
+
+    }
+
+
+    function setSemanas(){
+
+        let liItem;
+        let ulSemanas;
+
+        $('.rutina').each( function(index,element){
+            ulSemanas = $('.list-group')[index];
+            ulSemanas.append(htmlStringToElement(`     <li class="list-group-item">
+                               <div class="row row-año">  </div></li>`));
+            liItem  = $('.list-group-item .row-año')[index];
+            let numSemana = $(this)[0].dataset.value;
+             for( let i = 0 ; i< 48 ; i++){
+                if( i + 1 >= Number(numSemana)){
+                    liItem.append(htmlStringToElement(`
+                         <div class="col-xs-3 col-md-1">
+                           <div class="semana semana-no-data" id='s${index}_${(i+1)}' > S${(i+1)}</div>
+                         </div>`));
+                }else{
+                    liItem.append(htmlStringToElement(`
+                         <div class="col-xs-3 col-md-1">
+                           <div class="semana"  id='s${index}_${(i+1)}' > S${(i+1)}</div>
+                         </div>`));
+                }
+             }
+        })
+    }
+
+    function svgFillEvent(){
+
+        $('img[src$=".svg"]').each(function() {
+            let $img = $(this);
+            let imgURL = $img.attr('src');
+            let attributes = $img.prop("attributes");
+
+
+            $.get(imgURL, function(data) {
+                // Get the SVG tag, ignore the rest
+                let $svg = jQuery(data).find('svg');
+
+                // Remove any invalid XML tags
+                $svg = $svg.removeAttr('xmlns:a');
+
+                // Loop through IMG attributes and apply on SVG
+                $.each(attributes, function() {
+                    $svg.attr(this.name, this.value);
+                });
+
+                // Replace IMG with SVG
+                $img.replaceWith($svg);
+            }, 'xml');
+        });
+    }
+
+function semanaClickEventListener() {
+
+    $(".semana").click(function (e) {
+         let target = e.target.id;
+        target = target.slice(1);
+        let rutinaValues = target.split("_");
+
+        verPrograma( parseInt(rutinaValues[0]), parseInt(rutinaValues[1]));
+    });
+}
+
+    function verPrograma( rutinaIndex, semanaIndex){
+
+        window.location.href = _ctx+'rutina/edicion-historial?si='+ btoa(semanaIndex) + '&ri='+ getHash16Id('rf-rutina', rutinaIndex) + '&rn=' + getParamFromURL("rn") +  '&nm=' + getParamFromURL("nm") + '&fn=' + getParamFromURL("fn");
+    }
+
+
+</script>
+
+</body>
+</html>

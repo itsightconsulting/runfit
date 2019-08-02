@@ -43,6 +43,8 @@ public class RutinaDTO implements Serializable {
     private List<RuDataGrafico> dtGrafico;
     private List<SemanaPlantillaDTO> semanas;
     private RutinaControl control;
+    private String nombre;
+
 
     public RutinaDTO(){}
 

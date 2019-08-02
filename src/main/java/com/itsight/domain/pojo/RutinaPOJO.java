@@ -26,6 +26,9 @@ public class RutinaPOJO implements Serializable {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaFin;
     private RutinaControl control;
+    public String nombre;
+    public String prueba;
+
 
     public RutinaPOJO(){}
 
@@ -39,5 +42,6 @@ public class RutinaPOJO implements Serializable {
         this.fechaInicio = rutina.getFechaInicio();
         this.fechaFin = rutina.getFechaFin();
         this.control = rutina.getControl();
+        this.nombre = rutina.getNombre();
     }
 }

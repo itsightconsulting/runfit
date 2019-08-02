@@ -12,6 +12,12 @@ public interface RutinaService extends BaseService<Rutina, Integer> {
 
     Rutina findLastByRedFitnessId(Integer redFitId);
 
+    Rutina findByRedFitnessOrderByIdDesc(Integer redFitId);
+
+    Rutina findByIndexRedFitness(Integer redFitId, Integer page);
+
+    List<Rutina> findAllByRedFitnessOrderByIdDesc(Integer redFitId);
+
     Rutina findOneWithOneWeekById(Integer id);
 
     void updateSemanaIds(Integer id, int[] semanaIds);

@@ -761,9 +761,16 @@
         }
         return opciones;
     }
-    function fttMeses(v, row, ix){
-        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_archivo.svg"/>`;
+    function fttMeses(v, row, ix) {
+
+        if (row.contadorRutinas == 0) {
+            return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_archivo.svg"/>`;
+        } else {
+            return `<img class="svg" data-redfit-id="${row.id}"  onClick="javascript:verHistorialRutina('${row.id}','${row.cliId}','${btoa(row.cliNombreCompleto)}','${btoa(row.cliFechaNacimiento)}')" src="${_ctx}img/iconos/icon_archivo.svg"/>`;
+        }
     }
+
+
     function fttTemporada(v, row, ix){
         return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_disquete.svg"/>`;
     }
@@ -950,8 +957,17 @@
     }
 
     function verUltimoPrograma(redFitnessId, clienteId, fechaNac, cliFullNombre){
-        const datosAsURI = '&fn=' + fechaNac + '&nm=' + cliFullNombre;
+
+       const datosAsURI = '&fn=' + fechaNac + '&nm=' + cliFullNombre;
        window.location.href = _ctx+'rutina/edicion?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', clienteId)+datosAsURI;
+    }
+
+
+    function verHistorialRutina(redFitnessId, clienteId, nombreCompleto,fechaNacimiento){
+
+
+      console.log("sdd",atob(fechaNacimiento));
+       window.location.href = _ctx+'gestion/trainer/red/historial_rutina?key='+ getHash32Id('rf-rutina', redFitnessId) + '&rn='+ getHash16Id('rf-rutina', clienteId) +'&nm=' + nombreCompleto + '&fn='+fechaNacimiento;
     }
 
     function estadoPlan(value, row){
@@ -999,6 +1015,7 @@
     }
 
     function asignarPlantilla(redId, clienteId, correo , index){
+
         let plantillas = document.querySelector('#Plantillas');
         document.querySelector('#spRaw3').innerHTML = spinnerHTMLRawCsMessage('Cargando...');
         let params = {};

@@ -72,6 +72,7 @@ public class RutinaController {
         return new ModelAndView(ViewConstant.MAIN_TRAINER_RUTINA_PLANTILLA);
     }
 
+
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
     List<Rutina> listarConFiltro(

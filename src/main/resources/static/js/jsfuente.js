@@ -666,6 +666,11 @@ function getHash16Id(schema, id){
     return new Hashids(schema, 16).encode(id)
 }
 
+
+function decodeHash16Id(schema, id){
+    return new Hashids(schema, 16).decode(id)
+}
+
 function getParamFromURL(param){
     return new URLSearchParams(window.location.search).get(param);
 }

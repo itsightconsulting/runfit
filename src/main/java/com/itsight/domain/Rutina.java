@@ -89,6 +89,9 @@ public class Rutina extends AuditingEntity {
     @Column(nullable = false)
     private int dias;
 
+    @Column(nullable = false)
+    private String nombre;
+
     //ManytoOne
     //Generatedvalue +
     // id y nombre

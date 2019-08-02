@@ -81,16 +81,27 @@ $(function () {
 
 function init(){
 
+    let uriParam = getParamFromURL("si");
+
+
+
     obtenerSemanaInicialRutina().then((semana)=>{
         //Esconder la opcion de collapse del menú principal
         document.querySelector('#left-panel .minifyme').classList.toggle('hidden');
         //Importante mantener el orden para el correcto funcionamiento
-        $rutina = new Rutina(rutinaStringify);
-        $rutina.init(semana);
 
+        $rutina = new Rutina(rutinaStringify);
+
+        let semanaIdx = atob(uriParam);
+        if(uriParam){
+            $('#SemanaActual').text(Number(semanaIdx)+1);
+            $rutina.initEspecifico(semana,semanaIdx)
+          //console.log(semanaIdx);
+        }else{
+            $rutina.init(semana);
+        }
         validators();
         instanciarDatosFitnessCliente();
-
         tabRutina.addEventListener('click', principalesEventosTabRutina);
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
@@ -127,10 +138,16 @@ function init(){
         //obtenerSemanasEnviadas();
         calendarioTmp();
 
+
     });
+
+
 }
 
 function avanzarRetrocederSemana(numSem, action, parentDiv){
+
+
+         console.log("ooh");
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
         if(semana != undefined) {
             $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
@@ -140,7 +157,7 @@ function avanzarRetrocederSemana(numSem, action, parentDiv){
             instanciarTooltips();
             generarDiasEnviados();
             parentDiv.removeAttribute('hidden');
-            console.log(action);
+            console.log("ss",action);
         }
     });
 }
@@ -162,6 +179,7 @@ async function obtenerSemanaInicialRutina(){
                     } else {
                         //Semana
                         resolve(data);
+                        console.log(data);
                     }
                 }
             },
