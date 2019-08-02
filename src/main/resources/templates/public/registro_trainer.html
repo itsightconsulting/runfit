@@ -33,7 +33,7 @@
             <div class="container">
                 <div class="col-md-5">
                     <div class="avatar-form">
-                        <input type="file" id="InpImgPerfil" name="InpImgPerfil">
+                        <input type="file" id="InpImgPerfil" name="InpImgPerfil" accept=".jpg,.png,.jpeg,.bmp">
                         <div class="avatar-form-content img-container">
                             <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                         </div>
@@ -121,7 +121,7 @@
                                         <ul class="checks">
                                             <li>
                                                 <div class="chk-content">Principiante
-                                                    <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                    <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
                                                 </div>
                                             </li>
                                             <li>
@@ -183,7 +183,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>GALERÍA DE FOTOS</label><br>
-                                        <input type="file" multiple="multiple" class="hidden" name="InpGaleria" id="InpGaleria">
+                                        <input type="file" multiple="multiple" class="hidden" name="InpGaleria" id="InpGaleria" accept=".jpg,.png,.jpeg,.bmp">
                                         <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...</label>
                                     </div>
                                     <div class="row" style="padding-bottom: 20px">
@@ -227,7 +227,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                    <select class="form-control hidden" id="TipoDocumento" name="TipoDocumento">
+                                    <select class="form-control hidden" data-aka="TIPO DE DOCUMENTO" id="TipoDocumento" name="TipoDocumento">
+                                        <option value="">Seleccione</option>
                                         <option value="1">DNI</option>
                                         <option value="2">CE</option>
                                     </select>
@@ -281,7 +282,7 @@
                                     <label for="Password">CONTRASEÑA<span class="obligatorio">*</span></label>
                                     <input class="form-control" type="password" id="Password" name="Password">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group hidden">
                                     <label for="Username">DIRECCIÓN WEB<span class="obligatorio">*</span>
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                     </label>
@@ -542,7 +543,7 @@
                                                     <li>
                                                         <img class="img-ficha" th:src="@{/img/form_runner.png}+'?'+${version}" alt="">
                                                         <div class="chk-content chk-ficha">Running
-                                                            <input type="checkbox" checked="checked" value="1" name="FichaTrabajo" aria-invalid="false"><span class="checkmark"></span>
+                                                            <input type="checkbox" value="1" name="FichaTrabajo" aria-invalid="false"><span class="checkmark"></span>
                                                         </div>
                                                     </li>
                                                 </div>
@@ -601,7 +602,7 @@
             if(!exists){
                 termConSvc.push({servicioId: v.id});
             }
-        })
+        });
 
         const tycFiles = termConSvc.filter(t=>typeof t.file !== 'undefined');
         if(tycFiles.length>0){
@@ -627,6 +628,7 @@
 
         $("#frm_registro :input").prop("disabled", true);
         $(".chk-content").off('click');//Desactivando los event handlers de los checkbox y radio buttons
+
         document.querySelector('.ver-tyc').onclick = null;//Desactivamos en openModalTYC
         $.ajax({
             type: 'POST',
@@ -670,6 +672,8 @@
 
         document.querySelector('input[name="FormaTrabajo"]').checked = true;
         document.querySelector('#Disciplinas').value = "Running";
+        document.querySelector('input[name="NivelClientes"]').checked = true;
+        $('#Idiomas').multiselect('refresh');
 
         //Estudios
         const inpEst = document.querySelector('.inp-estudio');
@@ -704,9 +708,14 @@
         inpEspDom.value = "Entrenamiento en grupo";
 
         document.querySelector('#Telefono').value = `017776666`;
+        document.querySelector('#TipoDocumento').value = 1;
+        $('#TipoDocumento').multiselect('refresh');
         document.querySelector('#NumeroDocumento').value = `23232323`;
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
         document.querySelector('input[name="FormaTrabajo"]').checked = true;
+        //POPULATE UBIGEO LIMA - LIMA - LIMA
+        populateUbigeo();
+
 
         //Servicios
         document.querySelector('#NombreServicio').value = "Performance PRO";
@@ -751,6 +760,7 @@
         }, 1000);*/
 
         document.querySelector('#inpTermCond').checked = true;
+        document.querySelectorAll('input[name="FichaTrabajo"]')[1].checked = true;
     }
 
     function generateBody(){
@@ -921,6 +931,9 @@
                     digits: true,
                     rangelength: [7, 13]
                 },
+                TipoDocumento:{
+                    required: true
+                },
                 NumeroDocumento: {
                     required: true,
                     digits: true,
@@ -929,6 +942,15 @@
                         return val;
                     },
                     rangelength: [8, 12]
+                },
+                Dep:{
+                    required: true
+                },
+                Pro:{
+                    required: true
+                },
+                Dis:{
+                    required: true
                 },
                 Username:{
                     required: true,
@@ -1010,11 +1032,11 @@
                     pattern: "[0-9]{3,}[0-9 -]*$",
                     rangelength: [10, 30]
                 },
-                NomPag: {
+                /*NomPag: {
                     required: true,
                     pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
                     rangelength: [4, 40]
-                },
+                },*/
                 InpImgPerfil: {
                     extension: "jpg|jpeg|png|bmp",
                     minHeight: 220

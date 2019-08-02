@@ -145,6 +145,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private TipoTrainerService tipoTrainerService;
 
+    @Autowired
+    private TipoCanalVentaService canalVentaService;
+
     @Value("${main.repository}")
     private String mainRoute;
 
@@ -202,6 +205,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             addingCorreo();
             addingBanco();
             addingIdioma();
+            addingCanalVenta();
 
             addingAudios();
 
@@ -1055,6 +1059,22 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         }
     }
 
+    public void addingCanalVenta(){
+        try{
+            InputStream is = new ClassPathResource("static/seeds/canal_venta.csv").getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            String[] lines = content.split("\n");
+            reader.close();
+            for(int i=1; i<lines.length;i++){
+                String[] line = lines[i].split(",");
+                if (canalVentaService.findOne(i) == null) canalVentaService.save(new TipoCanalVenta(line[0].trim()));
+            }
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
     public void addingApplicationParameters() {
         if (parametroService.findByClave("MAIN_ROUTE") == null) {
             parametroService.add(new Parametro("MAIN_ROUTE", mainRoute));
@@ -1250,6 +1270,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
 
             cliFit.setFitElementos("1");
             cliFit.setCliente(cli);
+            cliFit.setTipoCanalVenta(new TipoCanalVenta(1));
             clienteFitnessService.save(cliFit);
             if(i<4){
                 trainers.forEach(t ->{

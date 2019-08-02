@@ -288,7 +288,7 @@ public class TrainerFichaController extends BaseController {
             @PathVariable(name = "hashPreTrainerId") String hashPreTrainerId,
             @RequestBody @Valid TrainerDTO trainerFicha) throws CustomValidationException {
         Integer postTraId = 0;
-        if(hashPreTrainerId.length() == 32){
+        if(hashPreTrainerId.length() >= 32){
             postTraId = Parseador.getDecodeHash32Id("rf-request", hashPreTrainerId);
         }
 

@@ -58,4 +58,4 @@ public class TipoCanalVenta {
             this.lstClienteFitness = lstClienteFitness;
         }
 
-    }
+}

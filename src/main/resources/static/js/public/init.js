@@ -256,9 +256,22 @@ function smallBoxAlertValidation(inputsNotPassed){
     let arrCamps = inputsNotPassed.map(v=>{
         const previous = v.previousElementSibling;
         const preText = previous ? previous.textContent : "";
-        const nomFinal = !preText ? v.getAttribute('data-aka').toUpperCase() : preText;
-        return nomFinal;
-    })
+        if(v.type === 'radio' || v.type === 'checkbox'){
+            const attrAka = v.getAttribute('data-aka');
+            if(attrAka){
+                return attrAka.toUpperCase();
+            }else{
+                const label = v.parentElement.parentElement.parentElement.previousElementSibling;
+                if(label && label.tagName === "LABEL"){
+                    const nomFinal = label.textContent;
+                    return nomFinal;
+                }
+            }
+        }else{
+            const nomFinal = !preText ? v.getAttribute('data-aka').toUpperCase() : preText;
+            return nomFinal;
+        }
+    });
     let strCamps = Array.from(new Set(arrCamps)).map(e=>`<i class="fa fa-dot-circle-o fa-fw"></i>${e}<br>`).join('');
     if(strCamps){
         $.smallBox(

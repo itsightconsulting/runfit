@@ -501,6 +501,7 @@
         checkFrom();
         constraintsValidation();
         setHeightForModals(['myModalCC']);
+        setEstilosParaModalGaleria();
       }
 
       function checkFrom(){
@@ -971,7 +972,7 @@
                   },
                   Mensaje: {
                       required: true,
-                      rangelength: [5, 1000],
+                      rangelength: [4, 1000],
                   },
                   Sexo:{
                       required: true

@@ -113,7 +113,7 @@
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
                           <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento">
-                            <option selected="selected" value="15">Lima</option>
+                            <option value="15">Lima</option>
                           </select>
                         </div>
                       </div>
@@ -123,7 +123,7 @@
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
                           <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
-                            <option selected="selected" value="01">Lima</option>
+                            <option value="01">Lima</option>
                           </select>
                         </div>
                       </div>
@@ -133,7 +133,7 @@
                         </div>
                         <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
                           <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
-                            <option selected="selected" value="01">Lima</option>
+                            <option value="01">Lima</option>
                           </select>
                         </div>
                       </div>
@@ -144,6 +144,7 @@
                   <div class="form-group">
                     <label>¿Cuál es tu estado civil?<span class="obligatorio">*</span></label>
                     <select class="form-control hidden" id="EstadoCivil" name="EstadoCivil" data-aka="Estado civil">
+                      <option value="">Selecione</option>
                       <option value="1">Soltera(o)</option>
                       <option value="2">Comprometida(o)</option>
                       <option value="3">Casada(o)</option>
@@ -163,7 +164,7 @@
                         </li>
                         <li>
                           <div class="chk-content" id="sxMujer">Femenino
-                            <input type="radio" name="Sexo" data-aka="Sexo" value="2" checked="checked"/><span class="checkmark"></span>
+                            <input type="radio" name="Sexo" data-aka="Sexo" value="2"/><span class="checkmark"></span>
                           </div>
                         </li>
                       </ul>
@@ -200,7 +201,7 @@
                       </li>
                       <li>
                         <div class="chk-content" id="FlagPadeceDolorNo">No
-                          <input type="radio" name="FlagPadeceDolor" checked="checked"/><span class="checkmark"></span>
+                          <input type="radio" name="FlagPadeceDolor"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -273,7 +274,7 @@
                       </li>
                       <li>
                         <div class="chk-content">No
-                          <input type="radio" name="FlagEmbarazo" checked="checked"/><span class="checkmark"></span>
+                          <input type="radio" name="FlagEmbarazo"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -307,7 +308,7 @@
                       </li>
                       <li>
                         <div class="chk-content">No
-                          <input name="FlagHiperTensionArt" type="radio" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagHiperTensionArt" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -322,7 +323,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input type="radio" name="FlagFumador" value="0" data-ele-hd="#divDesFumador" checked="checked"/><span class="checkmark"></span>
+                          <input type="radio" name="FlagFumador" value="0" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -341,13 +342,13 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input type="radio" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hipertensión" value="0" data-ele-hd="#FamInfOrHiper" checked="checked"/><span class="checkmark"></span>
+                          <input type="radio" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hipertensión" value="0" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
                   </div>
                   <div class="form-group hidden">
-                    <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control">
+                    <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hidden">
                       <option value="">Seleccione</option>
                       <option value="1">Papá</option>
                       <option value="2">Mamá</option>
@@ -367,7 +368,7 @@
                       </li>
                       <li>
                         <div class="chk-content">No
-                          <input name="FlagResInsulina" type="radio" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagResInsulina" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -382,7 +383,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input name="FlagAntFamDiabetes" type="radio" value="0" data-ele-hd="#FamDiabetico" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagAntFamDiabetes" type="radio" value="0" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -406,7 +407,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -416,11 +417,12 @@
                       <option value="1">Menos de 5 KG</option>
                       <option value="2">Menos de 10 KG</option>
                       <option value="3">Más de 10 KG</option>
-                    </select>git
+                    </select>
                   </div>
                   <div class="form-group">
                     <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
                     <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
+                      <option value="">Seleccione</option>
                       <option value="1">Buenos</option>
                       <option value="2">Regulares</option>
                       <option value="3">Malos</option>
@@ -429,6 +431,7 @@
                   <div class="form-group">
                     <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
                     <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control hidden">
+                      <option value="">Seleccione</option>
                       <option value="1">Bajo</option>
                       <option value="2">Medio</option>
                       <option value="3">Alto</option>
@@ -450,7 +453,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input name="FlagEnfermedad" type="radio" value="0" data-ele-hd="#DesEnfermedad" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagEnfermedad" type="radio" value="0" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -468,7 +471,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input name="FlagAleMed" type="radio" value="0" data-ele-hd="#DesAleMed" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagAleMed" type="radio" value="0" data-ele-hd="#DesAleMed"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -486,7 +489,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input name="FlagOperacion" type="radio" value="0" data-ele-hd="#DesOperacion" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagOperacion" type="radio" value="0" data-ele-hd="#DesOperacion"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -504,7 +507,7 @@
                       </li>
                       <li>
                         <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
-                          <input name="FlagHerDisOrCondCol" type="radio" value="0" data-ele-hd="#DesHerDisOrCondCol" checked="checked"/><span class="checkmark"></span>
+                          <input name="FlagHerDisOrCondCol" type="radio" value="0" data-ele-hd="#DesHerDisOrCondCol"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -532,7 +535,7 @@
                       </li>
                       <li>
                         <div class="chk-content">N.A.
-                          <input name="DesPadVarios" value="4" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                          <input name="DesPadVarios" value="4" type="checkbox"/><span class="checkmark"></span>
                         </div>
                       </li>
                     </ul>
@@ -581,6 +584,7 @@
                   <div class="form-group">
                     <label>¿Cuál es el nivel de atleta con el que te identificarías?<span class="obligatorio">*</span></label>
                     <select id="NivelAtleta" name="NivelAtleta" data-aka="Nivel de atleta" class="form-control hidden">
+                      <option value="">Seleccione</option>
                       <option value="1">Básico</option>
                       <option value="2">Intermedio</option>
                       <option value="3">Avanzado</option>
@@ -619,7 +623,7 @@
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Si
-                          <input id="FlagCalentamiento" name="FlagCalentamiento" data-aka="Especificar si realiza calentamientos" type="radio" checked="checked"/><span class="checkmark"></span>
+                          <input id="FlagCalentamiento" name="FlagCalentamiento" data-aka="Especificar si realiza calentamientos" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
@@ -636,7 +640,7 @@
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Si
-                          <input id="FlagEstiramiento" name="FlagEstiramiento" data-aka="Especificar si realiza estiramientos" type="radio" checked="checked"/><span class="checkmark"></span>
+                          <input id="FlagEstiramiento" name="FlagEstiramiento" data-aka="Especificar si realiza estiramientos" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
@@ -722,7 +726,7 @@
                       <li>
                         <div class="item text"><img th:src="@{/img/public/dis_9.png}+'?'+${version}"/>
                           <div class="chk-content">Ninguna de las anteriores
-                            <input name="ItemsFitness" type="checkbox" value="9" checked="checked"/><span class="checkmark"></span>
+                            <input name="ItemsFitness" type="checkbox" value="9"/><span class="checkmark"></span>
                           </div>
                         </div>
                       </li>
@@ -754,37 +758,37 @@
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Por recomendación
-                          <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio" checked="checked"/><span class="checkmark"></span>
+                          <input value="1" name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Vía correo
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="2" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Google
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="3" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Facebook
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="4" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Twitter
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="5" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Instagram
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="6" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Otro
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="7" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <input id="TrainerId" type="hidden" th:value="${trainerId}">
@@ -1101,7 +1105,7 @@
   function templateMuscleEleList(name){
     return `<li>
                      <div class="chk-content">${name}
-                         <input data-body="${name}" type="checkbox" name="${name}" checked="checked"/><span class="checkmark"></span>
+                         <input data-body="${name}" type="checkbox" name="${name}"/><span class="checkmark"></span>
                      </div>
                   </li>`;
   }
@@ -1169,6 +1173,7 @@
     obj.cliFit.frecuenciaComunicacion = 1;
     obj.cliFit.viaConexion =  1;
     obj.cliFit.fichaId =  2;//General = 2
+    obj.cliFit.tipoCanalVentaId = document.querySelector('input[name="ViaConexion"]:checked').value;
 
 
     const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
@@ -1341,7 +1346,9 @@
             rangelength: [5,500]
           },
           FlagEmbarazo: {
-            required: true
+            required: function(){
+              return document.querySelector('input[name="Sexo"][value="2"]').checked;
+            }
           },
           FlagHiperTensionArt: {
             required: true
@@ -1432,6 +1439,9 @@
             required: true,
             rangelength: [10,500]
 
+          },
+          NivelAtleta:{
+            required: true
           },
           FrecuenciaCardiaca: {
             min: 40,
@@ -1548,8 +1558,31 @@
     document.querySelector('#Peso').value = 77;
     document.querySelector('#Talla').value = 177;
     document.querySelector('#Imc').value = 77;
+    //POPULATE UBIGEO LIMA - LIMA - LIMA
+    populateUbigeo();
+    document.querySelector('input[name="Sexo"]').checked = true;
+    document.querySelector('#EstadoCivil').selectedIndex = 1;
+    $('#EstadoCivil').multiselect('refresh');
+    document.querySelectorAll('input[name="FlagPadeceDolor"]')[1].checked = true;
 
     //Page 2
+    document.querySelectorAll('input[name="FlagHiperTensionArt"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagFumador"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagAntFamInfOrHiper"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagResInsulina"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagAntFamDiabetes"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagSobrepeso"]')[1].checked = true;
+    document.querySelector('#CatAlimentacion').selectedIndex = 1;
+    $('#CatAlimentacion').multiselect('refresh');
+    document.querySelector('#NivelEstres').selectedIndex = 1;
+    $('#NivelEstres').multiselect('refresh');
+    document.querySelectorAll('input[name="FlagEnfermedad"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagAleMed"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagOperacion"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagHerDisOrCondCol"]')[1].checked = true;
+    document.querySelectorAll('input[name="DesPadVarios"]')[1].checked = true;
+    document.querySelector('#NivelAtleta').selectedIndex = 1;
+    $('#NivelAtleta').multiselect('refresh');
     document.querySelector('#ContactoEmergenciaNombre').value = "Augusto";
     document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
     document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
@@ -1559,9 +1592,14 @@
     document.querySelector('input[name="CondicionMejora"]').checked = true;
 
     //Page 3
+
+    document.querySelectorAll('input[name="FlagCalentamiento"')[1].checked = true;
+    document.querySelectorAll('input[name="FlagEstiramiento"')[1].checked = true;
     document.querySelector('#DesObjetivos').value = "Ser el mejor";
     document.querySelector('#Username').value = "abc"+String(new Date().getTime());
     document.querySelector('#Password').value = "runfit123";
+    document.querySelector('input[name="ItemsFitness"]').checked = true;
+    document.querySelector('input[name="ViaConexion"]').checked = true;
 
     /*var tid = setInterval( function () {
       if ( document.readyState !== 'complete' ) return;

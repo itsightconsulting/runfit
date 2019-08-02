@@ -18,7 +18,7 @@ public abstract class BaseController {
     Integer getDecodeHashId(String schema, String hashId) throws CustomValidationException {
         Integer id = 0;
 
-        if(hashId.length() == 32){
+        if(hashId.length() >= 32){
             id = Parseador.getDecodeHash32Id(schema, hashId);
         }
 
@@ -31,7 +31,7 @@ public abstract class BaseController {
     Integer getDecodeHashIdSecCustom(String schema, String hashId) throws SecCustomValidationException {
         Integer id = 0;
 
-        if(hashId.length() == 32){
+        if(hashId.length() >= 32){
             id = Parseador.getDecodeHash32Id(schema, hashId);
         }
 

@@ -48,7 +48,7 @@ public class PostulanteTrainerController extends BaseController{
     @GetMapping("/revisar/{codPreTrainer}")
     public ModelAndView revisarMiniCvPostulante(@PathVariable(value = "codPreTrainer") String codPreTrainer, Model model)
     {
-        if(codPreTrainer.length() == 32){
+        if(codPreTrainer.length() >= 32){
             PostulanteTrainer post = postulanteTrainerService.findOne(Parseador.getDecodeHash32Id("rf-request", codPreTrainer));
             if(post == null){
                 return new ModelAndView(ViewConstant.P_ERROR404);

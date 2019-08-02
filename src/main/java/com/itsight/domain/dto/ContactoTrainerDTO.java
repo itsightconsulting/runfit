@@ -25,7 +25,7 @@ public class ContactoTrainerDTO implements Serializable {
     @NotBlank
     private String movil;
 
-    @Size(min = 5, max = 1000)
+    @Size(min = 4, max = 1000)
     @NotBlank
     private String mensaje;
 

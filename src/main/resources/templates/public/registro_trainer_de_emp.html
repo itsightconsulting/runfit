@@ -20,7 +20,7 @@
                   <div class="container">
                       <div class="col-md-5">
                           <div class="avatar-form">
-                              <input type="file" id="InpImgPerfil" name="InpImgPerfil">
+                              <input type="file" id="InpImgPerfil" name="InpImgPerfil" accept=".jpg,.png,.jpeg,.bmp">
                               <div class="avatar-form-content img-container">
                                   <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                                   <i id="btnVerPerEmpresa" rel="tooltip" title="Si desea volver al perfil de empresa, clickee aquí" style="float:right; color: #17a2b8;font-size: 1.5em;cursor: pointer;" class="fa fa-arrow-circle-left"></i>
@@ -103,7 +103,7 @@
                                                   <ul class="checks">
                                                       <li>
                                                           <div class="chk-content">Principiante
-                                                              <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox" checked="checked"/><span class="checkmark"></span>
+                                                              <input name="NivelClientes" value="pr" data-aka="Seleccionar nivel de personas a las que entrenas" type="checkbox"/><span class="checkmark"></span>
                                                           </div>
                                                       </li>
                                                       <li>
@@ -165,7 +165,7 @@
                                                           <li>
                                                               <img class="img-ficha" th:src="@{/img/form_standard.svg}+'?'+${version}" alt="">
                                                               <div class="chk-content chk-ficha">Standard
-                                                                  <input type="checkbox" checked="checked" value="2" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
+                                                                  <input type="checkbox" value="2" name="FichaTrabajo" data-aka="SELECCIONE LA FICHA CON LA QUE VA TRABAJAR" aria-invalid="false"><span class="checkmark info-pago"></span>
                                                               </div>
                                                           </li>
                                                       </div>
@@ -199,7 +199,8 @@
                                       </div>
                                       <div class="form-group">
                                           <label>TIPO DE DOCUMENTO<span class="obligatorio">*</span></label>
-                                          <select class="form-control hidden" id="TipoDocumento" name="TipoDocumento">
+                                          <select class="form-control hidden" data-aka="TIPO DE DOCUMENTO" id="TipoDocumento" name="TipoDocumento">
+                                              <option value="">Seleccione</option>
                                               <option value="1">DNI</option>
                                               <option value="2">CE</option>
                                           </select>
@@ -253,7 +254,7 @@
                                           <label for="Password">CONTRASEÑA<span class="obligatorio">*</span></label>
                                           <input class="form-control" type="password" id="Password" name="Password">
                                       </div>
-                                      <div class="form-group">
+                                      <div class="form-group hidden">
                                           <label for="Username">DIRECCIÓN WEB<span class="obligatorio">*</span>
                                               <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                           </label>
@@ -267,7 +268,7 @@
                                       <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
                                   </div>
                                   <div class="tab-pane fade inpts-3" id="service">
-                                      <h1 class="title-form">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
+                                      <h1 class="" style="margin:0px;color:#686868">ELIGE LOS SERVICIOS PARA EL TRAINER</h1>
                                       <form>
                                           <div class="ver-servicios">
                                               <div id="NomServicios" class="form-group">
@@ -306,8 +307,8 @@
       <footer th:replace="html-commons/p/footer :: fg-footer"></footer>
       <!-- MODALS  -->
       <div class="modal fade" tabindex="-1" role="dialog" id="myModalCropper" data-backdrop="static">
-          <div class="modal-dialog" role="document" style="width: 70%">
-              <div class="modal-content" style="width: 100%">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
                   <div class="modal-header" style="background: #000000;text-align: center;border:none">
                       <button id="btnCerrarRecorteFotoPerfil" type="button"  data-dismiss="modal" class="close-modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   </div>
@@ -320,12 +321,12 @@
                       <div class="row" id="actions">
                           <div class="col-md-12 docs-buttons">
                               <div class="btn-group btn-group-crop">
-                                  <button style="margin: 20px 20px 10px;border-radius: 5px; min-width: 180px" data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                  <button data-dismiss="modal" type="button" class="btn btn-black" data-method="getCroppedCanvas" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
                                             <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 })">
                                                 <i class="fa fa-check-circle fa-fw"></i>Confirmar
                                             </span>
                                   </button>
-                                  <button style="margin: 20px 20px 10px;border-radius: 5px; min-width: 180px" onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
+                                  <button onclick="elegirOtraImagenCropper()" data-dismiss="modal" type="button" class="btn btn-black" data-option="{ &quot;maxWidth&quot;: 4096, &quot;maxHeight&quot;: 4096 }">
                                             <span class="docs-tooltip" data-toggle="tooltip" title="">
                                                 <i class="fa fa-refresh fa-fw"></i>Cambiar
                                             </span>
@@ -683,7 +684,7 @@
                         crop(event) {},
                         zoomOnWheel: false,
                         viewMode: 1,
-                        minContainerHeight: image.height > window.innerHeight * 0.8 ? window.innerHeight * 0.8 : image.height
+                        minContainerHeight: window.innerHeight * 0.70,
                     });
                 }
             })
@@ -756,6 +757,8 @@
             document.querySelector('#Especialidad').value = `Entrenador para maratones`;
             document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
             document.querySelector('#Disciplinas').value = "Running";
+            document.querySelector('input[name="NivelClientes"]').checked = true;
+            $('#Idiomas').multiselect('refresh');
 
             populateTabContacto(t0, t1, t2);
             //Estudios
@@ -781,6 +784,9 @@
             const inpRes = document.querySelector('.inp-resultado');
             const abc = inpRes.nextElementSibling;
 
+            //POPULATE UBIGEO LIMA - LIMA - LIMA
+            populateUbigeo();
+
             ["Juan Pérez, campeón en natación 100 m libres (2017)",
                 "Rocío Flores, campeona sudamericana 4x100 m (2017)",
                 "Michael Barros, campeón en natación 4x200 (2016)",
@@ -795,13 +801,16 @@
             document.querySelector('#EspecDomino').value = "Diplomado en nutrición para atletas";
 
             document.querySelector('#Telefono').value = `017776666`;
+            document.querySelector('#TipoDocumento').value = 1;
+            $('#TipoDocumento').multiselect('refresh');
             document.querySelector('#NumeroDocumento').value = `23232323`;
 
             document.querySelector('input[name="FormaTrabajo"]').checked = true;
 
             setTimeout(()=>{
                 document.querySelector('input[name="SvcCheck"]').checked = true;
-            }, 1000)
+            }, 1000);
+            document.querySelectorAll('input[name="FichaTrabajo"]')[1].checked = true;
         }
 
         function populateTabContacto(t, t1, t2){
@@ -985,6 +994,9 @@
                         digits: true,
                         rangelength: [7, 13]
                     },
+                    TipoDocumento:{
+                        required: true
+                    },
                     NumeroDocumento: {
                         required: true,
                         digits: true,
@@ -993,6 +1005,15 @@
                             return val;
                         },
                         rangelength: [8, 12],
+                    },
+                    Dep:{
+                        required: true
+                    },
+                    Pro:{
+                        required: true
+                    },
+                    Dis:{
+                        required: true
                     },
                     Username:{
                         required: true,
@@ -1003,10 +1024,13 @@
                         required: true,
                         rangelength: [8, 30],
                         pwcheck: true
-                    },NomPag: {
+                    },/*NomPag: {
                         required: true,
                         pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
                         rangelength: [4, 40]
+                    },*/
+                    FichaTrabajo:{
+                        required: true
                     },
                     InpImgPerfil:{
                         extension: "jpg|jpeg|png",

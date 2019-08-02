@@ -24,6 +24,7 @@ import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hashids.Hashids;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -261,6 +262,15 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     @Override
     public RefUploadIds registrarPostulante(TrainerDTO trainerFicha, int tipoTrainerId, Integer trEmpId){
+        Hashids hshIds = new Hashids("rf-rdm-nom-pag", 8, "abcdefghifklmnopqrstuvwxyz");
+        String nomPagRandom;
+        if(tipoTrainerId == Enums.TipoTrainer.PARA_EMPRESA.get()) {
+            nomPagRandom = hshIds.encode(new Date().getTime());
+        } else {
+            nomPagRandom = hshIds.encode(trainerFicha.getPostulanteTrainerId());
+        }
+        trainerFicha.setNomPag(nomPagRandom);
+
         TrainerFicha obj = new TrainerFicha();
         BeanUtils.copyProperties(trainerFicha, obj);
         //Seteando el trainer empresa en caso tenga
