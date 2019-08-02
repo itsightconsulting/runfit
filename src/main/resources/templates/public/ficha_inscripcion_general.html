@@ -758,37 +758,37 @@
                     <ul class="checks">
                       <li>
                         <div class="chk-content">Por recomendación
-                          <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
+                          <input value="1" name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Vía correo
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="2" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Google
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="3" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Facebook
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="4" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Twitter
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="5" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Instagram
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="6" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <li>
                         <div class="chk-content">Otro
-                          <input name="ViaConexion" type="radio"/><span class="checkmark"></span>
+                          <input value="7" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                         </div>
                       </li>
                       <input id="TrainerId" type="hidden" th:value="${trainerId}">
@@ -1173,6 +1173,7 @@
     obj.cliFit.frecuenciaComunicacion = 1;
     obj.cliFit.viaConexion =  1;
     obj.cliFit.fichaId =  2;//General = 2
+    obj.cliFit.tipoCanalVentaId = document.querySelector('input[name="ViaConexion"]:checked').value;
 
 
     const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
@@ -1557,8 +1558,31 @@
     document.querySelector('#Peso').value = 77;
     document.querySelector('#Talla').value = 177;
     document.querySelector('#Imc').value = 77;
+    //POPULATE UBIGEO LIMA - LIMA - LIMA
+    populateUbigeo();
+    document.querySelector('input[name="Sexo"]').checked = true;
+    document.querySelector('#EstadoCivil').selectedIndex = 1;
+    $('#EstadoCivil').multiselect('refresh');
+    document.querySelectorAll('input[name="FlagPadeceDolor"]')[1].checked = true;
 
     //Page 2
+    document.querySelectorAll('input[name="FlagHiperTensionArt"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagFumador"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagAntFamInfOrHiper"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagResInsulina"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagAntFamDiabetes"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagSobrepeso"]')[1].checked = true;
+    document.querySelector('#CatAlimentacion').selectedIndex = 1;
+    $('#CatAlimentacion').multiselect('refresh');
+    document.querySelector('#NivelEstres').selectedIndex = 1;
+    $('#NivelEstres').multiselect('refresh');
+    document.querySelectorAll('input[name="FlagEnfermedad"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagAleMed"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagOperacion"]')[1].checked = true;
+    document.querySelectorAll('input[name="FlagHerDisOrCondCol"]')[1].checked = true;
+    document.querySelectorAll('input[name="DesPadVarios"]')[1].checked = true;
+    document.querySelector('#NivelAtleta').selectedIndex = 1;
+    $('#NivelAtleta').multiselect('refresh');
     document.querySelector('#ContactoEmergenciaNombre').value = "Augusto";
     document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
     document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
@@ -1568,9 +1592,14 @@
     document.querySelector('input[name="CondicionMejora"]').checked = true;
 
     //Page 3
+
+    document.querySelectorAll('input[name="FlagCalentamiento"')[1].checked = true;
+    document.querySelectorAll('input[name="FlagEstiramiento"')[1].checked = true;
     document.querySelector('#DesObjetivos').value = "Ser el mejor";
     document.querySelector('#Username').value = "abc"+String(new Date().getTime());
     document.querySelector('#Password').value = "runfit123";
+    document.querySelector('input[name="ItemsFitness"]').checked = true;
+    document.querySelector('input[name="ViaConexion"]').checked = true;
 
     /*var tid = setInterval( function () {
       if ( document.readyState !== 'complete' ) return;

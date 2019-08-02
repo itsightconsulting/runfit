@@ -416,6 +416,7 @@
         instanceAllTooltip();
         getTrainer();
         checkFrom();
+        setEstilosParaModalGaleria();
       }
 
       function checkFrom(){
@@ -619,7 +620,7 @@
           const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
           if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
               document.getElementById('lblGaleriaFotos').classList.remove('hidden');
-              poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
+              poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc, true);
           }
 
           if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){

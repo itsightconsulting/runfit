@@ -620,11 +620,10 @@ function modalEventos(){
                 crop(event) {},
                 zoomOnWheel: false,
                 viewMode: 1,
-                minContainerHeight: image.height > window.innerHeight * 0.8 ? window.innerHeight * 0.8 : image.height
+                minContainerHeight: window.innerHeight * 0.70,
             });
         }
     });
-
     setHeightForModals(['myModalCC']);
 }
 

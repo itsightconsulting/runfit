@@ -25,7 +25,7 @@
             <div class="container">
                 <div class="col-md-5">
                     <div class="avatar-form">
-                        <input type="file" id="InpImgPerfil" name="InpImgPerfil">
+                        <input type="file" id="InpImgPerfil" name="InpImgPerfil" accept=".jpg,.png,.jpeg,.bmp">
                         <div class="avatar-form-content img-container">
                             <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
                         </div>
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>GALERÍA DE FOTOS</label><br>
-                                        <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria">
+                                        <input type="file" multiple="multiple" class="hide" name="InpGaleria" id="InpGaleria" accept=".jpg,.png,.jpeg,.bmp">
                                         <label class="btn btn-default btn-white" style="width: 50%" th:for="InpGaleria">EXAMINAR EQUIPO...</label>
                                     </div>
                                     <div class="row" style="padding-bottom: 20px">
@@ -202,7 +202,7 @@
                                                 <label>DEPARTAMENTO:</label>
                                             </div>
                                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
+                                                <select disabled="disabled" class="form-control margin-o-bottom-10 ubigeo hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
                                                     <option selected="selected" value="15">Lima</option>
                                                 </select>
                                             </div>
@@ -212,7 +212,7 @@
                                                 <label>PROVINCIA:</label>
                                             </div>
                                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                <select disabled="disabled" class="form-control margin-o-bottom-10 hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
+                                                <select disabled="disabled" class="form-control margin-o-bottom-10 ubigeo hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
                                                     <option selected="selected" value="01">Lima</option>
                                                 </select>
                                             </div>
@@ -222,7 +222,7 @@
                                                 <label>DISTRITO:</label>
                                             </div>
                                             <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                <select class="form-control margin-o-bottom-10 hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
+                                                <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
                                                     <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
                                                 </select>
                                             </div>
@@ -239,7 +239,7 @@
                                     <label for="Password">CONTRASEÑA<span class="obligatorio">*</span></label>
                                     <input class="form-control" type="password" id="Password" name="Password">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group hidden">
                                     <label for="Username">DIRECCIÓN WEB<span class="obligatorio">*</span>
                                         <i class="fa fa-question-circle" rel="tooltip" data-placement="bottom" title="El nombre de página debe empezar con un mínimo de 4 letras(Mínusculas). Los caracteres permitidos son letras(Mínusculas), números y como separadores puede usar puntos y guiones"></i>
                                     </label>
@@ -518,7 +518,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </section>
@@ -604,6 +603,7 @@
         document.getElementById('Password').value = "runfit123";
         Array.from(document.getElementById('Idiomas').querySelectorAll("option"),(e,i)=>i % 2 === 1 ? e.selected = 'selected': '');
         document.querySelector('#Acerca').value = 'Soy licenciado en cultura física y ex campeón nacional de natación.\n\n Me dedico a entrenar a profesionales y amateurs de natación desde hace más de 10 años, logrando que muchos de mis alumnos lleguen a ganar campeonatos nacionales, sudamericanos y cualquier otro logro personal. Considero que la natación es una disciplina completa y sobre todo una pasión que tiene muchos beneficios en la vida diaria. No solo es cuestión de talento sino del esfuerzo y compromiso que uno le ponga a la disciplina. \n\nConmigo el trabajo será duro pero valdrá la pena.';
+        document.querySelector('input[name="NivelClientes"]').checked = true;
         document.querySelector('#MetodoTrabajo').value = 'Está centrado en buscar un equilibrio armónico entre las leyes de la física, la fisiología y la biomecánica humana, logrando como resultado un eficiente desplazamiento con bajo impacto articular y poco coste energético. El sistema es complementado con el mejoramiento de las capacidades motrices, para obtener mejores resultados.\n' +
             '\n' +
             'Desarrollamos una metodología pedagógica altamente efectiva, con sistemas de clases didácticas y experienciales, que han ayudado a cientos de personas a mejorar su rendimiento. Ellas han aprendido a correr de forma distinta, con sensaciones positivas y disfrutando del running como nunca antes.';
@@ -617,9 +617,13 @@
         document.querySelector('#Resultados').value = "Juan Pérez, campeón en natación 100 m libres (2017)";
         document.querySelector('#CentroTrabajo').value = 'AQUALAB - Av. Nicolás de Ribera 145, San Isidro';
         document.querySelector('#Telefono').value = `017776666`;
+        document.querySelector('#TipoDocumento').value = 1;
+        $('#TipoDocumento').multiselect('refresh');
         document.querySelector('#NumeroDocumento').value = `23232323`;
         document.querySelector('#NomPag').value = `pedro`+t1+t2;
         document.querySelector('input[name="FormaTrabajo"]').checked = true;
+        //POPULATE UBIGEO LIMA - LIMA - LIMA
+        populateUbigeo();
 
         //Servicios
         document.querySelector('#NombreServicio').value = "Performance PRO";
@@ -811,6 +815,15 @@
                     },
                     rangelength: [8, 12],
                 },
+                Dep:{
+                    required: true
+                },
+                Pro:{
+                    required: true
+                },
+                Dis:{
+                    required: true
+                },
                 Username:{
                     required: true,
                     usernameOrEmail: true,
@@ -891,11 +904,11 @@
                     pattern: "[0-9]{3,}[0-9 -]*$",
                     rangelength: [10, 30]
                 },
-                NomPag: {
+                /*NomPag: {
                     required: true,
                     pattern:"[a-z]{4,}[0-9\\w.\\w-]*$",
                     rangelength: [4, 40]
-                },
+                },*/
                 InpImgPerfil:{
                     extension: "jpg|jpeg|png",
                     minHeight: 220

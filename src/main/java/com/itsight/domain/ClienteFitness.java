@@ -195,6 +195,4 @@ public class ClienteFitness implements Serializable {
         this.cliente = new Cliente(cliId);
     }
 
-
-
 }

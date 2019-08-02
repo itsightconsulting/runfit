@@ -257,10 +257,15 @@ function smallBoxAlertValidation(inputsNotPassed){
         const previous = v.previousElementSibling;
         const preText = previous ? previous.textContent : "";
         if(v.type === 'radio' || v.type === 'checkbox'){
-            const label = v.parentElement.parentElement.parentElement.previousElementSibling;
-            if(label && label.tagName === "LABEL"){
-                const nomFinal = label.textContent;
-                return nomFinal;
+            const attrAka = v.getAttribute('data-aka');
+            if(attrAka){
+                return attrAka.toUpperCase();
+            }else{
+                const label = v.parentElement.parentElement.parentElement.previousElementSibling;
+                if(label && label.tagName === "LABEL"){
+                    const nomFinal = label.textContent;
+                    return nomFinal;
+                }
             }
         }else{
             const nomFinal = !preText ? v.getAttribute('data-aka').toUpperCase() : preText;

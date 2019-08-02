@@ -1309,41 +1309,37 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Por recomendación
-<<<<<<< HEAD
-                              <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
-=======
-                              <input name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio" checked="checked" value="1"/><span class="checkmark"></span>
->>>>>>> 9e712c9ace8efeea7afb85ae62f320ce86c9109f
+                              <input value="1" name="ViaConexion" data-aka="Seleccionar medio por el cual nos conociste" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Vía correo
-                              <input name="ViaConexion" type="radio" value="2"/><span class="checkmark"></span>
+                              <input value="2" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Google
-                              <input name="ViaConexion" type="radio" value="3"/><span class="checkmark"></span>
+                              <input value="3" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Facebook
-                              <input name="ViaConexion" type="radio" value="4"/><span class="checkmark"></span>
+                              <input value="4" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Twitter
-                              <input name="ViaConexion" type="radio" value="5" /><span class="checkmark"></span>
+                              <input value="5" name="ViaConexion" type="radio"><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Instagram
-                              <input name="ViaConexion" type="radio" value="6"/><span class="checkmark"></span>
+                              <input value="6" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Otro
-                              <input name="ViaConexion" type="radio" value="7"/><span class="checkmark"></span>
+                              <input value="7" name="ViaConexion" type="radio"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <input id="TrainerId" type="hidden" th:value="${trainerId}">
@@ -1794,6 +1790,7 @@
         obj.cliFit.tipoCanalVentaId =  document.querySelector('input[name="ViaConexion"]:checked').value;
         obj.cliFit.tiempoDistancia = getTiemposDistancias();
         obj.cliFit.fichaId =  1;//Runner = 1
+        obj.cliFit.tipoCanalVentaId = document.querySelector('input[name="ViaConexion"]:checked').value;
 
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
         condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
@@ -2301,7 +2298,6 @@
         //Page 1
         const t0 = String(new Date().getTime());
         const t1 = t0.slice(-3);
-        const t2 = t0.slice(-6).slice(0, 3);
 
         document.querySelector('#Nombres').value = "Pedro ";
         document.querySelector('#Apellidos').value = "Sotelo";
@@ -2313,8 +2309,31 @@
         document.querySelector('#Peso').value = 77;
         document.querySelector('#Talla').value = 177;
         document.querySelector('#Imc').value = 77;
+        //POPULATE UBIGEO LIMA - LIMA - LIMA
+        populateUbigeo();
+        document.querySelector('input[name="Sexo"]').checked = true;
+        document.querySelector('#EstadoCivil').selectedIndex = 1;
+        $('#EstadoCivil').multiselect('refresh');
+        document.querySelectorAll('input[name="FlagPadeceDolor"]')[1].checked = true;
 
         //Page 2
+        document.querySelectorAll('input[name="FlagHiperTensionArt"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagFumador"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagAntFamInfOrHiper"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagResInsulina"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagAntFamDiabetes"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagSobrepeso"]')[1].checked = true;
+        document.querySelector('#CatAlimentacion').selectedIndex = 1;
+        $('#CatAlimentacion').multiselect('refresh');
+        document.querySelector('#NivelEstres').selectedIndex = 1;
+        $('#NivelEstres').multiselect('refresh');
+        document.querySelectorAll('input[name="FlagEnfermedad"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagAleMed"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagOperacion"]')[1].checked = true;
+        document.querySelectorAll('input[name="FlagHerDisOrCondCol"]')[1].checked = true;
+        document.querySelectorAll('input[name="DesPadVarios"]')[1].checked = true;
+        document.querySelector('#NivelAtleta').selectedIndex = 1;
+        $('#NivelAtleta').multiselect('refresh');
         document.querySelector('#ContactoEmergenciaNombre').value = "Augusto";
         document.querySelector('#ContactoEmergenciaMovil').value = "987654321";
         document.querySelector('#HistorialDeportivoAnt').value = "Debería ir el historial infancia";
@@ -2329,13 +2348,21 @@
         document.querySelector('#TiempoUnKilometro').value = "00:05:55";
         document.querySelector('#KilometrajePromedioSemana').value = 30;
         document.querySelector('#DiasSemanaCorriendo').value = 4;
+        $('#DiasSemanaCorriendo').multiselect('refresh');
         document.querySelector('#DesObjetivos').value = "Ser el mejor";
         document.querySelector('input[name="TiempoComp"]').value = "03:30:00";
-        $('input[name="InpFechaCompetencia"]').val("2020-05-25")
+        document.querySelectorAll('input[name="FlagCalentamiento"')[1].checked = true;
+        document.querySelectorAll('input[name="FlagEstiramiento"')[1].checked = true;
+        document.querySelectorAll('input[name="DesgasteZapatilla"')[1].checked = true;
+        document.querySelectorAll('input[name="DesTerPredom"')[1].checked = true;
+        document.querySelector('#TwoKm').value = "11:22:33";
+        $('input[name="InpFechaCompetencia"]').val("2020-05-25");
+        document.querySelector('#InpDistancia').value = "21";
+        document.querySelector('input[name="ItemsFitness"]').checked = true;
+        document.querySelector('input[name="ViaConexion"]').checked = true;
         document.querySelector('#DesComp').value = "Maratón de Boston";
         document.querySelector('#Username').value = "abc"+String(new Date().getTime());
         document.querySelector('#Password').value = "runfit123";
-
 
         /*var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;

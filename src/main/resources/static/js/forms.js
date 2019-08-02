@@ -378,9 +378,26 @@ function agregarInputsDinamico(e){
           }
 
 
-   }*/
+}*/
 
 
+
+function setEstilosParaModalGaleria(){
+    const heightForImages = window.innerHeight * 0.70;
+    const style = document.createElement('style');
+    style.innerHTML = `
+                                .modal .carousel div.item>img {
+                                    height: ${heightForImages}px;
+                                }
+                                .carousel-indicators li{
+                                    border: 1px solid #c0c152;
+                                }
+                                .carousel-indicators .active{
+                                    background-color: #a8fa00;
+                                }
+                            `;
+    document.getElementsByTagName('head')[0].appendChild(style);
+}
 
 
 function getValoracion(cantPerVal, totalVal){
@@ -450,7 +467,7 @@ function doMultiselectCheckBox(){
                 $(select).valid();
             }
         });
-    })
+    });
 
     document.querySelectorAll('select:not([multiple])').forEach(e=>{
         if(e.classList.contains('no-multi')){
@@ -509,7 +526,8 @@ function searchSvgTraversing(path){
 }
 
 function  galeriaPerfilCarousel() {
-  if($('.owl-carousel .item').size() < 5)
+  const totImgsCarousel = $('.owl-carousel .item').size();
+  if(totImgsCarousel < 5)
   {
     $('.owl-carousel').owlCarousel({
           loop: false,
@@ -564,9 +582,15 @@ function  galeriaPerfilCarousel() {
     $(".owl-prev").empty();
     $(".owl-prev").append('<span class="fa fa-chevron-left"></span>');
     $(".owl-next").empty();
-    $(".owl-next").append('<span class="fa fa-chevron-right"></span>')
-
+    $(".owl-next").append('<span class="fa fa-chevron-right"></span>');
   }
+    setTimeout(() => {
+        const inpGal = document.querySelector('#InpGaleria');
+        /*if (inpGal) {
+            inpGal.value = "";
+        }*/
+    }, totImgsCarousel*200);
+
 }
 
 function generarDOMCarousel(imgTemps, nomImgsGaleria){
@@ -588,7 +612,6 @@ function generarDOMCarousel(imgTemps, nomImgsGaleria){
                 btCerrar.appendChild(imgCerrar);
                 dvItem.appendChild(btCerrar);
                 dvCarusel.appendChild(dvItem);
-
             });
 
  return dvCarusel;
@@ -748,9 +771,31 @@ function getUbigeoPeruLim(){
                 }
             }
         ).then(res=>{
-        document.getElementById('Dep').innerHTML = '<option>Seleccione</option>'+res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
-        document.getElementById('Pro').innerHTML = '<option>Seleccione Departamento</option>';
-        document.getElementById('Dis').innerHTML = '<option>Seleccione Provincia</option>';
+        document.getElementById('Dep').innerHTML = '<option value="">Seleccione</option>'+res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        document.getElementById('Pro').innerHTML = '<option value="">Seleccione Departamento</option>';
+        document.getElementById('Dis').innerHTML = '<option value="">Seleccione Provincia</option>';
+        $('#Dep').multiselect('rebuild');
+        $('#Dis').multiselect('rebuild');
+        $('#Pro').multiselect('rebuild');
+    }).catch((err)=>{
+        exception(err);
+    });
+}
+
+function populateUbigeo(){
+    fetch(_ctx+'p/ubigeo/get/peru-lim')
+        .then(res=> {
+                if(res.ok){
+                    return res.json();
+                }
+            }
+        ).then(res=>{
+        document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        $('#Dep').val('15');
+        $('#Dis').val('01');
+        $('#Pro').val('01');
         $('#Dep').multiselect('rebuild');
         $('#Dis').multiselect('rebuild');
         $('#Pro').multiselect('rebuild');
