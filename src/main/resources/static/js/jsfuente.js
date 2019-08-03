@@ -210,7 +210,7 @@ function reqSuccess(r, timeout, withoutEscape){
         if(withoutEscape){
             setTimeout(()=>{
                 $.SmartMessageBox({
-                    title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Runfit Notifications</b>",
+                    title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
                     content: "<div class='font-md' style='font-size: 1.5em'>" +
                         msg+"</div>",
                     buttons: '[OK]'
@@ -260,7 +260,7 @@ function exception(xhr, errorName) {
             }else{
                 if(xhr['status'] == 401){
                     $.SmartMessageBox({
-                        title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Notificación</b>",
+                        title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
                         content: "<div class='font-md'><i> Su sesión ha expirado, usted será redireccionado a la página de login...</div></i>",
                         buttons: '[OK]'
                     }, function (ButtonPressed) {
@@ -673,11 +673,6 @@ function getHash32Id(schema, id){
 
 function getHash16Id(schema, id){
     return new Hashids(schema, 16).encode(id)
-}
-
-
-function decodeHash16Id(schema, id){
-    return new Hashids(schema, 16).decode(id)
 }
 
 function getParamFromURL(param){

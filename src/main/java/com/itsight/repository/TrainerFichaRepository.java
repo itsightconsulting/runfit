@@ -96,4 +96,8 @@ public interface TrainerFichaRepository extends JpaRepository<TrainerFicha, Inte
     @Modifying
     @Query(value = "UPDATE TrainerFicha T SET T.cuentas = ?1 WHERE T.trainer.id = ?2")
     void actualizarCuentasGaleria(String cuentas, Integer id);
+
+    @Modifying
+    @Query(value = "UPDATE trainer_ficha SET mini_galeria = COALESCE(mini_galeria,'') || case when COALESCE(NULLIF(mini_galeria,''), '0') = '0' then ?1 else '|' || ?1 end WHERE trainer_id = ?2", nativeQuery = true)
+    void updateMiniGaleriaById(String nombres, Integer trainerId);
 }

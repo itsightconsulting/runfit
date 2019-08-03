@@ -172,24 +172,28 @@
                                             <div class="col-md-12" id="ImgsGaleria">
                                             </div>
                                         </div>
+                                        <input type="file" multiple="multiple" class="hidden" name="InpGaleria" id="InpGaleria" accept=".jpg,.png,.jpeg,.bmp">
+                                        <label class="btn btn-default btn-white" title="Agregar nuevas fotos" style="width: 50%" th:for="InpGaleria">
+                                            EXAMINAR EQUIPO...
+                                        </label>
                                     </div>
                                     <div class="form-group rs">
                                         <label>REDES SOCIALES</label>
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
-                                            <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text">
+                                            <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text" placeholder="Ej: https://facebook.com/runfit_pe">
                                         </div>
                                     </div>
                                     <div class="form-group rs">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
-                                            <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text">
+                                            <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text" placeholder="Ej: https://instagram.com/runfit_pe">
                                         </div>
                                     </div>
                                     <div class="form-group rs">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
-                                            <input value="" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
+                                            <input value="" class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text" placeholder="Ej: https://youtube.com/runfit_pe">
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +212,7 @@
                             <h4 class="sub-menus">
                                 <span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span>
                                 <span class="obligatorio">*</span>
-                                <span class="sub-menu" data-op="2" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span>
+                                <span class="sub-menu" data-op="2" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span>
                             </h4>
                             <div>
                                 <div class="ver-servicios">
@@ -229,7 +233,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>INFORMACIÓN ADICIONAL</label>
-                                        <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
+                                        <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic"></textarea>
                                     </div>
                                     <div id="EnlaceTYC" class="form-group hidden">
                                         <label class="title-icon-ver">TÉRMINOS Y CONDICIONES:
@@ -416,7 +420,9 @@
     const imgPerfil = document.getElementById('ImagePerfil');
     const tabService = document.getElementById('service');
     const inpImgPerfil = document.getElementById('InpImgPerfil');
+    const inpGaleria = document.getElementById('InpGaleria');
     const frm = document.getElementById('frm_registro');
+    const $galeria = [];
     let serviciosSm = [];
     let servicios = [];
     let ccBancarias = [];
@@ -431,6 +437,7 @@
     const body = document.querySelector('body');
 
     (function () {
+        uploadImgsEdit(inpGaleria, 'ImgsGaleria');
         inpImgPerfil.addEventListener('click', clickImgPerfiL);
         body.addEventListener('click', bodyClickEventListener);
         body.addEventListener('focusout', bodyFocusOutEventListener);
@@ -452,7 +459,6 @@
             }
             const subTitleTarifario = document.querySelector('.st-tarifario>i.fa-plus-cs');
             const svcBasics = document.querySelector('#SvcCamposBasicos');
-            const titleTar = document.querySelector('.st-tarifario');
             const tarBasics = document.querySelector('#contentTarifario');
             const svcEdit = document.querySelector('.svc-focus').parentElement.querySelector('a.edit');
             const sbTarifario = document.querySelector('.st-tarifario');
@@ -464,18 +470,26 @@
                 $(svcBasics).hide().fadeIn().removeClass('hidden');
                 svcEdit.classList.remove('hidden');
                 tarBasics.classList.add('hidden');
-                subTitleTarifario.classList.add('hidden');
-                sbTarifario.classList.add('hidden');
-                titleTar.classList.add('hidden');
-                tarifarios.classList.add('hidden');
+                if(!servicios.find(e=>e.id===selServicioId).tarifarios.length){
+                    sbTarifario.classList.add('hidden');
+                }else{
+                    sbTarifario.classList.remove('hidden');
+                }
+                tarifarios.classList.remove('hidden');
+                document.querySelectorAll('svg.tarifa-svc').forEach((e)=>{
+                    e.style.fill = 'black';
+                });
+                document.querySelectorAll('.tarifa-svc').forEach((e)=>{
+                    e.classList.add('no-selectable');
+                });
             } else {
                 //CheckTarifarios
                 const tar = servicios.find(e=>e.id===selServicioId).tarifarios;
                 if (!tar || !tar.length) {
-                    titleTar.classList.add('hidden');
+                    sbTarifario.classList.add('hidden');
                     tarBasics.classList.add('hidden');
                 } else {
-                    titleTar.classList.remove('hidden');
+                    sbTarifario.classList.remove('hidden');
                     tarBasics.classList.remove('hidden');
                 }
 
@@ -484,10 +498,26 @@
                 subTitleTarifario.classList.remove('hidden');
                 sbTarifario.classList.remove('hidden');
                 tarifarios.classList.remove('hidden');
+                document.querySelectorAll('svg.tarifa-svc').forEach((e)=>{
+                    e.style.fill = 'black';
+                });
+                document.querySelectorAll('.tarifa-svc').forEach((e)=>{
+                    e.classList.remove('no-selectable');
+                });
             }
 
         } else if(clases.contains('img-remover')){
-            preEliminarImagenGaleria(input);
+            const imgDeleteId = input.id;
+            const onClick = `confirmarEliminarDeGaleriaEdit(${imgDeleteId});`;
+            $.smallBox({
+                content: "¿Estás seguro de eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onClick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+                color: "#296191",
+                timeout: 10000,
+                icon: "fa fa-bell swing animated",
+                iconSmall: "",
+            });
+        } else if(clases.contains('img-remover-antiguo')){
+            preEliminarImagenAntiguaGaleria(input);
         }
     }
 
@@ -520,10 +550,10 @@
         }
     }
 
-    function preEliminarImagenGaleria(input){
+    function preEliminarImagenAntiguaGaleria(input){
         const imgName = input.getAttribute('data-name');
         const ordenSlide = Number(input.parentElement.previousElementSibling.getAttribute('data-slide-to'));
-        const onclick = `eliminarImagenGaleria("${imgName}", ${ordenSlide})`;
+        const onclick = `eliminarImagenAntiguaGaleria("${imgName}", ${ordenSlide})`;
         $.smallBox({
             content: "¿Estás seguro de eliminar la imagen de la galería? <p class='text-align-right'><a href='javascript:"+onclick+"' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
             color: "#296191",
@@ -533,10 +563,10 @@
         });
     }
 
-    function eliminarImagenGaleria(imgName, ordenSlide){
-        console.log(imgName);
+    function eliminarImagenAntiguaGaleria(imgName, ordenSlide){
         document.querySelector(`a[href="#myGallery"][data-slide-to="${ordenSlide}"]`).parentElement.parentElement.remove();
-        $.smallBox({});
+        $.smallBox({content: 'La imagen se removió con éxito'});
+        $perfil.miniGaleria = $perfil.miniGaleria.split("|").filter(e=>e!==imgName).join('|');
         const srcs = Array.from(document.querySelectorAll('.img-gal')).map(e=>{
             const arrURL = e.src.split("/");
             return arrURL[arrURL.length - 1];
@@ -569,23 +599,68 @@
                 } else {
                     tarBasics.classList.add('hidden');
                     titleTar.classList.add('hidden');
-
                 }
                 return;
+            }else{
+                document.querySelector('#Tarifarios').classList.remove('hidden');
+                document.querySelectorAll('.tarifa-svc').forEach((e)=>{
+                    e.classList.add('no-selectable');
+                });
             }
             const actualEdit = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
             if(actualEdit){
                 actualEdit.classList.add('hidden');
             }
             tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
+            imgToSvgForRegistroTrainer();
+        }
+        else if(input.tagName === "path"){
+            let svg = searchSvgTraversing(input);
+            if (svg.classList.contains('tarifa-svc')) {
+                if(document.querySelector('.sub-menu-selected[data-op="1"]')){
+                    return;//DETENEMOS LA EJECUCIÓN POR CONVENIENCIA
+                }
+                let padre = svg.parentElement.parentElement;
 
-        } else if(clases.contains('tarifa-svc')) {
+                const svgTar = document.querySelectorAll('.tarifa-svc');
+                svgTar.forEach((e)=>{
+                    e.style.fill = 'black';
+                });
+                if(svg){
+                    svg.style.fill = '#a8fa00';
+                }
+
+                const tarifaId = padre.getAttribute('data-id');
+                const svcFocus = tabService.querySelector('.tarifa-svc-pick');
+                svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
+                padre.classList.add('tarifa-svc-pick');
+                mostrarDetalleTarifaSvc(Number(tarifaId));
+                //Agregando el data id
+                const butonEdit = document.querySelector('button.edit-tar-svc');
+                butonEdit.setAttribute('data-id', tarifaId);
+                butonEdit.removeAttribute('disabled');
+            }
+        }
+        else if(clases.contains('tarifa-svc')) {
+            if(document.querySelector('.sub-menu-selected[data-op="1"]')){
+                return;//DETENEMOS LA EJECUCIÓN POR CONVENIENCIA
+            }
             let padre = {};
-            if(input.tagName === "IMG" || input.tagName === "H6"){
+            if(input.tagName === "IMG" || input.tagName === "H6" || input.tagName === "svg"){
                 padre = input.parentElement.parentElement;
             } else if(input.tagName === "A"){
                 padre = input.parentElement;
             }
+
+            const svgTar = document.querySelectorAll('.tarifa-svc');
+            svgTar.forEach((e)=>{
+                e.style.fill = 'black';
+            });
+            const svg = padre.querySelector('svg');
+            if(svg){
+                svg.style.fill = '#a8fa00';
+            }
+
             const tarifaId = padre.getAttribute('data-id');
             const svcFocus = tabService.querySelector('.tarifa-svc-pick');
             svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
@@ -721,6 +796,12 @@
                 e.classList.add('hidden');
             });
             $('#btnGuardar').html('<i class="fa fa-fw fa-check"></i>ACTUALIZAR');
+            //Selecciona el primero que es el que necesitamos para nuestro caso
+            const btnNext = document.querySelector('.btnNextTab');
+            btnNext.classList.add('hidden');
+            //Movemos el btn Guardar al primer tab
+            const btnGuardar = document.getElementById('btnGuardar');
+            btnNext.insertAdjacentElement('afterend', btnGuardar);
         }
     }
 
@@ -832,15 +913,20 @@
             bridgeMultipart: true,
             success: function (data, textStatus) {
                 if (textStatus == "success") {
-                    if(!document.getElementById('FinalImagenRecortada').src.startsWith("https")){
-                        uploadFotoPerfil(data);
-                    } else{
+                    if ($galeria.length || document.getElementById('FinalImagenRecortada').src.startsWith("https")) {
+                        if(document.getElementById('FinalImagenRecortada').src.startsWith("https")){
+                            uploadFotoPerfil(data);
+                        }
+                        if($galeria.length){
+                            uploadFotosGaleria(data);
+                        }
+                    } else {
                         if($perfil.tipoTrainerId === TipoTrainer.DE_EMPRESA){
                             reqSuccess({res: "Éxito, usted actualizó la ficha de su colaborador. Recuerde que para confirmar todos " +
                                     "los cambios y enviarlos para la revisión general deberá ir al perfil principal " +
                                     "y seleccionar desde allí el botón: ACTUALIZAR Y ENVIAR"},
                                 3600000, 1);
-                        }else{
+                        } else {
                             reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada." +
                                     " Le estaremos notificando los resultados. Gracias"},
                                 3600000, 1);//El último parametro abre una ventana emergente tipo modal con propiedad static-backgrop
@@ -919,7 +1005,7 @@
                     }
                     return myXhr;
                 },
-                success: function (data) {
+                success: function () {
                     reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. Le estaremos notificando los resultados. Gracias"},
                         3600000);
                 },
@@ -931,6 +1017,46 @@
                 }
             });
         }
+    }
+
+    function uploadFotosGaleria(d){
+        //submit the form here
+        const hshId = d.res;
+        const data = new FormData();
+        data.append("fileExtension", ".jpg");
+        //IMG GALERIA
+        $galeria.forEach(f=>{
+            data.append("files", f);
+        });
+
+        $.ajax({
+            type: 'PUT',
+            url: _ctx+'p/trainer/subir/fotos/perfil/edicion/'+hshId,
+            data : data,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            xhr: function() {
+                const myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){
+                    myXhr.upload.addEventListener('progress', progress, false);
+                }
+                return myXhr;
+            },
+            success: function () {
+                reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. " +
+                                "Le estaremos notificando los resultados. Gracias"},
+                    3600000);
+            },
+            error: (xhr)=>{
+                exception(xhr);
+            },
+            complete: ()=> {
+                //Solo aplica para registro trainer como empresa
+                $('.step-04').click();
+                $(window).scrollTop(0);
+            }
+        });
     }
 
     function getTrainer(){
@@ -1094,7 +1220,7 @@
         const baseSrc = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+t.id+"/";
         if(t.miniGaleria != null && t.miniGaleria.trim().length>0){
             document.getElementById('lblGaleriaFotos').classList.remove('hidden');
-            poblarCarusel(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
+            poblarCaruselAntiguo(t.miniGaleria.split("|"), 'ImgsGaleria', baseSrc);
         }
 
         if(t.mapCoordenadas != null && t.mapCoordenadas.trim().length>0){
@@ -1186,7 +1312,7 @@
         document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-2 col-xs-3 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
-                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                                     <h6>${t.nombre}</h6>
                                 </a>
                             </div>`))});
@@ -1245,7 +1371,12 @@
         tarifarios.forEach((t, ix)=>{
             dt.appendChild(
                 htmlStringToElement(`${putTarifario(ix, t.nombre)}`));
-        })
+        });
+        if(!tarifarios.length){
+            document.querySelector('.st-tarifario').classList.add('hidden');
+        }else{
+            document.querySelector('.st-tarifario').classList.remove('hidden');
+        }
     }
 
     function putTarifario(id, nombre){
@@ -1254,7 +1385,7 @@
         }, 500);
         return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                     </div>`;
@@ -1298,6 +1429,7 @@
             tarifa.personas = t.personas;
             tarifa.sesiones = t.sesiones;
             tarifa.precio = t.precio;
+            tarifa.monedaId = t.monedaId;
             tabService.querySelector('.tarifa-svc-pick h6').textContent = t.nombre.trim();
             cleanPaqueteCampos();
             $.smallBox({color: "#111509",content: '<i class="fa fa-fw fa-check"></i> <i>Se modificó satisfactoriamente</i>'});
@@ -1313,6 +1445,7 @@
         tar.personas = document.querySelector('#txtCantidadPersonas').value.trim();
         tar.meses = document.querySelector('#txtCantidadMeses').value.trim();
         tar.sesiones = document.querySelector('#txtCantidadSesiones').value.trim();
+        tar.monedaId = document.querySelector('#Moneda').value.trim();
         tar.valid = false;
 
         const jQvalidate = Array.from(document.querySelectorAll('#contentTarifario input')).filter(e=>!$(e).valid()).length == 0 ? true : false;

@@ -334,8 +334,17 @@ public class TrainerFichaController extends BaseController {
     public @ResponseBody String subirImagenesPerfil(
             @RequestPart(name = "files") MultipartFile[] imgs,
             @PathVariable(name = "trainerHshId") String hshTrainerId,
-            @RequestPart(name = "rdmsUUIDs") String uuid) throws CustomValidationException {
-        return jsonResponse(trainerService.subirFiles(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuid, JPEG.get()));
+            @RequestPart(name = "rdmsUUIDs") String uuids) throws CustomValidationException {
+        return jsonResponse(trainerService.subirFiles(imgs, getDecodeHashId("rf-load-media", hshTrainerId), uuids, JPEG.get()));
+    }
+
+    @PutMapping("/subir/fotos/perfil/edicion/{trainerHshId}")
+    public @ResponseBody String subirImagenesPerfilEdicion(
+            @RequestPart(name = "files") MultipartFile[] imgs,
+            @PathVariable(name = "trainerHshId") String hshTrainerId) throws CustomValidationException {
+        Integer trainerId = getDecodeHashId("rf-load-media", hshTrainerId);
+        String uuids = trainerFichaService.actualizarMiniGaleriaById(trainerId, imgs.length);
+        return jsonResponse(trainerService.subirFiles(imgs, trainerId, uuids, JPEG.get()));
     }
 
     @GetMapping("/empresa/agregar/sub/{hshEmpTraId}/{hshPostTrainerId}")

@@ -87,6 +87,7 @@ where
     ($8 IS NULL OR public.f_unaccent(LOWER(y.servicio)) LIKE public.f_unaccent(LOWER(CONCAT('%', $8,'%')))) AND
     ($9 IS NULL OR coalesce(totalValoracion/NULLIF(canPerValoracion,0), 0) >= $9) AND
     y.fg = true) as fx
+    ORDER BY fx.totalValoracion DESC, fx.id ASC
     LIMIT $10
     OFFSET $11
 $func$ LANGUAGE sql;

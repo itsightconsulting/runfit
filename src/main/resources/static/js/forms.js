@@ -76,6 +76,56 @@ function readURLCs(input, img, ix, mainDivId, nomImg) {
  }
 }
 
+function readURLCsEdit(input, img, ix, mainDivId, nomImg) {
+    nomImgsGaleria.push(nomImg);
+    if (input.files && input.files[ix]) {
+        var reader = new FileReader();
+
+        reader.onloadend = function (e) {
+            $(img).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[ix]);
+
+        imgTemps.push(img);
+        if(imgTemps.length === $galeria.length){
+            var dvCarusel =  generarDOMCarouselEdit(imgTemps, nomImgsGaleria);
+            const mainDiv = document.querySelector('#'+mainDivId);
+            if(mainDiv.children.length == 1){
+                mainDiv.children[0].remove();
+            }
+            mainDiv.appendChild(dvCarusel);
+            galeriaPerfilCarousel();
+        }
+    }
+}
+
+function confirmarEliminarDeGaleriaEdit(id){
+    const img = document.querySelector(`img.img-remover[id="${id}"]`);
+    const nomImg = img.getAttribute('data-nom');
+    nomImgsGaleria.forEach((e, ix)=>{
+        if(e === nomImg){
+            nomImgsGaleria.splice(ix, 1);
+        }
+    });
+    $galeria.forEach((e, ix)=>{
+        if(!nomImgsGaleria.find(g=>g === e.name)){
+            $galeria.splice(ix, 1);
+        }
+    });
+
+    console.log(img.id);
+    var index = parseInt(img.id,10);
+    imgTemps.splice(index, 1);
+
+    $('.owl-carousel').remove();
+
+    var dvCarusel = generarDOMCarouselEdit(imgTemps, nomImgsGaleria);
+
+    const mainDiv = document.querySelector('#ImgsGaleria');
+    mainDiv.appendChild(dvCarusel);
+    galeriaPerfilCarousel();
+}
+
 function confirmarEliminarDeGaleria(id){
     const img = document.querySelector(`img.img-remover[id="${id}"]`);
     const nomImg = img.getAttribute('data-nom');
@@ -168,6 +218,71 @@ function poblarCarusel(srcs, mainDivId, baseSrc, noOptionDelete) {
     galeriaPerfilCarousel();
 }
 
+function poblarCaruselAntiguo(srcs, mainDivId, baseSrc, noOptionDelete) {
+    const dvCarusel = document.createElement('div');
+    const mainDiv = document.querySelector('#'+mainDivId);
+    if(mainDiv.firstElementChild){
+        mainDiv.firstElementChild.remove();
+    }
+
+    const modal = document.querySelector('#myGallery');
+    const galeriaModal = modal.querySelector('.carousel-inner');
+    if(galeriaModal.hasChildNodes()){
+        galeriaModal.innerHTML = "";
+    }
+    const indicadoresGaleria = modal.querySelector('.carousel-indicators');
+
+    if(indicadoresGaleria.hasChildNodes()){
+        indicadoresGaleria.innerHTML = "";
+    }
+
+
+    Array.from(srcs).forEach((src,i)=>{
+        let img = document.createElement('img');
+        img.src = baseSrc + src;
+        img.setAttribute('data-toggle', 'modal');
+        img.setAttribute('data-target', '#myModal');
+        img.classList.add('img-gal');
+        dvCarusel.className = 'owl-carousel owl-theme';
+        dvCarusel.id="fotos-carousel";
+        const dvItem = document.createElement('div');
+        dvItem.classList.add('item');
+
+        let enlace = document.createElement('a');
+        enlace.href="#myGallery";
+        enlace.setAttribute('data-slide-to', i);
+        enlace.appendChild(img);
+
+        //Añadiendo botón eliminar
+        let btnEliminarImagenGaleria = '';
+
+        if(!noOptionDelete){
+            btnEliminarImagenGaleria = htmlStringToElement(`<a class="boton-remover">
+                                             <img data-name="${src}" src="${_ctx}img/remove.png" class="img-remover-antiguo" data-nom="andy-bn.png">
+                                          </a>`);
+        }
+
+
+        dvItem.appendChild(enlace);
+        if(!noOptionDelete){
+            dvItem.appendChild(btnEliminarImagenGaleria);
+        }
+        dvCarusel.appendChild(dvItem);
+
+        // ---- MODAL ----
+        galeriaModal.appendChild(htmlStringToElement(`
+                                                                <div class="item ${i== 0 ? 'active':''}"> 
+                                                                    <img src="${baseSrc + src}" style="display: block;margin: auto"/>
+                                                                    <div class="carousel-caption">
+                                                                    </div>
+                                                                </div>`));
+        indicadoresGaleria.appendChild(htmlStringToElement(`<li data-target="#myGallery" data-slide-to="${i}" class=""></li>`));
+    });
+
+    mainDiv.appendChild(dvCarusel);
+    galeriaPerfilCarousel();
+}
+
 function poblarCaruselAlter(srcs, mainDivId, baseSrc) {
 
     const modal = document.querySelector('#myGallery');
@@ -228,6 +343,49 @@ function uploadImgs(input, mainDivId) {
                     if(imgTemp.height >= 100){
                         $galeria.push(input.files[i]);
                         readURLCs($(input)[0], img, i, mainDivId, nameImg);
+                    } else{
+                        nomImgsFailed+='<br>'+nameImg;
+                        $.smallBox({color: 'alert', content: 'La(s) imagen(es) debe(n) tener un alto mínimo de 300px: '+nomImgsFailed});
+                    }
+
+                };
+                imgTemp.onerror = function (){
+                    $(input).val("");
+                    $.smallBox({
+                        content: "<i> No se ha seleccionado una imagen válida!</i>",
+                        color: "#8a6d3b",
+                        iconSmall: "fa fa-warning fa-2x fadeInRight animated",
+                        timeout: 3500,
+                    });
+                };
+                imgTemp.src = _URL.createObjectURL(file);
+            }
+        }
+    });
+}
+
+function uploadImgsEdit(input, mainDivId) {
+    $(input).change(function () {
+        let nomImgsFailed = '';
+        var file;
+        for(let i=0; i<input.files.length;i++){
+            let imgTemp;
+            let img = document.createElement('img');
+            if ((file = this.files[i])) {
+                imgTemp = new Image();
+                imgTemp.onload = function () {
+                    const type = input.files[i].type;
+                    if(type.includes("svg")){
+                        $.smallBox({
+                            color: 'alert',
+                            content: 'No puede subir imágenes de tipo SVG'});
+                        return;
+                    }
+                    //Previsualizar
+                    const nameImg = input.files[i].name;
+                    if(imgTemp.height >= 100){
+                        $galeria.push(input.files[i]);
+                        readURLCsEdit($(input)[0], img, i, mainDivId, nameImg);
                     } else{
                         nomImgsFailed+='<br>'+nameImg;
                         $.smallBox({color: 'alert', content: 'La(s) imagen(es) debe(n) tener un alto mínimo de 300px: '+nomImgsFailed});
@@ -596,11 +754,11 @@ function  galeriaPerfilCarousel() {
 function generarDOMCarousel(imgTemps, nomImgsGaleria){
  const dvCarusel = document.createElement('div');
             dvCarusel.className = 'owl-carousel owl-theme carousel-img';
-            imgTemps.forEach( (v,index)=>{
+            imgTemps.forEach( (img,index)=>{
                 const dvItem = document.createElement('div');
                 dvItem.classList.add('item');
                 dvItem.setAttribute('value', "img" + (index+1) );
-                dvItem.appendChild(v);
+                dvItem.appendChild(img);
                 var btCerrar = document.createElement('a');
                 btCerrar.classList.add('boton-remover');
                 var imgCerrar = document.createElement('img');
@@ -615,6 +773,51 @@ function generarDOMCarousel(imgTemps, nomImgsGaleria){
             });
 
  return dvCarusel;
+
+}
+
+function generarDOMCarouselEdit(imgTemps, nomImgsGaleria){
+    const dvCarusel = document.createElement('div');
+    dvCarusel.className = 'owl-carousel owl-theme carousel-img';
+    $perfil.miniGaleria.split("|").forEach((v, index)=>{
+        const dvItem = document.createElement('div');
+        dvItem.classList.add('item');
+        dvItem.setAttribute('value', "img" + (index+1) );
+        const img = document.createElement('img');
+        img.classList.add('img-gal')
+        img.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+'/'+v;
+        dvItem.appendChild(img);
+        var btCerrar = document.createElement('a');
+        btCerrar.classList.add('boton-remover');
+        var imgCerrar = document.createElement('img');
+        imgCerrar.setAttribute('id', index );
+        imgCerrar.setAttribute('src', _ctx+'img/remove.png');
+        imgCerrar.classList.add('img-remover-antiguo');
+        imgCerrar.setAttribute('data-nom', nomImgsGaleria[index]);
+
+        btCerrar.appendChild(imgCerrar);
+        dvItem.appendChild(btCerrar);
+        dvCarusel.appendChild(dvItem);
+    });
+    imgTemps.forEach( (img,index)=>{
+        const dvItem = document.createElement('div');
+        dvItem.classList.add('item');
+        dvItem.setAttribute('value', "img" + (index+1) );
+        dvItem.appendChild(img);
+        var btCerrar = document.createElement('a');
+        btCerrar.classList.add('boton-remover');
+        var imgCerrar = document.createElement('img');
+        imgCerrar.setAttribute('id', index );
+        imgCerrar.setAttribute('src', _ctx+'img/remove.png');
+        imgCerrar.classList.add('img-remover');
+        imgCerrar.setAttribute('data-nom', nomImgsGaleria[index]);
+
+        btCerrar.appendChild(imgCerrar);
+        dvItem.appendChild(btCerrar);
+        dvCarusel.appendChild(dvItem);
+    });
+
+    return dvCarusel;
 
 }
 
@@ -1146,4 +1349,29 @@ function checkingValidExtension(input){
             return false;
         }
     }
+}
+
+function imgToSvgForRegistroTrainer() {
+
+    $('#Tarifarios img.tarifa-svc').each(function () {
+        var $img = jQuery(this);
+        var imgURL = $img.attr('src');
+        var element = $img[0];
+
+        $.get(imgURL, function (data) {
+            var $svg = $(data).find('svg');
+            $img[0].getAttributeNames().forEach(e=>{
+                $svg = $svg.attr(e, element.getAttribute(e));
+            })
+            $svg = $svg.removeAttr('xmlns:a');
+            if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+                $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
+            }
+            $img.replaceWith($svg);
+            if($svg[0].hasAttribute('rel')){
+                $($svg[0]).tooltip();
+            }
+
+        }, 'xml');
+    });
 }

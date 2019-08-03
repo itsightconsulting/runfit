@@ -134,6 +134,9 @@
                             </div>
                         </div>
                     </div>
+                    <div th:if="${porAprobar}" class="form-group">
+                        <button class="btn btn-default btn-black btnNextTab" type="button">SIGUIENTE</button>
+                    </div>
                   </form>
                 </div>
                 <div class="tab-pane fade" id="contact">
@@ -225,7 +228,7 @@
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label>NOMBRE:</label>
+                                          <label>NOMBRE PAQUETE:</label>
                                       </div>
                                       <div class="col-xs-5">
                                           <label id="NombreTarifario" class="txt-tarifario-right"></label>
@@ -248,11 +251,7 @@
                                           <label>CANTIDAD DE PERSONAS:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
-                                          <ul class="counter">
-                                              <li class="result">
-                                                  <input class="counter-input" id="txtCantidadPersonas" type="text" value="0" disabled="disabled">
-                                              </li>
-                                          </ul>
+                                        <label id="txtCantidadPersonas" class="txt-tarifario-right" type="text">0</label>
                                       </div>
                                   </div>
                               </div>
@@ -262,11 +261,7 @@
                                           <label>CANTIDAD DE MESES:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
-                                          <ul class="counter">
-                                              <li class="result">
-                                                  <input class="counter-input" disabled="disabled" id="txtCantidadMeses" type="text" value="0">
-                                              </li>
-                                          </ul>
+                                        <label id="txtCantidadMeses" class="txt-tarifario-right" type="text">0</label>
                                       </div>
                                   </div>
                               </div>
@@ -276,21 +271,17 @@
                                           <label>CANTIDAD DE SESIONES:</label>
                                       </div>
                                       <div class="col-xs-5 text-right">
-                                          <ul class="counter">
-                                              <li class="result">
-                                                  <input class="counter-input" disabled="disabled" id="txtCantidadSesiones" type="text" value="0">
-                                              </li>
-                                          </ul>
+                                        <label id="txtCantidadSesiones" class="txt-tarifario-right" type="text">0</label>
                                       </div>
                                   </div>
                               </div>
                               <div class="form-group txt-tar">
                                   <div class="row">
                                       <div class="col-xs-7">
-                                          <label style="margin: 5px 0px !important;">PRECIO TOTAL:</label>
+                                          <label>PRECIO TOTAL:</label>
                                       </div>
-                                      <div class="col-xs-5 text-right" style="margin: 5px 0px !important;">
-                                          <input id="PrecioPaquete" class="price" type="text" value="0.00" disabled="disabled">
+                                      <div class="col-xs-5 text-right">
+                                          <label id="PrecioPaquete" class="txt-tarifario-right" type="text" value="0.00"></label>
                                       </div>
                                   </div>
                               </div>
@@ -315,20 +306,20 @@
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
                           </div>
+                          <div th:if="${porAprobar}" class="form-group div-aprobacion">
+                              <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
+                              <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
+                              <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
+                              <div class="hidden" id="SeccionCorreccion">
+                                  <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
+                                  <div style="text-align: right">
+                                      <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
+                                          <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
+                                  </div>
+                              </div>
+                          </div>
                           <button id="btnElegir" class="btn btn-default btn-black hidden" type="button">INSCRÍBETE</button>
                       </form>
-                  </div>
-                  <div th:if="${porAprobar}" class="form-group div-aprobacion">
-                      <input id="HshTrainerId" type="hidden" th:value="${hshTrainerId}">
-                      <button class="btn btn-default btn-black" id="btnAprobarTrainer"><i class="fa fa-check"></i>APROBAR</button>
-                      <button class="btn btn-default btn-white" id="btnAbrirCajaNotificacion">NOTIFICAR CORRECCIÓN</button>
-                      <div class="hidden" id="SeccionCorreccion">
-                          <textarea id="Obs" class="form-control" placeholder="Escribir los puntos a modificar" style="margin-bottom: 15px"></textarea>
-                          <div style="text-align: right">
-                              <a href="javascript:void(0)" onclick="enviarInfoACorregir()" class="btn btn-success" style="background-color: #303030;border: none;">
-                                  <i class="fa fa-fw fa-paper-plane"></i>ENVIAR</a>
-                          </div>
-                      </div>
                   </div>
               </div>
             </div>
@@ -411,10 +402,10 @@
           const t = servicios.find(v => v.id === selServicioId).tarifarios.find((t, ix)=>ix === tarifaId);
           document.querySelector('#NombreTarifario').textContent = t.nombre;
           document.querySelector('#FrecuenciaPaquete').textContent = t.frecuencia;
-          document.querySelector('#txtCantidadPersonas').value = t.personas;
-          document.querySelector('#txtCantidadMeses').value = t.meses;
-          document.querySelector('#txtCantidadSesiones').value = t.sesiones;
-          document.querySelector('#PrecioPaquete').value = (t.monedaId === 1 ? 'S/. ' : '$ ')+ parseFloat(t.precio).toFixed(2);
+          document.querySelector('#txtCantidadPersonas').textContent = t.personas;
+          document.querySelector('#txtCantidadMeses').textContent = t.meses;
+          document.querySelector('#txtCantidadSesiones').textContent = t.sesiones;
+          document.querySelector('#PrecioPaquete').textContent = (t.monedaId === 1 ? 'S/. ' : '$ ')+ parseFloat(t.precio).toFixed(2);
       }
 
       function mostrarDetalleServicio(servicioId){
@@ -475,7 +466,7 @@
           }, 500);
           return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                     </div>`
@@ -502,19 +493,36 @@
         constraintsValidation();
         setHeightForModals(['myModalCC']);
         setEstilosParaModalGaleria();
+        nextTabButton();
+      }
+
+      function nextTabButton() {
+          $('.btnNextTab').click(function(){
+              const header = $(".navbar-inverse").height();
+              $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+              setTimeout(() => {
+                  document.querySelector('a[href="#service"]').click();
+              }, 300);
+          });
       }
 
       function checkFrom(){
-          if(btnAprobarTrainer === null){
-              document.querySelector('.rating').classList.remove('hidden');
-              document.querySelector('.valoration').classList.remove('hidden');
-              $('.nav-tabs a[href="#contact"]').parent()[0].classList.remove('hidden');
-          }else{
-              document.querySelector('#btnInfoContacto').classList.add('hidden');
+          const onlyCheckPerfilTrainerDeEmpresa = getParamFromURL('den');
+          if(onlyCheckPerfilTrainerDeEmpresa){
               document.querySelector('#btnElegir').classList.add('hidden');
-              document.querySelector('#txtSexo').classList.remove('hidden');
-              disabledForm('frm_contacto');
+          }else{
+              if(btnAprobarTrainer === null){
+                  document.querySelector('.rating').classList.remove('hidden');
+                  document.querySelector('.valoration').classList.remove('hidden');
+                  $('.nav-tabs a[href="#contact"]').parent()[0].classList.remove('hidden');
+              }else{
+                  document.querySelector('#btnInfoContacto').classList.add('hidden');
+                  document.querySelector('#btnElegir').classList.add('hidden');
+                  document.querySelector('#txtSexo').classList.remove('hidden');
+                  disabledForm('frm_contacto');
+              }
           }
+
       }
 
       function checkTab(){
@@ -545,7 +553,7 @@
             }
         }else{
             $.SmartMessageBox({
-                title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Notificación</b>",
+                title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
                 content: "<div style='font-size: 1.3em'>Antes de ir al formulario de registro, deseamos saber, ¿El servicio elegido está relacionado con la disciplina de running?</div>",
                 buttons: '[NO][SI]'
             }, function (ButtonPressed) {
@@ -718,14 +726,18 @@
             document.querySelector('.nav-tabs a[href="#staff"]').parentElement.classList.remove('hidden');
             const divStaffs = document.getElementById('Staffs');
             const s = staffGaleria;
+            const routeArray = window.location.pathname.split('/');
+            const fromRutaParaInscripcion = routeArray[3].length >= 8;
             s.split("|").forEach(e=>{
                 const imgAndNom = e.split(",");
+                //Esta cadena no representa nada en backend, solo es un artificio:
+                //vXBwA0END3zjlNmLk5mZKebwbNwLX2veM9aVPdGoq6PEg2d76GZAlDz1jpO5Bx7R
                 divStaffs.appendChild(htmlStringToElement(
                     `<li>
                                     <div class="avatar-form-min">
                                         <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${imgAndNom[0]}"/>
                                     </div>
-                                    <a href="${_ctx}p/trainer/${imgAndNom.length === 3 ? imgAndNom[2] : ''}" target="_blank"><p>${imgAndNom[1]}</p></a>
+                                    <a href="${_ctx}p/trainer/${imgAndNom.length === 3 ? imgAndNom[2] : ''}${fromRutaParaInscripcion ? '': '?den=vXBwA0END3zjlNmLk5mZKebwbNwLX2veM9aVPdGoq6PEg2d76GZAlDz1jpO5Bx7R'}" target="_blank"><p>${imgAndNom[1]}</p></a>
                                 </li>`
                 ))
             })
@@ -760,7 +772,7 @@
         let formsTrabajo = t.formasTrabajo.split("|");
         document.querySelector('#FormasTrabajo').appendChild(htmlStringToElement('<ul class="list-description">'+formsTrabajo.map(e=>`<li><p>${_forsTrabajo.find(i=>i.cd===e).nombre}</p></li>`).join('')+'</ul>'));
         if(ttId === TipoTrainer.PARTICULAR || ttId === TipoTrainer.DE_EMPRESA){
-            if(!window.location.href.split("/").find(e=>e==="ver")){
+            if(!window.location.href.split("/").find(e=>e==="ver") && !getParamFromURL('den')){
                 document.getElementById('btnElegir').classList.remove('hidden');
             }
             document.querySelector('#NombreFull').textContent = t.nombreCompleto;
@@ -909,7 +921,7 @@
                   document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-3 col-xs-4 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
-                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                                     <h6 class="tarifa-svc">${t.nombre}</h6>
                                 </a>
                             </div>`))});

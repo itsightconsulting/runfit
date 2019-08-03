@@ -23,8 +23,12 @@
               <div class="avatar-form">
                 <div class="avatar-form-content" id="ImagenPerfil">
                     <img src="https://media1.tenor.com/images/b18603537d3dbdd776f2907e3187a5c4/tenor.gif?itemid=11580546" style="max-height: 100% !important;height: 100%"/>
-                    <i rel="tooltip" onclick="irARegistrosTrainer();" title="Clickea aquí para registrar un nuevo trainer para la empresa" style="float:right; color: #17a2b8;font-size: 1.5em;" class="fa fa-arrow-circle-right fa-trainer-emp"></i>
-                    </div>
+                </div>
+                <div class="div-btn-emp-trainer">
+                    <button onclick="irARegistrosTrainer();" class="btn btn-white btn-emp-trainer"  rel="tooltip" title="Clickee aquí para registrar un nuevo trainer para la empresa">
+                        IR A REGISTRAR STAFF
+                    </button>
+                </div>
               </div>
             </div>
             <div class="col-md-7">
@@ -397,7 +401,7 @@
           }, 500);
           return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                     </div>`
@@ -552,15 +556,25 @@
             const s = staffGaleria;
             s.split("|").forEach(e=>{
                 const imgAndNom = e.split(",");
+                //Esta cadena no representa nada en backend, solo es un artificio:
+                //vXBwA0END3zjlNmLk5mZKebwbNwLX2veM9aVPdGoq6PEg2d76GZAlDz1jpO5Bx7R
                 divStaffs.appendChild(htmlStringToElement(
                     `<li>
                                     <div class="avatar-form-min">
                                         <img class="img-asesor-emp" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${imgAndNom[0]}"/>
                                     </div>
-                                    <a href="${_ctx}p/trainer/${imgAndNom.length === 3 ? imgAndNom[2] : ''}" target="_blank"><p>${imgAndNom[1]}</p></a>
+                                    <a href="${_ctx}p/trainer/${imgAndNom.length === 3 ? imgAndNom[2] : ''}?den=vXBwA0END3zjlNmLk5mZKebwbNwLX2veM9aVPdGoq6PEg2d76GZAlDz1jpO5Bx7R" target="_blank"><p>${imgAndNom[1]}</p></a>
                                 </li>`
                 ))
             })
+            divStaffs.appendChild(htmlStringToElement(`
+                                            <li class="list-no-point" style="list-style: none">
+                                                <div class="avatar-form-min" onclick="irARegistrosTrainer();" style="cursor: pointer;">
+                                                    <img onclick="irAformParaNuevoTrainerDeEmp();" class="img-asesor-emp" src="${_ctx}img/add_staff.png">
+                                                </div>
+                                                <a href="javascript:void(0);"><p>&nbsp;</p></a>
+                                            </li>
+            `));
         }
       }
 
@@ -714,7 +728,7 @@
                         document.getElementById('Tarifarios').appendChild(htmlStringToElement(`
                             <div class="col-md-3 col-xs-4 mg-bt-10" data-id="${t.id}">
                                 <a href="javascript:void(0)" class="tarifa-svc">
-                                    <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                                    <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                                     <h6 class="tarifa-svc">${t.nombre}</h6>
                                 </a>
                             </div>`))});
@@ -761,7 +775,7 @@
                   return;
               }
               $.SmartMessageBox({
-                  title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Runfit Notifications</b>",
+                  title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
                   content: "<div class='font-md' style='font-size: 1.5em'>" +
                       "¿Desea finalizar el registro de sus asesores y enviar su perfil a una última aprobación? Por el contrario, " +
                       "en caso aún le falte registrar nuevos entrenadores seleccione 'NO'.</div>",
@@ -825,7 +839,7 @@
                   if(data.res){
                       setTimeout(()=>{
                           $.SmartMessageBox({
-                              title: "<i class='fa fa-info fa-2x fa-fw'></i> <b>Runfit Notifications</b>",
+                              title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
                               content: "<div class='font-md' style='font-size: 1.5em'>" +
                                   data.res+"</div>",
                               buttons: '[OK]'

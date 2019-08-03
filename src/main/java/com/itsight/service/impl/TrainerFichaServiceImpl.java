@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.itsight.util.Enums.FileExt.JPEG;
 import static com.itsight.util.Enums.Mail.*;
@@ -285,5 +286,20 @@ public class TrainerFichaServiceImpl extends BaseServiceImpl<TrainerFichaReposit
     @Override
     public Integer getTotalColaboradoresById(Integer trainerId) {
         return repository.getTotalColaboradoresById(trainerId);
+    }
+
+    @Override
+    public String actualizarMiniGaleriaById(Integer trainerId, int length) {
+        String nombres = "";
+        String justUuids = "";
+        String sep = "";
+        for(int i=0; i<length;i++){
+            String nueUuid = UUID.randomUUID().toString();
+            justUuids += sep+ nueUuid;
+            nombres += sep+ nueUuid+ JPEG.get();
+            sep="|";
+        }
+        repository.updateMiniGaleriaById(nombres, trainerId);
+        return justUuids;
     }
 }

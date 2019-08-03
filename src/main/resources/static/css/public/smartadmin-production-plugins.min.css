@@ -162,6 +162,10 @@
     width: 95%
 }
 
+.MessageBoxMiddle h4{
+    text-align: justify;
+}
+
 .MessageBoxMiddle .MsgTitle {
     letter-spacing: -1px;
     font-size: 24px;

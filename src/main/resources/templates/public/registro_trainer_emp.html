@@ -150,19 +150,19 @@
                                         <label>REDES SOCIALES</label>
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/fb.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
-                                            <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text">
+                                            <input class="form-control" data-aka="Redes sociales" id="RsFb" name="RsFb" type="text" placeholder="Ej: https://facebook.com/runfit_pe">
                                         </div>
                                     </div>
                                     <div class="form-group rs">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/ins.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
-                                            <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text">
+                                            <input class="form-control" data-aka="Redes sociales" id="RsIn" name="RsIn" type="text" placeholder="Ej: https://instagram.com/runfit_pe">
                                         </div>
                                     </div>
                                     <div class="form-group rs">
                                         <div class="col-xs-1 no_padding"><img th:src="@{/img/public/youtube.png} +'?'+ ${version}"></div>
                                         <div class="col-xs-11 no_padding">
-                                            <input class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text">
+                                            <input class="form-control" data-aka="Redes sociales" id="RsYo" name="RsYo" type="text" placeholder="Ej: https://youtube.com/runfit_pe">
                                         </div>
                                     </div>
                                 </div>
@@ -256,7 +256,7 @@
                                 <h4 class="sub-menus">
                                     <span class="sub-menu sub-menu-selected" data-op="1" rel="tooltip" title="Volver a detalles del servicio" data-placement="bottom">MIS SERVICIOS</span>
                                     <span class="obligatorio">*</span>
-                                    <span class="sub-menu" data-op="2" style="float: right" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span></h4>
+                                    <span class="sub-menu" data-op="2" rel="tooltip" title="Ir a tarifarios del servicio" data-placement="bottom">TARIFARIOS</span></h4>
                                 <div>
                                     <div class="ver-servicios">
                                     </div>
@@ -276,7 +276,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>INFORMACIÓN ADICIONAL</label>
-                                            <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic" style="height: 56px !important;"></textarea>
+                                            <textarea class="form-control" id="ServicioInfAdic" name="ServicioInfAdic"></textarea>
                                         </div>
                                     </div>
                                     <div id="btnsServicio">
@@ -290,6 +290,9 @@
                                                 id="btnSubirCondServicio" class="btn btn-default btn-white" onclick="javascript:document.getElementById('inpCondServicio').click()" type="button">
                                             <i class="fa fa-cloud-upload fa-fw"></i> ADJUNTAR T&C
                                         </button>
+                                        <i class="fa fa-exclamation-circle tyc-fa-ec"
+                                           rel="tooltip"
+                                           title="OPCIONAL: Subir un archivo pdf con los términos y condiciones del servicio que esta por agregar"></i>
                                         <img class="del-tyc-svc hidden" rel="tooltip" title="Remover archivo T&C" src="/img/iconos/icon_trash.svg">
                                     </div>
                                     <h4 class="sub-title st-tarifario hidden">TARIFARIOS

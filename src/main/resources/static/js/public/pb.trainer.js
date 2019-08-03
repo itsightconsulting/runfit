@@ -63,7 +63,7 @@ const body = document.querySelector('body');
 
 function nextTabButton() {
     $('.btnNextTab').click(function(){
-        var header = $(".navbar-inverse").height();
+        const header = $(".navbar-inverse").height();
         $('.nav-tabs > .active').next('li').find('a').trigger('click');
         $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
     });
@@ -103,7 +103,7 @@ function finalSendForm(){
         }
 
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Runfit Notification",
+            title: "<i class='fa fa-exclamation-triangle' style='color: yellow'></i> RUNFIT",
             content: "" +
                 "<br/><h4>Antes de proceder con el registro, se ha detectado que usted no ha registrado ningún tarifario a su(s) servicio(s). " +
                 "¿Deseas seguir sin agregar tarifarios para su(s) servicio(s)?</h4>",
@@ -206,6 +206,7 @@ function agregarTarifaAServicio(){
             document.getElementById('Tarifarios')
                 .appendChild(
                     htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
+            imgToSvgForRegistroTrainer();
         }else
             $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Usted debe primero agregar un servicio ya que los tarifarios deben ir asociados a un servicio</em>" ,timeout: 7500});
     }else{
@@ -254,18 +255,63 @@ function clickListenerTabService(e) {
             document.querySelector('.edit-tar-svc').setAttribute('disabled', 'disabled');
             document.querySelector('.del-tar-svc').setAttribute('disabled', 'disabled');
             return;
+        }else{
+            document.querySelectorAll('.tarifa-svc').forEach((e)=>{
+                e.classList.add('no-selectable');
+            });
         }
         const notHidden = tabService.querySelector('.ver-servicios .edit:not(.hidden)');
         if(notHidden){notHidden.classList.add('hidden')}
         tabService.querySelector(`.ver-servicios .edit[data-id="${selServicioId}"]`).classList.remove('hidden');
         instanceIcons();
-    } else if(clases.contains('tarifa-svc')) {
+        imgToSvgForRegistroTrainer();
+    }
+    else if(input.tagName === "path"){
+        let svg = searchSvgTraversing(input);
+        if (svg.classList.contains('tarifa-svc')) {
+            if(document.querySelector('.sub-menu-selected[data-op="1"]')){
+                return;//DETENEMOS LA EJECUCIÓN POR CONVENIENCIA
+            }
+            let padre = svg.parentElement.parentElement;
+
+            const svgTar = document.querySelectorAll('.tarifa-svc');
+            svgTar.forEach((e)=>{
+                e.style.fill = 'black';
+            });
+            svg.style.fill = '#a8fa00';
+
+            const tarifaId = padre.getAttribute('data-id');
+            const svcFocus = tabService.querySelector('.tarifa-svc-pick');
+            svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
+            padre.classList.add('tarifa-svc-pick');
+            mostrarDetalleTarifaSvc(Number(tarifaId));
+            //Agregando el data id
+            const butonEdit = document.querySelector('button.edit-tar-svc');
+            const butonDel = document.querySelector('button.del-tar-svc');
+            butonEdit.setAttribute('data-id', tarifaId);
+            butonDel.setAttribute('data-id', tarifaId);
+            butonEdit.removeAttribute('disabled');
+            butonDel.removeAttribute('disabled');
+        }
+    }
+    else if(clases.contains('tarifa-svc')) {
+        if(document.querySelector('.sub-menu-selected[data-op="1"]')){
+            return;//DETEMOS LA EJECUCIÓN POR CONVENIENCIA
+        }
         let padre = {};
-        if(input.tagName === "IMG" || input.tagName === "H6"){
+        if(input.tagName === "IMG" || input.tagName === "H6" || input.tagName === "svg"){
             padre = input.parentElement.parentElement;
         } else if(input.tagName === "A"){
             padre = input.parentElement;
         }
+
+        const svgTar = document.querySelectorAll('.tarifa-svc');
+        svgTar.forEach((e)=>{
+            e.style.fill = 'black';
+        });
+        const svg = padre.querySelector('svg');
+        svg.style.fill = '#a8fa00';
+
         const tarifaId = padre.getAttribute('data-id');
         const svcFocus = tabService.querySelector('.tarifa-svc-pick');
         svcFocus != undefined ? svcFocus.classList.remove('tarifa-svc-pick') : "";
@@ -405,8 +451,12 @@ function bodyClickEventListener(e){
             svcEdit.classList.remove('hidden');
             tarBasics.classList.add('hidden');
             subTitleTarifario.classList.add('hidden');
-            sbTarifario.classList.add('hidden');
-            tarifarios.classList.add('hidden');
+            if(!servicios.find(e=>e.id===selServicioId).tarifarios.length){
+                sbTarifario.classList.add('hidden');
+            }else{
+                sbTarifario.classList.remove('hidden');
+            }
+            tarifarios.classList.remove('hidden');
             cleanPaqueteCampos();
             const tarPick = document.querySelector('.tarifa-svc-pick');
             if(tarPick){
@@ -414,6 +464,12 @@ function bodyClickEventListener(e){
             }
             document.querySelector('.edit-tar-svc').setAttribute('disabled', 'disabled');
             document.querySelector('.del-tar-svc').setAttribute('disabled', 'disabled');
+            document.querySelectorAll('svg.tarifa-svc').forEach((e)=>{
+                e.style.fill = 'black';
+            });
+            document.querySelectorAll('.tarifa-svc').forEach((e)=>{
+                e.classList.add('no-selectable');
+            });
         } else {
             svcBasics.classList.add('hidden');
             btnsServicio.classList.add('hidden');
@@ -421,7 +477,12 @@ function bodyClickEventListener(e){
             tarBasics.classList.remove('hidden');
             subTitleTarifario.classList.remove('hidden');
             sbTarifario.classList.remove('hidden');
-            tarifarios.classList.remove('hidden');
+            document.querySelectorAll('svg.tarifa-svc').forEach((e)=>{
+                e.style.fill = 'black';
+            });
+            document.querySelectorAll('.tarifa-svc').forEach((e)=>{
+                e.classList.remove('no-selectable');
+            });
         }
     }
 }
@@ -1068,7 +1129,12 @@ function setTarifarios(tarifarios){
     tarifarios.forEach(t=>{
         dt.appendChild(
             htmlStringToElement(`${putTarifario(t.id, t.nombre)}`));
-    })
+    });
+    if(!tarifarios.length){
+        document.querySelector('.st-tarifario').classList.add('hidden');
+    }else{
+        document.querySelector('.st-tarifario').classList.remove('hidden');
+    }
 }
 
 function putTarifario(id, nombre){
@@ -1077,7 +1143,7 @@ function putTarifario(id, nombre){
     }, 500);
     return `<div class="col-md-3 col-xs-4 mg-bt-10" data-id="${id}">
                         <a href="javascript:void(0)" class="tarifa-svc">
-                            <img class="tarifa-svc" src="${_ctx}img/purchase.png"/>
+                            <img class="tarifa-svc" src="${_ctx}img/purchase.svg"/>
                             <h6 class="tarifa-svc">${nombre}</h6>
                         </a>
                     </div>`

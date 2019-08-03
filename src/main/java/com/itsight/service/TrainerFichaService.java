@@ -40,4 +40,6 @@ public interface TrainerFichaService extends BaseService<TrainerFicha, Integer> 
     String enviarFichaTrainerEmpresa(TrainerEmpresaDTO trainer, Integer trainerId);
 
     Integer getTotalColaboradoresById(Integer trainerId);
+
+    String actualizarMiniGaleriaById(Integer trainerId, int length);
 }

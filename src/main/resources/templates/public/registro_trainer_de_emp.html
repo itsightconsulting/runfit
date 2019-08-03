@@ -23,7 +23,11 @@
                               <input type="file" id="InpImgPerfil" name="InpImgPerfil" accept=".jpg,.png,.jpeg,.bmp">
                               <div class="avatar-form-content img-container">
                                   <img id="FinalImagenRecortada" title="Subir foto" onclick="javascript:document.getElementById('InpImgPerfil').click()" th:src="@{/img/public/subir_foto.png}" style="height: 220px;"/>
-                                  <i id="btnVerPerEmpresa" rel="tooltip" title="Si desea volver al perfil de empresa, clickee aquí" style="float:right; color: #17a2b8;font-size: 1.5em;cursor: pointer;" class="fa fa-arrow-circle-left"></i>
+                              </div>
+                              <div class="div-btn-emp-trainer">
+                                  <button id="btnVerPerEmpresa" class="btn btn-white" rel="tooltip" title="Si desea volver al perfil de empresa, clickee aquí">
+                                      IR AL PERFIL EMPRESA
+                                  </button>
                               </div>
                           </div>
                       </div>
@@ -296,10 +300,10 @@
                                   <input type="hidden" id="HshEmpTrainerId" th:value="${hshEmpTrainerId}">
                               </div>
                           </form>
-                          <div class="alert alert-info-cs">Si ya termino de registrar a todos sus colaboradores, regrese al
+                          <!--<div class="alert alert-info-cs">Si ya termino de registrar a todos sus colaboradores, regrese al
                               menú principal mediante el ícono <i style="color:#17a2b8;" class="fa fa-arrow-circle-left fa-fw"></i> que se
                               encuentra debajo de la foto de perfil de esta página
-                          </div>
+                          </div>-->
                     </div>
                   </div>
           </section>

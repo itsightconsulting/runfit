@@ -820,6 +820,10 @@ footer li a span.fa{
   .entrena_correctamente ol li .item h2 {
     padding: 0
   }
+
+  .div-btn-emp-trainer{
+    text-align: center;
+  }
 }
 
 fieldset,
@@ -927,6 +931,14 @@ h1 {
   cursor: pointer;
 }
 
+.avatar-form .div-btn-emp-trainer {
+  padding: 10px 0px;
+}
+
+.avatar-form .div-btn-emp-trainer > button {
+  margin-bottom: 0px;
+}
+
 .trainers-form {
   margin-bottom: 80px;
   position: relative;
@@ -1011,9 +1023,6 @@ ul.tabs {
   padding: 0;
   display: inline-block;
   width: 100%;
-}
-.trainers-form .tab-contenido{
-  display: none;
 }
 
 .trainers-form .tab-contenido.current{
@@ -1177,6 +1186,9 @@ ul.tabs {
   width: 100%;
   margin-bottom: 10px
 }
+.trainers-form .form-group.rs a {
+  margin-right: 15px
+}
 
 .trainers-form .form-group.rs img {
   max-width: 30px;
@@ -1277,7 +1289,8 @@ ul.tabs {
 }
 
 .trainers-form .sub-menu[data-op="2"]{
-  padding-bottom: 12px !important;
+  padding-bottom: 9px !important;
+  margin-left: 23px;
 }
 
 .trainers-form #FichasDisponibles .img-ficha {
@@ -1419,7 +1432,7 @@ ul.tabs {
   padding: 0;
   margin: 0;
   margin-top: 50px;
-  text-align: center;
+  text-align: left;
 }
 
 .staff li {
@@ -1493,6 +1506,12 @@ ul.tabs {
   left: 0;
   top: 9px;
   border-radius: 50%
+}
+
+.staff li.list-no-point p::before {
+  content: "";
+  display: none;
+
 }
 
 .modal .modal-dialog {
@@ -3865,6 +3884,15 @@ img.tarifa-svc {
   width: 58px;
 }
 
+svg.tarifa-svc {
+  width: 58px;
+  height: 58px;
+}
+
+.no-selectable{
+  cursor: auto;
+}
+
 .tarifa-svc-pick {
   /*border-bottom: 5px solid #a8fa00;
   border-radius: 20%;*/
@@ -4002,6 +4030,10 @@ section.trainers-form {
 
 .modal .carousel-control {
   background: none;
+  opacity: 1 !important;
+}
+.modal .carousel-control:hover{
+  opacity: 0.7 !important;
 }
 
 .button-remover{
@@ -4009,7 +4041,7 @@ section.trainers-form {
   height: 120px;
 }
 
-.img-remover {
+.img-remover, .img-remover-antiguo {
   display: block !important;
   height: 40px !important;
   width: 40px !important;
@@ -4189,3 +4221,10 @@ body.modal-open {
 }
 
 /* END SPINNER */
+
+.tyc-fa-ec {
+  top: -1px;
+  font-size: 1.6em;
+  left: 2px;
+  position: relative;
+}
