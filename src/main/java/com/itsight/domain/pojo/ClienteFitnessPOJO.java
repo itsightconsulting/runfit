@@ -13,78 +13,53 @@ public class ClienteFitnessPOJO {
 
     private Integer id;
 
-
     private String competencias;
-
 
     private String condicionAnatomica;
 
-
     private String desObjetivos;
-
 
     private String desTerPredom;
 
     private String desTerPredomOtro;
 
-
-
     private String desgasteZapatilla;
 
     private String desgasteZapatillaOtro;
 
-
     private Integer diasSemanaCorriendo;
-
 
     private Integer estadoCivil;
 
-
     private String fitElementos;
-
 
     private Boolean flagCalentamiento;
 
-
     private Boolean flagEstiramientos;
-
 
     private Integer frecuenciaComunicacion;
 
-
     private Double imc;
-
 
     private BigDecimal kilometrajePromedioSemana;
 
-
     private String mejoras;
-
 
     private Integer nivel;
 
-
     private BigDecimal peso;
-
 
     private String salud;
 
-
     private Integer sexo;
-
 
     private Integer talla;
 
-
     private String tiempoDistancia;
-
 
     private String tiempoUnKilometro;
 
-
     private Integer tipoCanalVentaId;
-
-
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaCreacion;
@@ -92,42 +67,30 @@ public class ClienteFitnessPOJO {
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaModificacion;
 
-
     private boolean flagActivo;
-
 
     private String correo;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaNacimiento;
 
-
     private Date fechaUltimoAcceso;
-
 
     private String movil;
 
-
     private String nombres;
-
 
     private String apellidos;
 
-
     private String numeroDocumento;
-
 
     private Integer paisId;
 
-
     private Integer tipoDocumentoId;
-
 
     private String ubigeo;
 
-
     private Integer predeterminadaFichaId;
-
 
     public ClienteFitnessPOJO(
             Integer id,

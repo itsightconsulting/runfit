@@ -126,6 +126,22 @@
   text-transform: uppercase
 }
 
+
+.login .show-pass{
+  cursor: pointer;
+  position: absolute;
+  left: 325px !important;
+  top: 21px !important;
+  color: #A8FA00;
+  font-size: 1.6em;
+}
+
+@media only screen and (max-width: 420px) {
+  .login .show-pass{
+    left: 293px !important;
+  }
+}
+
 /*.login .form-group input {
   color: #a8fa00;
   background: transparent;
@@ -4217,6 +4233,12 @@ body.modal-open {
   }
   100%{
     transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .half-circle-spinner {
+    left: 30.5%;
   }
 }
 

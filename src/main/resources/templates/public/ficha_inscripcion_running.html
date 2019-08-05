@@ -1433,6 +1433,8 @@
             type: 'GET',
             url: _ctx + 'p/condicion-mejora/listar/todos',
             dataType: 'json',
+            blockLoading: false,
+            noOne: true,
             success: function (res) {
               lstCondMejoras = res;
               const divConMej = document.getElementById('CondicionesMejora');
@@ -2340,7 +2342,9 @@
         document.querySelector('#HistorialDeportivoAct').value = "Debería ir el historial adultez";
         document.querySelector('#FrecuenciaCardiaca').value = 120;
         document.querySelector('#FrecuenciaCardiacaMaxima').value = 190;
-        document.querySelector('input[name="CondicionMejora"]').checked = true;
+        if(document.querySelector('input[name="CondicionMejora"]')){
+          document.querySelector('input[name="CondicionMejora"]').checked = true;
+        }
 
 
         //Page 3
