@@ -63,7 +63,8 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
     public String registrarVisitante(VisitanteDTO visitanteDTO) throws CustomValidationException {
 
         if (!securityUserRepository.findCorreoExist(visitanteDTO.getCorreo())) {
-
+                //Por conveción del proyecto
+                visitanteDTO.setCorreo(visitanteDTO.getCorreo().toLowerCase());
                 Visitante obj = new Visitante();
                 String contraseñaEncrypt = encoderPassword(visitanteDTO.getPassword());
 

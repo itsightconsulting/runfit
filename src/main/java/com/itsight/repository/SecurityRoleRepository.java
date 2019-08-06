@@ -19,4 +19,8 @@ public interface SecurityRoleRepository extends JpaRepository<SecurityRole, Inte
     @Query("DELETE FROM SecurityRole S WHERE S.id = ?1")
     void deleteById(Integer id);
 
+    @Modifying
+    @Query("DELETE FROM SecurityRole S WHERE S.securityUser.id = ?1")
+    void deleteBySecurityId(Integer secUserId);
+
 }

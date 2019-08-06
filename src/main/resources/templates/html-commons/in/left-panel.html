@@ -14,6 +14,7 @@
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">Mi Perfil</a></li>
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('RUNNER')">
@@ -25,17 +26,16 @@
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
+                <li><a th:href="@{/gestion/cliente-fitness/perfil}"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">Mi Perfil</a></li>
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">
-                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 55.svg}+'?'+${version}">Planes prediseñados</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_money.svg}+'?'+${version}">Pagos</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 52.svg}+'?'+${version}">Suspendidos</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Estadísticas</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Mis contratos</a></li>
-                <li><a class="" th:href="@{/gestion/video}"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Grupo de videos</a></li>
             </th:block>
             <li><a class="" href="javascript:void(0);" onclick="cerrarSesion();"><img class="svg" th:src="@{/img/iconos/icon_arrow-left.svg}+'?'+${version}">Salir</a></li>
         </ul>

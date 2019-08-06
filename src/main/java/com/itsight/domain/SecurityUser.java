@@ -139,7 +139,7 @@ public class SecurityUser{
     private Set<SecurityRole> roles;
 
     @JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "securityUser", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, optional = false)
     private Cliente cliente;
 
     @JsonBackReference

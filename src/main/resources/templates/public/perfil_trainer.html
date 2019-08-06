@@ -586,7 +586,6 @@
       }
 
       function registrarContactoTrainer(){
-
           if(!$(frm).valid()){
               return;
           }
@@ -596,7 +595,7 @@
           params.correoTrainer = $perfil.correo;
           const trainerId = $perfil.id;
           $('#btnInfoContacto').attr('disabled', 'disabled');
-          const ttId = $perfil.tipoTrainerId
+          const ttId = $perfil.tipoTrainerId;
           const url = _ctx + `p/contacto/trainer/registrar/${trainerId}?ttId=${ttId}`;
           $.ajax({
               type: 'POST',
@@ -774,7 +773,7 @@
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
         if(t.centroTrabajo){
             document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
-        }else{
+        } else {
             $('#dvCentroTrabajo').addClass('hidden');
         }
         let res = document.querySelector('#Resultados');
@@ -947,9 +946,11 @@
 
       function mostrarMediosPago(mediosPago, cuentas){
         //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+        let noOne = true;
         if(cuentas){
             const ccs = JSON.parse(cuentas);
             if(ccs.length){
+                noOne = false;
                 //Importante para que en el modal no aparezca el ícono imagen de eliminar
                 ccs[0].noDelete = true;
                 ccBancarias = ccs;
@@ -962,6 +963,7 @@
 
         const ccs = mediosPago ? mediosPago.split("|") : [];
         ccs.forEach(id=>{
+            noOne = false;
             if(id != "1"){
                 tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
             }
@@ -971,6 +973,10 @@
         }
         if(!ccs.find(e=>e!="1")){
             document.querySelector('.tarjetas').remove();
+        }
+
+        if(noOne){
+            document.querySelector('.title-metodo-pago').classList.add('hidden');
         }
 
         number_time_line();

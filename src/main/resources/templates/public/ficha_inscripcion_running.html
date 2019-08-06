@@ -1285,6 +1285,7 @@
                       </div>
                     </li>
                     <th:block sec:authorize="!hasRole('GUEST')">
+                      <!-- IMPORTANTE YA QUE BASADO EN Username ID y password ID el backend sigue uno u otro flujo -->
                       <li>
                         <div class="form-group">
                           <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
@@ -1761,6 +1762,9 @@
 
       function generateBody(){
         const obj = getFormData($('#frm_registro'));
+        //NECESARIO PARA QUE EN LA SERIALIZACIÓN NO SE LE RESTE A LA FECHA UN DÍA
+        let parseFecha = parseFromStringToDate(obj.fechaNacimiento);
+        obj.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
         const trainerId = document.getElementById('TrainerId');
         const correoTrainer = document.getElementById('CorreoTrainer');
         obj.trainerId = trainerId.value === "" ? null : trainerId.value;
@@ -2203,15 +2207,27 @@
             ViaConexion: {
               required: true
             },
-            Username: {
-              required: true,
-              usernameOrEmail: true,
-              rangelength: [7, 30],
+            Username: function(){
+              if(document.getElementById('Username')){
+                return {
+                  required: true,
+                  usernameOrEmail: true,
+                  rangelength: [7, 30],
+                }
+              }else{
+                return {};
+              }
             },
-            Password: {
-              required: true,
-              rangelength: [8, 30],
-              pwcheck: true
+            Password: function(){
+              if(document.getElementById('Password')){
+                return {
+                  required: true,
+                  rangelength: [8, 30],
+                  pwcheck: true
+                }
+              } else{
+                return {};
+              }
             },
             InpFechaCompetencia:{
               greaterThanDate: nowDatePlusOne,
@@ -2368,8 +2384,10 @@
         document.querySelector('input[name="ItemsFitness"]').checked = true;
         document.querySelector('input[name="ViaConexion"]').checked = true;
         document.querySelector('#DesComp').value = "Maratón de Boston";
-        document.querySelector('#Username').value = "abc"+String(new Date().getTime());
-        document.querySelector('#Password').value = "runfit123";
+        if(document.querySelector('#Username')){
+          document.querySelector('#Username').value = "abc"+String(new Date().getTime());
+          document.querySelector('#Password').value = "runfit123";
+        }
 
         /*var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;

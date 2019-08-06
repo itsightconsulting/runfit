@@ -25,12 +25,12 @@ import static com.itsight.util.Enums.TipoMedia.AUDIO;
 @Transactional
 public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements DiaService {
 
+    @Autowired(required = false)
     private HttpSession session;
 
     @Autowired
-    public DiaServiceImpl(DiaRepository repository, HttpSession session) {
+    public DiaServiceImpl(DiaRepository repository) {
         super(repository);
-        this.session = session;
     }
 
     @Override

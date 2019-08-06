@@ -1142,6 +1142,9 @@
 
   function generateBody(){
     const obj = getFormData($('#frm_registro'));
+    //NECESARIO PARA QUE EN LA SERIALIZACIÓN NO SE LE RESTE A LA FECHA UN DÍA
+    let parseFecha = parseFromStringToDate(obj.fechaNacimiento);
+    obj.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
     const trainerId = document.getElementById('TrainerId');
     const correoTrainer = document.getElementById('CorreoTrainer');
     obj.trainerId = trainerId.value === "" ? null : trainerId.value;
