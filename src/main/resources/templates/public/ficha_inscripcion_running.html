@@ -1284,25 +1284,28 @@
                         </ul>
                       </div>
                     </li>
-                    <li>
-                      <div class="form-group">
-                        <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
-                        <div class="credentials-register">
-                          <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
-                            <label style="width: 110px !important;" for="Username">Usuario</label>
-                            <div>
-                              <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
-                              <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                              <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                    <th:block sec:authorize="!hasRole('GUEST')">
+                      <li>
+                        <div class="form-group">
+                          <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
+                          <div class="credentials-register">
+                            <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
+                              <label style="width: 110px !important;" for="Username">Usuario</label>
+                              <div>
+                                <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                              </div>
+                            </div>
+                            <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
+                              <label style="width: 112px !important;" for="Password">Contraseña</label>
+                              <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
                             </div>
                           </div>
-                          <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
-                            <label style="width: 112px !important;" for="Password">Contraseña</label>
-                            <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
-                          </div>
                         </div>
-                      </div>
-                    </li>
+                      </li>
+                    </th:block>
+
                     <li>
                       <div class="form-group">
                         <label>Finalmente, ¿cómo te enteraste de nosotros?<span class="obligatorio">*</span></label>

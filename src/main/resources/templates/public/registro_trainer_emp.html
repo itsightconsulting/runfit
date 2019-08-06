@@ -462,7 +462,12 @@
                                     </div>
                                     <h4 class="title-icon-ver">CUENTA BANCARIA
                                         <i rel="tooltip" data-original-title="Mostrar/Ocultar" data-toggle="collapse" data-target="#contentCC" class="fa fa-chevron-up fa-plus-cs" style="color: #a8fa00;float:right;"></i>
-                                        <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                                        <img id="VerCuentasBancarias" th:src="@{/img/iconos/icon_edit.svg}+'?'+${version}"
+                                             rel="tooltip"
+                                             data-placement="bottom"
+                                             title="Ir a editar las cuentas registradas"
+                                             onclick="verCuentasBancarias();"
+                                             class="hidden"/>
                                     </h4>
                                     <div class="form-group info-cuenta collapse in" id="contentCC">
                                         <label for="BancoId">BANCO<span class="obligatorio">*</span></label>

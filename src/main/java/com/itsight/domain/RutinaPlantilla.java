@@ -70,6 +70,7 @@ public class RutinaPlantilla extends AuditingEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
     private Trainer trainer;
+
     @JsonIgnoreProperties
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL, orphanRemoval = true)

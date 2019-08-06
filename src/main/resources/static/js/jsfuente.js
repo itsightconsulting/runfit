@@ -179,14 +179,19 @@ function detail_hide() {
 }
 
 function irRegistro(wildcard) {
-
     $('#btnNuevo').css('display', 'none');
-    $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        //console.log('....r1');
-        $('#view_list').hide();
-
-        $("#view_register").show().removeClass().addClass('fadeInLeftBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        });
+    $('#view_list').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function (e) {
+        const input = e.target;
+        if(input.classList.contains('dropdown-menu')){
+            return;
+        } else {
+            $('#view_list').hide();
+            $("#view_register").show().removeClass().addClass('fadeInLeftBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                return;
+            });
+        }
     });
     wildcard != undefined ? "" : limpiarMainForm();
 }
@@ -196,9 +201,10 @@ function irListado(x) {
     $('#view_register').removeClass().addClass('fadeOutRightBig' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         $('#view_register').hide();
         $('#btnNuevo').css('display', 'block');
-        //console.log('.....1.1');
-        $("#view_list").show().removeClass().addClass('fadeInLeft' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            //console.log('.....2');
+        $("#view_list").show().removeClass().addClass('fadeInLeft' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            return;
         });
     });
 }
@@ -373,9 +379,11 @@ function agregarModalParaVisualizacionImagen() {
 }
 
 function spinnerSwitchTab(effect){
+    const demo = [];
+    demo
     const gifRunner = _ctx + "img/runner.gif";
     $.SmartMessageBox({
-        /*title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",*/
+        /*title: "<i style='color: #a8fa00'> RUNFIT</i>",*/
         /*content: "" +
             "<br/><i style='font-size: 1.2em;'>La acción solicitada ha iniciado. Por favor espere...</i><i class='fa fa-spinner fa-spin fa-15x pull-right'></i><br/>" +
             "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='"+gifRunner+"'><div class='row text-center'></div>",*/
@@ -384,7 +392,7 @@ function spinnerSwitchTab(effect){
                          '<div class="circle circle-1"></div>' +
                          '<div class="circle circle-2"></div>' +
                      '</div>' +
-                     '<h3>Cargando...</h3>'+
+                     '<h3 style="text-align: center">Cargando...</h3>'+
                  '</div>',
         buttons: '[]',
         background: 'transparent'

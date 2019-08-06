@@ -5,6 +5,17 @@
             <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
         </div>
         <ul class="menu">
+            <th:block sec:authorize="hasRole('GUEST')">
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
+                <li><a th:href="@{/videoteca}" class="menu-allowed"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Mi videoteca</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
+                <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
+            </th:block>
             <th:block sec:authorize="hasRole('RUNNER')">
                 <li><a class="notif" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>

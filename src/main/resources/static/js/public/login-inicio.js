@@ -102,7 +102,7 @@ function sendFormRecuperacion(){
             $('.actions').addClass('hidden');
             setTimeout(()=>{
                 $.SmartMessageBox({
-                    title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                    title: "<i style='color: #a8fa00'> RUNFIT</i>",
                     content: "" +
                         "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para continuar con los próximos pasos</i><br/>",
                     buttons: '[SALIR]'
@@ -144,7 +144,7 @@ function sendFormCambiar(){
             $('.actions').addClass('hidden');
             setTimeout(()=>{
                 $.SmartMessageBox({
-                    title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                    title: "<i style='color: #a8fa00'> RUNFIT</i>",
                     content: "" +
                         "<br/><i style='font-size: 1.2em;'>Su contraseña se ha actualizado satisfactoriamente</i><br/>",
                     buttons: '[IR AL LOGIN]'
@@ -231,7 +231,7 @@ function registro() {
                 setTimeout(()=>{
                     $('.actions').addClass('hidden');
                     $.SmartMessageBox({
-                        title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                        title: "<i style='color: #a8fa00'> RUNFIT</i>",
                         content: "" +
                             "<br/><i style='font-size: 1.2em;'>Se le ha enviado un correo al e-mail asociado a esta cuenta. Por favor revise su bandeja para culminar el registro</i><br/>",
                         buttons: '[SALIR]'
@@ -251,7 +251,7 @@ function registro() {
 
 
                 $.smallBox({
-                    title: "Notificaciones Runfit",
+                    title: "RUNFIT",
                     content: '<p>'+mensaje+'</p>',
                     timeout: 4500,
                     color:  '#cc4d4d',

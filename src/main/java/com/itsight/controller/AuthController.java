@@ -5,6 +5,7 @@ import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.UsuarioRecover;
 import com.itsight.domain.dto.PasswordDTO;
+import com.itsight.repository.IdiomaRepository;
 import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.UsuarioRecoverRepository;
 import com.itsight.service.EmailService;
@@ -33,12 +34,16 @@ public class AuthController extends BaseController {
 
     private SecurityUserService securityUserService;
 
+    private IdiomaRepository idiomaRepository;
+
     @Autowired
     public AuthController(
                           UsuarioRecoverRepository usuarioRecoverRepository,
-                          SecurityUserService securityUserService) {
+                          SecurityUserService securityUserService,
+                          IdiomaRepository idiomaRepository) {
         this.usuarioRecoverRepository = usuarioRecoverRepository;
         this.securityUserService = securityUserService;
+        this.idiomaRepository = idiomaRepository;
     }
 
     @GetMapping(value = "/login")
@@ -57,7 +62,7 @@ public class AuthController extends BaseController {
 
     //	@PreAuthorize("hasAnyRole({'ADMIN','USER'}) or hasAuthority('READ_PRIVILEGE')")
     @GetMapping(value = {"/bienvenido", "/"})
-    public String welcome(){
+    public String welcome(Model model){
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for (GrantedAuthority authority: authorities){
             if(authority.getAuthority().equals("ROLE_ADMIN")){
@@ -67,6 +72,10 @@ public class AuthController extends BaseController {
                 return ViewConstant.MAIN_TRAINER_RED;
             if(authority.getAuthority().equals("ROLE_RUNNER") || authority.getAuthority().equals("ROLE_STORE"))
                 return ViewConstant.CLIENTE_INDEX;
+            if(authority.getAuthority().equals("ROLE_GUEST")){
+                model.addAttribute("idiomas", idiomaRepository.findAll());
+                return ViewConstant.CLIENTE_VISITANTE;
+            }
         }
         return ViewConstant.PRINCIPAL;
     }

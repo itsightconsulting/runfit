@@ -24,13 +24,18 @@ function imgToSvg () {
 }
 
 function datepicker_init () {
-    $('.datepicker_inline').datetimepicker({
-        locale: 'es',
-        inline: true,
-        sideBySide: true,
-        format: 'DD/MM/YYYY',
-        //defaultDate: date,
-    });
+    try {
+        $('.datepicker_inline').datetimepicker({
+            locale: 'es',
+            inline: true,
+            sideBySide: true,
+            format: 'DD/MM/YYYY',
+            //defaultDate: date,
+        });
+    }catch (e) {
+        console.warn(e);
+    }
+
 }
 
 function openNav() {

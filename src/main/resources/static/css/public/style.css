@@ -2034,7 +2034,7 @@ ul.tabs {
 .owl-carousel .item img  {
   width: 135px;
   height: 130px;
-  object-fit: cover;
+  object-fit: scale-down;
   object-position: center;
   transition: .5s;
 }
@@ -4222,7 +4222,7 @@ body.modal-open {
 }
 
 .half-circle-spinner .circle.circle-2 {
-  border-bottom-color: #ff1d5e;
+  border-bottom-color: #a8fa00;
   animation: half-circle-spinner-animation 1s infinite alternate;
 }
 
@@ -4249,4 +4249,23 @@ body.modal-open {
   font-size: 1.6em;
   left: 2px;
   position: relative;
+}
+
+#VerCuentasBancarias{
+  height: 32px;
+  float:right;
+  cursor: pointer;
+}
+
+#VerCuentasBancariasNoFloat{
+  height: 32px;
+  cursor: pointer;
+}
+
+.li-perfil-asesor{
+  padding-top: 1px;
+}
+
+#service .steps ol>li{
+  padding-left: 54px !important;
 }

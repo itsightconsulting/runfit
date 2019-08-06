@@ -104,7 +104,6 @@ public class PublicoController extends BaseController {
     public ModelAndView busquedaTrainer(Model model)
     {
         model.addAttribute("idiomas", idiomaRepository.findAll());
-        model.addAttribute("peLiDistritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
         return new ModelAndView(ViewConstant.MAIN_BUSQUEDA_TRAINER);
     }
 

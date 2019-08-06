@@ -16,6 +16,19 @@ function time_line() {
     }
 }
 
+function time_line_info_pago() {
+    var total = $(".steps ol").length;
+    var estilos;
+
+    for (var i = 0; i < total; i++) {
+        var altura_total = $(".steps ol")[i].clientHeight;
+        var altura_rest = $(".steps ol > li:last-child")[i].clientHeight;
+        $(".steps ol")[i].className += " cbp_tmtimeline_" + i + "";
+        estilos = ".cbp_tmtimeline_" + i + ":before{height: " + (altura_total - altura_rest) + "px !important}";
+        $("html").append("<style>" + estilos + "</style>");
+    }
+}
+
 function number_time_line() {
     var total = $(".steps ol>li").length;
     var estilos;

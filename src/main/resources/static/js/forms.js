@@ -40,18 +40,17 @@ function uploadImg(input, img) {
 
 const imgTemps = [];
 const nomImgsGaleria = [];
-function readURLCs(input, img, ix, mainDivId, nomImg) {
+function readURLCs(input, img, ix, mainDivId, nomImg, last) {
     nomImgsGaleria.push(nomImg);
     if (input.files && input.files[ix]) {
         var reader = new FileReader();
 
         reader.onloadend = function (e) {
             $(img).attr('src', e.target.result);
-        }
+        };
         reader.readAsDataURL(input.files[ix]);
-
         imgTemps.push(img);
-        if(imgTemps.length === $galeria.length){
+        if(imgTemps.length === $galeria.length && last){
             var dvCarusel =  generarDOMCarousel(imgTemps, nomImgsGaleria);
             const mainDiv = document.querySelector('#'+mainDivId);
             if(mainDiv.children.length == 1){
@@ -72,8 +71,8 @@ function readURLCs(input, img, ix, mainDivId, nomImg) {
                    iconSmall: "",
                });
            });
+        }
     }
- }
 }
 
 function readURLCsEdit(input, img, ix, mainDivId, nomImg) {
@@ -319,18 +318,16 @@ function poblarCaruselAlter(srcs, mainDivId, baseSrc) {
 
 function uploadImgs(input, mainDivId) {
     $(input).change(function () {
-        /*for(let i=0; i<this.files.length; i++){
-            $galeria.push(this.files[i]);
-        }*/
         //submit the form here
         let nomImgsFailed = '';
         var file;
+        var timesonLoad = 0;
         for(let i=0; i<input.files.length;i++){
             let imgTemp;
             let img = document.createElement('img');
             if ((file = this.files[i])) {
                 imgTemp = new Image();
-                imgTemp.onload = function () {
+                imgTemp.onload = function (e) {
                     const type = input.files[i].type;
                     if(type.includes("svg")){
                         $.smallBox({
@@ -342,14 +339,22 @@ function uploadImgs(input, mainDivId) {
                     const nameImg = input.files[i].name;
                     if(imgTemp.height >= 100){
                         $galeria.push(input.files[i]);
-                        readURLCs($(input)[0], img, i, mainDivId, nameImg);
+
+                        if(input.files.length-1 === timesonLoad) {
+                            readURLCs($(input)[0], img, i, mainDivId, nameImg, true);
+                        }else{
+                            readURLCs($(input)[0], img, i, mainDivId, nameImg);
+                        }
                     } else{
+                        if(input.files.length-1 === i){
+                        }
                         nomImgsFailed+='<br>'+nameImg;
                         $.smallBox({color: 'alert', content: 'La(s) imagen(es) debe(n) tener un alto mínimo de 300px: '+nomImgsFailed});
                     }
-
+                    ++timesonLoad;
                 };
                 imgTemp.onerror = function (){
+                    ++timesonLoad;
                     $(input).val("");
                     $.smallBox({
                         content: "<i> No se ha seleccionado una imagen válida!</i>",
@@ -708,7 +713,7 @@ function  galeriaPerfilCarousel() {
                   items: 4
               }
           }
-      })
+      });
 
     $(".owl-prev").empty();
     $(".owl-prev").append('<span class="fa fa-chevron-left"></span>');
@@ -744,10 +749,10 @@ function  galeriaPerfilCarousel() {
   }
     setTimeout(() => {
         const inpGal = document.querySelector('#InpGaleria');
-        /*if (inpGal) {
+        if (inpGal) {
             inpGal.value = "";
-        }*/
-    }, totImgsCarousel*200);
+        }
+    }, 2500);
 
 }
 
@@ -783,17 +788,21 @@ function generarDOMCarouselEdit(imgTemps, nomImgsGaleria){
         const dvItem = document.createElement('div');
         dvItem.classList.add('item');
         dvItem.setAttribute('value', "img" + (index+1) );
+        const aGall = document.createElement('a');
+        aGall.href = "#myGallery";
+        aGall.setAttribute('data-slide-to', index);
         const img = document.createElement('img');
         img.classList.add('img-gal')
         img.src = 'https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/'+$perfil.id+'/'+v;
-        dvItem.appendChild(img);
+        aGall.appendChild(img);
+        dvItem.appendChild(aGall);
         var btCerrar = document.createElement('a');
         btCerrar.classList.add('boton-remover');
         var imgCerrar = document.createElement('img');
-        imgCerrar.setAttribute('id', index );
+        imgCerrar.setAttribute('id', index);
         imgCerrar.setAttribute('src', _ctx+'img/remove.png');
         imgCerrar.classList.add('img-remover-antiguo');
-        imgCerrar.setAttribute('data-nom', nomImgsGaleria[index]);
+        btCerrar.setAttribute('data-name', v);
 
         btCerrar.appendChild(imgCerrar);
         dvItem.appendChild(btCerrar);
