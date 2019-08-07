@@ -6,7 +6,6 @@
     <title>Ficha de inscripción | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
     <style>
 
       #DivSvgSkeleton .tooltip.fade{
@@ -166,7 +165,9 @@
                         <div>
                           <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
                           <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                          <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                          <input sec:authorize="!hasRole('GUEST')" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                          <input sec:authorize="hasRole('GUEST')" th:value="${#authentication.name}" disabled="disabled" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+
                         </div>
                         <div><input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/></div>
                       </div>
@@ -1408,6 +1409,7 @@
       })();
 
       function init(){
+        checkCookiesForFichaCli();
         instanceInitTab();
         mainSeeders();
         mainEventListeners();
@@ -1426,7 +1428,7 @@
         getUbigeoPeruLim();
         if(flag_form_populate){
           getCondicionesMejora();
-          setTimeout(()=>populateForm(), 1000);
+          //setTimeout(()=>populateForm(), 1000);
         }
       }
 
@@ -1746,12 +1748,16 @@
           success: function (res) {
             $('#btnGuardar').attr('disabled', 'disabled');
             if(res == "-1"){
-              $('input[name="username"]').val(body.username);
-              $('input[name="password"]').val(body.password);
-              document.querySelector('.login_link').click();
-              setTimeout(() => {
-                $('#btn-login').click();
-              }, 1000);
+              if(document.getElementById('Username')){
+                $('input[name="username"]').val(body.username);
+                $('input[name="password"]').val(body.password);
+                document.querySelector('.login_link').click();
+                setTimeout(() => {
+                  $('#btn-login').click();
+                }, 1000);
+              } else {//SOLO CUANDO SE VA DE CLIENTE INVITADO A FULL
+                window.location.href = _ctx;
+              }
             }
           }, error: (xhr) => {
             exception(xhr);
@@ -1765,6 +1771,8 @@
         //NECESARIO PARA QUE EN LA SERIALIZACIÓN NO SE LE RESTE A LA FECHA UN DÍA
         let parseFecha = parseFromStringToDate(obj.fechaNacimiento);
         obj.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+        obj.correo = document.getElementById('Correo').value;
+        //END NECESARIO
         const trainerId = document.getElementById('TrainerId');
         const correoTrainer = document.getElementById('CorreoTrainer');
         obj.trainerId = trainerId.value === "" ? null : trainerId.value;
@@ -1963,6 +1971,7 @@
       }
 
       function constraintsValidation() {
+        const validUsername = document.getElementById('Username') ? true : false;
         $(frm).validate({
           rules: {
             Nombres: {
@@ -2195,7 +2204,7 @@
             },
             DesObjetivos: {
               required: true,
-              rangelength:[10, 500]
+              rangelength:[10, 1000]
             },
             DesComp: {
               required: true,
@@ -2207,27 +2216,15 @@
             ViaConexion: {
               required: true
             },
-            Username: function(){
-              if(document.getElementById('Username')){
-                return {
-                  required: true,
-                  usernameOrEmail: true,
-                  rangelength: [7, 30],
-                }
-              }else{
-                return {};
-              }
+            Username:{
+                required: validUsername,
+                usernameOrEmail: validUsername,
+                rangelength: [!validUsername ? 0 : 7, !validUsername ? 0 : 30],
             },
-            Password: function(){
-              if(document.getElementById('Password')){
-                return {
-                  required: true,
-                  rangelength: [8, 30],
-                  pwcheck: true
-                }
-              } else{
-                return {};
-              }
+            Password:{
+                required: validUsername,
+              rangelength: [!validUsername ? 0 : 8, !validUsername ? 0 : 30],
+                pwcheck: validUsername
             },
             InpFechaCompetencia:{
               greaterThanDate: nowDatePlusOne,
@@ -2311,7 +2308,11 @@
         //Maxlength
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
-            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+            if(e === "Username" || e === "Password" && rules[e].rangelength[1] === 0){
+              //Nothing
+            }else{
+              document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+            }
         });
       }
 

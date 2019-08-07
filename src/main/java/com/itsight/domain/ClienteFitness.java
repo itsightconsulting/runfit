@@ -152,7 +152,7 @@ public class ClienteFitness implements Serializable {
 
     private String desgasteZapatillaOtro;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String desObjetivos;
     @Column(nullable = false)
     private String desTerPredom;

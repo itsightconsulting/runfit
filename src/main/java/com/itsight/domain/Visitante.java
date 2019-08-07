@@ -8,6 +8,11 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@NamedNativeQueries({
+        @NamedNativeQuery(query = "select nombres, apellidos, '' uuidFp, '' extFp from visitante v where v.security_user_id = ?1",
+                name = "Visitante.getForCookieById",
+                resultSetMapping = "findForCookieById")
+})
 public class Visitante {
 
     @GeneratedValue(generator = "visitante_seq")
@@ -39,6 +44,5 @@ public class Visitante {
     @MapsId
     @JoinColumn(name = "SecurityUserId")
     private SecurityUser securityUser;
-
 
 }

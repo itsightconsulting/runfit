@@ -1384,3 +1384,12 @@ function imgToSvgForRegistroTrainer() {
         }, 'xml');
     });
 }
+
+function checkCookiesForFichaCli(){
+    const isGuest = !document.getElementById('Username');
+    if(isGuest){
+        const fullName = atob(getCookie("GLL_NOMBRE_COMPLETO"));
+        document.querySelector('#Nombres').value = fullName.split(" ")[0];
+        document.querySelector('#Apellidos').value = fullName.indexOf(" ") === -1 ? "" : fullName.slice(fullName.indexOf(" "));
+    }
+}

@@ -243,7 +243,6 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     @Override
     public String registroFull(ClienteDTO cliente) {
-        System.out.println(cliente.getFechaNacimiento().toString());
         boolean pickTrainer = false;
         if(cliente.getTrainerId() != null && cliente.getTrainerId() > 0){
             Boolean suserActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
@@ -269,6 +268,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         if(authorities.stream().filter(e->(e).getAuthority().equals("ROLE_GUEST")).count() == 1){
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             cliente.setUsername(username);
+            //Ya que este tipo de usuario tiene como nombre de usuario su correo
+            // personal(ya sea de facebook o el que puso en el mini registro para invitados)
+            cliente.setCorreo(username);
             secCliente = securityUserRepository.findByUsername(username);
             securityRoleRepository.deleteById(secCliente.getRoles().stream().findFirst().get().getId());
             //Fixing authentication object
@@ -289,6 +291,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
         objCli.setSecurityUser(secCliente);
 
+        //Se copian las propiedades del DTO al objeto que va a ser persistido
         BeanUtils.copyProperties(cliente, objCli);
 
         ClienteFitness objCliFit = new ClienteFitness();

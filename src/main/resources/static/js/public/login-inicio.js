@@ -197,17 +197,10 @@ function customErrorHandler(xhr, input){
 
 function registro() {
 
-
     if ($("#register-form").valid()) {
         const params = getFormData($('#register-form'));
-
-
         params.password = $('#PasswordRegistro').val();
-
         delete params.passwordRegistro;
-
-
-        console.log(params);
 
         let registroParams ={
             nombres : params.nombresRegistro,
@@ -216,8 +209,6 @@ function registro() {
             password: params.password
 
         }
-
-        console.log(registroParams);
 
         $.ajax({
             type: 'POST',

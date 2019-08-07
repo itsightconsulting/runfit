@@ -6,7 +6,6 @@
   <title>Ficha de inscripción | Fitness | Runfit</title>
   <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
   <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
 </head>
 <body>
 <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -91,7 +90,8 @@
                     <div>
                       <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
                       <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                      <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                      <input sec:authorize="!hasRole('GUEST')" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                      <input sec:authorize="hasRole('GUEST')" th:value="${#authentication.name}" disabled="disabled" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
                     </div>
                     <div><input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/></div>
                   </div>
@@ -733,25 +733,28 @@
                     </ul>
                   </div>
                 </li>
-                <li>
-                  <div class="form-group">
-                    <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
-                    <div class="credentials-register">
-                      <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
-                        <label style="width: 110px !important;" for="Username">Usuario</label>
-                        <div>
-                          <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
-                          <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                          <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                <th:block sec:authorize="!hasRole('GUEST')">
+                  <!-- IMPORTANTE YA QUE BASADO EN Username ID y password ID el backend sigue uno u otro flujo -->
+                  <li>
+                    <div class="form-group">
+                      <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
+                      <div class="credentials-register">
+                        <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
+                          <label style="width: 110px !important;" for="Username">Usuario</label>
+                          <div>
+                            <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                            <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                            <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                          </div>
+                        </div>
+                        <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
+                          <label style="width: 112px !important;" for="Password">Contraseña</label>
+                          <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
                         </div>
                       </div>
-                      <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
-                        <label style="width: 112px !important;" for="Password">Contraseña</label>
-                        <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
-                      </div>
                     </div>
-                  </div>
-                </li>
+                  </li>
+                </th:block>
                 <li>
                   <div class="form-group">
                     <label>Finalmente, ¿cómo te enteraste de nosotros?<span class="obligatorio">*</span></label>
@@ -834,6 +837,7 @@
   })();
 
   function init(){
+    checkCookiesForFichaCli();
     instanceInitTab();
     mainSeeders();
     mainEventListeners();
@@ -851,8 +855,7 @@
     getUbigeoPeruLim();
     if(flag_form_populate){
       getCondicionesMejora();
-      setTimeout(()=>populateForm(), 700);
-
+      //setTimeout(()=>populateForm(), 1000);
     }
   }
 
@@ -1126,12 +1129,16 @@
       success: function (res) {
         $('#btnGuardar').attr('disabled', 'disabled');
         if(res == "-1"){
-          $('input[name="username"]').val(body.username);
-          $('input[name="password"]').val(body.password);
-          document.querySelector('.login_link').click();
-          setTimeout(() => {
-            $('#btn-login').click();
-          }, 1000);
+          if(document.getElementById('Username')){
+            $('input[name="username"]').val(body.username);
+            $('input[name="password"]').val(body.password);
+            document.querySelector('.login_link').click();
+            setTimeout(() => {
+              $('#btn-login').click();
+            }, 1000);
+          } else {//SOLO CUANDO SE VA DE CLIENTE INVITADO A FULL
+            window.location.href = _ctx;
+          }
         }
       }, error: (xhr) => {
          exception(xhr);
@@ -1145,6 +1152,8 @@
     //NECESARIO PARA QUE EN LA SERIALIZACIÓN NO SE LE RESTE A LA FECHA UN DÍA
     let parseFecha = parseFromStringToDate(obj.fechaNacimiento);
     obj.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+    obj.correo = document.getElementById('Correo').value;
+    //END NECESARIO
     const trainerId = document.getElementById('TrainerId');
     const correoTrainer = document.getElementById('CorreoTrainer');
     obj.trainerId = trainerId.value === "" ? null : trainerId.value;
@@ -1176,7 +1185,6 @@
 
 
     obj.cliFit.frecuenciaComunicacion = 1;
-    obj.cliFit.viaConexion =  1;
     obj.cliFit.fichaId =  2;//General = 2
     obj.cliFit.tipoCanalVentaId = document.querySelector('input[name="ViaConexion"]:checked').value;
 
@@ -1260,6 +1268,7 @@
   }
 
     function constraintsValidation() {
+      const validUsername = document.getElementById('Username') ? true : false;
       $(frm).validate({
         rules: {
           Nombres: {
@@ -1488,7 +1497,7 @@
           },
           DesObjetivos: {
             required: true,
-            rangelength:[10, 500]
+            rangelength:[10, 1000]
           },
           ItemsFitness: {
             required: true
@@ -1496,16 +1505,16 @@
           ViaConexion: {
             required: true
           },
-          Username: {
-            required: true,
-            usernameOrEmail: true,
-            rangelength: [7, 30],
+          Username:{
+            required: validUsername,
+            usernameOrEmail: validUsername,
+            rangelength: [!validUsername ? 0 : 7, !validUsername ? 0 : 30],
           },
-          Password: {
-            required: true,
-            rangelength: [8, 30],
-            pwcheck: true
-          }
+          Password:{
+            required: validUsername,
+            rangelength: [!validUsername ? 0 : 8, !validUsername ? 0 : 30],
+            pwcheck: validUsername
+          },
         },
         messages: {
           Sexo: {
@@ -1543,7 +1552,11 @@
       //Maxlength
       const rules = $(frm).validate().settings.rules;
       Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
-        document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        if(e === "Username" || e === "Password" && rules[e].rangelength[1] === 0){
+          //Nothing
+        }else{
+          document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+        }
       });
     }
 

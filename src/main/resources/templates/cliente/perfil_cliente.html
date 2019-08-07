@@ -6,25 +6,11 @@
     <title>Mis clientes</title>
     <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/perfil-cliente.css}+'?'+${version}"/>
-
-
     <style>
-        #indicadorCirculo1,#indicadorCirculo3{
-            color: #d6ff58 !important;
+        input[type=time]::-webkit-datetime-edit-ampm-field {
+            display: none !important;
         }
-        #indicadorCirculo2,#indicadorCirculo4{
-            color: #cf3239 !important;
-        }
-
-
-
-         input[type=time]::-webkit-datetime-edit-ampm-field {
-             display: none !important;
-         }
         input[type=time]::-webkit-clear-button {
             -webkit-appearance: none !important;
             -moz-appearance: none !important;
@@ -55,15 +41,13 @@
         .form-group {
             margin-bottom: 18px;
         }
-
-
     </style>
 </head>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
-    <div id="wrapper">
+    <div id="wrapper" class="wrapper-cross-template">
             <section class="steps">
                 <div class="container">
                     <div class="row">
@@ -206,54 +190,96 @@
                             <div class="row">
                                 <div class="col-md-6"></div>
                                 <div class="col-md-6">
-
                                     <h4 class="condAnat-title">Condición Anatómica</h4>
-
                                     <ol>
                                         <li>
                                             <div class="form-group">
-                                                <label >¿Padeces actualmente de algún dolor?</label>
-
-                                                <label id="FlagPadeceDolor" name="FlagPadeceDolor" class="field-content"/>
-
+                                                <label>¿Padeces actualmente de algún dolor?<span class="obligatorio">*</span></label>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" id="FlagPadeceDolorSi">Si
+                                                            <input type="radio" name="FlagPadeceDolor" data-aka="Padece algún dolor" id="FlagPadeceDolor"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" id="FlagPadeceDolorNo">No
+                                                            <input type="radio" name="FlagPadeceDolor"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                        </li>
-                                        <li>
                                             <div class="form-group">
-                                                <label >Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
-                                                <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control" disabled="true"></textarea>
+                                                <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
+                                                <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label >Cuando realizas actividad física, el dolor está presente:</label>
-                                                <label id="MomDolor" name="MomDolor" class="field-content"/>
-
-                                            </div>
-                                        </li>
-                                        <li>
                                             <div class="form-group block-checks">
-                                                <label >Al correr el dolor empieza:</label>
-                                                <label id="MomDolorIni" name="MomDolorIni" class="field-content"/>
+                                                <label>Cuando realizas actividad física, el dolor está presente:</label>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content chk-mom-dolor">Siempre (incluso en reposo)
+                                                            <input type="radio" name="MomDolor" data-aka="Momento donde el dolor se hace presente" value="1"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content chk-mom-dolor">Al correr
+                                                            <input type="radio" name="MomDolor" value="2"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content chk-mom-dolor">Después de correr
+                                                            <input type="radio" name="MomDolor" value="3"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group block-checks hidden" id="DivDolCorrer">
+                                                <label>Al correr el dolor empieza:<span class="obligatorio"></span></label>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content">Al inicio
+                                                            <input type="checkbox" name="MomDolorIni" data-aka="Momento del dolor" value="1"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content">A la mitad
+                                                            <input type="checkbox" name="MomDolorIni" value="2"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content">Al final
+                                                            <input type="checkbox" name="MomDolorIni" value="3"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label >¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?</label>
-                                                <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control" disabled="true"></textarea>
+                                                <label>¿En los últimos 6 meses, has tenido o tienes alguna lesión o condición que te afecte al correr?</label>
+                                                <textarea id="DesLesion" name="DesLesion" data-aka="Descripción lesión últimos 6 meses" class="form-control"></textarea>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
-                                                <label >¿Tiene alguna recomendación o limitación médica?</label>
-                                                <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control" disabled="true"></textarea>
+                                                <label>¿Tiene alguna recomendación o limitación médica?</label>
+                                                <textarea id="RecomMedica" name="RecomMedica" data-aka="Recomendaciones médicas" class="form-control"></textarea>
                                             </div>
                                         </li>
                                         <li id="liFlagEmbarazo">
                                             <div class="form-group">
-                                                <label > ¿Estás embarazada?</label>
-                                                <label id="FlagEmbarazo" name="FlagEmbarazo" class="field-content"/>
-
+                                                <label>¿Estás embarazada?<span class="obligatorio">*</span></label>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content">Si
+                                                            <input type="radio" name="FlagEmbarazo" data-aka="Se encuentra embarazada" id="FlagEmbarazo"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content">No
+                                                            <input type="radio" name="FlagEmbarazo"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </li>
                                     </ol>
@@ -264,7 +290,6 @@
                             </div>
                         </div>
                         <div class="row ficha-02 fade-ficha inpts-2">
-
                             <div class="col-md-12">
                                 <h4>Entrenamiento</h4>
                             </div>
@@ -272,66 +297,147 @@
                                 <div class="col-md-6">
                                     <ol>
                                         <li>
+                                            <p class="title-form-group mar-top">factores de riesgo cardiovascular</p>
                                             <div class="form-group" id="dv">
                                                 <label >¿Padeces de hipertensión arterial?</label>
-                                                <label id="FlagHiperTensionArt" name="FlagHiperTensionArt" class="field-content"/>
-
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content">Si
+                                                            <input id="FlagHiperTensionArt" name="FlagHiperTensionArt" data-aka="Padece de hipertensión arterial" type="radio"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content">No
+                                                            <input name="FlagHiperTensionArt" type="radio"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-
                                             <div class="form-group">
                                                 <label >¿Fumas?</label>
-                                                <label id="FlagFumador" name="FlagFumador" class="field-content"/>
-
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagFumador" type="radio" name="FlagFumador" data-aka="Especificar si fuma" value="1" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input type="radio" name="FlagFumador" value="0" data-ele-hd="#divDesFumador"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <div class="form-group" id="dvDesFumador">
+                                            <div class="form-group hidden" id="divDesFumador">
                                                 <label >¿Con qué frecuencia fumas?</label>
                                                 <input id="DesFumador" name="DesFumador" class="form-control" type="text" disabled="true"/>
                                             </div>
                                             <div class="form-group">
                                                 <label >¿Antecedentes familiares de infarto o hipertensión?</label>
-                                                <label id="FlagAntFamInfOrHiper" name="FlagAntFamInfOrHiper" class="field-content"/>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input type="radio" id="FlagAntFamInfOrHiper" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hiperensión" value="1" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input type="radio" name="FlagAntFamInfOrHiper" data-aka="Especificar si existe antecedente familiar infarto o hipertensión" value="0" data-ele-hd="#FamInfOrHiper"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-
-                                            <div class="form-group">
-
+                                            <div class="form-group hidden">
                                                 <label >Familiar referido en la pregunta anterior</label>
-                                                <label id="FamInfOrHiper" name="FamInfOrHiper" class="field-content"/>
-
+                                                <select name="FamInfOrHiper" id="FamInfOrHiper" data-aka="Seleccionar familiar con antecedente de infarto o hipertensión" class="form-control hidden">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Papá</option>
+                                                    <option value="2">Mamá</option>
+                                                    <option value="3">Abuelo</option>
+                                                    <option value="4">Abuela</option>
+                                                    <option value="5">Hermano</option>
+                                                    <option value="6">Hermana</option>
+                                                </select>
                                             </div>
-
                                             <div class="form-group">
                                                 <label >¿Tienes resistencia a la insulina?</label>
-                                                <label id="FlagResInsulina" name="FlagResInsulina" class="field-content"/>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content">Si
+                                                            <input id="FlagResInsulina" name="FlagResInsulina" data-aka="Especificar si eres resistente a la insulina" type="radio"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content">No
+                                                            <input name="FlagResInsulina" type="radio"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-
                                             <div class="form-group">
                                                 <label >¿Tienes familiares directos que padecen de diabetes? </label>
-                                                <label id="FlagAntFamDiabetes" name="FlagAntFamDiabetes" class="field-content"/>
-
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagAntFamDiabetes" name="FlagAntFamDiabetes" data-aka="Especificar si tiene familiar con antecedentes de diabetes" type="radio" value="1" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input name="FlagAntFamDiabetes" type="radio" value="0" data-ele-hd="#FamDiabetico"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label > Familiar referido en la pregunta anterior</label>
-                                                <label id="FamDiabetico" name="FamDiabetico" class="field-content"/>
-
+                                                <select name="FamDiabetico" id="FamDiabetico" data-aka="Seleccionar familiar diabético" class="form-control hidden">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Papá</option>
+                                                    <option value="2">Mamá</option>
+                                                    <option value="3">Abuelo</option>
+                                                    <option value="4">Abuela</option>
+                                                </select>
                                             </div>
                                             <div class="form-group">
                                                 <label >¿Consideras que tienes sobrepeso?</label>
-                                                <label id="FlagSobrepeso" name="FlagSobrepeso" class="field-content"/>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagSobrepeso" name="FlagSobrepeso" data-aka="Especificar si sufre de sobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="1"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label > Nivel de sobrepeso </label>
-                                                <label id="CatSobrepeso" name="CatSobrepeso" class="field-content"/>
+                                            <div class="form-group hidden">
+                                                <select class="form-control hidden" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
+                                                    <option value="1">Menos de 5 KG</option>
+                                                    <option value="2">Menos de 10 KG</option>
+                                                    <option value="3">Más de 10 KG</option>
+                                                </select>
                                             </div>
-
                                             <div class="form-group">
-                                                <label >Tu alimentación es: </label>
-                                                <label id="CatAlimentacion" name="CatAlimentacion" class="field-content"/>
+                                                <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
+                                                <select id="CatAlimentacion" name="CatAlimentacion" data-aka="Categoría alimentación" class="form-control hidden">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Buenos</option>
+                                                    <option value="2">Regulares</option>
+                                                    <option value="3">Malos</option>
+                                                </select>
+                                            </div>
                                             <div class="form-group">
-                                                <label >¿Cuál es tu nivel de estrés?</label>
-                                                <label id="NivelEstres" name="NivelEstres" class="field-content"/>
-
+                                                <label>¿Cuál es tu nivel de estrés?<span class="obligatorio">*</span></label>
+                                                <select id="NivelEstres" name="NivelEstres" data-aka="Nivel de estres" class="form-control hidden">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Bajo</option>
+                                                    <option value="2">Medio</option>
+                                                    <option value="3">Alto</option>
+                                                </select>
                                             </div>
                                         </li>
                                     </ol>
@@ -339,43 +445,106 @@
                                 <div class="col-md-6">
                                     <ol>
                                         <li>
+                                            <p class="title-form-group mar-top">historial médico y personal</p>
                                             <div class="form-group">
-                                                <label  >¿Padeces de alguna enfermedad?</label>
-                                                <label id="FlagEnfermedad" name="FlagEnfermedad" class="field-content"/>
+                                                <label>¿Padeces de alguna enfermedad?</label>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagEnfermedad" name="FlagEnfermedad" data-aka="Especificar si padece de alguna enfermedad" type="radio" value="1" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input name="FlagEnfermedad" type="radio" value="0" data-ele-hd="#DesEnfermedad"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <div class="form-group">
-                                                <label > Especifique la enfermedad que padece</label>
-                                                <input class="form-control" id="DesEnfermedad" name="DesEnfermedad" type="text"  disabled="true"/>
+                                            <div class="form-group hidden">
+                                                <input class="form-control" id="DesEnfermedad" name="DesEnfermedad" data-aka="Especificar la enfermedad que padece" type="text" placeholder="Especificar la enfermedad que padece"/>
                                             </div>
                                             <div class="form-group">
                                                 <label >¿Tienes alergia a algún medicamento?</label>
-                                                <label class="field-content" id="FlagAleMed" name="FlagAleMed"/>
-
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagAleMed" name="FlagAleMed" data-aka="Especificar si es alergico a algún medicamento" type="radio" value="1" data-ele-hd="#DesAleMed"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input name="FlagAleMed" type="radio" value="0" data-ele-hd="#DesAleMed"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <div class="form-group">
-                                                <label >Especificar medicamento(s) al que es alérgico</label>
+                                            <div class="form-group hidden">
+                                                <label>Especificar medicamento(s) al que es alérgico</label>
                                                 <input id="DesAleMed" name="DesAleMed" class="form-control" type="text" disabled="true" />
                                             </div>
                                             <div class="form-group">
-                                                <label >¿Te has sometido a operaciones quirurgicas recientemente?</label>
-                                                <label id="FlagOperacion" name="FlagOperacion" class="field-content"/>
-
+                                                <label>¿Te has sometido a operaciones quirurgicas recientemente?</label>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagOperacion" name="FlagOperacion" data-aka="Especificar si se ha sometido a operaciones quirúrgicas recientemente" type="radio" value="1" data-ele-hd="#DesOperacion"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input name="FlagOperacion" type="radio" value="0" data-ele-hd="#DesOperacion"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <div class="form-group">
-
+                                            <div class="form-group hidden">
                                                 <label >Especificar la descripción de la operación a la cual se sometio</label>
                                                 <input name="DesOperacion" id="DesOperacion" class="form-control" type="text" disabled="true"/>
                                             </div>
                                             <div class="form-group">
                                                 <label >¿Tienes alguna hernia discal o padeces otra condición especial en la columna?</label>
-                                                <label name="FlagHerDisOrCondCol" id="FlagHerDisOrCondCol" class="field-content"/>
+                                                <ul class="checks">
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">Si
+                                                            <input id="FlagHerDisOrCondCol" name="FlagHerDisOrCondCol" data-aka="Especificar si tiene una hernia discal o problema en la columna" type="radio" value="1" data-ele-hd="#DesHerDisOrCondCol"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="chk-content" onclick="hideShowGenericInp(this.firstElementChild)">No
+                                                            <input name="FlagHerDisOrCondCol" type="radio" value="0" data-ele-hd="#DesHerDisOrCondCol"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label >Especificar brevemente la hernia o el problema en la columna</label>
                                                 <input class="form-control" id="DesHerDisOrCondCol" name="DesHerDisOrCondCol" type="text" disabled="true"/>
                                             </div>
                                             <div class="form-group" id="dvDesPadVarios">
                                                 <label >Padeces de Artritis/Condromalacia/Osteocondritis/N.A:</label>
+                                                <ul class="checks mar-0 row">
+                                                    <li class="col-md-6">
+                                                        <div class="chk-content">Artritis
+                                                            <input name="DesPadVarios" value="1" data-aka="Seleccionar padeces de: Artritis/Condromalacia/Osteocondritis/N.A" type="checkbox"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li class="col-md-6">
+                                                        <div class="chk-content">Condromalacia
+                                                            <input name="DesPadVarios" value="2" type="checkbox"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li class="col-md-6">
+                                                        <div class="chk-content">Osteocondritis
+                                                            <input name="DesPadVarios" value="3" type="checkbox"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                    <li class="col-md-6">
+                                                        <div class="chk-content">N.A.
+                                                            <input name="DesPadVarios" value="4" type="checkbox"/><span class="checkmark"></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
                                             <h5>Información adicional</h5>
                                         <li>
@@ -942,35 +1111,18 @@
                     </form>
                 </div>
             </section>
-
         </div>
     </div>
 </div>
-
-
 <!-- CUSTOM NOTIFICATION -->
-
 <script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
 <script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
 <script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/forms.js}+'?'+${version}"></script>
 
-
-
 <script th:inline="javascript">
 
     const initPageActive = 1;
- /*
-    const composedMuscles = [
-        ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"],
-        ["path338","path340"],
-        ["path418","path420"],
-        ["path346","path348"],
-        ["path426","path428"],
-    ];
-    const absIds = ["path62","path60", "path48","path46", "path206", "path208", "path210", "path212"];
-    let selectedMuscles = [];
-*/
 
     const stUbicacion = document.getElementById('stUbicacion');
     const frm = document.getElementById('frm_registro');
