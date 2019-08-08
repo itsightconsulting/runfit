@@ -867,7 +867,9 @@ section#info .list_plan li:before {
     font-size: 30px; }
 section#info .list_plan li a.edit .svg {
     margin-left: 20px;
-    width: 18px; }
+    width: 18px;
+    cursor: pointer;
+}
 
 section#suspendidos .title_carousel {
     color: #fff;
@@ -1289,3 +1291,26 @@ section#historial .periodo-rutina{
 section#historial .datos-cliente{
    margin:40px 0;
 }
+
+section#nuevaCategoriaPlantilla input ,section#editarCategoriaPlantilla input {
+    border: 1px solid #000;
+    border-radius: 4px;
+    top: 0px;
+    padding-left: 30px;
+    margin-left: 10px;
+}
+
+section#nuevaCategoriaPlantilla .checkmark, section#editarCategoriaPlantilla .checkmark{
+    top: 0px;
+}
+
+section#nuevaCategoriaPlantilla .chk-content, section#editarCategoriaPlantilla .chk-content {
+    font-size: 14px;
+    padding-top: 3px;
+}
+
+
+section#nuevaCategoriaPlantilla .chk-content input:checked ~ .checkmark , section#editarCategoriaPlantilla .chk-content input:checked ~ .checkmark {
+    background-color: #a8fa00;
+    border-color: #a8fa00;
+    }

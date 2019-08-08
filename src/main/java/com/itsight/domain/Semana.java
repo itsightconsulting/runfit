@@ -16,8 +16,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "semana"),
@@ -68,8 +67,10 @@ public class Semana {
     @JoinColumn(name = "RutinaId")
     private Rutina rutina;
 
+
     @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "semana", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(/*fetch = FetchType.LAZY,*/ mappedBy = "semana", cascade = CascadeType.ALL)
     private List<Dia> lstDia;
 
     @Column(nullable = false)
@@ -101,6 +102,35 @@ public class Semana {
 
     public Semana(){}
 
+    public Semana(SemanaPlantilla semanaPlantilla){
+
+        this.lstDia = new ArrayList<>();
+        this.calorias = semanaPlantilla.getCalorias();
+        this.fechaFin = semanaPlantilla.getFechaFin();
+        this.fechaInicio = semanaPlantilla.getFechaInicio();
+        this.flagEnvioCliente = semanaPlantilla.isFlagEnvioCliente();
+        this.flagFull = semanaPlantilla.isFlagFull();
+        this.horas = semanaPlantilla.getHoras();
+        this.kilometrajeActual = semanaPlantilla.getKilometrajeActual();
+        this.kilometrajeTotal = semanaPlantilla.getKilometrajeTotal();
+        this.metricas = semanaPlantilla.getMetricas();
+        this.metricasVelocidad = semanaPlantilla.getMetricasVelocidad();
+        this.objetivos = semanaPlantilla.getObjetivos();
+        this.prioridad = semanaPlantilla.getPrioridad();
+
+        List<DiaPlantilla> dP = semanaPlantilla.getLstDiaPlantilla();
+        List<Dia> dList = new ArrayList<>();
+
+        dP.forEach((temp) -> {
+
+            Dia dia= new Dia(temp);
+            dList.add(dia);
+        });
+
+        this.lstDia.addAll(dList);
+
+
+    }
 
     public void setRutina(Rutina rutina) {
         this.rutina = rutina;

@@ -1,4 +1,4 @@
-﻿let $porcentajesIntensidad = [];
+﻿flet $porcentajesIntensidad = [];
 
 Ficha = (function(){
     return {

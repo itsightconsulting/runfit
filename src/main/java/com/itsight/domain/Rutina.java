@@ -24,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -121,7 +122,8 @@ public class Rutina extends AuditingEntity {
     @JoinColumn(name = "RedFitnessId", referencedColumnName = "RedFitnessId", updatable = false)
     private RedFitness redFitness;
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(/*fetch = FetchType.LAZY, */mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Semana> lstSemana;
     @JsonIgnore
     @Type(type = "int-array")
@@ -138,6 +140,26 @@ public class Rutina extends AuditingEntity {
 
     public Rutina(Integer id){
         this.id = id;
+    }
+
+    public Rutina(RutinaPlantilla rPlantilla){
+        this.lstSemana = new ArrayList<>();
+        this.anios = rPlantilla.getAnios();
+        this.dias = rPlantilla.getDias();
+        this.meses = rPlantilla.getMeses();
+        this.totalSemanas = rPlantilla.getTotalSemanas();
+        this.nombre = rPlantilla.getNombre();
+
+       List<SemanaPlantilla> sP = rPlantilla.getLstSemana();
+        List<Semana> sList = new ArrayList<>();
+
+        sP.forEach((temp) -> {
+
+            Semana semana= new Semana(temp);
+            sList.add(semana);
+        });
+
+        this.lstSemana.addAll(sList);
     }
 
     public void setCliente(Integer cliId) {

@@ -82,6 +82,7 @@ public class RutinaPlantillaController {
     }
 
     //PT: Para trainer
+    /*
     @GetMapping(value = "/trainer/obtenerListado")
     public @ResponseBody
     List<RutinaPlantilla> listadoConFiltroPT(HttpSession session) {
@@ -90,7 +91,8 @@ public class RutinaPlantillaController {
         //PT: Por trainer
         return rutinaPlantillaService.listarPorFiltroPT(trainerId);
     }
-
+*/
+/*
     @GetMapping(value = "/trainer/red/obtenerListado")
     public @ResponseBody
     List<RutinaPlantilla> listadoRutinaPlantillaRed(@RequestParam int redFitnessId, @RequestParam int clienteId, HttpSession session) {
@@ -101,21 +103,21 @@ public class RutinaPlantillaController {
         //PT: Por trainer
         return rutinaPlantillaService.listarPorFiltroPT(trainerId);
     }
-
+*/
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @PostMapping(value = "/agregar")
     public @ResponseBody
-    String nuevo(@RequestBody RutinaPlantillaDTO rutinaPlantilla, HttpSession session) {
+    String nuevo(@RequestBody RutinaPlantillaDTO rutinaPlantilla) {
+
+
+
         //RutinaPlantillaDTO es un arreglo multidimensional que se diferencia del original en la propiedad lista de semanas
         //RutinaPlantillaDTO -> semanas | RutinaPlantilla > lstSemana
         //Esto con el fin de cortar la copia de propiedades mediante BeanUtils en el primer nivel
-        int userId = Integer.parseInt(session.getAttribute("id").toString());
-        RutinaPlantilla objRp = new RutinaPlantilla();
-        //Pasando del Dto al objeto
-        BeanUtils.copyProperties(rutinaPlantilla, objRp);
-        objRp.setTrainer(userId);
+
+    //   objRp.setTrainer(userId);
         //Instanciando lista de semanas
-        List<SemanaPlantilla> semanas = new ArrayList<>();
+ /*       List<SemanaPlantilla> semanas = new ArrayList<>();
         for (SemanaPlantillaDTO semana: rutinaPlantilla.getSemanas()) {
             SemanaPlantilla semanaPlantilla = new SemanaPlantilla();
             BeanUtils.copyProperties(semana, semanaPlantilla);
@@ -143,8 +145,25 @@ public class RutinaPlantillaController {
         //Guardando en session el id de la nueva rutina plantilla y los ids de las semanas generadas
         session.setAttribute("rpId", objRp.getId());
         session.setAttribute("rpSemanaIds", semanas.stream().map(semana-> semana.getId()).toArray(Integer[]::new));
+      */
+        rutinaPlantillaService.agregarRutinaPrediseñada(rutinaPlantilla);
+
         return ResponseCode.REGISTRO.get();
     }
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @PutMapping(value = "/actualizar")
+    public @ResponseBody
+    String actualizar(@RequestBody RutinaPlantillaDTO rutinaPlantilla) {
+
+        rutinaPlantillaService.actualizarRutinaPrediseñada(rutinaPlantilla);
+
+        return ResponseCode.ACTUALIZACION.get();
+    }
+
+
+
+
 
     @PostMapping(value = "/lista/agregar")
     public @ResponseBody String obtenerListaNueva(
@@ -273,5 +292,14 @@ public class RutinaPlantillaController {
         ClassId<BagForest> forestClassId = new ClassId<BagForest>(BagForest.class, forestId);
         return entityGraphBuilder.getEntityContext().getObject(forestClassId);
     }
+
+    @GetMapping(value = "/listar")
+    public  @ResponseBody List<RutinaPlantillaDTO>  obtenerRutinaPlantillaByCatId (@RequestParam Integer catId){
+
+        return rutinaPlantillaService.listarRutinasPredByCatId(catId);
+    }
+
+
+
 
 }

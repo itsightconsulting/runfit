@@ -72,7 +72,8 @@ public class Dia {
     private List<Elemento> elementos;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToOne(/*fetch = FetchType.LAZY*/)
     @JoinColumn(name = "SemanaId")
     private Semana semana;
 
@@ -80,6 +81,22 @@ public class Dia {
     private boolean flagEnvioCliente;
 
     public Dia(){}
+
+
+    public Dia(DiaPlantilla diaPlantilla){
+       this.calorias = diaPlantilla.getCalorias();
+       this.dia = diaPlantilla.getDia();
+       this.distancia = diaPlantilla.getDistancia();
+       this.elementos = diaPlantilla.getElementos();
+       this.fecha = diaPlantilla.getFecha();
+       this.flagDescanso = diaPlantilla.isFlagDescanso();
+       this.flagEnvioCliente = diaPlantilla.isFlagEnvioCliente();
+       this.literal = diaPlantilla.getLiteral();
+       this.minutos = diaPlantilla.getMinutos();
+       this.nota = diaPlantilla.getNota();
+       this.smsHeader = diaPlantilla.getSmsHeader();
+       this.voz = diaPlantilla.getVoz();
+    }
 
     public String getDiaLiteral(){
         return this.literal + " " + this.dia;

@@ -109,6 +109,7 @@
             return false;
         });
         $(".scroll").click(function() {
+            $("section#info").slideUp(200);
             $('html, body').animate({
                 scrollTop: 0
             }, 800);

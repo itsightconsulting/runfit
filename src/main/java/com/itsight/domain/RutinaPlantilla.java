@@ -6,26 +6,27 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
+import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.List;
 
-
+/*
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "rutinaPlantilla.trainer", attributeNodes = {
                 @NamedAttributeNode(value = "trainer")}),
         @NamedEntityGraph(name = "rutinaPlantilla"),
-})
+})*/
 @TypeDefs({
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 })
@@ -49,6 +50,10 @@ public class RutinaPlantilla extends AuditingEntity {
     )
     @Column(name = "RutinaPlantillaId")
     private Integer id;
+
+    @Column(nullable = false)
+    private String nombre;
+
     @Column(nullable = false)
     private int anios;
     @Column(nullable = false)
@@ -57,28 +62,25 @@ public class RutinaPlantilla extends AuditingEntity {
     private int totalSemanas;
     @Column(nullable = false)
     private int dias;
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicio;
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-    @Temporal(TemporalType.DATE)
-    private Date fechaFin;
+
+    @Type(type = "jsonb")
+    @Column(name = "control", columnDefinition = "jsonb")
+    private RutinaControl control;
+
+    @JsonIgnoreProperties
+    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(/*fetch = FetchType.LAZY, */mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true */)
+    private List<SemanaPlantilla> lstSemana;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
-    private Trainer trainer;
-    @JsonIgnoreProperties
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SemanaPlantilla> lstSemana;
+    @JoinColumn( name = "CategoriaPlantillaId" , referencedColumnName =  "CategoriaPlantillaId")
+    private CategoriaPlantilla categoriaPlantilla;
 
     public RutinaPlantilla(){}
 
-    public void setTrainer(Integer trainerId) {
-        this.trainer = new Trainer(trainerId);
-    }
 
 }
+
+

@@ -23,17 +23,21 @@ import java.util.List;
 public class RutinaPlantillaDTO implements Serializable {
 
     private int id;
+    private String nombre;
     private int anios;
     private int meses;
     private int totalSemanas;
     private int dias;
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    private Date fechaInicio;
-    @JsonSerialize(using = JsonDateSimpleSerializer.class)
-    private Date fechaFin;
+    private int categoriaPlantilla;
 
-    private List<SemanaPlantillaDTO> semanas;
+//  private List<SemanaPlantillaDTO> semanas;
 
     public RutinaPlantillaDTO(){}
 
+    public RutinaPlantillaDTO(int id, String nombre, int totalSemanas, int dias) {
+        this.id = id;
+        this.nombre = nombre;
+        this.totalSemanas = totalSemanas;
+        this.dias = dias;
+    }
 }

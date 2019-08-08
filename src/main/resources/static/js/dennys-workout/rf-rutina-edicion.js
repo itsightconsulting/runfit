@@ -82,9 +82,6 @@ $(function () {
 function init(){
 
     let uriParam = getParamFromURL("si");
-
-
-
     obtenerSemanaInicialRutina().then((semana)=>{
         //Esconder la opcion de collapse del menú principal
         document.querySelector('#left-panel .minifyme').classList.toggle('hidden');

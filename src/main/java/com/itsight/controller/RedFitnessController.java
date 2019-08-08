@@ -5,16 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
+import com.itsight.domain.CategoriaPlantilla;
 import com.itsight.domain.Rutina;
+import com.itsight.domain.Trainer;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.RutinaPOJO;
-import com.itsight.service.ClienteFitnessProcedureInvoker;
-import com.itsight.service.RedFitnessProcedureInvoker;
-import com.itsight.service.RedFitnessService;
-import com.itsight.service.RutinaService;
+import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
@@ -43,13 +43,17 @@ public class RedFitnessController {
 
     private ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker;
 
+    private TrainerService trainerService;
+
+
 
     @Autowired
-    public RedFitnessController(RedFitnessService redFitnessService, RedFitnessProcedureInvoker redFitnessProcedureInvoker, ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker, RutinaService rutinaService) {
+    public RedFitnessController(RedFitnessService redFitnessService, RedFitnessProcedureInvoker redFitnessProcedureInvoker, ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker, RutinaService rutinaService, TrainerService trainerService) {
         this.redFitnessService = redFitnessService;
         this.redFitnessProcedureInvoker = redFitnessProcedureInvoker;
         this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
         this.rutinaService = rutinaService;
+        this.trainerService = trainerService;
     }
 
     public RedFitnessController(RedFitnessService redFitnessService){
@@ -179,7 +183,6 @@ public class RedFitnessController {
         List<RedFitCliDTO> lstSuspendidos = redFitnessService.findSuspendidosbyTrainerId(trainerId,mes);
 
         return lstSuspendidos;
-
     }
 
 

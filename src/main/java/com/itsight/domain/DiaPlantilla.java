@@ -1,8 +1,10 @@
 package com.itsight.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.ListaPlantilla;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
@@ -15,6 +17,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "diaPlantilla"),
@@ -47,6 +50,13 @@ public class DiaPlantilla {
     @Column
     private boolean flagDescanso;
 
+    @Column
+    private String smsHeader;
+    @Column
+    private String nota;
+    @Column
+    private String voz;
+
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     @Temporal(TemporalType.DATE)
@@ -54,12 +64,30 @@ public class DiaPlantilla {
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private List<ListaPlantilla> listas;
+    private Set<ListaPlantilla> listas;
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToOne(/*fetch = FetchType.LAZY*/)
     @JoinColumn(name = "SemanaPlantillaId")
     private SemanaPlantilla semanaPlantilla;
+
+
+    @Column
+    private int minutos;
+
+    @Column
+    private double distancia;
+
+    @Column
+    private double calorias;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private List<Elemento> elementos;
+
+    @Column
+    private boolean flagEnvioCliente;
 
     public DiaPlantilla(){}
 
