@@ -94,8 +94,8 @@ function checkBoxes() {
 
 function activeItems() {
     $(".list_items .chk-content").click(function() {
-        var _self = $(this).find('input')
-        var parent = $(this).parent().parent()
+        var _self = $(this).find('input');
+        var parent = $(this).parent().parent();
         if (_self.is(':checked')) {
             parent.addClass('active')
         } else {
@@ -273,7 +273,7 @@ function smallBoxAlertValidation(inputsNotPassed){
             const attrAka = v.getAttribute('data-aka');
             if(attrAka){
                 return attrAka.toUpperCase();
-            }else{
+            } else {
                 const label = v.parentElement.parentElement.parentElement.previousElementSibling;
                 if(label && label.tagName === "LABEL"){
                     const nomFinal = label.textContent;

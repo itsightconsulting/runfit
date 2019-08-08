@@ -477,9 +477,6 @@ function getValuesConcatInpCheckbox(name){
     if(inpts.length > 0){
         return Array.from(inpts).map((v)=>
         {
-            if(name === "DesPadVarios"){
-                return v.parentElement.textContent.trim()
-            }
             if(v.value === "Otro"){
                 const txtOtro = document.getElementById(`${name}Otro`);
                 if(txtOtro.value.trim().length>0) {
@@ -832,7 +829,6 @@ function generarDOMCarouselEdit(imgTemps, nomImgsGaleria){
 
 function hideShowGenericInp(ele){
     const val = ele.value;
-
     const eleRefId = ele.getAttribute('data-ele-hd');
 
     let finalElement = document.querySelector(eleRefId);
@@ -846,6 +842,15 @@ function hideShowGenericInp(ele){
         finalElement.classList.add('hidden');
     else
         finalElement.classList.remove('hidden');
+
+    //Sub flujo aparte
+    if(ele.name && ele.name === "FlagSobrepeso"){
+        if(Number(val) === 0){
+            document.getElementById('SobrePeso').classList.add('hidden');
+        }else{
+            document.getElementById('SobrePeso').classList.remove('hidden');
+        }
+    }
 }
 
 function recordsRunningValidation(input){
@@ -1392,4 +1397,50 @@ function checkCookiesForFichaCli(){
         document.querySelector('#Nombres').value = fullName.split(" ")[0];
         document.querySelector('#Apellidos').value = fullName.indexOf(" ") === -1 ? "" : fullName.slice(fullName.indexOf(" "));
     }
+}
+
+function setUbigeo(ub){
+    const dep = ub.substr(0, 2);
+    const prov = ub.substr(2, 2);
+    const dis = ub.substr(4, 2);
+    fetch(_ctx+'p/ubigeo/get/peru-lim')
+        .then(res=> {
+                if(res.ok){
+                    return res.json();
+                }
+            }
+        ).then(res=>{
+        document.getElementById('Dep').innerHTML = res.lstDep.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+        $('#Dep').val(dep);
+        $('#Dep').multiselect('rebuild');
+        const url = `p/ubigeo/get/peru-prov-by-dep?depId=${dep}`;
+        fetch(_ctx+url)
+            .then(res=> {
+                if(res.ok){
+                        return res.json();
+                    }
+                }
+            ).then(res=>{
+            document.getElementById('Pro').innerHTML = res.lstPro.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+            $('#Pro').val(prov);
+            $('#Pro').multiselect('rebuild');
+            const lastUrl = `p/ubigeo/get/peru-dis-by-dep-and-prov?depId=${dep}&&provId=${prov}`;
+            fetch(_ctx+lastUrl)
+                .then(res=> {
+                    if(res.ok){
+                        return res.json();
+                    }
+                }).then(res=>{
+                document.getElementById('Dis').innerHTML = res.lstDis.map(v=>`<option value="${v.cod}">${v.ubNombre}</option>`).join('');
+                $('#Dis').val(dis);
+                $('#Dis').multiselect('rebuild');
+            }).catch((err)=>{
+                exception(err);
+            });
+        }).catch((err)=>{
+            exception(err);
+        });
+    }).catch((err)=>{
+        exception(err);
+    });
 }

@@ -8,14 +8,6 @@
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
     <style>
 
-      #DivSvgSkeleton .tooltip.fade{
-        top: 0px !important;
-      }
-
-      #DivSvgSkeleton .tooltip-arrow{
-          display: none;
-      }
-
       .sk-no-f-group {
         position: initial !important;
       }
@@ -23,57 +15,6 @@
       #tblCompetencia tbody input{
         width: 100%;
         max-width: 100%;
-      }
-
-      input.marca-referencial{
-        cursor: pointer !important;
-      }
-
-      .ok-time-selector {
-        position: absolute;
-        top: -6px;
-        right: -9px;
-        font-size: 1.8em;
-        color: black;
-      }
-
-      .popover-picker-time{
-        width: 220px;
-      }
-
-      .popover-picker-time .popover-content{
-        padding: 5px 0px;
-      }
-
-      .popover-picker-time .dv-input-time{
-        padding: 0px !important;
-        margin-right: 3px !important;
-      }
-
-      .popover-picker-time .dv-l-input-time{
-        padding: 0px !important;
-      }
-
-      .dv-input-time:nth-child(1){
-          margin-left: 8px;
-      }
-
-      .dv-picker-time-button{
-        float: right;
-        top: -27px;
-        right: 24px;
-      }
-
-      .popover-picker-time .dv-input-time:after{
-        content: ":";
-        position: absolute;
-        top: 9px;
-        right: -2px;
-      }
-
-      .popover-picker-time input{
-        padding: 0px;
-        width: 50px !important;
       }
 
       #tblCompetencia th{
@@ -363,13 +304,13 @@
                 <p class="desc">¡Ya falta poco para terminar!</p>
               </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
               <div class="col-md-12">
-                <h4>Entrenamiento</h4>
+                <h4>ENTRENAMIENTO</h4>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <ol>
                     <li>
-                      <p class="title-form-group mar-top">factores de riesgo cardiovascular</p>
+                      <p class="title-form-group mar-top">FACTORES DE RIESGO CARDIOVASCULAR</p>
                       <div class="form-group">
                         <label>¿Padeces de hipertensión arterial?<span class="obligatorio">*</span></label>
                         <ul class="checks">
@@ -482,14 +423,15 @@
                               <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0"/><span class="checkmark"></span>
                             </div>
                           </li>
+                          <span id="SobrePeso" class="hidden">0KG</span>
                         </ul>
                       </div>
-                      <div class="form-group hidden">
-                        <select class="form-control hidden" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
-                          <option value="1">Menos de 5 KG</option>
-                          <option value="2">Menos de 10 KG</option>
-                          <option value="3">Más de 10 KG</option>
-                        </select>
+                      <div class="">
+                        <div class="rango bg-slide hidden rango-sobrepeso">
+                          <input id="CatSobrepeso" name="CatSobrepeso" type="range" value="0" min="0" max="40" step="1" data-aka="Seleccione el sobrepeso aproximado" class="">
+                          <span class="rng-left">0KG</span>
+                          <span class="rng-right">40KG</span>
+                        </div>
                       </div>
                       <div class="form-group">
                         <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
@@ -515,7 +457,7 @@
                 <div class="col-md-6">
                   <ol>
                     <li>
-                      <p class="title-form-group mar-top">historial médico y personal</p>
+                      <p class="title-form-group mar-top">HISTORIAL MÉDICO Y PERSONAL</p>
                       <div class="form-group">
                         <label>¿Padeces de alguna enfermedad?<span class="obligatorio">*</span></label>
                         <ul class="checks">
@@ -665,7 +607,7 @@
                       </li>
                       <li>
                         <div class="form-group">
-                          <label>De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
+                          <label>De los siguientes aspectos, ¿Cuáles crees que debes mejorar?</label>
                           <div id="CondicionesMejora">
 
                           </div>
@@ -1017,32 +959,32 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Punta
-                              <input name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" value="Punta" type="checkbox"/><span class="checkmark"></span>
+                              <input value="1" name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Dedo interno
-                              <input name="DesgasteZapatilla" value="Dedo interno" type="checkbox"/><span class="checkmark"></span>
+                              <input value="2" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Dedo externo
-                              <input name="DesgasteZapatilla" value="Dedo externo" type="checkbox"/><span class="checkmark"></span>
+                              <input value="3" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Borde interno del talón
-                              <input name="DesgasteZapatilla" value="Borde interno del talón" type="checkbox"/><span class="checkmark"></span>
+                              <input value="4" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Borde externo del talón
-                              <input name="DesgasteZapatilla" value="Borde externo del talón" type="checkbox"/><span class="checkmark"></span>
+                              <input value="5" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Otro
-                              <input name="DesgasteZapatilla" value="Otro" type="checkbox"/><span class="checkmark"></span>
+                              <input value="6" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -1057,27 +999,27 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Asfalto
-                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="Asfalto" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="1" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Cemento
-                              <input name="DesTerPredom" value="Cemento" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="2" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Trail / Trocha
-                              <input name="DesTerPredom" value="Trail / Trocha" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="3" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Cinta de correr
-                              <input name="DesTerPredom" value="Cinta de correr" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="4" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Otro
-                              <input name="DesTerPredom" value="Otro" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="5" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li></li>
@@ -1428,7 +1370,7 @@
         getUbigeoPeruLim();
         if(flag_form_populate){
           getCondicionesMejora();
-          //setTimeout(()=>populateForm(), 1000);
+          setTimeout(()=>populateForm(), 1000);
         }
       }
 
@@ -1480,6 +1422,12 @@
         document.querySelector('body').addEventListener('click', bodyClickEventListener);
         document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
         document.querySelector('body').addEventListener('change', bodyChangeEventListener);
+        document.querySelector('body .ficha-02 .rango-sobrepeso').addEventListener('mousemove', (e)=>{
+          if(e.target.id === 'CatSobrepeso'){
+            document.getElementById('SobrePeso').textContent = e.target.value + "KG";
+          }
+        });
+
         document.querySelector('body').addEventListener('keydown', (e)=>{
           const input = e.target;
           if (input.classList.contains('input-time')) {
@@ -1518,6 +1466,10 @@
                 input.nextElementSibling.remove();
               }
             }
+          }
+
+          if(input.id && input.id === "CatSobrepeso"){
+            document.getElementById('SobrePeso').textContent = input.value + "KG";
           }
         }
 
@@ -1633,7 +1585,6 @@
               }
             }
           }
-
         }
         /* END elementos a disposición*/
 
@@ -1709,7 +1660,7 @@
             is = arr.some((v)=>{return v===id});
             index = is ? i : -1;
           }
-        })
+        });
         return {check: is, ix: index}
       }
 
@@ -1795,8 +1746,8 @@
         obj.cliFit.tiempoUnKilometro = document.getElementById('TiempoUnKilometro').value;
         obj.cliFit.kilometrajePromedioSemana = document.getElementById('KilometrajePromedioSemana').value;
         obj.cliFit.diasSemanaCorriendo = document.getElementById('DiasSemanaCorriendo').value;
-        obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
-        obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
+        obj.cliFit.flagCalentamiento = document.getElementById('FlagCalentamiento').checked;
+        obj.cliFit.flagEstiramiento = document.getElementById('FlagEstiramiento').checked;
         obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
         obj.cliFit.desgasteZapatillaOtro = document.getElementById('DesgasteZapatillaOtro').value;
         obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;

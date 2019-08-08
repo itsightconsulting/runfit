@@ -292,12 +292,13 @@
             <p class="desc">¡Ya falta poco para terminar!</p>
           </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
           <div class="col-md-12">
-            <h4>Entrenamiento</h4>
+            <h4>ENTRENAMIENTO</h4>
           </div>
           <div class="row">
             <div class="col-md-6">
               <ol>
                 <li>
+                  <p class="title-form-group mar-top">FACTORES DE RIESGO CARDIOVASCULAR</p>
                   <div class="form-group">
                     <label>¿Padeces de hipertensión arterial?<span class="obligatorio">*</span></label>
                     <ul class="checks">
@@ -410,14 +411,15 @@
                           <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0"/><span class="checkmark"></span>
                         </div>
                       </li>
+                      <span id="SobrePeso" class="hidden">0KG</span>
                     </ul>
                   </div>
-                  <div class="form-group hidden">
-                    <select class="form-control" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
-                      <option value="1">Menos de 5 KG</option>
-                      <option value="2">Menos de 10 KG</option>
-                      <option value="3">Más de 10 KG</option>
-                    </select>
+                  <div class="">
+                    <div class="rango bg-slide hidden rango-sobrepeso">
+                      <input id="CatSobrepeso" name="CatSobrepeso" type="range" value="0" min="0" max="40" step="1" data-aka="Seleccione el sobrepeso aproximado" class="">
+                      <span class="rng-left">0KG</span>
+                      <span class="rng-right">40KG</span>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
@@ -443,6 +445,7 @@
             <div class="col-md-6">
               <ol>
                 <li>
+                  <p class="title-form-group mar-top">HISTORIAL MÉDICO Y PERSONAL</p>
                   <div class="form-group">
                     <label>¿Padeces de alguna enfermedad?<span class="obligatorio">*</span></label>
                     <ul class="checks">
@@ -541,7 +544,6 @@
                     </ul>
                   </div>
                   <p class="title-form-group">Información adicional</p>
-                <li>
                   <div class="form-group more-inputs">
                     <label>En caso de emergencia llamar a:<span class="obligatorio">*</span></label>
                     <div><input id="ContactoEmergenciaNombre" name="ContactoEmergenciaNombre" data-aka="Completar nombre de contacto de emergencia" class="form-control inp-cont-emer" placeholder="Nombre del contacto" type="text"/></div>
@@ -550,15 +552,16 @@
                  <!--   <a href="javascript:void(0);" onclick="javascript:reducirInputsDinamico(this)"><i title="Reducir cantidad de contacto" class="fa fa-minus pull-right hide" style="color: #a8fa00; padding-right: 5px;"></i></a> -->
                   </div>
                   <p class="title-form-group">Historial deportivo</p>
-                  <div class="form-group">
-                    <label>Infancia / Juventud<span class="obligatorio">*</span></label>
-                    <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label>Actual (desde cuándo, periocidad, tiempo y actividades que realizas)<span class="obligatorio">*</span></label>
-                    <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control"></textarea>
-                  </div>
-                </li>
+                  <li>
+                    <div class="form-group">
+                      <label>Infancia / Juventud<span class="obligatorio">*</span></label>
+                      <textarea id="HistorialDeportivoAnt" name="HistorialDeportivoAnt" data-aka="Historial deportivo infancia/juventud" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label>Actual (desde cuándo, periocidad, tiempo y actividades que realizas)<span class="obligatorio">*</span></label>
+                      <textarea id="HistorialDeportivoAct" name="HistorialDeportivoAct" data-aka="Historial deportivo actual" class="form-control"></textarea>
+                    </div>
+                  </li>
                 <li>
                   <div class="form-group">
                     <label>Queremos conocer tus frecuencias cardiacas:</label>
@@ -593,7 +596,7 @@
                 </li>
                 <li>
                   <div class="form-group">
-                    <label>De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
+                    <label>De los siguientes aspectos, ¿Cuáles crees que debes mejorar?</label>
                     <div id="CondicionesMejora">
 
                     </div>
@@ -855,7 +858,7 @@
     getUbigeoPeruLim();
     if(flag_form_populate){
       getCondicionesMejora();
-      //setTimeout(()=>populateForm(), 1000);
+      setTimeout(()=>populateForm(), 1000);
     }
   }
 
@@ -905,7 +908,13 @@
     stUbicacion.addEventListener('change', evtLsChangeUbicacion);
     btnGuardar.addEventListener('click', sendMainForm);
     document.querySelector('body').addEventListener('click', bodyClickEventListener);
+    document.querySelector('body').addEventListener('click', bodyChangeEventListener);
     document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
+    document.querySelector('body .ficha-02 .rango-sobrepeso').addEventListener('mousemove', (e)=>{
+      if(e.target.id === 'CatSobrepeso'){
+        document.getElementById('SobrePeso').textContent = e.target.value + "KG";
+      }
+    });
     document.querySelector('body').addEventListener('keydown', (e)=>{
       const input = e.target;
       if(input.id === 'Username' || input.id === 'Correo'){
@@ -1031,6 +1040,17 @@
 
     }
     /* END elementos a disposición*/
+  }
+
+  function bodyChangeEventListener(e){
+    const input = e.target;
+    const clases = input.classList;
+
+    if(input.tagName === "INPUT"){
+      if(input.id && input.id === "CatSobrepeso"){
+        document.getElementById('SobrePeso').textContent = input.value + "KG";
+      }
+    }
   }
 
   function bodyFocusOutEventListener(e){
@@ -1173,8 +1193,8 @@
     obj.cliFit.nivel = document.getElementById('NivelAtleta').value;
 
     //private CondicionMejora mejoras;
-    obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
-    obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
+    obj.cliFit.flagCalentamiento = document.getElementById('FlagCalentamiento').checked;
+    obj.cliFit.flagEstiramiento = document.getElementById('FlagEstiramiento').checked;
     obj.cliFit.desgasteZapatilla = "";
     obj.cliFit.diasSemanaCorriendo = 0;
     obj.cliFit.tiempoDistancia = "";

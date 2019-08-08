@@ -1349,9 +1349,6 @@ ul.tabs {
   padding: 8px 15px
 }
 
-
-
-
 .ver-servicios {
   margin: 30px 0 35px
 }
@@ -2388,6 +2385,8 @@ ul.tabs {
   margin-bottom: 60px
 }
 
+/* STARTS FICHAS DE INSCRIPCIÓN CLIENTE */
+
 .steps {
   counter-reset: item
 }
@@ -2737,6 +2736,14 @@ ul.tabs {
   padding-right: 60px;
 }
 
+#DivSvgSkeleton .tooltip.fade{
+  top: 0px !important;
+}
+
+#DivSvgSkeleton .tooltip-arrow{
+  display: none;
+}
+
 .steps table thead {
   background: #000;
   text-transform: uppercase;
@@ -3077,6 +3084,25 @@ img.tibial {
   margin-bottom: 20px
 }
 
+.rango-sobrepeso .rng-left{
+    position: absolute;
+    top: 33px;
+    left: 2px;
+    font-size: 16px;
+}
+
+.rango-sobrepeso .rng-right{
+    position: absolute;
+    top: 33px;
+    right: 2px;
+    font-size: 16px;
+}
+
+#SobrePeso{
+    float: right;
+    border-bottom: 2px solid #b5fb26;
+}
+
 input[type=range] {
   cursor: pointer;
   -webkit-appearance: none;
@@ -3169,6 +3195,8 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
   background: transparent
 }
+
+/* ENDS FICHAS DE INSCRIPCIÓN CLIENTE */
 
 .menu_mobile {
   position: fixed;
@@ -4269,3 +4297,58 @@ body.modal-open {
 #service .steps ol>li{
   padding-left: 54px !important;
 }
+
+/* POPOVER PICKER TIME */
+
+input.marca-referencial{
+  cursor: pointer !important;
+}
+
+.ok-time-selector {
+  position: absolute;
+  top: -6px;
+  right: -9px;
+  font-size: 1.8em;
+  color: black;
+}
+
+.popover-picker-time{
+  width: 220px;
+}
+
+.popover-picker-time .popover-content{
+  padding: 5px 0px;
+}
+
+.popover-picker-time .dv-input-time{
+  padding: 0px !important;
+  margin-right: 3px !important;
+}
+
+.popover-picker-time .dv-l-input-time{
+  padding: 0px !important;
+}
+
+.dv-input-time:nth-child(1){
+  margin-left: 8px;
+}
+
+.dv-picker-time-button{
+  float: right;
+  top: -27px;
+  right: 24px;
+}
+
+.popover-picker-time .dv-input-time:after{
+  content: ":";
+  position: absolute;
+  top: 9px;
+  right: -2px;
+}
+
+.popover-picker-time input{
+  padding: 0px;
+  width: 50px !important;
+}
+
+/* END POPOVER PICKER TIME */

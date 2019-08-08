@@ -975,3 +975,7 @@ function getTimestampUnix(){
     return new Date().getTime();
 }
 
+function fromDateToString(d){
+    return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
+}
+

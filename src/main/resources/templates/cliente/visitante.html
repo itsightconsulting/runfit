@@ -9,41 +9,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/perfil-cliente.css}+'?'+${version}"/><!-- NECESARIO -->
 </head>
 <style><!-- NECESARIO -->
-    .input-group-addon{
-        display: none;
-    }
-
-    button.multiselect{
-        background-color: #fafafa !important;
-        margin-bottom: 0px !important;
-        border-radius: 15px;
-        color: #666666;
-        border: 1px solid rgba(141, 141, 141, 0.4);
-        font-size: 14px;
-        padding: 9px 30px;
-    }
-
-    .multiselect-container label.checkbox, .multiselect-container label.radio{
-        color: #303030 !important;
-    }
-
-    .multiselect-container li>a{
-        padding-left: 30px;
-    }
-
-    .multiselect-container li>a>label>input{
-        position: absolute;
-        top: -10px;
-    }
-
-    button.multiselect + ul{
-        width: 100% !important;
-        padding-top: 0px;
-        margin-top: 0px;
-    }
-    .multiselect-native-select .btn-group{
-        width: 100%;
-    }
 
     .encuentra-tu-coach {
         margin-top: -50px;
@@ -697,7 +662,7 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
-    <div id="wrapper" class="wrapper" style="margin: 50px;">
+    <div id="wrapper" class="wrapper">
         <section class="encuentra-tu-coach">
             <form id="frm_registro">
                 <div class="container">

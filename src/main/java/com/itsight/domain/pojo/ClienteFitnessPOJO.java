@@ -35,7 +35,7 @@ public class ClienteFitnessPOJO {
 
     private Boolean flagCalentamiento;
 
-    private Boolean flagEstiramientos;
+    private Boolean flagEstiramiento;
 
     private Integer frecuenciaComunicacion;
 
@@ -105,7 +105,7 @@ public class ClienteFitnessPOJO {
             Integer estadoCivil,
             String fitElementos,
             Boolean flagCalentamiento,
-            Boolean flagEstiramientos,
+            Boolean flagEstiramiento,
             Integer frecuenciaComunicacion,
             Double imc,
             BigDecimal kilometrajePromedioSemana,
@@ -157,7 +157,7 @@ public class ClienteFitnessPOJO {
 
                 this.flagCalentamiento = flagCalentamiento;
 
-                this.flagEstiramientos = flagEstiramientos;
+                this.flagEstiramiento = flagEstiramiento;
 
                 this.frecuenciaComunicacion = frecuenciaComunicacion;
 

@@ -48,7 +48,7 @@ import java.util.List;
                                         @ColumnResult(name = "estadoCivil"),
                                         @ColumnResult(name = "fitElementos"),
                                         @ColumnResult(name = "flagCalentamiento"),
-                                        @ColumnResult(name = "flagEstiramientos"),
+                                        @ColumnResult(name = "flagEstiramiento"),
                                         @ColumnResult(name = "frecuenciaComunicacion"),
                                         @ColumnResult(name = "imc"),
                                         @ColumnResult(name = "kilometrajePromedioSemana"),
@@ -146,10 +146,10 @@ public class ClienteFitness implements Serializable {
     @Column(nullable = false)
     private boolean flagCalentamiento;
     @Column(nullable = false)
-    private boolean flagEstiramientos;
+    private boolean flagEstiramiento;
     @Column(nullable = false)
     private String desgasteZapatilla;
-
+    @Column(nullable = true)
     private String desgasteZapatillaOtro;
 
     @Column(nullable = false, columnDefinition = "TEXT")

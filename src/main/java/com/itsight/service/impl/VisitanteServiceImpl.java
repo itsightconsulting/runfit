@@ -65,13 +65,13 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
                 //Por conveción del proyecto
                 visitanteDTO.setCorreo(visitanteDTO.getCorreo().toLowerCase());
                 Visitante obj = new Visitante();
-                String contraseñaEncrypt = encoderPassword(visitanteDTO.getPassword());
+                String contrasenaEncrypt = encoderPassword(visitanteDTO.getPassword());
 
                 BeanUtils.copyProperties(visitanteDTO, obj, new String[] {"password"});
 
                 String schema = Utilitarios.getRandomString(10);
 
-                SecurityUser securityUser = new SecurityUser(obj.getCorreo(), contraseñaEncrypt, false);
+                SecurityUser securityUser = new SecurityUser(obj.getCorreo(), contrasenaEncrypt, false);
                 Set<SecurityRole> listSr = new HashSet<>();
                 listSr.add(new SecurityRole("ROLE_GUEST", securityUser));
                 securityUser.setRoles(listSr);
