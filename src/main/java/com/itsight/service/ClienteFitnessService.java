@@ -2,6 +2,7 @@ package com.itsight.service;
 
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.ClienteFitness;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.generic.BaseService;
 
@@ -11,6 +12,5 @@ public interface ClienteFitnessService extends BaseService<ClienteFitness, Integ
 
     ClienteFitness findByClienteId(Integer clienteId);
 
-
-
+    void actualizarFull(ClienteDTO cliente, Integer clienteId) throws CustomValidationException;
 }

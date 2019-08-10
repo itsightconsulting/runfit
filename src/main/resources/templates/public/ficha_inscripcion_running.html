@@ -218,11 +218,11 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group hidden" id="dvDescDolor">
                         <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
                         <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                       </div>
-                      <div class="form-group block-checks">
+                      <div class="form-group block-checks hidden" id="dvMomDolor">
                         <label>Cuando realizas actividad física, el dolor está presente:</label>
                         <ul class="checks">
                           <li>
@@ -1294,7 +1294,7 @@
                         </ul><br/>
                       </div>
                       <div class="form-group">
-                        <button id="btnGuardar" class="btn btn-bg-black" type="submit">FINALIZAR</button>
+                        <button id="btnGuardar" class="btn btn-bg-black" type="button">FINALIZAR</button>
                       </div>
                     </li>
                   </ol>
@@ -1338,7 +1338,6 @@
       const btnGuardar = document.getElementById('btnGuardar');
       const body = document.querySelector('body');
       const verifiedNames = [];
-
       const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
       let nowDatePlusOne = new Date();
       nowDatePlusOne.setDate(nowDatePlusOne.getDate()+1);
@@ -1531,7 +1530,6 @@
             const absSelected = clases.contains('muscle-selected');
             const muscleName = input.getAttribute('data-original-title').slice(4).slice(0, -5);
             msclArr.forEach(v=>{
-              console.log(v);
               const absEle = document.getElementById(v);
               if(!absSelected){
                 selectedMuscles.push({id: absEle.id, name: muscleName});
@@ -1554,6 +1552,17 @@
               }
               if(prev.name === "DesPadVarios"){
                 validarSeleccionNA(prev,"DesPadVarios","4");
+              }
+            }
+            if(prev.name === "FlagPadeceDolor"){
+              const isChecked = document.getElementById('FlagPadeceDolor').checked;
+              if(isChecked){
+                document.getElementById('dvDescDolor').classList.remove('hidden');
+                document.getElementById('dvMomDolor').classList.remove('hidden');
+              }else{
+                document.getElementById('dvDescDolor').classList.add('hidden');
+                document.getElementById('dvMomDolor').classList.add('hidden');
+                document.getElementById('DivDolCorrer').classList.add('hidden');
               }
             }
 
@@ -1602,6 +1611,17 @@
             e.value = "";
           });
           input.focus();
+        }
+        if(input.id === "FlagPadeceDolorSi" || input.id === "FlagPadeceDolorNo"){
+          const isChecked = document.getElementById('FlagPadeceDolor').checked;
+          if(isChecked){
+            document.getElementById('dvDescDolor').classList.remove('hidden');
+            document.getElementById('dvMomDolor').classList.remove('hidden');
+          } else {
+            document.getElementById('dvDescDolor').classList.add('hidden');
+            document.getElementById('dvMomDolor').classList.add('hidden');
+            document.getElementById('DivDolCorrer').classList.add('hidden');
+          }
         }
       }
 
@@ -1762,9 +1782,11 @@
 
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
         condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
-        condAnatomica.descripcionDolor = obj.descripcionDolor;
-        condAnatomica.momDolor = obj.momDolor;
-        condAnatomica.momDolorIni = obj.momDolorIni;
+        if(condAnatomica.flagPadeceDolor){
+          condAnatomica.descripcionDolor = obj.descripcionDolor;
+          condAnatomica.momDolor = obj.momDolor;
+          condAnatomica.momDolorIni = getValuesConcatInpCheckbox('MomDolorIni');
+        }
         condAnatomica.desLesion = obj.desLesion;
         condAnatomica.recomMedica = obj.recomMedica;
         condAnatomica.flagEmbarazo = document.querySelector('#FlagEmbarazo').checked;
@@ -2276,6 +2298,7 @@
         document.querySelector('#Apellidos').value = "Sotelo";
         document.querySelector('#FechaNacimiento').value = "1993-02-28";
         document.querySelector('#TipoDocumentoId').value = 1;
+        $('#TipoDocumentoId').multiselect('refresh');
         document.querySelector('#NumeroDocumento').value = 42424242;
         document.querySelector('#Correo').value = generateRandomMail();
         document.querySelector('#Movil').value = `51987${t1}234`;

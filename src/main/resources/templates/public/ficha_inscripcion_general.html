@@ -206,11 +206,11 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="form-group">
+                    <div class="form-group hidden" id="dvDescDolor">
                     <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:<span class="obligatorio">*</span></label>
                     <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control" maxlength="250"></textarea>
                   </div>
-                  <div class="form-group block-checks">
+                    <div class="form-group block-checks hidden" id="dvMomDolor">
                     <label>Cuando realizas actividad física, el dolor está presente:</label>
                     <ul class="checks">
                       <li>
@@ -802,7 +802,7 @@
                     </ul><br/>
                   </div>
                   <div class="form-group">
-                    <button id="btnGuardar" class="btn btn-bg-black" type="submit">FINALIZAR</button>
+                    <button id="btnGuardar" class="btn btn-bg-black" type="button">FINALIZAR</button>
                   </div>
                 </li>
               </ol>
@@ -1005,6 +1005,17 @@
             validarSeleccionNA(prev,"DesPadVarios","4");
            }
         }
+          if(prev.name === "FlagPadeceDolor"){
+              const isChecked = document.getElementById('FlagPadeceDolor').checked;
+              if(isChecked){
+                  document.getElementById('dvDescDolor').classList.remove('hidden');
+                  document.getElementById('dvMomDolor').classList.remove('hidden');
+              }else{
+                  document.getElementById('dvDescDolor').classList.add('hidden');
+                  document.getElementById('dvMomDolor').classList.add('hidden');
+                  document.getElementById('DivDolEjercicio').classList.add('hidden');
+              }
+          }
 
         if(prev.name === "MomDolor"){
           if(prev.value === "1" || prev.value === "2"){
@@ -1040,6 +1051,17 @@
 
     }
     /* END elementos a disposición*/
+      if(input.id === "FlagPadeceDolorSi" || input.id === "FlagPadeceDolorNo"){
+          const isChecked = document.getElementById('FlagPadeceDolor').checked;
+          if(isChecked){
+              document.getElementById('dvDescDolor').classList.remove('hidden');
+              document.getElementById('dvMomDolor').classList.remove('hidden');
+          } else {
+              document.getElementById('dvDescDolor').classList.add('hidden');
+              document.getElementById('dvMomDolor').classList.add('hidden');
+              document.getElementById('DivDolEjercicio').classList.add('hidden');
+          }
+      }
   }
 
   function bodyChangeEventListener(e){
@@ -1211,9 +1233,11 @@
 
     const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
     condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
-    condAnatomica.descripcionDolor = obj.descripcionDolor;
-    condAnatomica.momDolor = obj.momDolor;
-    condAnatomica.momDolorIni = obj.momDolorIni;
+    if(condAnatomica.flagPadeceDolor){
+        condAnatomica.descripcionDolor = obj.descripcionDolor;
+        condAnatomica.momDolor = obj.momDolor;
+        condAnatomica.momDolorIni = getValuesConcatInpCheckbox('MomDolorIni');
+    }
     condAnatomica.desLesion = obj.desLesion;
     condAnatomica.recomMedica = obj.recomMedica;
     condAnatomica.flagEmbarazo = document.querySelector('#FlagEmbarazo').checked;
@@ -1590,6 +1614,7 @@
     document.querySelector('#Apellidos').value = "Sotelo";
     document.querySelector('#FechaNacimiento').value = "1993-02-28";
     document.querySelector('#TipoDocumentoId').value = 1;
+    $('#TipoDocumentoId').multiselect('refresh');
     document.querySelector('#NumeroDocumento').value = 42424242;
     document.querySelector('#Correo').value = generateRandomMail();
     document.querySelector('#Movil').value = `51987${t1}234`;

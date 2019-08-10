@@ -234,11 +234,11 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group hidden" id="dvDescDolor">
                                             <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
                                             <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                                         </div>
-                                        <div class="form-group block-checks">
+                                        <div class="form-group block-checks hidden" id="dvMomDolor">
                                             <label>Cuando realizas actividad física, el dolor está presente:</label>
                                             <ul class="checks">
                                                 <li>
@@ -1243,7 +1243,7 @@
                                     </li>
                                     <li>
                                         <div class="form-group">
-                                            <button id="btnGuardar" class="btn btn-bg-black" type="submit">ACTUALIZAR</button>
+                                            <button id="btnGuardar" class="btn btn-bg-black" type="button">ACTUALIZAR</button>
                                         </div>
                                     </li>
                                 </ol>
@@ -1410,15 +1410,24 @@
     }
 
     function sendMainForm(e){
+        const data = getFormData($(frm));
+        let parseFecha = parseFromStringToDate(data.fechaNacimiento);
+        data.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+
         //IN PROGRESS
-        alert('In progress');
-        /*e.preventDefault();//To avoid form sended automatically
-        const checkList = validationByNumSheet(3);
-        if(checkList.inputs.length == 0){
-            sendForm();
-        }else{
-            smallBoxAlertValidation(checkList.inputs);
-        }*/
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/json',
+            url: _ctx + 'gestion/cliente-fitness/actualizar',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            blockLoading: true,
+            success: function (res) {
+                $.smallBox({content: 'Actualización exitosa'});
+            },complete:()=>{
+
+            }
+        })
     }
 
     function bodyClickEventListener(e){
@@ -1468,6 +1477,18 @@
                         validarSeleccionNA(prev,"DesPadVarios","4");
                     }
                 }
+                if(prev.name === "FlagPadeceDolor"){
+                    const isChecked = document.getElementById('FlagPadeceDolor').checked;
+                    if(isChecked){
+                        document.getElementById('dvDescDolor').classList.remove('hidden');
+                        document.getElementById('dvMomDolor').classList.remove('hidden');
+                    }else{
+                        document.getElementById('dvDescDolor').classList.add('hidden');
+                        document.getElementById('dvMomDolor').classList.add('hidden');
+                        document.getElementById('DivDolCorrer').classList.add('hidden');
+
+                    }
+                }
 
                 if(prev.name === "MomDolor"){
                     if(prev.value === "1" || prev.value === "2"){
@@ -1515,6 +1536,18 @@
                 e.value = "";
             });
             input.focus();
+        }
+
+        if(input.id === "FlagPadeceDolorSi" || input.id === "FlagPadeceDolorNo"){
+            const isChecked = document.getElementById('FlagPadeceDolor').checked;
+            if(isChecked){
+                document.getElementById('dvDescDolor').classList.remove('hidden');
+                document.getElementById('dvMomDolor').classList.remove('hidden');
+            }else{
+                document.getElementById('dvDescDolor').classList.add('hidden');
+                document.getElementById('dvMomDolor').classList.add('hidden');
+                document.getElementById('DivDolCorrer').classList.add('hidden');
+            }
         }
     }
 
@@ -2032,7 +2065,7 @@
                     min: 0
                 },
                 TiempoUnKilometro: {
-                    required: true,
+                    required: (e)=> e.value ? true : false,
                     timing: true,
                     greaterThanSeconds: "00:02:00",
                     rangelength: [7, 8]
@@ -2196,12 +2229,18 @@
         document.querySelectorAll('input[name="FlagPadeceDolor"]')[ca.flagPadeceDolor ? 0 : 1].checked = true;
         if(ca.flagPadeceDolor){
             document.querySelector('#DescripcionDolor').value = ca.descripcionDolor;
-            document.querySelector('input[name="MomDolor"][value="'+ca.momDolor+'"]').checked = true;
             if(ca.momDolor && (ca.momDolor == "1" || ca.momDolor == "2")){
+                document.getElementById('dvDescDolor').classList.remove('hidden');
+                document.getElementById('dvMomDolor').classList.remove('hidden');
+                document.querySelector('input[name="MomDolor"][value="'+ca.momDolor+'"]').checked = true;
                 document.querySelector('#DivDolCorrer').classList.remove('hidden');
-                document.querySelector('input[name="MomDolorIni"][value="'+ca.momDolorIni+'"]').checked = true;
+                const momDolorIni = ca.momDolorIni.split("|");
+                momDolorIni.forEach(e=>{
+                    document.querySelector('input[name="MomDolorIni"][value="'+e.trim()+'"]').checked = true;
+                });
             }
         }
+
         document.querySelector('#DesLesion').value = ca.desLesion;
         document.querySelector('#RecomMedica').value = ca.recomMedica;
         document.querySelectorAll('input[name="FlagEmbarazo"]')[ca.flagEmbarazo ? 0 : 1].checked = true;
