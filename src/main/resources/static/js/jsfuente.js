@@ -975,7 +975,6 @@ function getTimestampUnix(){
     return new Date().getTime();
 }
 
-<<<<<<< HEAD
 function imgtoSvgEvent()
 {
     $('img[src$=".svg"]').each(function() {
@@ -1001,9 +1000,7 @@ function imgtoSvgEvent()
         }, 'xml');
     });
     }
-=======
 function fromDateToString(d){
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
 }
 
->>>>>>> e3fe97d8dbcef5a9368cd37abbb6a1e978dc166a
