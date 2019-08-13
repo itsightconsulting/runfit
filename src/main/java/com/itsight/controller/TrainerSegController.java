@@ -33,10 +33,6 @@ public class TrainerSegController {
     }
 
 
-    @GetMapping(value = {"/planes2"})
-    public String vistaPlanes2() {
-        return ViewConstant.MAIN_PLANES_PREDISENIADOS2;
-    }
 
 
     @GetMapping(value = {"/planes/seleccion"})

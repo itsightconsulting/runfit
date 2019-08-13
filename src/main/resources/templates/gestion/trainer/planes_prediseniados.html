@@ -322,6 +322,8 @@
     const btnEditarRutina = document.getElementById("btnEditarRutina");
     const btnNuevaRutina = document.getElementById("btnNuevaRutina");
     const ulListRutina = $('.list_plan');
+    const anchorItemBody = $('.item-body a');
+
     const inpSearchRutina = document.getElementById('inpSearch');
     let currentRutinasData;
     const favoritos = [];
@@ -339,8 +341,54 @@
         owl.on('click', '.item-header', categoriaClickListenerEvent);
         ulListRutina.on('click', 'li', rutinaClickListenerEvent);
         inpSearchRutina.addEventListener('input', searchRutinaEvent);
+        anchorItemBody.on('click',seleccionCategoriaEvent);
         constraintsValidation();
 
+    }
+
+    function seleccionCategoriaEvent(e){
+
+            const input = e.target;
+            let categoriaId;
+            let catNombre;
+
+            if(input.tagName.toUpperCase() === 'SVG'){
+
+                const dsCategoria = e.currentTarget.dataset;
+                categoriaId = dsCategoria.categoriaId;
+                catNombre = dsCategoria.nombre;
+
+
+            }else if (input.tagName.toUpperCase() === 'A'){
+
+                categoriaId = input.getAttribute('data-categoria-id');
+                catNombre = input.getAttribute('data-nombre');
+            }
+
+            $('section#info .title_big').text(catNombre);
+
+            btnNuevaRutina.setAttribute('data-categoria-id' , categoriaId);
+
+            obtenerRutinas(categoriaId);
+
+
+            $("section#info").slideDown(200);
+            $( 'html, body' ).stop().animate({
+                scrollTop: $("section#info").offset().top
+            });
+            return false;
+
+    }
+
+    function scrollEvent(){
+
+        $(".scroll").click(function() {
+            $("section#info").slideUp(200);
+            $('html, body').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
     }
 
     function agregarCategoria() {
@@ -397,46 +445,6 @@
 
             },
             complete: (d) =>{
-
-                $(".item-body a").click(function (e) {
-
-                    const input = e.target;
-                    let categoriaId;
-                    let catNombre;
-
-                    if(input.tagName.toUpperCase() === 'SVG'){
-
-                        const dsCategoria = e.currentTarget.dataset;
-                         categoriaId = dsCategoria.categoriaId;
-                         catNombre = dsCategoria.nombre;
-
-
-                    }else if (input.tagName.toUpperCase() === 'A'){
-
-                        categoriaId = input.getAttribute('data-categoria-id');
-                        catNombre = input.getAttribute('data-nombre');
-                    }
-
-                    $('section#info .title_big').text(catNombre);
-
-                    btnNuevaRutina.setAttribute('data-categoria-id' , categoriaId);
-
-                   obtenerRutinas(categoriaId);
-
-
-                    $("section#info").slideDown(200);
-                    $( 'html, body' ).stop().animate({
-                        scrollTop: $("section#info").offset().top
-                    });
-                    return false;
-                });
-                $(".scroll").click(function() {
-                    $("section#info").slideUp(200);
-                    $('html, body').animate({
-                        scrollTop: 0
-                    }, 800);
-                    return false;
-                });
 
 
             }

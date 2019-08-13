@@ -9,6 +9,8 @@ import com.itsight.domain.base.AuditingEntity;
 import com.itsight.domain.jsonb.RutinaControl;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
+import com.itsight.util.EntityVisitor;
+import com.itsight.util.Identifiable;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +37,27 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RutinaPlantilla extends AuditingEntity {
+public class RutinaPlantilla extends AuditingEntity implements Identifiable {
+
+
+    public static EntityVisitor<RutinaPlantilla, BagForest> ENTITY_VISITOR = new EntityVisitor<RutinaPlantilla, BagForest>(RutinaPlantilla.class) {
+
+        @Override
+        public BagForest getParent(RutinaPlantilla visitingObject) {
+            return visitingObject.getForest();
+        }
+
+        @Override
+        public List<RutinaPlantilla> getChildren(BagForest parent) {
+            return parent.getTreesRp();
+        }
+
+        @Override
+        public void setChildren(BagForest parent) {
+            parent.setTreesRp(new ArrayList<>());
+        }
+    };
+
 
     @Id
     @GeneratedValue(generator = "rutina_plantilla_seq")

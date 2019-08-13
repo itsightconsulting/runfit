@@ -76,11 +76,10 @@
     <div class="modal fade" id="myModalRutGen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
-                <div class="modal-header txt-color-white bg-color-teal">
-                    <button type="button" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
-                    <h4 class="modal-title text-align-center"><strong>Selección de rutina prediseñada</strong></h4>
+                <div class="modal-header txt-color-white" style="background-color:black">
+                    <strong>Selección de rutina prediseñada</strong>
+                    <i class="i-btn fa fa-close fa-15x mdl-dark-header pull-right" data-dismiss="modal"></i>
                     <p class="modal-title text-align-center"><strong id="rutinaSelectNombre"></strong> <span> Semanas : </span> <span id="rutinaSelectSemanas"> </span></p>
-
                 </div>
                 <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
                     <form id="frm_asign_rut_pred" action="javascript:void(0);">
@@ -102,7 +101,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="crearRutinaDesdePlantilla(this)"  id="btnGenerarRutina" class="btn btn-primary">GENERAR RUTINA DESDE PLANTILLA </button>
+                    <button onclick="crearRutinaDesdePlantilla(this)"  id="btnGenerarRutina" class="btn btn-md">GENERAR RUTINA DESDE PLANTILLA </button>
                 </div>
             </div>
         </div>
@@ -330,16 +329,16 @@
               if(element.favorito){
                 favoritos.push(element.id);
                 itemsCategoria += `
-                      <div class="item" >
+                      <div class="item" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}">
                         <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a> <div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
-                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"></div>
                       </div>
                       `;
               }else{
                 itemsCategoria += `
-                     <div class="item" >
+                     <div class="item" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}">
                         <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
-                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"></div>
                      </div>
                    `;
               }

@@ -1316,7 +1316,11 @@ section#nuevaCategoriaPlantilla .chk-content input:checked ~ .checkmark , sectio
 
 section#mdlGenerarRutinaPred strong{
     font-size: 17px;
-    color : #000000;
+    color : #ffffff;
+}
+section#mdlGenerarRutinaPred span{
+    font-size: 14px;
+    color : #ffffff;
 }
 
 /*Vista Planes prediseñados  - botón de Notificación */
@@ -1351,4 +1355,8 @@ section#seleccionCategoriasRutGen ~ section#info .list_plan li .svg.plantilla {
 
 section#info .btn-circle {
     top : 104px;
+}
+
+.div-fichas{
+    cursor: pointer;
 }
