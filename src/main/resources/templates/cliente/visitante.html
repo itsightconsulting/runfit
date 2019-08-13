@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Bienvenido</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/perfil-cliente.css}+'?'+${version}"/><!-- NECESARIO -->
+</head>
+<style><!-- NECESARIO -->
+
+    .encuentra-tu-coach {
+        margin-top: -50px;
+        position: relative;
+        z-index: 2;
+        margin-bottom: 50px
+    }
+
+    .encuentra-tu-coach h1 {
+        font-size: 68px;
+        font-family: Gotham-HTF-Black-Italic, 'system-ui';
+        text-transform: uppercase;
+        margin: 0;
+        margin-bottom: 45px;
+        color: white;
+    }
+
+    .encuentra-tu-coach h1 span {
+        font-size: 24px;
+        font-family: Gotham-HTF-Black-Italic, 'system-ui';
+        display: block;
+        text-transform: uppercase
+    }
+
+    .encuentra-tu-coach .form-group label {
+        margin: 12px 0;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-family: Gotham-HTF-Bold, 'system-ui';
+        color: #303030
+    }
+
+    .encuentra-tu-coach .form-group input,
+    .encuentra-tu-coach .form-group select {
+        background-color: #fafafa;
+        border-radius: 15px;
+        border: 0;
+        height: 40px;
+        box-shadow: 0 0 0
+    }
+
+    .encuentra-tu-coach .form-group input.price,
+    .encuentra-tu-coach .form-group select.price {
+        width: 118px;
+        height: 28px;
+        background-color: #fff;
+        border-radius: 15px;
+        border: 1px solid #d3d3d3;
+        text-align: center
+    }
+
+    .encuentra-tu-coach .form-group textarea {
+        background-color: #fafafa;
+        border-radius: 15px;
+        border: 0;
+        resize: none;
+        box-shadow: 0 0 0;
+        height: 92px
+    }
+
+    .encuentra-tu-coach .btn {
+        margin-bottom: 25px
+    }
+
+    .encuentra-tu-coach .btn-white {
+        border: 1px solid #303030;
+        color: #303030;
+        font-size: 17.23px;
+        padding: 15px 25px;
+        min-width: 250px;
+        text-transform: uppercase;
+        font-size: 17px;
+        border-radius: 5px;
+        background-color: #fff;
+        font-family: Gotham-HTF-Bold, 'system-ui'
+    }
+
+    .encuentra-tu-coach .btn-white:hover {
+        color: #fff;
+        border: 1px solid #fff;
+        background-color: #303030
+    }
+
+    .encuentra-tu-coach .btn-black {
+        border: 1px solid #fff;
+        color: #fff;
+        font-size: 17.23px;
+        padding: 15px 25px;
+        min-width: 250px;
+        text-transform: uppercase;
+        font-size: 17px;
+        border-radius: 5px;
+        background-color: #303030;
+        font-family: Gotham-HTF-Bold, 'system-ui'
+    }
+
+    .encuentra-tu-coach .btn-black:hover {
+        color: #303030;
+        border: 1px solid #303030;
+        background-color: #fff
+    }
+
+    .encuentra-tu-coach .group-trainer {
+        padding: 25px 0 10px;
+        border-top: 1px solid #d3d3d3
+    }
+
+    .encuentra-tu-coach .group-trainer:first-child {
+        margin-top: 35px
+    }
+
+    .encuentra-tu-coach .group-trainer .avatar-form {
+        top: 15px
+    }
+
+    .encuentra-tu-coach .group-trainer h4 {
+        font-family: Gotham-HTF-Bold, 'system-ui';
+        font-size: 24px;
+        color: #303030;
+        text-transform: uppercase
+    }
+
+    .encuentra-tu-coach .group-trainer h4 .title {
+        display: block;
+        font-size: 18px;
+        text-transform: initial;
+        margin: 3px 0
+    }
+
+    .encuentra-tu-coach .group-trainer h4 .location {
+        display: block;
+        color: #666666;
+        font-size: 18px;
+        text-transform: initial;
+        margin-bottom: 25px
+    }
+
+    .encuentra-tu-coach .group-trainer .col-md-9 {
+        padding-left: 35px
+    }
+
+    .encuentra-tu-coach .group-trainer .col-md-9 p {
+        margin-bottom: 25px;
+        font-size: 18px;
+        line-height: 1.6;
+        word-break: break-word;
+        text-align: justify;
+    }
+
+    .encuentra-tu-coach .group-trainer .rating {
+        top: 0
+    }
+
+    .encuentra-tu-coach .group-trainer .valoration {
+        top: 0
+    }
+
+    .avatar-form {
+        position: relative;
+        top: -80px
+    }
+
+    .avatar-form img {
+        width: 100%;
+        border-radius: 50%
+    }
+
+    .avatar-form input {
+        position: absolute;
+        opacity: 0;
+        top: 115px;
+        z-index: 2;
+        cursor: pointer;
+        max-width: 250px;
+        margin: 0 auto
+    }
+
+    .avatar-form-content {
+        border-radius: 50%;
+        max-width: 250px;
+        height: 250px;
+        width: 100%;
+        border: 15px solid #a8fa00;
+        background-color: #fff
+    }
+
+    .avatar-form-button {
+        background-color: #d3d3d3;
+        border-radius: 15px;
+        color: #303030;
+        padding: 7px 15px;
+        font-size: 16px;
+        max-width: 157px;
+        text-align: center;
+        font-family: Gotham-HTF-Bold, 'system-ui';
+        position: relative;
+        top: 90px;
+        cursor: pointer;
+        margin: 0 auto
+    }
+
+    .avatar-form .fa-trainer-emp {
+        cursor: pointer;
+    }
+
+    .avatar-form .div-btn-emp-trainer {
+        padding: 10px 0px;
+    }
+
+    .avatar-form .div-btn-emp-trainer > button {
+        margin-bottom: 0px;
+    }
+
+    @media only screen and (max-width: 800px) {
+        .encuentra-tu-coach h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            margin-top: 45px;
+            color: white;
+        }
+        .encuentra-tu-coach h1 span {
+            font-size: 16px;
+            margin-top: 5px
+        }
+        .encuentra-tu-coach .group-trainer .avatar-form-content {
+            margin: 0 auto
+        }
+        .encuentra-tu-coach .group-trainer .rating {
+            margin: 0 auto;
+            max-width: 170px
+        }
+        .encuentra-tu-coach .group-trainer .valoration {
+            margin: 0 auto
+        }
+        .encuentra-tu-coach .group-trainer .col-md-9 {
+            text-align: center;
+            padding-left: 15px
+        }
+        .encuentra-tu-coach .group-trainer .col-md-9 p {
+            font-size: 14px;
+        }
+        .encuentra-tu-coach .group-trainer h4 {
+            text-align: left;
+            margin-top: 30px;
+            font-size: 16px
+        }
+        .encuentra-tu-coach .group-trainer h4 span.location {
+            font-size: 15px
+        }
+        .encuentra-tu-coach .group-trainer h4 span.title {
+            font-size: 15px
+        }
+    }
+
+    /* RATING */
+    .rating {
+        max-width: 210px;
+        text-align: center;
+        position: relative;
+        top: -70px
+    }
+
+    .rating>input {
+        display: none
+    }
+
+    .rating>label:before {
+        margin: 5px;
+        font-size: 25px;
+        font-family: FontAwesome;
+        display: inline-block;
+        content: "\f005"
+    }
+
+    .rating>.half:before {
+        content: "\f089";
+        position: absolute
+    }
+
+    .rating>label {
+        color: #E6BE00;
+        float: right
+    }
+
+    .rating>input:checked ~ label,
+    .rating:not(:checked)>label:hover,
+    .rating:not(:checked)>label:hover ~ label {
+        color: #FFD700 !important;
+    }
+
+    .rating>input:checked+label:hover,
+    .rating>input:checked ~ label:hover,
+    .rating>label:hover ~ input:checked ~ label,
+    .rating>input:checked ~ label:hover ~ label {
+        color: #E6BE00 !important;
+    }
+    /* END RATING*/
+
+    .valoration {
+        max-width: 250px;
+        text-align: center;
+        position: relative;
+        top: -60px
+    }
+
+    .valoration span {
+        color: #63caf0
+    }
+
+    /* star five system */
+    .rating-holder {
+        display: inline-block;
+        padding: .625em 1.875em;
+        margin: 0 10px;
+        background-color: #2a242c;
+        border-radius: 1.5625em;
+        box-sizing: border-box
+    }
+
+    .c-rating button {
+        display: inline-block;
+        float: left;
+        width: 1.75em;
+        height: 1.25em;
+        border: 0;
+        text-indent: -9999px;
+        outline: none;
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat;
+        cursor: pointer;
+        transition: background 0.25s ease
+    }
+
+    .c-rating[data-rating-value="0"] button:nth-child(-n+0) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="0.25"] button:nth-child(-n+1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="0.25"] button:nth-child(1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M196.208 415.2v-224.8l-139.504 20.272 100.944 98.384-23.84 138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="0.5"] button:nth-child(-n+1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="0.5"] button:nth-child(1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M258.672 64l-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6v-318.4z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="0.75"] button:nth-child(-n+1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="0.75"] button:nth-child(1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M321.616 190.496l-0.656-0.096-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 63.024 33.136z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1"] button:nth-child(-n+1) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1.25"] button:nth-child(-n+2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1.25"] button:nth-child(2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M196.208 415.2v-224.8l-139.504 20.272 100.944 98.384-23.84 138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1.5"] button:nth-child(-n+2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1.5"] button:nth-child(2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M258.672 64l-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6v-318.4z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1.75"] button:nth-child(-n+2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="1.75"] button:nth-child(2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M321.616 190.496l-0.656-0.096-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 63.024 33.136z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2"] button:nth-child(-n+2) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2.25"] button:nth-child(-n+3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2.25"] button:nth-child(3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M196.208 415.2v-224.8l-139.504 20.272 100.944 98.384-23.84 138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2.5"] button:nth-child(-n+3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2.5"] button:nth-child(3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M258.672 64l-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6v-318.4z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2.75"] button:nth-child(-n+3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="2.75"] button:nth-child(3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M321.616 190.496l-0.656-0.096-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 63.024 33.136z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3"] button:nth-child(-n+3) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3.25"] button:nth-child(-n+4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3.25"] button:nth-child(4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M196.208 415.2v-224.8l-139.504 20.272 100.944 98.384-23.84 138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3.5"] button:nth-child(-n+4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3.5"] button:nth-child(4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M258.672 64l-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6v-318.4z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3.75"] button:nth-child(-n+4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="3.75"] button:nth-child(4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M321.616 190.496l-0.656-0.096-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 63.024 33.136z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4"] button:nth-child(-n+4) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4.25"] button:nth-child(-n+5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4.25"] button:nth-child(5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M196.208 415.2v-224.8l-139.504 20.272 100.944 98.384-23.84 138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4.5"] button:nth-child(-n+5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4.5"] button:nth-child(5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M258.672 64l-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6v-318.4z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4.75"] button:nth-child(-n+5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="4.75"] button:nth-child(5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M321.616 190.496l-0.656-0.096-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 63.024 33.136z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat, url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23ddd%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+
+    .c-rating[data-rating-value="5"] button:nth-child(-n+5) {
+        background: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22gold%22%20d%3D%22M457.888 210.672l-139.504-20.272-62.384-126.4-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6 124.768 65.6-23.84-138.928c0 0 100.944-98.384 100.944-98.384z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") center/cover no-repeat
+    }
+    /* End star five system */
+
+    /* CHECKMARK */
+
+
+
+    .checks {
+        list-style: none;
+        padding: 0
+    }
+
+    .checks li {
+        display: inline-block;
+        margin-right: 24px
+    }
+
+    .checks.mar-0 li {
+        margin-right: 0px
+    }
+
+    .chk-content {
+        display: block;
+        position: relative;
+        padding-left: 22px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #666666;
+        font-size: 18px
+    }
+
+    .chk-content:hover input ~ .checkmark {
+        background-color: #ccc
+    }
+
+    .chk-content input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0
+    }
+
+    .chk-content input:checked ~ .checkmark {
+        background-color: #a8fa00
+    }
+
+    .chk-content input:checked ~ .checkmark:after {
+        display: block
+    }
+
+    .chk-content .checkmark {
+        position: absolute;
+        top: 6px;
+        left: 0;
+        height: 16px;
+        width: 16px;
+        background-color: #eee
+    }
+
+    .chk-content .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 5.5px;
+        top: 1.5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 1px 1px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg)
+    }
+
+    .chk-content input:checked ~ .checkmark:after {
+        display: block
+    }
+    /* END CHECKMARK */
+    /* AUTOCOMPLETE */
+    /*the container must be positioned relative:*/
+    .autocomplete {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+    /* END AUTOCOMPLETE */
+
+    /* SPINNER LOADING */
+    .spring-spinner, .spring-spinner * {
+        box-sizing: border-box;
+    }
+
+    .spring-spinner {
+        height: 60px;
+        width: 60px;
+        margin-left: 49%;
+    }
+
+    .spring-spinner .spring-spinner-part {
+        overflow: hidden;
+        height: calc(60px / 2);
+        width: 60px;
+    }
+
+    .spring-spinner  .spring-spinner-part.bottom {
+        transform: rotate(180deg) scale(-1, 1);
+    }
+
+    .spring-spinner .spring-spinner-rotator {
+        width: 60px;
+        height: 60px;
+        border: calc(60px / 7) solid transparent;
+        border-right-color: #82b4e4;
+        border-top-color: #a8fa00;
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: spring-spinner-animation 3s ease-in-out infinite;
+        transform: rotate(-200deg);
+    }
+
+    @keyframes spring-spinner-animation {
+        0% {
+            border-width: calc(60px / 7);
+        }
+        25% {
+            border-width: calc(60px / 23.33);
+        }
+        50% {
+            transform: rotate(115deg);
+            border-width: calc(60px / 7);
+        }
+        75% {
+            border-width: calc(60px / 23.33);
+        }
+        100% {
+            border-width: calc(60px / 7);
+        }
+    }
+    /* END SPINNER LOADING */
+</style>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+<div id="main-content">
+    <div id="wrapper" class="wrapper">
+        <section class="encuentra-tu-coach">
+            <form id="frm_registro">
+                <div class="container">
+                    <h1>Elige al especialista<span>Que se adecúe a tus necesidades</span></h1>
+                    <div class="row">
+                        <div class="col-md-4 view-only-desktop">
+                            <div class="form-group">
+                                <label>BÚSQUEDA POR NOMBRE</label>
+                                <input class="form-control" type="text" id="Nombres" name="Nombres" placeholder="Nombre del trainer" maxlength="60">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>UTILIZA PALABRAS CLAVES</label>
+                                <input class="form-control" id="Acerca" name="Acerca" type="text" placeholder="Ej: Trail, circuitos, funcional..." maxlength="30">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>UBICACIÓN</label>
+                                <div class="autocomplete">
+                                    <input class="form-control" id="Ubigeo" name="Ubigeo" type="text" placeholder="Ej: Ciudad, provincia o distrito" maxlength="30">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 view-only-desktop">
+                            <div class="form-group">
+                                <label>SERVICIOS</label>
+                                <input class="form-control" type="text" id="Servicio" name="Servicio" placeholder="Nombre del servicio" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="col-md-8 view-only-desktop">
+                            <div class="form-group">
+                                <label>¿DÓNDE QUIERES ENTRENAR?</label>
+                                <ul class="checks">
+                                    <li>
+                                        <div class="chk-content">Al aire libre
+                                            <input type="checkbox" name="FormaTrabajo" value="ai"><span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="chk-content">Personalizado
+                                            <input type="checkbox" name="FormaTrabajo" value="pe"><span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="chk-content">En grupo
+                                            <input type="checkbox" name="FormaTrabajo" value="eg"><span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="chk-content">Online
+                                            <input type="checkbox" name="FormaTrabajo" value="on"><span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 view-only-desktop">
+                            <div class="form-group">
+                                <label style="width: 100%">SEXO</label>
+                                <select class="form-control hidden" id="Sexo" name="Sexo">
+                                    <option value="">Todos</option>
+                                    <option value="1">Masculino</option>
+                                    <option value="2">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="width: 100%">VALORACIÓN MAYOR A</label>
+                                <fieldset class="rating" style="top: 0px !important;max-width: 172px !important;">
+                                    <input id="star5" type="radio" name="Valoracion" value="5" disabled="disabled">
+                                    <label class="full" for="star5"></label>
+                                    <input id="star4half" type="radio" name="Valoracion" value="4.5">
+                                    <label class="half" for="star4half"></label>
+                                    <input id="star4" type="radio" name="Valoracion" value="4">
+                                    <label class="full" for="star4"></label>
+                                    <input id="star3half" type="radio" name="Valoracion" value="3.5">
+                                    <label class="half" for="star3half"></label>
+                                    <input id="star3" type="radio" name="Valoracion" value="3">
+                                    <label class="full" for="star3"></label>
+                                    <input id="star2half" type="radio" name="Valoracion" value="2.5">
+                                    <label class="half" for="star2half"></label>
+                                    <input id="star2" type="radio" name="Valoracion" value="2">
+                                    <label class="full" for="star2"></label>
+                                    <input id="star1half" type="radio" name="Valoracion" value="1.5">
+                                    <label class="half" for="star1half"></label>
+                                    <input id="star1" type="radio" name="Valoracion" value="1">
+                                    <label class="full" for="star1"></label>
+                                    <input id="starhalf" type="radio" name="Valoracion" value="0.5">
+                                    <label class="half" for="starhalf"></label>
+                                </fieldset>
+                            </div>
+                            <!--<div class="rango bg-slide">
+                                <input id="Valoracion" name="Valoracion" type="range" value="0" min="0" max="10" data-aka="Seleccionar que tan en forma se encuentra">
+                                <img class="desc-range" src="https://www.flaticon.com/premium-icon/icons/svg/804/804009.svg">
+                            </div>-->
+                        </div>
+                        <div class="col-md-4 view-only-desktop">
+                            <div class="form-group">
+                                <label style="width: 100%">IDIOMAS QUE DOMINA EL ASESOR</label>
+                                <select class="form-control hidden" id="Idiomas" name="Idiomas" multiple="multiple" style="height: 100px">
+                                    <option th:each="ln : ${idiomas}" th:value="${ln.iso}" th:text="${ln.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 view-only-desktop">
+                            <div class="form-group">
+                                <label style="width: 100%">NIVEL DE RENDIMIENTO</label>
+                                <select class="form-control hidden" id="Niveles" name="Niveles" multiple="multiple" style="height: 100px">
+                                    <option value="pr">Principiante</option>
+                                    <option value="in">Intermedio</option>
+                                    <option value="av">Avanzado</option>
+                                    <option value="pf">Profesional</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="btnLimpiar" class="btn btn-default btn-white view-only-desktop" type="button">LIMPIAR TODO</button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button class="btn btn-default btn-black" type="button" id="btnBuscar">BUSCAR</button>
+                        </div>
+                        <div class="col-md-12 dv-rows hidden" style="font-size: 1.6em;padding: 10px;color: white;">
+                            <i class="fa fa-check fa-fw"></i> <span id="Rows"></span></div>
+                    </div>
+                    <div id="Trainers">
+
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+
+</div>
+
+
+<!-- CUSTOM NOTIFICATION -->
+
+<script th:src="@{/js/public/vendor/vendor_all.js}+'?'+${version}" type="text/javascript"></script>
+<script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/init.js}+'?'+${version}" type="text/javascript"></script>
+<script th:src="@{/js/jsfuente.js}+'?'+${version}" type="text/javascript"></script>
+<script th:src="@{/js/notification/SmartNotification.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/forms.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    /*An array containing all the country names in the world:*/
+
+    const body = document.querySelector('body');
+    const btnLimpiar = document.getElementById('btnLimpiar');
+    const btnBuscar = document.getElementById('btnBuscar');
+    const initLimit = 10;
+    const initOffset = 0;
+    let totalRows = 0;
+    let queryParams = resetPagination();
+    function resetPagination(){
+        return {
+            limit: initLimit,
+            offset: initOffset
+        };
+    }
+
+    (function(){
+        btnLimpiar.addEventListener('click', ()=>{
+            //All reset
+            limpiarMainForm();
+            busquedaDinamica();
+            document.querySelectorAll('select').forEach(e=>{
+                $(e).multiselect('refresh');
+            });
+        });
+        btnBuscar.addEventListener('click', busquedaDinamica);
+        document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
+        init();
+    })();
+
+    function init(){
+        onlyBusquedaDinamica();
+        scrollEventBusquedaAutomatica();
+        doMultiselectCheckBox();
+        checkBoxes();
+    }
+
+    function busquedaDinamica(){
+        //Clean resulset
+        document.querySelector('#Trainers').innerHTML = "";
+        totalRows = 0;
+        queryParams = resetPagination();
+        onlyBusquedaDinamica();
+    }
+
+    function onlyBusquedaDinamica(){
+        document.querySelector('.dv-rows').classList.add('hidden');
+        const divTrainers = document.getElementById('Trainers');
+        divTrainers.innerHTML = spinnerLoadingHtmlRaw();
+
+        const d = getFormData($('#frm_registro'));
+        d.niveles = Array.from(document.getElementById('Niveles').querySelectorAll("option:checked"),e=>e.value).join('|');
+        d.idiomas = Array.from(document.getElementById('Idiomas').querySelectorAll("option:checked"),e=>e.value).join('|');
+        d.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
+
+        Object.keys(d).forEach(key=>{
+            if(!d[key]){
+                delete d[key];
+            }
+        });
+
+        d.limit = queryParams.limit;
+        d.offset = queryParams.offset;
+
+        $.ajax({
+            type: 'GET',
+            url: _ctx + 'p/trainer/find/dinamico',
+            dataType: 'json',
+            data: d,
+            blockLoading: false,
+            noOne: true,
+            success: function (res) {
+                divTrainers.innerHTML = "";
+                if(res.length === 0){
+                    const noOne = document.createElement('div');
+                    noOne.className = "";
+                    noOne.style.fontSize = "1.5em";
+                    noOne.style.color = "#a8fa00";
+                    noOne.style.padding = "15px 0px";
+                    noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se ha encontrado ninguna coincidencia. Pruebe nuevamente con otra búsqueda";
+                    document.getElementById('Trainers').appendChild(noOne);
+                    document.querySelector('.dv-rows').classList.add('hidden');
+                }else{
+                    recrearListado(res);
+                    totalRows = res[0].rows;
+                    if(totalRows > 1){
+                        document.querySelector('#Rows').textContent = `Se encontraron ${totalRows} coincidencias`;
+                    } else {
+                        document.querySelector('#Rows').textContent = `Se encontró ${totalRows} coincidencia`;
+
+                    }
+                    document.querySelector('.dv-rows').classList.remove('hidden');
+                }
+            }, error: (xhr) => {
+                exception(xhr);
+            }, complete: () => {
+
+            }
+        })
+    }
+
+    function recrearListado(arr){
+        console.log(arr);
+        const divTrainers = document.getElementById('Trainers');
+        arr.forEach((e)=>{
+            const acLen = e.acerca.length;
+            if(acLen > 540){
+                e.acerca = e.acerca.slice(0, 540).trim();
+                if(e.acerca.lastIndexOf(".") === e.acerca.length-1){
+                    e.acerca = slice.replace(0,539);
+                }
+                e.acerca += "...";
+            };
+            const ttId = e.tipoTrainerId;
+
+            const objValoracion = getValoracion(e.canPerValoracion, e.totalValoracion);
+            const nomLink = e.nomPag;
+            let nombreFinal = "";
+            if(ttId == 1){
+                nombreFinal = e.nombreCompleto;
+            }else{
+                nombreFinal = e.nombreCompleto.includes(' xxx') ? e.nombreCompleto.substring(0, e.nombreCompleto.indexOf(" xxx")) : e.nombreCompleto;
+            }
+            divTrainers.appendChild(htmlStringToElement(`
+          <div class="group-trainer row">
+              <div class="col-md-3 pad-0">
+              <div class="avatar-form">
+              <div class="avatar-form-content"><img src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.id}/${e.nomImgPerfil}" style="max-height: 100%;height: 100%; !important;"></div>
+              <fieldset class="text-center">
+                <div class="rating-holder">
+                  <div class="c-rating c-rating--regular" data-rating-value="${objValoracion.aproximadaValoracion}">
+                    <button disabled="disabled">1</button>
+                    <button disabled="disabled">2</button>
+                    <button disabled="disabled">3</button>
+                    <button disabled="disabled">4</button>
+                    <button disabled="disabled">5</button>
+                  </div>
+                </div>
+              </fieldset>
+              <p class="valoration">${objValoracion.exactaValoracion.toFixed(1)} <span>(${objValoracion.valoraciones} valoraciones)</span></p>
+      </div>
+      </div>
+      <div class="col-md-9">
+              <h4>${nombreFinal}<span class="title">${ttId == 1 ? e.especialidad : ''}</span><span class="location">${e.nomUbigeo ? e.nomUbigeo.split("|").join(' - ') : 'LIMA - LIMA'}</span></h4>
+      <p>${e.acerca}</p>
+      <button class="btn btn-default btn-black" type="button" onclick="verPerfil('${nomLink}')">VER PERFIL</button>
+      <button class="btn btn-default btn-white" type="button" onclick="verPerfilDirectServices('${nomLink}')">VER SERVICIOS</button>
+      </div>
+      </div>
+          `));
+        });
+    }
+
+    function spinnerLoadingHtmlRaw(){
+        return `<hr>
+                <div class="spring-spinner">
+                  <div class="spring-spinner-part top">
+                    <div class="spring-spinner-rotator"></div>
+                  </div>
+                  <div class="spring-spinner-part bottom">
+                    <div class="spring-spinner-rotator"></div>
+                  </div>
+                </div>`;
+    }
+
+    function verPerfil(nomLink){
+        window.location.href = _ctx + 'p/trainer/'+nomLink;
+    }
+
+    function verPerfilDirectServices(nomLink){
+        window.location.href = _ctx + 'p/trainer/'+nomLink+"#service";
+
+    }
+
+    function scrollEventBusquedaAutomatica(){
+        const footHeight = 100;
+        $(window).scroll(function() {
+
+            if($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
+                if(totalRows> queryParams.offset + queryParams.limit){
+                    queryParams.offset = queryParams.offset + queryParams.limit;
+                    onlyBusquedaDinamica();
+                }
+            }
+        });
+    }
+
+    function bodyFocusOutEventListener(e){
+        const input = e.target;
+        if(input.type==="text") {
+            input.value = input.value.trim().replace(/ +/g, " ");
+        }
+
+        if(input.tagName === "TEXTAREA"){
+            input.value = input.value.trim();
+        }
+    }
+
+    /* AUTOCOMPLETE */
+
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            if(this.value.trim().length<2){
+                //Interrumpimos lo demás así como también al listener keydown
+                return;
+            }
+
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function(e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    fetch(_ctx+'p/trainer/get/all/nom-ubigeo')
+        .then(res=> {
+                if(res.ok){
+                    return res.text();
+                }
+            }
+        ).then(res=>{
+        const arr = Array.from(new Set(res.split("|")));
+        autocomplete(document.getElementById("Ubigeo"), arr);
+    }).catch((err)=>{
+        exception(err);
+    });
+
+    function smallBoxAlertValidation2(inputsNotPassed){
+        const tout = (2000*(inputsNotPassed.length)) + 4000;
+        const strCamps = inputsNotPassed.map(v=>`<i class="fa fa-dot-circle-o fa-fw"></i>
+                                            ${v}<br>`).join('');
+        $.smallBox(
+            {
+                color: '#cc4d4d',
+                content: `Los valores de los campos no son apropiados:<br>
+                      <span style="padding-bottom: 3px"></span>
+                      <p style="height: 80px; overflow-y: auto;">${strCamps}</p>`,
+                timeout: tout,
+                icon: "fa fa-exclamation-circle"
+            }
+        )
+    }
+
+    function checkBoxes() {
+        $(".chk-content").click(function() {
+            var _self = $(this).find('input');
+            var tipoElemento = _self.attr("type");
+
+            if(tipoElemento !== "radio"){
+                var clase = _self.attr("data-body");
+                if (_self.is(':checked')) {
+                    $("." + clase + "").fadeOut();
+                    _self.prop('checked', false);
+                } else {
+                    _self.prop('checked', true);
+                    $("." + clase + "").fadeIn();
+                }
+            } else{
+                _self.prop('checked', true)
+                $("." + clase + "").fadeIn();
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

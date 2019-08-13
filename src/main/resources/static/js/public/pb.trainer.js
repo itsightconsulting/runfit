@@ -220,6 +220,7 @@ function agregarNuevaInfoPago(){
         ccBancarias.push(c);
         cleanCuentaBanCampos();
         $.smallBox({color: "black", content: "<i class='fa fa-fw fa-check' style='color: #a8fa00'></i><em style='color: #a8fa00'>Agregado satisfactoriamente</em>" ,timeout: 3000});
+        document.getElementById('VerCuentasBancarias').classList.remove('hidden');
     } else{
         $.smallBox({color: "rgb(204, 77, 77)", content: "<i class='fa fa-fw fa-close'></i><em>Deben completar los campos requeridos</em>" ,timeout: 3500})
     }
@@ -1078,7 +1079,10 @@ function confirmarEliminarCB(ccId){
     });
     setTimeout(()=>{
         $.smallBox({content: 'La cuenta ha sido removida con éxito'});
-    }, 150)
+    }, 150);
+    if(!ccBancarias.length){
+        document.getElementById('VerCuentasBancarias').classList.add('hidden');
+    }
 }
 
 function mostrarDetalleTarifaSvc(tarifaId){

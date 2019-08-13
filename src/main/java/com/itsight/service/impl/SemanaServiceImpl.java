@@ -16,6 +16,7 @@ import com.itsight.service.SemanaService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import com.itsight.util.Validador;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,14 +38,14 @@ public class SemanaServiceImpl extends BaseServiceImpl<SemanaRepository> impleme
 
     private RuConsolidadoService ruConsolidadoService;
 
+    @Autowired(required = false)
     private HttpSession session;
 
-    public SemanaServiceImpl(SemanaRepository repository, RutinaRepository rutinaRepository, RedFitnessRepository redFitnessRepository, RuConsolidadoService ruConsolidadoService, HttpSession session) {
+    public SemanaServiceImpl(SemanaRepository repository, RutinaRepository rutinaRepository, RedFitnessRepository redFitnessRepository, RuConsolidadoService ruConsolidadoService) {
         super(repository);
         this.rutinaRepository = rutinaRepository;
         this.redFitnessRepository = redFitnessRepository;
         this.ruConsolidadoService = ruConsolidadoService;
-        this.session = session;
     }
 
     @Override

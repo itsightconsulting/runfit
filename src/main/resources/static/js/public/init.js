@@ -16,6 +16,19 @@ function time_line() {
     }
 }
 
+function time_line_info_pago() {
+    var total = $(".steps ol").length;
+    var estilos;
+
+    for (var i = 0; i < total; i++) {
+        var altura_total = $(".steps ol")[i].clientHeight;
+        var altura_rest = $(".steps ol > li:last-child")[i].clientHeight;
+        $(".steps ol")[i].className += " cbp_tmtimeline_" + i + "";
+        estilos = ".cbp_tmtimeline_" + i + ":before{height: " + (altura_total - altura_rest) + "px !important}";
+        $("html").append("<style>" + estilos + "</style>");
+    }
+}
+
 function number_time_line() {
     var total = $(".steps ol>li").length;
     var estilos;
@@ -81,8 +94,8 @@ function checkBoxes() {
 
 function activeItems() {
     $(".list_items .chk-content").click(function() {
-        var _self = $(this).find('input')
-        var parent = $(this).parent().parent()
+        var _self = $(this).find('input');
+        var parent = $(this).parent().parent();
         if (_self.is(':checked')) {
             parent.addClass('active')
         } else {
@@ -260,7 +273,7 @@ function smallBoxAlertValidation(inputsNotPassed){
             const attrAka = v.getAttribute('data-aka');
             if(attrAka){
                 return attrAka.toUpperCase();
-            }else{
+            } else {
                 const label = v.parentElement.parentElement.parentElement.previousElementSibling;
                 if(label && label.tagName === "LABEL"){
                     const nomFinal = label.textContent;

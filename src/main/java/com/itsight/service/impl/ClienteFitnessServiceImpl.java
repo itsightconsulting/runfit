@@ -4,15 +4,20 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.RedFitness;
+import com.itsight.domain.SecurityUser;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ClienteFitnessRepository;
+import com.itsight.repository.ClienteRepository;
 import com.itsight.service.ClienteFitnessService;
+import com.itsight.service.ClienteProcedureInvoker;
 import com.itsight.service.ClienteService;
 import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +35,17 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
 
     private RedFitnessService redFitnessService;
 
+    private ClienteProcedureInvoker clienteProcedureInvoker;
 
     @Autowired
-    public ClienteFitnessServiceImpl(ClienteFitnessRepository repository, ClienteService clienteService, RedFitnessService redFitnessService){
+    public ClienteFitnessServiceImpl(ClienteFitnessRepository repository,
+                                     ClienteService clienteService,
+                                     RedFitnessService redFitnessService,
+                                     ClienteProcedureInvoker clienteProcedureInvoker){
         super(repository);
         this.clienteService = clienteService;
         this.redFitnessService = redFitnessService;
+        this.clienteProcedureInvoker = clienteProcedureInvoker;
     }
 
     @Override
@@ -120,7 +130,6 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
 
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
-
     }
 
     @Override
@@ -151,9 +160,13 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
         return Optional.of(repository.findByClienteId(clienteId)).orElseThrow(()->new EntityNotFoundException());
     }
 
-
-
-
-
-
+    @Override
+    public void actualizarFull(ClienteDTO cliente, Integer id) throws CustomValidationException {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        //Cliente tCliente = clienteService.findByUsername(username);
+        //tCliente.setUsername(username);
+        //tCliente.setSecurityUser(new SecurityUser(id));
+        //BeanUtils.copyProperties(cliente, tCliente);
+        clienteProcedureInvoker.actualizarClienteById(cliente, id);
+    }
 }

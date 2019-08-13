@@ -7,7 +7,9 @@ import java.util.List;
 public interface ClienteProcedureInvoker {
 
 
- public List<ClienteDTO> getDistribucionDepartamentoCliente();
+ List<ClienteDTO> getDistribucionDepartamentoCliente();
+
+ void actualizarClienteById(ClienteDTO cliente, Integer clienteId);
 
 
 }

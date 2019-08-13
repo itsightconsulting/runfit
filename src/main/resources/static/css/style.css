@@ -1500,3 +1500,11 @@ section #moreFav {
   display: none;
 }
 
+.menu-not-allowed{
+  color: #9d9d9d6e !important;
+  cursor: not-allowed;
+}
+
+.menu-not-allowed:hover{
+  color: #A8FA00 !important;
+}

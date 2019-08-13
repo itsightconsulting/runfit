@@ -367,7 +367,11 @@
                                     </div>
                                 </div>
                                 <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
-                                    <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancarias();"></i>
+                                    <img id="VerCuentasBancarias" th:src="@{/img/iconos/icon_edit.svg}+'?'+${version}"
+                                         rel="tooltip"
+                                         data-placement="bottom"
+                                         title="Ir a editar las cuentas registradas"
+                                         onclick="verCuentasBancarias();"/>
                                 </h4>
                                 <div class="hidden"><!-- NECESARIO PARA CLONARLO PARA LA EDICIÓN DE CUENTAS-->
                                     <select class="form-control mg-bt-10 hidden" name="BancoId" id="BancoId">
@@ -496,7 +500,6 @@
                 svcBasics.classList.add('hidden');
                 svcEdit.classList.add('hidden');
                 subTitleTarifario.classList.remove('hidden');
-                sbTarifario.classList.remove('hidden');
                 tarifarios.classList.remove('hidden');
                 document.querySelectorAll('svg.tarifa-svc').forEach((e)=>{
                     e.style.fill = 'black';

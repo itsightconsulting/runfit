@@ -288,20 +288,37 @@
                           </div>
                           <!-- END DETALLE PAQUETE -->
                           <!-- END TARIFARIOS-->
-                          <h4 class="title-metodo-pago">MÉTODOS DE PAGO</h4>
-                          <div class="row">
-                              <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="1"><img th:src="@{/img/money.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2"><img th:src="@{/img/mastercard.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3"><img th:src="@{/img/visa.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4"><img th:src="@{/img/amex.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5"><img th:src="@{/img/diners-club.png}"></a>
-                                  <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
+                          <h4 class="title-metodo-pago">INFORMACIÓN DE PAGO</h4>
+                          <div class="steps">
+                              <div class="row">
+                                  <ol>
+                                      <li class="efectivo">
+                                          <div class="form-group li-perfil-asesor">
+                                              <label>EFECTIVO: <i class="fa fa-check-circle"></i></label>
+                                          </div>
+                                      </li>
+                                      <li class="cuentas-bancarias">
+                                          <div class="form-group li-perfil-asesor">
+                                              <label>TRANSFERENCIAS: <a href="javascript:void(0);" style="color: black"><i class="fa fa-chevron-down" onclick="verCuentasBancariasNoOps();"></i></a></label>
+                                          </div>
+                                      </li>
+                                      <li class="tarjetas">
+                                          <div class="form-group li-perfil-asesor">
+                                              <label>TARJETAS:</label>
+                                              <div class="row">
+                                                  <div class="col col-md-12" id="MediosPagosAgregados" style="padding-bottom:15px">
+                                                      <a href="javascript:void(0);" class="cc-elegido hidden" data-id="2"><img th:src="@{/img/mastercard.png}"></a>
+                                                      <a href="javascript:void(0);" class="cc-elegido hidden" data-id="3"><img th:src="@{/img/visa.png}"></a>
+                                                      <a href="javascript:void(0);" class="cc-elegido hidden" data-id="4"><img th:src="@{/img/amex.png}"></a>
+                                                      <a href="javascript:void(0);" class="cc-elegido hidden" data-id="5"><img th:src="@{/img/diners-club.png}"></a>
+                                                      <a href="javascript:void(0);" class="cc-elegido hidden" data-id="6"><img th:src="@{/img/discover.png}"></a>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                  </ol>
                               </div>
                           </div>
-                          <h4 class="title-icon-ver title-cuentas-bancarias">CUENTAS BANCARIAS
-                              <i rel="tooltip" data-placement="bottom" data-original-title="Ver las cuentas registradas" onclick="verCuentasBancariasNoOps();"></i>
-                          </h4>
                           <div class="form-group hidden" id="divNotaFinal">
                               <label>Nota</label>
                               <p id="NotaFinal"></p>
@@ -569,7 +586,6 @@
       }
 
       function registrarContactoTrainer(){
-
           if(!$(frm).valid()){
               return;
           }
@@ -579,7 +595,7 @@
           params.correoTrainer = $perfil.correo;
           const trainerId = $perfil.id;
           $('#btnInfoContacto').attr('disabled', 'disabled');
-          const ttId = $perfil.tipoTrainerId
+          const ttId = $perfil.tipoTrainerId;
           const url = _ctx + `p/contacto/trainer/registrar/${trainerId}?ttId=${ttId}`;
           $.ajax({
               type: 'POST',
@@ -757,7 +773,7 @@
         document.querySelector('#MetodoTrabajo').innerHTML = t.metodoTrabajo.replace(/\r?\n/g, '<br />');
         if(t.centroTrabajo){
             document.querySelector('#CentroTrabajo').innerHTML = t.centroTrabajo;
-        }else{
+        } else {
             $('#dvCentroTrabajo').addClass('hidden');
         }
         let res = document.querySelector('#Resultados');
@@ -930,28 +946,40 @@
 
       function mostrarMediosPago(mediosPago, cuentas){
         //Pasando las cuentas al aray que posteriormente será usado para poblar el modal de cuentas
+        let noOne = true;
         if(cuentas){
             const ccs = JSON.parse(cuentas);
             if(ccs.length){
+                noOne = false;
                 //Importante para que en el modal no aparezca el ícono imagen de eliminar
                 ccs[0].noDelete = true;
                 ccBancarias = ccs;
-            } else {
-                document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+            }else{
+                document.querySelector('.cuentas-bancarias').remove();
             }
         }else{
-            document.querySelector('.title-cuentas-bancarias').classList.add('hidden');
+            document.querySelector('.cuentas-bancarias').remove();
         }
 
-        if(!mediosPago){
-            document.querySelector('.title-metodo-pago').classList.add('hidden');
-            return;
-        }
-
-        const ccs = mediosPago.split("|");
+        const ccs = mediosPago ? mediosPago.split("|") : [];
         ccs.forEach(id=>{
-            tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+            noOne = false;
+            if(id != "1"){
+                tabService.querySelector('.cc-elegido[data-id="'+id+'"]').classList.remove('hidden');
+            }
         });
+        if(!ccs.find(e=>e=="1")){
+            document.querySelector('.efectivo').remove();
+        }
+        if(!ccs.find(e=>e!="1")){
+            document.querySelector('.tarjetas').remove();
+        }
+
+        if(noOne){
+            document.querySelector('.title-metodo-pago').classList.add('hidden');
+        }
+
+        number_time_line();
       }
 
       function setValoracion(canPerValoracion, totalValoracion){

@@ -15,18 +15,31 @@ import com.itsight.util.Enums;
 import com.itsight.util.MailContents;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.apache.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.net.www.protocol.http.AuthenticationInfo;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.itsight.util.Enums.Galletas.GLL_NOMBRE_COMPLETO;
 import static com.itsight.util.Enums.Mail.NUEVO_CLIENTE;
 import static com.itsight.util.Enums.ResponseCode;
+import static com.itsight.util.Enums.TipoUsuario.CLIENTE;
+import static com.itsight.util.Utilitarios.createCookie;
 
 @Service
 @Transactional
@@ -51,6 +64,12 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     private CorreoService correoService;
 
     private ServicioService servicioService;
+
+    @Autowired(required = false)
+    private HttpSession session;
+
+    @Autowired(required = false)
+    private HttpServletResponse httpServletResponse;
 
     @Value("${domain.name}")
     private String domainName;
@@ -212,7 +231,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
                     repository.save(cliente);
 
                     //Enviando correo al nuevo cliente
-                    StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, Enums.TipoUsuario.CLIENTE.ordinal(), domainName);
+                    StringBuilder sb = MailContents.contenidoNuevoUsuario(cliente.getUsername(), originalPassword, CLIENTE.ordinal(), domainName);
                     emailService.enviarCorreoInformativo("Bienvenido a la familia", cliente.getCorreo(), sb.toString());
                     return ResponseCode.REGISTRO.get()+','+cliente.getId()+','+flagTrainer;
             } catch (Exception e){
@@ -239,15 +258,40 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         objCli.setFlagActivo(true);
         //Agregando roles
 
-        objCli.setRoles(Enums.TipoUsuario.CLIENTE.ordinal());
+        objCli.setRoles(CLIENTE.ordinal());
         objCli.setTipoDocumento(cliente.getTipoDocumentoId());
         objCli.setPais(cliente.getPaisId());
 
-        SecurityUser secCliente = new SecurityUser(cliente.getUsername().toLowerCase(), cliente.getPassword());
-        secCliente.setRoles(Enums.TipoUsuario.CLIENTE.ordinal());
+        SecurityUser secCliente;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        if(authorities.stream().filter(e->(e).getAuthority().equals("ROLE_GUEST")).count() == 1){
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            cliente.setUsername(username);
+            //Ya que este tipo de usuario tiene como nombre de usuario su correo
+            // personal(ya sea de facebook o el que puso en el mini registro para invitados)
+            cliente.setCorreo(username);
+            secCliente = securityUserRepository.findByUsername(username);
+            securityRoleRepository.deleteById(secCliente.getRoles().stream().findFirst().get().getId());
+            //Fixing authentication object
+            Set<GrantedAuthority> updatedAuthorities = new HashSet<>();
+            updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_RUNNER"));
+            UsernamePasswordAuthenticationToken nwAuthentication = new UsernamePasswordAuthenticationToken(
+                    username,
+                    authentication.getCredentials(),
+                    updatedAuthorities);
+            SecurityContextHolder.getContext().setAuthentication(nwAuthentication);
+
+            String fullName = cliente.getNombres() + " " + cliente.getApellidos();
+            httpServletResponse.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
+        }else{
+            secCliente = new SecurityUser(cliente.getUsername().toLowerCase(), cliente.getPassword());
+        }
+        secCliente.setRoles(CLIENTE.ordinal());
 
         objCli.setSecurityUser(secCliente);
 
+        //Se copian las propiedades del DTO al objeto que va a ser persistido
         BeanUtils.copyProperties(cliente, objCli);
 
         ClienteFitness objCliFit = new ClienteFitness();

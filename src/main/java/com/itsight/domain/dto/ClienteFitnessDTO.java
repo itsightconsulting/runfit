@@ -33,8 +33,8 @@ public class ClienteFitnessDTO implements Serializable {
     @JsonSerialize(using = JsonMoneySimpleSerializer.class)
     private BigDecimal kilometrajePromedioSemana;
     private Integer diasSemanaCorriendo;
-    private Boolean flagHaceCalentamiento;
-    private Boolean flagHaceEstiramientos;
+    private Boolean flagCalentamiento;
+    private Boolean flagEstiramiento;
     private String desgasteZapatilla;
 
     private String desgasteZapatillaOtro;

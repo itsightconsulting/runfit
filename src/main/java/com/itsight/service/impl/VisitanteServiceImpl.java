@@ -3,6 +3,7 @@ package com.itsight.service.impl;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.aop.AspectController;
 import com.itsight.domain.*;
+import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.domain.dto.VisitanteDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.SecurityUserRepository;
@@ -38,9 +39,7 @@ import static com.itsight.util.Utilitarios.encoderPassword;
 @Transactional
 public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> implements VisitanteService {
 
-    private static final Logger logger = LogManager.getLogger(VisitanteServiceImpl.class);
-
-
+    private static final Logger LOGGER = LogManager.getLogger(VisitanteServiceImpl.class);
 
     private SecurityUserRepository securityUserRepository;
 
@@ -63,15 +62,16 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
     public String registrarVisitante(VisitanteDTO visitanteDTO) throws CustomValidationException {
 
         if (!securityUserRepository.findCorreoExist(visitanteDTO.getCorreo())) {
-
+                //Por conveción del proyecto
+                visitanteDTO.setCorreo(visitanteDTO.getCorreo().toLowerCase());
                 Visitante obj = new Visitante();
-                String contraseñaEncrypt = encoderPassword(visitanteDTO.getPassword());
+                String contrasenaEncrypt = encoderPassword(visitanteDTO.getPassword());
 
                 BeanUtils.copyProperties(visitanteDTO, obj, new String[] {"password"});
 
                 String schema = Utilitarios.getRandomString(10);
 
-                SecurityUser securityUser = new SecurityUser(obj.getCorreo(), contraseñaEncrypt, false);
+                SecurityUser securityUser = new SecurityUser(obj.getCorreo(), contrasenaEncrypt, false);
                 Set<SecurityRole> listSr = new HashSet<>();
                 listSr.add(new SecurityRole("ROLE_GUEST", securityUser));
                 securityUser.setRoles(listSr);
@@ -97,8 +97,6 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
 
             throw new CustomValidationException(CORREO_REPETIDO.get(), EX_VALIDATION_FAILED.get());
 
-
-
         }
 
            // return Enums.ResponseCode.VF_USUARIO_REPETIDO.get();
@@ -107,5 +105,10 @@ public class VisitanteServiceImpl extends BaseServiceImpl<VisitanteRepository> i
     @Override
     public Visitante findOne(Integer preViId) {
         return repository.findById(preViId).orElse(null);
+    }
+
+    @Override
+    public UsuGenDTO getForCookieById(Integer id) {
+        return repository.getForCookieById(id);
     }
 }

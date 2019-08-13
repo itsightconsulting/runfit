@@ -6,16 +6,7 @@
     <title>Ficha de inscripción | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/p/css  :: fg-css"></th:block>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/rf-rutina.css}+'?'+${version}"/>
     <style>
-
-      #DivSvgSkeleton .tooltip.fade{
-        top: 0px !important;
-      }
-
-      #DivSvgSkeleton .tooltip-arrow{
-          display: none;
-      }
 
       .sk-no-f-group {
         position: initial !important;
@@ -24,57 +15,6 @@
       #tblCompetencia tbody input{
         width: 100%;
         max-width: 100%;
-      }
-
-      input.marca-referencial{
-        cursor: pointer !important;
-      }
-
-      .ok-time-selector {
-        position: absolute;
-        top: -6px;
-        right: -9px;
-        font-size: 1.8em;
-        color: black;
-      }
-
-      .popover-picker-time{
-        width: 220px;
-      }
-
-      .popover-picker-time .popover-content{
-        padding: 5px 0px;
-      }
-
-      .popover-picker-time .dv-input-time{
-        padding: 0px !important;
-        margin-right: 3px !important;
-      }
-
-      .popover-picker-time .dv-l-input-time{
-        padding: 0px !important;
-      }
-
-      .dv-input-time:nth-child(1){
-          margin-left: 8px;
-      }
-
-      .dv-picker-time-button{
-        float: right;
-        top: -27px;
-        right: 24px;
-      }
-
-      .popover-picker-time .dv-input-time:after{
-        content: ":";
-        position: absolute;
-        top: 9px;
-        right: -2px;
-      }
-
-      .popover-picker-time input{
-        padding: 0px;
-        width: 50px !important;
       }
 
       #tblCompetencia th{
@@ -166,7 +106,9 @@
                         <div>
                           <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
                           <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                          <input id="Correo" name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                          <input sec:authorize="!hasRole('GUEST')" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                          <input sec:authorize="hasRole('GUEST')" th:value="${#authentication.name}" disabled="disabled" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+
                         </div>
                         <div><input id="Movil" name="Movil" placeholder="Móvil" data-aka="Móvil" class="form-control" type="text"/></div>
                       </div>
@@ -276,11 +218,11 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group hidden" id="dvDescDolor">
                         <label>Si tu respuesta es afirmativa, cuéntanos dónde lo sientes:</label>
                         <textarea id="DescripcionDolor" name="DescripcionDolor" data-aka="Descripción del dolor" class="form-control"></textarea>
                       </div>
-                      <div class="form-group block-checks">
+                      <div class="form-group block-checks hidden" id="dvMomDolor">
                         <label>Cuando realizas actividad física, el dolor está presente:</label>
                         <ul class="checks">
                           <li>
@@ -362,13 +304,13 @@
                 <p class="desc">¡Ya falta poco para terminar!</p>
               </div><img class="bg-image" th:src="@{/img/public/step-2.png}+'?'+${version}"/>
               <div class="col-md-12">
-                <h4>Entrenamiento</h4>
+                <h4>ENTRENAMIENTO</h4>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <ol>
                     <li>
-                      <p class="title-form-group mar-top">factores de riesgo cardiovascular</p>
+                      <p class="title-form-group mar-top">FACTORES DE RIESGO CARDIOVASCULAR</p>
                       <div class="form-group">
                         <label>¿Padeces de hipertensión arterial?<span class="obligatorio">*</span></label>
                         <ul class="checks">
@@ -481,14 +423,15 @@
                               <input name="FlagSobrepeso" type="radio" data-ele-hd="#CatSobrepeso" value="0"/><span class="checkmark"></span>
                             </div>
                           </li>
+                          <span id="SobrePeso" class="hidden">0KG</span>
                         </ul>
                       </div>
-                      <div class="form-group hidden">
-                        <select class="form-control hidden" id="CatSobrepeso" name="CatSobrepeso" data-aka="Seleccionar categoria sobrepeso">
-                          <option value="1">Menos de 5 KG</option>
-                          <option value="2">Menos de 10 KG</option>
-                          <option value="3">Más de 10 KG</option>
-                        </select>
+                      <div class="">
+                        <div class="rango bg-slide hidden rango-sobrepeso">
+                          <input id="CatSobrepeso" name="CatSobrepeso" type="range" value="0" min="0" max="40" step="1" data-aka="Seleccione el sobrepeso aproximado" class="">
+                          <span class="rng-left">0KG</span>
+                          <span class="rng-right">40KG</span>
+                        </div>
                       </div>
                       <div class="form-group">
                         <label>Tus hábitos alimenticios son:<span class="obligatorio">*</span></label>
@@ -514,7 +457,7 @@
                 <div class="col-md-6">
                   <ol>
                     <li>
-                      <p class="title-form-group mar-top">historial médico y personal</p>
+                      <p class="title-form-group mar-top">HISTORIAL MÉDICO Y PERSONAL</p>
                       <div class="form-group">
                         <label>¿Padeces de alguna enfermedad?<span class="obligatorio">*</span></label>
                         <ul class="checks">
@@ -664,7 +607,7 @@
                       </li>
                       <li>
                         <div class="form-group">
-                          <label>De los siguientes aspectos, ¿cuáles crees que debes mejorar?</label>
+                          <label>De los siguientes aspectos, ¿Cuáles crees que debes mejorar?</label>
                           <div id="CondicionesMejora">
 
                           </div>
@@ -1016,32 +959,32 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Punta
-                              <input name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" value="Punta" type="checkbox"/><span class="checkmark"></span>
+                              <input value="1" name="DesgasteZapatilla" data-aka="Especificar puntos de desgaste de zapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Dedo interno
-                              <input name="DesgasteZapatilla" value="Dedo interno" type="checkbox"/><span class="checkmark"></span>
+                              <input value="2" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Dedo externo
-                              <input name="DesgasteZapatilla" value="Dedo externo" type="checkbox"/><span class="checkmark"></span>
+                              <input value="3" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Borde interno del talón
-                              <input name="DesgasteZapatilla" value="Borde interno del talón" type="checkbox"/><span class="checkmark"></span>
+                              <input value="4" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Borde externo del talón
-                              <input name="DesgasteZapatilla" value="Borde externo del talón" type="checkbox"/><span class="checkmark"></span>
+                              <input value="5" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Otro
-                              <input name="DesgasteZapatilla" value="Otro" type="checkbox"/><span class="checkmark"></span>
+                              <input value="6" name="DesgasteZapatilla" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                         </ul>
@@ -1056,27 +999,27 @@
                         <ul class="checks">
                           <li>
                             <div class="chk-content">Asfalto
-                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="Asfalto" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" data-aka="Especificar terreno(s) predominante(s) al correr" value="1" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Cemento
-                              <input name="DesTerPredom" value="Cemento" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="2" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Trail / Trocha
-                              <input name="DesTerPredom" value="Trail / Trocha" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="3" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Cinta de correr
-                              <input name="DesTerPredom" value="Cinta de correr" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="4" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li>
                             <div class="chk-content">Otro
-                              <input name="DesTerPredom" value="Otro" type="checkbox"/><span class="checkmark"></span>
+                              <input name="DesTerPredom" value="5" type="checkbox"/><span class="checkmark"></span>
                             </div>
                           </li>
                           <li></li>
@@ -1284,25 +1227,29 @@
                         </ul>
                       </div>
                     </li>
-                    <li>
-                      <div class="form-group">
-                        <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
-                        <div class="credentials-register">
-                          <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
-                            <label style="width: 110px !important;" for="Username">Usuario</label>
-                            <div>
-                              <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
-                              <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                              <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                    <th:block sec:authorize="!hasRole('GUEST')">
+                      <!-- IMPORTANTE YA QUE BASADO EN Username ID y password ID el backend sigue uno u otro flujo -->
+                      <li>
+                        <div class="form-group">
+                          <label>Credenciales para su ingreso<span class="obligatorio">*</span></label>
+                          <div class="credentials-register">
+                            <div class="form-group usuario"><span class="fa fa-user-o" style="color: #a8fa00 !important;"></span>
+                              <label style="width: 110px !important;" for="Username">Usuario</label>
+                              <div>
+                                <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
+                                <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
+                                <input type="text" class="form-control" id="Username" name="Username" data-aka="Usuario" style="padding: 6px 12px;width: 30%" aria-invalid="false">
+                              </div>
+                            </div>
+                            <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
+                              <label style="width: 112px !important;" for="Password">Contraseña</label>
+                              <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
                             </div>
                           </div>
-                          <div class="form-group password"><span class="fa fa-unlock-alt" style="color: #a8fa00 !important;"></span>
-                            <label style="width: 112px !important;" for="Password">Contraseña</label>
-                            <input type="password" class="form-control" id="Password" name="Password" style="padding: 6px 12px;width: 30%" aria-invalid="false">
-                          </div>
                         </div>
-                      </div>
-                    </li>
+                      </li>
+                    </th:block>
+
                     <li>
                       <div class="form-group">
                         <label>Finalmente, ¿cómo te enteraste de nosotros?<span class="obligatorio">*</span></label>
@@ -1347,7 +1294,7 @@
                         </ul><br/>
                       </div>
                       <div class="form-group">
-                        <button id="btnGuardar" class="btn btn-bg-black" type="submit">FINALIZAR</button>
+                        <button id="btnGuardar" class="btn btn-bg-black" type="button">FINALIZAR</button>
                       </div>
                     </li>
                   </ol>
@@ -1391,7 +1338,6 @@
       const btnGuardar = document.getElementById('btnGuardar');
       const body = document.querySelector('body');
       const verifiedNames = [];
-
       const nowDate = parseFromStringToDate(getFechaFormatoString(new Date()));
       let nowDatePlusOne = new Date();
       nowDatePlusOne.setDate(nowDatePlusOne.getDate()+1);
@@ -1404,6 +1350,7 @@
       })();
 
       function init(){
+        checkCookiesForFichaCli();
         instanceInitTab();
         mainSeeders();
         mainEventListeners();
@@ -1474,6 +1421,12 @@
         document.querySelector('body').addEventListener('click', bodyClickEventListener);
         document.querySelector('body').addEventListener('focusout', bodyFocusOutEventListener);
         document.querySelector('body').addEventListener('change', bodyChangeEventListener);
+        document.querySelector('body .ficha-02 .rango-sobrepeso').addEventListener('mousemove', (e)=>{
+          if(e.target.id === 'CatSobrepeso'){
+            document.getElementById('SobrePeso').textContent = e.target.value + "KG";
+          }
+        });
+
         document.querySelector('body').addEventListener('keydown', (e)=>{
           const input = e.target;
           if (input.classList.contains('input-time')) {
@@ -1512,6 +1465,10 @@
                 input.nextElementSibling.remove();
               }
             }
+          }
+
+          if(input.id && input.id === "CatSobrepeso"){
+            document.getElementById('SobrePeso').textContent = input.value + "KG";
           }
         }
 
@@ -1573,7 +1530,6 @@
             const absSelected = clases.contains('muscle-selected');
             const muscleName = input.getAttribute('data-original-title').slice(4).slice(0, -5);
             msclArr.forEach(v=>{
-              console.log(v);
               const absEle = document.getElementById(v);
               if(!absSelected){
                 selectedMuscles.push({id: absEle.id, name: muscleName});
@@ -1596,6 +1552,17 @@
               }
               if(prev.name === "DesPadVarios"){
                 validarSeleccionNA(prev,"DesPadVarios","4");
+              }
+            }
+            if(prev.name === "FlagPadeceDolor"){
+              const isChecked = document.getElementById('FlagPadeceDolor').checked;
+              if(isChecked){
+                document.getElementById('dvDescDolor').classList.remove('hidden');
+                document.getElementById('dvMomDolor').classList.remove('hidden');
+              }else{
+                document.getElementById('dvDescDolor').classList.add('hidden');
+                document.getElementById('dvMomDolor').classList.add('hidden');
+                document.getElementById('DivDolCorrer').classList.add('hidden');
               }
             }
 
@@ -1627,7 +1594,6 @@
               }
             }
           }
-
         }
         /* END elementos a disposición*/
 
@@ -1645,6 +1611,17 @@
             e.value = "";
           });
           input.focus();
+        }
+        if(input.id === "FlagPadeceDolorSi" || input.id === "FlagPadeceDolorNo"){
+          const isChecked = document.getElementById('FlagPadeceDolor').checked;
+          if(isChecked){
+            document.getElementById('dvDescDolor').classList.remove('hidden');
+            document.getElementById('dvMomDolor').classList.remove('hidden');
+          } else {
+            document.getElementById('dvDescDolor').classList.add('hidden');
+            document.getElementById('dvMomDolor').classList.add('hidden');
+            document.getElementById('DivDolCorrer').classList.add('hidden');
+          }
         }
       }
 
@@ -1703,7 +1680,7 @@
             is = arr.some((v)=>{return v===id});
             index = is ? i : -1;
           }
-        })
+        });
         return {check: is, ix: index}
       }
 
@@ -1742,12 +1719,16 @@
           success: function (res) {
             $('#btnGuardar').attr('disabled', 'disabled');
             if(res == "-1"){
-              $('input[name="username"]').val(body.username);
-              $('input[name="password"]').val(body.password);
-              document.querySelector('.login_link').click();
-              setTimeout(() => {
-                $('#btn-login').click();
-              }, 1000);
+              if(document.getElementById('Username')){
+                $('input[name="username"]').val(body.username);
+                $('input[name="password"]').val(body.password);
+                document.querySelector('.login_link').click();
+                setTimeout(() => {
+                  $('#btn-login').click();
+                }, 1000);
+              } else {//SOLO CUANDO SE VA DE CLIENTE INVITADO A FULL
+                window.location.href = _ctx;
+              }
             }
           }, error: (xhr) => {
             exception(xhr);
@@ -1758,6 +1739,11 @@
 
       function generateBody(){
         const obj = getFormData($('#frm_registro'));
+        //NECESARIO PARA QUE EN LA SERIALIZACIÓN NO SE LE RESTE A LA FECHA UN DÍA
+        let parseFecha = parseFromStringToDate(obj.fechaNacimiento);
+        obj.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+        obj.correo = document.getElementById('Correo').value;
+        //END NECESARIO
         const trainerId = document.getElementById('TrainerId');
         const correoTrainer = document.getElementById('CorreoTrainer');
         obj.trainerId = trainerId.value === "" ? null : trainerId.value;
@@ -1780,8 +1766,8 @@
         obj.cliFit.tiempoUnKilometro = document.getElementById('TiempoUnKilometro').value;
         obj.cliFit.kilometrajePromedioSemana = document.getElementById('KilometrajePromedioSemana').value;
         obj.cliFit.diasSemanaCorriendo = document.getElementById('DiasSemanaCorriendo').value;
-        obj.cliFit.flagHaceCalentamiento = document.getElementById('FlagCalentamiento').checked;
-        obj.cliFit.flagHaceEstiramientos = document.getElementById('FlagEstiramiento').checked;
+        obj.cliFit.flagCalentamiento = document.getElementById('FlagCalentamiento').checked;
+        obj.cliFit.flagEstiramiento = document.getElementById('FlagEstiramiento').checked;
         obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
         obj.cliFit.desgasteZapatillaOtro = document.getElementById('DesgasteZapatillaOtro').value;
         obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;
@@ -1796,9 +1782,11 @@
 
         const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
         condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
-        condAnatomica.descripcionDolor = obj.descripcionDolor;
-        condAnatomica.momDolor = obj.momDolor;
-        condAnatomica.momDolorIni = obj.momDolorIni;
+        if(condAnatomica.flagPadeceDolor){
+          condAnatomica.descripcionDolor = obj.descripcionDolor;
+          condAnatomica.momDolor = obj.momDolor;
+          condAnatomica.momDolorIni = getValuesConcatInpCheckbox('MomDolorIni');
+        }
         condAnatomica.desLesion = obj.desLesion;
         condAnatomica.recomMedica = obj.recomMedica;
         condAnatomica.flagEmbarazo = document.querySelector('#FlagEmbarazo').checked;
@@ -1956,6 +1944,7 @@
       }
 
       function constraintsValidation() {
+        const validUsername = document.getElementById('Username') ? true : false;
         $(frm).validate({
           rules: {
             Nombres: {
@@ -2188,7 +2177,7 @@
             },
             DesObjetivos: {
               required: true,
-              rangelength:[10, 500]
+              rangelength:[10, 1000]
             },
             DesComp: {
               required: true,
@@ -2200,15 +2189,15 @@
             ViaConexion: {
               required: true
             },
-            Username: {
-              required: true,
-              usernameOrEmail: true,
-              rangelength: [7, 30],
+            Username:{
+                required: validUsername,
+                usernameOrEmail: validUsername,
+                rangelength: [!validUsername ? 0 : 7, !validUsername ? 0 : 30],
             },
-            Password: {
-              required: true,
-              rangelength: [8, 30],
-              pwcheck: true
+            Password:{
+                required: validUsername,
+              rangelength: [!validUsername ? 0 : 8, !validUsername ? 0 : 30],
+                pwcheck: validUsername
             },
             InpFechaCompetencia:{
               greaterThanDate: nowDatePlusOne,
@@ -2292,7 +2281,11 @@
         //Maxlength
         const rules = $(frm).validate().settings.rules;
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
-            document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+            if(e === "Username" || e === "Password" && rules[e].rangelength[1] === 0){
+              //Nothing
+            }else{
+              document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
+            }
         });
       }
 
@@ -2305,6 +2298,7 @@
         document.querySelector('#Apellidos').value = "Sotelo";
         document.querySelector('#FechaNacimiento').value = "1993-02-28";
         document.querySelector('#TipoDocumentoId').value = 1;
+        $('#TipoDocumentoId').multiselect('refresh');
         document.querySelector('#NumeroDocumento').value = 42424242;
         document.querySelector('#Correo').value = generateRandomMail();
         document.querySelector('#Movil').value = `51987${t1}234`;
@@ -2365,8 +2359,10 @@
         document.querySelector('input[name="ItemsFitness"]').checked = true;
         document.querySelector('input[name="ViaConexion"]').checked = true;
         document.querySelector('#DesComp').value = "Maratón de Boston";
-        document.querySelector('#Username').value = "abc"+String(new Date().getTime());
-        document.querySelector('#Password').value = "runfit123";
+        if(document.querySelector('#Username')){
+          document.querySelector('#Username').value = "abc"+String(new Date().getTime());
+          document.querySelector('#Password').value = "runfit123";
+        }
 
         /*var tid = setInterval( function () {
           if ( document.readyState !== 'complete' ) return;

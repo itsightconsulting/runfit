@@ -1,7 +1,12 @@
 package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.json.JsonDateSimpleDeserializer;
+import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
+import org.springframework.security.oauth2.common.util.JsonDateDeserializer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Past;
@@ -20,6 +25,8 @@ public class ClienteDTO implements Serializable  {
     private String correoTrainer;
     private String movil;
     @Past
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     private Date fechaNacimiento;
     private String username;
     /*FK's*/

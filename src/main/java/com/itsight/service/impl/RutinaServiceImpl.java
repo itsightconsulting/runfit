@@ -44,15 +44,15 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
 
     private TipoRutinaService tipoRutinaService;
 
+    @Autowired(required = false)
     private HttpSession session;
 
     @Autowired
-    public RutinaServiceImpl(RutinaRepository repository, RuConsolidadoService ruConsolidadoService, RedFitnessService redFitnessService, TipoRutinaService tipoRutinaService, HttpSession session) {
+    public RutinaServiceImpl(RutinaRepository repository, RuConsolidadoService ruConsolidadoService, RedFitnessService redFitnessService, TipoRutinaService tipoRutinaService) {
         super(repository);
         this.ruConsolidadoService = ruConsolidadoService;
         this.redFitnessService = redFitnessService;
         this.tipoRutinaService = tipoRutinaService;
-        this.session = session;
     }
 
     @Override

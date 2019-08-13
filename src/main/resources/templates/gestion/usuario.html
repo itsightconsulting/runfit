@@ -367,7 +367,8 @@
         validarRegistros();
         init();
 
-        $("#btnNuevo").click(function () {//Debe respetarse el orden de ejecución para el correcto funcionamiento
+        $("#btnNuevo").click(function (e) {//Debe respetarse el orden de ejecución para el correcto funcionamiento
+            e.stopPropagation();
             $('#Operacion').text('Registrar');
             $('#Username').removeAttr('readonly');
             $('#Correo').removeAttr('readonly');
@@ -384,21 +385,25 @@
 
         });
 
-        $("#btnGuardar").click(function () {
+        $("#btnGuardar").click(function (e) {
+            e.stopPropagation();
             registro();
         });
 
-        $("#btnCambioContrasena").click(function () {
+        $("#btnCambioContrasena").click(function (e) {
+            e.stopPropagation();
             confirmarCambio();
         });
 
-        $("#btnCancelar").click(function () {
+        $("#btnCancelar").click(function (e) {
+            e.stopPropagation();
             $('#PerfilId').val("");
             $('#PerfilId').removeAttr('disabled');
             irListado($index);
         });
 
-        $("#btnFiltrar").click(function () {
+        $("#btnFiltrar").click(function (e) {
+            e.stopPropagation();
             listarRegistros();
         });
 
@@ -415,6 +420,7 @@
     }
 
     function bodyFocusOutEventListener(e){
+        e.stopPropagation();
         const input = e.target;
         if(input.tagName === "INPUT"){
 

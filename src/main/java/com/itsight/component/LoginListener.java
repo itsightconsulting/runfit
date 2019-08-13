@@ -1,10 +1,7 @@
 package com.itsight.component;
 
 import com.itsight.domain.dto.UsuGenDTO;
-import com.itsight.service.AdministradorService;
-import com.itsight.service.ClienteService;
-import com.itsight.service.ConfiguracionClienteService;
-import com.itsight.service.TrainerService;
+import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
@@ -43,9 +40,12 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     private AdministradorService administradorService;
 
     @Autowired
+    private VisitanteService visitanteService;
+
+    @Autowired
     private ConfiguracionClienteService configuracionClienteService;
 
-/*    @Autowired
+    /*@Autowired
     private SecurityUserRepository securityUserRepository;*/
 
     @Autowired(required = false)
@@ -55,7 +55,6 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     public void onApplicationEvent(InteractiveAuthenticationSuccessEvent login) {
         // TODO Auto-generated method stub
         try {
-
             //For cookies
             HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 
@@ -72,7 +71,9 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             } else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
                 usu = administradorService.getForCookieById(id);
                 administradorService.actualizarFechaUltimoAcceso(new Date(), id);
-            } else {
+            } else if(login.getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUEST"))) {
+                usu = visitanteService.getForCookieById(id);
+            } else {//ROLE RUNNER
                 usu = clienteService.getForCookieById(id);
                 clienteService.actualizarFechaUltimoAcceso(new Date(), id);
 
@@ -89,7 +90,6 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
 
                 response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_ENTRENAMIENTO.name())));
                 response.addCookie(createCookie(GLL_CONTROL_REP_VIDEO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_REP_VIDEO.name())));
-
             }
 
             //Fixing authentication object

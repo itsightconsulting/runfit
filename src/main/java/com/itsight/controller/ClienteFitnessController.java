@@ -3,12 +3,14 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ClienteFitness;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.RuCliPOJO;
 import com.itsight.repository.ClienteFitnessRepository;
 import com.itsight.service.*;
 import com.itsight.service.impl.ClienteFitnessProcedureInvokerImpl;
+import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/gestion/cliente-fitness")
@@ -78,6 +81,14 @@ public class ClienteFitnessController {
         }else{
             return "-1";
         }
+    }
+
+    @PutMapping(value = "/actualizar")
+    public @ResponseBody
+    String actualizar(@RequestBody @Valid ClienteDTO cliente, HttpSession session) throws CustomValidationException {
+        Integer id = (Integer) session.getAttribute("id");
+        clienteFitnessService.actualizarFull(cliente, id);
+        return Enums.ResponseCode.EXITO_GENERICA.get();
     }
 
     @GetMapping(value = "/planes")

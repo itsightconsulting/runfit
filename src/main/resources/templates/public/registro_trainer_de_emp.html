@@ -213,7 +213,7 @@
                                           <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
                                           <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
                                       </div>
-                                      <div class="form-group">
+                                      <div class="form-group hidden">
                                           <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
                                           <div class="row">
                                               <div class="col-md-12">
@@ -828,7 +828,10 @@
 
             //Ubigeo
             obj.paisId = 604;
-            obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+            //Por ser entrenador staff de una empresa, no se le mostrará el campo
+            //para que elija su ubigeo y se le asignará por defecto el de Lima: 150101
+            obj.ubigeo = "150101";
+            //obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
             const dep = document.getElementById('Dep').options[document.getElementById('Dep').selectedIndex].textContent;
             const pro = document.getElementById('Pro').options[document.getElementById('Pro').selectedIndex].textContent;
             const dis = document.getElementById('Dis').options[document.getElementById('Dis').selectedIndex].textContent;

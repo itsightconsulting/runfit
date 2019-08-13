@@ -44,6 +44,60 @@
       background-color: DodgerBlue !important;
       color: #ffffff;
     }
+
+    /* SPINNER LOADING */
+    .spring-spinner, .spring-spinner * {
+      box-sizing: border-box;
+    }
+
+    .spring-spinner {
+      height: 60px;
+      width: 60px;
+      margin-left: 49%;
+    }
+
+    .spring-spinner .spring-spinner-part {
+      overflow: hidden;
+      height: calc(60px / 2);
+      width: 60px;
+    }
+
+    .spring-spinner  .spring-spinner-part.bottom {
+      transform: rotate(180deg) scale(-1, 1);
+    }
+
+    .spring-spinner .spring-spinner-rotator {
+      width: 60px;
+      height: 60px;
+      border: calc(60px / 7) solid transparent;
+      border-right-color: #82b4e4;
+      border-top-color: #a8fa00;
+      border-radius: 50%;
+      box-sizing: border-box;
+      animation: spring-spinner-animation 3s ease-in-out infinite;
+      transform: rotate(-200deg);
+    }
+
+    @keyframes spring-spinner-animation {
+      0% {
+        border-width: calc(60px / 7);
+      }
+      25% {
+        border-width: calc(60px / 23.33);
+      }
+      50% {
+        transform: rotate(115deg);
+        border-width: calc(60px / 7);
+      }
+      75% {
+        border-width: calc(60px / 23.33);
+      }
+      100% {
+        border-width: calc(60px / 7);
+      }
+    }
+    /* END SPINNER LOADING */
+
   </style>
   <body>
     <nav th:replace="html-commons/p/header :: fg-header"></nav>
@@ -240,6 +294,10 @@
       }
 
       function onlyBusquedaDinamica(){
+        document.querySelector('.dv-rows').classList.add('hidden');
+        const divTrainers = document.getElementById('Trainers');
+        divTrainers.innerHTML = spinnerLoadingHtmlRaw();
+
         const d = getFormData($('#frm_registro'));
         d.niveles = Array.from(document.getElementById('Niveles').querySelectorAll("option:checked"),e=>e.value).join('|');
         d.idiomas = Array.from(document.getElementById('Idiomas').querySelectorAll("option:checked"),e=>e.value).join('|');
@@ -248,7 +306,7 @@
         Object.keys(d).forEach(key=>{
           if(!d[key]){
             delete d[key];
-          };
+          }
         });
 
         d.limit = queryParams.limit;
@@ -262,7 +320,7 @@
           blockLoading: false,
           noOne: true,
           success: function (res) {
-
+            divTrainers.innerHTML = "";
             if(res.length === 0){
               const noOne = document.createElement('div');
               noOne.className = "";
@@ -292,7 +350,6 @@
       }
 
       function recrearListado(arr){
-        console.log(arr);
         const divTrainers = document.getElementById('Trainers');
         arr.forEach((e)=>{
           const acLen = e.acerca.length;
@@ -341,6 +398,18 @@
       </div>
           `));
         });
+      }
+
+      function spinnerLoadingHtmlRaw(){
+        return `<hr>
+                <div class="spring-spinner">
+                  <div class="spring-spinner-part top">
+                    <div class="spring-spinner-rotator"></div>
+                  </div>
+                  <div class="spring-spinner-part bottom">
+                    <div class="spring-spinner-rotator"></div>
+                  </div>
+                </div>`;
       }
 
       function verPerfil(nomLink){
