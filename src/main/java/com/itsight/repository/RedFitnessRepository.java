@@ -25,7 +25,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     void actualizarNotaACliente(Integer id, String nota);
 
     @Modifying
-    @Query("UPDATE RedFitness R SET R.estadoPlan = ?2, R.fechaInicialPlanificacion= ?3, R.fechaFinalPlanificacion = ?4, R.contadorRutinas = R.contadorRutinas + ?5 WHERE R.id = ?1")
+    @Query("UPDATE RedFitness R SET R.estadoPlan = ?2,  R.fechaInicialPlanificacion= CASE WHEN ( R.fechaInicialPlanificacion < ?3 ) THEN  R.fechaInicialPlanificacion ELSE ?3 END, R.fechaFinalPlanificacion = CASE WHEN (R.fechaFinalPlanificacion <?4) THEN ?4 ELSE R.fechaFinalPlanificacion END, R.contadorRutinas = R.contadorRutinas + ?5 WHERE R.id = ?1")
     void updatePlanStatusAndUltimoDiaPlanificacion(Integer id, int planStatus, Date fechaInicialPlanificacion, Date diaFinalPlanificacion, int contadorRutinas);
 
     @Query("SELECT R.contadorRutinas FROM RedFitness R where R.id = ?1")

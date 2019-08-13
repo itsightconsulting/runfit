@@ -1296,11 +1296,10 @@ section#nuevaCategoriaPlantilla input ,section#editarCategoriaPlantilla input {
     border: 1px solid #000;
     border-radius: 4px;
     top: 0px;
-    padding-left: 30px;
-    margin-left: 10px;
 }
 
-section#nuevaCategoriaPlantilla .checkmark, section#editarCategoriaPlantilla .checkmark{
+section#nuevaCategoriaPlantilla .checkmark, section#editarCategoriaPlantilla .checkmark,
+section#listaCategoria .checkmark{
     top: 0px;
 }
 
@@ -1314,3 +1313,42 @@ section#nuevaCategoriaPlantilla .chk-content input:checked ~ .checkmark , sectio
     background-color: #a8fa00;
     border-color: #a8fa00;
     }
+
+section#mdlGenerarRutinaPred strong{
+    font-size: 17px;
+    color : #000000;
+}
+
+/*Vista Planes prediseñados  - botón de Notificación */
+button.botTempo {
+     border: 1px solid #fff;
+     color: #fff;
+     font-size: 17.23px;
+     padding: 10px 25px;
+     text-transform: uppercase;
+     font-size: 17px;
+     border-radius: 5px;
+     background-color: transparent;
+     font-family: Gotham-HTF-Bold, 'system-ui';
+     transition: all .5s;
+}
+
+section#seleccionCategoriasRutGen .item , section#info li{
+    cursor: pointer;
+}
+
+section#seleccionCategoriasRutGen ~ section#info .list_plan li .svg.plantilla {
+    position: absolute;
+    left: 0;
+    top:0;
+}
+
+ i.mdl-dark-header{
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+section#info .btn-circle {
+    top : 104px;
+}

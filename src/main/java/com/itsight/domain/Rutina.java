@@ -150,17 +150,7 @@ public class Rutina extends AuditingEntity {
         this.totalSemanas = rPlantilla.getTotalSemanas();
         this.nombre = rPlantilla.getNombre();
 
-       List<SemanaPlantilla> sP = rPlantilla.getLstSemana();
-        List<Semana> sList = new ArrayList<>();
-
-        sP.forEach((temp) -> {
-
-            Semana semana= new Semana(temp);
-            sList.add(semana);
-        });
-
-        this.lstSemana.addAll(sList);
-    }
+         }
 
     public void setCliente(Integer cliId) {
         this.cliente = new Cliente(cliId);

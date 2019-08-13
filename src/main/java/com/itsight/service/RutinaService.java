@@ -45,5 +45,6 @@ public interface RutinaService extends BaseService<Rutina, Integer> {
     String registrarGenByCascada(RuTpGeneralDTO rutina, Integer redFitnessId, Integer clienteId);
 
     List<String> findRutinaIdsByClienteId(int id);
+
 }
 

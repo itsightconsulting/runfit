@@ -1,14 +1,10 @@
 package com.itsight.service.impl;
 
-import com.itsight.domain.CategoriaPlantilla;
-import com.itsight.domain.Rutina;
-import com.itsight.domain.RutinaPlantilla;
+import com.itsight.domain.*;
 import com.itsight.domain.dto.RutinaPlantillaDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RutinaPlantillaRepository;
-import com.itsight.service.CategoriaPlantillaService;
-import com.itsight.service.RutinaPlantillaService;
-import com.itsight.service.RutinaService;
+import com.itsight.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -29,14 +27,21 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
 
     CategoriaPlantillaService categoriaPlantillaService;
     RutinaService rutinaService;
+    SemanaService semanaService;
+    DiaService diaService;
+    RedFitnessService redFitnessService;
     private EntityManager entityManager;
 
     @Autowired
-    public RutinaPlantillaServiceImpl(RutinaPlantillaRepository repository, CategoriaPlantillaService categoriaPlantillaService, RutinaService rutinaService, EntityManager entityManager) {
+    public RutinaPlantillaServiceImpl(RutinaPlantillaRepository repository, CategoriaPlantillaService categoriaPlantillaService,
+                                      RutinaService rutinaService, EntityManager entityManager, SemanaService semanaService, DiaService diaService, RedFitnessService redFitnessService) {
         super(repository);
         this.categoriaPlantillaService = categoriaPlantillaService;
         this.rutinaService = rutinaService;
         this.entityManager = entityManager;
+        this.semanaService = semanaService;
+        this.diaService = diaService;
+        this.redFitnessService = redFitnessService;
     }
 
 
@@ -150,12 +155,12 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
         rutinaService.save(objR);
      */
 
+/*
 
         RutinaPlantilla rutinaPlantilla = entityManager.createQuery(
                 "select rp " +
                         "from RutinaPlantilla rp " +
                         "join fetch rp.lstSemana s " +
-                        "join fetch s.lstDiaPlantilla " +
                         "where rp.id = :id", RutinaPlantilla.class)
                 .setParameter(
                         "id",
@@ -173,8 +178,9 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
         Rutina rutinaPlantillaClone = new Rutina(rutinaPlantilla);
         rutinaPlantillaClone.setFechaInicio(new Date());
         rutinaPlantillaClone.setFechaFin(date);
-
         entityManager.persist(rutinaPlantillaClone);
+
+*/
 
         objRp.setCategoriaPlantilla(cP);
 
@@ -207,5 +213,90 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     public List<RutinaPlantillaDTO> listarRutinasPredByCatId(Integer categoriaId) {
 
         return repository.findByCategoriaId(categoriaId);
+    }
+
+    @Override
+        public void agregarRutinadesdePlantilla(RutinaPlantilla rutinaPlantilla,String fechaInicio, String fechaFin, Integer redFitID, Integer cliId, Integer tipoRutina) {
+
+       Rutina rutina = new Rutina(rutinaPlantilla);
+
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      Date dateInicio = null, dateFin = null;
+       try {
+           dateInicio = format.parse(fechaInicio);
+           dateFin = format.parse(fechaFin);
+
+       } catch (ParseException e) {
+           e.printStackTrace();
+       }
+
+      rutina.setFechaInicio(dateInicio);
+      rutina.setFechaFin(dateFin);
+      rutina.setRedFitness(redFitID);
+      rutina.setCliente(cliId);
+      rutina.setTipoRutina(tipoRutina);
+      Rutina nuevaRutina = rutinaService.save(rutina);
+
+      List<SemanaPlantilla> sP = rutinaPlantilla.getLstSemana();
+      List<Integer> semIdsList = new ArrayList<>();
+
+      List<DiaPlantilla> diaPlantillas = new ArrayList<>();
+
+      int indexSemana = 0;
+
+
+       for(SemanaPlantilla semanaPlantilla: sP){
+
+              Calendar calInicio = Calendar.getInstance();
+              calInicio.setTime(dateInicio);
+              calInicio.add(Calendar.DATE, 7* indexSemana);
+              Date dateInicioSem = calInicio.getTime();
+
+              Calendar calFin = Calendar.getInstance();
+              calFin.setTime(dateInicioSem);
+              calFin.add(Calendar.DATE, 6);
+              Date dateFinSem   = calFin.getTime();
+
+
+              semanaPlantilla.setFechaInicio(dateInicioSem);
+              semanaPlantilla.setFechaFin(dateFinSem);
+
+              Semana semana= new Semana(semanaPlantilla);
+              semana.setRutina(nuevaRutina);
+
+              diaPlantillas.addAll(semanaPlantilla.getLstDiaPlantilla());
+
+              Semana sem = new Semana();
+              sem = semanaService.save(semana);
+
+              semIdsList.add(sem.getId());
+
+              int indexDia = 0;
+                for(DiaPlantilla diaPlantilla : diaPlantillas){
+
+                    Calendar calDia = Calendar.getInstance();
+                    calInicio.setTime(dateInicio);
+                    calInicio.add(Calendar.DATE, indexDia + (indexSemana * 7));
+
+                    Date dateDia= calInicio.getTime();
+
+                    diaPlantilla.setFecha(dateDia);
+                    Dia dia = new Dia(diaPlantilla);
+                    dia.setSemana(sem);
+
+                    diaService.save(dia);
+                    indexDia++;
+                }
+
+            indexSemana++;
+           diaPlantillas.clear();
+          };
+
+        int[] arrSemIds = new int[semIdsList.size()];
+        for(int i=0; i<arrSemIds.length;i++){
+            arrSemIds[i] = semIdsList.get(i);
+        }
+        rutinaService.updateSemanaIds(rutina.getId() , arrSemIds);
+        redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitID, 2, rutina.getFechaInicio(), rutina.getFechaFin(), 1);
     }
 }

@@ -12,7 +12,11 @@ import java.util.List;
 @Repository
 public interface CategoriaPlantillaRepository extends JpaRepository<CategoriaPlantilla, Integer> {
 
-    @Query("SELECT NEW com.itsight.domain.dto.CategoriaPlantillaDTO(C.id,C.nombre, C.tipo) FROM CategoriaPlantilla C WHERE C.trainer.id= ?1")
+    @Query("SELECT NEW com.itsight.domain.dto.CategoriaPlantillaDTO(C.id,C.nombre, C.tipo, C.favorito) FROM CategoriaPlantilla C WHERE C.trainer.id= ?1")
     List<CategoriaPlantillaDTO> findCategoriasByTrainerId(Integer trainerId);
+
+    @Query("SELECT NEW com.itsight.domain.dto.CategoriaPlantillaDTO(C.id,C.nombre, C.tipo,C.favorito) FROM CategoriaPlantilla C WHERE C.trainer.id= ?1 AND C.tipo = ?2")
+    List<CategoriaPlantillaDTO> findCategoriasByTrainerIdAndTipo(Integer trainerId, int tipoRutina);
+
 
 }

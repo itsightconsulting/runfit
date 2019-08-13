@@ -245,11 +245,8 @@ function registro() {
             error: function (xhr) {
 
                 const mensaje = xhr.responseJSON.message;
-                console.log(mensaje);
 
                 $('#divSmallBoxes').css('z-index','100000');
-
-
                 $.smallBox({
                     title: "Notificaciones Runfit",
                     content: '<p>'+mensaje+'</p>',
@@ -257,8 +254,6 @@ function registro() {
                     color:  '#cc4d4d',
                     icon: "fa fa-exclamation-circle"
                 })
-
-
             },
             complete: function () {
             }

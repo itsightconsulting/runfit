@@ -47,6 +47,11 @@ public class BagForest implements Identifiable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "forest", orphanRemoval = true)
     private List<GrupoVideo> treesGb = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "forest")
+    private List<RutinaPlantilla> treesRp = new ArrayList<>();
+
+
     public BagForest(){}
 
     public BagForest(Integer id){
@@ -72,7 +77,18 @@ public class BagForest implements Identifiable {
         return treesGb;
     }
 
-    public void setTreesGb(List<GrupoVideo> treesGb) {
+
+    public void setTreesGb(List<GrupoVideo> treesGb)
+     {
         this.treesGb = treesGb;
+    }
+
+    public void setTreesRp(List<RutinaPlantilla> treesRp) {
+        this.treesRp = treesRp;
+    }
+
+
+    public List<RutinaPlantilla> getTreesRp() {
+        return treesRp;
     }
 }

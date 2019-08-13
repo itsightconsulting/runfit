@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en-us" style="background-color: #fff;"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}" media="screen"/>
+
+</head>
+<style>
+
+ .btn-circle{
+     float: right!important;
+     border-radius: 50%;
+      font-size: 20px;
+     background-color: gainsboro;
+     color: #fff;
+ }
+
+
+ .title-categoria
+ {
+     word-wrap: break-word;
+     width: 200px;
+     /* text-align: center; */
+     margin: auto;
+     /* height: 100px; */
+     font-family: GothamHTF-Book;
+     color: #daffc6;
+     font-size: 28px;
+     line-height: 1;
+     font-weight: 600;
+ }
+
+ .title-categoria.sm
+ {
+     font-size: 18px;
+ }
+
+ .title-categoria.md
+ {
+     font-size: 28px;
+ }
+
+ .title-categoria.lg
+ {
+     font-size: 48px;
+ }
+
+ .owl-dots {
+     max-width: 45%;
+ }
+</style>
+<body style="background-color: #fff;">
+
+
+  <div id="wrapper">
+
+
+
+
+    <header>
+        <ul class="nav nav-pills">
+            <li class="col-md-3 icons"><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
+            <li class="active col-md-1"><a href="#">listado</a></li>
+            <li class="col-md-2"><a href="#">g. videos</a></li>
+            <li class="col-md-2"><a href="#">rutinario</a></li>
+            <li class="col-md-2"><a href="#">g. audios</a></li>
+            <li class="col-md-2"><a href="#">planes prediseñados</a></li>
+        </ul>
+    </header>
+
+  <section id="mdlGenerarRutinaPred">
+    <div class="modal fade" id="myModalRutGen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header txt-color-white bg-color-teal">
+                    <button type="button" class="close" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                    <h4 class="modal-title text-align-center"><strong>Selección de rutina prediseñada</strong></h4>
+                    <p class="modal-title text-align-center"><strong id="rutinaSelectNombre"></strong> <span> Semanas : </span> <span id="rutinaSelectSemanas"> </span></p>
+
+                </div>
+                <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                    <form id="frm_asign_rut_pred" action="javascript:void(0);">
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <div class="col col-md-6">
+                                    <label for="RutFechaInicio">Fecha inicio:</label>
+                                    <input id="RutFechaInicio" name="RutFechaInicio" type="date" class="form-control">
+                                </div>
+                                <div class="col col-md-6">
+                                    <label for="RutFechaFinal">Fecha fin:</label>
+                                    <input id="RutFechaFinal" name="RutFechaFinal" type="date" class="form-control">
+                                </div>
+                                <div style="margin-top:10px" class="row text-center col-md-12 padding-top-10">Total semanas: <span id="RutinaTotalSemanas">0</span></div>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="spRaw4" class="form-group">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="crearRutinaDesdePlantilla(this)"  id="btnGenerarRutina" class="btn btn-primary">GENERAR RUTINA DESDE PLANTILLA </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <section id="seleccionCategoriasRutGen">
+     <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
+
+
+        <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
+
+
+        <div class="text-center">
+            <h3 style="color: black" id="tipoPlantilla"> PLANTILLAS</h3>
+        </div>
+        <div class="owl-carousel owl-theme" id="planesCarousel">
+
+        </div>
+
+    </div>
+  </section>
+
+   <div class="shadow-gris">
+          <div class="container-t">
+              <div class="slider-container">
+                  <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="5">
+              </div>
+          </div>
+      </div>
+
+    <section id="info">
+        <div class="container-t">
+            <div class="text-center">
+                <div class="form-group pull-left">
+                    <div class="search">
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="inpSearch">
+                        </div>
+                    </div>
+                </div><a class="scroll" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-top.svg}"></a>
+                <div class="form-group pull-right">
+                    <select class="form-control">
+                        <option>1 - plan de 1 semanas</option>
+                    </select>
+
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <h1 class="title_big">15<span>km - </span><i>intermedios</i></h1>
+            <ul class="list_plan">
+          </ul>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+
+</div>
+  <th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+
+
+
+  <script th:inline="javascript">
+
+      const body = document.getElementsByTagName("body")[0];
+      const owl = $('.owl-carousel');
+      const cbox = $('input[type="radio"][name="cbNuevaCategoria"]');
+      const mdlEditarCat = document.getElementById("modalEditarCategoria");
+      const mdlEditarRutina = document.getElementById("modalEditarRutina");
+      const mdlAgregarCat = document.getElementById("modalNuevaCategoria");
+      const mdlAsignacionRutina = document.getElementById("myModalRutGen");
+      const btnEditarCat = document.getElementById("btnEditarCategoria");
+      const mdlAgregarRutina = document.getElementById("modalNuevaRutina");
+      const btnEditarRutina = document.getElementById("btnEditarRutina");
+      const btnNuevaRutina = document.getElementById("btnNuevaRutina");
+      const fInitRutGen = document.getElementById("RutFechaInicio");
+      const fFinalRutGen = document.getElementById("RutFechaFinal");
+      const btnGenerarRutina = document.getElementById("btnGenerarRutina");
+      const ulListRutina = $('.list_plan');
+      const inpSearchRutina = document.getElementById('inpSearch');
+      let currentCategoriasData;
+      let currentRutinasData;
+      const favoritos = [];
+
+      $(function(){
+         onInit();
+      })
+
+      function onInit(){
+          checkBoxTipoChangeEvent();
+          checkBoxasRadioButtons()
+          mostrarTipoRutina();
+          obtenerCategorias();
+          owl.on('click', '.item', categoriaClickListenerEvent);
+          ulListRutina.on('click', 'li', rutinaClickListenerEvent);
+          fInitRutGen.addEventListener('change', setTotalSemanas);
+          fFinalRutGen.addEventListener('change', setTotalSemanas);
+          inpSearchRutina.addEventListener('input', searchRutinaEvent);
+          constraintsValidation();
+
+      }
+
+      function agregarCategoria(){
+
+          const nombre = $('#nombreCategoria').val()
+          const tipoRutina = $('input[type="radio"][name="cbNuevaCategoria"]:checked').val();
+
+          $.ajax({
+              type: 'POST',
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              url: _ctx+'gestion/categoria-plantilla/agregar',
+              data: {nombre :nombre,
+                  tipo: tipoRutina } ,
+              dataType: 'json',
+              success: (data) =>  {
+
+
+              } ,
+              error: (d) =>{
+
+              },
+              complete: (d) =>{
+                  $(mdlAgregarCat).modal('hide');
+                  obtenerCategorias();
+              }
+
+
+
+
+          })
+
+      }
+
+
+      function obtenerCategorias(){
+
+          //     const nombre = $('#nombreCategoria').val()
+          //     const tipoRutina = $('input[type="checkbox"][name="cbSeleccionTipo"]:checked').val();
+
+          const tipoRutina = getParamFromURL("tr");
+
+          $.ajax({
+              type: 'GET',
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              url: _ctx+'gestion/categoria-plantilla/obtener/tipo?tr='+tipoRutina,
+              dataType: 'json',
+              success: (data) =>  {
+                  currentCategoriasData = data;
+                  obtenerCategoriasPlantillas(currentCategoriasData);
+              } ,
+              error: (d) =>{
+
+              },
+              complete: (d) => {
+
+                  $(".item-body a").click(function (e) {
+
+                      const input = e.target;
+                      let categoriaId;
+                      let catNombre;
+
+                      if (input.tagName.toUpperCase() === 'SVG') {
+
+                          const dsCategoria = e.currentTarget.dataset;
+                          categoriaId = dsCategoria.categoriaId;
+                          catNombre = dsCategoria.nombre;
+
+
+                      } else if (input.tagName.toUpperCase() === 'A') {
+
+                          categoriaId = input.getAttribute('data-categoria-id');
+                          catNombre = input.getAttribute('data-nombre');
+                      }
+
+
+                  })
+
+              }
+          })
+      }
+
+      function actualizarCategoriaPlantilla(){
+
+          const nombre = $('#nombreCategoriaEdit').val()
+          const tipoRutina = $('input[type="radio"][name="cbEditarCategoria"]:checked').val();
+          const idCategoria = Number(btnEditarCat.getAttribute("data-categoria-id"));
+
+          console.log(idCategoria);
+
+          $.ajax({
+              type: 'PUT',
+              url: _ctx + "gestion/categoria-plantilla/actualizar",
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              data:  { id: idCategoria ,nombre : nombre , tipo: tipoRutina},
+              dataType : 'json',
+              success: (d) =>{
+                  console.log(d);
+              },
+              error : (e) => {},
+              complete: (c) =>{
+                  obtenerCategorias();
+                  $(mdlEditarCat).modal('hide');
+              }
+
+          })
+      }
+
+      function obtenerCategoriasPlantillas(categoriaData){
+
+          currentCategoriaData = categoriaData.sort( function(a,b){
+              if (a.favorito > b.favorito) return -1;
+              if (a.favorito < b.favorito) return 1;
+              if (a.id < b.id) return -1;
+              if (a.id > b.id) return 1;
+              return 0;
+          });
+
+          let itemsCategoria = "";
+          currentCategoriaData.forEach(function(element) {
+              let claseCategoria = "title-categoria";
+              let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+                  (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
+              claseCategoria += " "+ tamanio;
+              if(element.favorito){
+                favoritos.push(element.id);
+                itemsCategoria += `
+                      <div class="item" >
+                        <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a> <div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
+                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                      </div>
+                      `;
+              }else{
+                itemsCategoria += `
+                     <div class="item" >
+                        <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
+                        <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+                     </div>
+                   `;
+              }
+          });
+
+          $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
+          $('.owl-item').css('width','229.8px');
+          $('.owl-item').css('margin-right','10px');
+          imgtoSvgEvent();
+      }
+
+      function checkBoxasRadioButtons(){
+
+          $("input:checkbox").on('click', function() {
+              let $box = $(this);
+              if ($box.is(":checked")) {
+                  let group = "input:checkbox[name='" + $box.attr("name") + "']";
+                  $(group).prop("checked", false);
+                  $box.prop("checked", true);
+              } else {
+                  $box.prop("checked", false);
+              }
+          });
+
+      }
+
+      function checkBoxTipoChangeEvent() {
+
+          $("input:checkbox").on('change', function () {
+              let cbSeleccionado = $(this)[0].value;
+
+              if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
+                  obtenerCategoriasPlantillas(currentCategoriasData);
+              }else{
+                  let currentCategoriasDataTipo = currentCategoriasData.filter( (e) => e.tipo ===  Number(cbSeleccionado) );
+                  obtenerCategoriasPlantillas(currentCategoriasDataTipo);
+              }
+          })
+      }
+
+
+      function categoriaClickListenerEvent(e){
+          const input = e.currentTarget;
+
+          const catNombre = input.getAttribute("data-nombre");
+          const categoriaId = input.getAttribute("data-categoria-id");
+          const tipoCategoria = Number(input.getAttribute("data-tipo"));
+          $('section#info .title_big').text(catNombre);
+          obtenerRutinas(categoriaId);
+
+          $("section#info").slideDown(200);
+          $( 'html, body' ).stop().animate({
+              scrollTop: $("section#info").offset().top
+          });
+
+          $(".scroll").click(function() {
+              $("section#info").slideUp(200);
+              $('html, body').animate({
+                  scrollTop: 0
+              }, 800);
+          });
+      }
+
+      function rutinaClickListenerEvent(e){
+
+          const input = e.currentTarget;
+
+          const nombre = input.getAttribute('data-rutina-nombre');
+          const semanas = input.getAttribute('data-rutina-sem');
+          const dias = input.getAttribute('data-rutina-dias');
+          const id = input.getAttribute('data-rutina-id');
+          const mdlSelectNombre = document.getElementById('rutinaSelectNombre');
+          const mdlSelectSemanas = document.getElementById('rutinaSelectSemanas');
+
+          mdlSelectNombre.textContent = nombre;
+          mdlSelectSemanas.textContent = semanas;
+          btnGenerarRutina.setAttribute('data-rutina-id',id);
+
+          $(mdlAsignacionRutina).modal('show');
+
+      }
+
+
+      function searchSvg(path){
+          let svg = path;
+          while(svg.tagName.toUpperCase() !== "SVG"){
+              svg = svg.parentElement;
+          }
+          return svg;
+      }
+
+      function agregarRutina(){
+
+          const nombreRotulo = $('#nombreRutina').val();
+          const semanas = $('#semanasRutina').val();
+          const dias = $('#diasRutina').val();
+          const id = btnNuevaRutina.getAttribute('data-categoria-id');
+          const obj = {
+              nombre : nombreRotulo,
+              totalSemanas : semanas,
+              dias : dias,
+              anios : Math.floor(dias/365),
+              meses : Math.floor(dias/30),
+              categoriaPlantilla : id
+          }
+
+          console.log(id);
+
+          $.ajax({
+              type: 'POST',
+              url: _ctx + 'gestion/rutina-plantilla/agregar',
+              dataType:'json',
+              contentType: 'application/json',
+              data : JSON.stringify(obj),
+              success: (s) =>{
+                  obtenerRutinas(id);
+                  $(mdlAgregarRutina).modal('hide');
+                  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+              },
+              error: (e) =>{
+              },
+              complete: (c) =>{
+              }
+          });
+      }
+
+      function actualizarRutina(){
+
+          const nombreRotulo = $('#nombreEditRutina').val();
+          const semanas = $('#semanasEditRutina').val();
+          const dias = $('#diasEditRutina').val();
+          const id = btnEditarRutina.getAttribute('data-rutina-id');
+          const categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
+
+          const obj = {
+              id : id,
+              nombre : nombreRotulo,
+              totalSemanas : semanas,
+              dias : dias,
+              anios : Math.floor(dias/365),
+              meses : Math.floor(dias/30),
+              categoriaPlantilla : categoriaId
+          }
+
+
+          $.ajax({
+              type: 'PUT',
+              url: _ctx + 'gestion/rutina-plantilla/actualizar',
+              dataType:'json',
+              contentType: 'application/json',
+              data : JSON.stringify(obj),
+              success: (s) =>{
+                  obtenerRutinas(categoriaId);
+                  $(mdlEditarRutina).modal('hide');
+              },
+              error: (e) =>{
+              },
+              complete: (c) =>{
+              }
+          });
+      }
+
+
+
+      function obtenerRutinas(catId){
+
+          $.ajax({
+              type: 'GET',
+              url: _ctx + 'gestion/rutina-plantilla/listar',
+              data: { catId: catId
+              },
+              dataType:'json',
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              success: (data) =>{
+                  currentRutinasData = data;
+                  generarRutinasCategoriaDOM(data)
+              },
+              error: (e) =>{
+              },
+              complete: (c) =>{
+              }
+          });
+      }
+
+      function generarRutinasCategoriaDOM(dataRutina){
+
+          const ulListadoRutinas = document.getElementsByClassName('list_plan')[0];
+          ulListadoRutinas.innerHTML ="";
+
+          dataRutina.forEach( (element) =>{
+
+              const rutina = htmlStringToElement(`
+                                       <li class="col-md-4" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}" data-rutina-dias="${element.dias}">
+                                         <img class="plantilla svg" src="/img/iconos-trainers/icon_leyenda.svg" > ${element.nombre.toUpperCase()}
+                                       </li>
+          `);
+           ulListadoRutinas.appendChild(rutina);
+           imgtoSvgEvent();
+           })
+      }
+
+      function crearRutinaDesdePlantilla(input){
+
+          const fechaInicio = $('#RutFechaInicio').val();
+          const fechaFin = $('#RutFechaFinal').val();
+          const rutinaId =  btnGenerarRutina.getAttribute('data-rutina-id');
+
+          $.ajax({
+              type: 'POST',
+              url: _ctx + 'gestion/rutina-plantilla/generar-rutina',
+              data: { fi : fechaInicio , ff: fechaFin , rId: rutinaId
+              },
+              dataType:'json',
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              success: (s) =>{
+
+                  setTimeout(()=>{
+
+                      $('.MessageBoxContainer').css('background-color', 'rgba(0, 0, 0, 0.9)');
+                      $.SmartMessageBox({
+                          title: "<i style='color: #a8fa00'> Notificaciones Runfit</i>",
+                          content: "" +
+                              "<br/><i style='font-size: 1.2em;'>Se le ha generado exitosamente la rutina al cliente seleccionado. Se le redirigirá a su página de inicio </i><br/>",
+                          buttons: '[SALIR]'
+                      }, function (ButtonPressed) {
+                          if(ButtonPressed){
+                              window.location.href = _ctx + "";
+                          }
+                      })
+                  }, 700)
+              },
+              error: (xhr) =>{
+                  const mensaje = xhr.responseJSON.message;
+                  $.smallBox({
+                      title: "Notificaciones Runfit",
+                      content: '<p>'+mensaje+'</p>',
+                      timeout: 4500,
+                      color:  '#cc4d4d',
+                      icon: "fa fa-exclamation-circle"
+                  });
+              },
+              complete: (c) =>{
+                  $(mdlAsignacionRutina).modal('hide')
+              }
+          });
+
+
+      }
+
+      function setTotalSemanas(e){
+
+          const inputId = e.target.id;
+          const inputValue = e.target.value;
+          const fechaInicio = parseFromStringToDate(fInitRutGen.value);
+          const fechaFin = parseFromStringToDate(fFinalRutGen.value);
+          //   const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
+          //  const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
+          //  document.querySelector('#RutinaTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.floor(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
+
+          const nroSemanas =  $('#rutinaSelectSemanas').text()
+          const totalDias = Number(nroSemanas)*7;
+          console.log(inputId);
+          if(inputId === 'RutFechaInicio' && $('#RutFechaInicio').valid()){
+              const final = parseFromStringToDate(inputValue);
+              final.setDate(final.getDate() + (totalDias - 1));
+              let finalDay = ("0" + final.getDate()).slice(-2);
+              let finalMonth = ("0" + (final.getMonth()+1)).slice(-2);
+              const fechaString = final.getFullYear()+"-"+(finalMonth)+"-"+(finalDay) ;
+              $('#RutFechaFinal').val(fechaString);
+              $('#RutFechaFinal').valid();
+              document.querySelector('#RutinaTotalSemanas').textContent = nroSemanas;
+          }
+      }
+
+      function constraintsValidation(){
+
+          let nowDatePlusOne = new Date();
+          nowDatePlusOne.setDate(nowDatePlusOne.getDate()+1);
+          nowDatePlusOne = parseFromStringToDate(getFechaFormatoString(nowDatePlusOne));
+
+          $('#frm_asign_rut_pred').validate({
+              rules:{
+                  RutFechaInicio: {
+                      greaterThanDate: nowDatePlusOne,
+                      isSpecificDay : 1
+                  },
+                  RutFechaFinal: {
+                      equalDateTo: function(){
+                          const final = parseFromStringToDate($('#RutFechaInicio').val());
+                          const totalDias = Number($('#rutinaSelectSemanas').text())*7;
+                          final.setDate(final.getDate()+(totalDias-1));
+                          return parseFromStringToDate(getFechaFormatoString(final));
+                      },
+                      isSpecificDay : 0
+                  }
+              },
+              messages:{
+
+              }
+          })
+
+
+      }
+
+      function mostrarTipoRutina(){
+
+          const tipoRutinaId = getParamFromURL('tr');
+          const tituloTipoRutina = document.getElementById('tipoPlantilla');
+
+          tipoRutinaId === '1' ?  tituloTipoRutina.textContent = 'Running' : tituloTipoRutina.textContent = 'General';
+
+      }
+
+      function searchRutinaEvent(filterInp){
+
+       if(filterInp.data) {
+           let filterText = filterInp.data.toUpperCase();
+           const filteredData = currentRutinasData.filter( (el,index) => el.nombre.toUpperCase().indexOf(filterText) > -1);
+           console.log(filteredData);
+           generarRutinasCategoriaDOM(filteredData);
+       }else{
+           generarRutinasCategoriaDOM(currentRutinasData);
+       }
+      }
+
+
+  </script>
+
+</body>
+</html>
+

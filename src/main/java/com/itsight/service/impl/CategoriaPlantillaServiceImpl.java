@@ -50,8 +50,22 @@ public class CategoriaPlantillaServiceImpl extends BaseServiceImpl<CategoriaPlan
     @Override
     public String actualizarCategoriaPlantilla(CategoriaPlantilla categoriaPlantilla) {
 
-        repository.saveAndFlush(categoriaPlantilla);
+        CategoriaPlantilla currentCP = repository.findById(categoriaPlantilla.getId()).orElse(null);
 
+        currentCP.setNombre(categoriaPlantilla.getNombre());
+        currentCP.setTipo(categoriaPlantilla.getTipo());
+        repository.saveAndFlush(currentCP);
+
+        return ACTUALIZACION.get();
+    }
+
+    @Override
+    public String actualizarFlagFavorito(CategoriaPlantilla categoriaPlantilla) {
+
+        CategoriaPlantilla currentCP = repository.findById(categoriaPlantilla.getId()).orElse(null);
+        currentCP.setFavorito(!currentCP.getFavorito());
+
+        repository.saveAndFlush(currentCP);
         return ACTUALIZACION.get();
     }
 
@@ -59,12 +73,24 @@ public class CategoriaPlantillaServiceImpl extends BaseServiceImpl<CategoriaPlan
     public List<CategoriaPlantillaDTO> obtenerCategoriasbyTrainerId() {
 
         Integer trainerId = (Integer) session.getAttribute("id");
-        List<CategoriaPlantillaDTO> lstCatPlantilla = new ArrayList<>();
+        List<CategoriaPlantillaDTO> lstCatPlantilla;
 
          lstCatPlantilla = repository.findCategoriasByTrainerId(trainerId);
 
         return lstCatPlantilla;
     }
+
+    @Override
+    public List<CategoriaPlantillaDTO> obtenerCategoriasbyTrainerIdAndTipo(int tipoRutina) {
+
+        Integer trainerId = (Integer) session.getAttribute("id");
+        List<CategoriaPlantillaDTO> lstCatPlantilla;
+
+        lstCatPlantilla = repository.findCategoriasByTrainerIdAndTipo(trainerId, tipoRutina);
+
+        return lstCatPlantilla;
+
+        }
 
     @Override
     public CategoriaPlantilla update(CategoriaPlantilla entity) {

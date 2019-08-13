@@ -91,7 +91,6 @@ public class ClienteFitnessController {
         return new ModelAndView(ViewConstant.CLIENTE_PERFIL);
     }
 
-
     @GetMapping(value = "/obtener/completo")
     public @ResponseBody
     ResponseEntity<ClienteFitnessPOJO> obtenerInfoCompletaByClienteId(HttpSession session){

@@ -13,12 +13,15 @@ public class CategoriaPlantillaDTO implements Serializable {
 
     private int tipo;
 
+    private Boolean favorito;
+
     public CategoriaPlantillaDTO() {
     }
 
-    public CategoriaPlantillaDTO(Integer id, String nombre, int tipo) {
+    public CategoriaPlantillaDTO(Integer id, String nombre, int tipo, Boolean favorito) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.favorito = favorito;
     }
 }

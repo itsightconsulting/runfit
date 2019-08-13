@@ -12,6 +12,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -31,8 +32,6 @@ import java.util.*;
 })
 @Data
 @Entity
-
-
 public class Semana {
 
     @Id
@@ -60,7 +59,7 @@ public class Semana {
     @Temporal(TemporalType.DATE)
     private Date fechaFin;
     @Column
-    private boolean flagFull;
+    private Boolean flagFull;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,7 +69,7 @@ public class Semana {
 
     @JsonManagedReference
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(/*fetch = FetchType.LAZY,*/ mappedBy = "semana", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "semana", cascade = CascadeType.ALL)
     private List<Dia> lstDia;
 
     @Column(nullable = false)
@@ -98,18 +97,16 @@ public class Semana {
     private String prioridad;
 
     @Column
-    private boolean flagEnvioCliente;
+    private Boolean flagEnvioCliente;
 
     public Semana(){}
 
-    public Semana(SemanaPlantilla semanaPlantilla){
-
-        this.lstDia = new ArrayList<>();
+    public Semana(SemanaPlantilla semanaPlantilla) {
         this.calorias = semanaPlantilla.getCalorias();
         this.fechaFin = semanaPlantilla.getFechaFin();
         this.fechaInicio = semanaPlantilla.getFechaInicio();
-        this.flagEnvioCliente = semanaPlantilla.isFlagEnvioCliente();
-        this.flagFull = semanaPlantilla.isFlagFull();
+        this.flagEnvioCliente = semanaPlantilla.getFlagEnvioCliente();
+        this.flagFull = semanaPlantilla.getFlagFull();
         this.horas = semanaPlantilla.getHoras();
         this.kilometrajeActual = semanaPlantilla.getKilometrajeActual();
         this.kilometrajeTotal = semanaPlantilla.getKilometrajeTotal();
@@ -117,19 +114,6 @@ public class Semana {
         this.metricasVelocidad = semanaPlantilla.getMetricasVelocidad();
         this.objetivos = semanaPlantilla.getObjetivos();
         this.prioridad = semanaPlantilla.getPrioridad();
-
-        List<DiaPlantilla> dP = semanaPlantilla.getLstDiaPlantilla();
-        List<Dia> dList = new ArrayList<>();
-
-        dP.forEach((temp) -> {
-
-            Dia dia= new Dia(temp);
-            dList.add(dia);
-        });
-
-        this.lstDia.addAll(dList);
-
-
     }
 
     public void setRutina(Rutina rutina) {

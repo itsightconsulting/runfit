@@ -8,6 +8,8 @@ import com.itsight.domain.jsonb.Elemento;
 import com.itsight.domain.jsonb.ListaPlantilla;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
+import com.itsight.util.EntityVisitor;
+import com.itsight.util.Identifiable;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.*;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +30,25 @@ import java.util.Set;
 })
 @Data
 @Entity
-public class DiaPlantilla {
+public class DiaPlantilla implements Identifiable {
+
+    public static EntityVisitor<DiaPlantilla, SemanaPlantilla> ENTITY_VISITOR = new EntityVisitor<DiaPlantilla, SemanaPlantilla>(DiaPlantilla.class) {
+        @Override
+        public SemanaPlantilla getParent(DiaPlantilla visitingObject) {
+            return visitingObject.getSemanaPlantilla();
+        }
+
+        @Override
+        public List<DiaPlantilla> getChildren(SemanaPlantilla parent) {
+            return parent.getLstDiaPlantilla();
+        }
+
+        @Override
+        public void setChildren(SemanaPlantilla parent) {
+            parent.setLstDiaPlantilla(new ArrayList<>());
+        }
+    };
+
 
     @Id
     @GeneratedValue(generator = "dia_plantilla_seq")
@@ -48,7 +69,7 @@ public class DiaPlantilla {
     @Column
     private String literal;
     @Column
-    private boolean flagDescanso;
+    private Boolean flagDescanso;
 
     @Column
     private String smsHeader;
@@ -62,13 +83,8 @@ public class DiaPlantilla {
     @Temporal(TemporalType.DATE)
     private Date fecha;
 
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
-    private Set<ListaPlantilla> listas;
-
-    @JsonManagedReference
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToOne(/*fetch = FetchType.LAZY*/)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SemanaPlantillaId")
     private SemanaPlantilla semanaPlantilla;
 
@@ -87,7 +103,7 @@ public class DiaPlantilla {
     private List<Elemento> elementos;
 
     @Column
-    private boolean flagEnvioCliente;
+    private Boolean flagEnvioCliente;
 
     public DiaPlantilla(){}
 

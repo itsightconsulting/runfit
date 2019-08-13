@@ -9,13 +9,49 @@
 </head>
 <style>
 
- .btn-circle{
-     float: right!important;
-     border-radius: 50%;
-      font-size: 20px;
-     background-color: gainsboro;
-     color: #fff;
- }
+    .btn-circle {
+        float: right!important;
+        border-radius: 50%;
+        font-size: 20px;
+        background-color: gainsboro;
+        color: #fff;
+        top: -70px;
+        position: relative;
+        right: 220px;
+    }
+
+    .title-categoria
+    {
+        word-wrap: break-word;
+        width: 200px;
+        /* text-align: center; */
+        margin: auto;
+        /* height: 100px; */
+        font-family: GothamHTF-Book;
+        color: #daffc6;
+        font-size: 28px;
+        line-height: 1;
+        font-weight: 600;
+    }
+
+    .title-categoria.sm
+    {
+        font-size: 18px;
+    }
+
+    .title-categoria.md
+    {
+        font-size: 28px;
+    }
+
+    .title-categoria.lg
+    {
+        font-size: 48px;
+    }
+
+    .owl-dots {
+        max-width: 45%;
+    }
 </style>
 <body style="background-color: #fff;">
 <div id="wrapper">
@@ -25,7 +61,7 @@
             <section id="nuevaCategoriaPlantilla">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color:black">
-                        <strong>NUEVA CATEGORÍA</strong>  <i class="i-btn fa fa-close fa-15x txt-color-blueLight pull-right" data-dismiss="modal"></i>
+                        <strong>NUEVA CATEGORÍA</strong>  <i class="i-btn fa fa-close fa-15x mdl-dark-header pull-right" data-dismiss="modal"></i>
                     </div>
 
                     <div class="modal-body">
@@ -34,7 +70,7 @@
 
                                 <div class="form-group form-alt">
                                     <label>NOMBRE </label>
-                                    <input id="nombreCategoria" name="Nombre" type="text">
+                                    <input id="nombreCategoria" name="nombreCategoria" type="text" class="form-control">
                                 </div>
                                 <div class="form-group form-alt">
                                     <label> TIPO DE RUTINA </label>
@@ -42,7 +78,7 @@
                                     <ul class="checks text-center">
                                         <li>
                                             <label class="chk-content">PLANTILLA ESTÁNDAR
-                                                <input type="radio" name="cbNuevaCategoria" value="0"><span class="checkmark"></span>
+                                                <input type="radio" name="cbNuevaCategoria" value="2" checked><span class="checkmark"></span>
                                             </label>
                                         </li>
                                         <li>
@@ -71,7 +107,7 @@
             <section id="editarCategoriaPlantilla">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color:black">
-                        <strong>EDITAR CATEGORÍA</strong>  <i class="i-btn fa fa-close fa-15x txt-color-blueLight pull-right" data-dismiss="modal"></i>
+                        <strong>EDITAR CATEGORÍA</strong>  <i class="i-btn fa fa-close fa-15x mdl-dark-header pull-right" data-dismiss="modal"></i>
                     </div>
 
                     <div class="modal-body">
@@ -80,7 +116,7 @@
 
                                 <div class="form-group form-alt">
                                     <label>NOMBRE </label>
-                                    <input id="nombreCategoriaEdit" name="Nombre" type="text">
+                                    <input id="nombreCategoriaEdit" name="nombreCategoriaEdit" class="form-control" type="text">
                                 </div>
                                 <div class="form-group form-alt">
                                     <label> TIPO DE RUTINA </label>
@@ -88,7 +124,7 @@
                                     <ul class="checks text-center">
                                         <li>
                                             <label class="chk-content">PLANTILLA ESTÁNDAR
-                                                <input type="radio" name="cbEditarCategoria" value="0"><span class="checkmark"></span>
+                                                <input type="radio" name="cbEditarCategoria" value="2"  checked><span class="checkmark"></span>
                                             </label>
                                         </li>
                                         <li>
@@ -117,7 +153,7 @@
             <section id="nuevaRutinaPlantilla">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color:black">
-                        <strong>NUEVA RUTINA PREDISEÑADA</strong>  <i class="i-btn fa fa-close fa-15x txt-color-blueLight pull-right" data-dismiss="modal"></i>
+                        <strong>NUEVA RUTINA PREDISEÑADA</strong>  <i class="i-btn fa fa-close fa-15x mdl-dark-header pull-right" data-dismiss="modal"></i>
                     </div>
 
                     <div class="modal-body">
@@ -126,17 +162,17 @@
 
                                 <div class="form-group form-alt">
                                     <label> NOMBRE </label>
-                                    <input id="nombreRutina" class="form-control" name="nombre" type="text">
+                                    <input id="nombreRutina" class="form-control" name="nombreRutina" type="text">
                                 </div>
 
                                 <div class="form-group form-alt">
                                     <label> SEMANAS </label>
-                                    <input id="semanasRutina" class="form-control" name="semana" type="number">
+                                    <input id="semanasRutina" class="form-control" name="semanasRutina" type="number">
                                 </div>
 
                                 <div class="form-group form-alt">
                                     <label> DIAS </label>
-                                    <input id="diasRutina" class="form-control" name="dias" type="number">
+                                    <input id="diasRutina" class="form-control" name="diasRutina" type="number">
                                 </div>
 
                             </form>
@@ -156,7 +192,7 @@
             <section id="editarRutinaPlantilla">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color:black">
-                        <strong>EDITAR RUTINA PREDISEÑADA</strong>  <i class="i-btn fa fa-close fa-15x txt-color-blueLight pull-right" data-dismiss="modal"></i>
+                        <strong>EDITAR RUTINA PREDISEÑADA</strong>  <i class="i-btn fa fa-close fa-15x mdl-dark-header pull-right" data-dismiss="modal"></i>
                     </div>
 
                     <div class="modal-body">
@@ -165,17 +201,17 @@
 
                                 <div class="form-group form-alt">
                                     <label> NOMBRE </label>
-                                    <input id="nombreEditRutina" class="form-control" name="nombreEdit" type="text">
+                                    <input id="nombreRutinaEdit" class="form-control" name="nombreRutinaEdit" type="text">
                                 </div>
 
                                 <div class="form-group form-alt">
                                     <label> SEMANAS </label>
-                                    <input id="semanasEditRutina" class="form-control" name="semanaEdit" type="number">
+                                    <input id="semanasRutinaEdit" class="form-control" name="semanasRutinaEdit" type="number">
                                 </div>
 
                                 <div class="form-group form-alt">
                                     <label> DIAS </label>
-                                    <input id="diasEditRutina" class="form-control" name="diasEdit" type="number">
+                                    <input id="diasRutinaEdit" class="form-control" name="diasRutinaEdit" type="number">
                                 </div>
 
                             </form>
@@ -200,18 +236,22 @@
             <li class="col-md-2"><a href="#">planes prediseñados</a></li>
         </ul>
     </header>
-    <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
 
+    <section id="listaCategoria">
+      <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
         <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
 
-        <a data-toggle="modal" data-target="#modalNuevaCategoria" type="button" href="#" class="btn btn-circle btn-lg"  title="Registrar">
-           <i class="fa fa-plus fa-2x"></i>
+        <a data-toggle="modal" data-target="#modalNuevaCategoria" type="button" class="btn btn-circle btn-lg"  title="Registrar">
+          <div>
+                     <i class="fa fa-plus fa-2x"></i>
+          </div>
+
         </a>
 
         <ul class="checks text-center">
             <li>
                 <label class="chk-content">PLANTILLA ESTÁNDAR
-                    <input type="checkbox" class="radio" name="cbSeleccionTipo" value="0"><span class="checkmark"></span>
+                    <input type="checkbox" class="radio" name="cbSeleccionTipo" value="2"><span class="checkmark"></span>
                 </label>
             </li>
             <li>
@@ -221,16 +261,17 @@
             </li>
         </ul>
         <div class="owl-carousel owl-theme" id="planesCarousel">
-
         </div>
-        <div class="shadow-gris">
-            <div class="container-t">
-                <div class="slider-container">
-                    <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="5">
-                </div>
+
+    </div>
+    </section>
+
+    <div class="shadow-gris">
+        <div class="container-t">
+            <div class="slider-container">
+                <input class="range-slider" type="range" id="range" value="0" name="range" min="0" step="1" max="5">
             </div>
         </div>
-
     </div>
 
     <section id="info">
@@ -239,7 +280,7 @@
                 <div class="form-group pull-left">
                     <div class="search">
                         <div class="input-group">
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="inpSearch">
                         </div>
                     </div>
                 </div><a class="scroll" href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-top.svg}"></a>
@@ -281,56 +322,62 @@
     const btnEditarRutina = document.getElementById("btnEditarRutina");
     const btnNuevaRutina = document.getElementById("btnNuevaRutina");
     const ulListRutina = $('.list_plan');
+    const inpSearchRutina = document.getElementById('inpSearch');
+    let currentRutinasData;
+    const favoritos = [];
+
     let dataCategorias;
 
     $(function(){
-
-
-
         onInit();
-
     })
 
     function onInit(){
         checkBoxTipoChangeEvent();
-        checkBoxasRadioButtons()
+        checkBoxasRadioButtons();
         obtenerCategorias();
-        owl.on('click', '.item', categoriaClickListenerEvent);
+        owl.on('click', '.item-header', categoriaClickListenerEvent);
         ulListRutina.on('click', 'li', rutinaClickListenerEvent);
+        inpSearchRutina.addEventListener('input', searchRutinaEvent);
+        constraintsValidation();
 
     }
 
-    function agregarCategoria(){
-
-        const nombre = $('#nombreCategoria').val()
-        const tipoRutina = $('input[type="radio"][name="cbNuevaCategoria"]:checked').val();
-
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            url: _ctx+'gestion/categoria-plantilla/agregar',
-            data: {nombre :nombre,
-                   tipo: tipoRutina } ,
-            dataType: 'json',
-            success: (data) =>  {
+    function agregarCategoria() {
 
 
-            } ,
-            error: (d) =>{
+        if ($('#nueva_categoria_frm').valid()) {
+            const nombre = $('#nombreCategoria').val()
+            const tipoRutina = $('input[type="radio"][name="cbNuevaCategoria"]:checked').val();
 
-            },
-            complete: (d) =>{
-                $(mdlAgregarCat).modal('hide');
-                obtenerCategorias();
-            }
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: _ctx + 'gestion/categoria-plantilla/agregar',
+                data: {
+                    nombre: nombre,
+                    tipo: tipoRutina,
+                    favorito : false
+                },
+                dataType: 'json',
+                success: (data) => {
 
 
+                },
+                error: (d) => {
+
+                },
+                complete: (d) => {
+                    $(mdlAgregarCat).modal('hide');
+                    obtenerCategorias();
+                }
 
 
-        })
+            })
+
+        }
 
     }
-
 
     function obtenerCategorias(){
 
@@ -397,51 +444,97 @@
 
     }
 
-    function actualizarCategoriaPlantilla(){
+    function actualizarCategoriaPlantilla() {
 
-        const nombre = $('#nombreCategoriaEdit').val()
-        const tipoRutina = $('input[type="radio"][name="cbEditarCategoria"]:checked').val();
-        const idCategoria = Number(btnEditarCat.getAttribute("data-categoria-id"));
+        if ($('#editar_categoria_frm').valid()) {
 
-        console.log(idCategoria);
+            const nombre = $('#nombreCategoriaEdit').val()
+            const tipoRutina = $('input[type="radio"][name="cbEditarCategoria"]:checked').val();
+            const categoriaId = Number(btnEditarCat.getAttribute("data-categoria-id"));
 
-        $.ajax({
-            type: 'PUT',
-            url: _ctx + "gestion/categoria-plantilla/actualizar",
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            data:  { id: idCategoria ,nombre : nombre , tipo: tipoRutina},
-            dataType : 'json',
-            success: (d) =>{
-                console.log(d);
-            },
-            error : (e) => {},
-            complete: (c) =>{
-                obtenerCategorias();
-                $(mdlEditarCat).modal('hide');
-            }
+            $.ajax({
+                type: 'PUT',
+                url: _ctx + "gestion/categoria-plantilla/actualizar",
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: {id: categoriaId, nombre: nombre, tipo: tipoRutina},
+                dataType: 'json',
+                success: (d) => {
+                    console.log(d);
+                },
+                error: (e) => {
+                },
+                complete: (c) => {
+                    obtenerCategorias();
+                    $(mdlEditarCat).modal('hide');
+                }
 
             })
+        }
     }
 
     function obtenerCategoriasPlantillas(dataCategorias){
 
+        dataCategorias = dataCategorias.sort( function(a,b){
+            if (a.favorito > b.favorito) return -1;
+            if (a.favorito < b.favorito) return 1;
+            if (a.id < b.id) return -1;
+            if (a.id > b.id) return 1;
+            return 0;
+        });
+
         let itemsCategoria = "";
         dataCategorias.forEach(function(element) {
-            itemsCategoria += `
-           <div class="item" >
-                <div class="item-header"><a class="star"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" data-target="#modalEditarCategoria" type="button" href="#"><img class="svg icon-edit" src="/img/iconos-trainers/icon_edit.svg" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"></a><strong> ${element.nombre} </strong></div>
+        let claseCategoria = "title-categoria";
+        let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+            (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
+        claseCategoria += " "+ tamanio;
+         if(element.favorito){
+
+            favoritos.push(element.id);
+             itemsCategoria += `
+              <div class="item" >
+                <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
+                <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
+              </div>
+              `;
+         }else{
+             itemsCategoria += `
+             <div class="item" >
+                <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
              </div>
            `;
+
+         }
         });
-
-
         $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
-        $('.owl-stage').css('width','');
-        $('.owl-item').css('width','259.8px');
+        $('.owl-item').css('width','229.8px');
         $('.owl-item').css('margin-right','10px');
-        imgtoSvgEvent();
+         imgtoSvgEvent();
 
+    }
+
+
+    function actualizarFavoritoCategoria(categoriaId) {
+
+            $.ajax({
+                type: 'PUT',
+                url: _ctx + "gestion/categoria-plantilla/actualizar-favorito",
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: {id: categoriaId},
+                dataType: 'json',
+                success: (d) => {
+
+                },
+                error: (e) => {
+
+                },
+                complete: (c) => {
+               //     obtenerCategorias();
+               //     $(mdlEditarCat).modal('hide');
+                }
+
+            })
     }
 
     function checkBoxasRadioButtons(){
@@ -462,11 +555,14 @@
     function checkBoxTipoChangeEvent() {
 
         $("input:checkbox").on('change', function () {
+
+
             let cbSeleccionado = $(this)[0].value;
 
            if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
                obtenerCategoriasPlantillas(dataCategorias);
            }else{
+                console.log(cbSeleccionado);
                 let dataCategoriasTipo = dataCategorias.filter( (e) => e.tipo ===  Number(cbSeleccionado) );
                 obtenerCategoriasPlantillas(dataCategoriasTipo);
            }
@@ -476,88 +572,75 @@
 
     function categoriaClickListenerEvent(e){
         const input = e.target;
-        const clases = input.classList;
+        const parentStarDOM = ($(input).parent().closest('.star'));
+        const parentEditDOM = ($(input).parent().closest('.icon-edit'));
 
-        console.log(e);
+        const starElement = parentStarDOM[0];
+        const editElement = parentEditDOM[0];
+
+        if(starElement){
+
+            const starClases = starElement.classList;
+            const categoriaId =  Number(starElement.getAttribute('data-categoria-id'));
+            actualizarFavoritoCategoria(categoriaId);
+            let dataCategoriaIx = dataCategorias.findIndex( e => e.id === categoriaId );
+
+            if(starClases.contains('selected')){
+              //  const categoriaId =  Number(starElement.getAttribute('data-categoria-id');
+                starClases.remove('selected');
+                let index = favoritos.findIndex( e => e === categoriaId);
+                favoritos.splice(index,1);
+                dataCategorias[dataCategoriaIx].favorito =  false;
 
 
-        if(input.tagName.toUpperCase() === 'PATH'){
+            }else{
+                starClases.add('selected');
+                const categoriaId =  starElement.getAttribute('data-categoria-id');
+                !favoritos.includes('categoriaId') ? favoritos.push(Number(categoriaId)) : null;
+                dataCategorias[dataCategoriaIx].favorito =  true;
 
-            const svg = searchSvg(input);
+            }
 
-            const nombre = svg.getAttribute("data-nombre");
-            const idCategoria = svg.getAttribute("data-categoria-id");
-
-            const tipoCategoria = Number(svg.getAttribute("data-tipo"));
-
-            const txtNombre = mdlEditarCat.querySelector('#nombreCategoriaEdit');
-            const cbTipoCategoria = mdlEditarCat.querySelectorAll('input[type="radio"][name="cbEditarCategoria"]');
-            txtNombre.value = nombre;
-            cbTipoCategoria[tipoCategoria].checked = true;
-
-            btnEditarCat.setAttribute("data-categoria-id",idCategoria);
+            obtenerCategoriasPlantillas(dataCategorias);
 
         }
 
-        if(clases.contains('icon-edit')){
-            const nombre = input.getAttribute("data-nombre");
-            const idCategoria = input.getAttribute("data-categoria-id");
-            const tipoCategoria = Number(input.getAttribute("data-tipo"));
+        else if(editElement){
+            const nombre = editElement.getAttribute("data-nombre");
+            const categoriaId = editElement.getAttribute("data-categoria-id");
+            const tipoCategoria = Number(editElement.getAttribute("data-tipo"));
             const txtNombre = mdlEditarCat.querySelector('#nombreCategoriaEdit');
-            const cbTipoCategoria = mdlEditarCat.querySelectorAll('input[type="radio"][name="cbEditarCategoria"]');
+            const cbTipoCategoria = mdlEditarCat.querySelectorAll('input[name="cbEditarCategoria"][value="'+ tipoCategoria+'"]');
             txtNombre.value = nombre;
-            cbTipoCategoria[tipoCategoria].checked = true;
-            btnEditarCat.setAttribute("data-categoria-id",idCategoria);
+            console.log(nombre);
+            $(cbTipoCategoria).prop('checked','true');
+            btnEditarCat.setAttribute("data-categoria-id",categoriaId);
         }
     }
 
     function rutinaClickListenerEvent(e){
         const input = e.target;
-        const clases = input.classList;
-
-        const txtNombre = mdlEditarRutina.querySelector('#nombreEditRutina');
-        const txtSem = mdlEditarRutina.querySelector('#semanasEditRutina');
-        const txtDias = mdlEditarRutina.querySelector('#diasEditRutina');
+        const parentEditDOM = ($(input).parent().closest('.edit'));
+        const editElement = parentEditDOM[0];
+        const txtNombre = mdlEditarRutina.querySelector('#nombreRutinaEdit');
+        const txtSem = mdlEditarRutina.querySelector('#semanasRutinaEdit');
+        const txtDias = mdlEditarRutina.querySelector('#diasRutinaEdit');
         let id,nombre,semanas,dias;
 
-
-        if(input.tagName.toUpperCase() === 'PATH') {
-            const svg = searchSvg(input);
-            id = svg.getAttribute('data-rutina-id');
-            nombre = svg.getAttribute('data-rutina-nombre');
-            semanas = svg.getAttribute('data-rutina-sem');
-            dias = svg.getAttribute('data-rutina-dias');
-            txtNombre.value = nombre;
-            txtSem.value = semanas;
-            txtDias.value = dias;
-
-            btnEditarRutina.setAttribute('data-rutina-id',id);
-
-            $(mdlEditarRutina).modal('show');
-        
-        
-        }
-
-        else if(clases.contains('icon-edit')){
-
-
-            nombre = input.getAttribute('data-rutina-nombre');
-            semanas = input.getAttribute('data-rutina-sem');
-            dias = input.getAttribute('data-rutina-dias');
-            id = input.getAttribute('data-rutina-id');
+        if(editElement) {
+            nombre = editElement.getAttribute('data-rutina-nombre');
+            semanas = editElement.getAttribute('data-rutina-sem');
+            dias = editElement.getAttribute('data-rutina-dias');
+            id = editElement.getAttribute('data-rutina-id');
 
             txtNombre.value = nombre;
             txtSem.value = semanas;
             txtDias.value = dias;
 
             btnEditarRutina.setAttribute('data-rutina-id',id);
-
             $(mdlEditarRutina).modal('show');
         }
-
-
     }
-
 
     function searchSvg(path){
         let svg = path;
@@ -568,6 +651,8 @@
     }
 
     function agregarRutina(){
+
+    if( $('#nueva_rutina_pred_frm').valid()){
 
      const nombreRotulo = $('#nombreRutina').val();
      const semanas = $('#semanasRutina').val();
@@ -582,9 +667,7 @@
                    categoriaPlantilla : id
                 }
 
-      console.log(id);
-
-        $.ajax({
+       $.ajax({
           type: 'POST',
           url: _ctx + 'gestion/rutina-plantilla/agregar',
           dataType:'json',
@@ -600,45 +683,48 @@
           complete: (c) =>{
                     }
         });
+     }
     }
+    function actualizarRutina() {
 
-    function actualizarRutina(){
 
-        const nombreRotulo = $('#nombreEditRutina').val();
-        const semanas = $('#semanasEditRutina').val();
-        const dias = $('#diasEditRutina').val();
-        const id = btnEditarRutina.getAttribute('data-rutina-id');
-        const categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
+        if ($('#editar_categoria_frm').valid()) {
 
-        const obj = {
-            id : id,
-            nombre : nombreRotulo,
-            totalSemanas : semanas,
-            dias : dias,
-            anios : Math.floor(dias/365),
-            meses : Math.floor(dias/30),
-            categoriaPlantilla : categoriaId
+            const nombreRotulo = $('#nombreRutinaEdit').val();
+            const semanas = $('#semanasRutinaEdit').val();
+            const dias = $('#diasRutinaEdit').val();
+            const id = btnEditarRutina.getAttribute('data-rutina-id');
+            const categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
+
+            const obj = {
+                id: id,
+                nombre: nombreRotulo,
+                totalSemanas: semanas,
+                dias: dias,
+                anios: Math.floor(dias / 365),
+                meses: Math.floor(dias / 30),
+                categoriaPlantilla: categoriaId
+            }
+
+
+            $.ajax({
+                type: 'PUT',
+                url: _ctx + 'gestion/rutina-plantilla/actualizar',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(obj),
+                success: (s) => {
+                    obtenerRutinas(categoriaId);
+                    $(mdlEditarRutina).modal('hide');
+                },
+                error: (e) => {
+                },
+                complete: (c) => {
+                }
+            });
         }
 
-
-        $.ajax({
-            type: 'PUT',
-            url: _ctx + 'gestion/rutina-plantilla/actualizar',
-            dataType:'json',
-            contentType: 'application/json',
-            data : JSON.stringify(obj),
-            success: (s) =>{
-               obtenerRutinas(categoriaId);
-               $(mdlEditarRutina).modal('hide');
-            },
-            error: (e) =>{
-            },
-            complete: (c) =>{
-            }
-        });
     }
-
-
 
     function obtenerRutinas(catId){
 
@@ -649,8 +735,9 @@
               },
             dataType:'json',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-           success: (s) =>{
-                generarRutinasCategoriaDOM(s)
+           success: (data) => {
+                generarRutinasCategoriaDOM(data);
+                currentRutinasData = data;
             },
             error: (e) =>{
             },
@@ -668,8 +755,8 @@
 
           const rutina = htmlStringToElement(`
                                        <li class="col-md-4">
-                                        <img class="plantilla svg" src="img/iconos-trainers/icon_leyenda.svg"> ${element.nombre.toUpperCase()}
-                                        <a class="edit"><img class="svg icon-edit" src="img/iconos-trainers/icon_edit.svg" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}" data-rutina-dias="${element.dias}"></a>
+                                        <img class="plantilla svg" src="/img/iconos-trainers/icon_leyenda.svg"> ${element.nombre.toUpperCase()}
+                                        <a class="edit" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}" data-rutina-dias="${element.dias}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"></a>
                                         </li>
           `);
 
@@ -678,13 +765,102 @@
       imgtoSvgEvent();
     }
 
-    function editarRutina(){
+    function constraintsValidation()
+    {
+        $('#nueva_categoria_frm').validate({
+            rules:{
+                nombreCategoria : {
+                    required: true,
+                    rangelength: [1, 30]
+                }
+            },
+            messages: {
+            }
+        });
 
+        $('#editar_categoria_frm').validate({
+            rules:{
+                nombreCategoriaEdit : {
+                    required: true,
+                    rangelength: [1, 30]
+                }
+            },
+            messages: {
+            }
+        });
 
+        $('#nueva_rutina_pred_frm').validate({
+            rules:{
+                nombreRutina : {
+                    required: true,
+                    maxlength : 30
+                },
+                semanasRutina : {
+                    required: true,
+                    range: [6, 84]
+                },
+                diasRutina : {
+                    required : true,
+                    range : function(){
+                         let semanaValue = Number($('#semanasRutina').val());
+                         return [semanaValue * 7 - 6 , semanaValue * 7];
+                     }
+                }
+            },
+            messages: {
+                diasRutina : {
+                   range : function (e) {
 
+                        if($('#semanasRutina').valid()) {
+                            return `Se requiere que la cantidad de días esté entre ${e[0]} y ${e[1]} de acuerdo a la cantidad de semanas indicada`;
+                        }else{
+                            return 'Complete primero el campo semana de manera correcta';
+                        }
+                         }}}
+        });
 
+        $('#editar_rutina_pred_frm').validate({
+            rules:{
+                nombreRutinaEdit : {
+                    required: true,
+                   maxlength : 30
+                },
+                semanasRutinaEdit : {
+                    required: true,
+                    range: [6, 84]
+                },
+                diasRutinaEdit : {
+                    required : true,
+                    range : function(){
+                        let semanaValue = Number($('#semanasRutinaEdit').val());
+                        return [semanaValue * 7 - 6 , semanaValue * 7];
+                    }
+                }
+            },
+            messages: {
+                diasRutinaEdit : {
+                    range : function (e) {
 
+                        if($('#semanasRutinaEdit').valid()) {
+                            return `Se requiere que la cantidad de días esté entre ${e[0]} y ${e[1]} de acuerdo a la cantidad de semanas indicada`;
+                        }else{
+                            return 'Complete primero el campo semana de manera correcta';
+                        }
+                    }}}
+        });
     }
+
+    function searchRutinaEvent(filterInp){
+        if(filterInp.data) {
+            let filterText = filterInp.data.toUpperCase();
+            const filteredData = currentRutinasData.filter( (el,index) => el.nombre.toUpperCase().indexOf(filterText) > -1);
+            console.log(filteredData);
+            generarRutinasCategoriaDOM(filteredData);
+        }else{
+            generarRutinasCategoriaDOM(currentRutinasData);
+        }
+    }
+
 </script>
 </body>
 </html>

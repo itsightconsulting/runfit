@@ -67,19 +67,21 @@ public class RutinaPlantilla extends AuditingEntity {
     @Column(name = "control", columnDefinition = "jsonb")
     private RutinaControl control;
 
-    @JsonIgnoreProperties
-    @JsonBackReference
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(/*fetch = FetchType.LAZY, */mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true */)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true*/ )
     private List<SemanaPlantilla> lstSemana;
 
-    @JsonManagedReference
+    @JsonIgnoreProperties
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "CategoriaPlantillaId" , referencedColumnName =  "CategoriaPlantillaId")
     private CategoriaPlantilla categoriaPlantilla;
 
-    public RutinaPlantilla(){}
+    @JsonBackReference
+    @ManyToOne
+    public BagForest forest;
 
+    public RutinaPlantilla(){}
 
 }
 

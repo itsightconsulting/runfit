@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.*;
-import com.itsight.domain.dto.DiaPlantillaDTO;
-import com.itsight.domain.dto.RutinaPlantillaDTO;
-import com.itsight.domain.dto.SemanaPlantillaDTO;
+import com.itsight.domain.dto.*;
 import com.itsight.domain.jsonb.ElementoPlantilla;
 import com.itsight.domain.jsonb.ListaPlantilla;
 import com.itsight.service.*;
@@ -17,12 +15,17 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.itsight.util.Enums.ResponseCode;
@@ -33,6 +36,8 @@ public class RutinaPlantillaController {
 
     private RutinaPlantillaService rutinaPlantillaService;
 
+    private RutinaService rutinaService;
+
     private DiaPlantillaService diaPlantillaService;
 
     private ListaPlantillaSimpleService listaPlantillaSimpleService;
@@ -41,18 +46,25 @@ public class RutinaPlantillaController {
 
     private TipoAudioService tipoAudioService;
 
+    private EntityManager entityManager;
+
+
     @Autowired
     public RutinaPlantillaController(
             RutinaPlantillaService rutinaPlantillaService,
             DiaPlantillaService diaPlantillaService,
             ListaPlantillaSimpleService listaPlantillaSimpleService,
             CategoriaEjercicioService categoriaEjercicioService,
-            TipoAudioService tipoAudioService) {
+            TipoAudioService tipoAudioService,
+            RutinaService rutinaService,
+            EntityManager entityManager) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.diaPlantillaService = diaPlantillaService;
         this.listaPlantillaSimpleService = listaPlantillaSimpleService;
         this.categoriaEjercicioService = categoriaEjercicioService;
         this.tipoAudioService = tipoAudioService;
+        this.rutinaService = rutinaService;
+        this.entityManager = entityManager;
     }
 
     @GetMapping(value = "")
@@ -299,6 +311,42 @@ public class RutinaPlantillaController {
         return rutinaPlantillaService.listarRutinasPredByCatId(catId);
     }
 
+
+    @PostMapping(value = {"/generar-rutina"})
+    @Transactional
+    public @ResponseBody
+    String obtenerArbolDia(@RequestParam String fi, @RequestParam String ff, @RequestParam String rId, HttpSession session) throws JsonProcessingException {
+        List<DiaPlantilla> dias = diaPlantillaService.obtenerTodosConJerarquia(7);
+
+        Integer rutinaId = Integer.parseInt(rId);
+
+        if(dias.isEmpty()){
+            return "-9";
+        }
+
+        BagForest forest = reconstructForestDia(dias, 3);
+        List<RutinaPlantilla> lstRutinaPlantilla = forest.getTreesRp();
+        RutinaPlantilla rPlantilla = new RutinaPlantilla();
+        rPlantilla = lstRutinaPlantilla.get(0);
+
+        Integer redFitId = (Integer) session.getAttribute("plantillaRutRedFitId");
+        Integer clienteId = (Integer) session.getAttribute("plantillaRutRunnerId");
+        Integer tipoRutina = Integer.parseInt(session.getAttribute("plantillaRutTipo").toString());
+
+
+        rutinaPlantillaService.agregarRutinadesdePlantilla(rPlantilla,fi,ff,redFitId,clienteId, tipoRutina);
+
+        return "1";
+    }
+
+
+    private BagForest reconstructForestDia(List<DiaPlantilla> leaves, int forestId) {
+        EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(new EntityVisitor[]{
+                RutinaPlantilla.ENTITY_VISITOR, SemanaPlantilla.ENTITY_VISITOR, DiaPlantilla.ENTITY_VISITOR, BagForest.ENTITY_VISITOR
+        }).build(leaves);
+        ClassId<BagForest> forestClassId = new ClassId<BagForest>(BagForest.class, forestId);
+        return entityGraphBuilder.getEntityContext().getObject(forestClassId);
+    }
 
 
 

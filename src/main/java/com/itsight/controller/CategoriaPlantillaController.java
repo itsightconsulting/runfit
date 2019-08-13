@@ -42,7 +42,18 @@ public class CategoriaPlantillaController {
             @ModelAttribute @Valid CategoriaPlantilla categoriaPlantilla, BindingResult bindingResult) throws JsonProcessingException {
 
         if(!bindingResult.hasErrors())
-            return categoriaPlantillaService.agregarCategoriaPlantilla(categoriaPlantilla);
+            return categoriaPlantillaService.actualizarCategoriaPlantilla(categoriaPlantilla);
+
+        return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
+    }
+
+    @PutMapping(value = "/actualizar-favorito")
+    public @ResponseBody
+    String actualizarFlagFavoritoCategoria(
+            @ModelAttribute @Valid CategoriaPlantilla categoriaPlantilla, BindingResult bindingResult) throws JsonProcessingException {
+
+        if(!bindingResult.hasErrors())
+            return categoriaPlantillaService.actualizarFlagFavorito(categoriaPlantilla);
 
         return Enums.ResponseCode.EX_VALIDATION_FAILED.get();
     }
@@ -55,5 +66,21 @@ public class CategoriaPlantillaController {
 
        return lstCatPlantilla;
     }
+
+    @GetMapping(value = "/obtener/tipo")
+    public @ResponseBody
+    List<CategoriaPlantillaDTO> obtenerCategoriasByTrainerIdAndTipo(@RequestParam String tr) throws JsonProcessingException {
+
+        int tipoRutinaId = Integer.parseInt(tr);
+
+        List<CategoriaPlantillaDTO> lstCategoriaPlantilla = categoriaPlantillaService.obtenerCategoriasbyTrainerIdAndTipo(tipoRutinaId);
+
+        return lstCategoriaPlantilla;
+    }
+
+
+
+
+
 
 }

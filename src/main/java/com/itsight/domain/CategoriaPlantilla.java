@@ -34,6 +34,9 @@ public class CategoriaPlantilla extends AuditingEntity {
   @Column(nullable = false)
   private String nombre;
 
+  @Column(nullable = false)
+  private Boolean favorito;
+
   @JsonManagedReference
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "TrainerId", referencedColumnName ="SecurityUserId")

@@ -268,10 +268,11 @@
                 </div>
                 <div class="col col-md-12 text-center hidden" id="NuevaRutianStep2">
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                        <button class="btn btn-white" onclick="crearRutina()">Nueva rutina</button>
+                        <button class="btn btn-white" onclick="
+                        crearRutina()">Nueva rutina</button>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 10px;">
-                        <button class="btn btn-white" onclick="alert('La función de rutinas prediseñadas aún esta en progreso')">Rutina a partir de una plantilla</button>
+                        <button class="btn btn-white" onclick="seleccionarRutinaPlantilla()">Rutina a partir de una plantilla</button>
                     </div>
                 </div>
             </div>
@@ -1213,7 +1214,6 @@
                 TableStart += myXMLHead(1, columnHeader);
                 TableStart += rowData;
             }
-
             return TableStart + TableEnd;
         };
 
@@ -1353,6 +1353,16 @@
         })
 
 
+    }
+
+
+    function seleccionarRutinaPlantilla(){
+
+        const obj = users.find(u=>u.id==redFitId);
+        const id = getHash32Id('rf-rutina', obj.id);
+        const clienteId = getHash16Id('rf-rutina', obj.cliId);
+
+        window.location.href = _ctx + 'planes/seleccion?key=' + id + '&rn=' + clienteId +  '&tr='+feNuevaRutina
     }
 </script>
 

@@ -14,4 +14,7 @@ public interface CategoriaPlantillaService extends BaseService<CategoriaPlantill
     String actualizarCategoriaPlantilla(CategoriaPlantilla categoriaPlantilla) throws JsonProcessingException;
 
     List<CategoriaPlantillaDTO> obtenerCategoriasbyTrainerId();
+
+    List<CategoriaPlantillaDTO> obtenerCategoriasbyTrainerIdAndTipo(int tipoRutina);
+    String actualizarFlagFavorito(CategoriaPlantilla categoriaPlantilla) throws  JsonProcessingException;
 }

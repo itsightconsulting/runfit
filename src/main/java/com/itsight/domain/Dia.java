@@ -10,6 +10,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
@@ -51,7 +52,7 @@ public class Dia {
     @Column
     private String voz;
     @Column
-    private boolean flagDescanso;
+    private Boolean flagDescanso;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
@@ -78,10 +79,9 @@ public class Dia {
     private Semana semana;
 
     @Column
-    private boolean flagEnvioCliente;
+    private Boolean flagEnvioCliente;
 
     public Dia(){}
-
 
     public Dia(DiaPlantilla diaPlantilla){
        this.calorias = diaPlantilla.getCalorias();
@@ -89,8 +89,8 @@ public class Dia {
        this.distancia = diaPlantilla.getDistancia();
        this.elementos = diaPlantilla.getElementos();
        this.fecha = diaPlantilla.getFecha();
-       this.flagDescanso = diaPlantilla.isFlagDescanso();
-       this.flagEnvioCliente = diaPlantilla.isFlagEnvioCliente();
+       this.flagDescanso = diaPlantilla.getFlagDescanso();
+       this.flagEnvioCliente = diaPlantilla.getFlagEnvioCliente();
        this.literal = diaPlantilla.getLiteral();
        this.minutos = diaPlantilla.getMinutos();
        this.nota = diaPlantilla.getNota();

@@ -1,6 +1,7 @@
 package com.itsight.repository;
 
 import com.itsight.domain.DiaPlantilla;
+import com.itsight.domain.Video;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -41,8 +42,8 @@ public interface DiaPlantillaRepository extends JpaRepository<DiaPlantilla, Inte
     void saveElementos(@Param("id") Integer id, @Param("listaIx") int listaIx ,@Param("texto") String texto, @Param("elementos") String elementos);
 
     @Modifying
-    @Query("UPDATE DiaPlantilla D SET D.flagDescanso = ?2, D.listas = null WHERE D.id = ?1 ")
-    void updateFlagDescanso(Integer id, boolean flagDescanso);
+    @Query("UPDATE DiaPlantilla D SET D.flagDescanso = ?2  WHERE D.id = ?1 ")
+    void updateFlagDescanso(Integer id, Boolean flagDescanso);
 
     @Modifying
     @Query(value = "UPDATE dia_plantilla SET listas = (SELECT listas-?2 FROM dia_plantilla WHERE dia_plantilla_id=?1) WHERE dia_plantilla_id=?1", nativeQuery = true)
@@ -51,5 +52,15 @@ public interface DiaPlantillaRepository extends JpaRepository<DiaPlantilla, Inte
     @Modifying
     @Query(value = "UPDATE dia_plantilla SET listas = (SELECT listas #- CAST(?2 as text[]) FROM dia_plantilla WHERE dia_plantilla_id=?1) WHERE dia_plantilla_id=?1", nativeQuery = true)
     void eliminarElementoById(Integer id, String texto);
+
+
+    @Query("SELECT D FROM DiaPlantilla D " +
+            "INNER JOIN FETCH D.semanaPlantilla SP " +
+            "INNER JOIN FETCH SP.rutinaPlantilla RP " +
+            "INNER JOIN FETCH RP.forest F " +
+            "WHERE RP.id=?1 " +
+            "ORDER BY RP.id,SP.id, D.id")
+    List<DiaPlantilla> findAllDiasbyRutinaPlantilla(Integer rutinaPlantillaId);
+
 
 }

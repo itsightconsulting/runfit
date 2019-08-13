@@ -66,7 +66,7 @@ public class ViewConstant {
     public static final String MAIN_RUTINARIO_CE_SCE = "gestion/sub_categoria_ejercicio";
     public static final String MAIN_RUTINARIO_CE_ESCE = "gestion/especificacion_sub_categoria_ejercicio";
     public static final String MAIN_PLANES_PREDISENIADOS = "gestion/trainer/planes_prediseniados";
-    public static final String MAIN_PLANES_PREDISENIADOS_ELEGIDO= "gestion/trainer/plan_elegido";
+    public static final String MAIN_PLANES_PREDISENIADOS_SELECCION= "gestion/trainer/planes_prediseniados_seleccion";
     public static final String MAIN_SUSPENDIDO= "gestion/trainer/suspendido";
     public static final String MAIN_HISTORIAL_RUTINA_ELEGIDA= "gestion/trainer/historial_rutina";
 

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
+import com.itsight.util.EntityVisitor;
+import com.itsight.util.Identifiable;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.*;
@@ -14,6 +16,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +28,26 @@ import java.util.List;
 })
 @Data
 @Entity
-public class SemanaPlantilla {
+public class SemanaPlantilla implements Identifiable {
+
+    public static EntityVisitor<SemanaPlantilla, RutinaPlantilla> ENTITY_VISITOR = new EntityVisitor<SemanaPlantilla, RutinaPlantilla>(SemanaPlantilla.class) {
+        @Override
+        public RutinaPlantilla getParent(SemanaPlantilla visitingObject) {
+            return visitingObject.getRutinaPlantilla();
+        }
+
+        @Override
+        public List<SemanaPlantilla> getChildren(RutinaPlantilla parent) {
+            return parent.getLstSemana();
+        }
+
+        @Override
+        public void setChildren(RutinaPlantilla parent) {
+            parent.setLstSemana(new ArrayList<>());
+        }
+    };
+
+
 
     @Id
     @GeneratedValue(generator = "semana_plantilla_seq")
@@ -40,7 +62,7 @@ public class SemanaPlantilla {
             }
     )
     @Column(name = "SemanaPlantillaId")
-    private int id;
+    private Integer id;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
@@ -83,135 +105,16 @@ public class SemanaPlantilla {
     private Boolean flagEnvioCliente;
 
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RutinaPlantillaId")
     private RutinaPlantilla rutinaPlantilla;
 
-    @JsonBackReference
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(/*fetch = FetchType.LAZY,*/ mappedBy = "semanaPlantilla", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "semanaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true*/)
     private List<DiaPlantilla> lstDiaPlantilla;
 
     public SemanaPlantilla(){}
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Date getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public Boolean isFlagFull() {
-        return flagFull;
-    }
-
-    public void setFlagFull(boolean flagFull) {
-        this.flagFull = flagFull;
-    }
-
-    public double getKilometrajeTotal() {
-        return kilometrajeTotal;
-    }
-
-    public void setKilometrajeTotal(double kilometrajeTotal) {
-        this.kilometrajeTotal = kilometrajeTotal;
-    }
-
-    public double getKilometrajeActual() {
-        return kilometrajeActual;
-    }
-
-    public void setKilometrajeActual(double kilometrajeActual) {
-        this.kilometrajeActual = kilometrajeActual;
-    }
-
-    public double getCalorias() {
-        return calorias;
-    }
-
-    public void setCalorias(double calorias) {
-        this.calorias = calorias;
-    }
-
-    public double getHoras() {
-        return horas;
-    }
-
-    public void setHoras(double horas) {
-        this.horas = horas;
-    }
-
-    public String getObjetivos() {
-        return objetivos;
-    }
-
-    public void setObjetivos(String objetivos) {
-        this.objetivos = objetivos;
-    }
-
-    public String getMetricas() {
-        return metricas;
-    }
-
-    public void setMetricas(String metricas) {
-        this.metricas = metricas;
-    }
-
-    public String getMetricasVelocidad() {
-        return metricasVelocidad;
-    }
-
-    public void setMetricasVelocidad(String metricasVelocidad) {
-        this.metricasVelocidad = metricasVelocidad;
-    }
-
-    public String getPrioridad() {
-        return prioridad;
-    }
-
-    public void setPrioridad(String prioridad) {
-        this.prioridad = prioridad;
-    }
-
-    public Boolean isFlagEnvioCliente() {
-        return flagEnvioCliente;
-    }
-
-    public void setFlagEnvioCliente(boolean flagEnvioCliente) {
-        this.flagEnvioCliente = flagEnvioCliente;
-    }
-
-    public RutinaPlantilla getRutinaPlantilla() {
-        return rutinaPlantilla;
-    }
-
-    public void setRutinaPlantilla(RutinaPlantilla rutinaPlantilla) {
-        this.rutinaPlantilla = rutinaPlantilla;
-    }
-
-    public List<DiaPlantilla> getLstDiaPlantilla() {
-        return lstDiaPlantilla;
-    }
-
-    public void setLstDiaPlantilla(List<DiaPlantilla> lstDiaPlantilla) {
-        this.lstDiaPlantilla = lstDiaPlantilla;
-    }
 }

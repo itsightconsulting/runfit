@@ -19,6 +19,8 @@ public class DiaPlantillaServiceImpl extends BaseServiceImpl<DiaPlantillaReposit
         super(repository);
     }
 
+
+
     @Override
     public DiaPlantilla update(DiaPlantilla rutina) {
         // TODO Auto-generated method stub
@@ -156,4 +158,13 @@ public class DiaPlantillaServiceImpl extends BaseServiceImpl<DiaPlantillaReposit
         System.out.println("> Query :"+texto);
         repository.eliminarElementoById(id, texto);
     }
+
+
+    @Override
+    public List<DiaPlantilla> obtenerTodosConJerarquia(Integer rutinaPlantillaId){
+
+
+        return repository.findAllDiasbyRutinaPlantilla(rutinaPlantillaId);
+    }
+
 }
