@@ -68,14 +68,12 @@ public class RutinaPlantilla extends AuditingEntity {
     private RutinaControl control;
 
     @JsonManagedReference
-<<<<<<< HEAD
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true*/ )
     private List<SemanaPlantilla> lstSemana;
-=======
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
     private Trainer trainer;
->>>>>>> e3fe97d8dbcef5a9368cd37abbb6a1e978dc166a
 
     @JsonIgnoreProperties
     @JsonBackReference
