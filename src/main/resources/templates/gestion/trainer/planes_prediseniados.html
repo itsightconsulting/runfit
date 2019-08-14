@@ -341,9 +341,8 @@
         owl.on('click', '.item-header', categoriaClickListenerEvent);
         ulListRutina.on('click', 'li', rutinaClickListenerEvent);
         inpSearchRutina.addEventListener('input', searchRutinaEvent);
-        anchorItemBody.on('click',seleccionCategoriaEvent);
+        owl.on('click', '.item-body', seleccionCategoriaEvent);
         constraintsValidation();
-
     }
 
     function seleccionCategoriaEvent(e){
@@ -357,7 +356,6 @@
                 const dsCategoria = e.currentTarget.dataset;
                 categoriaId = dsCategoria.categoriaId;
                 catNombre = dsCategoria.nombre;
-
 
             }else if (input.tagName.toUpperCase() === 'A'){
 
