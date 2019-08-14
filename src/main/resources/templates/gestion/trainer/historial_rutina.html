@@ -70,7 +70,7 @@
                      <div class="panel panel-default rutina" th:id="'dvRutinas' + ${iter.index}" th:attr="data-value=${rutina.totalSemanas}">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title" ><img class="svg" th:src="@{/img/iconos-trainers/icon_calendar2.svg}">  [[${rutina.nombre}]]  <p class="periodo-rutina">( De [[${rutina.fechaInicio}]]  a  [[${rutina.fechaFin}]]    ) </p>  <a data-toggle="collapse" th:href="@{'#collapse'+${iter.index}}"><img class="arrow svg" th:src="@{/img/iconos-trainers/icon_flecha2.svg}" onload="svgFillEvent()"/></a></h3>
+                        <h3 class="panel-title" ><img class="svg" th:src="@{/img/iconos-trainers/icon_calendar2.svg}">  [[${rutina.nombre}]]  <p class="periodo-rutina">( De [[${rutina.fechaInicio}]]  a  [[${rutina.fechaFin}]]    ) </p>  <a data-toggle="collapse" th:href="@{'#collapse'+${iter.index}}"><img class="arrow svg" th:src="@{/img/iconos-trainers/icon_flecha2.svg}"/></a></h3>
                     </div>
 
                     <div class="panel-collapse collapse" th:id="'collapse' + ${iter.index}">
@@ -135,27 +135,47 @@
 
     function setSemanas(){
 
-        let liItem;
         let ulSemanas;
+        let contadorLiItem = 0;
 
         $('.rutina').each( function(index,element){
+
             ulSemanas = $('.list-group')[index];
-            ulSemanas.append(htmlStringToElement(`     <li class="list-group-item">
-                               <div class="row row-año">  </div></li>`));
-            liItem  = $('.list-group-item .row-año')[index];
+            let liItem;
             let numSemana = $(this)[0].dataset.value;
-             for( let i = 0 ; i< 48 ; i++){
+            let cantidadBloquesSemana = numSemana > 48 ?  84   : 48 ;
+            let incGenerBloques = numSemana > 48 ?  8   : 4;
+            let indexListGroup = 0;
+
+             for( let i = 0 ; i< cantidadBloquesSemana ; i++){
+
+                if(  i === 0 || ( i  % 12 === 0  && i!== cantidadBloquesSemana - 1) ){
+                  ulSemanas.append(htmlStringToElement(`
+                     <li class="list-group-item">
+                        <div class="row row-año">  </div></li>`));
+
+                    liItem = $('.list-group-item .row-año')[contador];
+
+                    contadorLiItem++;
+
+                }
+
                 if( i + 1 >= Number(numSemana)){
+
+
                     liItem.append(htmlStringToElement(`
                          <div class="col-xs-3 col-md-1">
                            <div class="semana semana-no-data" id='s${index}_${(i+1)}' > S${(i+1)}</div>
                          </div>`));
-                }else{
+                }
+
+               else{
                     liItem.append(htmlStringToElement(`
                          <div class="col-xs-3 col-md-1">
                            <div class="semana"  id='s${index}_${(i+1)}' > S${(i+1)}</div>
                          </div>`));
                 }
+
              }
         })
     }
@@ -166,7 +186,6 @@
             let $img = $(this);
             let imgURL = $img.attr('src');
             let attributes = $img.prop("attributes");
-
 
             $.get(imgURL, function(data) {
                 // Get the SVG tag, ignore the rest
