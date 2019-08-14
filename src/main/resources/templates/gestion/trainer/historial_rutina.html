@@ -135,9 +135,8 @@
 
     function setSemanas(){
 
-        let liItem;
         let ulSemanas;
-        let contadorSemanas;
+        let contadorLiItem = 0;
 
         $('.rutina').each( function(index,element){
 
@@ -155,26 +154,28 @@
                      <li class="list-group-item">
                         <div class="row row-año">  </div></li>`));
 
-                    let itemIx =  cantidadBloquesSemana === 48 ?  ((index * incGenerBloques))+ indexListGroup
-                        :       ((index * incGenerBloques) - index )+ indexListGroup;
+                    liItem = $('.list-group-item .row-año')[contador];
 
-                    liItem = $('.list-group-item .row-año')[itemIx];
-
-                    indexListGroup++;
+                    contadorLiItem++;
 
                 }
 
                 if( i + 1 >= Number(numSemana)){
+
+
                     liItem.append(htmlStringToElement(`
                          <div class="col-xs-3 col-md-1">
                            <div class="semana semana-no-data" id='s${index}_${(i+1)}' > S${(i+1)}</div>
                          </div>`));
-                }else{
+                }
+
+               else{
                     liItem.append(htmlStringToElement(`
                          <div class="col-xs-3 col-md-1">
                            <div class="semana"  id='s${index}_${(i+1)}' > S${(i+1)}</div>
                          </div>`));
                 }
+
              }
         })
     }
@@ -185,7 +186,6 @@
             let $img = $(this);
             let imgURL = $img.attr('src');
             let attributes = $img.prop("attributes");
-
 
             $.get(imgURL, function(data) {
                 // Get the SVG tag, ignore the rest
