@@ -59,6 +59,7 @@ const body = document.querySelector('body');
         }
     });
     init();
+
 })();
 
 function nextTabButton() {

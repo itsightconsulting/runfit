@@ -2,11 +2,12 @@ package com.itsight.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.domain.jsonb.CompetenciaRunner;
+import com.itsight.domain.jsonb.CondicionAnatomica;
 import com.itsight.domain.jsonb.CondicionMejora;
-import com.itsight.domain.jsonb.*;
+import com.itsight.domain.jsonb.Salud;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
-import com.itsight.json.JsonMoneySimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.Parameter;
@@ -15,7 +16,6 @@ import org.hibernate.annotations.*;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 
 @NamedEntityGraphs({
@@ -123,9 +123,9 @@ public class ClienteFitness implements Serializable {
     private Integer estadoCivil;
     @Column(nullable = false)
     private Integer sexo;
-    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
+    @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
     @Column(precision = 6, scale = 3, nullable = false)
-    private BigDecimal peso;
+    private Double peso;
     @Column(nullable = false)
     private Integer talla;
     @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
@@ -138,9 +138,9 @@ public class ClienteFitness implements Serializable {
     private List<CondicionMejora> mejoras;
     @Column
     private String tiempoUnKilometro;
-    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
+    @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
     @Column(precision = 5, scale = 2, nullable = false)
-    private BigDecimal kilometrajePromedioSemana;
+    private Double kilometrajePromedioSemana;
     @Column(nullable = false)
     private Integer diasSemanaCorriendo;
     @Column(nullable = false)

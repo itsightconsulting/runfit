@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -41,13 +40,13 @@ public class ClienteFitnessPOJO {
 
     private Double imc;
 
-    private BigDecimal kilometrajePromedioSemana;
+    private Double kilometrajePromedioSemana;
 
     private String mejoras;
 
     private Integer nivel;
 
-    private BigDecimal peso;
+    private Double peso;
 
     private String salud;
 
@@ -108,10 +107,10 @@ public class ClienteFitnessPOJO {
             Boolean flagEstiramiento,
             Integer frecuenciaComunicacion,
             Double imc,
-            BigDecimal kilometrajePromedioSemana,
+            Double kilometrajePromedioSemana,
             String mejoras,
             Integer nivel,
-            BigDecimal peso,
+            Double peso,
             String salud,
             Integer sexo,
             Integer talla,

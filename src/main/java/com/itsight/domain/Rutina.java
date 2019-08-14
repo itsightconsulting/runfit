@@ -82,6 +82,8 @@ public class Rutina extends AuditingEntity {
     @Column(name = "RutinaId")
     private Integer id;
     @Column(nullable = false)
+    private String nombre;
+    @Column(nullable = false)
     private int anios;
     @Column(nullable = false)
     private int meses;
@@ -89,9 +91,6 @@ public class Rutina extends AuditingEntity {
     private int totalSemanas;
     @Column(nullable = false)
     private int dias;
-
-    @Column(nullable = false)
-    private String nombre;
 
     //ManytoOne
     //Generatedvalue +

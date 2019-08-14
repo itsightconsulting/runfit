@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.json.JsonDateSimpleDeserializer;
 import com.itsight.json.JsonDateSimpleSerializer;
 import lombok.Data;
-import org.springframework.security.oauth2.common.util.JsonDateDeserializer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Past;

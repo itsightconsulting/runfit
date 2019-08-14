@@ -1,15 +1,13 @@
 package com.itsight.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.ClienteFitness;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ClienteFitnessDTO;
 import com.itsight.domain.pojo.ClienteFitnessPOJO;
-import com.itsight.domain.pojo.RuCliPOJO;
-import com.itsight.repository.ClienteFitnessRepository;
 import com.itsight.service.*;
-import com.itsight.service.impl.ClienteFitnessProcedureInvokerImpl;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,10 +83,9 @@ public class ClienteFitnessController {
 
     @PutMapping(value = "/actualizar")
     public @ResponseBody
-    String actualizar(@RequestBody @Valid ClienteDTO cliente, HttpSession session) throws CustomValidationException {
+    ResponseEntity<String> actualizar(@RequestBody @Valid ClienteDTO cliente, HttpSession session) throws CustomValidationException, JsonProcessingException {
         Integer id = (Integer) session.getAttribute("id");
-        clienteFitnessService.actualizarFull(cliente, id);
-        return Enums.ResponseCode.EXITO_GENERICA.get();
+        return clienteFitnessService.actualizarFull(cliente, id);
     }
 
     @GetMapping(value = "/planes")

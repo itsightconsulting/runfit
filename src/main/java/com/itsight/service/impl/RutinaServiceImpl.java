@@ -223,6 +223,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         BeanUtils.copyProperties(rutinaDto.getControl(), rc);
         BeanUtils.copyProperties(rutinaDto, nueRutina);
         nueRutina.setCliente(runneId);
+        nueRutina.setNombre("Rutina con fecha"+ new Date().toString());
         nueRutina.setRedFitness(redFitId);
         nueRutina.setControl(rc);
         //Instanciando lista de semanas

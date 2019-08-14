@@ -17,10 +17,10 @@ public class TipoImagen {
     private String nombre;
 
     @Column(nullable = false, precision = 5, scale = 1)
-    private BigDecimal ancho;
+    private Double ancho;
 
     @Column(nullable = false, precision = 5, scale = 1)
-    private BigDecimal alto;
+    private Double alto;
 
     public TipoImagen() {
         // TODO Auto-generated constructor stub
@@ -32,8 +32,8 @@ public class TipoImagen {
 
     public TipoImagen(String nombre, Double ancho, Double alto) {
         this.nombre = nombre;
-        this.ancho = BigDecimal.valueOf(ancho);
-        this.alto = BigDecimal.valueOf(alto);
+        this.ancho = ancho;
+        this.alto = alto;
     }
 
 }

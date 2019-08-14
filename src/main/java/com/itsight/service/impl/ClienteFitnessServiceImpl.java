@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.ClienteFitness;
@@ -15,8 +16,11 @@ import com.itsight.service.ClienteProcedureInvoker;
 import com.itsight.service.ClienteService;
 import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,9 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.itsight.util.Enums.Msg.VALIDACION_FALLIDA;
+import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
 
 @Service
 @Transactional
@@ -161,12 +168,12 @@ public class ClienteFitnessServiceImpl extends BaseServiceImpl<ClienteFitnessRep
     }
 
     @Override
-    public void actualizarFull(ClienteDTO cliente, Integer id) throws CustomValidationException {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        //Cliente tCliente = clienteService.findByUsername(username);
-        //tCliente.setUsername(username);
-        //tCliente.setSecurityUser(new SecurityUser(id));
-        //BeanUtils.copyProperties(cliente, tCliente);
-        clienteProcedureInvoker.actualizarClienteById(cliente, id);
+    public ResponseEntity<String> actualizarFull(ClienteDTO cliente, Integer id) throws JsonProcessingException {
+        cliente.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        boolean updSuccess = clienteProcedureInvoker.actualizarClienteById(cliente, id);
+        if(updSuccess){
+            return new ResponseEntity<>(Utilitarios.jsonResponse(ACTUALIZACION.get()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(Utilitarios.jsonResponse(VALIDACION_FALLIDA.get()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -3,14 +3,16 @@ package com.itsight.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.domain.jsonb.*;
-import com.itsight.json.JsonMoneySimpleSerializer;
+import com.itsight.domain.jsonb.CompetenciaRunner;
+import com.itsight.domain.jsonb.CondicionAnatomica;
+import com.itsight.domain.jsonb.CondicionMejora;
+import com.itsight.domain.jsonb.Salud;
+import com.itsight.json.JsonMoneyDoubleSimpleSerializer;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -20,8 +22,8 @@ public class ClienteFitnessDTO implements Serializable {
     private String correoSecundario;
     private Integer estadoCivil;
     private Integer sexo;
-    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
-    private BigDecimal peso;
+    @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
+    private Double peso;
     private Integer talla;
     @Digits(integer = 3, fraction = 1)
     private Double imc;
@@ -30,8 +32,8 @@ public class ClienteFitnessDTO implements Serializable {
     @Valid
     private List<CondicionMejora> mejoras;
     private String tiempoUnKilometro;
-    @JsonSerialize(using = JsonMoneySimpleSerializer.class)
-    private BigDecimal kilometrajePromedioSemana;
+    @JsonSerialize(using = JsonMoneyDoubleSimpleSerializer.class)
+    private Double kilometrajePromedioSemana;
     private Integer diasSemanaCorriendo;
     private Boolean flagCalentamiento;
     private Boolean flagEstiramiento;
