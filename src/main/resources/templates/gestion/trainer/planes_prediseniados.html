@@ -437,7 +437,9 @@
             dataType: 'json',
             success: (data) =>  {
                 dataCategorias = data;
-                obtenerCategoriasPlantillas(dataCategorias);
+                if(dataCategorias.length>0){
+                    obtenerCategoriasPlantillas(dataCategorias);
+                }
             } ,
             error: (d) =>{
 

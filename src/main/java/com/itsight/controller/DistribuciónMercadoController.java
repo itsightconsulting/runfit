@@ -29,7 +29,6 @@ public class DistribuciónMercadoController {
 
  @RequestMapping("")
 public ModelAndView getDistribucionMercado(){
-
  return new ModelAndView(ViewConstant.MAIN_DISTRIBUCION_MERCADO_RED);
 }
 

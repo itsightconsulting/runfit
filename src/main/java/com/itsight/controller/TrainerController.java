@@ -9,6 +9,8 @@ import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -109,5 +111,10 @@ public class TrainerController extends BaseController{
     List<Post> listarPostsEntrenador(HttpSession session) {
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
         return postService.findAllByTrainerId(trainerId);
+    }
+
+    @GetMapping(value = "/sher/{id}")
+    public @ResponseBody String listarPostsEntrenador(@PathVariable String id) {
+        return Utilitarios.jsonResponse(Parseador.getEncodeHash32Id("rf-rutina", Integer.parseInt(id)));
     }
 }

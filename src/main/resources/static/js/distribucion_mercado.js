@@ -77,9 +77,13 @@ function obtenerDataEstadisticas(){
             const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
             const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
             cantidadUsuarios = dataNoDuplicados.length;
+            if(dataNoDuplFem.length > 0){
+                setGraficoFem(dataNoDuplFem);
+            }
 
-            setGraficoFem(dataNoDuplFem);
-            setGraficoMasc(dataNoDuplMasc);
+            if(dataNoDuplMasc.length > 0){
+                setGraficoMasc(dataNoDuplMasc);
+            }
 
             let arrTipoServicio = dataNoDuplicados .map( ({predeterminadaFichaId}) => predeterminadaFichaId);
             let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
@@ -1450,7 +1454,6 @@ function setGraficoMasc(data){
 
 
 function setGraficoFem(data){
-
 
     const dataFem = {};
     //Femenino

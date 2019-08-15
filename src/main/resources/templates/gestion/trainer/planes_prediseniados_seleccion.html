@@ -251,8 +251,10 @@
               dataType: 'json',
               success: (data) =>  {
                   currentCategoriasData = data;
-                  obtenerCategoriasPlantillas(currentCategoriasData);
-              } ,
+                  if(currentCategoriasData.length>0){
+                      obtenerCategoriasPlantillas(currentCategoriasData);
+                  }
+              },
               error: (d) =>{
 
               },

@@ -16,13 +16,26 @@ function init(){
 
 
 function obtenerRutinaConsolidado(rutinaId){
+      const body = new Object();
+      body.rutinaId = rutinaId;
+      if(document.getElementById('InpClienteId')){
+          body.clienteId = document.getElementById('InpClienteId').value;
+      }
 
-      if(!rutinaId){ rutinaId = 0}
+      let hrefFinal = "";
+
+
+    if(body.clienteId){//Ruta para entrenadores from red fitness listado
+          hrefFinal = _ctx + "cliente/rutina/consolidado/obtener/by";
+      }else{//Ruta personal de clientes
+          hrefFinal = _ctx + "cliente/rutina/consolidado/obtener";
+      }
+
 
       $.ajax({
       type: "GET",
-      data:{rutinaId : rutinaId},
-      url: _ctx + "cliente/rutina/consolidado/obtener",
+      data: body,
+      url: hrefFinal,
       success: function (data) {
           cargarTablaVelocidad(data);
           cargarTablaCadencia(data);
