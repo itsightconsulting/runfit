@@ -50,9 +50,9 @@ button {
   margin-left: 280px; }
 
 .container {
-  padding: 40px 0;
+  padding: 40px 20px;
   width: 100%;
-  max-width: 814px; }
+  max-width: 796px; }
 
 h4.user {
   float: right;
@@ -208,7 +208,7 @@ a.fav:hover .svg, a.fav.selected .svg {
   .no_mostrar_mobile {
     display: none !important; }
   .container {
-    padding: 28px 24px 0; }
+    padding: 28px 20px 0; }
   .navbar-toggle {
     padding: 0;
     margin: 0; }
@@ -237,12 +237,6 @@ a.fav:hover .svg, a.fav.selected .svg {
       header h4.user span {
         font-size: 11px;
         margin-top: 4px; }
-  .row {
-    margin-right: -5px;
-    margin-left: -5px; }
-    .row .col-xs-6, .row .col-xs-4 {
-      padding-left: 5px;
-      padding-right: 5px; }
   section h4 .input-group {
     float: none !important;
     width: 100%;
