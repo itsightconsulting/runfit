@@ -53,6 +53,24 @@ function obtenerDataEstadisticas(){
         type: "GET",
         url: _ctx + url,
         success: function (data) {
+<<<<<<< HEAD
+=======
+            //Masculino
+
+            dataClientes = data;
+
+            const dataNoDuplicados = quitarDuplicados(data, 'id');
+            const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
+            const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
+            cantidadUsuarios = dataNoDuplicados.length;
+            if(dataNoDuplFem.length > 0){
+                setGraficoFem(dataNoDuplFem);
+            }
+
+            if(dataNoDuplMasc.length > 0){
+                setGraficoMasc(dataNoDuplMasc);
+            }
+>>>>>>> 483bc2dc34f7995d1ce6f70471182a9c1d4129c7
 
             if(data.length > 0){
                 dataClientes = data;
@@ -1493,9 +1511,15 @@ function setGraficosEdadMasc(data){
 }
 
 
+<<<<<<< HEAD
 function setGraficosEdadFem(data){
 
     let dataFem ={},dataGraphFemenino;
+=======
+function setGraficoFem(data){
+
+    const dataFem = {};
+>>>>>>> 483bc2dc34f7995d1ce6f70471182a9c1d4129c7
     //Femenino
     const edadClientesFem = data.filter(element => element.sexo === 2)
         .map(({fechaNacimiento})=> getEdad(fechaNacimiento)  );

@@ -122,7 +122,7 @@
                                             <div>
                                                 <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
                                                 <i class="fa fa-spinner fa-spin fa-15px i-checked hidden"></i>
-                                                <input sec:authorize="!hasRole('GUEST')" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
+                                                <input sec:authorize="!hasRole('GUEST')" th:id="Correo" th:name="Correo" disabled="disabled" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
                                                 <input sec:authorize="hasRole('GUEST')" th:value="${#authentication.name}" disabled="disabled" th:id="Correo" th:name="Correo" placeholder="Correo electrónico" data-aka="Correo electrónico" class="form-control" type="text"/>
 
                                             </div>
@@ -1410,9 +1410,8 @@
     }
 
     function sendMainForm(e){
-        const data = getFormData($(frm));
-        let parseFecha = parseFromStringToDate(data.fechaNacimiento);
-        data.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+        const body = generateBody();
+
 
         //IN PROGRESS
         $.ajax({
@@ -1420,12 +1419,13 @@
             contentType: 'application/json',
             url: _ctx + 'gestion/cliente-fitness/actualizar',
             dataType: 'json',
-            data: JSON.stringify(data),
+            data: JSON.stringify(body),
             blockLoading: true,
             success: function (res) {
-                $.smallBox({content: 'Actualización exitosa'});
+                reqSuccess(res);
             },complete:()=>{
-
+            },error:(err)=>{
+                exception(err);
             }
         })
     }
@@ -2474,6 +2474,128 @@
         if(tbody.querySelectorAll('tr').length<3){
             $('input[name="DesComp"]').rules('add', {required: false});
         }
+    }
+
+    function generateBody(){
+        const obj = getFormData($('#frm_registro'));
+        //NECESARIO PARA QUE EN LA SERIALIZACIÓN NO SE LE RESTE A LA FECHA UN DÍA
+        let parseFecha = parseFromStringToDate(obj.fechaNacimiento);
+        obj.fechaNacimiento = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+        //Ubigeo
+        obj.paisId = 604;//PERU
+        obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
+        obj.cliFit = {};
+        obj.cliFit.correoSecundario = document.getElementById('Correo').value;
+        obj.cliFit.estadoCivil = document.getElementById('EstadoCivil').value;
+        obj.cliFit.sexo = document.querySelector('input[name="Sexo"]:checked').value;
+        obj.cliFit.peso = document.getElementById('Peso').value;
+        obj.cliFit.talla = document.getElementById('Talla').value;
+        obj.cliFit.imc = document.getElementById('Imc').value;
+        obj.cliFit.nivel = document.getElementById('NivelAtleta').value;
+        //private CondicionMejora mejoras;
+        obj.cliFit.tiempoUnKilometro = document.getElementById('TiempoUnKilometro').value;
+        obj.cliFit.kilometrajePromedioSemana = document.getElementById('KilometrajePromedioSemana').value;
+        obj.cliFit.diasSemanaCorriendo = document.getElementById('DiasSemanaCorriendo').value;
+        obj.cliFit.flagCalentamiento = document.getElementById('FlagCalentamiento').checked;
+        obj.cliFit.flagEstiramiento = document.getElementById('FlagEstiramiento').checked;
+        obj.cliFit.desgasteZapatilla = getValuesConcatInpCheckbox('DesgasteZapatilla');
+        obj.cliFit.desgasteZapatillaOtro = document.getElementById('DesgasteZapatillaOtro').value;
+        obj.cliFit.desObjetivos = document.getElementById('DesObjetivos').value;
+        obj.cliFit.desTerPredom = getValuesConcatInpCheckbox('DesTerPredom');
+        obj.cliFit.desTerPredomOtro =  document.getElementById('DesTerPredomOtro').value;
+        obj.cliFit.mejoras = getValuesCondicionMejora();
+        obj.cliFit.frecuenciaComunicacion = 1;
+        obj.cliFit.tiempoDistancia = getTiemposDistancias();
+        const condAnatomica = obj.cliFit.condicionAnatomica = new Object();
+        condAnatomica.flagPadeceDolor = document.querySelector('#FlagPadeceDolor').checked;
+        condAnatomica.descripcionDolor = obj.descripcionDolor;
+        condAnatomica.momDolor = obj.momDolor;
+        condAnatomica.momDolorIni = obj.momDolorIni;
+        condAnatomica.desLesion = obj.desLesion;
+        condAnatomica.recomMedica = obj.recomMedica;
+        condAnatomica.flagEmbarazo = document.querySelector('#FlagEmbarazo').checked;
+        condAnatomica.frecuenciaCardiaca = obj.frecuenciaCardiaca;
+        condAnatomica.frecuenciaCardiacaMaxima = obj.frecuenciaCardiacaMaxima;
+        condAnatomica.formaInicial = obj.formaInicial;
+        condAnatomica.musculosSensibles = selectedMuscles.map(v=>{return {id: v.id.slice(4), nombre: v.name}});
+        condAnatomica.musculoSensiblesOtros = obj.txtMusculoOtro;
+        const salud = obj.cliFit.salud = new Object();
+        salud.flagEnfermedad = document.querySelector('#FlagEnfermedad').checked;
+        salud.flagFumador = document.querySelector('#FlagFumador').checked;
+        salud.flagHiperTensionArt = document.querySelector('#FlagHiperTensionArt').checked;
+        salud.flagAntFamInfOrHiper = document.querySelector('#FlagAntFamInfOrHiper').checked;
+        salud.flagResInsulina = document.querySelector('#FlagResInsulina').checked;
+        salud.flagAntFamDiabetes = document.querySelector('#FlagAntFamDiabetes').checked;
+        salud.flagSobrepeso = document.querySelector('#FlagSobrepeso').checked;
+        salud.flagAleMed = document.querySelector('#FlagAleMed').checked;
+        salud.flagOperacion = document.querySelector('#FlagOperacion').checked;
+        salud.flagHerDisOrCondCol = document.querySelector('#FlagHerDisOrCondCol').checked;
+        salud.famDiabetico = obj.famDiabetico;
+        salud.famInfOrHiper = obj.famInfOrHiper;
+        salud.catSobrepeso = obj.catSobrepeso;
+        salud.catAlimentacion = obj.catAlimentacion;
+        salud.nivelEstres = obj.nivelEstres;
+        salud.desEnfermedad = obj.desEnfermedad;
+        salud.desFumador = obj.desFumador;
+        salud.desAleMed = obj.desAleMed;
+        salud.desOperacion = obj.desOperacion;
+        salud.desHerDisOrCondCol = obj.desHerDisOrCondCol;
+        salud.desPadVarios = getValuesConcatInpCheckbox('DesPadVarios');
+        salud.contactosEmergencia = getValuesEmergencyContact();
+        salud.historialDeportivoAnt = obj.historialDeportivoAnt;
+        salud.historialDeportivoAct = obj.historialDeportivoAct;
+        //Competencias
+        obj.cliFit.competencias = getCompetenciasParticipar();
+        obj.cliFit.fitElementos = getValuesConcatInpCheckbox('ItemsFitness');
+        return obj;
+    }
+
+    function getTiemposDistancias(){
+        const obj = {};
+        obj["2"] =  document.querySelector('#TwoKm').value;
+        obj["4"] =  document.querySelector('#FourKm').value;
+        obj["21"] =  document.querySelector('#TweOneKm').value;
+        obj["42"] =  document.querySelector('#FouTwoKm').value;
+        return JSON.stringify(obj);
+    }
+    function getCompetenciasParticipar(){
+        const rows = Array.from(document.querySelector('#tblCompetencia tbody').querySelectorAll('tr:not(.hide)'));
+        return rows.map(v=>{
+            const obj = new Object();
+            obj.fecha = v.querySelector('.inp-fecha').value;
+            let parseFecha = parseFromStringToDate(obj.fecha);
+            obj.fecha = parseFecha.getDate()+"/"+(parseFecha.getMonth()+1)+"/"+parseFecha.getFullYear();
+            obj.distancia = v.querySelector('.inp-distancia').value;
+            obj.nombre = v.querySelector('.inp-nombre').value;
+            obj.tiempoObjetivo = v.querySelector('.inp-tiempo').value;
+            obj.prioridad = v.querySelector('.inp-prioridad').value;
+            return obj;
+        });
+    }
+    function getValuesCondicionMejora(){
+        return Array.from(document.querySelectorAll('input[name="CondicionMejora"]:checked')).map(
+            v=>{return {id: v.value, nombre: v.parentElement.textContent.trim()}}
+        );
+    }
+    function getValuesEmergencyContact(){
+        const prContNombre = document.querySelector('#ContactoEmergenciaNombre').value;
+        const prContMovil = document.querySelector('#ContactoEmergenciaMovil').value;
+        if(prContNombre.trim().length>2 && prContNombre.trim().length>6){
+            let others = Array.from(document.querySelectorAll('.inp-cont-emer')).slice(2).map((e,i,k)=>{
+                if(i%2==0){
+                    if(e.value.trim().length>2 && k[i+1].value.trim().length>6){
+                        return e.value.trim()+"_"+ k[i+1].value.trim();
+                    }
+                }
+            }).filter(v=>v!==undefined).join('|');
+            if(others.length>0){
+                others = "|"+others;
+            }
+            return prContNombre+"_"+prContMovil+others;
+        }else{
+            return "";
+        }
+        return Array.from(document.querySelectorAll('input.inp-cont-emer')).map(v=>v.value).filter(v=>v.trim().length>10).join('|');
     }
 
 </script>

@@ -1,8 +1,8 @@
 <div id="SideBar1" class="sidebar"  th:fragment="fg-menu-desk">
-    <div class="text-center no_mostrar_mobile"><a href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a></div>
+    <div class="text-center no_mostrar_mobile"><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a></div>
     <div class="mobile">
         <div class="only_mobile text-center">
-            <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
+            <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
         </div>
         <ul class="menu">
             <th:block sec:authorize="hasRole('GUEST')">
@@ -31,9 +31,9 @@
             </th:block>
             <th:block sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_money.svg}+'?'+${version}">Pagos</a></li>
-                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 52.svg}+'?'+${version}">Suspendidos</a></li>
-                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Estadísticas</a></li>
-                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
+                <li><a class="" th:href="@{/gestion/trainer/red/suspendidos}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 52.svg}+'?'+${version}">Suspendidos</a></li>
+                <li><a class="" th:href="@{/gestion/trainer/distribucion-mercado}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Estadísticas</a></li>
+                <li><a class="" th:href="@{/planes}"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Mis contratos</a></li>
             </th:block>

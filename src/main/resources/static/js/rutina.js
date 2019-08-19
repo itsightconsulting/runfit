@@ -813,7 +813,6 @@ RutinaGet = (function(){
             return semanas;
         },
         getKilometrajes: ()=>{
-            debugger
             const k = {};
             let kcalTotal = 0, kmPlanificado = 0;
             const sIx = Number($semActual.textContent)-1;

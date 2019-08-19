@@ -1230,7 +1230,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             cliFit.setNivel((int) Math.ceil((double)i/3.0));
             cliFit.setEstadoCivil(1);
             cliFit.setImc(Double.parseDouble(String.valueOf(15+i)));
-            cliFit.setPeso(BigDecimal.valueOf(65+i));
+            cliFit.setPeso((65+i)+0.0);
             cliFit.setSexo(1);
             cliFit.setDesgasteZapatilla("Inicio");
             cliFit.setDesObjetivos("Resistencia");
@@ -1240,7 +1240,7 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             ca.setFrecuenciaCardiacaMaxima(190-i);
             cliFit.setCondicionAnatomica(ca);
             cliFit.setSalud(new Salud());
-            cliFit.setKilometrajePromedioSemana(BigDecimal.valueOf(20));
+            cliFit.setKilometrajePromedioSemana(20.0);
             cliFit.setMejoras(new ArrayList<>());
             cliFit.setFrecuenciaComunicacion(1);
             cliFit.setDiasSemanaCorriendo(1);

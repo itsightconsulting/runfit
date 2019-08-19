@@ -68,7 +68,6 @@ public class Semana {
 
 
     @JsonManagedReference
-    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "semana", cascade = CascadeType.ALL)
     private List<Dia> lstDia;
 

@@ -314,11 +314,9 @@ function validacionFormularioVisitante(){
 function getFormData($form) {
     var unindexed_array = $form.serializeArray();
     var indexed_array = {};
-
     $.map(unindexed_array, function (n, i) {
         indexed_array[n['name'][0].toLowerCase() + n['name'].slice(1)] = n['value'];
     });
-
     return indexed_array;
 }
 
@@ -333,9 +331,6 @@ function inicializarLoginForm(){
 }
 
 function ocultarLoginForm(){
-
     $('.login').removeClass('active');
     $('html, body').css('overflowY', 'auto');
-
-
 }

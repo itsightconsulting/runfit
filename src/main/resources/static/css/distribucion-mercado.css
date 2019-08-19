@@ -46,13 +46,12 @@ header{
  padding-top:20px !important;
 }
 .distribucion-edad{
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
     border: 1px solid #565a4d;
     border-radius: 5px;
     color: #ffffff;
     font-family: GothamHTF-Book;
-
 }
 
 .container {
@@ -145,7 +144,6 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .canal-venta .col-md-5{
-  padding-right: 0px;
   padding-left: 0px;
 }
 
@@ -297,6 +295,7 @@ select{
     padding-top: 0.09px;
     line-height: 1.27;
     font-size: 0.95em;
+    text-align: right;
 }
 
 
@@ -333,11 +332,6 @@ select{
 
 .div-graf-row-2 svg{
    padding-left: 3px;
-}
-
-.dv-servicios{
-   padding-top: 80px;
-   padding-bottom: 20px;
 }
 
 .dv-ventas-servicios{
@@ -377,5 +371,174 @@ canvas{
 .hr-servicios{
      border-color: #565a4d;
      margin: 30px 2px 50px 25px;
-
 }
+
+@media only screen and (max-width: 500px) {
+    .distribucion-edad {
+        margin-bottom: 10px;
+    }
+    .distribucion-edad canvas {
+        width: 100% !important;
+        padding: 20px 0;
+        height: auto !important;
+    }
+    .graph-porc p.fem-range-porc,.graph-porc p.masc-range-porc {
+        font-size: 12px;
+    }
+    .graph-porc div p {
+        font-size: 10px;
+        margin-left: 6px;
+        margin-bottom: 0;
+    }
+    .graph strong {
+        font-size: 14px;
+    }
+    .graph-porc .svg {
+        height: 18px;
+    }
+    .distribucion-edad p {
+        font-size: 8pt;
+        margin-bottom: 0;
+    }
+    .row.div-graf-row-2 {
+        margin-top: 0;
+        border: none;
+    }
+    .row.dv-distr-dpto {
+        border:none;
+    }
+    .distr-dpto-porcentajes p {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+    .graph-distr-departamento {
+        padding-left: 0;
+    }
+    .distr-dpto-title {
+        padding-left: 0;
+        font-size: 14px;
+    }
+    .canal-venta-title, .tipo-servicio-title {
+        padding-left: 0;
+    }
+    .hr-servicios {
+        margin: 25px 0;
+    }
+    .servicios-graph {
+        padding-top: 0;
+    }
+    .nombre-servicio {
+        padding-left: 0;
+        padding-top: 12px;
+    }
+    .nombre-servicio {
+        padding-left: 0;
+        padding-top: 12px;
+    }
+    .nombre-servicio p {
+        font-size: 11px;
+    }
+    .tipo-servicio-porc {
+        position: relative;
+        top: -26px;
+    }
+    .row-mobile {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+    .tipo-servicio-porc p {
+        font-size: 10px;
+    }
+    .nombre-servicio p:last-child,.servicio-porc-fem p:last-child, .servicio-porc-masc p:last-child {
+        margin-bottom: 0px;
+    }
+    .nombre-canal {
+        padding-left: 0;
+        padding-top: 7px;
+    }
+    .canal-graph {
+        padding-top: 0;
+    }
+    .nombre-canal p {
+        margin-bottom: 6.5px;
+        font-size: 10px;
+    }
+    .canal-porc-fem p, .canal-porc-masc p {
+        margin-bottom: 4.5px;
+    }
+    .canal-porc-sexo {
+        position: relative;
+        top: -38px;
+    }
+    .canal-porc-sexo p {
+        font-size: 10px;
+    }
+    .dv-ventas-servicios {
+        margin: 0;
+        padding-top: 20px;
+    }
+    .graph-servicio-temporada {
+        overflow: auto;
+    }
+    .dv-cond-fisica {
+        margin-left: 15px;
+        margin-right: 15px;
+        padding-top: 20px;
+    }
+    .dv-cond-fisica canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+    .dv-cond-fisica .masc {
+        border: none;
+        margin-top: 22px;
+    }
+    .dv-cond-fisica .fem p.cond-fisica-title,
+    .dv-cond-fisica .masc p.cond-fisica-title{
+        font-size: 13px;
+    }
+    .dv-vistas {
+        margin-top: 0;
+        margin-right: 15px;
+        margin-left: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .dv-vistas h5 {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .distr-dpto-porcentajes p {
+        font-size: 11px;
+        margin-bottom: 5.2px;
+    }
+    .nombre-servicio p {
+        margin-bottom: 15px;
+    }
+    .servicio-porc-fem p, .servicio-porc-masc p {
+        margin-bottom: 22px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .distr-dpto-porcentajes p {
+        font-size: 10px;
+        margin-bottom: 3.5px;
+    }
+    .nombre-servicio p {
+        margin-bottom: 12px;
+        font-size: 10px;
+    }
+    .servicio-porc-fem p, .servicio-porc-masc p {
+        margin-bottom: 17px;
+    }
+    .canal-porc-fem p, .canal-porc-masc p {
+        margin-bottom: 2px;
+    }
+    .nombre-canal p {
+        margin-bottom: 3.5px;
+    }
+}
+

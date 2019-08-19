@@ -370,6 +370,23 @@
         }
     }
 
+    function preTemporadaCliente(cliId){
+        $.ajax({
+            type: 'GET',
+            url: _ctx+'gestion/trainer/sher/'+cliId,
+            blockLoading: true,
+            dataType: 'json',
+            success: (r)=>{
+                window.location.href = _ctx + "cliente/rutina/consolidado/ver?key="+r.res;
+            },
+            error: ()=>{
+            },
+            complete: ()=>{
+
+            }
+        });
+    }
+
     function preNotificacionPersonal(rfId, cliId, cliCorreo){
 
         $.ajax({
@@ -391,7 +408,7 @@
             complete: ()=>{
 
             }
-        })
+        });
     }
 
     function enviarChatMensaje(){
@@ -772,7 +789,7 @@
 
 
     function fttTemporada(v, row, ix){
-        return `<img class="svg" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_disquete.svg"/>`;
+        return `<img class="svg" onclick="preTemporadaCliente(${row.cliId})" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_disquete.svg"/>`;
     }
     function fttEnviarCorreo(v, row, ix){
         return `<img class="svg" onclick="preNotificacionPersonal(${row.id}, ${row.cliId}, '${row.cliCorreo}')" data-redfit-id="${row.id}" src="${_ctx}img/iconos/icon_mail.svg"/>`;
