@@ -104,6 +104,7 @@ public class RutinaPlantilla extends AuditingEntity implements Identifiable {
     @JoinColumn( name = "CategoriaPlantillaId" , referencedColumnName =  "CategoriaPlantillaId")
     private CategoriaPlantilla categoriaPlantilla;
 
+
     @JsonBackReference
     @ManyToOne
     public BagForest forest;

@@ -480,15 +480,19 @@
 
     function obtenerCategoriasPlantillas(dataCategorias){
 
-        dataCategorias = dataCategorias.sort( function(a,b){
-            if (a.favorito > b.favorito) return -1;
-            if (a.favorito < b.favorito) return 1;
-            if (a.id < b.id) return -1;
-            if (a.id > b.id) return 1;
-            return 0;
-        });
+        console.log(dataCategorias);
 
-        let itemsCategoria = "";
+        if(dataCategorias.length > 0) {
+           dataCategorias = dataCategorias.sort(function (a, b) {
+               if (a.favorito > b.favorito) return -1;
+               if (a.favorito < b.favorito) return 1;
+               if (a.id < b.id) return -1;
+               if (a.id > b.id) return 1;
+               return 0;
+           });
+
+
+       let itemsCategoria = "";
         dataCategorias.forEach(function(element) {
         let claseCategoria = "title-categoria";
         let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
@@ -517,7 +521,7 @@
         $('.owl-item').css('width','229.8px');
         $('.owl-item').css('margin-right','10px');
          imgtoSvgEvent();
-
+        }
     }
 
 

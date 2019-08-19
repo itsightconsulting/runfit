@@ -1,16 +1,10 @@
 
+let dvDistrMercado = document.querySelector('.distr-mercado');
+let sectionConsolidado = document.querySelector('section#consolidado');
+let dvCanalVenta = document.querySelector('.canal-venta');
+const selectElemYear = document.getElementById('graphYearFilter');
 let $chartMiniPorc = {};
-let $chartMiniPorc2 = {};
-let $chartMiniPorcCondFisM1 = {};
-let $chartMiniPorcCondFisM2 = {};
-let $chartMiniPorcCondFisM3 = {};
-let $chartMiniPorcCondFisF1 = {};
-let $chartMiniPorcCondFisF2 = {};
-let $chartMiniPorcCondFisF3 = {};
-
 var dataClientes;
-
-
 let canalesVenta = ["Recomendación", "Vía correo", "Google", "Facebook", "Twitter", "Instagram", "Otro"];
 let serviciosTipos = ["Running", "General"];
 let arrColorFem = ['#FF00EB', '#c42bba', '#bc49b3', '#8c4b86', '#6b5269','#665e5e'];
@@ -27,8 +21,7 @@ $( function(){
 
 function init(){
 
-    obtenerDataEstadisticas();
-    obtenerInformacionDistribucionDepartamentos();
+     obtenerDataEstadisticas();
 
 
     if(selectYear) {
@@ -40,18 +33,8 @@ function init(){
 
 function selectYearEventListener(){
 
-  const anioFechaTemporada = (dataClientes.map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("YYYY")));
-
     const dataFechaTemporadaFem = (dataClientes.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
     const dataFechaTemporadaMasc = (dataClientes.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
-
-
-    let aniosArr = Array.from(new Set(anioFechaTemporada));
-
-    aniosArr = aniosArr.map( e => Number(e)).sort( (a,b) => b - a);
-
-
-  //  generarSelectYearFilter(aniosArr);
 
     const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem,this.value);
     const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc,this.value);
@@ -63,75 +46,62 @@ function selectYearEventListener(){
 
 function obtenerDataEstadisticas(){
 
-
+    let url = perfil === 1 ? "gestion/trainer/distribucion-mercado/obtener"
+                           : "gestion/distribucion-mercado/obtener"
 
     $.ajax({
         type: "GET",
-        url: _ctx + "gestion/trainer/distribucion-mercado/obtener",
+        url: _ctx + url,
         success: function (data) {
-            //Masculino
 
-            dataClientes = data;
+            if(data.length > 0){
+                dataClientes = data;
 
-            const dataNoDuplicados = quitarDuplicados(data, 'id');
-            const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
-            const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
-            cantidadUsuarios = dataNoDuplicados.length;
+                sectionConsolidado.style.visibility = 'visible';
+                //Masculino
+                const dataNoDuplicados = quitarDuplicados(data, 'id');
+                const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
+                const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
+                cantidadUsuarios = dataNoDuplicados.length;
 
-            setGraficoFem(dataNoDuplFem);
-            setGraficoMasc(dataNoDuplMasc);
-
-            let arrTipoServicio = dataNoDuplicados .map( ({predeterminadaFichaId}) => predeterminadaFichaId);
-            let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
-
-            graficoServiciosUsados(graphTipoServicioData);
-            generarNombreServiciosDOM();
-            setDataServicioDistrSexo(dataNoDuplicados,graphTipoServicioData);
-
-            let arrTipoCanalVenta = dataNoDuplicados .map( ({tipoCanalVentaId}) => tipoCanalVentaId);
-            let graphCanalVentaData =  getDataGraficoTipoCanal(arrTipoCanalVenta);
-            setDataCanalDistrSexo(dataNoDuplicados,graphCanalVentaData);
-            graficoCanalesUsados(graphCanalVentaData);
-            generarNombreCanalesDOM();
-
-
-            const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
-            const condAnatomicaFem =  dataNoDuplFem.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));
-            console.log(condAnatomicaMasc);
-            const arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
-
-            console.log("awsss", arrCondFisicMasc);
-            const arrCondFisicFem =    getDataGraficoCondFisica(condAnatomicaFem);
-
-            graficoCondFisicaBasicaMasc(arrCondFisicMasc);
-            graficoCondFisicaMedioMasc(arrCondFisicMasc);
-            graficoCondFisicaAvanzadoMasc(arrCondFisicMasc);
-            graficoCondFisicaBasicaFem(arrCondFisicFem);
-            graficoCondFisicaMedioFem(arrCondFisicFem);
-            graficoCondFisicaAvanzadoFem(arrCondFisicFem);
+                setGraficosEdadFem(dataNoDuplFem);
+                setGraficosEdadMasc(dataNoDuplMasc);
 
             generarPorcentajeCondFisica(arrCondFisicMasc, 'masc');
             generarPorcentajeCondFisica(arrCondFisicFem, 'fem');
 
+                if(perfil === 1) //Trainer
+                {
+                    const hrServicios = document.querySelector('.hr-servicios');
+                    const dvServicios = document.querySelector('.dv-servicios');
 
-            const anioFechaTemporada = (data.map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("YYYY")));
+                    dvServicios.style.paddingTop = '300px';
+                    hrServicios.parentNode.removeChild(hrServicios);
+                    dvCanalVenta.parentNode.removeChild(dvCanalVenta);
 
-            const dataFechaTemporadaFem = (data.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
-            const dataFechaTemporadaMasc = (data.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
+                }else{
+                    setGraficoCanalVenta(dataNoDuplicados);
+                }
 
+                setGraficosCondFisMasc(dataNoDuplMasc);
+                setGraficosCondFisFem(dataNoDuplFem);
 
-            let aniosArr = Array.from(new Set(anioFechaTemporada));
+                setGraficosServiciosVentaTemporada(data)
+                obtenerInformacionDistribucionDepartamentos();
 
-            aniosArr = aniosArr.map( e => Number(e)).sort( (a,b) => b - a);
+            }else{
 
+                sectionConsolidado.style.display = 'none';
 
-            generarSelectYearFilter(aniosArr);
+                const mensaje =  htmlStringToElement(`
+                    <p class="text-center" style ="margin-top : 200px; color: #ffffff;"> No se pueden
+                        mostrar las estadísticas debido a que aún no cuenta con ningún
+                        cliente asociado a una rutina </p>
+                `);
 
-            const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem,2019);
-            const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc,2019);
+                dvDistrMercado.appendChild(mensaje);
 
-            graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
-
+            }
 
 
         }
@@ -144,9 +114,13 @@ function obtenerDataEstadisticas(){
 }
 
 function obtenerInformacionDistribucionDepartamentos(){
+
+    let url = perfil === 1 ? "gestion/trainer/distribucion-departamento/obtener"
+        : "gestion/cliente/distribucion-departamento/obtener"
+
     $.ajax({
         type: "GET",
-        url: _ctx + "gestion/cliente/distribucion-departamento",
+        url: _ctx + url,
         success: function(data){
             let arrGraf= [];
             let arrGraf2= [];
@@ -198,6 +172,79 @@ function quitarDuplicados(arr, attribute){
         return uniqueArr;
 }
 
+function setGraficosCondFisMasc(dataNoDuplMasc){
+
+    const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
+    let arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
+    arrCondFisicMasc.length > 0 ? null : arrCondFisicMasc = [0,0,0];
+
+
+    graficoCondFisicaBasicaMasc(arrCondFisicMasc);
+    graficoCondFisicaMedioMasc(arrCondFisicMasc);
+    graficoCondFisicaAvanzadoMasc(arrCondFisicMasc);
+
+    generarPorcentajeCondFisica(arrCondFisicMasc, 'masc');
+
+
+}
+
+
+function setGraficosCondFisFem(dataNoDuplFem){
+
+    const condAnatomicaFem =  dataNoDuplFem.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));
+    let arrCondFisicFem =    getDataGraficoCondFisica(condAnatomicaFem);
+    arrCondFisicFem.length > 0 ? null : arrCondFisicFem = [0,0,0];
+
+    graficoCondFisicaBasicaFem(arrCondFisicFem);
+    graficoCondFisicaMedioFem(arrCondFisicFem);
+    graficoCondFisicaAvanzadoFem(arrCondFisicFem);
+
+    generarPorcentajeCondFisica(arrCondFisicFem, 'fem');
+
+
+}
+
+
+function setGraficoServicios(dataNoDuplicados){
+    let arrTipoServicio = dataNoDuplicados.map(({predeterminadaFichaId}) => predeterminadaFichaId);
+    let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
+
+    graficoServiciosUsados(graphTipoServicioData);
+    generarNombreServiciosDOM();
+    setDataServicioDistrSexo(dataNoDuplicados,graphTipoServicioData);
+
+}
+
+function setGraficoCanalVenta(dataNoDuplicados) {
+
+    let arrTipoCanalVenta = dataNoDuplicados .map( ({tipoCanalVentaId}) => tipoCanalVentaId);
+    let graphCanalVentaData =  getDataGraficoTipoCanal(arrTipoCanalVenta);
+    setDataCanalDistrSexo(dataNoDuplicados,graphCanalVentaData);
+    graficoCanalesUsados(graphCanalVentaData);
+    generarNombreCanalesDOM();
+}
+
+function setGraficosServiciosVentaTemporada(data){
+
+    const anioFechaTemporada = (data.map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("YYYY")));
+
+    const dataFechaTemporadaFem = (data.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
+    const dataFechaTemporadaMasc = (data.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
+
+    let aniosArr = Array.from(new Set(anioFechaTemporada));
+
+    aniosArr = aniosArr.map( e => Number(e)).sort( (a,b) => b - a);
+
+    generarSelectYearFilter(aniosArr);
+
+    const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem, aniosArr[0] );
+    const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc, aniosArr[0] );
+
+    console.log(data);
+
+    graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
+
+}
 function getAgeRangesValues(arr){
 
     let rang18_23 = arr.filter( e =>  e>=18 && e<=24).length;
@@ -1347,9 +1394,6 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
         }
     });
 
-
-
-
    let config =  {
         type: 'doughnutCenterElement',
         data: {
@@ -1397,7 +1441,9 @@ function generarInfoDistribucionEdadMascDOM(dataMasc){
     console.log(dataMasc);
 
     $('.masc-porc').text(`${dataMasc.porcentajeMasc}%`);
-    $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`);
+
+    dataMasc.edadPromedioMasc > 0 ?  $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`)
+                                  :  $('.masc-age-prom').text(`NA`);
 
     $('.graph-porc .masc-range-porc').each( function(index) {$(this).html(`${dataMasc.porcentajeRangosMasc[index] }%`)
                                                              $(this).css("color", arrColorMasc[index])});
@@ -1412,6 +1458,8 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
     $('.fem-porc').text(`${dataFem.porcentajeFem}%`);
     $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`);
 
+    dataFem.edadPromedioFem > 0 ?  $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`)
+        :  $('.fem-age-prom').text(`NA`);
 
     $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`);
                                                           $(this).css("color", arrColorFem[index])});
@@ -1422,51 +1470,49 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
 }
 
 
-function setGraficoMasc(data){
+function setGraficosEdadMasc(data){
 
-    const dataMasc = {};
+    let dataMasc ={} , dataGraphMasculino;
     const edadClientesMasc = data.filter(element => element.sexo === 1)
          .map(({fechaNacimiento}) => getEdad(fechaNacimiento));
-
 
     if(edadClientesMasc.length > 0){
         dataMasc.edadPromedioMasc = Math.round((edadClientesMasc.reduce((acc, val) => acc + val)) / edadClientesMasc.length);
         dataMasc.porcentajeMasc = Math.round(edadClientesMasc.length * 100 / cantidadUsuarios);
-
-        const dataGraphMasculino = getAgeRangesValues(edadClientesMasc);
-
+        dataGraphMasculino = getAgeRangesValues(edadClientesMasc);
         dataMasc.porcentajeRangosMasc = dataGraphMasculino.map(e => ((e / edadClientesMasc.length) * 100));
         dataMasc.porcentajeRangosMasc = roundedPercentage(dataMasc.porcentajeRangosMasc , 100);
-        graficoDistribucionEdadMasculino(dataGraphMasculino);
-        generarInfoDistribucionEdadMascDOM(dataMasc);
+
     }else{
-        let dataGraphMasculino = [0,0,0,0,0,0];
-        let dataMasc= {edadPromedioMasc: [0] ,porcentajeRangosMasc : [0] , porcentajeMasc : [0]}
-        graficoDistribucionEdadMasculino(dataGraphMasculino);
-        generarInfoDistribucionEdadMascDOM(dataMasc);
+        dataGraphMasculino = [0,0,0,0,0,0];
+        dataMasc= {edadPromedioMasc: [0] ,porcentajeRangosMasc : [0,0,0,0,0,0] , porcentajeMasc : [0]}
     }
 
+    graficoDistribucionEdadMasculino(dataGraphMasculino);
+    generarInfoDistribucionEdadMascDOM(dataMasc);
 }
 
 
-function setGraficoFem(data){
+function setGraficosEdadFem(data){
 
-
-    const dataFem = {};
+    let dataFem ={},dataGraphFemenino;
     //Femenino
     const edadClientesFem = data.filter(element => element.sexo === 2)
         .map(({fechaNacimiento})=> getEdad(fechaNacimiento)  );
 
+    if(edadClientesFem.length > 0) {
 
-    dataFem.porcentajeFem = Math.round(edadClientesFem.length * 100 / cantidadUsuarios );
-    dataFem.edadPromedioFem =Math.round((edadClientesFem.reduce((acc,val) => acc +val))/edadClientesFem.length);
+        dataFem.porcentajeFem = Math.round(edadClientesFem.length * 100 / cantidadUsuarios);
+        dataFem.edadPromedioFem = Math.round((edadClientesFem.reduce((acc, val) => acc + val)) / edadClientesFem.length);
 
-    const dataGraphFemenino =  (getAgeRangesValues(edadClientesFem));
+        dataGraphFemenino = (getAgeRangesValues(edadClientesFem));
 
-    dataFem.porcentajeRangosFem = dataGraphFemenino.map( e => Math.round((e/edadClientesFem.length)*100));
+        dataFem.porcentajeRangosFem = dataGraphFemenino.map(e => Math.round((e / edadClientesFem.length) * 100));
 
-    console.log(dataFem);
-
+    }else{
+        dataGraphFemenino = [0,0,0,0,0,0];
+        dataFem= {edadPromedioFem: [0] ,porcentajeRangosFem : [0,0,0,0,0,0] , porcentajeFem : [0]}
+    }
     graficoDistribucionEdadFemenino(dataGraphFemenino);
     generarInfoDistribucionEdadFemDOM(dataFem);
 }
@@ -2201,7 +2247,10 @@ function generarPorcentajeTipoServicioSexoDOM(arr, index){
 }
 
 function generarPorcentajeCondFisica(arr, sexo){
-    const porcCondFisic =  getPorcentaje(arr);
+
+    let porcCondFisic;
+    porcCondFisic = ( arr.reduce( (a,b) => a+b) === 0) ? arr : getPorcentaje(arr);
+
 
     $(`.dv-cond-fisica .${sexo} .cond-fisica-porc`).each(
                  function(index){
@@ -2435,7 +2484,11 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
 function generarSelectYearFilter(arr){
 
     $.each(arr, function(val, text) {
-        $('#graphYearFilter').append( $('<option></option>').val(text).html(text) )
+        let option = document.createElement('option');
+        option.value = text;
+        option.textContent = text;
+
+        selectElemYear.appendChild(option);
     });
 }
 

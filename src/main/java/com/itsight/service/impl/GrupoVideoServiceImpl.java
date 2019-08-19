@@ -117,7 +117,7 @@ public class GrupoVideoServiceImpl extends BaseServiceImpl<GrupoVideoRepository>
         if (comodin.equals("0") && estado.equals("-1")) {
             lstGrupoVideo = repository.findAll();
         } else {
-            if (comodin.equals("0")) lstGrupoVideo = repository.findAllByFlagActivo(Boolean.valueOf(estado));
+            if (comodin.equals("0")) lstGrupoVideo = repository.findAllByFlagActivo(Boolean.valueOf(estado.equals("1") ? "true" : "false"));
             else {
                 lstGrupoVideo = !estado.equals("-1") ? repository.findAllByNombreContainingIgnoreCaseAndFlagActivo(comodin, Boolean.valueOf(estado)) : repository.findAllByNombreContainingIgnoreCase(comodin);
             }

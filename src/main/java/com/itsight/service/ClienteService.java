@@ -35,4 +35,6 @@ public interface ClienteService extends BaseService<Cliente, Integer> {
     String getUsernameById(int id);
 
     UsuGenDTO getForCookieById(Integer id);
+
+
 }

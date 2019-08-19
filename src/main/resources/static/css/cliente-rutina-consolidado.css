@@ -15,6 +15,13 @@ section#consolidado h2.metric-title {
     font-size: 35px;
 }
 
+section#consolidado h3.metric-title {
+    color: #C9C9C9;
+    font-family: GothamHTF-Bold;
+    text-align: center;
+    font-size: 28px;
+}
+
 .etapa-rutina  label {
     font-weight: normal;
 }
@@ -191,7 +198,7 @@ hr.semanas-fixed {
 }
 
 .distribucion-km strong {
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .total-km div{

@@ -81,7 +81,6 @@ public class ViewConstant {
     public static final String FORM_CONFIRMATION_VISA = "visa/visa-consolidado";
     public static final String FORM_VISA_TERMINOS = "visa/visa-terminos";
 
-
     public static final String PRINCIPAL = "bienvenido";
     public static final String LOGIN = "login";
     public static final String RECUPERAR_PASSWORD = "recuperar_password";
@@ -110,6 +109,7 @@ public class ViewConstant {
     public static final String CLIENTE_MIS_RUTINAS = "cliente/mis_rutinas";
     public static final String CLIENTE_PERFIL = "cliente/perfil_cliente";
     public static final String CLIENTE_RUTINA_CONSOLIDADO = "cliente/rutina_consolidado";
+    public static final String CLIENTE_VIDEOTECA = "cliente/videoteca";
 
 
 }

@@ -24,9 +24,6 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
-
-
-
     <div id="wrapper">
         <div>
             <header>
@@ -38,19 +35,24 @@
                 <br>
             </header>
 
-
-            <section id="consolidado">
                 <div class="container">
-                    <div class="rutina-cli">
-                        <h4 class="graph-title"> PORCENTAJE DE DISTRIBUCIÓN DEL MERCADO POR SEXO Y EDAD </h4>
+                    <div class="distr-mercado">
+                        <div th:if="${perfilValue}">
+
+                        <h4 class="graph-title"> PORCENTAJE DE DISTRIBUCIÓN DE CLIENTES POR SEXO Y EDAD </h4>
+                        </div>
+
+                        <div th:unless="${perfilValue}">
+                            <h4 class="graph-title">PORCENTAJE DE DISTRIBUCIÓN DE MERCADO POR SEXO Y EDAD</h4>
+                        </div>
+
+                        <section id="consolidado" style="visibility: hidden">
 
                         <div class="container-fluid">
                             <div class="row">
                              <div class="col-md-6">
                                 <div class="distribucion-edad">
                                     <div class="row">
-
-
                                         <div class="col-md-6">
                                           <div class="graph">
                                             <strong> MUJERES </strong> <strong class="fem-porc">  76% </strong>
@@ -320,12 +322,12 @@
                               </div>
                             </div>
 
-                        </div>
+                        </section>
+
+
+                    </div>
 
                   </div>
-
-            </section>
-
         </div>
     </div>
 
@@ -341,7 +343,15 @@
 <script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/underscore/underscore.js}+'?'+${version}"></script>
-<script th:src="@{/js/distribucion_mercado.js}+'?'+${version}"></script>
+<script th:inline="javascript" th:src="@{/js/distribucion_mercado.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var perfil = /*[[${perfilValue}]]*/ 0;
+
+    /*]]>*/
+</script>
 
 
 </body>

@@ -332,6 +332,7 @@
               document.querySelector('.dv-rows').classList.add('hidden');
             }else{
               recrearListado(res);
+              console.log(res);
               totalRows = res[0].rows;
               if(totalRows > 1){
                 document.querySelector('#Rows').textContent = `Se encontraron ${totalRows} coincidencias`;
@@ -424,7 +425,6 @@
       function scrollEventBusquedaAutomatica(){
         const footHeight = document.querySelector('.footer').clientHeight + 300;
         $(window).scroll(function() {
-
           if($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
             if(totalRows> queryParams.offset + queryParams.limit){
                 queryParams.offset = queryParams.offset + queryParams.limit;

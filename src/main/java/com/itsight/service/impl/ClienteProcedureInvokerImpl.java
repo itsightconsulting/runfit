@@ -20,8 +20,10 @@ public class ClienteProcedureInvokerImpl implements ClienteProcedureInvoker {
     private EntityManager entityManager;
 
     @Override
-    public List<ClienteDTO> getDistribucionDepartamentoCliente() {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_get_count_departamento_cliente", "resultMappingClienteDistribucionDepartamento");
+    public List<ClienteDTO> getDistribucionDepartamentoCliente(Integer trainerId) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distr_ubi_q_dynamic_where", "resultMappingClienteDistribucionDepartamento");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, trainerId);
         return  storedProcedureQuery.getResultList();
     }
 

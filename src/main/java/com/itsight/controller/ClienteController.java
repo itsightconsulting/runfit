@@ -1,6 +1,7 @@
 package com.itsight.controller;
 
 import com.itsight.advice.CustomValidationException;
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.TipoUsuario;
 import com.itsight.domain.dto.ClienteDTO;
@@ -14,8 +15,11 @@ import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -29,13 +33,22 @@ public class ClienteController {
 
     private ClienteProcedureInvoker clienteProcedureInvoker;
 
+    private HttpSession session;
+
     @Autowired
     public ClienteController(ClienteService clienteService,
                              SecUserProcedureInvoker secUserProcedureInvoker,
-                             ClienteProcedureInvoker clienteProcedureInvoker) {
+                             ClienteProcedureInvoker clienteProcedureInvoker,
+                             HttpSession session) {
         this.clienteService = clienteService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
         this.clienteProcedureInvoker = clienteProcedureInvoker;
+        this.session = session;
+    }
+
+    @GetMapping(value = "/videoteca")
+    public ModelAndView pageVideoteca(Model model, HttpSession session) {
+        return new ModelAndView(ViewConstant.CLIENTE_VIDEOTECA);
     }
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
@@ -70,12 +83,15 @@ public class ClienteController {
     }
 
 
-    @GetMapping(value = "/distribucion-departamento")
+    @GetMapping(value = "/distribucion-departamento/obtener")
     public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoCliente(){
 
-     List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente();
+        Integer trainerId = null;
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente(trainerId);
 
      return lstDistribucionCliente;
 
     }
+
+
 }
