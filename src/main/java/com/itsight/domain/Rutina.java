@@ -50,6 +50,18 @@ import java.util.List;
 
                         )
                 }
+        ),
+        @SqlResultSetMapping(
+                name = "getDatosSemanaByRutinaId",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = RuCliPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "avanceSemanal"),
+                                        @ColumnResult(name = "esfuerzoSemanal")
+                                }
+                        )
+                }
         )
 })
 @NamedEntityGraphs({
@@ -121,8 +133,7 @@ public class Rutina extends AuditingEntity {
     @JoinColumn(name = "RedFitnessId", referencedColumnName = "RedFitnessId", updatable = false)
     private RedFitness redFitness;
     @JsonBackReference
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(/*fetch = FetchType.LAZY, */mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rutina", cascade = CascadeType.ALL)
     private List<Semana> lstSemana;
     @JsonIgnore
     @Type(type = "int-array")
@@ -142,14 +153,14 @@ public class Rutina extends AuditingEntity {
     }
 
     public Rutina(RutinaPlantilla rPlantilla){
+
         this.lstSemana = new ArrayList<>();
         this.anios = rPlantilla.getAnios();
         this.dias = rPlantilla.getDias();
         this.meses = rPlantilla.getMeses();
         this.totalSemanas = rPlantilla.getTotalSemanas();
         this.nombre = rPlantilla.getNombre();
-
-         }
+    }
 
     public void setCliente(Integer cliId) {
         this.cliente = new Cliente(cliId);

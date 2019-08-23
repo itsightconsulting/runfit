@@ -45,7 +45,6 @@ public class RutinaDTO implements Serializable {
     private RutinaControl control;
     private String nombre;
 
-
     public RutinaDTO(){}
 
 }

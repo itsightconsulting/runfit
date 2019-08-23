@@ -111,7 +111,7 @@ public class SemanaPlantilla implements Identifiable {
     private RutinaPlantilla rutinaPlantilla;
 
     @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "semanaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true*/)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "semanaPlantilla", cascade = CascadeType.ALL)
     private List<DiaPlantilla> lstDiaPlantilla;
 
     public SemanaPlantilla(){}

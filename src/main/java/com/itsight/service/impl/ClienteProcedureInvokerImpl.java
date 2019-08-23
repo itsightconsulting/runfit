@@ -57,7 +57,6 @@ public class ClienteProcedureInvokerImpl implements ClienteProcedureInvoker {
                     .registerStoredProcedureParameter(9, cliente.getClass().getDeclaredField("tipoDocumentoId").getType(), IN)//_tipo_documento_id int,
                     .registerStoredProcedureParameter(10, cliente.getClass().getDeclaredField("ubigeo").getType(), IN);//,--END Cliente
 
-
             //Entity: ClienteFitness
             storedProcedureQuery
                     .registerStoredProcedureParameter(11, String.class, IN)//text,--jsonb

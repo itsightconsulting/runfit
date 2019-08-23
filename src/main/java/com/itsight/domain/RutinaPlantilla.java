@@ -91,7 +91,7 @@ public class RutinaPlantilla extends AuditingEntity implements Identifiable {
     private RutinaControl control;
 
     @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL /*, orphanRemoval = true*/ )
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "rutinaPlantilla", cascade = CascadeType.ALL)
     private List<SemanaPlantilla> lstSemana;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -110,6 +110,14 @@ public class RutinaPlantilla extends AuditingEntity implements Identifiable {
     public BagForest forest;
 
     public RutinaPlantilla(){}
+
+    public void setForest(BagForest forest){
+        this.forest = forest;
+    }
+
+    public void setForest(Integer bagForestId){
+        this.forest = new BagForest(bagForestId);
+    }
 
 }
 

@@ -46,7 +46,7 @@
 
               </ul>
             </div>
-            <div class="text-center"><a data-toggle="collapse" data-target="#moreFav"><img class="svg moreview" src="/img/iconos/icon_flecha2.svg"></a></div>
+            <div class="text-center" id="iconArrowMoreFav"><a data-toggle="collapse" data-target="#moreFav"><img class="svg moreview" src="/img/iconos/icon_flecha2.svg"></a></div>
             <div class="collapse" id="moreFav">
               <div class="resultado_material">
                 <ul class="row">
@@ -89,6 +89,10 @@
   const urlAwsVideo ='https://rf-media-rutina.s3-us-west-2.amazonaws.com/video';
   const ulVideosGrupo = document.querySelector('section.busqueda .resultado_material ul');
   const ulFavoritosGrupo = document.querySelector('section.favoritos .resultado_material ul');
+  const dvArrowMoreFav = document.querySelector('section.favoritos #iconArrowMoreFav ');
+  const dvMoreFav = document.querySelector('section.favoritos #moreFav');
+  const dvResultadoFavoritos = document.querySelector('section.favoritos .resultado_material');
+
   const ulOtrosFavoritosGrupo = document.querySelector('section.favoritos #moreFav ul');
   const inpBuscador = document.getElementById('inpBuscador');
   let currentVideosxGrupo;
@@ -116,12 +120,12 @@
 
      obtenerVideosFavoritos();
      obtenerGrupoVideos();
-     obtenerVideosxGrupo(0) //tipo 0 => Nuevo grupo video
-     $(dvCarousel).on('click', '.item', grupoVideoClickEvent);
+   //  obtenerVideosxGrupo(0) //tipo 0 => Nuevo grupo video
+   //  $(dvCarousel).on('click', '.item', grupoVideoClickEvent);
      inpBuscador.addEventListener("input", buscadorEvent);
-     body.addEventListener('click' , bodyClickEventListener);
-     scrollEventBusquedaAutomatica();
-     $(dvCarousel).on('changed.owl.carousel', seleccionGrupoEvent);
+      $(dvCarousel).on('changed.owl.carousel', seleccionGrupoEvent);
+      $(body).on('click','.fav',favoritoEvent);
+
     }
 
     function obtenerGrupoVideos(){
@@ -198,7 +202,6 @@
       noOne: false,
       success :  (result) => {
         currentFavoritos = result;
-        console.log("uwu",currentFavoritos);
         poblarDvVideosFavoritosxCliente(result);
       },
       error: (xhr) =>{
@@ -270,12 +273,16 @@
   function poblarDvVideosFavoritosxCliente(dataVideos){
 
     ulFavoritosGrupo.innerHTML ="";
+    $('section.favoritos p').text("");
+    if(dataVideos.length > 0){
+      const videosFav =  dataVideos.reverse();
 
-    const videosFav =  dataVideos.reverse();
-
-
-    dataVideos.forEach( function(element,index){
-      const videoElement = htmlStringToElement(`
+      if(dataVideos.length <= 6){
+        dvArrowMoreFav.style.display = 'none';
+        dvMoreFav.style.display = 'none';
+      }
+      dataVideos.forEach( function(element,index){
+        const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
                                       <div class="video"><a data-fancybox="galleryFavoritos" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
@@ -286,8 +293,25 @@
                                  </li>
                              `);
 
-      index <= 5 ? ulFavoritosGrupo.appendChild(videoElement) : ulOtrosFavoritosGrupo.appendChild(videoElement);
-    })
+        if (index <= 5) {
+          ulFavoritosGrupo.appendChild(videoElement);
+
+        }  else {
+          ulOtrosFavoritosGrupo.appendChild(videoElement);
+        }})
+
+    }else{
+
+      dvArrowMoreFav.style.display = 'none';
+      dvMoreFav.style.display = 'none';
+
+      const mensaje = htmlStringToElement(`<p class="text-center" style="color:#ffffff">No cuenta aún con videos favoritos </p>`)
+      dvResultadoFavoritos.appendChild(mensaje);
+
+    }
+
+
+
     svgFillEvent();
 
   }
@@ -399,7 +423,7 @@
 
      if(favClasses.contains('selected')){
        favElement.classList.remove('selected');
-      // quitarVideoDeFavoritos(videoId);
+       quitarVideoDeFavoritos(videoId);
        const index = currentFavoritos.findIndex( e => e.id === Number(videoId));
 
        index > -1 ? currentFavoritos.splice(index, 1) : null;
@@ -410,9 +434,9 @@
        favElement.classList.add('selected');
         const videoInfo = currentVideosxGrupo.find( e  => e.id === Number(videoId));
         currentFavoritos.push(videoInfo);
-        //  agregarVideoAFavoritos(videoId);
+       agregarVideoAFavoritos(videoId);
      }
-    //  poblarDvVideosFavoritosxCliente(currentFavoritos);
+      poblarDvVideosFavoritosxCliente(currentFavoritos);
 
     }
 
@@ -461,6 +485,9 @@
 
 
     function seleccionGrupoEvent(event){
+
+      console.log("xd");
+
       const grupoSeleccionado  = document.querySelectorAll('.item')[event.item.index];
 
       if(grupoSeleccionado){

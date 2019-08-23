@@ -614,13 +614,13 @@ MacroCiclo = (function(){
                     r.matrizMejoraCadencia = consolidado.matrizMejoraCadencia;
                     r.matrizMejoraTcs = consolidado.matrizMejoraTcs;
                     r.matrizMejoraLonPaso = consolidado.matrizMejoraLonPaso;
-
                     r.dtGrafico = MCGraficoData.paraTemporada($baseAfterComprobacion).map(v=>{return {kms: v.kms, color: v.color, percInts: v.perc, imgIcon: v.bullet != undefined ? v.bullet.substr(1) : undefined}});
                     for(let i=0; i<cantSemExcedentes;i++){
                         const iBase = r.dtGrafico.length - cantSemExcedentes;
                         r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
                     }
-                    guardarRutina(r, intervalEffect);
+                    console.log(r.semanas);
+                    //guardarRutina(r, intervalEffect);
                 }
             }else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});

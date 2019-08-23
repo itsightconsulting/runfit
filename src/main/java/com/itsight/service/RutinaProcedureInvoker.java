@@ -7,4 +7,7 @@ public interface RutinaProcedureInvoker {
     RuCliPOJO getLastByClienteId(Integer clienteId, Integer limit);
 
     RuCliPOJO findById(Integer id);
+
+    RuCliPOJO getDatosAvanceSemanalbyRutinaId(Integer id);
+
 }

@@ -68,6 +68,12 @@ public class Dia {
     @Column
     private double calorias;
 
+    @Column
+    private int  avanceDiario;
+
+    @Column
+    private int esfuerzoDiario;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private List<Elemento> elementos;

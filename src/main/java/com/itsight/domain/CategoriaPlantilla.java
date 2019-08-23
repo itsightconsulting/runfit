@@ -43,7 +43,7 @@ public class CategoriaPlantilla extends AuditingEntity {
   private Trainer trainer;
 
   @JsonBackReference
-  @OneToMany(fetch =  FetchType.LAZY , mappedBy = "categoriaPlantilla")
+  @OneToMany(fetch =  FetchType.LAZY , mappedBy = "categoriaPlantilla", orphanRemoval = true)
   private List<RutinaPlantilla> lstRutinaPlantilla;
 
 }

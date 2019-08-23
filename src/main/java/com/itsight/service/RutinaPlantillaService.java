@@ -20,6 +20,7 @@ public interface RutinaPlantillaService extends BaseService<RutinaPlantilla, Int
 
    void agregarRutinadesdePlantilla(RutinaPlantilla rutinaPlantilla,String fechaInicio,String fechaFin, Integer redFitID, Integer cliId,Integer tipoRutina);
 
+   void eliminarRutinaPlantilla(Integer id);
 
 }
 

@@ -93,5 +93,13 @@ public class ClienteController {
 
     }
 
+    @GetMapping(value = "/distribucion-departamento/trainer/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoClientexTrainer(@RequestParam Integer id){
+
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente(id);
+
+        return lstDistribucionCliente;
+    }
+
 
 }

@@ -110,7 +110,6 @@ public class CategoriaPlantillaServiceImpl extends BaseServiceImpl<CategoriaPlan
 
     @Override
     public void delete(Integer id) {
-
     }
 
     @Override
@@ -171,5 +170,11 @@ public class CategoriaPlantillaServiceImpl extends BaseServiceImpl<CategoriaPlan
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public void eliminarCategoriaPlantilla(Integer catId) {
+
+        repository.deleteById(catId);
     }
 }
