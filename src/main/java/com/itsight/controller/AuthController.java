@@ -106,6 +106,11 @@ public class AuthController extends BaseController {
         return ViewConstant.RECUPERAR_PASSWORD;
     }
 
+    @GetMapping(value = "/rutina/plataforma")
+    public String plataformaRutina(){
+        return ViewConstant.MAIN_RUTINA_PLATAFORMA;
+    }
+
     @PostMapping(value = "/p/recuperacion/password/check/username")
     public @ResponseBody String recuperarPasswordCheckUsernameExiste(@RequestParam String username) throws CustomValidationException, InterruptedException {
         if(username == null || username.trim().equals("")){

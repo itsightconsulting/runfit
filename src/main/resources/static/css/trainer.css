@@ -54,10 +54,15 @@ ul, ol {
 
 .nav-pills {
     background-color: #202127;
-    margin-bottom: 20px; }
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between; }
 .nav-pills li {
     margin: 0 !important;
     text-align: center; }
+.nav-pills li.icons a {
+    padding: 10px 0;
+}
 .nav-pills li a {
     display: inline-flex;
     text-transform: uppercase;
@@ -67,7 +72,7 @@ ul, ol {
     font-size: 15px;
     padding: 10px 0;
     background-color: transparent !important;
-    color: #fff; }
+    color: #fff;}
 .nav-pills li a .svg {
     height: 20px;
     fill: #fff; }
@@ -107,6 +112,8 @@ h2.title_carousel {
     display: inline-block;
     width: 100%;
     font-size: 25px;}
+h2.title_carousel button {
+    background-color: transparent;}
 h2.title_carousel span {
     font-family: GothamHTF-Light; }
 h2.title_carousel.dots {
@@ -1376,8 +1383,197 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
     color: #000000;
     padding-bottom: 200px;
     padding-top: 50px;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
+
+/*RUTINA PLATAFORMA*/
+
+.editor_text {
+    background-color: #161824;
+    padding: 25px;
+    margin-top: -20px;
+    display: flex;
+    justify-content: space-between; }
+.editor_text .block {
+    text-align: right; }
+.editor_text .logo {
+    max-width: 95px; }
+.editor_text section {
+    border-right: 1px solid #2e303b;
+    padding-right: 12px; }
+.editor_text section.green .svg {
+    fill: #daffc6; }
+.editor_text select {
+    border-radius: 7px;
+    border: none;
+    padding: 2px 8px;
+    background: url(../img/selectmini.png) no-repeat 85% #fff !important; }
+.editor_text button {
+    background-color: transparent;
+    border: none; }
+.editor_text button .svg {
+    height: 30px;
+    max-width: 40px;
+    fill: #cdcdcd;
+    width: auto; }
+.editor_text button .svg.textAlign {
+    height: 24px; }
+.editor_text span {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #daffc6;
+    font-family: GothamHTF-Bold;
+    padding-right: 55px;
+    display: inline-block;
+    margin-bottom: 18px; }
+.editor_text span i {
+    font-family: GothamHTF-Book;
+    color: #a8fa00;
+    font-style: normal; }
+.editor_text span:last-child {
+    padding-right: 10px; }
+
+.scroll_rut {
+    overflow: auto;
+    white-space: nowrap;
+    padding: 30px 0;
+    margin-left: 35px; }
+.scroll_rut .days_week article {
+    display: inline-block;
+    max-width: 300px;
+    width: 100%;
+    margin: 0 10px;
+    vertical-align: top; }
+.scroll_rut .days_week article .heading-dia {
+    border-bottom: 1px solid #a8fa00; }
+.scroll_rut .days_week article .heading-dia h2 {
+    font-size: 13px;
+    font-family: GothamHTF-Light;
+    text-transform: uppercase;
+    padding-left: 15px;
+    position: relative;
+    margin-top: 0; }
+.scroll_rut .days_week article .heading-dia h2 span {
+    font-size: 30px;
+    margin-left: 5px; }
+.scroll_rut .days_week article .heading-dia h2.gr:before {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #7ab500;
+    position: absolute;
+    left: 0;
+    bottom: 8px; }
+.scroll_rut .days_week article .heading-dia h2.red:before {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #f21721;
+    position: absolute;
+    left: 0;
+    bottom: 8px; }
+.scroll_rut .days_week article .heading-dia h2.ylw:before {
+    content: " ";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ffcc00;
+    position: absolute;
+    left: 0;
+    bottom: 8px; }
+.scroll_rut .days_week article .sub-header {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between; }
+.scroll_rut .days_week article .sub-header span .svg {
+    height: 12px;
+    fill: #b5b6b6;
+    margin-right: 5px; }
+.scroll_rut .days_week article .rt-elem {
+    min-height: 518px;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    white-space: normal;
+    -webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4); }
+.scroll_rut .days_week article .rt-elem .elem a {
+    font-family: Montserrat-Bold;
+    text-decoration: none;
+    color: #000;
+    padding-left: 10px; }
+.scroll_rut .days_week article .rt-elem .elem a .arrow {
+    transform: rotate(0deg);
+    transition: all .5s;
+    height: 12px;
+    top: 8px; }
+.scroll_rut .days_week article .rt-elem .elem a[aria-expanded="true"] svg.arrow {
+    transform: rotate(180deg);
+    transition: all .5s; }
+.scroll_rut .days_week article .rt-elem .elem .svg {
+    height: 20px;
+    position: relative;
+    top: 4px;
+    max-width: 20px; }
+.scroll_rut .days_week article .rt-elem .elem button.btn.add {
+    background-color: transparent;
+    color: #b3b3b3; }
+.scroll_rut .days_week article .rt-elem .elem button.btn.add .svg {
+    fill: #b3b3b3; }
+.scroll_rut .days_week article .rt-elem .elem ul li {
+    font-family: Montserrat-Regular;
+    margin: 20px 0;
+    padding-left: 14px;
+    position: relative; }
+.scroll_rut .days_week article .rt-elem .elem ul li input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc; }
+.scroll_rut .days_week article .rt-elem .elem ul li .col-xs-4 {
+    text-align: center; }
+.scroll_rut .days_week article .rt-elem .elem ul li .time {
+    display: flex;
+    justify-content: space-between; }
+
+.notes {
+    position: absolute;
+    top: -12px; }
+.notes .gr {
+    width: 8px;
+    height: 8px;
+    background-color: #16b825;
+    border-radius: 50%;
+    display: inline-block; }
+.notes .ong {
+    width: 8px;
+    height: 8px;
+    background-color: #ff7200;
+    border-radius: 50%;
+    display: inline-block; }
+
+.rut-dots {
+    text-align: center; }
+.rut-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+    border: 1px solid #000; }
+.rut-dots .dot.active {
+    background-color: #28a905;
+    border: none; }
+.rut-dots .dot.prox {
+    background-color: #444444;
+    border: none; }
+.rut-dots .btn {
+    background-color: transparent;
+    position: relative;
+    top: -5px; }
+.rut-dots .btn .svg {
+    width: 20px;
+    height: 20px; }
+
