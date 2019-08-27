@@ -856,20 +856,26 @@ section#info .list-plan li {
     font-family: GothamHTF-Book;
     color: #000;
     margin-bottom: 25px; }
-section#info .list_plan li .svg {
+section#info .list-plan li .svg {
     height: 42px;
     fill: #9d9d9d;
     width: 42px;
     position: relative;
     top: 10px; }
-section#info .list_plan li .svg.plantilla {
+section#info .list-plan li .svg.plantilla {
     position: absolute;
     left: 0; }
-section#info .list_plan li:before {
+section#info .list-plan li:before {
     content: counter(count) " - ";
     font-size: 30px; }
-section#info .list_plan li a.edit .svg {
+section#info .list-plan li a.edit .svg {
     margin-left: 20px;
+    width: 18px;
+    cursor: pointer;
+}
+
+section#info .list-plan li a.delete .svg {
+    margin-left: 5px;
     width: 18px;
     cursor: pointer;
 }
@@ -1370,4 +1376,8 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
     color: #000000;
     padding-bottom: 200px;
     padding-top: 50px;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f

@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -46,14 +47,18 @@ public class VideoController {
 
     private VideoProcedureInvoker videoProcedureInvoker;
 
+    private HttpSession session;
+
     @Autowired
     public VideoController(VideoService videoService,
                            GrupoVideoService grupoVideoService,
-                           VideoProcedureInvoker videoProcedureInvoker) {
+                           VideoProcedureInvoker videoProcedureInvoker,
+                           HttpSession session) {
         // TODO Auto-generated constructor stub
         this.videoService = videoService;
         this.grupoVideoService = grupoVideoService;
         this.videoProcedureInvoker = videoProcedureInvoker;
+        this.session = session;
     }
 
     @GetMapping(value = "")
@@ -77,6 +82,23 @@ public class VideoController {
             @PathVariable("subCatVideo") String subCatVideo) {
         return videoService.listarPorFiltro(comodin, estado, subCatVideo);
     }
+
+    @GetMapping(value = "/obtener/grupo-video")
+    public @ResponseBody
+    List<Video> listarActivosPorGrupoVideoId(@RequestParam(value = "id") int grupoVideoId) {
+        return videoService.findAllActiveByGrupoVideoIdOrderById(grupoVideoId);
+    }
+
+
+    @GetMapping(value = "/obtener/favoritos")
+    public @ResponseBody
+    List<Video> listarFavoritosPorClienteId() {
+
+        Integer clienteId = (Integer) session.getAttribute("id");
+
+        return videoService.findAllVideosFavByClienteIdOrderById(clienteId);
+    }
+
 
     @GetMapping("/obtenerListado/dinamico")
     public @ResponseBody ResPaginationDTO getAllVideosByDynamic(@ModelAttribute @Valid VideoQueryDTO query){
@@ -149,6 +171,26 @@ public class VideoController {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(forest.getTreesGb());
     }
+
+
+    @PostMapping(value = {"/agregar-favorito"})
+    public @ResponseBody
+    String agregarVideoFavoritos( @RequestParam(value = "vidId") Integer videoId){
+
+        Integer clienteId = (Integer) session.getAttribute("id");
+
+        return videoService.addClienteServicio(clienteId, videoId);
+    }
+
+    @DeleteMapping(value = {"/eliminar-favorito"})
+    public @ResponseBody
+    String eliminarVideoFavoritos( @RequestParam(value = "vidId") Integer videoId){
+
+        Integer clienteId = (Integer) session.getAttribute("id");
+
+        return videoService.deleteClienteServicio(clienteId, videoId);
+    }
+
 
     protected BagForestDTO reconstructForestDto(List<VideoDTO> leaves, Integer forestId) {
         EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(new EntityVisitor[]{

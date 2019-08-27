@@ -7,7 +7,7 @@ import java.util.List;
 public interface ClienteFitnessProcedureInvoker {
 
     public ClienteFitnessPOJO getById(Integer id);
-    public List<ClienteFitnessPOJO> getDistribucionMercadoData();
+    public List<ClienteFitnessPOJO> getDistribucionMercado(Integer id);
 
 
 }

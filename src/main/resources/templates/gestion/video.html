@@ -424,6 +424,8 @@
                     res.nombre = data.txtFiltro !== "" ? data.txtFiltro : null;
                     res.catVideoId = data.categoriaVideo !== "" ? data.categoriaVideo : null;
                     res.subCatVideoId = data.subCategoriaVideo !== "" ? data.subCategoriaVideo : null;
+                    res.grupoVideoId = null;
+
                     return res;
                 },
                 onLoadSuccess: function (data) {
@@ -604,7 +606,6 @@
     }
 
     function subirVideo(d) {
-        const videoId = d.res;
         const rdmUUID = d.rdm;
         var video = $("#Video").get(0);
 

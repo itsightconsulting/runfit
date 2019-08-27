@@ -29,8 +29,10 @@ public class ClienteFitnessProcedureInvokerImpl implements ClienteFitnessProcedu
     }
 
     @Override
-    public List<ClienteFitnessPOJO> getDistribucionMercadoData() {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distribucion_estadistica_cliente", "resultMappingClienteFitnessDistribucion");
+    public List<ClienteFitnessPOJO> getDistribucionMercado(Integer id) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distr_mercado_q_dynamic_where", "resultMappingClienteFitnessDistribucion");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, id);
         return  storedProcedureQuery.getResultList();
     }
 

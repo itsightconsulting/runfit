@@ -24,11 +24,8 @@
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 <div id="main-content">
-
-
-
     <div id="wrapper">
-        <div class="container">
+        <div>
             <header>
                 <div class="text-center">
                     <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}+'?'+${version}"></button><a class="only_mobile" href="index.html"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
@@ -38,20 +35,25 @@
                 <br>
             </header>
 
+                <div class="container">
+                    <div class="distr-mercado">
+                        <div th:if="${perfilValue}">
 
-            <section id="consolidado">
-                <div class="">
-                    <div class="rutina-cli">
-                        <h4 class="graph-title"> PORCENTAJE DE DISTRIBUCIÓN DEL MERCADO POR SEXO Y EDAD </h4>
+                        <h4 class="graph-title"> PORCENTAJE DE DISTRIBUCIÓN DE CLIENTES POR SEXO Y EDAD </h4>
+                        </div>
 
-                        <div class="">
+                        <div th:unless="${perfilValue}">
+                            <h4 class="graph-title">PORCENTAJE DE DISTRIBUCIÓN DE MERCADO POR SEXO Y EDAD</h4>
+                        </div>
+
+                        <section id="consolidado" style="visibility: hidden">
+
+                        <div class="container-fluid">
                             <div class="row">
                              <div class="col-md-6">
                                 <div class="distribucion-edad">
                                     <div class="row">
-
-
-                                        <div class="col-md-6 col-xs-6">
+                                        <div class="col-md-6">
                                           <div class="graph">
                                             <strong> MUJERES </strong> <strong class="fem-porc">  76% </strong>
 
@@ -62,7 +64,7 @@
                                           </div>
                                         </div>
 
-                                        <div class="col-md-6 col-xs-6">
+                                        <div class="col-md-6">
 
                                           <div class="graph-porc">
 
@@ -88,7 +90,7 @@
 
 
 
-                                         <div class="col-md-6 col-xs-6">
+                                         <div class="col-md-6">
 
                                             <div class="graph">
                                              <strong> HOMBRES </strong> <strong class="masc-porc"> 56% </strong>
@@ -99,7 +101,7 @@
                                             </div>
                                          </div>
 
-                                         <div class="col-md-6 col-xs-6">
+                                         <div class="col-md-6">
                                             <div class="graph-porc">
 
                                                 <div>  <img class="svg masc " th:src="@{/img/iconos/icon_male.svg}+'?'+${version}"/><p class="masc-range-porc">0%</p> <p>(18-24 edad)</p>  </div>
@@ -129,13 +131,13 @@
 
                                    <p class="distr-dpto-title"> DISTRIBUCIÓN DEL MERCADO POR LOCALIZACIÓN</p>
 
-                                   <div class="col-md-9 col-xs-10">
+                                   <div class="col-md-9">
                                  <div class="graph-distr-departamento">
                                    <canvas id="GraficoDistribucionDepartamento" width="250" height="500"></canvas>
                                  </div>
                                </div>
 
-                               <div class="col-md-3 col-xs-2">
+                               <div class="col-md-3">
                                     <div class="distr-dpto-porcentajes">
 
 
@@ -146,30 +148,28 @@
                                </div>
 
                               </div>
-                                <hr class="hr-servicios only_mobile">
+
                               <div class="col-md-6">
 
                                     <div class="row dv-servicios">
 
                                         <p class="tipo-servicio-title"> SERVICIOS MÁS SOLICITADOS </p>
 
-                                        <div class="row-mobile">
-
-                                        <div class="col-md-4 col-xs-3">
+                                        <div class="col-md-4">
                                             <div class="nombre-servicio">
 
                                             </div>
                                         </div>
 
-                                        <div class="col-md-5 col-xs-6">
+                                        <div class="col-md-5">
                                             <div class ="servicios-graph">
                                                 <canvas id="GraficoServiciosUsados" width="220" height="130"></canvas>
 
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-xs-3 no_padding">
+                                        <div class="col-md-3">
                                             <div class ="tipo-servicio-porc">
-                                                <div class="col-md-6 col-xs-6">
+                                                <div class="col-md-6">
                                                     <img class="svg fem" th:src="@{/img/iconos/icon_female.svg}+'?'+${version}"/>
                                                     <div class="servicio-porc-fem">
 
@@ -178,7 +178,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6 col-xs-6">
+                                                <div class="col-md-6">
                                                     <img class="svg masc" th:src="@{/img/iconos/icon_male.svg}+'?'+${version}"/>
                                                     <div class="servicio-porc-masc">
 
@@ -189,7 +189,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    </div>
 
                                     <hr class="hr-servicios">
 
@@ -197,23 +196,23 @@
                                     <div class="canal-venta">
 
                                  <p class="canal-venta-title"> CANALES DE VENTAS MÁS USADOS</p>
-                                    <div class="row-mobile">
-                                     <div class="col-md-4 col-xs-4">
+
+                                     <div class="col-md-4">
                                         <div class="nombre-canal">
 
 
                                         </div>
                                      </div>
 
-                                     <div class="col-md-5 col-xs-5">
+                                     <div class="col-md-5">
                                       <div class ="canal-graph">
                                        <canvas id="GraficoCanalesUsados" width="220" height="263"></canvas>
 
                                       </div>
                                      </div>
-                                      <div class="col-md-3 col-xs-3 no_padding">
+                                      <div class="col-md-3">
                                           <div class ="canal-porc-sexo">
-                                            <div class="col-md-6 col-xs-6">
+                                            <div class="col-md-6">
                                                 <img class="svg fem" th:src="@{/img/iconos/icon_female.svg}+'?'+${version}"/>
                                                 <div class="canal-porc-fem">
 
@@ -222,7 +221,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 col-xs-6">
+                                            <div class="col-md-6">
                                               <img class="svg masc" th:src="@{/img/iconos/icon_male.svg}+'?'+${version}"/>
                                                 <div class="canal-porc-masc">
 
@@ -232,7 +231,6 @@
                                             </div>
                                           </div>
                                       </div>
-                                    </div>
                                  </div>
                                </div>
                               </div>
@@ -266,22 +264,22 @@
 
                                <div class="dv-cond-fisica">
                                    <h4 class="graph-title text-center"> NIVEL DE CONDICIÓN FÍSICA</h4>
-                                <div class="row-mobile">
+
                                    <div class="col-md-6">
                                      <div class="row fem">
-                                       <div class="col-xs-4">
+                                       <div class="col-md-4">
                                            <p class="cond-fisica-title"> BÁSICO</p>
                                            <p class="cond-fisica-porc"> 55%</p>
                                            <canvas id="GraficoCondFisFemBas" height="120" width="148"></canvas>
                                        </div>
 
-                                       <div class="col-xs-4">
+                                       <div class="col-md-4">
                                            <p class="cond-fisica-title"> MEDIO </p>
                                            <p class="cond-fisica-porc"> 55%</p>
                                            <canvas id="GraficoCondFisFemMed" height="120" width="148"></canvas>
                                        </div>
 
-                                        <div class="col-xs-4">
+                                        <div class="col-md-4">
                                             <p class="cond-fisica-title"> AVANZADO </p>
                                             <p class="cond-fisica-porc"> 55%</p>
                                             <canvas id="GraficoCondFisFemAvanz" height="120" width="148"></canvas>
@@ -293,19 +291,19 @@
                                     <div class="col-md-6">
 
                                        <div class="row masc">
-                                           <div class="col-xs-4">
+                                           <div class="col-md-4">
                                                <p class="cond-fisica-title"> BÁSICO </p>
                                                <p class="cond-fisica-porc"> 55%</p>
                                                <canvas id="GraficoCondFisMascBas" height="120" width="148"></canvas>
                                            </div>
 
-                                           <div class="col-xs-4">
+                                           <div class="col-md-4">
                                                <p class="cond-fisica-title">  MEDIO </p>
                                                <p class="cond-fisica-porc"> 55%</p>
                                                <canvas id="GraficoCondFisMascMed" height="120" width="148"></canvas>
                                            </div>
 
-                                           <div class="col-xs-4">
+                                           <div class="col-md-4">
                                                <p class="cond-fisica-title"> AVANZADO </p>
                                                <p class="cond-fisica-porc"> 55%</p>
                                                <canvas id="GraficoCondFisMascAvanz" height="120" width="148"></canvas>
@@ -315,7 +313,6 @@
                                        </div>
 
                                     </div>
-                                </div>
                                    </div>
                             </div>
 
@@ -325,12 +322,12 @@
                               </div>
                             </div>
 
-                        </div>
+                        </section>
+
+
+                    </div>
 
                   </div>
-
-            </section>
-
         </div>
     </div>
 
@@ -346,7 +343,15 @@
 <script th:src="@{/js/plugin/chartjs/chart.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
 <script th:src="@{/js/plugin/underscore/underscore.js}+'?'+${version}"></script>
-<script th:src="@{/js/distribucion_mercado.js}+'?'+${version}"></script>
+<script th:inline="javascript" th:src="@{/js/distribucion_mercado.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var perfil = /*[[${perfilValue}]]*/ 0;
+
+    /*]]>*/
+</script>
 
 
 </body>

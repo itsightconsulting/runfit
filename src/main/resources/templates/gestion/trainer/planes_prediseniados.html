@@ -18,10 +18,18 @@
         position: relative;
         right: 220px;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
     .btn-dark{
         color:#ffffff;
         background-color: #000000;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
     .title-categoria
     {
         word-wrap: break-word;
@@ -50,6 +58,8 @@
     .owl-dots {
         max-width: 45%;
     }
+
+
 </style>
 <body style="background-color: #fff;">
 <div id="wrapper">
@@ -285,7 +295,11 @@
             <div class="clearfix"></div>
             <h1 class="title_big">15<span>km - </span><i>intermedios</i></h1>
             <ul class="list-plan">
+<<<<<<< HEAD
             </ul>
+=======
+          </ul>
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             <div class="clearfix"></div>
         </div>
     </section>
@@ -331,6 +345,7 @@
         scrollEvent();
     }
     function seleccionCategoriaEvent(e){
+<<<<<<< HEAD
         //  debugger
         const input = e.currentTarget;
         let categoriaId;
@@ -346,12 +361,50 @@
             scrollTop: $("section#info").offset().top
         });
         return false;
+=======
+
+      //  debugger
+            const input = e.currentTarget;
+
+            let categoriaId;
+            let catNombre;
+
+            inpSearchRutina.value = '';
+            categoriaId = input.getAttribute('data-categoria-id');
+            catNombre = input.getAttribute('data-nombre');
+
+            $('section#info .title_big').text(catNombre);
+            btnNuevaRutina.setAttribute('data-categoria-id' , categoriaId);
+            obtenerRutinas(categoriaId);
+
+
+            $("section#info").slideDown(200);
+            $( 'html, body' ).stop().animate({
+                scrollTop: $("section#info").offset().top
+            });
+            return false;
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
     }
     function scrollEvent(){
         $(".scroll").click(function() {
+<<<<<<< HEAD
             ocultarSeccionRutinas();
             return false;
         });
+=======
+          ocultarSeccionRutinas();
+          return false;
+    });
+    }
+
+    function ocultarSeccionRutinas(){
+
+        $("section#info").slideUp(200);
+        $('html, body').animate({
+            scrollTop: 0
+        }, 800);
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
     }
     function ocultarSeccionRutinas(){
         $("section#info").slideUp(200);
@@ -425,6 +478,7 @@
             })
         }
     }
+<<<<<<< HEAD
     function obtenerCategoriasPlantillas(data){
         if(data.length > 0) {
             data = data.sort(function (a, b) {
@@ -443,6 +497,31 @@
                 if(element.favorito){
                     favoritos.push(element.id);
                     itemsCategoria += `
+=======
+
+    function obtenerCategoriasPlantillas(data){
+
+        if(data.length > 0) {
+            data = data.sort(function (a, b) {
+               if (a.favorito > b.favorito) return -1;
+               if (a.favorito < b.favorito) return 1;
+               if (a.id < b.id) return -1;
+               if (a.id > b.id) return 1;
+               return 0;
+           });
+
+
+       let itemsCategoria = "";
+            data.forEach(function(element) {
+        let claseCategoria = "title-categoria";
+        let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+            (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
+        claseCategoria += " "+ tamanio;
+         if(element.favorito){
+
+            favoritos.push(element.id);
+             itemsCategoria += `
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
               <div class="item" >
                 <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
@@ -455,6 +534,7 @@
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
              </div>
            `;
+<<<<<<< HEAD
                 }
             });
             $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
@@ -494,6 +574,120 @@
             buttons: "[No][Si]"
         }, function(e) {
             "Si" == e &&
+=======
+
+         }
+        });
+        $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
+        $('.owl-item').css('width','229.8px');
+        $('.owl-item').css('margin-right','10px');
+         imgtoSvgEvent();
+         visualizarElementosOcultos();
+
+
+     }else{
+
+          let mensajeNoData;
+
+          if(dataCategorias.length === 0){
+               mensajeNoData = htmlStringToElement(`
+                    <p class="mensaje-no-data"> No cuenta con alguna categoría de plantillas de rutinas. Dele click al botón de Agregar para
+                       iniciar su colección </p>
+            `) ;
+              dvListaCategoria.appendChild(mensajeNoData);
+
+               ocultarElementos(1);
+
+          }else{
+              let mensajeNoData = htmlStringToElement(`
+                    <p class="mensaje-no-data"> No cuenta con registros para el tipo de categoría consultado. Dele click al botón de Agregar para
+                       iniciar su colección </p>
+            `) ;
+              dvListaCategoria.appendChild(mensajeNoData);
+
+
+              ocultarElementos(2);
+
+          }
+
+          owl.css('display' , 'show');
+
+        }
+         ocultarSeccionRutinas();
+    }
+
+
+    function eliminarCategoria(){
+
+        const obj ={
+              id :  Number(btnEliminarCat.getAttribute('data-categoria-id'))
+        }
+
+
+        const nombre = btnEliminarCat.getAttribute('data-nombre');
+
+        console.log(obj);
+
+        $.SmartMessageBox({
+            title: "<i class='fa fa-2x fa-trash' style='display:flex; align-items: center; margin-right:0.7em;'></i> ¿Está seguro que desea eliminar la categoría "+ nombre + " ( Se eliminarán todas las rutinas asociadas a esta )?",
+            buttons: "[No][Si]"
+        }, function(e) {
+            "Si" == e &&
+            $.ajax({
+                url: _ctx + "gestion/categoria-plantilla/eliminar",
+                type: "DELETE",
+                dataType: 'json',
+                data: obj,
+                success: function(e) {
+                    $(mdlEditarCat).modal('hide');
+                    obtenerCategorias();
+                },
+                error: function(e) {
+                    console.log(e)
+                }
+            })
+        })
+
+        $('.MsgTitle').css('display','flex');
+
+    }
+
+    function visualizarElementosOcultos(){
+
+        $('.slider-container').css('display' , 'block');
+        $('section#listaCategoria .checks').css('display' , 'block');
+        $('.mensaje-no-data').remove();
+
+    }
+
+    function ocultarElementos(tipo){
+
+        const item = document.querySelectorAll('body .item')
+
+        switch(tipo) {
+        case 1 :
+               $('section#listaCategoria .checks').css('display' , 'none');
+               $('.slider-container').css('display' , 'none');
+        break;
+
+        case 2 :
+               debugger
+               $('.slider-container').css('display' , 'none');
+               for (let i=0; i<item.length; i++) {
+                owl.trigger('remove.owl.carousel', [i])
+                    .trigger('refresh.owl.carousel');
+               }
+        break;
+        default:
+               null;
+    }
+
+
+    }
+
+    function actualizarFavoritoCategoria(categoriaId) {
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             $.ajax({
                 url: _ctx + "gestion/categoria-plantilla/eliminar",
                 type: "DELETE",
@@ -566,6 +760,7 @@
     function checkBoxTipoChangeEvent() {
         $("input:checkbox").on('change', function () {
             let cbSeleccionado = $(this)[0].value;
+<<<<<<< HEAD
             if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
                 obtenerCategoriasPlantillas(dataCategorias);
             }else {
@@ -575,11 +770,29 @@
                     obtenerCategoriasPlantillas(dataCategoriasTipo);
                 }
             }
+=======
+
+           if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
+               obtenerCategoriasPlantillas(dataCategorias);
+           }else {
+
+                console.log(dataCategorias);
+
+               if (dataCategorias.length > 0) {
+
+                 let dataCategoriasTipo = dataCategorias.filter((e) => e.tipo === Number(cbSeleccionado));
+
+                  obtenerCategoriasPlantillas(dataCategoriasTipo);
+
+               }
+           }
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             inpSearchRutina.value = '';
             ocultarSeccionRutinas();
         })
     }
     function categoriaClickListenerEvent(e){
+
         const input = e.target;
         const parentStarDOM = ($(input).parent().closest('.star'));
         const parentEditDOM = ($(input).parent().closest('.icon-edit'));
@@ -616,9 +829,14 @@
             btnEditarCat.setAttribute("data-categoria-id",categoriaId);
             btnEliminarCat.setAttribute("data-categoria-id",categoriaId);
             btnEliminarCat.setAttribute("data-nombre",nombre);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
         }
     }
     function rutinaClickListenerEvent(e){
+
         const input = e.target;
         const parentEditDOM = ($(input).parent().closest('.edit'));
         const parentDeleteDOM = ($(input).parent().closest('.delete'));
@@ -627,7 +845,13 @@
         const txtNombre = mdlEditarRutina.querySelector('#nombreRutinaEdit');
         let id,nombre,semanas;
         let categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
+<<<<<<< HEAD
         if(editElement) {
+=======
+
+        if(editElement) {
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             console.log(editElement);
             nombre = editElement.getAttribute('data-rutina-nombre');
             id = editElement.getAttribute('data-rutina-id');
@@ -635,23 +859,42 @@
             btnEditarRutina.setAttribute('data-rutina-id',id);
             $(mdlEditarRutina).modal('show');
         }
+<<<<<<< HEAD
         if(deleteElement){
             id = deleteElement.getAttribute('data-rutina-id');
             nombre = deleteElement.getAttribute('data-rutina-nombre');
             const obj = {
                 id: id
             }
+=======
+
+        if(deleteElement){
+
+            id = deleteElement.getAttribute('data-rutina-id');
+            nombre = deleteElement.getAttribute('data-rutina-nombre');
+
+            const obj = {
+                id: id
+            }
+
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             $.SmartMessageBox({
                 title: "<i class='fa fa-2x fa-trash' style='display:flex; align-items: center; margin-right:0.7em;'></i> ¿Está seguro que desea eliminar la rutina "+ nombre + "?",
                 buttons: "[No][Si]"
             }, function(e) {
                 "Si" == e &&
+<<<<<<< HEAD
                 $.ajax({
+=======
+                 $.ajax({
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
                     url: _ctx + "gestion/rutina-plantilla/eliminar",
                     type: "DELETE",
                     dataType: 'json',
                     data: obj,
                     success: function(e) {
+<<<<<<< HEAD
                         obtenerRutinas(categoriaId);
                     },
                     error: function(e) {
@@ -660,6 +903,19 @@
                 })
             })
             $('.MsgTitle').css('display','flex');
+=======
+                       obtenerRutinas(categoriaId);
+                    },
+                    error: function(e) {
+                       console.log(e)
+                    }
+                })
+
+            })
+
+            $('.MsgTitle').css('display','flex');
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
         }
     }
     function searchSvg(path){
@@ -670,6 +926,7 @@
         return svg;
     }
     function agregarRutina(){
+<<<<<<< HEAD
         if( $('#nueva_rutina_pred_frm').valid()){
             const nombreRotulo = $('#nombreRutina').val();
             const semanas = $('#semanasRutina').val();
@@ -705,6 +962,48 @@
     }
     function actualizarRutina() {
         if ($('#editar_rutina_pred_frm').valid()) {
+=======
+
+    if( $('#nueva_rutina_pred_frm').valid()){
+
+     const nombreRotulo = $('#nombreRutina').val();
+     const semanas = $('#semanasRutina').val();
+     const dias = Number($('#diasRutina').val())*7;
+     const id = btnNuevaRutina.getAttribute('data-categoria-id');
+     const obj = {
+                   nombre : nombreRotulo,
+                   totalSemanas : semanas,
+                   dias : semanas*7,
+                   anios : Math.floor(semanas*7/365),
+                   meses : Math.floor(semanas/4),
+                   categoriaPlantilla : id
+                }
+     console.log(obj);
+
+       $.ajax({
+          type: 'POST',
+          url: _ctx + 'gestion/rutina-plantilla/agregar',
+          dataType:'json',
+          contentType: 'application/json',
+          data : JSON.stringify(obj),
+          success: (s) =>{
+              obtenerRutinas(id);
+              $(mdlAgregarRutina).modal('hide');
+              $("html, body").animate({ scrollTop: $(document).height()}, 1000);
+              document.getElementById("nueva_rutina_pred_frm").reset();
+          },
+          error: (e) =>{
+          },
+          complete: (c) =>{
+                    }
+        });
+     }
+    }
+    function actualizarRutina() {
+
+        if ($('#editar_rutina_pred_frm').valid()) {
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             const nombreRotulo = $('#nombreRutinaEdit').val();
             const id = btnEditarRutina.getAttribute('data-rutina-id');
             const categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
@@ -713,6 +1012,10 @@
                 nombre: nombreRotulo,
                 categoriaPlantilla: categoriaId
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             $.ajax({
                 type: 'PUT',
                 url: _ctx + 'gestion/rutina-plantilla/actualizar',
@@ -738,9 +1041,17 @@
             },
             dataType:'json',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+<<<<<<< HEAD
             success: (data) => {
                 generarRutinasCategoriaDOM(data);
                 currentRutinasData = data;
+=======
+           success: (data) => {
+
+                  generarRutinasCategoriaDOM(data);
+                  currentRutinasData = data;
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             },
             error: (e) =>{
             },
@@ -749,6 +1060,7 @@
         });
     }
     function generarRutinasCategoriaDOM(dataRutina){
+<<<<<<< HEAD
         const ulListadoRutinas = document.getElementsByClassName('list-plan')[0];
         const mensaje = document.querySelector('section#info .mensaje-no-data');
         mensaje ? mensaje.parentNode.removeChild(mensaje) : null;
@@ -756,12 +1068,25 @@
         if(dataRutina.length > 0) {
             dataRutina.forEach( (element) =>{
                 const rutina = htmlStringToElement(`
+=======
+
+     const ulListadoRutinas = document.getElementsByClassName('list-plan')[0];
+     const mensaje = document.querySelector('section#info .mensaje-no-data');
+     mensaje ? mensaje.parentNode.removeChild(mensaje) : null;
+     ulListadoRutinas.innerHTML ="";
+
+     if(dataRutina.length > 0) {
+
+         dataRutina.forEach( (element) =>{
+             const rutina = htmlStringToElement(`
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
                                        <li class="col-md-4">
                                         <img class="plantilla svg" src="/img/iconos-trainers/icon_leyenda.svg"> ${element.nombre.toUpperCase()}
                                         <a class="edit" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"></a>
                                         <a class="delete" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_trash.svg"></a>
                                        </li>
           `);
+<<<<<<< HEAD
                 ulListadoRutinas.appendChild(rutina);
             })
             imgtoSvgEvent();
@@ -776,13 +1101,39 @@
                    `);
             }else{
                 mensaje = htmlStringToElement(`
+=======
+             ulListadoRutinas.appendChild(rutina);
+         })
+         imgtoSvgEvent();
+     }else{
+
+        let buscador = $('#inpSearch').val();
+        let mensaje;
+        if(buscador.length > 0)
+        {
+             mensaje = htmlStringToElement(`
+                                    <p class="mensaje-no-data"> No se encontró resultados para su búsqueda
+                                    </p>
+                   `);
+
+        }else{
+             mensaje = htmlStringToElement(`
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
                                     <p class="mensaje-no-data"> No cuenta con alguna plantilla asociada a esta categoría.
                                        Dele click al botón de Agregar para comenzar a crearla.
                                     </p>
                    `);
+<<<<<<< HEAD
             }
             dvListaRutinas.appendChild(mensaje);
         }
+=======
+        }
+
+         dvListaRutinas.appendChild(mensaje);
+     }
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
     }
     function constraintsValidation()
     {
@@ -821,14 +1172,24 @@
         $('#editar_rutina_pred_frm').validate({
             rules:{
                 nombreRutinaEdit :{
+<<<<<<< HEAD
                     required: true,
                     maxlength : 30
+=======
+                   required: true,
+                   maxlength : 30
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
                 }
             }
         });
     }
     function searchRutinaEvent(filterInp){
         if(filterInp.data) {
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 9a31868233ff4be045d9440b74632c3dd686600f
             let filterText = $('#inpSearch').val().toUpperCase();
             const filteredData = currentRutinasData.filter( (el,index) => el.nombre.toUpperCase().indexOf(filterText) > -1);
             generarRutinasCategoriaDOM(filteredData);

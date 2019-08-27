@@ -100,6 +100,12 @@ public class Video extends AuditingEntity implements Identifiable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
     private List<VideoAudioFavorito> lstFavoritos;
 
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name = "ClienteVideo",
+            joinColumns =  @JoinColumn(name = "VideoId", referencedColumnName = "VideoId"),
+            inverseJoinColumns = @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId"))
+     private List<Cliente> clientes;
+
 
     public Video(){}
 

@@ -72,4 +72,24 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             "WHERE E.subCatVideo.id = ?1 AND LOWER(E.nombre) LIKE LOWER(CONCAT('%',?2,'%')) AND E.flagActivo = ?3 ORDER BY 1")
     List<Video> findAllBySubCategoriaVideoIdAndNombreContainingIgnoreCaseAndFlagActivoOrderById(Integer categoriaEjercicioId, String comodin, Boolean flagActivo);
 
+    @Modifying
+    @Query(value = "INSERT INTO cliente_video VALUES(?1, ?2)", nativeQuery = true)
+    void addFavClienteVideo( Integer videoId, Integer clienteId);
+
+
+    @Modifying
+    @Query(value = "DELETE FROM  cliente_video  WHERE video_id = ?1 AND cliente_id = ?2", nativeQuery = true)
+    void deleteFavClienteVideo( Integer videoId, Integer clienteId);
+
+
+    @Query("SELECT new Video(E.id, E.nombre, CONCAT(E.rutaWeb, '?v', E.version), E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E " +
+            "JOIN E.subCatVideo SC " +
+            "JOIN SC.categoriaVideo CV " +
+            "JOIN CV.grupoVideo GV WHERE GV.id = ?1 AND E.flagActivo = true ORDER BY 1")
+    List<Video> findAllActiveByGrupoVideoIdOrderById(Integer grupoVideoId);
+
+
+    @Query("SELECT new Video(E.id, E.nombre, CONCAT(E.rutaWeb, '?v', E.version), E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E "+
+           "JOIN  E.clientes C where C.id = ?1 AND E.flagActivo = true ORDER BY 1")
+    List<Video> findVideosFavActivosByClienteId( Integer clienteId);
 }

@@ -30,8 +30,10 @@ public class ClienteProcedureInvokerImpl implements ClienteProcedureInvoker {
     private static final Logger LOGGER = LogManager.getLogger(ClienteProcedureInvokerImpl.class);
 
     @Override
-    public List<ClienteDTO> getDistribucionDepartamentoCliente() {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_get_count_departamento_cliente", "resultMappingClienteDistribucionDepartamento");
+    public List<ClienteDTO> getDistribucionDepartamentoCliente(Integer trainerId) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_distr_ubi_q_dynamic_where", "resultMappingClienteDistribucionDepartamento");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, trainerId);
         return  storedProcedureQuery.getResultList();
     }
 
@@ -54,7 +56,6 @@ public class ClienteProcedureInvokerImpl implements ClienteProcedureInvoker {
                     .registerStoredProcedureParameter(8, cliente.getClass().getDeclaredField("username").getType(), IN)//logged's username
                     .registerStoredProcedureParameter(9, cliente.getClass().getDeclaredField("tipoDocumentoId").getType(), IN)//_tipo_documento_id int,
                     .registerStoredProcedureParameter(10, cliente.getClass().getDeclaredField("ubigeo").getType(), IN);//,--END Cliente
-
 
             //Entity: ClienteFitness
             storedProcedureQuery

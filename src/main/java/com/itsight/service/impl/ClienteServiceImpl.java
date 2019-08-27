@@ -460,4 +460,6 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     public UsuGenDTO getForCookieById(Integer id) {
         return repository.getForCookieById(id);
     }
+
+
 }

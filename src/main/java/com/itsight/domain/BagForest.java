@@ -49,7 +49,7 @@ public class BagForest implements Identifiable {
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "forest")
-    private List<RutinaPlantilla> treesRp = new ArrayList<>();
+    private List<RutinaPlantilla> treesRp = null;
 
 
     public BagForest(){}
@@ -84,8 +84,9 @@ public class BagForest implements Identifiable {
     }
 
     public void setTreesRp(List<RutinaPlantilla> treesRp) {
-        this.treesRp = treesRp;
+            this.treesRp = treesRp;
     }
+
 
 
     public List<RutinaPlantilla> getTreesRp() {

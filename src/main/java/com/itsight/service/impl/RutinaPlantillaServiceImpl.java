@@ -1,7 +1,9 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.*;
+import com.itsight.domain.dto.DiaPlantillaDTO;
 import com.itsight.domain.dto.RutinaPlantillaDTO;
+import com.itsight.domain.dto.SemanaPlantillaDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.RutinaPlantillaRepository;
 import com.itsight.service.*;
@@ -30,6 +32,7 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     SemanaService semanaService;
     DiaService diaService;
     RedFitnessService redFitnessService;
+
     private EntityManager entityManager;
 
     @Autowired
@@ -149,62 +152,59 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
         BeanUtils.copyProperties(rutinaPlantillaDTO, objRp);
 
         Rutina objR = new Rutina();
-
-     /*   BeanUtils.copyProperties(objRp, objR);
-
-        rutinaService.save(objR);
-     */
-
-/*
-
-        RutinaPlantilla rutinaPlantilla = entityManager.createQuery(
-                "select rp " +
-                        "from RutinaPlantilla rp " +
-                        "join fetch rp.lstSemana s " +
-                        "where rp.id = :id", RutinaPlantilla.class)
-                .setParameter(
-                        "id",
-                        7
-                )
-                .getSingleResult();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = format.parse("2019-08-30");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Rutina rutinaPlantillaClone = new Rutina(rutinaPlantilla);
-        rutinaPlantillaClone.setFechaInicio(new Date());
-        rutinaPlantillaClone.setFechaFin(date);
-        entityManager.persist(rutinaPlantillaClone);
-
-*/
-
         objRp.setCategoriaPlantilla(cP);
 
-        repository.save(objRp);
+        objRp.setForest(3);
 
+        RutinaPlantilla rutinaPlantilla = repository.save(objRp);
+
+        List<SemanaPlantilla> semanas = new ArrayList<>();
+        for ( int i = 0 ; i < rutinaPlantilla.getTotalSemanas() ; i++) {
+
+            SemanaPlantilla semanaPlantilla = new SemanaPlantilla();
+            //BeanUtils.copyProperties(semana, semanaPlantilla);
+          //  semanas.add(semanaPlantilla);
+            //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
+            //se referencie en el registro de la semana
+            semanaPlantilla.setFechaInicio(new Date());
+            semanaPlantilla.setFechaFin(new Date());
+            semanaPlantilla.setHoras(2);
+            semanaPlantilla.setRutinaPlantilla(rutinaPlantilla);
+            semanas.add(semanaPlantilla);
+            //Insertando dias de la semana a su respectiva lista de dias
+            List<DiaPlantilla> dias = new ArrayList<>();
+            for(int j = 0 ; j < 7 ; j++){
+                DiaPlantilla objDia = new DiaPlantilla();
+                objDia.setCalorias(2);
+                dias.add(objDia);
+                //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
+                //se referencie en el registro del día
+                objDia.setSemanaPlantilla(semanaPlantilla);
+            }
+            //Agregando la lista de dias a la semana
+            semanaPlantilla.setLstDiaPlantilla(dias);
+
+        }
+
+        //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
+       // objRp.setLstSemana(semanas);
+        rutinaPlantilla.setLstSemana(semanas);
+        rutinaPlantilla.setFlagActivo(true);
+        repository.saveAndFlush(rutinaPlantilla);
+        //Guardando en session el id de la nueva rutina plantilla y los ids de las semanas generadas
+    /*    session.setAttribute("rpId", objRp.getId());
+        session.setAttribute("rpSemanaIds", semanas.stream().map(semana-> semana.getId()).toArray(Integer[]::new));
+*/
         return REGISTRO.get();
     }
 
     @Override
     public String actualizarRutinaPrediseñada(RutinaPlantillaDTO rutinaPlantillaDTO) {
 
-        RutinaPlantilla objRp = new RutinaPlantilla();
         //Pasando del Dto al objeto
-
-        Integer categoriaId = rutinaPlantillaDTO.getCategoriaPlantilla();
-        CategoriaPlantilla cP = new CategoriaPlantilla();
-        cP = categoriaPlantillaService.findOne(categoriaId);
-
-        BeanUtils.copyProperties(rutinaPlantillaDTO, objRp);
-
-        objRp.setCategoriaPlantilla(cP);
-      //  objRp.setLstSemana(null);
-
-        repository.saveAndFlush(objRp);
+        RutinaPlantilla rutinaPlantilla = repository.findById(rutinaPlantillaDTO.getId()).orElse(null);
+        rutinaPlantilla.setNombre(rutinaPlantillaDTO.getNombre());
+        repository.saveAndFlush(rutinaPlantilla);
 
         return ACTUALIZACION.get();
     }
@@ -218,85 +218,100 @@ public class RutinaPlantillaServiceImpl extends BaseServiceImpl<RutinaPlantillaR
     @Override
         public void agregarRutinadesdePlantilla(RutinaPlantilla rutinaPlantilla,String fechaInicio, String fechaFin, Integer redFitID, Integer cliId, Integer tipoRutina) {
 
-       Rutina rutina = new Rutina(rutinaPlantilla);
+        RutinaPlantilla rPtemp = new RutinaPlantilla();
 
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-      Date dateInicio = null, dateFin = null;
-       try {
-           dateInicio = format.parse(fechaInicio);
-           dateFin = format.parse(fechaFin);
+        BeanUtils.copyProperties(rutinaPlantilla, rPtemp);
 
-       } catch (ParseException e) {
+    //    rPtemp.setId(99);
+
+        Rutina rutina = new Rutina(rutinaPlantilla);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateInicio = null, dateFin = null;
+
+        try {
+            dateInicio = format.parse(fechaInicio);
+            dateFin = format.parse(fechaFin);
+
+        } catch (ParseException e) {
            e.printStackTrace();
-       }
+        }
 
-      rutina.setFechaInicio(dateInicio);
-      rutina.setFechaFin(dateFin);
-      rutina.setRedFitness(redFitID);
-      rutina.setCliente(cliId);
-      rutina.setTipoRutina(tipoRutina);
-      Rutina nuevaRutina = rutinaService.save(rutina);
+        rutina.setFechaInicio(dateInicio);
+        rutina.setFechaFin(dateFin);
+        rutina.setRedFitness(redFitID);
+        rutina.setCliente(cliId);
+        rutina.setTipoRutina(tipoRutina);
 
-      List<SemanaPlantilla> sP = rutinaPlantilla.getLstSemana();
-      List<Integer> semIdsList = new ArrayList<>();
+        Rutina nuevaRutina = rutinaService.save(rutina);
 
-      List<DiaPlantilla> diaPlantillas = new ArrayList<>();
+        List<SemanaPlantilla> sP = rutinaPlantilla.getLstSemana();
+        List<Integer> semIdsList = new ArrayList<>();
 
-      int indexSemana = 0;
+        int indexSemana = 0;
 
+        for(SemanaPlantilla semanaPlantilla: sP){
 
-       for(SemanaPlantilla semanaPlantilla: sP){
+            Calendar calInicio = Calendar.getInstance();
+            calInicio.setTime(dateInicio);
+            calInicio.add(Calendar.DATE, 7* indexSemana);
+            Date dateInicioSem = calInicio.getTime();
 
-              Calendar calInicio = Calendar.getInstance();
-              calInicio.setTime(dateInicio);
-              calInicio.add(Calendar.DATE, 7* indexSemana);
-              Date dateInicioSem = calInicio.getTime();
+            Calendar calFin = Calendar.getInstance();
+            calFin.setTime(dateInicioSem);
+            calFin.add(Calendar.DATE, 6);
+            Date dateFinSem   = calFin.getTime();
 
-              Calendar calFin = Calendar.getInstance();
-              calFin.setTime(dateInicioSem);
-              calFin.add(Calendar.DATE, 6);
-              Date dateFinSem   = calFin.getTime();
+            semanaPlantilla.setFechaInicio(dateInicioSem);
+            semanaPlantilla.setFechaFin(dateFinSem);
 
+            Semana semana= new Semana(semanaPlantilla);
+            semana.setRutina(nuevaRutina);
 
-              semanaPlantilla.setFechaInicio(dateInicioSem);
-              semanaPlantilla.setFechaFin(dateFinSem);
+            List<DiaPlantilla> diaPlantillas = new ArrayList<>();
 
-              Semana semana= new Semana(semanaPlantilla);
-              semana.setRutina(nuevaRutina);
+            diaPlantillas.addAll(semanaPlantilla.getLstDiaPlantilla());
 
-              diaPlantillas.addAll(semanaPlantilla.getLstDiaPlantilla());
+            Semana sem = semanaService.save(semana);
 
-              Semana sem = new Semana();
-              sem = semanaService.save(semana);
+            semIdsList.add(sem.getId());
 
-              semIdsList.add(sem.getId());
+                    int indexDia = 0;
+                    for(DiaPlantilla diaPlantilla : diaPlantillas){
 
-              int indexDia = 0;
-                for(DiaPlantilla diaPlantilla : diaPlantillas){
+                        Calendar calDia = Calendar.getInstance();
+                        calInicio.setTime(dateInicio);
+                        calInicio.add(Calendar.DATE, indexDia + (indexSemana * 7));
 
-                    Calendar calDia = Calendar.getInstance();
-                    calInicio.setTime(dateInicio);
-                    calInicio.add(Calendar.DATE, indexDia + (indexSemana * 7));
+                        Date dateDia= calInicio.getTime();
 
-                    Date dateDia= calInicio.getTime();
+                        diaPlantilla.setFecha(dateDia);
+                        Dia dia = new Dia(diaPlantilla);
+                        dia.setSemana(sem);
 
-                    diaPlantilla.setFecha(dateDia);
-                    Dia dia = new Dia(diaPlantilla);
-                    dia.setSemana(sem);
+                        diaService.save(dia);
 
-                    diaService.save(dia);
-                    indexDia++;
-                }
+                        indexDia++;
+                    }
 
             indexSemana++;
-           diaPlantillas.clear();
-          };
-
-        int[] arrSemIds = new int[semIdsList.size()];
-        for(int i=0; i<arrSemIds.length;i++){
-            arrSemIds[i] = semIdsList.get(i);
+            diaPlantillas.clear();
         }
+
+
+            int[] arrSemIds = new int[semIdsList.size()];
+              for(int i=0; i<arrSemIds.length;i++){
+                 arrSemIds[i] = semIdsList.get(i);
+                 }
+
+
         rutinaService.updateSemanaIds(rutina.getId() , arrSemIds);
         redFitnessService.updatePlanStatusAndUltimoDiaPlanificacionAndContadorRutinas(redFitID, 2, rutina.getFechaInicio(), rutina.getFechaFin(), 1);
+
+    }
+
+
+    @Override
+    public void eliminarRutinaPlantilla(Integer id) {
+        repository.deleteById(id);
     }
 }

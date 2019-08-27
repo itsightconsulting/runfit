@@ -151,6 +151,14 @@ public class Cliente extends AuditingEntity implements Serializable {
     )
     private List<Servicio> servicios = new ArrayList<>();
 
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name = "ClienteVideo",
+        joinColumns =
+             @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId"),
+        inverseJoinColumns =
+             @JoinColumn(name = "VideoId", referencedColumnName = "VideoId"))
+    private List<Video> videos = new ArrayList<>();
+
     @Transient
     @JsonSerialize
     private String nombreCompleto;

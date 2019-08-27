@@ -1,15 +1,16 @@
-package com.itsight.service;
+ package com.itsight.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.itsight.domain.dto.ClienteDTO;
+ import com.fasterxml.jackson.core.JsonProcessingException;
+ import com.itsight.domain.dto.ClienteDTO;
 
-import java.util.List;
+ import java.util.List;
 
-public interface ClienteProcedureInvoker {
+ public interface ClienteProcedureInvoker {
 
 
- List<ClienteDTO> getDistribucionDepartamentoCliente();
+  List<ClienteDTO> getDistribucionDepartamentoCliente(Integer trainerId);
 
- boolean actualizarClienteById(ClienteDTO cliente, Integer clienteId) throws JsonProcessingException;
+  boolean actualizarClienteById(ClienteDTO cliente, Integer clienteId) throws JsonProcessingException;
 
-}
+
+ }

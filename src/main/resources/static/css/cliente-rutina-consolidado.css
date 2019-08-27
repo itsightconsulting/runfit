@@ -15,6 +15,13 @@ section#consolidado h2.metric-title {
     font-size: 35px;
 }
 
+section#consolidado h3.metric-title {
+    color: #C9C9C9;
+    font-family: GothamHTF-Bold;
+    text-align: center;
+    font-size: 28px;
+}
+
 .etapa-rutina  label {
     font-weight: normal;
 }
@@ -191,7 +198,7 @@ hr.semanas-fixed {
 }
 
 .distribucion-km strong {
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .total-km div{
@@ -432,8 +439,6 @@ div #proyeccionCompetencia .proyeccion-title label{
     padding-bottom: 32px;
 }
 
-
-
 #consolidado .distribucion-etapas-km .col-md-6 {
     padding: 0;
 }
@@ -441,4 +446,56 @@ div #proyeccionCompetencia .proyeccion-title label{
 .distribucion-etapas-km{
     padding-top: 43px;
 
+}
+
+#dvCumplimiento h3.metric-title span {
+   color: #a8fa00;
+   font-weight: 900;
+}
+
+#dvEsfuerzo h3.metric-title span {
+   color: #C33846;
+    font-weight: 900;
+}
+
+.resumen-metrica {
+    color: #ffffff;
+}
+
+.resumen-metrica .titulo h4 {
+    font-size: 19px;
+    margin-bottom: 0 !important;
+}
+
+.resumen-metrica .titulo span {
+    font-size: 15px;
+}
+
+#dvCumplimiento, dvEsfuerzo{
+    margin:  80px 0;
+}
+
+#dvCumplimiento, dvEsfuerzo i{
+    margin-left:  0.7em;
+}
+
+#dvCumplimiento .intro,  #dvEsfuerzo .intro{
+   display: inline-flex;
+   align-items: center;
+}
+
+#dvCumplimiento .intro{
+   max-width:150px;
+}
+
+#dvEsfuerzo .intro{
+    max-width:160px;
+}
+
+canvas{
+    margin: auto
+}
+
+#dvEsfuerzo p, #dvCumplimiento p{
+    text-align: center;
 }

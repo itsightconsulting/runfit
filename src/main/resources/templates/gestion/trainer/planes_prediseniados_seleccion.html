@@ -58,10 +58,7 @@
 
   <div id="wrapper">
 
-
-
-
-    <header>
+   <header>
         <ul class="nav nav-pills">
             <li class="col-md-3 icons"><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
             <li class="active col-md-1"><a href="#">listado</a></li>
@@ -153,7 +150,7 @@
             </div>
             <div class="clearfix"></div>
             <h1 class="title_big">15<span>km - </span><i>intermedios</i></h1>
-            <ul class="list_plan">
+            <ul class="list-plan">
           </ul>
             <div class="clearfix"></div>
         </div>
@@ -163,13 +160,13 @@
   <th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 
-
-
   <script th:inline="javascript">
 
       const body = document.getElementsByTagName("body")[0];
       const owl = $('.owl-carousel');
       const cbox = $('input[type="radio"][name="cbNuevaCategoria"]');
+      const dvSeleccionCategorias = document.querySelector('section#seleccionCategoriasRutGen div');
+      const dvSeleccionRutinas = document.querySelector('section#info div');
       const mdlEditarCat = document.getElementById("modalEditarCategoria");
       const mdlEditarRutina = document.getElementById("modalEditarRutina");
       const mdlAgregarCat = document.getElementById("modalNuevaCategoria");
@@ -181,8 +178,9 @@
       const fInitRutGen = document.getElementById("RutFechaInicio");
       const fFinalRutGen = document.getElementById("RutFechaFinal");
       const btnGenerarRutina = document.getElementById("btnGenerarRutina");
-      const ulListRutina = $('.list_plan');
+      const ulListRutina = $('.list-plan');
       const inpSearchRutina = document.getElementById('inpSearch');
+      const totalSem = document.querySelector('#RutinaTotalSemanas');
       let currentCategoriasData;
       let currentRutinasData;
       const favoritos = [];
@@ -202,7 +200,6 @@
           fFinalRutGen.addEventListener('change', setTotalSemanas);
           inpSearchRutina.addEventListener('input', searchRutinaEvent);
           constraintsValidation();
-
       }
 
       function agregarCategoria(){
@@ -218,23 +215,15 @@
                   tipo: tipoRutina } ,
               dataType: 'json',
               success: (data) =>  {
-
-
               } ,
               error: (d) =>{
-
               },
               complete: (d) =>{
                   $(mdlAgregarCat).modal('hide');
                   obtenerCategorias();
               }
-
-
-
-
           })
-
-      }
+     }
 
 
       function obtenerCategorias(){
@@ -252,7 +241,17 @@
               success: (data) =>  {
                   currentCategoriasData = data;
                   if(currentCategoriasData.length>0){
-                      obtenerCategoriasPlantillas(currentCategoriasData);
+                      generarCategoriasPlantillasDOM(currentCategoriasData);
+                  }else{
+                    const mensaje = htmlStringToElement(`
+                            <p class="mensaje-no-data"> No cuenta con ninguna categoría registrada para el tipo escogido.
+                             <a href="/planes"> Ir a Plantillas prediseñadas </a> </p>
+                    `);
+
+                    ocultarElementosCategoría();
+
+                    dvSeleccionCategorias.appendChild(mensaje);
+
                   }
               },
               error: (d) =>{
@@ -286,6 +285,13 @@
           })
       }
 
+      function ocultarElementosCategoría(){
+
+          $('.slider-container').css('display' , 'none');
+          owl.remove();
+
+      }
+
       function actualizarCategoriaPlantilla(){
 
           const nombre = $('#nombreCategoriaEdit').val()
@@ -312,7 +318,7 @@
           })
       }
 
-      function obtenerCategoriasPlantillas(categoriaData){
+      function generarCategoriasPlantillasDOM(categoriaData){
 
           currentCategoriaData = categoriaData.sort( function(a,b){
               if (a.favorito > b.favorito) return -1;
@@ -373,10 +379,10 @@
               let cbSeleccionado = $(this)[0].value;
 
               if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
-                  obtenerCategoriasPlantillas(currentCategoriasData);
+                  generarCategoriasPlantillasDOM(currentCategoriasData);
               }else{
                   let currentCategoriasDataTipo = currentCategoriasData.filter( (e) => e.tipo ===  Number(cbSeleccionado) );
-                  obtenerCategoriasPlantillas(currentCategoriasDataTipo);
+                  generarCategoriasPlantillasDOM(currentCategoriasDataTipo);
               }
           })
       }
@@ -515,8 +521,27 @@
               dataType:'json',
               contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
               success: (data) =>{
-                  currentRutinasData = data;
-                  generarRutinasCategoriaDOM(data)
+
+               const mensaje = document.querySelector('.mensaje-no-data');
+
+                mensaje ?  mensaje.parentNode.removeChild(mensaje) : null;
+
+
+                  if(data.length > 0){
+                    currentRutinasData = data;
+                    generarRutinasCategoriaDOM(data)
+                  }else{
+
+
+                    const ulListadoRutinas = document.getElementsByClassName('list-plan')[0];
+                    ulListadoRutinas.innerHTML ="";
+                    const mensaje = htmlStringToElement(`
+                            <p class="mensaje-no-data"> No cuenta con ninguna plantilla asociada a la categoría consultada.
+                             <a href="/planes"> Ir a Plantillas prediseñadas </a> </p>
+                    `);
+
+                    dvSeleccionRutinas.appendChild(mensaje);
+                }
               },
               error: (e) =>{
               },
@@ -527,19 +552,30 @@
 
       function generarRutinasCategoriaDOM(dataRutina){
 
-          const ulListadoRutinas = document.getElementsByClassName('list_plan')[0];
+          const ulListadoRutinas = document.getElementsByClassName('list-plan')[0];
           ulListadoRutinas.innerHTML ="";
 
-          dataRutina.forEach( (element) =>{
+          if(dataRutina.length > 0) {
+              dataRutina.forEach((element) => {
 
-              const rutina = htmlStringToElement(`
+                  const rutina = htmlStringToElement(`
                                        <li class="col-md-4" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}" data-rutina-dias="${element.dias}">
                                          <img class="plantilla svg" src="/img/iconos-trainers/icon_leyenda.svg" > ${element.nombre.toUpperCase()}
                                        </li>
-          `);
-           ulListadoRutinas.appendChild(rutina);
-           imgtoSvgEvent();
-           })
+                                 `);
+
+                  ulListadoRutinas.appendChild(rutina);
+              });
+          }else{
+              $('.mensaje-no-data').remove();
+
+              mensaje = htmlStringToElement(`
+                                    <p class="mensaje-no-data"> No se encontró resultados para su búsqueda
+                                    </p>
+                   `);
+              ulListadoRutinas.appendChild(mensaje);
+          }
+             imgtoSvgEvent();
       }
 
       function crearRutinaDesdePlantilla(input){
@@ -611,7 +647,9 @@
               const fechaString = final.getFullYear()+"-"+(finalMonth)+"-"+(finalDay) ;
               $('#RutFechaFinal').val(fechaString);
               $('#RutFechaFinal').valid();
-              document.querySelector('#RutinaTotalSemanas').textContent = nroSemanas;
+              totalSem.textContent = nroSemanas;
+          }else{
+              totalSem.textContent = '';
           }
       }
 
@@ -657,9 +695,9 @@
       function searchRutinaEvent(filterInp){
 
        if(filterInp.data) {
-           let filterText = filterInp.data.toUpperCase();
+           let filterText = $('#inpSearch').val().toUpperCase();
            const filteredData = currentRutinasData.filter( (el,index) => el.nombre.toUpperCase().indexOf(filterText) > -1);
-           console.log(filteredData);
+
            generarRutinasCategoriaDOM(filteredData);
        }else{
            generarRutinasCategoriaDOM(currentRutinasData);

@@ -47,13 +47,28 @@
                     </th:block>
                     <h2 class="metric-title"> TEMPORADA </h2>
 
-                    <div class="container-fluid">
-                        <div class="col-md-12">
-                            <canvas id="GraficoTemporada" height="350"></canvas>
+                     <h3 class="metric-title"> INTENSIDAD </h3>
+
+
+                <div class="container-fluid">
+                        <div class="col-md-12" >
+                            <canvas id="GraficoTemporada" height="400"></canvas>
                         </div>
                     </div>
 
-                   <div class="row periodizacion">
+
+                <h3 class="metric-title"> KILOMETRAJE </h3>
+
+
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <canvas id="GraficoTemporadaKM" height="350" width="950"></canvas>
+                    </div>
+                </div>
+
+
+
+                <div class="row periodizacion">
 
                     <div class="col-md-3">
                         <div class="etapa-rutina light-green">
@@ -68,7 +83,6 @@
 
                        <div class="col-md-3">
                            <div class="etapa-rutina hlight-green">
-
                                <hr class="semanas">
                                <label>
                                    <img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}"/><strong>ESPECÍFICA</strong>
@@ -275,6 +289,79 @@
                          </div>
                     </div>
 
+              <div id="dvCumplimiento">
+                  <h3 class="metric-title"> CUMPLIMIENTO  DEL PROGRAMA <span>  </span></h3>
+                  <div class="container-fluid">
+                      <div class="col-md-12">
+                          <canvas id="GraficoAvanceSemanal" height="350" width="950"></canvas>
+                      </div>
+
+                      <div class="resumen-metrica">
+                          <div class="col-md-12">
+                              <div class="col-md-3 titulo">
+                                  <div class="intro">
+                                      <h4> CUMPLIMIENTO <span> POR TEMPORADA   </span>
+                                      </h4>
+                                      <i class="fa fa-arrow-right"></i>
+
+                                  </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                  <p> PREPARACIÓN GENERAL </p>
+                                  <canvas id="GraficoCumplimientoPerGeneral" height="150" width="178"></canvas>
+                              </div>
+
+                              <div class="col-md-3">
+                                  <p>  PREPARACIÓN ESPECIFICA </p>
+                                  <canvas id="GraficoCumplimientoPerEspecifico" height="150" width="148"></canvas>
+                              </div>
+
+                              <div class="col-md-3">
+                                  <p> PREPARACIÓN COMPETITIVA </p>
+                                  <canvas id="GraficoCumplimientoPerCompetitivo" height="150" width="148"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div id="dvEsfuerzo">
+                  <h3 class="metric-title"> PERCEPCIÓN DE ESFUERZO <span>  </span> </h3>
+                  <div class="container-fluid">
+                      <div class="col-md-12">
+                          <canvas id="GraficoEsfuerzoSemanal" height="350" width="950"></canvas>
+                      </div>
+
+                      <div class="resumen-metrica">
+                          <div class="col-md-12">
+                              <div class="col-md-3 titulo">
+                                  <div class="intro">
+                                      <h4> PERCEPCION DE ESFUERZO <span> POR TEMPORADA   </span> </h4>
+                                      <i class="fa fa-arrow-right"></i>
+                                  </div>
+                                  </div>
+
+                              <div class="col-md-3">
+                                  <p> PREPARACIÓN GENERAL </p>
+                                  <canvas id="GraficoEsfuerzoPerGeneral" height="150" width="178"></canvas>
+                              </div>
+
+                              <div class="col-md-3">
+                                  <p>  PREPARACIÓN ESPECIFICA </p>
+                                  <canvas id="GraficoEsfuerzoPerEspecifico" height="150" width="148"></canvas>
+                              </div>
+
+                              <div class="col-md-3">
+                                  <p> PREPARACIÓN COMPETITIVA </p>
+                                  <canvas id="GraficoEsfuerzoPerCompetitivo" height="150" width="148"></canvas>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+
 
             </div>
 
@@ -285,8 +372,6 @@
      </div>
 
     </div>
-
-
 
 
 <th:block th:insert="html-commons/in/js :: fg-js"></th:block>

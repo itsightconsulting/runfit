@@ -1231,7 +1231,8 @@ section.ritmos_tiempo .box_tiempo {
 
 .resultado_material ul li {
   display: inline-block;
-  margin-bottom: 24px; }
+  margin-bottom: 24px;
+}
   .resultado_material ul li .card {
     overflow: auto;
     border-radius: 10px; }

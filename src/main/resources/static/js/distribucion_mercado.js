@@ -1,15 +1,10 @@
 
+let dvDistrMercado = document.querySelector('.distr-mercado');
+let sectionConsolidado = document.querySelector('section#consolidado');
+let dvCanalVenta = document.querySelector('.canal-venta');
+const selectElemYear = document.getElementById('graphYearFilter');
 let $chartMiniPorc = {};
-let $chartMiniPorc2 = {};
-let $chartMiniPorcCondFisM1 = {};
-let $chartMiniPorcCondFisM2 = {};
-let $chartMiniPorcCondFisM3 = {};
-let $chartMiniPorcCondFisF1 = {};
-let $chartMiniPorcCondFisF2 = {};
-let $chartMiniPorcCondFisF3 = {};
-
 var dataClientes;
-
 
 let canalesVenta = ["Recomendación", "Vía correo", "Google", "Facebook", "Twitter", "Instagram", "Otro"];
 let serviciosTipos = ["Running", "General"];
@@ -22,13 +17,13 @@ $( function(){
 
     init();
 
+
 })
 
 
 function init(){
 
     obtenerDataEstadisticas();
-    obtenerInformacionDistribucionDepartamentos();
 
 
     if(selectYear) {
@@ -40,117 +35,105 @@ function init(){
 
 function selectYearEventListener(){
 
-  const anioFechaTemporada = (dataClientes.map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("YYYY")));
-
     const dataFechaTemporadaFem = (dataClientes.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
     const dataFechaTemporadaMasc = (dataClientes.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
-
-
-    let aniosArr = Array.from(new Set(anioFechaTemporada));
-
-    aniosArr = aniosArr.map( e => Number(e)).sort( (a,b) => b - a);
-
-
-  //  generarSelectYearFilter(aniosArr);
 
     const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem,this.value);
     const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc,this.value);
 
-   // console.log(dataGraficoFem, dataGraficoMasc);
+    // console.log(dataGraficoFem, dataGraficoMasc);
 
     graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
 }
 
 function obtenerDataEstadisticas(){
 
+    let id;
+    id =  perfil != 1 ?  getParamFromURL('trId') : null;
 
+    let url = perfil === 1 ? "gestion/trainer/distribucion-mercado/obtener"
+        : (id ? "gestion/distribucion-mercado/trainer/obtener?id="+id : "gestion/trainer/distribucion-mercado/obtener");
 
     $.ajax({
         type: "GET",
-        url: _ctx + "gestion/trainer/distribucion-mercado/obtener",
+        url: _ctx + url,
         success: function (data) {
-            //Masculino
 
-            dataClientes = data;
+            if(data.length > 0){
+                dataClientes = data;
 
-            const dataNoDuplicados = quitarDuplicados(data, 'id');
-            const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
-            const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
-            cantidadUsuarios = dataNoDuplicados.length;
-            if(dataNoDuplFem.length > 0){
-                setGraficoFem(dataNoDuplFem);
+                sectionConsolidado.style.visibility = 'visible';
+                //Masculino
+                const dataNoDuplicados = quitarDuplicados(data, 'id');
+                const dataNoDuplMasc = dataNoDuplicados.filter( e => e.sexo === 1);
+                const dataNoDuplFem = dataNoDuplicados.filter( e => e.sexo === 2);
+                cantidadUsuarios = dataNoDuplicados.length;
+
+                setGraficosEdadFem(dataNoDuplFem);
+                setGraficosEdadMasc(dataNoDuplMasc);
+
+                setGraficoServicios(dataNoDuplicados);
+
+                if(perfil === 1) //Trainer
+                {
+                    const hrServicios = document.querySelector('.hr-servicios');
+                    const dvServicios = document.querySelector('.dv-servicios');
+
+                    dvServicios.style.paddingTop = '300px';
+                    hrServicios.parentNode.removeChild(hrServicios);
+                    dvCanalVenta.parentNode.removeChild(dvCanalVenta);
+
+                }else{
+                    setGraficoCanalVenta(dataNoDuplicados);
+                }
+
+                setGraficosCondFisMasc(dataNoDuplMasc);
+                setGraficosCondFisFem(dataNoDuplFem);
+
+                setGraficosServiciosVentaTemporada(data)
+                obtenerInformacionDistribucionDepartamentos();
+
+            }else{
+
+                sectionConsolidado.style.display = 'none';
+                let mensaje;
+
+                if(perfil!=1){
+                    mensaje = htmlStringToElement(`
+                    <p class="text-center" style ="margin-top : 200px; color: #ffffff;"> No se pueden
+                        mostrar las estadísticas porque el entrenador consultado no cuenta con ningún
+                        cliente asociado a una rutina </p> `);
+                }else {
+                     mensaje = htmlStringToElement(`
+                    <p class="text-center" style ="margin-top : 200px; color: #ffffff;"> No se pueden
+                        mostrar las estadísticas debido a que aún no cuenta con ningún
+                        cliente asociado a una rutina </p>
+                `);
+                }
+                dvDistrMercado.appendChild(mensaje);
             }
-
-            if(dataNoDuplMasc.length > 0){
-                setGraficoMasc(dataNoDuplMasc);
-            }
-
-            let arrTipoServicio = dataNoDuplicados .map( ({predeterminadaFichaId}) => predeterminadaFichaId);
-            let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
-
-            graficoServiciosUsados(graphTipoServicioData);
-            generarNombreServiciosDOM();
-            setDataServicioDistrSexo(dataNoDuplicados,graphTipoServicioData);
-
-            let arrTipoCanalVenta = dataNoDuplicados .map( ({tipoCanalVentaId}) => tipoCanalVentaId);
-            let graphCanalVentaData =  getDataGraficoTipoCanal(arrTipoCanalVenta);
-            setDataCanalDistrSexo(dataNoDuplicados,graphCanalVentaData);
-            graficoCanalesUsados(graphCanalVentaData);
-            generarNombreCanalesDOM();
-
-
-            const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
-            const condAnatomicaFem =  dataNoDuplFem.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));
-            console.log(condAnatomicaMasc);
-            const arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
-
-            console.log("awsss", arrCondFisicMasc);
-            const arrCondFisicFem =    getDataGraficoCondFisica(condAnatomicaFem);
-
-            graficoCondFisicaBasicaMasc(arrCondFisicMasc);
-            graficoCondFisicaMedioMasc(arrCondFisicMasc);
-            graficoCondFisicaAvanzadoMasc(arrCondFisicMasc);
-            graficoCondFisicaBasicaFem(arrCondFisicFem);
-            graficoCondFisicaMedioFem(arrCondFisicFem);
-            graficoCondFisicaAvanzadoFem(arrCondFisicFem);
-
-            generarPorcentajeCondFisica(arrCondFisicMasc, 'masc');
-            generarPorcentajeCondFisica(arrCondFisicFem, 'fem');
-
-
-            const anioFechaTemporada = (data.map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("YYYY")));
-
-            const dataFechaTemporadaFem = (data.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
-            const dataFechaTemporadaMasc = (data.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
-
-
-            let aniosArr = Array.from(new Set(anioFechaTemporada));
-
-            aniosArr = aniosArr.map( e => Number(e)).sort( (a,b) => b - a);
-
-
-            generarSelectYearFilter(aniosArr);
-
-            const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem,2019);
-            const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc,2019);
-
-            graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
-
-
-
         }
-
         , error: (xhr) => {
         }, complete: () => {
 
         }
     });
+
 }
 
+
 function obtenerInformacionDistribucionDepartamentos(){
+
+    let id;
+    id =  perfil != 1 ?  getParamFromURL('trId') : null;
+
+
+    let url = perfil === 1 ? "gestion/trainer/distribucion-departamento/obtener"
+        : ( id ? "gestion/cliente/distribucion-departamento/trainer/obtener?id="+id  : "gestion/cliente/distribucion-departamento/obtener");
+
     $.ajax({
         type: "GET",
-        url: _ctx + "gestion/cliente/distribucion-departamento",
+        url: _ctx + url,
         success: function(data){
             let arrGraf= [];
             let arrGraf2= [];
@@ -184,8 +167,8 @@ function obtenerInformacionDistribucionDepartamentos(){
 function getEdad(fechaNacimiento){
 
     console.log(fechaNacimiento);
-  const fechaNac = parseFromStringToDate2(fechaNacimiento) ;
-  return new Date().getFullYear() - fechaNac.getFullYear();
+    const fechaNac = parseFromStringToDate2(fechaNacimiento) ;
+    return new Date().getFullYear() - fechaNac.getFullYear();
 }
 
 
@@ -193,15 +176,88 @@ function getEdad(fechaNacimiento){
 function quitarDuplicados(arr, attribute){
 
 
-        const uniqueArr = arr
-            .map(e => e[attribute])
-            .map((e, i, final) => final.indexOf(e) === i && i)
-            .filter(e => arr[e]).map(e => arr[e]);
+    const uniqueArr = arr
+        .map(e => e[attribute])
+        .map((e, i, final) => final.indexOf(e) === i && i)
+        .filter(e => arr[e]).map(e => arr[e]);
 
 
-        return uniqueArr;
+    return uniqueArr;
 }
 
+function setGraficosCondFisMasc(dataNoDuplMasc){
+
+    const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
+    let arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
+    arrCondFisicMasc.length > 0 ? null : arrCondFisicMasc = [0,0,0];
+
+
+    graficoCondFisicaBasicaMasc(arrCondFisicMasc);
+    graficoCondFisicaMedioMasc(arrCondFisicMasc);
+    graficoCondFisicaAvanzadoMasc(arrCondFisicMasc);
+
+    generarPorcentajeCondFisica(arrCondFisicMasc, 'masc');
+
+
+}
+
+
+function setGraficosCondFisFem(dataNoDuplFem){
+
+    const condAnatomicaFem =  dataNoDuplFem.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));
+    let arrCondFisicFem =    getDataGraficoCondFisica(condAnatomicaFem);
+    arrCondFisicFem.length > 0 ? null : arrCondFisicFem = [0,0,0];
+
+    graficoCondFisicaBasicaFem(arrCondFisicFem);
+    graficoCondFisicaMedioFem(arrCondFisicFem);
+    graficoCondFisicaAvanzadoFem(arrCondFisicFem);
+
+    generarPorcentajeCondFisica(arrCondFisicFem, 'fem');
+
+
+}
+
+
+function setGraficoServicios(dataNoDuplicados){
+    let arrTipoServicio = dataNoDuplicados.map(({predeterminadaFichaId}) => predeterminadaFichaId);
+    let graphTipoServicioData =  getDataGraficoTipoServicio(arrTipoServicio);
+
+    graficoServiciosUsados(graphTipoServicioData);
+    generarNombreServiciosDOM();
+    setDataServicioDistrSexo(dataNoDuplicados,graphTipoServicioData);
+
+}
+
+function setGraficoCanalVenta(dataNoDuplicados) {
+
+    let arrTipoCanalVenta = dataNoDuplicados .map( ({tipoCanalVentaId}) => tipoCanalVentaId);
+    let graphCanalVentaData =  getDataGraficoTipoCanal(arrTipoCanalVenta);
+    setDataCanalDistrSexo(dataNoDuplicados,graphCanalVentaData);
+    graficoCanalesUsados(graphCanalVentaData);
+    generarNombreCanalesDOM();
+}
+
+function setGraficosServiciosVentaTemporada(data){
+
+    const anioFechaTemporada = (data.map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("YYYY")));
+
+    const dataFechaTemporadaFem = (data.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
+    const dataFechaTemporadaMasc = (data.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
+
+    let aniosArr = Array.from(new Set(anioFechaTemporada));
+
+    aniosArr = aniosArr.map( e => Number(e)).sort( (a,b) => b - a);
+
+    generarSelectYearFilter(aniosArr);
+
+    const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem, aniosArr[0] );
+    const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc, aniosArr[0] );
+
+    console.log(data);
+
+    graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
+
+}
 function getAgeRangesValues(arr){
 
     let rang18_23 = arr.filter( e =>  e>=18 && e<=24).length;
@@ -276,11 +332,12 @@ function getDataGraficoCondFisica(arr){
 
 function graficoCondFisicaBasicaMasc(arr) {
 
+    console.log("jejeje",arr);
     let total = arr.reduce((a, b) => a + b);
     let canvas = document.getElementById('GraficoCondFisMascBas');
     let ctx = document.getElementById('GraficoCondFisMascBas').getContext('2d');
 
-     Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
+    Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
 
     var helpers = Chart.helpers;
     var defaults = Chart.defaults;
@@ -350,7 +407,7 @@ function graficoCondFisicaBasicaMasc(arr) {
                         ctx.stroke();
                     }
 
-                 }
+                }
             });
 
             var model = arc._model;
@@ -409,138 +466,138 @@ function graficoCondFisicaBasicaMasc(arr) {
 
 }
 
-    function graficoCondFisicaMedioMasc(arr){
+function graficoCondFisicaMedioMasc(arr){
 
     let total = arr.reduce( (a,b) => a+b);
     let canvas = document.getElementById('GraficoCondFisMascMed');
     let ctx = document.getElementById('GraficoCondFisMascMed').getContext('2d');
 
-        Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
+    Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
 
-        var helpers = Chart.helpers;
-        var defaults = Chart.defaults;
+    var helpers = Chart.helpers;
+    var defaults = Chart.defaults;
 
-        Chart.controllers.doughnutCenterElement = Chart.controllers.doughnut.extend({
-            updateElement: function(arc, index, reset) {
-                var _this = this;
-                var chart = _this.chart,
-                    chartArea = chart.chartArea,
-                    opts = chart.options,
-                    animationOpts = opts.animation,
-                    arcOpts = opts.elements.arc,
-                    centerX = (chartArea.left + chartArea.right) / 2,
-                    centerY = (chartArea.top + chartArea.bottom) / 2,
-                    startAngle = opts.rotation, // non reset case handled later
-                    endAngle = opts.rotation, // non reset case handled later
-                    dataset = _this.getDataset(),
-                    circumference = reset && animationOpts.animateRotate ? 0 : arc.hidden ? 0 : _this.calculateCircumference(dataset.data[index]) * (opts.circumference / (2.0 * Math.PI)),
-                    innerRadius = reset && animationOpts.animateScale ? 0 : _this.innerRadius,
-                    outerRadius = reset && animationOpts.animateScale ? 0 : _this.outerRadius,
-                    custom = arc.custom || {},
-                    valueAtIndexOrDefault = helpers.getValueAtIndexOrDefault;
+    Chart.controllers.doughnutCenterElement = Chart.controllers.doughnut.extend({
+        updateElement: function(arc, index, reset) {
+            var _this = this;
+            var chart = _this.chart,
+                chartArea = chart.chartArea,
+                opts = chart.options,
+                animationOpts = opts.animation,
+                arcOpts = opts.elements.arc,
+                centerX = (chartArea.left + chartArea.right) / 2,
+                centerY = (chartArea.top + chartArea.bottom) / 2,
+                startAngle = opts.rotation, // non reset case handled later
+                endAngle = opts.rotation, // non reset case handled later
+                dataset = _this.getDataset(),
+                circumference = reset && animationOpts.animateRotate ? 0 : arc.hidden ? 0 : _this.calculateCircumference(dataset.data[index]) * (opts.circumference / (2.0 * Math.PI)),
+                innerRadius = reset && animationOpts.animateScale ? 0 : _this.innerRadius,
+                outerRadius = reset && animationOpts.animateScale ? 0 : _this.outerRadius,
+                custom = arc.custom || {},
+                valueAtIndexOrDefault = helpers.getValueAtIndexOrDefault;
 
-                helpers.extend(arc, {
-                    // Utility
-                    _datasetIndex: _this.index,
-                    _index: index,
+            helpers.extend(arc, {
+                // Utility
+                _datasetIndex: _this.index,
+                _index: index,
 
-                    // Desired view properties
-                    _model: {
-                        x: centerX + chart.offsetX,
-                        y: centerY + chart.offsetY,
-                        startAngle: startAngle,
-                        endAngle: endAngle,
-                        circumference: circumference,
-                        outerRadius: outerRadius,
-                        innerRadius: innerRadius,
-                        label: valueAtIndexOrDefault(dataset.label, index, chart.data.labels[index])
-                    },
-
-                    draw: function () {
-                        var ctx = this._chart.ctx,
-                            vm = this._view,
-                            sA = vm.startAngle,
-                            eA = vm.endAngle,
-                            opts = this._chart.config.options;
-
-
-                        var img = new Image();
-                        img.src = '/img/iconos/icon_male.svg';
-                        ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
-
-                        ctx.beginPath();
-
-                        ctx.arc(vm.x, vm.y, vm.outerRadius, sA, eA);
-                        ctx.arc(vm.x, vm.y, vm.innerRadius, eA, sA, true);
-
-                        ctx.closePath();
-                        ctx.strokeStyle = vm.borderColor;
-                        ctx.lineWidth = vm.borderWidth;
-
-                        ctx.fillStyle = vm.backgroundColor;
-
-                        ctx.fill();
-                        ctx.lineJoin = 'bevel';
-
-                        if (vm.borderWidth) {
-                            ctx.stroke();
-                        }
-
-                    }
-                });
-
-                var model = arc._model;
-                model.backgroundColor = custom.backgroundColor ? custom.backgroundColor : valueAtIndexOrDefault(dataset.backgroundColor, index, arcOpts.backgroundColor);
-                model.hoverBackgroundColor = custom.hoverBackgroundColor ? custom.hoverBackgroundColor : valueAtIndexOrDefault(dataset.hoverBackgroundColor, index, arcOpts.hoverBackgroundColor);
-                model.borderWidth = custom.borderWidth ? custom.borderWidth : valueAtIndexOrDefault(dataset.borderWidth, index, arcOpts.borderWidth);
-                model.borderColor = custom.borderColor ? custom.borderColor : valueAtIndexOrDefault(dataset.borderColor, index, arcOpts.borderColor);
-
-                // Set correct angles if not resetting
-                if (!reset || !animationOpts.animateRotate) {
-                    if (index === 0) {
-                        model.startAngle = opts.rotation;
-                    } else {
-                        model.startAngle = _this.getMeta().data[index - 1]._model.endAngle;
-                    }
-
-                    model.endAngle = model.startAngle + model.circumference;
-                }
-
-                arc.pivot();
-            }
-        });
-
-
-        var config = {
-            type: 'doughnutCenterElement',
-            data: {
-                labels: ["Medio","Otros"],
-                datasets: [{
-                    data: [arr[1] , total - arr[1]],
-                    backgroundColor: ['#00b5f7', '#c2ccac'],
-                    hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
-                    borderColor: 'transparent',
-                }],
-            },
-            options: {
-                responsive: false,
-                cutoutPercentage: 95,
-                legend: {
-                    display: false,
-                    labels: {
-                        // This more specific font property overrides the global property
-                        fontColor: 'white',
-                        fontFamily: 'GothamHTF-Book',
-                    }
+                // Desired view properties
+                _model: {
+                    x: centerX + chart.offsetX,
+                    y: centerY + chart.offsetY,
+                    startAngle: startAngle,
+                    endAngle: endAngle,
+                    circumference: circumference,
+                    outerRadius: outerRadius,
+                    innerRadius: innerRadius,
+                    label: valueAtIndexOrDefault(dataset.label, index, chart.data.labels[index])
                 },
-                title: {
-                    display: false
+
+                draw: function () {
+                    var ctx = this._chart.ctx,
+                        vm = this._view,
+                        sA = vm.startAngle,
+                        eA = vm.endAngle,
+                        opts = this._chart.config.options;
+
+
+                    var img = new Image();
+                    img.src = '/img/iconos/icon_male.svg';
+                    ctx.drawImage(img,centerX -10,centerY - 25, 20,50);
+
+                    ctx.beginPath();
+
+                    ctx.arc(vm.x, vm.y, vm.outerRadius, sA, eA);
+                    ctx.arc(vm.x, vm.y, vm.innerRadius, eA, sA, true);
+
+                    ctx.closePath();
+                    ctx.strokeStyle = vm.borderColor;
+                    ctx.lineWidth = vm.borderWidth;
+
+                    ctx.fillStyle = vm.backgroundColor;
+
+                    ctx.fill();
+                    ctx.lineJoin = 'bevel';
+
+                    if (vm.borderWidth) {
+                        ctx.stroke();
+                    }
+
+                }
+            });
+
+            var model = arc._model;
+            model.backgroundColor = custom.backgroundColor ? custom.backgroundColor : valueAtIndexOrDefault(dataset.backgroundColor, index, arcOpts.backgroundColor);
+            model.hoverBackgroundColor = custom.hoverBackgroundColor ? custom.hoverBackgroundColor : valueAtIndexOrDefault(dataset.hoverBackgroundColor, index, arcOpts.hoverBackgroundColor);
+            model.borderWidth = custom.borderWidth ? custom.borderWidth : valueAtIndexOrDefault(dataset.borderWidth, index, arcOpts.borderWidth);
+            model.borderColor = custom.borderColor ? custom.borderColor : valueAtIndexOrDefault(dataset.borderColor, index, arcOpts.borderColor);
+
+            // Set correct angles if not resetting
+            if (!reset || !animationOpts.animateRotate) {
+                if (index === 0) {
+                    model.startAngle = opts.rotation;
+                } else {
+                    model.startAngle = _this.getMeta().data[index - 1]._model.endAngle;
                 }
 
+                model.endAngle = model.startAngle + model.circumference;
             }
-        };
 
-        new Chart(ctx, config);
+            arc.pivot();
+        }
+    });
+
+
+    var config = {
+        type: 'doughnutCenterElement',
+        data: {
+            labels: ["Medio","Otros"],
+            datasets: [{
+                data: [arr[1] , total - arr[1]],
+                backgroundColor: ['#00b5f7', '#c2ccac'],
+                hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
+                borderColor: 'transparent',
+            }],
+        },
+        options: {
+            responsive: false,
+            cutoutPercentage: 95,
+            legend: {
+                display: false,
+                labels: {
+                    // This more specific font property overrides the global property
+                    fontColor: 'white',
+                    fontFamily: 'GothamHTF-Book',
+                }
+            },
+            title: {
+                display: false
+            }
+
+        }
+    };
+
+    new Chart(ctx, config);
 
 
 }
@@ -1245,7 +1302,7 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
 
     }
 
-     new Chart(ctx,config);
+    new Chart(ctx,config);
 
 
 }
@@ -1255,6 +1312,7 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
 
     let canvas = document.getElementById('GraficoDistribucionHombre');
     let ctx = document.getElementById('GraficoDistribucionHombre').getContext('2d');
+
 
     Chart.defaults.doughnutCenterElement = Chart.helpers.clone(Chart.defaults.doughnut);
 
@@ -1353,8 +1411,7 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
 
 
 
-
-   let config =  {
+    let config =  {
         type: 'doughnutCenterElement',
         data: {
             labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
@@ -1401,10 +1458,12 @@ function generarInfoDistribucionEdadMascDOM(dataMasc){
     console.log(dataMasc);
 
     $('.masc-porc').text(`${dataMasc.porcentajeMasc}%`);
-    $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`);
+
+    dataMasc.edadPromedioMasc > 0 ?  $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`)
+        :  $('.masc-age-prom').text(`NA`);
 
     $('.graph-porc .masc-range-porc').each( function(index) {$(this).html(`${dataMasc.porcentajeRangosMasc[index] }%`)
-                                                             $(this).css("color", arrColorMasc[index])});
+        $(this).css("color", arrColorMasc[index])});
 
     $('.graph-porc svg.masc').each( function(index) {$(this).css("color", arrColorMasc[index])});
 
@@ -1416,9 +1475,11 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
     $('.fem-porc').text(`${dataFem.porcentajeFem}%`);
     $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`);
 
+    dataFem.edadPromedioFem > 0 ?  $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`)
+        :  $('.fem-age-prom').text(`NA`);
 
     $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`);
-                                                          $(this).css("color", arrColorFem[index])});
+        $(this).css("color", arrColorFem[index])});
 
     $('.graph-porc svg.fem').each( function(index) {$(this).css("color", arrColorFem[index])});
 
@@ -1426,50 +1487,49 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
 }
 
 
-function setGraficoMasc(data){
+function setGraficosEdadMasc(data){
 
-    const dataMasc = {};
+    let dataMasc ={} , dataGraphMasculino;
     const edadClientesMasc = data.filter(element => element.sexo === 1)
-         .map(({fechaNacimiento}) => getEdad(fechaNacimiento));
-
+        .map(({fechaNacimiento}) => getEdad(fechaNacimiento));
 
     if(edadClientesMasc.length > 0){
         dataMasc.edadPromedioMasc = Math.round((edadClientesMasc.reduce((acc, val) => acc + val)) / edadClientesMasc.length);
         dataMasc.porcentajeMasc = Math.round(edadClientesMasc.length * 100 / cantidadUsuarios);
-
-        const dataGraphMasculino = getAgeRangesValues(edadClientesMasc);
-
+        dataGraphMasculino = getAgeRangesValues(edadClientesMasc);
         dataMasc.porcentajeRangosMasc = dataGraphMasculino.map(e => ((e / edadClientesMasc.length) * 100));
         dataMasc.porcentajeRangosMasc = roundedPercentage(dataMasc.porcentajeRangosMasc , 100);
-        graficoDistribucionEdadMasculino(dataGraphMasculino);
-        generarInfoDistribucionEdadMascDOM(dataMasc);
+
     }else{
-        let dataGraphMasculino = [0,0,0,0,0,0];
-        let dataMasc= {edadPromedioMasc: [0] ,porcentajeRangosMasc : [0] , porcentajeMasc : [0]}
-        graficoDistribucionEdadMasculino(dataGraphMasculino);
-        generarInfoDistribucionEdadMascDOM(dataMasc);
+        dataGraphMasculino = [0,0,0,0,0,0];
+        dataMasc= {edadPromedioMasc: [0] ,porcentajeRangosMasc : [0,0,0,0,0,0] , porcentajeMasc : [0]}
     }
 
+    graficoDistribucionEdadMasculino(dataGraphMasculino);
+    generarInfoDistribucionEdadMascDOM(dataMasc);
 }
 
 
-function setGraficoFem(data){
+function setGraficosEdadFem(data){
 
-    const dataFem = {};
+    let dataFem ={},dataGraphFemenino;
     //Femenino
     const edadClientesFem = data.filter(element => element.sexo === 2)
         .map(({fechaNacimiento})=> getEdad(fechaNacimiento)  );
 
+    if(edadClientesFem.length > 0) {
 
-    dataFem.porcentajeFem = Math.round(edadClientesFem.length * 100 / cantidadUsuarios );
-    dataFem.edadPromedioFem =Math.round((edadClientesFem.reduce((acc,val) => acc +val))/edadClientesFem.length);
+        dataFem.porcentajeFem = Math.round(edadClientesFem.length * 100 / cantidadUsuarios);
+        dataFem.edadPromedioFem = Math.round((edadClientesFem.reduce((acc, val) => acc + val)) / edadClientesFem.length);
 
-    const dataGraphFemenino =  (getAgeRangesValues(edadClientesFem));
+        dataGraphFemenino = (getAgeRangesValues(edadClientesFem));
 
-    dataFem.porcentajeRangosFem = dataGraphFemenino.map( e => Math.round((e/edadClientesFem.length)*100));
+        dataFem.porcentajeRangosFem = dataGraphFemenino.map(e => Math.round((e / edadClientesFem.length) * 100));
 
-    console.log(dataFem);
-
+    }else{
+        dataGraphFemenino = [0,0,0,0,0,0];
+        dataFem= {edadPromedioFem: [0] ,porcentajeRangosFem : [0,0,0,0,0,0] , porcentajeFem : [0]}
+    }
     graficoDistribucionEdadFemenino(dataGraphFemenino);
     generarInfoDistribucionEdadFemDOM(dataFem);
 }
@@ -1477,7 +1537,7 @@ function setGraficoFem(data){
 
 function setDataCanalDistrSexo(data, graphGeneralData){
     const canalVentaFem = data.filter(element => element.sexo === 2)
-                              .map(({tipoCanalVentaId})=> tipoCanalVentaId);
+        .map(({tipoCanalVentaId})=> tipoCanalVentaId);
     const canalVentaMasc = data.filter(element => element.sexo === 1)
         .map(({tipoCanalVentaId})=> tipoCanalVentaId);
 
@@ -1490,12 +1550,12 @@ function setDataCanalDistrSexo(data, graphGeneralData){
     for( let i = 0 ; i <graphGeneralData.length; i++){
 
         if(graphGeneralData[i]> 0){
-         let porcValorMasc = ( datosMasc[i] * 100 ) / graphGeneralData[i];
-         let porcValorFem = ( datosFem[i] * 100 ) / graphGeneralData[i];
-         let porcentajeDistrSexo = [porcValorMasc, porcValorFem];
-         porcentajeDistrSexo = roundedPercentage(porcentajeDistrSexo, 100);
-         porcentajeMasc.push(porcentajeDistrSexo[0]);
-         porcentajeFem.push(porcentajeDistrSexo[1]);
+            let porcValorMasc = ( datosMasc[i] * 100 ) / graphGeneralData[i];
+            let porcValorFem = ( datosFem[i] * 100 ) / graphGeneralData[i];
+            let porcentajeDistrSexo = [porcValorMasc, porcValorFem];
+            porcentajeDistrSexo = roundedPercentage(porcentajeDistrSexo, 100);
+            porcentajeMasc.push(porcentajeDistrSexo[0]);
+            porcentajeFem.push(porcentajeDistrSexo[1]);
         }else{
             porcentajeMasc.push(0);
             porcentajeFem.push(0);
@@ -1520,7 +1580,7 @@ function graficoCanalesUsados(dataCanales){
                 data: dataCanales,
                 backgroundColor: "#ff8402"
             }
-          ]
+        ]
     };
 
     const myBarChartHoriz = new Chart(ctx, {
@@ -1541,10 +1601,10 @@ function graficoCanalesUsados(dataCanales){
                 yAxes: [{
                     barThickness : 15,
                     ticks:{
-                      callback: function(value,index){return porcentajes[index]+ " %"},
-                      fontSize: 13,
-                      fontColor: "#ff8402",
-                      fontFamily: "GothamHTF-Book"
+                        callback: function(value,index){return porcentajes[index]+ " %"},
+                        fontSize: 13,
+                        fontColor: "#ff8402",
+                        fontFamily: "GothamHTF-Book"
                     },
                     gridLines: {
                         display:false,
@@ -2152,8 +2212,8 @@ function generarNombreCanalesDOM(){
     const dvCanal = $('.nombre-canal');
 
     canalesVenta.map( function(element) {
-        let nombreCanal  = htmlStringToElement(`<p>${element}</p>`)  ;
-        dvCanal.append(nombreCanal);
+            let nombreCanal  = htmlStringToElement(`<p>${element}</p>`)  ;
+            dvCanal.append(nombreCanal);
 
         }
     );
@@ -2165,8 +2225,8 @@ function generarNombreServiciosDOM(){
     const dvServicio = $('.nombre-servicio');
 
     serviciosTipos.map( function(element) {
-        let nombreServicio  = htmlStringToElement(`<p>${element}</p>`)  ;
-        dvServicio.append(nombreServicio);
+            let nombreServicio  = htmlStringToElement(`<p>${element}</p>`)  ;
+            dvServicio.append(nombreServicio);
 
         }
     );
@@ -2181,7 +2241,7 @@ function generarPorcentajeSexoCanalDOM(arr, index){
 
     arr.map( function(element) {
             let porcCanal  = htmlStringToElement(`<p class="text-left">${element} %</p>`)  ;
-           dvPorcCanalxSexo.append(porcCanal);
+            dvPorcCanalxSexo.append(porcCanal);
 
         }
     );
@@ -2196,7 +2256,7 @@ function generarPorcentajeTipoServicioSexoDOM(arr, index){
     console.log(dvPorcServicioxSexo);
     arr.map( function(element) {
             let porcServicio  = htmlStringToElement(`<p class="text-left">${element} %</p>`)  ;
-        dvPorcServicioxSexo.append(porcServicio);
+            dvPorcServicioxSexo.append(porcServicio);
 
         }
     );
@@ -2204,21 +2264,24 @@ function generarPorcentajeTipoServicioSexoDOM(arr, index){
 }
 
 function generarPorcentajeCondFisica(arr, sexo){
-    const porcCondFisic =  getPorcentaje(arr);
+
+    let porcCondFisic;
+    porcCondFisic = ( arr.reduce( (a,b) => a+b) === 0) ? arr : getPorcentaje(arr);
+
 
     $(`.dv-cond-fisica .${sexo} .cond-fisica-porc`).each(
-                 function(index){
-                      $(this).html(`${porcCondFisic[index]}%`)
-                 });
+        function(index){
+            $(this).html(`${porcCondFisic[index]}%`)
+        });
 }
 
 function getPorcentaje(arr){
 
- const total = arr.reduce( (a,b) => a+b);
+    const total = arr.reduce( (a,b) => a+b);
 
- const porcArr = arr.map( e =>  (e/total)*100);
+    const porcArr = arr.map( e =>  (e/total)*100);
 
- return roundedPercentage(porcArr,100);
+    return roundedPercentage(porcArr,100);
 
 }
 
@@ -2227,20 +2290,20 @@ function getDataServicioPorTemporada( arr, año){
 
     const values =[];
 
-   values.push(arr.filter(e => e === `01/${año}`).length);
-   values.push(arr.filter(e => e === `02/${año}`).length);
-   values.push(arr.filter(e => e === `03/${año}`).length);
-   values.push(arr.filter(e => e === `04/${año}`).length);
-   values.push(arr.filter(e => e === `05/${año}`).length);
-   values.push(arr.filter(e => e === `06/${año}`).length);
-   values.push(arr.filter(e => e === `07/${año}`).length);
-   values.push(arr.filter(e => e === `08/${año}`).length);
-   values.push(arr.filter(e => e === `09/${año}`).length);
-   values.push(arr.filter(e => e === `10/${año}`).length);
-   values.push(arr.filter(e => e === `11/${año}`).length);
-   values.push(arr.filter(e => e === `12/${año}`).length);
+    values.push(arr.filter(e => e === `01/${año}`).length);
+    values.push(arr.filter(e => e === `02/${año}`).length);
+    values.push(arr.filter(e => e === `03/${año}`).length);
+    values.push(arr.filter(e => e === `04/${año}`).length);
+    values.push(arr.filter(e => e === `05/${año}`).length);
+    values.push(arr.filter(e => e === `06/${año}`).length);
+    values.push(arr.filter(e => e === `07/${año}`).length);
+    values.push(arr.filter(e => e === `08/${año}`).length);
+    values.push(arr.filter(e => e === `09/${año}`).length);
+    values.push(arr.filter(e => e === `10/${año}`).length);
+    values.push(arr.filter(e => e === `11/${año}`).length);
+    values.push(arr.filter(e => e === `12/${año}`).length);
 
-   return values;
+    return values;
 }
 
 function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
@@ -2268,13 +2331,13 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
             barValueSpacing: 20,
             scales: {
                 yAxes: [{
-                      display: false
+                    display: false
                 }],
                 xAxes: [{
-                   gridLines: {
-                       display:false,
-                       drawBorder: false
-                   }
+                    gridLines: {
+                        display:false,
+                        drawBorder: false
+                    }
                 }]
             },
             hover:{
@@ -2438,31 +2501,35 @@ function graficoBarraVentaServiciosTemporada(dataFem,dataMasc){
 function generarSelectYearFilter(arr){
 
     $.each(arr, function(val, text) {
-        $('#graphYearFilter').append( $('<option></option>').val(text).html(text) )
+        let option = document.createElement('option');
+        option.value = text;
+        option.textContent = text;
+
+        selectElemYear.appendChild(option);
     });
 }
 
 function roundedPercentage( l , target){
-     let off = target - _.reduce(l, function(acc, x) { return acc + Math.round(x) }, 0);
-     return _.chain(l).
-     sortBy(function(x) { return Math.round(x) - x }).
-     map(function(x, i) { return Math.round(x) + (off > i) - (i >= (l.length + off)) }).
-      value();
-    }
+    let off = target - _.reduce(l, function(acc, x) { return acc + Math.round(x) }, 0);
+    return _.chain(l).
+    sortBy(function(x) { return Math.round(x) - x }).
+    map(function(x, i) { return Math.round(x) + (off > i) - (i >= (l.length + off)) }).
+    value();
+}
 
 function generarPorcentajesDepartamentoDOM(dataGrafico){
 
-  let dataValores= dataGrafico.map( e => e.qty).sort( (a,b) => b-a);
-  const clientesLength =  dataValores.reduce( (a,b) => a+b );
-  let porcentajes = dataValores.map( e => ((e/clientesLength)*100).toFixed(2));
+    let dataValores= dataGrafico.map( e => e.qty).sort( (a,b) => b-a);
+    const clientesLength =  dataValores.reduce( (a,b) => a+b );
+    let porcentajes = dataValores.map( e => ((e/clientesLength)*100).toFixed(2));
 //  porcentajes = roundedPercentage(porcentajes , 100);
-  const dvDepartamentosPorc = $('.distr-dpto-porcentajes');
-   const porcentajesDOM =  porcentajes.map( function(element) {
-           let porcDepto  = htmlStringToElement(`<p>${element}%</p>`)  ;
-       dvDepartamentosPorc.append(porcDepto);
+    const dvDepartamentosPorc = $('.distr-dpto-porcentajes');
+    const porcentajesDOM =  porcentajes.map( function(element) {
+            let porcDepto  = htmlStringToElement(`<p>${element}%</p>`)  ;
+            dvDepartamentosPorc.append(porcDepto);
 
-       }
-   );
+        }
+    );
 
 }
 

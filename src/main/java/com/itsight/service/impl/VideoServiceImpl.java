@@ -9,6 +9,7 @@ import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.VideoRepository;
 import com.itsight.service.VideoService;
+import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -205,5 +206,34 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
     @Override
     public VideoPOJO obtenerFullById(Integer id) {
         return repository.getVideoById(id);
+    }
+
+
+    @Override
+    public String addClienteServicio(Integer clienteId, Integer videoId) {
+
+        repository.addFavClienteVideo(videoId, clienteId);
+
+        return Enums.ResponseCode.REGISTRO.get();
+    }
+
+    @Override
+    public String deleteClienteServicio(Integer clienteId, Integer videoId) {
+
+        repository.deleteFavClienteVideo(videoId, clienteId);
+
+        return Enums.ResponseCode.ELIMINACION.get();
+
+    }
+
+    @Override
+    public List<Video> findAllActiveByGrupoVideoIdOrderById(Integer grupoVideoId) {
+
+        return repository.findAllActiveByGrupoVideoIdOrderById(grupoVideoId);
+    }
+
+    @Override
+    public List<Video> findAllVideosFavByClienteIdOrderById(Integer clienteId) {
+        return repository.findVideosFavActivosByClienteId(clienteId);
     }
 }

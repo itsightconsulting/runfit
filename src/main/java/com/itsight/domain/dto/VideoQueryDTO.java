@@ -15,6 +15,11 @@ public class VideoQueryDTO implements Serializable {
 
     @Size(max = 30)
     private String nombre;
+
+    @Positive
+    @Max(value = 29999)
+    private Integer grupoVideoId;
+
     @Positive
     @Max(value = 29999)
     private Integer catVideoId;
@@ -29,5 +34,6 @@ public class VideoQueryDTO implements Serializable {
     private Integer limit;
     @PositiveOrZero
     private Integer offset;
+
 
 }

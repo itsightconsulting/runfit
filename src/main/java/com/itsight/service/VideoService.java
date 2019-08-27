@@ -19,4 +19,15 @@ public interface VideoService extends BaseService<Video, Integer> {
     RefUpload registrarConSubida(Video video);
 
     VideoPOJO obtenerFullById(Integer id);
+
+
+    String addClienteServicio(Integer clienteId, Integer videoId);
+
+    String deleteClienteServicio(Integer clienteId, Integer videoId);
+
+
+    List<Video> findAllActiveByGrupoVideoIdOrderById(Integer grupoVideoId);
+
+    List<Video> findAllVideosFavByClienteIdOrderById(Integer grupoVideoId);
+
 }

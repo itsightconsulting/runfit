@@ -4,13 +4,13 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Post;
 import com.itsight.domain.Trainer;
+import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
+import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
-import com.itsight.util.Parseador;
-import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -40,6 +40,11 @@ public class TrainerController extends BaseController{
 
     private SecUserProcedureInvoker secUserProcedureInvoker;
 
+    private ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker;
+
+    private ClienteProcedureInvoker clienteProcedureInvoker;
+
+
     @Autowired
     public TrainerController(TrainerService trainerService,
                              TipoUsuarioService perfilService,
@@ -47,7 +52,9 @@ public class TrainerController extends BaseController{
                              TipoDocumentoService tipoDocumentoService,
                              PostService postService,
                              UbPeruService ubPeruService,
-                             SecUserProcedureInvoker secUserProcedureInvoker) {
+                             SecUserProcedureInvoker secUserProcedureInvoker,
+                             ClienteFitnessProcedureInvoker clienteFitnessProcedureInvoker,
+                             ClienteProcedureInvoker clienteProcedureInvoker) {
         this.trainerService = trainerService;
         this.perfilService = perfilService;
         this.tipoDocumentoService = tipoDocumentoService;
@@ -55,6 +62,8 @@ public class TrainerController extends BaseController{
         this.postService = postService;
         this.ubPeruService = ubPeruService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
+        this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
+        this.clienteProcedureInvoker = clienteProcedureInvoker;
     }
 
     @GetMapping(value = "")
@@ -113,8 +122,38 @@ public class TrainerController extends BaseController{
         return postService.findAllByTrainerId(trainerId);
     }
 
-    @GetMapping(value = "/sher/{id}")
-    public @ResponseBody String listarPostsEntrenador(@PathVariable String id) {
-        return Utilitarios.jsonResponse(Parseador.getEncodeHash32Id("rf-rutina", Integer.parseInt(id)));
+
+    @GetMapping(value = "/distribucion-mercado")
+    public ModelAndView getDistribucionClientesTrainer(Model model){
+
+        Integer perfil = 1; // Es Trainer
+        model.addAttribute("perfilValue" ,perfil);
+
+        return new ModelAndView(ViewConstant.MAIN_DISTRIBUCION_MERCADO_RED);
     }
+
+    @GetMapping(value = "/distribucion-mercado/obtener")
+    public @ResponseBody
+    List<ClienteFitnessPOJO> obtenerInfoCompletaClientes(HttpSession session) {
+
+        Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        List<ClienteFitnessPOJO> fichaClienteFitness = clienteFitnessProcedureInvoker.getDistribucionMercado(trainerId);
+
+        return fichaClienteFitness;
+    }
+
+
+    @GetMapping(value = "/distribucion-departamento/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoClientexTrainer(HttpSession session){
+
+        Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDepartamentoCliente(trainerId);
+
+        return lstDistribucionCliente;
+
+    }
+
+
+
+
 }

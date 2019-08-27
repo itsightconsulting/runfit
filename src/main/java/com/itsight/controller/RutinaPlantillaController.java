@@ -46,6 +46,8 @@ public class RutinaPlantillaController {
 
     private TipoAudioService tipoAudioService;
 
+    private RutinaPlantillaProcedureInvoker rutinaPlantillaProcedureInvoker;
+
     private EntityManager entityManager;
 
 
@@ -57,7 +59,8 @@ public class RutinaPlantillaController {
             CategoriaEjercicioService categoriaEjercicioService,
             TipoAudioService tipoAudioService,
             RutinaService rutinaService,
-            EntityManager entityManager) {
+            EntityManager entityManager,
+            RutinaPlantillaProcedureInvoker rutinaPlantillaProcedureInvoker) {
         this.rutinaPlantillaService = rutinaPlantillaService;
         this.diaPlantillaService = diaPlantillaService;
         this.listaPlantillaSimpleService = listaPlantillaSimpleService;
@@ -65,6 +68,7 @@ public class RutinaPlantillaController {
         this.tipoAudioService = tipoAudioService;
         this.rutinaService = rutinaService;
         this.entityManager = entityManager;
+        this.rutinaPlantillaProcedureInvoker = rutinaPlantillaProcedureInvoker;
     }
 
     @GetMapping(value = "")
@@ -121,43 +125,13 @@ public class RutinaPlantillaController {
     public @ResponseBody
     String nuevo(@RequestBody RutinaPlantillaDTO rutinaPlantilla) {
 
-
-
         //RutinaPlantillaDTO es un arreglo multidimensional que se diferencia del original en la propiedad lista de semanas
         //RutinaPlantillaDTO -> semanas | RutinaPlantilla > lstSemana
         //Esto con el fin de cortar la copia de propiedades mediante BeanUtils en el primer nivel
 
     //   objRp.setTrainer(userId);
         //Instanciando lista de semanas
- /*       List<SemanaPlantilla> semanas = new ArrayList<>();
-        for (SemanaPlantillaDTO semana: rutinaPlantilla.getSemanas()) {
-            SemanaPlantilla semanaPlantilla = new SemanaPlantilla();
-            BeanUtils.copyProperties(semana, semanaPlantilla);
-            semanas.add(semanaPlantilla);
-            //Pasando el objeto de rutina a la semana para al momento de su registro, el ID que se genere(De la RutPlan)
-            //se referencie en el registro de la semana
-            semanaPlantilla.setRutinaPlantilla(objRp);
-            //Insertando dias de la semana a su respectiva lista de dias
-            List<DiaPlantilla> dias = new ArrayList<>();
-            for(DiaPlantillaDTO dia: semana.getDias()){
-                DiaPlantilla objDia = new DiaPlantilla();
-                BeanUtils.copyProperties(dia, objDia);
-                dias.add(objDia);
-                //Pasando el objeto de semana al dia para al momento de su registro, el ID que se genere(De la SemPlan)
-                //se referencie en el registro del día
-                objDia.setSemanaPlantilla(semanaPlantilla);
-            }
-            //Agregando la lista de dias a la semana
-            semanaPlantilla.setLstDiaPlantilla(dias);
-        }
-        //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy
-        objRp.setLstSemana(semanas);
-        objRp.setFlagActivo(true);
-        rutinaPlantillaService.save(objRp);
-        //Guardando en session el id de la nueva rutina plantilla y los ids de las semanas generadas
-        session.setAttribute("rpId", objRp.getId());
-        session.setAttribute("rpSemanaIds", semanas.stream().map(semana-> semana.getId()).toArray(Integer[]::new));
-      */
+
         rutinaPlantillaService.agregarRutinaPrediseñada(rutinaPlantilla);
 
         return ResponseCode.REGISTRO.get();
@@ -173,11 +147,15 @@ public class RutinaPlantillaController {
         return ResponseCode.ACTUALIZACION.get();
     }
 
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @DeleteMapping(value = "/eliminar")
+    public @ResponseBody
+    String eliminar(@RequestParam Integer id) throws JsonProcessingException {
+        rutinaPlantillaProcedureInvoker.eliminarRutinaPlantilla(id);
+        return ResponseCode.ELIMINACION.get();
+    }
 
-
-
-
-    @PostMapping(value = "/lista/agregar")
+  @PostMapping(value = "/lista/agregar")
     public @ResponseBody String obtenerListaNueva(
             @RequestBody ListaPlantilla listaRutinaPlantilla, HttpSession session) throws JsonProcessingException {
         //System.out.println(listaRutinaPlantilla);
@@ -316,8 +294,7 @@ public class RutinaPlantillaController {
     @Transactional
     public @ResponseBody
     String obtenerArbolDia(@RequestParam String fi, @RequestParam String ff, @RequestParam String rId, HttpSession session) throws JsonProcessingException {
-        List<DiaPlantilla> dias = diaPlantillaService.obtenerTodosConJerarquia(7);
-
+        List<DiaPlantilla> dias = diaPlantillaService.obtenerTodosConJerarquia(Integer.parseInt(rId));
         Integer rutinaId = Integer.parseInt(rId);
 
         if(dias.isEmpty()){
@@ -326,19 +303,18 @@ public class RutinaPlantillaController {
 
         BagForest forest = reconstructForestDia(dias, 3);
         List<RutinaPlantilla> lstRutinaPlantilla = forest.getTreesRp();
+
         RutinaPlantilla rPlantilla = new RutinaPlantilla();
         rPlantilla = lstRutinaPlantilla.get(0);
-
+//
         Integer redFitId = (Integer) session.getAttribute("plantillaRutRedFitId");
         Integer clienteId = (Integer) session.getAttribute("plantillaRutRunnerId");
         Integer tipoRutina = Integer.parseInt(session.getAttribute("plantillaRutTipo").toString());
-
 
         rutinaPlantillaService.agregarRutinadesdePlantilla(rPlantilla,fi,ff,redFitId,clienteId, tipoRutina);
 
         return "1";
     }
-
 
     private BagForest reconstructForestDia(List<DiaPlantilla> leaves, int forestId) {
         EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(new EntityVisitor[]{

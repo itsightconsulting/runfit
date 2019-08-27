@@ -78,4 +78,6 @@ public interface RutinaRepository extends JpaRepository<Rutina, Integer> {
 
     @Query(value = "select semana_ids[?2] from rutina where rutina_id=?1", nativeQuery = true)
     Integer findSemanaIdByIndex(Integer rutinaId, int semanaIx);
+
+
 }

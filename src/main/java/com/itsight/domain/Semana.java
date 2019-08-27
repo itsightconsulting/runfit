@@ -66,7 +66,6 @@ public class Semana {
     @JoinColumn(name = "RutinaId")
     private Rutina rutina;
 
-
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "semana", cascade = CascadeType.ALL)
     private List<Dia> lstDia;

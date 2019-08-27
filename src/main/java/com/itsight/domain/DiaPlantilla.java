@@ -98,6 +98,12 @@ public class DiaPlantilla implements Identifiable {
     @Column
     private double calorias;
 
+    @Column
+    private int esfuerzoSemanal;
+
+    @Column
+    private int avanceSemanal;
+
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private List<Elemento> elementos;

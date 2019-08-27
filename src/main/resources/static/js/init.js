@@ -162,11 +162,11 @@ function owlCarouselVideoteca() {
 
 }
 
-/*function fancybox() {
+function fancybox() {
     $(document).ready(function() {
         $("[data-fancybox]").fancybox();
     });
-}*/
+}
 
 function heightCard() {
     var ancho = window.innerWidth;
@@ -205,9 +205,9 @@ $(function() {
     openNav();
     owlCarouselSemanal();
     owlCarouselVideoteca();
-    //heightCard();
+    heightCard();
     miniPanelActive();
-    //fancybox();
+    fancybox();
     select_fave();
     $('[rel="tooltip"]').tooltip()
     try{
