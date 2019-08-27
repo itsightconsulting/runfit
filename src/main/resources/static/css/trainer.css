@@ -1360,3 +1360,41 @@ section#info .btn-circle {
 .div-fichas{
     cursor: pointer;
 }
+
+@media only screen and (max-width: 760px) {
+    .nav-pills, .logoBlack {
+        display: none;
+    }
+    .container-t {
+        padding: 0 20px;
+    }
+    h2.title_carousel {
+        font-size: 16px;
+    }
+    .btn-circle {
+        right: 22px !important;
+        font-size: 10px !important;
+        padding: 9px 12px !important;
+        position: absolute !important;
+        top: 50px !important;
+    }
+    .chk-content {
+        font-size: 12px;
+        padding-left: 25px;
+    }
+    .chk-content .checkmark {
+        height: 18px;
+        width: 18px;
+    }
+    .checks li {
+        display: inline-block;
+        margin-right: 0px;
+    }
+    .chk-content .checkmark::after {
+        content: "";
+        left: 6px;
+        top: 2px;
+        width: 6px;
+        height: 10px;
+    }
+}

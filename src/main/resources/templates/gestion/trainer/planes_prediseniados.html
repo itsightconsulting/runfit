@@ -23,7 +23,7 @@
     .title-categoria
     {
         word-wrap: break-word;
-        width: 200px;
+        width: 100%;
         /* text-align: center; */
         margin: auto;
         /* height: 100px; */
@@ -481,45 +481,47 @@
     }
 
     function obtenerCategoriasPlantillas(dataCategorias){
+        if(dataCategorias.length > 0) {
 
-        dataCategorias = dataCategorias.sort( function(a,b){
-            if (a.favorito > b.favorito) return -1;
-            if (a.favorito < b.favorito) return 1;
-            if (a.id < b.id) return -1;
-            if (a.id > b.id) return 1;
-            return 0;
-        });
 
-        let itemsCategoria = "";
-        dataCategorias.forEach(function(element) {
-        let claseCategoria = "title-categoria";
-        let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
-            (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
-        claseCategoria += " "+ tamanio;
-         if(element.favorito){
+            dataCategorias = dataCategorias.sort(function (a, b) {
+                if (a.favorito > b.favorito) return -1;
+                if (a.favorito < b.favorito) return 1;
+                if (a.id < b.id) return -1;
+                if (a.id > b.id) return 1;
+                return 0;
+            });
 
-            favoritos.push(element.id);
-             itemsCategoria += `
+            let itemsCategoria = "";
+            dataCategorias.forEach(function (element) {
+                let claseCategoria = "title-categoria";
+                let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2 ? "lg" :
+                    (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4 ? "md" : "sm");
+                claseCategoria += " " + tamanio;
+                if (element.favorito) {
+
+                    favoritos.push(element.id);
+                    itemsCategoria += `
               <div class="item" >
                 <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
               </div>
               `;
-         }else{
-             itemsCategoria += `
+                } else {
+                    itemsCategoria += `
              <div class="item" >
                 <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
              </div>
            `;
 
-         }
-        });
-        $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
-        $('.owl-item').css('width','229.8px');
-        $('.owl-item').css('margin-right','10px');
-         imgtoSvgEvent();
-
+                }
+            });
+            $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
+            $('.owl-item').css('width', '229.8px');
+            $('.owl-item').css('margin-right', '10px');
+            imgtoSvgEvent();
+        }
     }
 
 
