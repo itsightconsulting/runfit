@@ -688,53 +688,54 @@ a.star:hover .svg, a.star.selected .svg {
     left: -23px;
     border: none !important; }
 
-#tblRegistros {
+.table-trainer {
     color: #a9a7ab;
     margin-top: 30px;
     border-color: #525056; }
-#tblRegistros thead th {
+.table-trainer thead th {
     padding: 5px 10px !important;
     color: #fff; }
-#tblRegistros thead th .svg {
+.table-trainer thead th .svg {
     width: auto;
     height: 26px;
     fill: #fff; }
-#tblRegistros thead th .svg .st4 {
+.table-trainer thead th .svg .st4 {
     stroke: #fff; }
-#tblRegistros thead th .th-inner {
+.table-trainer thead th .th-inner {
     font-family: Montserrat-Medium;
-    font-size: 14px; }
-#tblRegistros tbody tr {
+    font-size: 14px;
+    font-weight: 100;}
+.table-trainer tbody tr {
     background-color: transparent;
     position: relative; }
-#tblRegistros tbody tr td {
+.table-trainer tbody tr td {
     font-family: GothamHTF-Bold;
     text-transform: uppercase;
     font-size: 12px;
     padding: 20px 5px;
     position: relative; }
-#tblRegistros tbody tr td svg {
+.table-trainer tbody tr td svg {
     fill: #daffc6 !important;
     max-height: 25px;
     cursor: pointer; }
-#tblRegistros tbody tr td a {
+.table-trainer tbody tr td a {
     font-family: GothamHTF-Bold;
     font-size: 12px;
     color: #9d9d9d; }
-#tblRegistros tbody tr td span {
+.table-trainer tbody tr td span {
     font-family: GothamHTF-Bold;
     text-transform: uppercase;
     font-size: 12px;
     color: #a9a7ab;
     font-weight: normal; }
-#tblRegistros tbody tr td.trash {
+.table-trainer tbody tr td.trash {
     cursor: pointer;
     padding-left: 0;
     padding-right: 0; }
 
-.table#tblRegistros.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th,
-.table#tblRegistros.table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th,
-.table#tblRegistros.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+.table.table-trainer.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th,
+.table.table-trainer.table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th,
+.table.table-trainer.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
     border: 1px solid #525056; }
 
 #planesCarousel, #planElegido {
@@ -1110,14 +1111,14 @@ section#suspendidos span:before {
     margin-right: 5px;
 }
 
-span:before {
+/*span:before {
     content: "";
     display: inline-block;
     width: 15px;
     height: 15px;
     border-radius: 50%;
     margin-right: 5px;
-}
+}*/
 .one:before {
     background: #a8fa00;
 }
@@ -1576,4 +1577,75 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
 .rut-dots .btn .svg {
     width: 20px;
     height: 20px; }
+
+#tblResumen {
+    margin: 0;
+    max-width: 100%;
+    overflow: auto;
+}
+#tblResumen thead th {
+    padding: 10px !important;
+    min-width: 105px;
+}
+#tblResumen thead th .btn {
+    background-color: #201e23;
+    width: 100%;
+    border-radius: 10px;
+    color: #fff;
+    font-family: GothamHTF-Bold;
+}
+#tblResumen thead th .btn.active {
+    background-color: #a8fa00;
+    color:#201e23;
+}
+.type-table {
+    margin-top: 60px;
+}
+.type-table li {
+    display: flex;
+    justify-content: start;
+    padding: 4px 0;
+}
+.type-table li span {
+    font-size: 12px;
+    color: #a8fa00;
+}
+.type-table li span i{
+    display: block;
+    font-style:normal;
+}
+.type-table li .svg {
+    width: 20px;
+    fill: #a8fa00;
+    margin-right: 20px;
+}
+.box-border {
+    border: 1px solid #565a4d;
+    border-radius: 5px;
+    color: #ffffff;
+    font-family: GothamHTF-Book;
+    padding: 20px;
+}
+.box-title {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 18px;
+    padding-right: 70px;
+    font-family: GothamHTF-Bold;
+}
+.tbl-simple {
+    border: 1px solid #525056;
+}
+.tbl-simple .green {
+    color: #a8fa00;
+}
+.tbl-simple>tbody>tr>td, .tbl-simple>tbody>tr>th, .tbl-simple>tfoot>tr>td,
+.tbl-simple>tfoot>tr>th, .tbl-simple>thead>tr>td, .tbl-simple>thead>tr>th {
+    border: 1px solid #525056;
+    vertical-align: middle;
+    padding: 12px;
+}
+.white {
+    color: #fff;
+}
 

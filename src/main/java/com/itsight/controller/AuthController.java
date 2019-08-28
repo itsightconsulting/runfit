@@ -106,9 +106,14 @@ public class AuthController extends BaseController {
         return ViewConstant.RECUPERAR_PASSWORD;
     }
 
-    @GetMapping(value = "/rutina/plataforma")
-    public String plataformaRutina(){
-        return ViewConstant.MAIN_RUTINA_PLATAFORMA;
+    @GetMapping(value = "/rutina/editor")
+    public String editorRutina(){
+        return ViewConstant.MAIN_RUTINA_EDITOR;
+    }
+
+    @GetMapping(value = "/pagos/resumen-anual")
+    public String resumenAnual(){
+        return ViewConstant.MAIN_PAGOS_RESUMEN_ANUAL;
     }
 
     @PostMapping(value = "/p/recuperacion/password/check/username")
