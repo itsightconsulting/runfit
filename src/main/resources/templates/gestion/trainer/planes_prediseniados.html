@@ -8,7 +8,6 @@
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
 </head>
 <style>
-
     .btn-circle {
         float: right!important;
         border-radius: 50%;
@@ -19,12 +18,10 @@
         position: relative;
         right: 220px;
     }
-
     .btn-dark{
         color:#ffffff;
         background-color: #000000;
     }
-
     .title-categoria
     {
         word-wrap: break-word;
@@ -38,27 +35,21 @@
         line-height: 1;
         font-weight: 600;
     }
-
     .title-categoria.sm
     {
         font-size: 18px;
     }
-
     .title-categoria.md
     {
         font-size: 28px;
     }
-
     .title-categoria.lg
     {
         font-size: 48px;
     }
-
     .owl-dots {
         max-width: 45%;
     }
-
-
 </style>
 <body style="background-color: #fff;">
 <div id="wrapper">
@@ -103,11 +94,11 @@
                     <div class="modal-footer">
                         <button class="btn btn-md" onclick="agregarCategoria()">AGREGAR CATEGORIA</button>
                     </div>
-         </div>
-        </section>
+                </div>
+            </section>
 
-     </div>
-</div>
+        </div>
+    </div>
 
     <div class="modal fade" id="modalEditarCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -224,42 +215,42 @@
 
     <header>
         <ul class="nav nav-pills">
-            <li class="col-md-3 icons"><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
-            <li class="active col-md-1"><a href="#">listado</a></li>
-            <li class="col-md-2"><a href="#">g. videos</a></li>
-            <li class="col-md-2"><a href="#">rutinario</a></li>
-            <li class="col-md-2"><a href="#">g. audios</a></li>
-            <li class="col-md-2"><a href="#">planes prediseñados</a></li>
+            <li class="icons"><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a><a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
+            <li class="active"><a href="#">listado</a></li>
+            <li><a href="#">g. videos</a></li>
+            <li><a href="#">rutinario</a></li>
+            <li><a href="#">g. audios</a></li>
+            <li><a href="#">planes prediseñados</a></li>
         </ul>
     </header>
 
     <section id="listaCategoria">
-      <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
-        <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
+        <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
+            <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
 
-        <a data-toggle="modal" data-target="#modalNuevaCategoria" type="button" class="btn btn-circle btn-lg"  title="Registrar">
-          <div>
-                     <i class="fa fa-plus fa-2x"></i>
-          </div>
+            <a data-toggle="modal" data-target="#modalNuevaCategoria" type="button" class="btn btn-circle btn-lg"  title="Registrar">
+                <div>
+                    <i class="fa fa-plus fa-2x"></i>
+                </div>
 
-        </a>
+            </a>
 
-        <ul class="checks text-center">
-            <li>
-                <label class="chk-content">PLANTILLA ESTÁNDAR
-                    <input type="checkbox" class="radio" name="cbSeleccionTipo" value="2"><span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="chk-content">PLANTILLA RUNNING
-                    <input type="checkbox" class="radio" name="cbSeleccionTipo" value="1"><span class="checkmark"></span>
-                </label>
-            </li>
-        </ul>
-        <div class="owl-carousel owl-theme" id="planesCarousel">
+            <ul class="checks text-center">
+                <li>
+                    <label class="chk-content">PLANTILLA ESTÁNDAR
+                        <input type="checkbox" class="radio" name="cbSeleccionTipo" value="2"><span class="checkmark"></span>
+                    </label>
+                </li>
+                <li>
+                    <label class="chk-content">PLANTILLA RUNNING
+                        <input type="checkbox" class="radio" name="cbSeleccionTipo" value="1"><span class="checkmark"></span>
+                    </label>
+                </li>
+            </ul>
+            <div class="owl-carousel owl-theme" id="planesCarousel">
+            </div>
+
         </div>
-
-    </div>
     </section>
 
     <div class="shadow-gris">
@@ -294,7 +285,7 @@
             <div class="clearfix"></div>
             <h1 class="title_big">15<span>km - </span><i>intermedios</i></h1>
             <ul class="list-plan">
-          </ul>
+            </ul>
             <div class="clearfix"></div>
         </div>
     </section>
@@ -306,7 +297,6 @@
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 
 <script th:inline="javascript">
-
     const body = document.getElementsByTagName("body")[0];
     const owl = $('.owl-carousel');
     const cbox = $('input[type="radio"][name="cbNuevaCategoria"]');
@@ -322,17 +312,13 @@
     const btnNuevaRutina = document.getElementById("btnNuevaRutina");
     const ulListRutina = $('.list-plan');
     const anchorItemBody = $('.item-body a');
-
     const inpSearchRutina = document.getElementById('inpSearch');
     let currentRutinasData;
     const favoritos = [];
-
     let dataCategorias;
-
     $(function(){
         onInit();
     })
-
     function onInit(){
         checkBoxTipoChangeEvent();
         checkBoxasRadioButtons();
@@ -344,55 +330,39 @@
         constraintsValidation();
         scrollEvent();
     }
-
     function seleccionCategoriaEvent(e){
-
-      //  debugger
-            const input = e.currentTarget;
-
-            let categoriaId;
-            let catNombre;
-
-            inpSearchRutina.value = '';
-            categoriaId = input.getAttribute('data-categoria-id');
-            catNombre = input.getAttribute('data-nombre');
-
-            $('section#info .title_big').text(catNombre);
-            btnNuevaRutina.setAttribute('data-categoria-id' , categoriaId);
-            obtenerRutinas(categoriaId);
-
-
-            $("section#info").slideDown(200);
-            $( 'html, body' ).stop().animate({
-                scrollTop: $("section#info").offset().top
-            });
-            return false;
-
+        //  debugger
+        const input = e.currentTarget;
+        let categoriaId;
+        let catNombre;
+        inpSearchRutina.value = '';
+        categoriaId = input.getAttribute('data-categoria-id');
+        catNombre = input.getAttribute('data-nombre');
+        $('section#info .title_big').text(catNombre);
+        btnNuevaRutina.setAttribute('data-categoria-id' , categoriaId);
+        obtenerRutinas(categoriaId);
+        $("section#info").slideDown(200);
+        $( 'html, body' ).stop().animate({
+            scrollTop: $("section#info").offset().top
+        });
+        return false;
     }
-
     function scrollEvent(){
-
         $(".scroll").click(function() {
-          ocultarSeccionRutinas();
-          return false;
-    });
+            ocultarSeccionRutinas();
+            return false;
+        });
     }
-
     function ocultarSeccionRutinas(){
-
         $("section#info").slideUp(200);
         $('html, body').animate({
             scrollTop: 0
         }, 800);
     }
-
     function agregarCategoria() {
-
-
         if ($('#nueva_categoria_frm').valid()) {
             const nombre = $('#nombreCategoria').val()
             const tipoRutina = $('input[type="radio"][name="cbNuevaCategoria"]:checked').val();
-
             $.ajax({
                 type: 'POST',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -404,29 +374,19 @@
                 },
                 dataType: 'json',
                 success: (data) => {
-
-
                 },
                 error: (d) => {
-
                 },
                 complete: (d) => {
                     $(mdlAgregarCat).modal('hide');
                     obtenerCategorias();
                 }
-
-
             })
-
         }
-
     }
-
     function obtenerCategorias(){
-
-   //     const nombre = $('#nombreCategoria').val()
-   //     const tipoRutina = $('input[type="checkbox"][name="cbSeleccionTipo"]:checked').val();
-
+        //     const nombre = $('#nombreCategoria').val()
+        //     const tipoRutina = $('input[type="checkbox"][name="cbSeleccionTipo"]:checked').val();
         $.ajax({
             type: 'GET',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -437,24 +397,16 @@
                 obtenerCategoriasPlantillas(dataCategorias);
             } ,
             error: (d) =>{
-
             },
             complete: (d) =>{
-
-
             }
         })
-
     }
-
     function actualizarCategoriaPlantilla() {
-
         if ($('#editar_categoria_frm').valid()) {
-
             const nombre = $('#nombreCategoriaEdit').val()
             const tipoRutina = $('input[type="radio"][name="cbEditarCategoria"]:checked').val();
             const categoriaId = Number(btnEditarCat.getAttribute("data-categoria-id"));
-
             $.ajax({
                 type: 'PUT',
                 url: _ctx + "gestion/categoria-plantilla/actualizar",
@@ -470,87 +422,67 @@
                     obtenerCategorias();
                     $(mdlEditarCat).modal('hide');
                 }
-
             })
         }
     }
-
     function obtenerCategoriasPlantillas(data){
-
         if(data.length > 0) {
             data = data.sort(function (a, b) {
-               if (a.favorito > b.favorito) return -1;
-               if (a.favorito < b.favorito) return 1;
-               if (a.id < b.id) return -1;
-               if (a.id > b.id) return 1;
-               return 0;
-           });
-
-
-       let itemsCategoria = "";
+                if (a.favorito > b.favorito) return -1;
+                if (a.favorito < b.favorito) return 1;
+                if (a.id < b.id) return -1;
+                if (a.id > b.id) return 1;
+                return 0;
+            });
+            let itemsCategoria = "";
             data.forEach(function(element) {
-        let claseCategoria = "title-categoria";
-        let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
-            (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
-        claseCategoria += " "+ tamanio;
-         if(element.favorito){
-
-            favoritos.push(element.id);
-             itemsCategoria += `
+                let claseCategoria = "title-categoria";
+                let tamanio = element.nombre.length <= 5 && 1 <= (element.nombre).split("").length <= 2  ? "lg" :
+                    (element.nombre.length < 18 && 1 <= (element.nombre).split("").length <= 4  ?  "md" : "sm");
+                claseCategoria += " "+ tamanio;
+                if(element.favorito){
+                    favoritos.push(element.id);
+                    itemsCategoria += `
               <div class="item" >
                 <div class="item-header"><a class="star selected" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#"  data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"  ></a><div class="${claseCategoria}"> <p> ${element.nombre} </> </div> </div>
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
               </div>
               `;
-         }else{
-             itemsCategoria += `
+                }else{
+                    itemsCategoria += `
              <div class="item" >
                 <div class="item-header"><a class="star" data-categoria-id = "${element.id}"><img class="svg" src="/img/iconos-trainers/icon_star.svg"></a><a data-toggle="modal" class="icon-edit" data-target="#modalEditarCategoria" type="button" href="#" data-categoria-id ="${element.id}"  data-nombre="${element.nombre}" data-tipo ="${element.tipo}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg" ></a><div class="${claseCategoria}"> <p> ${element.nombre} </p> </div> </div>
                 <div class="item-body"><img class="svg" src="/img/iconos-trainers/icon_tablero.svg"><a data-categoria-id ="${element.id}"  data-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</a></div>
              </div>
            `;
-
-         }
-        });
-        $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
-        $('.owl-item').css('width','229.8px');
-        $('.owl-item').css('margin-right','10px');
-         imgtoSvgEvent();
-         visualizarElementosOcultos();
-
-
-     }else{
-
-          let mensajeNoData;
-
-          if(dataCategorias.length === 0){
-               mensajeNoData = htmlStringToElement(`
+                }
+            });
+            $('.owl-carousel').trigger('replace.owl.carousel', itemsCategoria).trigger('refresh.owl.carousel');
+            $('.owl-item').css('width','229.8px');
+            $('.owl-item').css('margin-right','10px');
+            imgtoSvgEvent();
+            visualizarElementosOcultos();
+        }else{
+            let mensajeNoData;
+            if(dataCategorias.length === 0){
+                mensajeNoData = htmlStringToElement(`
                     <p class="mensaje-no-data"> No cuenta con alguna categoría de plantillas de rutinas. Dele click al botón de Agregar para
                        iniciar su colección </p>
             `) ;
-              dvListaCategoria.appendChild(mensajeNoData);
-
-               ocultarElementos(1);
-
-          }else{
-              let mensajeNoData = htmlStringToElement(`
+                dvListaCategoria.appendChild(mensajeNoData);
+                ocultarElementos(1);
+            }else{
+                let mensajeNoData = htmlStringToElement(`
                     <p class="mensaje-no-data"> No cuenta con registros para el tipo de categoría consultado. Dele click al botón de Agregar para
                        iniciar su colección </p>
             `) ;
-              dvListaCategoria.appendChild(mensajeNoData);
-
-
-              ocultarElementos(2);
-
-          }
-
-          owl.css('display' , 'show');
-
+                dvListaCategoria.appendChild(mensajeNoData);
+                ocultarElementos(2);
+            }
+            owl.css('display' , 'show');
         }
-         ocultarSeccionRutinas();
+        ocultarSeccionRutinas();
     }
-
-
     function eliminarCategoria(){
 
         const obj ={id :  Number(btnEliminarCat.getAttribute('data-categoria-id'))};
@@ -575,68 +507,50 @@
                 }
             })
         })
-
         $('.MsgTitle').css('display','flex');
-
     }
-
     function visualizarElementosOcultos(){
-
         $('.slider-container').css('display' , 'block');
         $('section#listaCategoria .checks').css('display' , 'block');
         $('.mensaje-no-data').remove();
-
     }
-
     function ocultarElementos(tipo){
-
         const item = document.querySelectorAll('body .item')
-
         switch(tipo) {
-        case 1 :
-               $('section#listaCategoria .checks').css('display' , 'none');
-               $('.slider-container').css('display' , 'none');
-        break;
-
-        case 2 :
-               debugger
-               $('.slider-container').css('display' , 'none');
-               for (let i=0; i<item.length; i++) {
-                owl.trigger('remove.owl.carousel', [i])
-                    .trigger('refresh.owl.carousel');
-               }
-        break;
-        default:
-               null;
-    }
-
-
-    }
-
-    function actualizarFavoritoCategoria(categoriaId) {
-
-            $.ajax({
-                type: 'PUT',
-                url: _ctx + "gestion/categoria-plantilla/actualizar-favorito",
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: {id: categoriaId},
-                dataType: 'json',
-                success: (d) => {
-
-                },
-                error: (e) => {
-
-                },
-                complete: (c) => {
-               //     obtenerCategorias();
-               //     $(mdlEditarCat).modal('hide');
+            case 1 :
+                $('section#listaCategoria .checks').css('display' , 'none');
+                $('.slider-container').css('display' , 'none');
+                break;
+            case 2 :
+                debugger
+                $('.slider-container').css('display' , 'none');
+                for (let i=0; i<item.length; i++) {
+                    owl.trigger('remove.owl.carousel', [i])
+                        .trigger('refresh.owl.carousel');
                 }
-
-            })
+                break;
+            default:
+                null;
+        }
     }
-
+    function actualizarFavoritoCategoria(categoriaId) {
+        $.ajax({
+            type: 'PUT',
+            url: _ctx + "gestion/categoria-plantilla/actualizar-favorito",
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: {id: categoriaId},
+            dataType: 'json',
+            success: (d) => {
+            },
+            error: (e) => {
+            },
+            complete: (c) => {
+                //     obtenerCategorias();
+                //     $(mdlEditarCat).modal('hide');
+            }
+        })
+    }
     function checkBoxasRadioButtons(){
-
         $("input:checkbox").on('click', function() {
             let $box = $(this);
             if ($box.is(":checked")) {
@@ -647,69 +561,48 @@
                 $box.prop("checked", false);
             }
         });
-
     }
-
     function checkBoxTipoChangeEvent() {
-
         $("input:checkbox").on('change', function () {
-
-
             let cbSeleccionado = $(this)[0].value;
-
-           if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
-               obtenerCategoriasPlantillas(dataCategorias);
-           }else {
-
+            if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
+                obtenerCategoriasPlantillas(dataCategorias);
+            }else {
                 console.log(dataCategorias);
-
-               if (dataCategorias.length > 0) {
-
-                 let dataCategoriasTipo = dataCategorias.filter((e) => e.tipo === Number(cbSeleccionado));
-
-                  obtenerCategoriasPlantillas(dataCategoriasTipo);
-
-               }
-           }
+                if (dataCategorias.length > 0) {
+                    let dataCategoriasTipo = dataCategorias.filter((e) => e.tipo === Number(cbSeleccionado));
+                    obtenerCategoriasPlantillas(dataCategoriasTipo);
+                }
+            }
             inpSearchRutina.value = '';
             ocultarSeccionRutinas();
         })
     }
-
-
     function categoriaClickListenerEvent(e){
-
         const input = e.target;
         const parentStarDOM = ($(input).parent().closest('.star'));
         const parentEditDOM = ($(input).parent().closest('.icon-edit'));
-
         const starElement = parentStarDOM[0];
         const editElement = parentEditDOM[0];
-
         if(starElement){
             const starClases = starElement.classList;
             const categoriaId =  Number(starElement.getAttribute('data-categoria-id'));
             actualizarFavoritoCategoria(categoriaId);
             let dataCategoriaIx = dataCategorias.findIndex( e => e.id === categoriaId );
-
             if(starClases.contains('selected')){
-              //  const categoriaId =  Number(starElement.getAttribute('data-categoria-id');
+                //  const categoriaId =  Number(starElement.getAttribute('data-categoria-id');
                 starClases.remove('selected');
                 let index = favoritos.findIndex( e => e === categoriaId);
                 favoritos.splice(index,1);
                 dataCategorias[dataCategoriaIx].favorito =  false;
-
-
             }else{
                 starClases.add('selected');
                 const categoriaId =  starElement.getAttribute('data-categoria-id');
                 !favoritos.includes('categoriaId') ? favoritos.push(Number(categoriaId)) : null;
                 dataCategorias[dataCategoriaIx].favorito =  true;
-
             }
             obtenerCategoriasPlantillas(dataCategorias);
         }
-
         else if(editElement){
             const nombre = editElement.getAttribute("data-nombre");
             const categoriaId = editElement.getAttribute("data-categoria-id");
@@ -722,12 +615,9 @@
             btnEditarCat.setAttribute("data-categoria-id",categoriaId);
             btnEliminarCat.setAttribute("data-categoria-id",categoriaId);
             btnEliminarCat.setAttribute("data-nombre",nombre);
-
         }
     }
-
     function rutinaClickListenerEvent(e){
-
         const input = e.target;
         const parentEditDOM = ($(input).parent().closest('.edit'));
         const parentDeleteDOM = ($(input).parent().closest('.delete'));
@@ -736,9 +626,7 @@
         const txtNombre = mdlEditarRutina.querySelector('#nombreRutinaEdit');
         let id,nombre,semanas;
         let categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
-
         if(editElement) {
-
             console.log(editElement);
             nombre = editElement.getAttribute('data-rutina-nombre');
             id = editElement.getAttribute('data-rutina-id');
@@ -746,42 +634,33 @@
             btnEditarRutina.setAttribute('data-rutina-id',id);
             $(mdlEditarRutina).modal('show');
         }
-
         if(deleteElement){
-
             id = deleteElement.getAttribute('data-rutina-id');
             nombre = deleteElement.getAttribute('data-rutina-nombre');
-
             const obj = {
                 id: id
             }
-
-
             $.SmartMessageBox({
                 title: "<i class='fa fa-2x fa-trash' style='display:flex; align-items: center; margin-right:0.7em;'></i> ¿Está seguro que desea eliminar la rutina "+ nombre + "?",
                 buttons: "[No][Si]"
             }, function(e) {
                 "Si" == e &&
-                 $.ajax({
+                $.ajax({
                     url: _ctx + "gestion/rutina-plantilla/eliminar",
                     type: "DELETE",
                     dataType: 'json',
                     data: obj,
                     success: function(e) {
-                       obtenerRutinas(categoriaId);
+                        obtenerRutinas(categoriaId);
                     },
                     error: function(e) {
-                       console.log(e)
+                        console.log(e)
                     }
                 })
-
             })
-
             $('.MsgTitle').css('display','flex');
-
         }
     }
-
     function searchSvg(path){
         let svg = path;
         while(svg.tagName.toUpperCase() !== "SVG"){
@@ -789,58 +668,50 @@
         }
         return svg;
     }
-
     function agregarRutina(){
-
-    if( $('#nueva_rutina_pred_frm').valid()){
-
-     const nombreRotulo = $('#nombreRutina').val();
-     const semanas = $('#semanasRutina').val();
-     const dias = Number($('#diasRutina').val())*7;
-     const id = btnNuevaRutina.getAttribute('data-categoria-id');
-     const obj = {
-                   nombre : nombreRotulo,
-                   totalSemanas : semanas,
-                   dias : semanas*7,
-                   anios : Math.floor(semanas*7/365),
-                   meses : Math.floor(semanas/4),
-                   categoriaPlantilla : id
+        if( $('#nueva_rutina_pred_frm').valid()){
+            const nombreRotulo = $('#nombreRutina').val();
+            const semanas = $('#semanasRutina').val();
+            const dias = Number($('#diasRutina').val())*7;
+            const id = btnNuevaRutina.getAttribute('data-categoria-id');
+            const obj = {
+                nombre : nombreRotulo,
+                totalSemanas : semanas,
+                dias : semanas*7,
+                anios : Math.floor(semanas*7/365),
+                meses : Math.floor(semanas/4),
+                categoriaPlantilla : id
+            }
+            console.log(obj);
+            $.ajax({
+                type: 'POST',
+                url: _ctx + 'gestion/rutina-plantilla/agregar',
+                dataType:'json',
+                contentType: 'application/json',
+                data : JSON.stringify(obj),
+                success: (s) =>{
+                    obtenerRutinas(id);
+                    $(mdlAgregarRutina).modal('hide');
+                    $("html, body").animate({ scrollTop: $(document).height()}, 1000);
+                    document.getElementById("nueva_rutina_pred_frm").reset();
+                },
+                error: (e) =>{
+                },
+                complete: (c) =>{
                 }
-     console.log(obj);
-
-       $.ajax({
-          type: 'POST',
-          url: _ctx + 'gestion/rutina-plantilla/agregar',
-          dataType:'json',
-          contentType: 'application/json',
-          data : JSON.stringify(obj),
-          success: (s) =>{
-              obtenerRutinas(id);
-              $(mdlAgregarRutina).modal('hide');
-              $("html, body").animate({ scrollTop: $(document).height()}, 1000);
-              document.getElementById("nueva_rutina_pred_frm").reset();
-          },
-          error: (e) =>{
-          },
-          complete: (c) =>{
-                    }
-        });
-     }
+            });
+        }
     }
     function actualizarRutina() {
-
         if ($('#editar_rutina_pred_frm').valid()) {
-
             const nombreRotulo = $('#nombreRutinaEdit').val();
             const id = btnEditarRutina.getAttribute('data-rutina-id');
             const categoriaId = btnNuevaRutina.getAttribute('data-categoria-id');
-
             const obj = {
                 id: id,
                 nombre: nombreRotulo,
                 categoriaPlantilla: categoriaId
             }
-
             $.ajax({
                 type: 'PUT',
                 url: _ctx + 'gestion/rutina-plantilla/actualizar',
@@ -857,23 +728,18 @@
                 }
             });
         }
-
     }
-
     function obtenerRutinas(catId){
-
         $.ajax({
             type: 'GET',
             url: _ctx + 'gestion/rutina-plantilla/listar',
             data: { catId: catId
-              },
+            },
             dataType:'json',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-           success: (data) => {
-
-                  generarRutinasCategoriaDOM(data);
-                  currentRutinasData = data;
-
+            success: (data) => {
+                generarRutinasCategoriaDOM(data);
+                currentRutinasData = data;
             },
             error: (e) =>{
             },
@@ -881,51 +747,42 @@
             }
         });
     }
-
     function generarRutinasCategoriaDOM(dataRutina){
-
-     const ulListadoRutinas = document.getElementsByClassName('list-plan')[0];
-     const mensaje = document.querySelector('section#info .mensaje-no-data');
-     mensaje ? mensaje.parentNode.removeChild(mensaje) : null;
-     ulListadoRutinas.innerHTML ="";
-
-     if(dataRutina.length > 0) {
-
-         dataRutina.forEach( (element) =>{
-             const rutina = htmlStringToElement(`
+        const ulListadoRutinas = document.getElementsByClassName('list-plan')[0];
+        const mensaje = document.querySelector('section#info .mensaje-no-data');
+        mensaje ? mensaje.parentNode.removeChild(mensaje) : null;
+        ulListadoRutinas.innerHTML ="";
+        if(dataRutina.length > 0) {
+            dataRutina.forEach( (element) =>{
+                const rutina = htmlStringToElement(`
                                        <li class="col-md-4">
                                         <img class="plantilla svg" src="/img/iconos-trainers/icon_leyenda.svg"> ${element.nombre.toUpperCase()}
                                         <a class="edit" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_edit.svg"></a>
                                         <a class="delete" data-rutina-id="${element.id}" data-rutina-sem="${element.totalSemanas}" data-rutina-nombre="${element.nombre}"><img class="svg" src="/img/iconos-trainers/icon_trash.svg"></a>
                                        </li>
           `);
-             ulListadoRutinas.appendChild(rutina);
-         })
-         imgtoSvgEvent();
-     }else{
-
-        let buscador = $('#inpSearch').val();
-        let mensaje;
-        if(buscador.length > 0)
-        {
-             mensaje = htmlStringToElement(`
+                ulListadoRutinas.appendChild(rutina);
+            })
+            imgtoSvgEvent();
+        }else{
+            let buscador = $('#inpSearch').val();
+            let mensaje;
+            if(buscador.length > 0)
+            {
+                mensaje = htmlStringToElement(`
                                     <p class="mensaje-no-data"> No se encontró resultados para su búsqueda
                                     </p>
                    `);
-
-        }else{
-             mensaje = htmlStringToElement(`
+            }else{
+                mensaje = htmlStringToElement(`
                                     <p class="mensaje-no-data"> No cuenta con alguna plantilla asociada a esta categoría.
                                        Dele click al botón de Agregar para comenzar a crearla.
                                     </p>
                    `);
+            }
+            dvListaRutinas.appendChild(mensaje);
         }
-
-         dvListaRutinas.appendChild(mensaje);
-     }
-
     }
-
     function constraintsValidation()
     {
         $('#nueva_categoria_frm').validate({
@@ -938,7 +795,6 @@
             messages: {
             }
         });
-
         $('#editar_categoria_frm').validate({
             rules:{
                 nombreCategoriaEdit : {
@@ -949,7 +805,6 @@
             messages: {
             }
         });
-
         $('#nueva_rutina_pred_frm').validate({
             rules:{
                 nombreRutina : {
@@ -962,21 +817,17 @@
                 }
             }
         });
-
         $('#editar_rutina_pred_frm').validate({
             rules:{
                 nombreRutinaEdit :{
-                   required: true,
-                   maxlength : 30
+                    required: true,
+                    maxlength : 30
                 }
             }
         });
     }
-
     function searchRutinaEvent(filterInp){
         if(filterInp.data) {
-
-
             let filterText = $('#inpSearch').val().toUpperCase();
             const filteredData = currentRutinasData.filter( (el,index) => el.nombre.toUpperCase().indexOf(filterText) > -1);
             generarRutinasCategoriaDOM(filteredData);
@@ -984,8 +835,6 @@
             generarRutinasCategoriaDOM(currentRutinasData);
         }
     }
-
 </script>
 </body>
 </html>
-

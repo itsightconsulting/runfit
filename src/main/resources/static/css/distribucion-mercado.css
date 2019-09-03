@@ -46,12 +46,11 @@ header{
  padding-top:20px !important;
 }
 .distribucion-edad{
-    padding-right: 20px;
-    padding-left: 20px;
     border: 1px solid #565a4d;
     border-radius: 5px;
     color: #ffffff;
     font-family: GothamHTF-Book;
+    padding: 20px;
 }
 
 .container {
@@ -80,8 +79,6 @@ p{
 
 .graph{
     text-align: center;
-    padding-top: 30px;
-    padding-bottom: 30px;
 }
 
 .distribucion-edad canvas{
@@ -389,6 +386,10 @@ canvas{
         font-size: 10px;
         margin-left: 6px;
         margin-bottom: 0;
+    }
+    .graph-title{
+        margin-left: 0;
+        margin-right: 0;
     }
     .graph strong {
         font-size: 14px;

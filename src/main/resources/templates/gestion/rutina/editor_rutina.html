@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en-us" style="background-color: #fff;"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+</head>
+<body style="background-color: #fff;">
+<div id="wrapper">
+    <header>
+        <ul class="nav nav-pills">
+            <li class="icons">
+                <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a>
+                <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_enviarmsj.svg}"></a>
+                <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_trash.svg}"></a>
+                <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a>
+                <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
+            <li><a href="#">listado</a></li>
+            <li><a href="#">g. videos</a></li>
+            <li class="active"><a href="#">rutinario</a></li>
+            <li><a href="#">g. audios</a></li>
+            <li><a href="#">planes prediseñados</a></li>
+            <li><a href="#">macro</a></li>
+            <li><a href="#">ficha</a></li>
+        </ul>
+    </header>
+    <div class="editor_text"><img class="logo" th:src="@{/img/logo.png}">
+        <section>
+            <div class="block">
+                <select style="min-width: 170px;">
+                    <option>Calibri</option>
+                </select>
+                <select>
+                    <option>11</option>
+                </select>
+                <button class="btn"><img class="svg textAlign" th:src="@{/img/iconos-trainers/icon_textLeft.svg}"></button>
+                <button class="btn"><img class="svg textAlign" th:src="@{/img/iconos-trainers/icon_textCenter.svg}"></button>
+                <button class="btn"><img class="svg textAlign" th:src="@{/img/iconos-trainers/icon_textRight.svg}"></button>
+            </div>
+            <div class="block">
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+            </div>
+        </section>
+        <section class="green">
+            <div class="block"><span>KMC <i>- 105</i></span><span>KMM <i>- 112.3</i></span><span>KMP<i>- 104.6</i></span></div>
+            <div class="block">
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_editRutina.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_editRutina3.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_editRutina2.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_editRutina4.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_temporada.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_editRutina.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_chat.svg}"></button>
+            </div>
+        </section>
+        <section>
+            <div class="block">
+                <select>
+                    <option>100%</option>
+                </select>
+            </div>
+            <div class="block">
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_zoom-menos.svg}"></button>
+                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_zoom-mas.svg}"></button>
+            </div>
+        </section>
+    </div>
+    <div class="container-t">
+        <h2 class="title_carousel">
+            <button class="btn"><img th:src="@{/img/arrow-left2.png}"></button>semana 3<span>- enero</span>
+            <button class="btn"><img th:src="@{/img/arrow-right2.png}"></button>
+        </h2>
+        <div class="rut-dots">
+            <div class="dot active"></div>
+            <div class="dot prox"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></button>
+        </div>
+    </div>
+    <div class="scroll_rut mCustomScrollbar">
+        <div class="days_week">
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia gr">Lunes<span>15</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <div class="notes">
+                                    <div class="ong"></div>
+                                    <div class="gr"></div>
+                                </div><i><img class="svg" th:src="@{/img/iconos-trainers/icon_videoteca.svg}"></i><i><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></i><i class="glyphicon glyphicon-option-horizontal"></i><a data-toggle="collapse" href="#collapse1">Resistencia aláctica</a>
+                            </div>
+                            <div class="col-xs-3"><a data-toggle="collapse" href="#collapse1"><img class="svg arrow" th:src="@{/img/iconos-trainers/icon_flecha2.svg}"></a></div>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapse1">
+                            <ul>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <div class="notes">
+                                                <div class="ong"></div>
+                                                <div class="gr"></div>
+                                            </div><i><img class="svg" th:src="@{/img/iconos-trainers/icon_videoteca.svg}"></i><i><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></i><span>Calentamiento</span>
+                                        </div>
+                                        <div class="col-xs-4"><span>10'</span></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <div class="notes">
+                                                <div class="ong"></div>
+                                            </div><i><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></i><span>Carrera continua</span>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <input>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><i><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></i><span>1 serie x 20 de recuperación</span>
+                                    <div class="time"><span>Z3</span><span>5'</span></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel-group elem">
+                        <div class="row">
+                            <div class="col-xs-12"><i><img class="svg" th:src="@{/img/iconos-trainers/icon_videoteca.svg}"></i><i><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}"></i><i class="glyphicon glyphicon-option-horizontal"></i><a>Resistencia aláctica</a></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia red">Martes<span>16</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <button class="btn add" type="button"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</button>
+                    </div>
+                </div>
+            </article>
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia ylw">miércoles<span>17</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <button class="btn add" type="button"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</button>
+                    </div>
+                </div>
+            </article>
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia red">jueves<span>18</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <button class="btn add" type="button"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</button>
+                    </div>
+                </div>
+            </article>
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia gr">viernes<span>19</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <button class="btn add" type="button"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</button>
+                    </div>
+                </div>
+            </article>
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia ylw">sábado<span>20</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <button class="btn add" type="button"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</button>
+                    </div>
+                </div>
+            </article>
+            <article class="rf-dia" data-index="3" data-fecha="2019-07-25">
+                <header class="heading-dia" role="heading">
+                    <h2 class="titulo-dia red">domingo<span>21</span></h2>
+                </header>
+                <div class="sub-header" role="heading"><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">0.00</span><span><img class="svg" th:src="@{/img/iconos-trainers/icon_km.svg}">2'48"</span></div>
+                <div class="rt-elem">
+                    <div class="panel-group elem">
+                        <button class="btn add" type="button"><img class="svg" th:src="@{/img/iconos-trainers/icon_add.svg}">Agregar</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<script th:inline="javascript">
+    function rutScroll() {
+        $(".scroll_rut").mCustomScrollbar({
+            theme:"3d",
+            axis:"x",
+            scrollButtons:{ enable: true }
+        });
+    }
+
+    $(function() {
+        rutScroll();
+    });
+</script>
+</body>
+</html>

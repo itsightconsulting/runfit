@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en-us"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Mis clientes</title>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+</head>
+<style>
+    .trash-nb{
+        border-left: 1px solid transparent !important;
+        border-top: 1px solid transparent !important;
+        border-bottom: 1px solid transparent !important;
+    }
+
+    .tooltip-inner {
+        max-width: 250px !important;
+        min-width: 140px !important;
+    }
+
+    .popover{
+        max-width: 400px !important;
+        min-width: 140px !important;
+    }
+</style>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+
+<!-- MAIN PANEL -->
+<div id="main-content" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="wrapper">
+        <header>
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#">listado</a></li>
+                <li><a href="#">g. videos</a></li>
+                <li><a href="#">rutinario</a></li>
+                <li><a href="#">g. audios</a></li>
+                <li><a href="#">planes prediseñados</a></li>
+                <li><a href="#">marco</a></li>
+                <li><a href="#">ficha</a></li>
+            </ul>
+        </header>
+        <div class="container-t">
+            <h2 class="title_carousel white">RESUMEN ANUAL</h2>
+                <section>
+                    <div class="row" id="view_list">
+                        <div class="col-md-2">
+                            <ul class="type-table">
+                                <li>
+                                    <img class="svg" title="Fecha fin de planificación" rel="tooltip" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">
+                                    <span>
+                                        CLIENTE<i>Academia</i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" title="Fecha fin de planificación" rel="tooltip" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">
+                                    <span>
+                                        CLIENTE<i>Plataforma</i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" title="Fecha fin de planificación" rel="tooltip" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">
+                                    <span>
+                                        CLIENTE<i>Mantenimiento</i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" title="Fecha fin de planificación" rel="tooltip" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">
+                                    <span>
+                                        <i>Infoproducto</i>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="mCustomScrollbar">
+                                <table id="tblResumen" data-mobile-responsive="true" class="table table-bordered table-condensed table-trainer">
+                                    <thead>
+                                    <tr>
+                                        <th data-formatter="" data-field="year1" data-halign="center" data-valign="middle"
+                                            data-align="center" data-width="95px"><button class="btn">2016</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year2" data-halign="center" data-valign="middle"
+                                            data-align="center" data-width="95px"><button class="btn active">2017</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year3" data-halign="center" data-valign="middle"
+                                            data-align="center" data-width="95px"><button class="btn">2018</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year4" data-halign="center" data-valign="middle"
+                                            data-width="95px"><button class="btn">2019</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year5" data-halign="center" data-valign="middle"
+                                            data-width="95px"><button class="btn">2020</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year6" data-halign="center" data-valign="middle"
+                                            data-width="95px"><button class="btn">2020</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year7" data-halign="center" data-valign="middle"
+                                            data-width="95px"><button class="btn">2020</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year7" data-halign="center" data-valign="middle"
+                                            data-width="95px"><button class="btn">2020</button>
+                                        </th>
+                                        <th data-formatter="" data-field="year7" data-halign="center" data-valign="middle"
+                                            data-width="95px"><button class="btn">2020</button>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <table class="table table-bordered tbl-simple">
+                                <thead>
+                                <tr>
+                                    <th><p class="box-title">FACTURACIÓN MENSUAL POR SERVICIOS</p></th>
+                                    <th class="text-center green">%</th>
+                                    <th class="text-center green">S/</th>
+                                    <th class="text-center green">$</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="green">programas de performance</td>
+                                    <td>75%</td>
+                                    <td>3000.0</td>
+                                    <td>61.0</td>
+                                </tr>
+                                <tr>
+                                    <td class="green">membresías</td>
+                                    <td>75%</td>
+                                    <td>3000.0</td>
+                                    <td>61.0</td>
+                                </tr>
+                                <tr>
+                                    <td class="green">plan de mantenimiento</td>
+                                    <td>75%</td>
+                                    <td>3000.0</td>
+                                    <td>61.0</td>
+                                </tr>
+                                <tr>
+                                    <td class="green">infoproductos</td>
+                                    <td>75%</td>
+                                    <td>3000.0</td>
+                                    <td>61.0</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="box-border">
+                                <p class="box-title">gráfico mensual por servicios</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-2 text-center">
+                            <h6 class="white">UNIDAD MENSUAL</h6>
+                        </div>
+                        <div class="col-xs-2 text-center">
+                            <h6 class="white">EGRESOS FIJOS</h6>
+                        </div>
+                        <div class="col-xs-2 text-center">
+                            <h6 class="white">EGRESOS VARIABLES</h6>
+                        </div>
+                        <div class="col-xs-2 text-center">
+                            <h6 class="white">P. EQUILIBRIO</h6>
+                        </div>
+                        <div class="col-xs-2 text-center">
+                            <h6 class="white">P. POR FACTURAR</h6>
+                        </div>
+                        <div class="col-xs-2 text-center ">
+                            <h6 class="white">U. M. PROYECTADA</h6>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <h6 class="white">MONTO TOTAL RECAUDADO</h6>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6 class="white">UTILIDAD</h6>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6 class="white">EGRESOS</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <h6 class="white">CLIENTES ACADEMIA</h6>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6 class="white">CLIENTES MEMBRESÍA</h6>
+                        </div>
+                        <div class="col-md-4 text-center ">
+                            <h6 class="white">CLIENTES MANTENIMIENTO</h6>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <h6 class="white">INFOPRODUCTOS</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <table id="tblGastosFijos" data-mobile-responsive="true" class="table table-bordered table-condensed table-trainer">
+                        <thead>
+                        <tr>
+                            <th data-formatter="" data-field="year1" data-halign="center" data-valign="middle"
+                                data-align="center" data-width="95px">Gastos fijos
+                            </th>
+                            <th data-formatter="" data-field="year2" data-halign="center" data-valign="middle"
+                                data-align="center" data-width="95px">Monto mensual
+                            </th>
+                            <th data-formatter="" data-field="year3" data-halign="center" data-valign="middle"
+                                data-align="center" data-width="95px">Total
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <table id="tblGastosVar" data-mobile-responsive="true" class="table table-bordered table-condensed table-trainer">
+                        <thead>
+                        <tr>
+                            <th data-formatter="" data-field="year1" data-halign="center" data-valign="middle"
+                                data-align="center" data-width="95px">Gastos fijos
+                            </th>
+                            <th data-formatter="" data-field="year2" data-halign="center" data-valign="middle"
+                                data-align="center" data-width="95px">Monto mensual
+                            </th>
+                            <th data-formatter="" data-field="year3" data-halign="center" data-valign="middle"
+                                data-align="center" data-width="95px">Total
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </section>
+        </div>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+
+<!-- END MAIN PANEL -->
+<!-- PAGE FOOTER -->
+
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
+<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
+<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/hashids.min.js}+'?'+${version}"></script>
+<script th:src="@{/js/rutina.js}+'?'+${version}"></script>
+
+<script th:inline="javascript">
+    let $table = $('#tblResumen');
+
+
+    $(function () {
+        listarRegistros();
+        rutScroll();
+        $('#tblGastosFijos').bootstrapTable();
+        $('#tblGastosVar').bootstrapTable();
+    });
+
+
+    function listarRegistros() {
+
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                onLoadSuccess: d => {
+                    instanceSvgAndPopovers();
+                },
+                onLoadError: function (xhr) {
+                    exception(xhr);
+                },
+            });
+    }
+
+    function instanceSvgAndPopovers(){
+        $('#tblResumen img.svg').each(function () {
+            var $img = jQuery(this);
+            var imgURL = $img.attr('src');
+            var element = $img[0];
+
+            $.get(imgURL, function (data) {
+                var $svg = $(data).find('svg');
+                $img[0].getAttributeNames().forEach(e=>{
+                    $svg = $svg.attr(e, element.getAttribute(e));
+                })
+                $svg = $svg.removeAttr('xmlns:a');
+                if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+                    $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
+                }
+                $img.replaceWith($svg);
+                if($svg[0].hasAttribute('rel')){
+                    $($svg[0]).tooltip();
+                }
+                if($svg[0].classList.contains('ico-nota')){
+                    $($svg[0]).popover();
+                }
+
+            }, 'xml');
+
+        });
+    }
+    function rutScroll() {
+        $(".mCustomScrollbar").mCustomScrollbar({
+            theme:"rounded-dots",
+            axis:"x",
+            scrollButtons:{ enable: true }
+        });
+    }
+</script>
+
+</body>
+
+</html>
