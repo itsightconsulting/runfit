@@ -371,15 +371,17 @@
     }
 
     function preTemporadaCliente(cliId){
+
+       console.log("entrooo");
         $.ajax({
             type: 'GET',
-            url: _ctx+'gestion/trainer/sher/'+cliId,
+            url: _ctx+'gestion/trainer/consolidado-cliente/obtener?cliId='+cliId,
             blockLoading: true,
-            dataType: 'json',
             success: (r)=>{
-                window.location.href = _ctx + "cliente/rutina/consolidado/ver?key="+r.res;
+                  window.location.href = _ctx + "cliente/rutina/consolidado/ver?key="+r;
             },
-            error: ()=>{
+            error: (x)=>{
+              console.log("uuu",x);
             },
             complete: ()=>{
 
@@ -549,6 +551,7 @@
         $('#RutFechaFinal').val(dateToString(dt));
         modalEventos();
         constraintsValidation();
+        tblRegistros.classList.remove("table-hover"); // quita evento hover de tabla
     }
 
     function modalEventos(){

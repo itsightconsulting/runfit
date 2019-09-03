@@ -11,6 +11,7 @@ import com.itsight.domain.pojo.ClienteFitnessPOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -157,6 +158,16 @@ public class TrainerController extends BaseController{
         return lstDistribucionCliente;
 
     }
+
+
+    @GetMapping(value = "/consolidado-cliente/obtener")
+    public @ResponseBody String getKeyConsolidadoCliente( @RequestParam int  cliId,  HttpSession session){
+
+        String clienteKey = Parseador.getEncodeHash32Id("rf-rutina", cliId);
+
+        return clienteKey;
+    }
+
 
 
 

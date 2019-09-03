@@ -162,11 +162,12 @@ function owlCarouselVideoteca() {
 
 }
 
+/*
 function fancybox() {
     $(document).ready(function() {
         $("[data-fancybox]").fancybox();
     });
-}
+}*/
 
 function heightCard() {
     var ancho = window.innerWidth;
