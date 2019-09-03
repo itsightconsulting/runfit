@@ -58,6 +58,8 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     @Query(value = "SELECT string_agg(distinct t.nom_ubigeo, '|') from trainer t where t.flag_activo=true", nativeQuery = true)
     String getAllDistinctNomUbigeoAsString();
 
+
+
     /*@Query(value = "SELECT NEW Trainer(codigoTrainer, nombres, apellidos, apellidoMaterno) FROM Trainer T WHERE T.tipoUsuario.id = 2")
     List<Trainer> findAllTrainers();
 

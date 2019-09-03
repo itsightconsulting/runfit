@@ -102,10 +102,16 @@ public class TrainerController extends BaseController{
         return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
     }
 
+    @GetMapping(value = "/consejos_legacy")
+    public ModelAndView misConsejosLegacy() {
+        return new ModelAndView(ViewConstant.MAIN_CONSEJOS_TRAINER2);
+    }
+
     @GetMapping(value = "/consejos")
     public ModelAndView misConsejos() {
         return new ModelAndView(ViewConstant.MAIN_CONSEJOS_TRAINER);
     }
+
 
     @GetMapping(value = "/micuenta")
     public ModelAndView miUsuario(Model model) {
@@ -119,9 +125,8 @@ public class TrainerController extends BaseController{
     public @ResponseBody
     List<Post> listarPostsEntrenador(HttpSession session) {
         Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
-        return postService.findAllByTrainerId(trainerId);
+        return postService.findAllActivosByTrainerId(trainerId);
     }
-
 
     @GetMapping(value = "/distribucion-mercado")
     public ModelAndView getDistribucionClientesTrainer(Model model){

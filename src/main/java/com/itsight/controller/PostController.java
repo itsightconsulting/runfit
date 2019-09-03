@@ -1,9 +1,12 @@
 package com.itsight.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Post;
 import com.itsight.domain.dto.PostDTO;
+import com.itsight.domain.dto.RefUpload;
 import com.itsight.service.PostService;
+import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +26,7 @@ import java.util.UUID;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
 import static com.itsight.util.Enums.ResponseCode.EX_GENERIC;
+import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Controller
 @RequestMapping("/gestion/consejo")
@@ -39,7 +43,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/audio", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(@RequestPart MultipartFile multimedia,
                           @RequestParam Integer id,
@@ -52,64 +56,54 @@ public class PostController {
         BeanUtils.copyProperties(postDto, post);
 
         post.setTrainer(trainerId);
+
         if (multimedia != null) {
-            return guardarFile(multimedia, id, post);
+            RefUpload refUpload = postService.guardarAudio(multimedia, id, post);
+
+            return jsonResponse(String.valueOf(refUpload.getId()),
+                    refUpload.getUuid().toString());
         }
         return EX_GENERIC.get();
     }
 
-    private String guardarFile(MultipartFile file, int id, Post post) {
-        if (!file.isEmpty()) {
-            try {
-                int trainerId = post.getTrainer().getId();
-                UUID uuid = UUID.randomUUID();
-                String[] splitNameFile = file.getOriginalFilename().split("\\.");
-                String extension = "." + splitNameFile[splitNameFile.length - 1];
-                String fullPath = mainRoute +"/Multimedia/"+trainerId;
-                String nombrefile = splitNameFile[0];
-                if(id == 0) {
-                    Utilitarios.createDirectory(fullPath);
-                    fullPath += "/" + uuid + extension;
+    @RequestMapping(value = "/upload/aws/{rdmUUID}", method = RequestMethod.POST)
+    public @ResponseBody
+    String subirAudioAws(
+            @RequestPart(value = "audio", required = true) MultipartFile audio,
+            @RequestParam(value = "audioId", required = true) Integer audioId,
+            @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
+        return Utilitarios.jsonResponse(postService.subirAudioAws(audio, audioId, uuid, null));
+    }
 
-                    File nuevoFile = new File(fullPath);
+    @RequestMapping(value = "/upload/text", method = RequestMethod.POST)
+    public @ResponseBody String guardarTexto(@RequestParam Integer id,@RequestParam String titulo,@RequestParam String descripcion,HttpSession session) {
+        int idUser = Integer.parseInt(session.getAttribute("id").toString());
 
-                    // Agregando la ruta a la base de datos
-                    post.setRutaWeb("/" + trainerId + "/" + uuid + extension);
-                    post.setUuid(uuid);
-                    post.setFlagActivo(true);
-                    post.setLstDetalle(new ArrayList<>());
-                    // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
-                    file.transferTo(nuevoFile);
-                    postService.save(post);
-                } else {
-                    Post qPost = postService.findOne(id);
-                    Utilitarios.createDirectory(fullPath);
-                    fullPath += "/" + uuid + extension;
-
-                    File nuevoFile = new File(fullPath);
-
-                    // Agregando la ruta a la base de datos
-                    qPost.setRutaWeb("/" + trainerId + "/" + uuid + extension);
-                    qPost.setTitulo(nombrefile);
-                    qPost.setTipo(post.getTipo());
-                    qPost.setDuracion(post.getDuracion());
-                    qPost.setPeso(post.getPeso());
-
-                    // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
-                    file.transferTo(nuevoFile);
-                    postService.update(qPost);
-                }
-                LOGGER.info("> ROUTE: " + fullPath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (id == 0) {
+            Post post = new Post();
+            post.setTrainer(idUser);
+            post.setTitulo(titulo);
+            post.setDescripcion(descripcion);
+            post.setTipo(Enums.TipoMedia.TEXTO.get());
+            post.setFlagActivo(true);
+            postService.save(post);
         } else {
-            LOGGER.info("> Isn't a file");
+            Post post = postService.findOne(id);
+            post.setTitulo(titulo);
+            post.setDescripcion(descripcion);
+            postService.update(post);
         }
-
         return EXITO_GENERICA.get();
     }
 
+    @RequestMapping(value = "/desactivar", method = RequestMethod.POST)
+    public @ResponseBody String actualizarEstadoConsejo(@RequestParam Integer id,HttpSession session) {
+
+        int idUser = Integer.parseInt(session.getAttribute("id").toString());
+        postService.actualizarEstadoPost(id);
+
+        return EXITO_GENERICA.get();
+    }
 
     @GetMapping("/get/{id}")
     public @ResponseBody ResponseEntity<Post> obtenerPostById(@PathVariable(value = "id") int id){

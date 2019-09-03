@@ -167,6 +167,12 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
         return  repository.findTrainerIdByUsuarioId(id);
     }
 
+
+    @Override
+    public Integer findTrainerIdUltimaRutinaByUsuarioId(Integer id) {
+        return  repository.findTrainerIdUltimaRutinaByUsuarioId(id);
+    }
+
     @Override
     public String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String cuerpo) throws JsonProcessingException {
         Date now = new Date();

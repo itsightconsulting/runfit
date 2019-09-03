@@ -17,10 +17,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
 import static com.itsight.util.Enums.FileExt.JPEG;
+import static org.thymeleaf.util.StringUtils.concat;
 
 public interface BaseService<T, V> {
 
@@ -107,10 +109,17 @@ public interface BaseService<T, V> {
                     file.getInputStream(),
                     metadata).withCannedAcl(CannedAccessControlList.PublicRead);
 
+            /*    List<Tag> tags = new ArrayList<Tag>();
+                tags.add(new Tag("prueba", "Contenido de prueba"));
+                request.setTagging(new ObjectTagging(tags));
+*/
                 Upload upload = tm.upload(request);
                 upload.waitForCompletion();
-                /*S3Object obj = amazonS3.getObject(new GetObjectRequest(credentials.getBucket(),fullPath));
-                System.out.println(obj.getObjectMetadata().getVersionId());*/
+
+            //    S3Object obj = amazonS3.getObject(new GetObjectRequest(credentials.getBucket(), "audio/20/00c5ec14-540c-4c63-a895-d553eeb41c9e.mp4"));
+               // System.out.println(obj.getObjectMetadata().getVersionId());
+
+
                 return true;
             } catch (IllegalStateException e) {
                 logger.warn(e.getMessage());
@@ -125,7 +134,7 @@ public interface BaseService<T, V> {
         return false;
     }
 
-    default boolean uploadMultipleToAws3(MultipartFile[] files, AwsStresPOJO credentials, final Logger logger) {
+    default boolean uploadMultipleToAws3(MultipartFile[] files, AwsStresPOJO credentials,  final Logger logger) {
         AmazonS3 amazonS3 = AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(credentials.getAccessKeyId(), credentials.getSecretKey())))
@@ -186,5 +195,33 @@ public interface BaseService<T, V> {
             }
         }
         return true;
+    }
+
+
+    default boolean addTagStatusToAws3(AwsStresPOJO credentials, boolean estadoActual, final Logger logger){
+
+       try{
+          AmazonS3 amazonS3 = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(credentials.getAccessKeyId(), credentials.getSecretKey())))
+                .withRegion(credentials.getRegion())
+                .build();
+
+           List<Tag> newTags = new ArrayList<Tag>();
+
+           if(estadoActual == true) {
+               newTags.add(new Tag(concat(credentials.getBucket(), "-disabled"), "0"));
+           }
+
+           String objectKey = concat(credentials.getPrefix(),credentials.getUuid(),credentials.getExtension());
+           amazonS3.setObjectTagging(new SetObjectTaggingRequest(credentials.getBucket(), objectKey , new ObjectTagging(newTags)));
+
+           return true;
+       } catch (IllegalStateException e) {
+         logger.warn(e.getMessage());
+       } catch (AmazonClientException e) {
+         logger.warn(e.getMessage());
+       }
+          return false;
     }
 }

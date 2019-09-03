@@ -1,204 +1,390 @@
 <!DOCTYPE html>
-<html lang="en-us"
-      xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#servletContext.getAttribute('version')}">
-<head>
-    <title>Runfit</title>
-    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
-    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
-    <style>
-        .space-right{
-            padding: 2% 3% 0 3%;
-        }
-        .space-left{
-            padding: 8% 3% 0% 3%;
-            text-align: center;
-        }
-        .td-min{
-            font-size: 40px;
-            text-align: center;
-        }
-        .td-min-h{
-            margin-top:2%
-        }
-        .close {
-            color: #f2594a !important;
-            opacity: 2 !important;
-        }
-        .btn-glyphicon { padding:8px; background:#ffffff; margin-right:4px; }
-        .icon-btn { padding: 1px 15px 3px 2px; border-radius:50px;}
-        .abtn-multimedia {
-            margin: 0 4%;
-        }
-        th{
-            text-align: center;
-        }
-        .fa-heart{
-            color: #db4a67;
-        }
-        .disabled{
-            color: #999;
-        }
-    </style>
+<html lang="es-ES">
+  <head>
+    <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
+  </head>
+  <body>
+   <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+   <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 
-    <!-- END CSS FILES -->
-</head>
-<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+   <style>
 
-<!-- HEADER -->
-<div th:replace="html-commons/header :: fg-header"></div>
-<!-- END HEADER -->
+       .btn-dark {
+           color: #fff;
+           background-color: #343a40;
+           border-color: #343a40;
+       }
 
-<!-- Left panel : Navigation area -->
-<!-- Note: This width of the aside area can be adjusted through LESS variables -->
-<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
-<!-- END NAVIGATION -->
+       .col-form-label {
+           padding-top: calc(.375rem + 3px);
+           padding-bottom: calc(.375rem + 3px);
+           margin-bottom: 0;
+           font-size: inherit;
+           line-height: 1.5;
+       }
 
-<!-- MAIN PANEL -->
-<div id="main" role="main">
-    <!-- MAIN CONTENT -->
-    <div id="content">
-        <fieldset>
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="space-right">
-                    <div class="row">
-                        <div class="col-lg-2 col-md-2 col-sm-2 td-min"> <a href="javascript:AgregarMultimedia()"><i class="fa fa-cloud-upload"></i></a></div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 td-min-h">
-                            <a id="btnAudios" data-id="1" class="btn icon-btn btn-warning" href="#">
-                                <span class="glyphicon btn-glyphicon glyphicon-music img-circle text-warning"></span>Audios</a>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 td-min-h">
-                            <a id="btnVideos"  data-id="2" class="btn icon-btn btn-success" href="#">
-                                <span class="glyphicon btn-glyphicon glyphicon-facetime-video img-circle text-success"></span>Vídeos</a></div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 td-min-h">
-                            <a id="btnTextos" data-id="3" class="btn icon-btn btn-danger" href="#">
-                                <span class="glyphicon btn-glyphicon glyphicon-list-alt img-circle text-danger"></span>Textos</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="space-right">
-                    <div class="row">
-                     <table class="table table-wrap" style="text-align: center;" >
-                         <thead>
-                         <th></th>
-                         <th>#</th>
-                         <th id="thTitulo"></th>
-                         <th id="thTitulo2">Nombre</th>
-                         <th></th>
-                         </thead>
-                         <tbody id="tbVideoAudio">
-                         </tbody>
-                     </table>
-                    </div>
-                </div>
+       .invalid{
+           color: #eb354d;
+       }
+   </style>
+
+    <div id="main-content">
+      <div id="wrapper">
+        <div class="container">
+          <header>
+            <div class="text-center">
+              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="/img/logo.png" alt=""></a>
+              <h4 class="user"><img class="svg" src="/img/iconos/icon_perfil.svg">Yasmine Andía H.<span>RUNNING</span></h4>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="space-left">
-                    <div class="row" style="margin-bottom: 1.6%!important;">
-                        <span>Los 10 temas más gustados</span>
-                    </div>
-                </div>
-                <div class="space-right">
-                    <div class="row">
-                        <table class="table table-wrap" style="text-align: center;">
-                            <thead>
-                            <th></th>
-                            <th>#</th>
-                            <th>Título</th>
-                            <th>Descripción</th>
-                            <th>Puntuación</th>
-                            </thead>
-                            <tbody id="tbTop">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+          </header>
         </div>
-        </fieldset>
+        <div class="container-consejos no_padding_top">
+         <div>
+          <h3 class="title_section no_margin_top">mis consejos</h3>
+          <section class="consejos">
+            <div class="search">
+              <div class="input-group">
+                <input class="form-control" type="text" id="inpSearch">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit" id="btnSearch">BUSCAR</button>
+                </div>
+              </div>
+              <div class="options">
+                <button class="btn" type="button" data-toggle="modal" data-target="#mdlAgregarConsejo"><img class="svg" src="/img/iconos/icon_disquete.svg"></button>
+                <button class="btn" type="button" id="btnAudiosList"><img class="svg" src="/img/iconos/icon_microfono.svg"></button>
+                <button class="btn" type="button" id="btnPostsList"><img class="svg" src="/img/iconos/icon_edit_file.svg"></button>
+              </div>
+            </div>
+            <div class="resultados">
+              <ul>
+                <li> <img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="delete"><img class="svg" src="/img/iconos/icon_trash.svg"></a>
+                  </div>
+                </li>
+                <li><img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="delete"><img class="svg" src="/img/iconos/icon_trash.svg"></a>
+                  </div>
+                </li>
+                <li><img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="delete"><img class="svg" src="/img/iconos/icon_trash.svg"></a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+         </div>
+
+         <div class="dv-consejos-favs">
+          <h4 class="title_section no_margin_top">Consejos preferidos por sus clientes</h4>
+          <section class="consejos-favs">
+            <div class="resultados">
+              <ul>
+                <li> <img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="fav"><img class="svg" src="/img/iconos/icon_heart.svg"></a>
+                  </div>
+                </li>
+                <li><img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="fav"><img class="svg" src="/img/iconos/icon_heart.svg"></a>
+                  </div>
+                </li>
+                <li><img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="fav"><img class="svg" src="/img/iconos/icon_heart.svg"></a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+         </div>
+        </div>
+      </div>
     </div>
-    <!-- END MAIN CONTENT -->
-</div>
-<!-- END MAIN PANEL -->
+
+    <!-- MODAL  -->
+
+    <div class="modal fade" id="mdlAgregarConsejo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered" role="document">
+           <div class="modal-content" style="width: 100%;height: 100%;" >
+               <div class="modal-body">
+                   <ul class="nav nav-pills mb-3" id="ulMdlSubirConsejo" role="tablist">
+                       <span> AGREGAR CONSEJO </span>
+                       <li class="nav-item active">
+                           <a class="nav-link active" id="pills-texto-tab" data-tipo="1" data-toggle="pill" href="#pills-texto" role="tab" aria-controls="pills-texto" aria-selected="false"><img class="svg" src="/img/iconos/icon_edit_file.svg"> Nota </a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link " id="pills-audio-tab" data-toggle="pill" data-tipo="2" href="#pills-audio" role="tab" aria-controls="pills-audio" aria-selected="true"><img class="svg" src="/img/iconos/icon_microfono.svg"> Audio </a>
+                       </li>
 
 
-<!-- MODAL -->
-<div class="modal fade" id="modalmultimedia" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width: 100%;height: 100%;" >
-            <div class="modal-body">
-                <div class="">
-                    <a data-id="1" class="abtn-multimedia btn icon-btn btn-danger" href="#"> <span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-music img-circle text-danger"></span>Agregar Audio</a>
-                    <a data-id="2" class="abtn-multimedia btn icon-btn btn-success" href="#"><span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-facetime-video img-circle text-success"></span>Agregar Vídeo</a>
-                    <a data-id="3" class="abtn-multimedia btn icon-btn btn-danger" href="#"> <span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-list-alt img-circle text-danger"></span>Agregar Texto</a>
-                </div>
-                <div id="registroTexto" class="row" style="padding: 5% 3% 0 3%;">
+                   </ul>
+                   <div class="tab-content" id="pills-tabConsejosContent">
 
-                    <div class="col-lg-2 col-md-2 col-sm-2">
-                        <label>Titulo</label>
-                    </div><button id="btnTexto" type="button" class="btn btn-primary pull-right">Guardar</button>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <input id="tTitulo" type="text" class="form-control"/>
-                    </div>
+                       <div class="tab-pane fade active in" id="pills-texto" role="tabpanel" aria-labelledby="pills-texto-tab">
+                           <form id="registrar-texto-frm" method="post">
 
-                    <br/><br/>
-                    <div class="col-lg-2 col-md-2 col-sm-2">
-                        <label>Descripción</label>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8">
-                        <textarea id="tDescripcion" rows="5" class="form-control"></textarea>
-                    </div>
-                </div>
-                <!-- COMPONENT START -->
-                <form id="subirArchivo">
-                <div class="form-group" style="margin-top: 6%">
-                    <div class="input-group input-file" name="Fichier1">
-                        <input id="inputFile" onchange='getEventChange(this)' type="text" accept="video/mp4,video/x-m4v,video/*" class="form-control" placeholder='Seleccione un archivo...' />
-                        <audio id="Tiempo" style="display: none;"></audio>
-                        <video id="Tiempo2" style="display: none;"></video>
-                        <span class="input-group-btn">
+                           <div id="registroTexto">
+                             <div class="form-group row">
+                               <div class="col-lg-2 col-md-2 col-sm-2">
+                                   <label>Titulo</label>
+                               </div>
+                               <div class="col-lg-10 col-md-10 col-sm-10">
+                                   <input id="tTitulo" name="titulo" type="text" class="form-control"/>
+                               </div>
+                             </div>
+
+                              <div class="form-group row">
+                                   <div class="col-lg-2 col-md-2 col-sm-2">
+                                     <label>Descripción</label>
+                                   </div>
+                                   <div class="col-lg-10 col-md-10 col-sm-10">
+                                       <textarea id="tDescripcion" name="descripcion" rows="5" class="form-control"></textarea>
+                                   </div>
+                               </div>
+                           </div>
+                           </form>
+
+                       </div>
+                       <div class="tab-pane fade" id="pills-audio" role="tabpanel" aria-labelledby="pills-audio-tab">
+                           <form id="registrar-audio-frm" method="post">
+                                    <div class="form-group row">
+                                        <label for="inpTitulo" class="col-sm-2 col-form-label">Título</label>
+                                        <div class="col-sm-10">
+                                            <div>
+                                             <input id="inpTitulo" name="titulo" type="text"  class="form-control" placeholder="Título"  />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                               <div class="form-group row">
+                                   <label for="inputFile" class="col-sm-2 col-form-label"> Archivo</label>
+                                   <div class="col-sm-10">
+                                       <div class="input-group input-file" name="Fichier1">
+
+                                           <input id="inputFile"  name="file" onchange='getEventChange(this)' type="text" accept="audio/*" class="form-control" placeholder='Seleccione un archivo...' />
+                                           <audio id="Tiempo" style="display: none;"></audio>
+                                           <video id="Tiempo2" style="display: none;"></video>
+                                           <span class="input-group-btn">
+        	                 	        <button class="btn btn-default btn-choose" type="button">Seleccionar</button>
+    		                           </span>
+
+                                       </div>
+                                   </div>
+                               </div>
+
+
+
+                           </form>
+
+
+                       </div>
+
+                  <!--
+                   <button class="btn" type="button"><img class="svg" src="/img/iconos/icon_microfono.svg"></button>
+                   <button class="btn" type="button"><img class="svg" src="/img/iconos/icon_edit_file.svg"></button>
+                   <button class="btn" type="button"><img class="svg" src="/img/iconos/icon_videoteca.svg"></button>
+-->
+           <!--        <ul class="nav nav-pills mb-3"  role="tablist">
+                      <span class="titulo-form"> AGREGAR CONSEJO </span>
+                       <li class="nav-item">
+                           <a class="nav-link active" id="pills-audio-tab" data-toggle="pill" href="#pills-audio" role="tab" aria-controls="pills-audio" aria-selected="true"><img class="svg" src="/img/iconos/icon_microfono.svg"> Audio </a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" id="pills-texto-tab" data-toggle="pill" href="#pills-texto" role="tab" aria-controls="pills-texto" aria-selected="false"><img class="svg" src="/img/iconos/icon_edit_file.svg"> Nota </a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="false"><img class="svg" src="/img/iconos/icon_videoteca.svg"> Video </a>
+                       </li>
+
+                   <div class="tab-content" id="pills-tabConsejosContent">
+                       <div class="tab-pane fade show active" id="pills-audio" role="tabpanel" aria-labelledby="pills-audio-tab">
+
+
+                       </div>
+                       <div class="tab-pane fade" id="pills-texto" role="tabpanel" aria-labelledby="pills-texto-tab">
+
+                       </div>
+                       <div class="tab-pane fade" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
+
+
+
+
+                       </div>
+                   </div> -->
+                <!--   <div class="">
+                       <a data-id="1" class="abtn-multimedia btn icon-btn btn-danger" href="#"> <span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-music img-circle text-danger"></span>Agregar Audio</a>
+                       <a data-id="2" class="abtn-multimedia btn icon-btn btn-success" href="#"><span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-facetime-video img-circle text-success"></span>Agregar Vídeo</a>
+                       <a data-id="3" class="abtn-multimedia btn icon-btn btn-danger" href="#"> <span class="spanbtn-multimedia glyphicon btn-glyphicon glyphicon-list-alt img-circle text-danger"></span>Agregar Texto</a>
+                   </div>
+                   <div id="registroTexto" class="row" style="padding: 5% 3% 0 3%;">
+                       <div class="col-lg-2 col-md-2 col-sm-2">
+                           <label>Titulo</label>
+                       </div><button id="btnTexto" type="button" class="btn btn-primary pull-right">Guardar</button>
+                       <div class="col-lg-6 col-md-6 col-sm-6">
+                           <input id="tTitulo" type="text" class="form-control"/>
+                       </div>
+                       <br/><br/>
+                       <div class="col-lg-2 col-md-2 col-sm-2">
+                           <label>Descripción</label>
+                       </div>
+                       <div class="col-lg-8 col-md-8 col-sm-8">
+                           <textarea id="tDescripcion" rows="5" class="form-control"></textarea>
+                       </div>
+                   </div> -->
+                   <!-- COMPONENT START -->
+                <!--   <form id="subirArchivo">
+                       <div class="form-group" style="margin-top: 6%">
+                           <div class="input-group input-file" name="Fichier1">
+                               <input id="inputFile" onchange='getEventChange(this)' type="text" accept="video/mp4,video/x-m4v,video/*" class="form-control" placeholder='Seleccione un archivo...' />
+                               <audio id="Tiempo" style="display: none;"></audio>
+                               <video id="Tiempo2" style="display: none;"></video>
+                               <span class="input-group-btn">
         		        <button class="btn btn-default btn-choose" type="button">Seleccionar</button>
     		            </span>
+                           </div>
+                       </div>
+                       <div class="form-group">
+                           <button id="btnGuardarArchivo" type="button" class="btn btn-primary pull-right">Guardar Archivo</button>
+                           <button type="reset" class="btn btn-danger">Limpiar</button>
+                       </div>
+                   </form>  -->
+                   <!-- COMPONENT END -->
+               </div>
+           </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button id="btnGuardarConsejo" type="button" class="btn btn-dark pull-right">Guardar </button>
+                        <button data-dismiss="modal" aria-hidden="true" class="btn btn-secondary"> Cancelar </button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button id="btnGuardarArchivo" type="button" class="btn btn-primary pull-right">Guardar Archivo</button>
-                    <button type="reset" class="btn btn-danger">Limpiar</button>
-                </div>
-                </form>
-                <!-- COMPONENT END -->
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END MODAL -->
+       </div>
+   </div>
+  </div>
+
+   <div class="modal fade" id="mdlVerConsejoTexto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered" role="document">
+           <div class="modal-content" style="width: 100%;height: 100%;" >
+               <div class="modal-header" style="background: black">
+                   <button type="button btn-white" class="close" data-dismiss="modal" title="Close" style="color: #ffffff; opacity: 0.8;"> <span class="glyphicon glyphicon-remove"></span></button>
+                   <h4 class="modal-title text-align-center" ><strong> Consejo </strong></h4>
+               </div>
+               <div class="modal-body">
+                   <form id="actualizar-texto-frm" method="post">
+
+                     <div id="dvContenidoConsejoTexto">
+                       <div class="form-group row">
+                           <div class="col-lg-2 col-md-2 col-sm-2">
+                               <label>Titulo</label>
+                           </div>
+                           <div class="col-lg-10 col-md-10 col-sm-10">
+                               <input id="mdlTxtTitulo" name="titulo" type="text" class="form-control" readonly="readonly"/>
+                           </div>
+                       </div>
+
+                       <div class="form-group row">
+                           <div class="col-lg-2 col-md-2 col-sm-2">
+                               <label>Descripción</label>
+                           </div>
+                           <div class="col-lg-10 col-md-10 col-sm-10">
+                               <textarea id="mdlTxtDescripcion" name="descripcion" rows="5" class="form-control" readonly="readonly"></textarea>
+                           </div>
+                       </div>
+                   </div>
+
+                   </form>
+                 </div>
+
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button id="btnEditarConsejoTxt" type="button" class="btn btn-secondary"> Editar </button>
+                        </div>
+
+                     <div id="dvBtnsActualizarTxt" class="form-group hidden">
+                       <button id="btnActualizarConsejoTxt" type="button" class="btn btn-dark pull-right">Actualizar </button>
+                       <button data-dismiss="modal" aria-hidden="true" class="btn btn-secondary"> Cancelar </button>
+                     </div>
+                   </div>
+           </div>
+       </div>
+   </div>
+
+   <div class="modal fade" id="mdlVerConsejoAudio" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered" role="document">
+           <div class="modal-content" style="width: 100%;height: 100%;" >
+               <div class="modal-header" style="background: black">
+                   <button type="button btn-white" class="close" data-dismiss="modal" title="Close" style="color: #ffffff; opacity: 0.8;"> <span class="glyphicon glyphicon-remove"></span></button>
+                   <h4 class="modal-title text-align-center" ><strong> Consejo </strong></h4>
+               </div>
+               <div class="modal-body">
+                   <div id="dvContenidoConsejoAudio">
+                       <form id="actualizar-audio-frm" method="post">
+                           <div class="form-group row">
+                               <label for="inpTitulo" class="col-sm-2 col-form-label">Título</label>
+                               <div class="col-sm-10">
+                                   <input id="mdlAudioTitulo" name="titulo" type="text"  class="form-control" placeholder="Título"  />
+                               </div>
+                           </div>
+
+                           <div class="form-group row">
+                               <label for="inputFile" class="col-sm-2 col-form-label"> Archivo</label>
+                               <div class="col-sm-10">
+                                   <div class="input-group input-file">
+
+                                       <input id="mdlAudioFile" name="file" onchange='getEventChange(this)' type="text" accept="audio/*" class="form-control" placeholder='Seleccione si desea cambiar el archivo actual' />
+
+                                       <span class="input-group-btn">
+        	                 	        <button class="btn btn-default btn-choose" type="button">Seleccionar</button>
+    		                           </span>
+
+                                   </div>
+                               </div>
+                           </div>
 
 
-<!-- PAGE FOOTER -->
-<input type="hidden" id="userSession" value="" />
-<div th:replace="html-commons/footer :: fg-footer"></div>
-<!-- END PAGE FOOTER -->
-<!-- IMPORTS JAVASCRIPT -->
-<script th:replace="html-commons/js :: fg-js"/>
-<script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/plugin/perfect-sb/perfect-scrollbar.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/plugin/summernote/summernote.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/bootbox.min.js}+'?'+${version}"></script>
 
-<!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
-<script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
-<script th:src="@{/js/misfavoritos.js}+'?'+${version}"></script>
+                       </form>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    $(function () {
-        $("#registroTexto").hide();
-    });
 
-    /*]]>*/
-</script>
 
-</body>
+                   </div>
+               </div>
+
+               <div class="modal-footer">
+                   <div class="form-group">
+                       <button id="btnEditarConsejoAudio" type="button" class="btn btn-secondary"> Editar </button>
+                   </div>
+
+                   <div id="dvBtnsActualizarAudio" class="form-group hidden">
+                       <button id="btnActualizarConsejoAudio" type="button" class="btn btn-dark pull-right">Actualizar </button>
+                       <button data-dismiss="modal" aria-hidden="true" class="btn btn-secondary"> Cancelar </button>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+
+
+
+
+
+
+
+
+   <input type="hidden" id="userSession" value="" />
+
+     <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+    <script th:src="@{/js/trainer-consejos.js}+'?'+${version}"></script>
+
+
+
+
+
+  </body>
 </html>

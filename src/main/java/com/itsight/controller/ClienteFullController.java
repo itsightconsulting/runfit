@@ -121,12 +121,20 @@ public class ClienteFullController {
         return new ModelAndView(ViewConstant.CLIENTE_NOVEDADES);
     }
 
+    @GetMapping(value = "/consejos")
+    public ModelAndView pageConsejos(Model model, HttpSession session) {
+        int id = (int) session.getAttribute("id");
+        model.addAttribute("clienteId", id);
+        String postIds = configuracionClienteService.obtenerPostIdFavoritos(id);
+        model.addAttribute("postsFavoritos" , postIds);
+
+        return new ModelAndView(ViewConstant.MAIN_CONSEJOS_CLIENTE);
+    }
+
     @GetMapping(value = "/misRutinas")
     public ModelAndView pageMisRutinas() {
         return new ModelAndView(ViewConstant.CLIENTE_MIS_RUTINAS);
     }
-
-
 
     @GetMapping(value = "/get/publicaciones")
     public @ResponseBody List<Post> obtenerMultimediaEntrenador(HttpSession session) {
@@ -136,18 +144,26 @@ public class ClienteFullController {
         return postService.findAllByTrainerIdIn(lstTrainerId);
     }
 
-    @PostMapping(value = "/post/updateFlag")
-    public @ResponseBody String updateFlag(@RequestParam int postId, @RequestParam int estado, @RequestParam int tipoFlag, HttpSession session) throws JsonProcessingException {
+    @GetMapping(value = "/get/consejos")
+    public @ResponseBody List<Post> obtenerConsejosEntrenador(HttpSession session) {
+        int id = (int)session.getAttribute("id");
+        Integer trainerId = redFitnessService.findTrainerIdUltimaRutinaByUsuarioId(id);
+
+        return postService.findAllActivosByTrainerId(trainerId);
+    }
+
+
+    @PostMapping(value = "/post/updateFavorito")
+    public @ResponseBody String updateFavorito(@RequestParam int postId, @RequestParam int estado, HttpSession session) throws JsonProcessingException {
         int clienteId = (int)session.getAttribute("id");
-        boolean hasLikedBefore = postService.verificarExisteLike(postId, clienteId);
-        if(hasLikedBefore){
-            if(tipoFlag == 1) postService.actualizarFlagLiked(postId, clienteId, !(estado == 0));
-            else {
+        boolean hasFavedBefore = postService.verificarExisteFav(postId, clienteId);
+        if(hasFavedBefore){
+
                 postService.actualizarFlagFav(postId, clienteId, !(estado == 0));
                 String postIdsString = configuracionClienteService.obtenerPostIdFavoritos(clienteId);
                 String[] postIdsFavs =  postIdsString.length()> 0 ? postIdsString.split(",") : new String[0];
                 int idsLen = postIdsFavs.length;
-                if(estado == 0){
+                if(estado == 1){
                     if(idsLen>0){
                         List<String> favs =  new ArrayList<>(Arrays.asList(postIdsFavs));
                         int index = (IntStream.range(0, idsLen).filter(ix->favs.get(ix).equals(String.valueOf(postId))).findFirst().orElse(-1));
@@ -165,12 +181,11 @@ public class ClienteFullController {
                     }else
                         configuracionClienteService.actualizarPostIdFavoritos(clienteId, String.valueOf(postId));
                 }
-            }
             return ACTUALIZACION.get();
         } else {
             String nombreCompleto = clienteService.findNombreCompletoById(clienteId);
-            postService.updatePostDetalle(postId, clienteId, nombreCompleto, tipoFlag == 1, tipoFlag == 2);
-            if(tipoFlag == 2) configuracionClienteService.actualizarPostIdFavoritos(clienteId, String.valueOf(postId));
+            postService.updatePostDetalle(postId, clienteId, nombreCompleto, true);
+            configuracionClienteService.actualizarPostIdFavoritos(clienteId, String.valueOf(postId));
         }
         return REGISTRO.get();
     }
@@ -212,28 +227,7 @@ public class ClienteFullController {
         return especificacionSubCategoriaService.findBySubCategoriaEjercicioId(id);
     }
 
-    @RequestMapping(value = "/uploadtext", method = RequestMethod.POST)
-    public @ResponseBody String guardarTexto(@RequestParam Integer id,@RequestParam String titulo,@RequestParam String descripcion,HttpSession session) {
-        int idUser = Integer.parseInt(session.getAttribute("id").toString());
 
-        if (id == 0) {
-            Post post = new Post();
-            post.setTrainer(idUser);
-            post.setTitulo(titulo);
-            post.setDescripcion(descripcion);
-            post.setTipo(Enums.TipoMedia.TEXTO.get());
-            post.setFlagActivo(true);
-            postService.save(post);
-        } else {
-            Post post = postService.findOne(id);
-            post.setTrainer(idUser);
-            post.setTitulo(titulo);
-            post.setDescripcion(descripcion);
-            post.setTipo(Enums.TipoMedia.TEXTO.get());
-            postService.update(post);
-        }
-        return EXITO_GENERICA.get();
-    }
 
     @GetMapping("/get/rutina/ids")
     public @ResponseBody List<String> getRutinasActivasById(HttpSession session){

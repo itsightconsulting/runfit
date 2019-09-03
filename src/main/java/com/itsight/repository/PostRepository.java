@@ -23,12 +23,15 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query("FROM Post P WHERE P.trainer.id = ?1")
     List<Post> findAllByTrainerId(Integer trainerId);
 
+    @Query("FROM Post P WHERE P.trainer.id = ?1 AND P.flagActivo = true")
+    List<Post> findAllActivosByTrainerId(Integer trainerId);
+
     @EntityGraph(value = "post.trainer")
     @Query("FROM Post P WHERE P.trainer.id IN (?1)")
     List<Post> findAllByTrainerIdIn(List<Integer> lstTrainerId);
 
     @Query(value = "SELECT TRUE FROM (SELECT CAST(jsonb_array_elements(detalle)->>'cliId' AS INT) cid FROM post WHERE post_id = ?1) tt WHERE tt.cid=?2", nativeQuery = true)
-    Optional<Boolean> checkLikeExists(Integer id, Integer clienteId);
+    Optional<Boolean> checkFavExists(Integer id, Integer clienteId);
 
     @Modifying
     @Query(value = "UPDATE post SET detalle = jsonb_set(detalle, (SELECT " +

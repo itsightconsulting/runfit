@@ -30,4 +30,6 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
     String getMesesCliSuspendidos(Integer trainerId);
 
+    Integer findTrainerIdUltimaRutinaByUsuarioId(Integer trainerId);
+
 }

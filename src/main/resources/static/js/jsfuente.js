@@ -764,11 +764,11 @@ function generateRandomMail(){
 
 (function modalHideScrollOnY(){
     $('body .modal').on('shown.bs.modal', function () {
-        body.parentElement.style.overflowY = "hidden";
+       document.body.parentElement.style.overflowY = "hidden";
     });
 
     $('body .modal').on('hide.bs.modal', function () {
-        body.parentElement.style.overflowY = "auto";
+        document.body.parentElement.style.overflowY = "auto";
     });
 })();
 

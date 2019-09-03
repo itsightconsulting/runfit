@@ -67,11 +67,16 @@ public class RutinaController {
         return new ModelAndView(ViewConstant.MAIN_RUTINA_PLANTILLA);
     }
 
+    @GetMapping(value = "prueba")
+    public ModelAndView principal2() {
+        return new ModelAndView(ViewConstant.MAIN_CONSEJOS_CLIENTE);
+    }
+
+
     @GetMapping(value = "/trainer")
     public ModelAndView principalTrainer() {
         return new ModelAndView(ViewConstant.MAIN_TRAINER_RUTINA_PLANTILLA);
     }
-
 
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody

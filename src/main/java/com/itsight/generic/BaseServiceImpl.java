@@ -21,6 +21,10 @@ public abstract class BaseServiceImpl<T> {
     @Value("${amazon.aws.s3.md.rutina.media.bucket}")
     protected String aws3RoutineBucket;
 
+
+    @Value("${amazon.aws.s3.tr.post.bucket}")
+    protected String aws3PostBucket;
+
     protected T repository;
 
     public BaseServiceImpl(T repository) {

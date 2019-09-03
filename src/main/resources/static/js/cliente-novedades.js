@@ -22,6 +22,7 @@ function principalesMouseOverPost(e){
     }
 }
 
+
 function principalesClickPost(e){
     const input = e.target;
     const clases = e.target.classList;

@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConfiguracionClienteRepository extends JpaRepository<ConfiguracionCliente, Integer> {
 
-    @Query(value = "SELECT parametros->4->>'valor' FROM configuracion_cliente WHERE cliente_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT parametros->3->>'valor' FROM configuracion_cliente WHERE cliente_id = ?1", nativeQuery = true)
     String getFavsPostTrainer(Integer id);
 
     @Modifying
-    @Query(value = "UPDATE configuracion_cliente SET parametros = jsonb_set(parametros, CAST('{4,\"valor\"}' AS text[]), to_jsonb(CAST(?2 as text))) WHERE cliente_id = ?1", nativeQuery = true)
+    @Query(value = "UPDATE configuracion_cliente SET parametros = jsonb_set(parametros, CAST('{3,\"valor\"}' AS text[]), to_jsonb(CAST(?2 as text))) WHERE cliente_id = ?1", nativeQuery = true)
     void updateFavsPostTrainer(Integer id, String postsFavsIds);
 
     @Query(value = "select cast(params as jsonb)->>'valor' " +
