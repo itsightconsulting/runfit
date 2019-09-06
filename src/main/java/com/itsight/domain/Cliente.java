@@ -113,6 +113,14 @@ public class Cliente extends AuditingEntity implements Serializable {
     @JoinColumn(name = "PaisId", nullable = false, updatable = false)
     private Pais pais;
 
+    @JsonBackReference
+    @OneToMany(
+            mappedBy = "cliente",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClienteServicio> lstCliSer = new ArrayList<>();
+
     @Column
     private String ubigeo;
 

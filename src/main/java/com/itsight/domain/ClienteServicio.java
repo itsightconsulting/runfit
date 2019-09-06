@@ -13,11 +13,11 @@ public class ClienteServicio {
     private ClienteServicioId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("SecurityUserId")
+    @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId", insertable = false, updatable = false)
     private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("ServicioId")
+    @JoinColumn(name = "ServicioId", insertable = false, updatable = false)
     private Servicio servicio;
 
     @Column(name = "FechaCreacion")
