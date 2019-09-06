@@ -243,17 +243,18 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     @Override
     public String registroFull(ClienteDTO cliente) {
-        boolean pickTrainer = false;
+        boolean passValidation = false;
         if(cliente.getTrainerId() != null && cliente.getTrainerId() > 0){
             Boolean suserActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
             if(suserActive == null){
                 return ResponseCode.NOT_FOUND_MATCHES.get();
             } else if(suserActive){
-                pickTrainer = true;
+                passValidation = true;
             } else {
                 return ResponseCode.NOT_FOUND_MATCHES.get();
             }
         }
+
         Cliente objCli = new Cliente();
         objCli.setFlagActivo(true);
         //Agregando roles
@@ -317,7 +318,7 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         servicioService.addClienteServicio(objCli.getId(), cliente.getServicioId());
 
         //Agregandolo a la red de su entrenador
-        if(pickTrainer){
+        if(passValidation){
             RedFitness rf = new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId()));
             rf.setPredeterminadaFichaId(cliente.getPredetFichaId());
             rf.setFlagActivo(true);

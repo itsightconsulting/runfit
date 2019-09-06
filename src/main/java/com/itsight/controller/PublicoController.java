@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Base64;
 import java.util.Date;
@@ -126,7 +127,8 @@ public class PublicoController extends BaseController {
     public ModelAndView fichaInscripcionRunner(
             @RequestParam(name="key", required=false) String hshTrainerId,
             @RequestParam(name="ml", required=false) String trainerMailDecode,
-            Model model) {
+            Model model, HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("id");
         return getFichaApropiada(model,
                                 hshTrainerId,
                                 trainerMailDecode,

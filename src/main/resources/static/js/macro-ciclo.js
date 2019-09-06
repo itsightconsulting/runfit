@@ -526,7 +526,6 @@ MacroCiclo = (function(){
         generarRutinaCompleta: (e)=>{//Flujo básico
             if($('#KilometrajePromedioSemanal').val() != ""){
                 if($('#frm_registro').valid()){
-                    const intervalEffect = spinnerSwitchTab(RutinaOpc.effectImage);
                     const $chelmoMacro = [];
                     //Semanas
                     const numSemBase = FichaGet.obtenerBase().numSem;
@@ -622,7 +621,7 @@ MacroCiclo = (function(){
                         const iBase = r.dtGrafico.length - cantSemExcedentes;
                         r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
                     }
-                    guardarRutina(r, intervalEffect);
+                    guardarRutina(r);
                 }
             }else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});

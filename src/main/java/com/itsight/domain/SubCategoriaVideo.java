@@ -47,11 +47,6 @@ public class SubCategoriaVideo implements Identifiable {
     @Column(nullable = false)
     private boolean flagActivo;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoriaVideoId")
-    private CategoriaVideo categoriaVideo;
-
     @JsonSerialize
     @Transient
     private Integer categoriaId;
@@ -59,6 +54,11 @@ public class SubCategoriaVideo implements Identifiable {
     @JsonSerialize
     @Transient
     private String nombreCategoria;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CategoriaVideoId")
+    private CategoriaVideo categoriaVideo;
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subCatVideo")

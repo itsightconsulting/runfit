@@ -58,6 +58,16 @@ import java.util.Date;
 
                         })
 })
+
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "fn_validacion_exists_by_trainer_id_and_cliente_id",
+                procedureName = "check_red_fitness_exist_by_trainer_id_and_cliente_id",
+                parameters = {
+                        @StoredProcedureParameter(name = "_trainer_id", mode = ParameterMode.IN, type = String.class),
+                        @StoredProcedureParameter(name = "_cliente_id", mode = ParameterMode.IN, type = String.class),
+                        @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
+                })
+})
 public class RedFitness implements Serializable {
 
     @Id

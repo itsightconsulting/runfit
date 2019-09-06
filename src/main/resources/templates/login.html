@@ -34,6 +34,10 @@
         .hidden{
             display: none;
         }
+
+        .usuario label{
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -224,7 +228,7 @@
         }
     });
 
-
+    //For show password button
     var passField = $('input[type=password]');
     $('.show-pass').hover(function() {
         passField.attr('type', 'text');

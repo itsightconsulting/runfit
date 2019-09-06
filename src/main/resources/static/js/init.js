@@ -32,7 +32,7 @@ function datepicker_init () {
             //defaultDate: date,
         });
     }catch (e) {
-        console.warn(e);
+        console.info("/**** SIMPLE INFO WARNING ****/: ", e.message ? e.message : "$(...).datetimepicker is not a function");
     }
 
 }
@@ -162,8 +162,7 @@ function owlCarouselVideoteca() {
 
 }
 
-/*
-function fancybox() {
+/*function fancybox() {
     $(document).ready(function() {
         $("[data-fancybox]").fancybox();
     });
@@ -195,9 +194,11 @@ function select_fave () {
 
 function leftPanelFocus(){
     var e=window.location.pathname;
-    e.includes("bienvenido")
-    || (document.querySelector("#SideBar1").querySelector("a[href*='"+e+"']").parentElement.className="active")
-    || (document.querySelector("#SideBar2").querySelector("a[href*='"+e+"']").parentElement.className="active");
+    if(e != "/"){
+        e.includes("bienvenido")
+        || (document.querySelector("#SideBar1").querySelector("a[href*='"+e+"']").parentElement.className="active")
+        || (document.querySelector("#SideBar2").querySelector("a[href*='"+e+"']").parentElement.className="active");
+    }
 }
 
 $(function() {
@@ -208,9 +209,9 @@ $(function() {
     owlCarouselVideoteca();
     heightCard();
     miniPanelActive();
-    fancybox();
+    //fancybox();
     select_fave();
-    $('[rel="tooltip"]').tooltip()
+    $('[rel="tooltip"]').tooltip();
     try{
         leftPanelFocus()
     }catch(e){}

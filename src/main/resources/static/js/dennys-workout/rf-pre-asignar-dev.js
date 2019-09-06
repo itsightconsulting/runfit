@@ -290,7 +290,7 @@ function principalesEventosFocusOutTabFichaTecnica(e){
 
 }
 
-function guardarRutina(rutina, btn, interval){
+function guardarRutina(rutina){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
     const fechaNac = getParamFromURL('fn');
@@ -302,16 +302,15 @@ function guardarRutina(rutina, btn, interval){
         contentType: "application/json",
         url: _ctx + "gestion/rutina/nueva?key=" + id + "&rn=" + rn,
         dataType: "json",
+        blockLoading: true,
+        noOne: false,
         data: JSON.stringify(rutina),
         success: function (data) {
-            window.clearInterval(interval);
             const resWithErrors = getResponseCodeWithErrors(data);
             resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
             data == "-1" ? window.location.href = _ctx + 'rutina/edicion?key=' + id + '&rn=' + rn + datosAsURI: setTimeout(()=>$('#bot1-Msg1').click());//res.id para el caso = redFitnessId;
         },
         error: function (xhr) {
-            $('#bot1-Msg1').click();
-            window.clearInterval(interval);
             exception(xhr);
         },
         complete: function () {}

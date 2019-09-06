@@ -93,7 +93,7 @@ public class TrainerFichaController extends BaseController {
     }
 
     @GetMapping("/{nomPag:.+}")
-    public  ModelAndView getTrainerByUsername(){
+    public  ModelAndView getVistaTrainerByUsername(){
         return new ModelAndView(ViewConstant.MAIN_PERFIL_TRAINER);
     }
 

@@ -3,10 +3,10 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Cliente;
-import com.itsight.domain.TipoUsuario;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
+import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.ClienteProcedureInvoker;
 import com.itsight.service.ClienteService;
@@ -101,5 +101,18 @@ public class ClienteController {
         return lstDistribucionCliente;
     }
 
+    @GetMapping(value = "/get/tyc/servicios")
+    public @ResponseBody List<TycClientePOJO> getTycServiciosById(){
+        Integer id = (Integer) session.getAttribute("id");
+        return clienteProcedureInvoker.getTycServiciosById(id);
+    }
 
+    @PostMapping(value = "/inscripcion/servicio")
+    public @ResponseBody String inscripcionNuevoServicio(
+            @RequestParam(name="key", required=false) String hshTrainerId,
+            @RequestParam(name="ml", required=false) String trainerMailDecode,
+            @RequestParam(name="sid", required=false) String sid
+    ){
+        return "1";
+    }
 }

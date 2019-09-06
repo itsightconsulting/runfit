@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -64,6 +65,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     @Query(value="SELECT string_agg(PS.periodo,',') mesesCliSuspendidos FROM (SELECT DISTINCT to_char(RF.fecha_creacion,'YYYYMM') AS periodo FROM red_fitness RF INNER JOIN cliente C ON rf.cliente_id = c.security_user_id  WHERE RF.trainer_id = ?1 AND RF.flag_activo = false ORDER BY periodo ASC) PS",nativeQuery = true)
     String getMesesCliSuspendidos(Integer trainerId);
 
-
+    @Procedure(name = "fn_validacion_exists_by_trainer_id_and_cliente_id")
+    Boolean checkExistsByTrainerIdAndClienteId(Integer trainerId, Integer clienteId);
 
 }

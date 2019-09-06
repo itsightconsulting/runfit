@@ -67,7 +67,7 @@
 }
 
 .login .login-bg {
-  background-color: #3a3a3a;
+  background-color: transparent;
   opacity: .6;
   position: fixed;
   width: 100%;

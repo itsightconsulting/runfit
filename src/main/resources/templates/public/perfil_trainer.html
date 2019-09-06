@@ -562,11 +562,17 @@
         const svcId = csBtoa(selServicioId);
 
         if(fichaIds.length==1){
-            const id = fichaIds[0];
-            if(id === "1"){
-                window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
-            }else if(id === "2"){
-                window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+            //Checking if user is login or is new
+            const flagUserLogged = document.getElementById('logout_flag');
+            if(flagUserLogged){
+                window.location.href = _ctx + "gestion/cliente/inscripcion/servicio="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+            }else{
+                const id = fichaIds[0];
+                if(id === "1"){
+                    window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+                }else if(id === "2"){
+                    window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+                }
             }
         }else{
             $.SmartMessageBox({

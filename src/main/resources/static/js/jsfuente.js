@@ -1056,3 +1056,25 @@ function fromDateToString(d){
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
 }
 
+function cerrarSesion(){
+    let fullName = atob(document.cookie = getCookie("GLL_NOMBRE_COMPLETO"));
+    fullName = fullName.toLowerCase().split().map(e=>capitalizeFirstLetter(e)).join(" ");
+    $.SmartMessageBox({
+        title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+        content: "¿Estás seguro que desea cerrar sesión "+fullName+" <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span>?",
+        buttons: "[No][Si]"
+    }, function(e) {
+        "Si" == e && $.ajax({
+            url: _ctx + "logout",
+            type: "POST",
+            success: function(e) {
+                document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
+                window.location = _ctx + "login";
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        })
+    })
+}
+
