@@ -7,9 +7,9 @@
                id="login_link">INICIAR SESIÓN
             </p>
             <p th:unless="${#authentication.principal == 'anonymousUser'}"
-               class="login_link"
+               class="logout_link"
                onclick="javascript:cerrarSesion()"
-            id="logout_flag">CERRAR SESIÓN
+                id="btn-logout-public" data-logout-flag="true">CERRAR SESIÓN
             </p>
         </div>
         <div class="navbar-header">

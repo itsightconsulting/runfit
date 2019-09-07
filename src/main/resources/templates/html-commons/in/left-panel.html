@@ -18,7 +18,7 @@
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
-                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">Mi Perfil</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('RUNNER')">
@@ -30,7 +30,7 @@
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
-                <li><a th:href="@{/gestion/cliente-fitness/perfil}"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">Mi Perfil</a></li>
+                <li><a th:href="@{/gestion/cliente-fitness/perfil}"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">
@@ -57,10 +57,9 @@
                         <input type="checkbox" id="OptConfCliCtrlRepVideoMob" data-type="1"><span class="slider"></span>
                     </label>
                 </li>
-                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
-                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
-                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">T&C de servicios</a></li>
+                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de Runfit</a></li>
+                <li><a href="javascript:void(0)" onclick="verTycServicios()"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de servicios</a></li>
                 <li><a th:href="@{/p/preguntas-frecuentes}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
             </ul>
         </div>
@@ -81,9 +80,9 @@
                     <input type="checkbox" id="OptConfCliCtrlRepVideo" data-type="1"><span class="slider"></span>
                 </label>
             </li>
-            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
-            <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
+            <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de Runfit</a></li>
+            <li><a href="javascript:void(0)" onclick="verTycServicios()"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de servicios</a></li>
             <li><a th:href="@{/p/preguntas-frecuentes}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
         </ul>
     </div>

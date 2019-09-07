@@ -79,7 +79,7 @@ function owlCarouselSemanal() {
     $(document).ready(function(){
         $('#carousel-semanal').owlCarousel({
             loop:false,
-            margin:10,
+            margin:30,
             dots:true,
             navigation:true,
             responsive:{
@@ -207,7 +207,7 @@ $(function() {
     openNav();
     owlCarouselSemanal();
     owlCarouselVideoteca();
-    heightCard();
+    //heightCard();
     miniPanelActive();
     //fancybox();
     select_fave();
@@ -216,3 +216,109 @@ $(function() {
         leftPanelFocus()
     }catch(e){}
 });
+
+function verTycServicios(){
+
+    new Promise((resolve, reject)=>{
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json',
+            url: _ctx + 'gestion/cliente/get/tyc/servicios',
+            blockLoading: true,
+            noOne: false,
+            dataType: 'json',
+            success: (res)=>{
+                resolve(res)
+            },
+            error: (xhr)=>{
+                reject(xhr)
+            }
+        })
+
+    }).then(res=>{
+        const hasTycs = res.length;
+        const genericModalId = "mdl"+new Date().getTime();
+        const awsS3URLBase = "https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/";
+        const modal = `
+        <div class="modal fade" id="${genericModalId}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: black">
+                        <button type="button " class="close btn-white" data-dismiss="modal" title="Close"> <span class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title text-align-center"><strong>TÉRMINOS Y CONDICIONES</strong></h4>
+                    </div>
+                    <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                        <div class="col col-md-12">
+                            ${!hasTycs ? '<h1>Los servicios a los que se ha suscrito no cuentan con términos y condiciones</h1>':
+                            `<div class="col col-md-12" style="padding-bottom: 15px">
+                                <div class="col-md-5 col-xs-5"><b>Nombre Asesor</b></div>
+                                <div class="col-md-5 col-xs-5"><b>Nombre Servicio</b></div>
+                                <div class="col-md-2 col-xs-2 text-center"><b>T&C</b></div>
+                            </div>`+
+                            res.map((tyc, ix)=>`
+                                <div class="col col-md-12" style="padding-bottom: 10px">
+                                    <div class="col-md-5 col-xs-5">${tyc.trainer.replace(" xxx", "")}</div>
+                                    <div class="col-md-5 col-xs-5">${tyc.nombreServicio}</div>
+                                    <div class="col-md-2 col-xs-2 text-center">
+                                        <a class="refTycUrl" data-index="${ix}" onclick="setIndexTycFile(${ix})" 
+                                            href="javascript:void(0)" data-tyc-url="${tyc.tycUrl}" title="Ver">
+                                            <i data-target="#modalTYC" data-toggle="modal" 
+                                            class="fa fa-file-pdf-o fa-fw" style='color: rgb(204, 77, 77);'></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-md" data-dismiss="modal">CERRAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        const modalElement = htmlStringToElement(modal);
+        const body = document.body;
+        body.appendChild(modalElement);
+        const checkModalTyc = document.getElementById('modalTYC');
+        if(!checkModalTyc){
+            body.appendChild(instanceModalTYC());
+        }
+        $('#'+genericModalId).modal('show');
+        $('#'+genericModalId).on('hidden.bs.modal', ()=>{
+            modalElement.remove();
+        });
+        $('#modalTYC').on('shown.bs.modal', (e)=>{
+            const doc = document.createElement('embed');
+            doc.type = "application/pdf";
+            doc.style = "width: 100%; height: 100%";
+            const ix = document.getElementById('TycIndex').value;
+            const relativeTycUrl = document.querySelector(`.refTycUrl[data-index="${ix}"]`).getAttribute('data-tyc-url');
+            doc.src = `${awsS3URLBase + relativeTycUrl}`;
+            document.getElementById('TYC').innerHTML = "";
+            document.getElementById('TYC').appendChild(doc);
+        })
+    }).catch(err=> exception(err));
+
+}
+
+function instanceModalTYC(){
+    return htmlStringToElement(`<div class="modal fade slide in" id="modalTYC" data-backdrop="static">
+        <div class="modal-dialog modal-lg" style="height: 85%;">
+            <div class="modal-content">
+                <div class="modal-header text-right" style="background: #323639;">
+                    <span class="" data-dismiss="modal" style="color: white;font-size: 1.4em;cursor: pointer"><i style="font-size: 1.3em !important;" class="fa-fw fa fa-close"></i></span>
+                </div>
+                <input type="hidden" id="TycIndex">
+                <div class="modal-body" style="padding: 0px !important; height: 550px;" id="TYC">
+                </div>
+            </div>
+        </div>
+    </div>`);
+}
+
+function setIndexTycFile(ix){
+    $('#TycIndex').val(ix);
+}
+
+

@@ -26,7 +26,7 @@ public interface ClienteService extends BaseService<Cliente, Integer> {
 
     String findNombreCompletoById(Integer id);
 
-    String registroFull(ClienteDTO cliente);
+    String registroFull(ClienteDTO cliente, Integer tipoTrainerId);
 
     List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, QueryParamsDTO queryParams);
 

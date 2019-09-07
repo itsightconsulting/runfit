@@ -11,6 +11,7 @@ import com.itsight.repository.UsuarioRecoverRepository;
 import com.itsight.service.EmailService;
 import com.itsight.service.SecurityUserService;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -126,7 +127,7 @@ public class AuthController extends BaseController {
 
     @GetMapping(value = "/p/cambiar/password/{hshId}")
     public String vistaCambiarPassword(@PathVariable String hshId, @RequestParam String sc, Model model) throws SecCustomValidationException {
-        Integer id = getDecodeHashIdSecCustom(new String(Base64.getDecoder().decode(sc.getBytes())), hshId);
+        Integer id = getDecodeHashIdSecCustom(Parseador.getDecodeBase64(sc), hshId);
         UsuarioRecover usurec = usuarioRecoverRepository.findById(id).orElse(null);
         if(usurec == null){
             return ViewConstant.P_ERROR404;
@@ -146,7 +147,7 @@ public class AuthController extends BaseController {
 
     @PostMapping(value = "/p/recuperacion/password/cambiar")
     public @ResponseBody String cambiarPassword(@ModelAttribute PasswordDTO passwordDTO) throws CustomValidationException {
-        Integer id = getDecodeHashId(new String(Base64.getDecoder().decode(passwordDTO.getSchema().getBytes())), passwordDTO.getUserId());
+        Integer id = getDecodeHashId(Parseador.getDecodeBase64(passwordDTO.getSchema()), passwordDTO.getUserId());
         return securityUserService.cambiarPassword(passwordDTO, id);
     }
 }

@@ -9,16 +9,16 @@ public class TycClientePOJO implements Serializable {
 
     private String trainer;
 
-    private String nomServicio;
+    private String nombreServicio;
 
     private String tycUrl;
 
     public TycClientePOJO() {
     }
 
-    public TycClientePOJO(String trainer, String nomServicio, String tycUrl) {
+    public TycClientePOJO(String trainer, String nombreServicio, String tycUrl) {
         this.trainer = trainer;
-        this.nomServicio = nomServicio;
+        this.nombreServicio = nombreServicio;
         this.tycUrl = tycUrl;
     }
 }

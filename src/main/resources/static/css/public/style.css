@@ -271,10 +271,26 @@
   border-color: transparent
 }
 
-.navbar-inverse .login_link {
+.navbar-inverse .login_link, .navbar-inverse .logout_link {
   margin: 15px 0 -15px;
   font-size: 14px;
   color: #a8fa00
+}
+
+.navbar-inverse .logout_link:before {
+  margin: 5px;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f08b"
+}
+
+.navbar-inverse .login_link:hover {
+  opacity: 0.8;
+}
+
+
+.navbar-inverse .logout_link:hover {
+  opacity: 0.8;
 }
 
 .navbar-inverse ul.navbar-right {
@@ -448,7 +464,7 @@
   border-right: 1px solid #a8fa00
 }
 
-.navbar-inverse .login_link{
+.navbar-inverse .login_link, .navbar-inverse .logout_link{
   cursor: pointer;
 }
 

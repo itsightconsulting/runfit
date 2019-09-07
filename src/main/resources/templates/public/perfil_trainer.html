@@ -561,34 +561,79 @@
         const fichaIds = $perfil.fichaClienteIds.split("|");
         const svcId = csBtoa(selServicioId);
 
-        if(fichaIds.length==1){
-            //Checking if user is login or is new
-            const flagUserLogged = document.getElementById('logout_flag');
-            if(flagUserLogged){
-                window.location.href = _ctx + "gestion/cliente/inscripcion/servicio="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+        //Cheking user is logged
+        const btnLogout = document.getElementById('btn-logout-public');
+        const userIsLogger = btnLogout ? btnLogout.getAttribute("data-logout-flag") : "false";
+        const tipoTrainerId = csBtoa($perfil.tipoTrainerId);
+        if(userIsLogger === "true"){
+            if(fichaIds.length==1){
+                registroClienteAntiguo(hshId, trainerCorreo, svcId, fichaIds[0], tipoTrainerId);
             }else{
-                const id = fichaIds[0];
-                if(id === "1"){
-                    window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
-                }else if(id === "2"){
-                    window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
-                }
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+                    content: "<div style='font-size: 1.3em'>Antes de proseguir, ¿El servicio elegido está relacionado con la disciplina de running?</div>",
+                    buttons: '[NO][SI]'
+                }, function (ButtonPressed) {
+                    if(ButtonPressed == 'SI'){//FichaId==1: Running
+                        registroClienteAntiguo(hshId, trainerCorreo, svcId, 1, tipoTrainerId);
+                    }
+                    if(ButtonPressed == 'NO'){//FichaId==2: General
+                        registroClienteAntiguo(hshId, trainerCorreo, svcId, 2, tipoTrainerId);
+                    }
+                })
             }
-        }else{
-            $.SmartMessageBox({
-                title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
-                content: "<div style='font-size: 1.3em'>Antes de ir al formulario de registro, deseamos saber, ¿El servicio elegido está relacionado con la disciplina de running?</div>",
-                buttons: '[NO][SI]'
-            }, function (ButtonPressed) {
-                if(ButtonPressed == 'SI'){
-                    window.location.href = _ctx + "p/ficha-inscripcion?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
-                }
 
-                if(ButtonPressed == 'NO'){
-                    window.location.href = _ctx + "p/ficha-inscripcion/general?key="+hshId+"&ml="+trainerCorreo+"&sid="+svcId;
+        } else{//For new users(not logged)
+            if(fichaIds.length==1){
+                //Checking if user is login or is new
+                const id = fichaIds[0];
+
+                if(id === "1"){
+                    window.location.href =
+                        `${_ctx}p/ficha-inscripcion?key=${hshId}&ml=${trainerCorreo}&sid=${svcId}&ttId=${tipoTrainerId}`;
+                }else if(id === "2"){
+                    window.location.href =
+                        `${_ctx}p/ficha-inscripcion/general?key=${hshId}&ml=${trainerCorreo}&sid=${svcId}&ttId=${tipoTrainerId}`;
                 }
-            })
+            } else {
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+                    content: "<div style='font-size: 1.3em'>Antes de ir al formulario de registro, deseamos saber, ¿El servicio elegido está relacionado con la disciplina de running?</div>",
+                    buttons: '[NO][SI]'
+                }, function (ButtonPressed) {
+                    if(ButtonPressed == 'SI'){//FichaId==1: Running
+                        window.location.href =
+                            `${_ctx}p/ficha-inscripcion?key=${hshId}&ml=${trainerCorreo}&sid=${svcId}&ttId=${tipoTrainerId}`;
+                    }
+
+                    if(ButtonPressed == 'NO'){//FichaId==2: General
+                        window.location.href =
+                            `${_ctx}p/ficha-inscripcion/general?key=${hshId}&ml=${trainerCorreo}&sid=${svcId}&ttId=${tipoTrainerId}`;
+                    }
+                })
+            }
         }
+      }
+
+      function registroClienteAntiguo(hshId, trainerCorreo, svcId, fichaId, ttId){
+          const finalURL = `${_ctx}gestion/cliente/inscripcion/servicio?key=${hshId}&ml=${trainerCorreo}&sid=${svcId}&fichaId=${fichaId}&ttId=${ttId}`;
+          $.ajax({
+              type: 'POST',
+              url: finalURL,
+              contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+              dataType: 'json',
+              blockLoading: true,
+              noOne: false,
+              success: function(data){
+                  document.getElementById('btnElegir').classList.add('hidden');
+                  reqSuccess(data, 10000000);
+              },
+              error: (xhr)=>{
+                  exceptionCheckDuplicateKeyConstraint(xhr,
+                      `<i class="fa fa-exclamation-circle"></i> Usted ya se ha inscrito en este servicio anteriormente.
+                      Por favor comuníqueselo a su asesor o intente seleccionando otro servicio.`);
+              }
+          })
       }
 
       function registrarContactoTrainer(){
@@ -688,6 +733,7 @@
           dataType: 'json',
           blockLoading: false,
           success: function (res) {
+            console.log(res);
             $perfil = res;
             recrearPerfil(res);
             getServiciosAsync(res.id, res.tipoTrainerId);

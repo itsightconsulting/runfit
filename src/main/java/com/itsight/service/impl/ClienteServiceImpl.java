@@ -242,16 +242,13 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public String registroFull(ClienteDTO cliente) {
-        boolean passValidation = false;
+    public String registroFull(ClienteDTO cliente, Integer ttId) {
         if(cliente.getTrainerId() != null && cliente.getTrainerId() > 0){
             Boolean suserActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
-            if(suserActive == null){
+            if(suserActive == null || !suserActive){
                 return ResponseCode.NOT_FOUND_MATCHES.get();
-            } else if(suserActive){
-                passValidation = true;
             } else {
-                return ResponseCode.NOT_FOUND_MATCHES.get();
+                //Continue with normal flow
             }
         }
 
@@ -318,13 +315,18 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
         servicioService.addClienteServicio(objCli.getId(), cliente.getServicioId());
 
         //Agregandolo a la red de su entrenador
-        if(passValidation){
-            RedFitness rf = new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId()));
-            rf.setPredeterminadaFichaId(cliente.getPredetFichaId());
-            rf.setFlagActivo(true);
-            redFitnessService.save(rf);
+        RedFitness rf = new RedFitness(cliente.getTrainerId(), objCli.getId(), Utilitarios.getPeticionParaTipoRutina(cliente.getCliFit().getFichaId()));
+        rf.setPredeterminadaFichaId(cliente.getPredetFichaId());
+        rf.setFlagActivo(true);
+        redFitnessService.save(rf);
+        if(ttId == Enums.TipoTrainer.PARA_EMPRESA.get()){
+            Integer servicioId = cliente.getServicioId();
+            String correoTrainerEmpresa = servicioService.getTrainerCorreoById(servicioId);
+            emailService.enviarCorreoInformativoConUnicoCc("Nuevo cliente Runfit", cliente.getCorreoTrainer(), correoTrainerEmpresa, "<h1>Tienes un nuevo cliente</h1>");
+        } else {
             emailService.enviarCorreoInformativo("Nuevo cliente Runfit", cliente.getCorreoTrainer(), "<h1>Tienes un nuevo cliente</h1>");
         }
+
         return ResponseCode.REGISTRO.get();
     }
 

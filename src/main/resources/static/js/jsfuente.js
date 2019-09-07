@@ -247,9 +247,27 @@ function disabledForm(frmId){
     $(`#${frmId} radio`).prop('disabled', true);
 }
 
+function exceptionCheckDuplicateKeyConstraint(xhr, csMessage){
+    if(xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.code === "23505"){
+        $.smallBox({
+            content: csMessage,
+            color: "alert",
+            timeout: 10000});
+    }else{
+        exception(xhr);
+    }
+}
+
 function exception(xhr, errorName) {
     console.log(xhr);
     const sCode = xhr['status'];
+
+    if(sCode === 405){
+        $.smallBox({content: "Request method 'G|PT|PS|D' not supported or denied permission",
+                       color: "alert",
+                       timeout: 10000});
+        return;
+    }
 
     if(typeof xhr == 'number' && xhr < 0){
         exception2(xhr, errorName);
@@ -787,8 +805,10 @@ function generateRandomMail(){
                     $("#btnGuardar").attr('disabled','disabled');
                     $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
                 }
-            } else if(options.type === 'GET' && options.noOne !== undefined){
+            } else if(options.type === 'GET' && options.noOne !== undefined && !options.blockLoading){
 
+            } else if(options.type === 'GET' && !options.noOne && options.blockLoading){
+                spinnerUpload();
             } else{
                 if(options.bridgeMultipart){
                     spinnerUpload(xhr);
@@ -819,8 +839,9 @@ function generateRandomMail(){
                         }
                     }
                 } else {
-                    if (options.type === 'GET' && options.noOne !== undefined) {
-
+                    if(options.type === 'GET' && options.noOne !== undefined && !options.blockLoading){
+                    } else if(options.type === 'GET' && !options.noOne && options.blockLoading){
+                        $('#bot1-Msg1').click();
                     } else {
                         $('#bot1-Msg1').click();
                     }

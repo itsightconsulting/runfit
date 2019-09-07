@@ -36,6 +36,6 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
                                                Integer trainerId,
                                                Integer servicioId,
                                                String correoTrainer,
-                                               Integer fichaId);
-
+                                               Integer fichaId,
+                                               Integer ttId);
 }

@@ -232,7 +232,7 @@ public class TrainerFichaController extends BaseController {
 
     @GetMapping("/get/{nomPag:.+}")
     public @ResponseBody
-    ResponseEntity<TrainerFichaPOJO> getTrainerByUsername(@PathVariable(name = "nomPag") String nomPag) {
+    ResponseEntity<TrainerFichaPOJO> getTrainerByNomPag(@PathVariable(name = "nomPag") String nomPag) {
         TrainerFichaPOJO t = trainerFichaService.findByNomPagPar(nomPag);
         if(t != null) {
             t.setHshTrainerId(Parseador.getEncodeHash32Id("rf-public", t.getId()));

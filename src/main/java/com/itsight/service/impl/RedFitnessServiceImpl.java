@@ -245,19 +245,20 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public String registrarNuevaRedParaClienteAntiguo(Integer clienteId, Integer trainerId, Integer servicioId, String correoTrainer, Integer fichaId) {
+    public String registrarNuevaRedParaClienteAntiguo(
+            Integer clienteId, Integer trainerId, Integer servicioId,
+            String correoTrainer, Integer fichaId, Integer ttId) {
         //Relacionando servicio con el nuevo cliente
-        boolean passValidation = false;
         if(trainerId != null && clienteId > 0){
             Boolean suserActive = securityUserRepository.findEnabledById(trainerId);
-            if(suserActive == null){
+            if(suserActive == null || !suserActive ){
                 return Enums.ResponseCode.NOT_FOUND_MATCHES.get();
-            } else if(suserActive){
-                passValidation = true;
             } else {
-                return Enums.ResponseCode.NOT_FOUND_MATCHES.get();
+                //Continue with normal flow
             }
         }
+
+        //Se valida con el exception controller, violation of composite unique key | Lo mismo para la tabla red_fitness
         servicioRepository.addClienteServicio(clienteId, servicioId);
 
         //Agregandolo a la red de su entrenador
@@ -267,15 +268,32 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
             rf.setPredeterminadaFichaId(fichaId);
             rf.setFlagActivo(true);
             this.save(rf);
-            emailService.enviarCorreoInformativo("Nuevo cliente Runfit",
-                    correoTrainer,
-                    "<h1>Tienes un nuevo cliente</h1>");
+
+            //-- MAIL --
+            if(ttId == Enums.TipoTrainer.PARA_EMPRESA.get()){
+                String correoTrainerEmpresa = servicioRepository.findTrainerCorreoById(servicioId);
+                emailService.enviarCorreoInformativoConUnicoCc(
+                        "Nuevo cliente Runfit", correoTrainer, correoTrainerEmpresa,
+                        "<h1>Tienes un nuevo cliente</h1>");
+            } else {
+                emailService.enviarCorreoInformativo("Nuevo cliente Runfit",
+                        correoTrainer,
+                        "<h1>Tienes un nuevo cliente</h1>");
+            }
+
         } else {
-            emailService.enviarCorreoInformativo("Cliente contrato otro de tus servicios",
-                                                        correoTrainer,
-                                                "<h1>Un cliente antiguo tuyo ha contratado otro de tus servicios</h1>");
+            if(ttId == Enums.TipoTrainer.PARA_EMPRESA.get()){
+                String correoTrainerEmpresa = servicioRepository.findTrainerCorreoById(servicioId);
+                emailService.enviarCorreoInformativoConUnicoCc(
+                        "Cliente contrato otro de tus servicios", correoTrainer, correoTrainerEmpresa,
+                        "<h1>Un cliente antiguo tuyo ha contratado otro de tus servicios</h1>");
+            } else {
+                emailService.enviarCorreoInformativo("Cliente contrato otro de tus servicios",
+                        correoTrainer,
+                        "<h1>Un cliente antiguo tuyo ha contratado otro de tus servicios</h1>");
+            }
         }
 
-        return jsonResponse(EXITO_GENERICA.get());
+        return jsonResponse(Enums.Msg.CLIENTE_ANTIGUO_SUSC_A_NUE_SERVICIO.get());
     }
 }
