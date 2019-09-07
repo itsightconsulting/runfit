@@ -1467,7 +1467,7 @@ function todosLosIndex(e){
     let indxs = {};
     indxs.numSem = document.querySelector('#SemanaActual').textContent;
     indxs.diaIndex = e.getAttribute('data-dia-index');
-    indxs.lstIndex = e.getAttribute('data-index');;
+    indxs.lstIndex = e.getAttribute('data-index');
     return indxs;
 }
 
@@ -1477,6 +1477,8 @@ function guardarRutina(){
         contentType: "application/json",
         url: _ctx + "gestion/rutina-plantilla/agregar",
         dataType: "json",
+        blockLoading: true,
+        noOne: false,
         data: JSON.stringify($programa),
         success: function (data) {
              if (data == "-150") {

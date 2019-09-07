@@ -11,11 +11,14 @@ import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ChatRepository;
 import com.itsight.repository.RedFitnessRepository;
+import com.itsight.repository.SecurityUserRepository;
+import com.itsight.repository.ServicioRepository;
 import com.itsight.service.*;
+import com.itsight.util.Enums;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.itsight.util.Parseador.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +26,8 @@ import java.util.List;
 
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_GENERAL;
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_PERSONAL;
-import static com.itsight.util.Parseador.fromStringToDateSimple;
+import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Transactional
 @Service
@@ -39,6 +43,10 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
 
     private ChatRepository chatRepository;
 
+    private ServicioRepository servicioRepository;
+
+    private SecurityUserRepository securityUserRepository;
+
     @Value("${domain.name}")
     private String domainName;
 
@@ -48,13 +56,17 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
             AnuncioTrainerService anuncioTrainerService,
             TrainerFichaService trainerFichaService,
             AnuncioReceptorService anuncioReceptorService,
-            ChatRepository chatRepository){
+            ChatRepository chatRepository,
+            ServicioRepository servicioRepository,
+            SecurityUserRepository securityUserRepository){
         super(repository);
         this.emailService = emailService;
         this.anuncioTrainerService = anuncioTrainerService;
         this.trainerFichaService = trainerFichaService;
         this.anuncioReceptorService = anuncioReceptorService;
         this.chatRepository = chatRepository;
+        this.servicioRepository = servicioRepository;
+        this.securityUserRepository = securityUserRepository;
     }
 
     @Override
@@ -230,5 +242,58 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
         String infoMesesSuspendidos  = repository.getMesesCliSuspendidos(trainerId);
 
         return infoMesesSuspendidos;
+    }
+
+    @Override
+    public String registrarNuevaRedParaClienteAntiguo(
+            Integer clienteId, Integer trainerId, Integer servicioId,
+            String correoTrainer, Integer fichaId, Integer ttId) {
+        //Relacionando servicio con el nuevo cliente
+        if(trainerId != null && clienteId > 0){
+            Boolean suserActive = securityUserRepository.findEnabledById(trainerId);
+            if(suserActive == null || !suserActive ){
+                return Enums.ResponseCode.NOT_FOUND_MATCHES.get();
+            } else {
+                //Continue with normal flow
+            }
+        }
+
+        //Se valida con el exception controller, violation of composite unique key | Lo mismo para la tabla red_fitness
+        servicioRepository.addClienteServicio(clienteId, servicioId);
+
+        //Agregandolo a la red de su entrenador
+        Boolean existsRf = repository.checkExistsByTrainerIdAndClienteId(trainerId, clienteId);
+        if(!existsRf){
+            RedFitness rf = new RedFitness(trainerId, clienteId, Utilitarios.getPeticionParaTipoRutina(fichaId.toString()));
+            rf.setPredeterminadaFichaId(fichaId);
+            rf.setFlagActivo(true);
+            this.save(rf);
+
+            //-- MAIL --
+            if(ttId == Enums.TipoTrainer.PARA_EMPRESA.get()){
+                String correoTrainerEmpresa = servicioRepository.findTrainerCorreoById(servicioId);
+                emailService.enviarCorreoInformativoConUnicoCc(
+                        "Nuevo cliente Runfit", correoTrainer, correoTrainerEmpresa,
+                        "<h1>Tienes un nuevo cliente</h1>");
+            } else {
+                emailService.enviarCorreoInformativo("Nuevo cliente Runfit",
+                        correoTrainer,
+                        "<h1>Tienes un nuevo cliente</h1>");
+            }
+
+        } else {
+            if(ttId == Enums.TipoTrainer.PARA_EMPRESA.get()){
+                String correoTrainerEmpresa = servicioRepository.findTrainerCorreoById(servicioId);
+                emailService.enviarCorreoInformativoConUnicoCc(
+                        "Cliente contrato otro de tus servicios", correoTrainer, correoTrainerEmpresa,
+                        "<h1>Un cliente antiguo tuyo ha contratado otro de tus servicios</h1>");
+            } else {
+                emailService.enviarCorreoInformativo("Cliente contrato otro de tus servicios",
+                        correoTrainer,
+                        "<h1>Un cliente antiguo tuyo ha contratado otro de tus servicios</h1>");
+            }
+        }
+
+        return jsonResponse(Enums.Msg.CLIENTE_ANTIGUO_SUSC_A_NUE_SERVICIO.get());
     }
 }

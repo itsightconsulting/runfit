@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.ClienteFitnessDTO;
+import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.service.ClienteProcedureInvoker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -127,5 +128,13 @@ public class ClienteProcedureInvokerImpl implements ClienteProcedureInvoker {
             LOGGER.warn(ex.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public List<TycClientePOJO> getTycServiciosById(Integer clienteId) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("func_cliente_get_tyc_from_svcs", "resultMappingGetTycServiciosById");
+        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(0, clienteId);
+        return  storedProcedureQuery.getResultList();
     }
 }

@@ -40,17 +40,6 @@ function imgToSvg () {
         }, 'xml');
     });
 };
-function datepicker_init () {
-
-    $('.datepicker_inline').datetimepicker({
-        locale: 'es',
-        inline: true,
-        sideBySide: true,
-        format: 'DD/MM/YYYY'
-        //minDate: moment()
-    });
-
-}
 
 function openNav() {
   var ancho = window.innerWidth;
@@ -214,12 +203,6 @@ function carouselPlanes() {
       });
 }
 
-/*function fancybox() {
-  $(document).ready(function() {
-    $("[data-fancybox]").fancybox();
-  });
-}*/
-
 function carouselSuspendidos() {
   $('#carouselSuspendidos').owlCarousel({
     loop:false,
@@ -250,7 +233,6 @@ function select_fave () {
 
 $(function() {
     imgToSvg();
-    //datepicker_init();
     openNav();
     carouselPlanes();
     carouselPlanElegido();

@@ -3,16 +3,19 @@ package com.itsight.controller;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Cliente;
-import com.itsight.domain.TipoUsuario;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
+import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
 import com.itsight.service.ClienteProcedureInvoker;
 import com.itsight.service.ClienteService;
+import com.itsight.service.RedFitnessService;
 import com.itsight.service.SecUserProcedureInvoker;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.Base64;
 import java.util.List;
 
+@PreAuthorize("hasRole('ROLE_RUNNER')")
 @Controller
 @RequestMapping("/gestion/cliente")
-public class ClienteController {
+public class ClienteController extends BaseController {
 
     private ClienteService clienteService;
 
@@ -33,17 +37,17 @@ public class ClienteController {
 
     private ClienteProcedureInvoker clienteProcedureInvoker;
 
-    private HttpSession session;
+    private RedFitnessService redFitnessService;
 
     @Autowired
     public ClienteController(ClienteService clienteService,
                              SecUserProcedureInvoker secUserProcedureInvoker,
                              ClienteProcedureInvoker clienteProcedureInvoker,
-                             HttpSession session) {
+                             RedFitnessService redFitnessService) {
         this.clienteService = clienteService;
         this.secUserProcedureInvoker = secUserProcedureInvoker;
         this.clienteProcedureInvoker = clienteProcedureInvoker;
-        this.session = session;
+        this.redFitnessService = redFitnessService;
     }
 
     @GetMapping(value = "/videoteca")
@@ -77,12 +81,6 @@ public class ClienteController {
         return clienteService.actualizar(cliente, rols);
     }
 
-    @PostMapping(value = "/fitness/agregar")
-    public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
-        return clienteService.registroFull(cliente);
-    }
-
-
     @GetMapping(value = "/distribucion-departamento/obtener")
     public @ResponseBody List<ClienteDTO> getDistribucionDepartamentoCliente(){
 
@@ -101,5 +99,27 @@ public class ClienteController {
         return lstDistribucionCliente;
     }
 
+    @GetMapping(value = "/get/tyc/servicios")
+    public @ResponseBody List<TycClientePOJO> getTycServiciosById(HttpSession session){
+        Integer id = (Integer) session.getAttribute("id");
+        return clienteProcedureInvoker.getTycServiciosById(id);
+    }
 
+    @PostMapping(value = "/inscripcion/servicio")
+    public @ResponseBody String inscripcionNuevoServicio(
+            @RequestParam(name="key") String hshTrainerId,
+            @RequestParam(name="ml") String trainerMailDecode,
+            @RequestParam(name="sid") String sid,
+            @RequestParam(name="fichaId") String fichaId,
+            @RequestParam(name="ttId") String tipoTrainerId,
+            HttpSession session) throws CustomValidationException {
+        String correoTrainer = Parseador.getDecodeBase64(trainerMailDecode);
+        String svcId = Parseador.getDecodeBase64(sid);
+        Integer ttId = Integer.parseInt(Parseador.getDecodeBase64(tipoTrainerId));
+
+        Integer id = (Integer) session.getAttribute("id");
+        Integer trainerId = getDecodeHashId("rf-public", hshTrainerId);
+        return redFitnessService.registrarNuevaRedParaClienteAntiguo(
+                id, trainerId, Integer.parseInt(svcId), correoTrainer, Integer.parseInt(fichaId), ttId);
+    }
 }

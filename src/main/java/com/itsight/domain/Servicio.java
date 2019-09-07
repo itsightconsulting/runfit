@@ -98,7 +98,15 @@ public class Servicio implements Serializable {
     @JoinColumn(name = "TrainerId", referencedColumnName = "SecurityUserId")
     private Trainer trainer;
 
-    @JsonBackReference
+    /*@JsonBackReference
     @ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
-    private List<Cliente> clientes = new ArrayList<>();
+    private List<Cliente> clientes = new ArrayList<>();*/
+
+    @JsonBackReference
+    @OneToMany(
+            mappedBy = "servicio",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClienteServicio> posts = new ArrayList<>();
 }

@@ -108,6 +108,19 @@ public abstract class EmailGeneric {
         return preparator;
     }
 
+    public MimeMessagePreparator mimeMessagePreparatorForRecepientAndOnlyOneCc(String asunto, String receptor, String ccReceptor, String contenido) {
+
+        MimeMessagePreparator preparator = mimeMessage -> {
+            mimeMessage.setFrom(new InternetAddress(hostMail, "RunFit Plataform"));
+            mimeMessage.setSubject(asunto);
+            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(receptor));
+            mimeMessage.setRecipient(Message.RecipientType.CC, new InternetAddress(ccReceptor));
+            mimeMessage.setContent(contenido
+                    , "text/html; charset=utf-8");
+        };
+        return preparator;
+    }
+
     public MimeMessagePreparator mimeMessagePreparator(String asunto, String receptor, String contenido, String copiado) {
 
         MimeMessagePreparator preparator = mimeMessage -> {

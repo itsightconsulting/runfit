@@ -30,6 +30,14 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer>{
     );
 
     @Modifying
-    @Query(value = "INSERT INTO cliente_servicio VALUES(?1, ?2);", nativeQuery = true)
+    @Query(value = "INSERT INTO cliente_servicio(fecha_creacion, cliente_id, servicio_id) VALUES(now(), ?1, ?2)", nativeQuery = true)
     void addClienteServicio(Integer clienteId, Integer servicioId);
+
+    @Query(value = "SELECT T.correo " +
+                   "FROM servicio S " +
+                   "INNER JOIN trainer T ON T.security_user_id=S.trainer_id " +
+                   "WHERE S.servicio_id " +
+                   "IN (SELECT servicio_id FROM CLIENTE_SERVICIO WHERE cliente_id = ?1) " +
+                   "LIMIT 1", nativeQuery = true)
+    String findTrainerCorreoById(Integer servicioId);
 }

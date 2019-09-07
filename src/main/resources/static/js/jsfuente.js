@@ -247,9 +247,27 @@ function disabledForm(frmId){
     $(`#${frmId} radio`).prop('disabled', true);
 }
 
+function exceptionCheckDuplicateKeyConstraint(xhr, csMessage){
+    if(xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.code === "23505"){
+        $.smallBox({
+            content: csMessage,
+            color: "alert",
+            timeout: 10000});
+    }else{
+        exception(xhr);
+    }
+}
+
 function exception(xhr, errorName) {
     console.log(xhr);
     const sCode = xhr['status'];
+
+    if(sCode === 405){
+        $.smallBox({content: "Request method 'G|PT|PS|D' not supported or denied permission",
+                       color: "alert",
+                       timeout: 10000});
+        return;
+    }
 
     if(typeof xhr == 'number' && xhr < 0){
         exception2(xhr, errorName);
@@ -787,8 +805,10 @@ function generateRandomMail(){
                     $("#btnGuardar").attr('disabled','disabled');
                     $("#btnGuardar").html('<i class="fa fa-spinner fa-15x fa-spin fa-fw margin-right-5 txt-color-darken"></i><i>Cargando... Por favor espere...</i>');
                 }
-            } else if(options.type === 'GET' && options.noOne !== undefined){
+            } else if(options.type === 'GET' && options.noOne !== undefined && !options.blockLoading){
 
+            } else if(options.type === 'GET' && !options.noOne && options.blockLoading){
+                spinnerUpload();
             } else{
                 if(options.bridgeMultipart){
                     spinnerUpload(xhr);
@@ -819,8 +839,9 @@ function generateRandomMail(){
                         }
                     }
                 } else {
-                    if (options.type === 'GET' && options.noOne !== undefined) {
-
+                    if(options.type === 'GET' && options.noOne !== undefined && !options.blockLoading){
+                    } else if(options.type === 'GET' && !options.noOne && options.blockLoading){
+                        $('#bot1-Msg1').click();
                     } else {
                         $('#bot1-Msg1').click();
                     }
@@ -1054,5 +1075,27 @@ function imgtoSvgEvent()
     }
 function fromDateToString(d){
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
+}
+
+function cerrarSesion(){
+    let fullName = atob(document.cookie = getCookie("GLL_NOMBRE_COMPLETO"));
+    fullName = fullName.toLowerCase().split().map(e=>capitalizeFirstLetter(e)).join(" ");
+    $.SmartMessageBox({
+        title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+        content: "¿Estás seguro que desea cerrar sesión "+fullName+" <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span>?",
+        buttons: "[No][Si]"
+    }, function(e) {
+        "Si" == e && $.ajax({
+            url: _ctx + "logout",
+            type: "POST",
+            success: function(e) {
+                document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
+                window.location = _ctx + "login";
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        })
+    })
 }
 

@@ -1708,11 +1708,11 @@
       function sendForm(){
         const body = generateBody();
         body.predetFichaId = TipoFicha.RUNNING;
-
+        const ttId = getParamFromURL("ttId");
         $.ajax({
           type: 'POST',
           contentType: 'application/json',
-          url: _ctx + 'p/cliente/fitness/agregar',
+          url: _ctx + 'p/cliente/fitness/agregar/'+ttId,
           dataType: 'json',
           data: JSON.stringify(body),
           blockLoading: true,

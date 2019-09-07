@@ -1636,3 +1636,53 @@ section.consejos span.msj-no-data{
   margin-top: 80px;
   color: #ffff;
 }
+
+/* SPINNER */
+.half-circle-spinner, .half-circle-spinner * {
+  box-sizing: border-box;
+}
+
+.half-circle-spinner {
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  position: relative;
+  left: 39.5%;
+}
+
+.half-circle-spinner .circle {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border: calc(60px / 10) solid transparent;
+}
+
+.half-circle-spinner .circle.circle-1 {
+  border-top-color: #a8fa00;
+  animation: half-circle-spinner-animation 1s infinite;
+}
+
+.half-circle-spinner .circle.circle-2 {
+  border-bottom-color: #a8fa00;
+  animation: half-circle-spinner-animation 1s infinite alternate;
+}
+
+@keyframes half-circle-spinner-animation {
+  0% {
+    transform: rotate(0deg);
+
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .half-circle-spinner {
+    left: 30.5%;
+  }
+}
+
+/* END SPINNER */

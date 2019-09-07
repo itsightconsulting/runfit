@@ -721,16 +721,17 @@ function instanciarDatosFitnessCliente(){
 }
 
 
-function instanciarGrupoVideos(effImg){
+function instanciarGrupoVideos(){
 
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/video/obtener/arbol',
+        blockLoading: true,
+        noOne: false,
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
-                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -759,7 +760,6 @@ function instanciarGrupoVideos(effImg){
             }
         },
         error: function (xhr) {
-            window.setInterval(effImg);
             exception(xhr);
         },
         complete: function () {
@@ -768,17 +768,17 @@ function instanciarGrupoVideos(effImg){
     });
 }
 
-function instanciarGrupoAudios(effImg){
+function instanciarGrupoAudios(){
 
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/tipo-audio/obtener/arbol',
         blockLoading: true,
+        noOne: false,
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
-                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -814,7 +814,6 @@ function instanciarGrupoAudios(effImg){
             }
         },
         error: function (xhr) {
-            window.setInterval(effImg);
             exception(xhr);
         },
         complete: function () {
@@ -2802,24 +2801,6 @@ function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     })
 }
 
-function guardarRutina(rutina, btn){
-    $(btn).button('loading');
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: _ctx + "gestion/rutina/generar/rutina/macro/demo",
-        dataType: "json",
-        data: JSON.stringify(rutina),
-        success: function () {
-            window.location.href = _ctx;
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {}
-    })
-}
-
 function cambiarATabRutina(){
     document.querySelector('a[href="#tabRutina"]').click();
 }
@@ -2838,8 +2819,7 @@ function principalesAlCambiarTab(e){
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
         if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
-            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
-            instanciarGrupoVideos(effImg);
+            instanciarGrupoVideos();
         }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
@@ -2853,8 +2833,7 @@ function principalesAlCambiarTab(e){
         document.querySelector('#OpsAdic').classList.add('hidden');
         document.querySelector('#DivEditor').classList.add('hidden');
         if (document.querySelector('#ArbolGrupoAudio').children.length == 0) {
-            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
-            instanciarGrupoAudios(effImg);
+            instanciarGrupoAudios();
         }
     }
     else if(e.target.tagName === "A"){
@@ -2862,8 +2841,7 @@ function principalesAlCambiarTab(e){
         document.querySelector('#DivEditor').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($ruConsolidado == undefined){
-                const effImg = spinnerSwitchTab(RutinaOpc.effectImage)
-                obtenerRutinaConsolidadoBD(effImg);
+                obtenerRutinaConsolidadoBD();
             }
         }
     }
@@ -3078,16 +3056,17 @@ function actualizarDiaObjetivoBD(a, b){
     })
 }
 
-function obtenerRutinaConsolidadoBD(effImg){
+function obtenerRutinaConsolidadoBD(){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: _ctx + "rutina/obtenerConsolidado?key="+id + "&rn="+rn,
+        blockLoading: true,
+        noOne: false,
         dataType: "json",
         success: function (d) {
-            window.setInterval(effImg);
             notificacionesRutinaSegunResponseCode(d.responseCode);
             if(d.data !== null){
                 FichaSet.instanciarConsolidado(d.data);
@@ -3100,7 +3079,7 @@ function obtenerRutinaConsolidadoBD(effImg){
             exception(xhr);
         },
         complete: function () {
-            window.setInterval(effImg);
+
         }
     })
 }

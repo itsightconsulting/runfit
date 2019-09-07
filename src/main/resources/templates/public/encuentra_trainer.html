@@ -293,10 +293,12 @@
         onlyBusquedaDinamica();
       }
 
-      function onlyBusquedaDinamica(){
+      function onlyBusquedaDinamica(noCleanPrevious){
         document.querySelector('.dv-rows').classList.add('hidden');
         const divTrainers = document.getElementById('Trainers');
-        divTrainers.innerHTML = spinnerLoadingHtmlRaw();
+        if(!noCleanPrevious){
+          divTrainers.innerHTML = spinnerLoadingHtmlRaw();
+        }
 
         const d = getFormData($('#frm_registro'));
         d.niveles = Array.from(document.getElementById('Niveles').querySelectorAll("option:checked"),e=>e.value).join('|');
@@ -311,7 +313,6 @@
 
         d.limit = queryParams.limit;
         d.offset = queryParams.offset;
-
         $.ajax({
           type: 'GET',
           url: _ctx + 'p/trainer/find/dinamico',
@@ -320,7 +321,9 @@
           blockLoading: false,
           noOne: true,
           success: function (res) {
-            divTrainers.innerHTML = "";
+            if(!noCleanPrevious){
+              divTrainers.innerHTML = "";
+            }
             if(res.length === 0){
               const noOne = document.createElement('div');
               noOne.className = "";
@@ -328,7 +331,7 @@
               noOne.style.color = "#a8fa00";
               noOne.style.padding = "15px 0px";
               noOne.innerHTML = "<i class='fa fa-info-circle fa-fw'></i>No se ha encontrado ninguna coincidencia. Pruebe nuevamente con otra búsqueda";
-              document.getElementById('Trainers').appendChild(noOne);
+              divTrainers.appendChild(noOne);
               document.querySelector('.dv-rows').classList.add('hidden');
             }else{
               recrearListado(res);
@@ -428,7 +431,8 @@
           if($(window).scrollTop() + $(window).height() > $(document).height() - footHeight) {
             if(totalRows> queryParams.offset + queryParams.limit){
                 queryParams.offset = queryParams.offset + queryParams.limit;
-                onlyBusquedaDinamica();
+                const noCleanPrevious = true;
+                onlyBusquedaDinamica(noCleanPrevious);
             }
           }
         });

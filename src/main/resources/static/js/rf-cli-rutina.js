@@ -584,21 +584,6 @@ RutinaOpc = (function(){
                         </div>
                     </form>`;
         },
-        effectImage: ()=>{
-            const imgEffect = document.querySelector('#ImgLoading');
-            imgEffect.style.position = 'relative';
-            let refOffSetWidth = imgEffect.parentElement.offsetWidth;
-            let s = 8, k = 1;
-            const intervalLoading = setInterval(function(){
-                imgEffect.style.right = (0 - (k*s)) + 'px';
-                k++;
-                if(Math.abs(k*s)>refOffSetWidth){
-                    k=1;
-                    imgEffect.style.right = (0 - (k*s)) + 'px';
-                }
-            }, 100);
-            return intervalLoading;
-        },
         cambiarEstado: (e, flag)=>{
             cambiarEstadoBD(flag, e);
         }

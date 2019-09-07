@@ -1,7 +1,16 @@
 <nav th:fragment="fg-header" class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="text-right view-only-desktop">
-            <p class="login_link" id="login_link">INICIAR SESIÓN</p>
+
+            <p th:if="${#authentication.principal == 'anonymousUser'}"
+               class="login_link"
+               id="login_link">INICIAR SESIÓN
+            </p>
+            <p th:unless="${#authentication.principal == 'anonymousUser'}"
+               class="logout_link"
+               onclick="javascript:cerrarSesion()"
+                id="btn-logout-public" data-logout-flag="true">CERRAR SESIÓN
+            </p>
         </div>
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/p/inicio}"><img class="logo-header" th:src="@{/img/public/logo.png}+'?'+${version}"/></a>

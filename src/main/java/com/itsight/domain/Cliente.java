@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.domain.base.AuditingEntity;
 import com.itsight.domain.jsonb.Rol;
 import com.itsight.domain.pojo.ClientePOJO;
+import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.json.JsonDateSimpleSerializer;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -46,9 +47,20 @@ import java.util.UUID;
                         @ConstructorResult(
                                 targetClass = ClientePOJO.class,
                                 columns = {
-                                        @ColumnResult(name = "departamentoUb")
-                                        ,@ColumnResult(name = "qtyClientesByDepartamento")
-                                          }
+                                        @ColumnResult(name = "departamentoUb"),
+                                        @ColumnResult(name = "qtyClientesByDepartamento")
+                                }
+                        )
+                }),
+        @SqlResultSetMapping(name = "resultMappingGetTycServiciosById",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = TycClientePOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "trainer"),
+                                        @ColumnResult(name = "nombreServicio"),
+                                        @ColumnResult(name = "tycUrl")
+                                }
                         )
                 })
 })
@@ -101,6 +113,14 @@ public class Cliente extends AuditingEntity implements Serializable {
     @JoinColumn(name = "PaisId", nullable = false, updatable = false)
     private Pais pais;
 
+    @JsonBackReference
+    @OneToMany(
+            mappedBy = "cliente",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClienteServicio> lstCliSer = new ArrayList<>();
+
     @Column
     private String ubigeo;
 
@@ -140,16 +160,15 @@ public class Cliente extends AuditingEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente")
     private AnuncioReceptor lstAnuncioReceptor;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    /*@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "ClienteServicio",
         joinColumns = {
             @JoinColumn(name = "ClienteId", referencedColumnName = "SecurityUserId")
-
         },inverseJoinColumns = {
             @JoinColumn(name = "ServicioId")
         }
     )
-    private List<Servicio> servicios = new ArrayList<>();
+    private List<Servicio> servicios = new ArrayList<>();*/
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "ClienteVideo",

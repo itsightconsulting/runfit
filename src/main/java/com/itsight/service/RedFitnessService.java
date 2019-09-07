@@ -32,4 +32,10 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
     Integer findTrainerIdUltimaRutinaByUsuarioId(Integer trainerId);
 
+    String registrarNuevaRedParaClienteAntiguo(Integer clienteId,
+                                               Integer trainerId,
+                                               Integer servicioId,
+                                               String correoTrainer,
+                                               Integer fichaId,
+                                               Integer ttId);
 }

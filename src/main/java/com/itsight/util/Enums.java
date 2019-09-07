@@ -203,7 +203,8 @@ public class Enums {
         CAMBIO_PASSWORD_PASADO("Usted ya ha cambiado su contraseña anteriormente por lo que este link ya no funciona."),
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado"),
         POSTULANTE_ULTIMA_ETAPA_EMP("Su ficha ha sido enviada satisfactoriamente. Pronto la revisaremos y le notificaremos del resultado vía correo. Gracias!"),
-        FLAG_BLOQUEADO_TIENE_DEPS("No puede actualizar el ESTADO del registro ya que este se encuentra asociado a un tabla hijo");
+        FLAG_BLOQUEADO_TIENE_DEPS("No puede actualizar el ESTADO del registro ya que este se encuentra asociado a un tabla hijo"),
+        CLIENTE_ANTIGUO_SUSC_A_NUE_SERVICIO("Su inscripción se ha realizado con éxito. El asesor esta siendo notificado y pronto se comunicará con usted. Gracias!");
 
         final String msg;
 
