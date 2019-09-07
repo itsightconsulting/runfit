@@ -1761,10 +1761,47 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     margin: 20px 0;
     padding-left: 14px;
     position: relative; }
-.scroll_rut .days_week article .rt-elem .elem ul li input {
+.scroll_rut .days_week article .rt-elem .elem ul li input  {
     width: 100%;
     border: none;
     border-bottom: 1px solid #ccc; }
+
+.scroll_rut .days_week article .rt-elem .elem input.item-inp{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin-top:20px;
+}
+.scroll_rut .days_week article .rt-elem .elem input.item-init,
+.scroll_rut .days_week article .rt-elem .elem input.in-sub-ele-esp-pos {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+   }
+.scroll_rut .days_week article .rt-elem .elem input.item-minutos{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+
+.scroll_rut .days_week article .inputs-init input.item-inp , .scroll_rut .days_week article .rf-dia-pre-elemento input{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.scroll_rut .days_week article .inputs-init, .scroll_rut .days_week article .rf-dia-pre-elemento {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    white-space: normal;
+    -webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+
+}
+
 .scroll_rut .days_week article .rt-elem .elem ul li .col-xs-4 {
     text-align: center; }
 .scroll_rut .days_week article .rt-elem .elem ul li .time {
@@ -1882,3 +1919,7 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     color: #fff;
 }
 
+h2.title_carousel span.semana-num {
+    font-family: GothamHTF-Bold;
+
+}

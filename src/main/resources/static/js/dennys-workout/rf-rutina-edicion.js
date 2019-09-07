@@ -100,6 +100,8 @@ function init(){
         validators();
         instanciarDatosFitnessCliente();
         tabRutina.addEventListener('click', principalesEventosTabRutina);
+
+
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
         tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
@@ -143,8 +145,6 @@ function init(){
 
 function avanzarRetrocederSemana(numSem, action, parentDiv){
 
-
-         console.log("ooh");
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
         if(semana != undefined) {
             $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
@@ -154,7 +154,6 @@ function avanzarRetrocederSemana(numSem, action, parentDiv){
             instanciarTooltips();
             generarDiasEnviados();
             parentDiv.removeAttribute('hidden');
-            console.log("ss",action);
         }
     });
 }
@@ -705,6 +704,7 @@ function instanciarDatosFitnessCliente(){
                 } else {
                     if(data.id != 0) {
                         if($rutina.tipoRutina !== TipoRutina.GENERAL){
+
                             FichaSet.instanciarDatosFicha(data);
                         }else{
                             FichaSet.setTotalSemanas();
@@ -1266,6 +1266,7 @@ function principalesEventosClickRutina(e) {
         }
     }
     else if(clases.contains('rf-dia-elemento-nombre')){
+        debugger;
         e.preventDefault();
         e.stopPropagation();
 
@@ -1475,6 +1476,7 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            alert("xd");
             const valor = $mediaNombre;
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
@@ -1644,6 +1646,7 @@ function principalesEventosFocusOutSemanario(e) {
         }
     }
     else if(clases.contains('in-sub-elemento')) {
+        debugger
         const valor = input.value.trim();
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -1797,6 +1800,7 @@ function principalEventoFocusIn(e){
 }
 
 function principalesEventosTabRutina(e){
+
     const input = e.target;
     const clases = input.classList;
 
@@ -2714,6 +2718,7 @@ function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElement
     params.diaIndice = diaIndex;
     params.elementoIndice = posElemento;
     params.subElementoIndice = postSubElemento;
+    console.log("papu", params);
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

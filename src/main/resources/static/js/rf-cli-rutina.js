@@ -76,6 +76,7 @@ class Rutina {
         $('#MesAnio').text(meses[semana.dias[0].fecha.getMonth()] +" - "+ semana.dias[0].fecha.getFullYear());
 
         //Modificando selector de semana
+
         RutinaOpc.iniciarSemanas(this.totalSemanas);
         instanciarPopovers();
         instanciarTooltips();
@@ -87,7 +88,10 @@ class Rutina {
             Indicadores.instanciarIndicadores2();
             Indicadores.instanciarKilometrajes();
             Indicadores.instanciarPorcentajeAvance();
+
+
         }
+
     }
 
     agregarNuevaSemana() {

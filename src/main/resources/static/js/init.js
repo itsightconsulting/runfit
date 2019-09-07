@@ -208,7 +208,7 @@ $(function() {
     owlCarouselVideoteca();
     heightCard();
     miniPanelActive();
-    fancybox();
+    //fancybox();
     select_fave();
     $('[rel="tooltip"]').tooltip()
     try{

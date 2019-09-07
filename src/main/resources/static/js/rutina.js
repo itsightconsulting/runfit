@@ -1139,6 +1139,7 @@ RutinaIx = (function(){
             return ixs;
         },
         getIxsForElemento: (e)=>{
+            debugger;
             let ixs = {};
             ixs.numSem = typeof $semActual === 'undefined' ? '0' : $semActual.textContent -1;
             ixs.diaIndex = e.getAttribute('data-dia-index');
@@ -2354,6 +2355,7 @@ RutinaSeccion = (function (){
                         <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                     </li>
                     `;
+
             subEleRef.insertAdjacentHTML(strategy, subEleHTML);
             return ix;
         },

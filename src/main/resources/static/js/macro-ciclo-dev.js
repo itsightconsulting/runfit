@@ -619,8 +619,7 @@ MacroCiclo = (function(){
                         const iBase = r.dtGrafico.length - cantSemExcedentes;
                         r.dtGrafico[iBase+i].percInts = r.control.intensidades[iBase+i];
                     }
-                    console.log(r.semanas);
-                    //guardarRutina(r, intervalEffect);
+                    guardarRutina(r, intervalEffect);
                 }
             }else{
                 $.smallBox({color: "alert", content: "Primero debes generar el macro..."});

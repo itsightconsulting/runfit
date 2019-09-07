@@ -119,6 +119,7 @@ function instanciarDatosFitnessCliente(){
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/cliente-fitness/obtener/secundario/'+ getParamFromURL('rn'),
         dataType: "json",
+        blockLoading: false,
         success: function (data, textStatus) {
             if (textStatus == "success") {
                 if (data == "-9") {
@@ -302,6 +303,7 @@ function guardarRutina(rutina, btn, interval){
         contentType: "application/json",
         url: _ctx + "gestion/rutina/nueva?key=" + id + "&rn=" + rn,
         dataType: "json",
+        blockLoading: false,
         data: JSON.stringify(rutina),
         success: function (data) {
             window.clearInterval(interval);

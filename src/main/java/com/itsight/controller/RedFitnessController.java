@@ -76,6 +76,7 @@ public class RedFitnessController {
     public ModelAndView historialRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, @RequestParam(name = "nm") String nombreCompleto ,
                                          Model model, HttpSession session) throws JsonProcessingException {
 
+
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
 
