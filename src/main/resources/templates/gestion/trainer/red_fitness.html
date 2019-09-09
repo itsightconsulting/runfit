@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-us"
 	  xmlns:th="http://www.thymeleaf.org"
 	  th:with="version = ${#servletContext.getAttribute('version')}">
@@ -807,9 +807,9 @@
             $.get(imgURL, function (data) {
                 var $svg = $(data).find('svg');
                 Array.from(element.attributes).forEach(e=>{
-                    $svg = $svg.attr(e.nodeName, e.nodeValue);
+                    $svg.attr(e.nodeName, e.nodeValue);
                 });
-                $svg = $svg.removeAttr('xmlns:a');
+                $svg.removeAttr('xmlns:a');
                 if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
                     $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
                 }
