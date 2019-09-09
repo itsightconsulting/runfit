@@ -4,6 +4,7 @@ import com.itsight.domain.dto.SecurityUserDTO;
 import com.itsight.repository.SecurityUserRepository;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,23 +30,16 @@ public class SecurityServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
-        try {
-            SecurityUserDTO user = securityUserRepository.findByUsernameNative(username.toLowerCase());
-            if (user != null) {
-                return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-            LOGGER.info("> Excepción | (?): " + username.toUpperCase());
-        }
-        LOGGER.info("> UsernameNotFoundException | (?): " + username.toUpperCase());
-        throw new UsernameNotFoundException("UsernameNotFoundException | (?): " + username.toUpperCase());
+        SecurityUserDTO user = securityUserRepository.findByUsernameNative(username.toLowerCase());
+        return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
+        /*if (user != null) {*/
+//            return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
+        /*}
+        LOGGER.info("> UsernameException | (?): " + username.toUpperCase());
+        throw new UsernameNotFoundException("UsernameNotFoundException | (?): " + username.toUpperCase());*/
     }
 
     private User buildUser(SecurityUserDTO securityUser, Set<GrantedAuthority> lstRole) {
-        if(!securityUser.isEnabled()){
-            throw new DisabledException("Usuario inactivo");
-        }
         return
                 new User(securityUser.getUsername() + "|"+securityUser.getId(),//Artificio
                         securityUser.getPassword(),

@@ -71,11 +71,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/accesoDenegado")
-                .authenticationEntryPoint(new AjaxAuthenticationFilter("/login"))
+                .authenticationEntryPoint(new AjaxAuthenticationFilter("/login?error"))
                 .and()
                 .sessionManagement()
-                .maximumSessions(5)
-                .expiredUrl("/login?error=session-expired")
+                .maximumSessions(4)
+                //.expiredUrl("/login?error=maximum-sessions-has-been-reached")
                 .maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry());
     }
@@ -84,7 +84,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SessionRegistry sessionRegistry() {
         SessionRegistry sessionRegistry = new SessionRegistryImpl();
-
         return sessionRegistry;
     }
 

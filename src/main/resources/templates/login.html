@@ -68,13 +68,20 @@
             </div>
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
             <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
-                    class="fa fa-fw fa-warning"></i> Inválido username, password o cuenta inactiva
+                    class="fa fa-fw fa-warning"></i> Inválido username o password
             </div>
             <div th:if="${error =='disabled'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
-                    class="fa fa-fw fa-warning"></i> Cuenta inactiva
+                    class="fa fa-fw fa-warning"></i> Su cuenta se encuentra desactivada
             </div>
             <div th:if="${error =='expired'}" class="alert alert-danger" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
-                    class="fa fa-fw fa-warning"></i> Inválido cliente o password
+                    class="fa fa-fw fa-warning"></i> Su sesión ha expirado, debe iniciar sesión nuevamente
+            </div>
+            <div th:if="${error =='checkout'}" class="alert alert-danger" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+                    class="fa fa-fw fa-warning"></i> Algo salió mal, por favor vuelva a ingresar sus credenciales
+            </div>
+            <div th:if="${error =='loggedin'}" class="alert alert-danger" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+                    class="fa fa-fw fa-warning"></i> Su cuenta ha llegado al máximo de sesiones simúltaneas activas. Debe cerrar sesión
+                    en alguno de sus dispositivos para poder ingresar
             </div>
             <div class="actions">
                 <button class="btn-login" id="btn-login" type="submit">INGRESAR</button>
@@ -86,7 +93,6 @@
     </div>
     <div class="register-guest">
         <form id="register-form" method="post">
-
             <div class="login-register-alt hidden">
                 <div class="form-group form-alt usuario"><span class="fa fa-user-o"></span>
                     <label>Nombres</label>
@@ -112,9 +118,7 @@
                     <button class="btn-guest-register" id="btn-register" name="btn-register" type="button">REGISTRAR</button>
                     <p>¿Ya es miembro de RunFit?</p><a class="btn-nuevo" href="javascript:goLogin()">INICIAR SESIÓN</a>
                 </div>
-
             </div>
-
         </form>
     </div>
 
@@ -172,11 +176,9 @@
         btnLogin.addEventListener('click',(e)=>{
             e.preventDefault();
             if($("#login-form").valid()){
-                const btn = e.target;
-                btn.setAttribute('disabled','disabled');
+                btnLogin.setAttribute('disabled', 'disabled');
                 document.getElementById('login-form').submit();
             }
-
         });
         const testing = false;
         // Validation

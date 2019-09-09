@@ -1,4 +1,3 @@
- /*<![CDATA[*/
     var $table = $('#tblRegistros');
     var $index = $('#Id');
 
@@ -86,6 +85,8 @@
                                     url: _ctx + 'gestion/tipo-rutina/agregar',
                                     dataType: "json",
                                     data: params,
+                                    blockLoading: true,
+                                    noOne: false,
                                     success: function (data, textStatus) {
                                         if (textStatus == "success") {
                                             if (data == "-9") {
@@ -119,6 +120,8 @@
                                 url: _ctx + 'gestion/tipo-rutina/actualizar',
                                 dataType: "json",
                                 data: params,
+                                blockLoading: true,
+                                noOne: false,
                                 success: function (data, textStatus) {
                                     if (textStatus == "success") {
                                         if (data == "-9") {
@@ -158,8 +161,6 @@
         irRegistro();
         $('#Operacion').text('Actualizar');
 
-
-
            var param = new Object();
                 param.id = id;
 
@@ -174,10 +175,11 @@
             url: _ctx + 'gestion/tipo-rutina/consultar',
             dataType: "json",
             data: param,
+            blockLoading: true,
+            noOne: false,
             success: function (data, textStatus) {
 
                 if (textStatus == "success") {
-
                     $("#Id").val(data.id);
                     $("#Nombre").val(data.nombre);
                     data.flagActivo === true ?
@@ -215,6 +217,8 @@
                     url: _ctx + 'gestion/tipo-rutina/actualizar-estado',
                     dataType: "json",
                     data: params,
+                    blockLoading: true,
+                    noOne: false,
                     success: function (data, textStatus) {
                         if (textStatus == "success") {
                             $.smallBox({
@@ -240,9 +244,6 @@
     }
 
     function linkFormatter(value, row) {
-
-       console.log(row.id);
-
         return `<a href="#" onclick="javascript:editar(${row.id})" title="Editar">${row.nombre}</a>`;
     }
 
@@ -259,22 +260,14 @@
         }
     }
 
-
-
     function validarRegistros() {
 
         $.validator.addMethod("maxlength", function ( value, element, len) {
-
-
-
            return value == "" || value.length <= len;
         });
 
 
         $.validator.addMethod("minlength", function (value1, element, len) {
-
-             console.log(value1.value);
-
            return value1 == "" || value1.length >= len;
          });
 
@@ -316,4 +309,3 @@ function bodyFocusOutEventListener(e){
         input.value = input.value.trim();
     }
 }
-    /*]]>*/

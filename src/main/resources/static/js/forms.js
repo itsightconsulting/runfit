@@ -1,4 +1,4 @@
-function uploadAndShow(input, img){
+﻿function uploadAndShow(input, img){
     uploadImg(input, img);
 }
 
@@ -1374,10 +1374,10 @@ function imgToSvgForRegistroTrainer() {
 
         $.get(imgURL, function (data) {
             var $svg = $(data).find('svg');
-            $img[0].getAttributeNames().forEach(e=>{
-                $svg = $svg.attr(e, element.getAttribute(e));
-            })
-            $svg = $svg.removeAttr('xmlns:a');
+            Array.from(element.attributes).forEach(e=>{
+                $svg.attr(e.nodeName, e.nodeValue);
+            });
+            $svg.removeAttr('xmlns:a');
             if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
                 $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
             }

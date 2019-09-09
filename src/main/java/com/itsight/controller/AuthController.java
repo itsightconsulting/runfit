@@ -49,12 +49,25 @@ public class AuthController extends BaseController {
 
     @GetMapping(value = "/login")
     public String loginForm(@RequestParam(value = "error", required = false) String error,
-                            Model model
-    ) {
+                            Model model) {
         if (error != null) {
             if (error.equals("session-expired")) {
                 model.addAttribute("expired", "expired");
-            } else {
+            }
+
+            else if(error.equals("disabled")){
+                model.addAttribute("error", "disabled");
+            }
+
+            else if(error.equals("checkout")){
+                model.addAttribute("error", "checkout");
+            }
+
+            else if(error.equals("loggedin")){
+                model.addAttribute("error", "loggedin");
+            }
+
+            else {
                 model.addAttribute("error", "error");
             }
         }
