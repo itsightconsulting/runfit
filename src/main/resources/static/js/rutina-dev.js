@@ -1400,8 +1400,8 @@ DiaOpc = (function(){
         },
         validPreActualizarFromNomSubEle2: (elemento, valor, ixs, posEle, posSE)=>{
             const nombreOZonaCardiaca = valor.toUpperCase();
-            const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
-            if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
+         //   const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
+        /*    if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
                 if (RutinaValidator.esZ(nombreOZonaCardiaca)) {
                     if(RutinaValidator.hayZFromEleNombre(elemento) || RutinaValidator.getZFromSubEle(elemento).length == 2){//Para el caso se evalua si el tamaño es 2 por conveniencia(1 del posible anterior y el otro de el nuevo valor z que se le asigno al sub elemento
                         $.smallBox({color: "alert", content: "<i>Este elemento ya tiene especificada una carrera...</i>"});
@@ -1433,8 +1433,9 @@ DiaOpc = (function(){
                         actualizarSubElementoNombreBD(valor, ixs.numSem, ixs.diaIndex, posEle, posSE);
                 }
             } else {
-                agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
-            }
+          */
+          agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
+            //}
         },
         actualizar: (elemento, nombre, kms, calorias, posEle, ixs, tipo, totalMinutos)=>{
             elemento.setAttribute('data-kms', kms);
@@ -1785,19 +1786,21 @@ ElementoOpc = (function(){
         },
         agregarMediaToElemento2: (ixs, input)=>{
             const assetsElemento = input.parentElement;
-            const iconoOpc = assetsElemento.querySelector('.ele-ops');
+            const iconoAdd = assetsElemento.querySelector('.ele-add');
             const iconoMedia = assetsElemento.querySelector('.rf-media');
-
+            const iconoAudio = assetsElemento.querySelector('.notes .ong');
+            const dvMediaElements =  assetsElemento.querySelector('.notes');
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
             let initTempElemento = tempElemento;
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
             if($tipoMedia == TipoElemento.AUDIO){
+                debugger
                 RutinaSet.setElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex=i), $mediaAudio, $mediaNombre);
                 //Primer if para actualizar
-                if(iconoMedia != undefined && (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))){
-                    iconoMedia.setAttribute('data-media', $mediaAudio);
+                if(iconoAudio != undefined /*&& (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))*/){
+                    iconoAudio.setAttribute('data-media', $mediaAudio);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
+                    dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
                 }
                 actualizarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.AUDIO, $mediaNombre);
                 $mediaAudio = '';
@@ -1842,18 +1845,21 @@ ElementoOpc = (function(){
             instanciarElementoPopovers(assetsElemento);
         },
         agregarInitMediaElemento: (ixs, tipo)=>{
+            debugger
             const nuevoIx = ElementoTP.SIMPLE == tipo? RutinaSeccion.newElementoSimple(ixs.diaIndex, tipo, $mediaNombre) : RutinaSeccion.newElementoLista(ixs.diaIndex, tipo, $mediaNombre);
             ixs.eleIndex = nuevoIx;
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            const iconoOpc = elemento.querySelector('.ele-ops');
+            const dvIconosMedia = elemento.querySelector('.notes');
+            const iconoAgregar = elemento.querySelector('.ele-add');
+
             const ele = {};
             ele.nombre = $mediaNombre;
             if($tipoMedia == TipoElemento.AUDIO){
                 ele.mediaAudio = $mediaAudio;
-                iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
+                dvIconosMedia.appendChild(`<div class="ong" rel="tooltip" data-original-title="Audio"></div>`);
             }else{
                 ele.mediaVideo = $mediaVideo;
-                iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
+                iconoAgregar.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
             }
 
             $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento(ele));
@@ -2207,7 +2213,7 @@ RutinaSeccion = (function (){
                            <div class="notes">
                                 
                             </div> 
-                           <i>  <img class="svg insertar-debajo" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                           <i>  <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                            <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>                                          
                          </div>
@@ -2229,7 +2235,7 @@ RutinaSeccion = (function (){
                                          <div class="col-xs-9">
                                            <div class="notes">  
                                            </div>  
-                                         <i> <img class="svg insertar-debajo" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                                         <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                           <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
 
@@ -2269,7 +2275,7 @@ RutinaSeccion = (function (){
                              <div class="col-xs-8">
                                <div class="notes">
                                </div>
-                               <i> <img class="svg insertar-debajo" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                               <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                                <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                              </div>
@@ -2287,7 +2293,7 @@ RutinaSeccion = (function (){
                     <div class="col-xs-9">
                       <div class="notes">
                       </div>
-                     <i > <img class="svg insertar-debajo" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                     <i > <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                     <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                     <span data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                     </div>
@@ -2319,7 +2325,7 @@ RutinaSeccion = (function (){
                           <div class="col-xs-12">
                             <div class="notes">
                             </div>
-                             <i> <img class="svg insertar-debajo-sub" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                             <i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                              <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                       </div> 
                     </li>
@@ -2337,7 +2343,7 @@ RutinaSeccion = (function (){
                 <div class="col-xs-12">
                 <div class="notes">
                 </div>
-                <i> <img class="svg insertar-debajo-sub" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                <i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                 <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
             </div>
           </li>                   
@@ -2566,7 +2572,7 @@ RutinaElementoHTML = (function(){
                            ${ele.nota != undefined && ele.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
                           </div>
                           ${ele.mediaVideo != undefined && ele.mediaVideo != ''?RutinaElementoHTML.iconoVideoPlay(ele.mediaVideo):''}
-                          <i> <img class="svg insertar-debajo" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                          <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                           <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
                          </div>
@@ -2591,7 +2597,7 @@ RutinaElementoHTML = (function(){
                                ${ele.nota != undefined && ele.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
                              </div>
                                ${ele.mediaVideo != undefined && ele.mediaVideo != '' ? RutinaElementoHTML.iconoVideoPlay(ele.mediaVideo) : ''}
-                               <i > <img class="svg insertar-debajo" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                               <i > <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
                                <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                                <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined ? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
                             </div>
@@ -2620,8 +2626,8 @@ RutinaElementoHTML = (function(){
                           ${sEle.nota != undefined && sEle.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
                         </div>
                           ${sEle.mediaVideo != undefined && sEle.mediaVideo != '' ? RutinaElementoHTML.iconoVideoPlay(sEle.mediaVideo) : ''}
-                          <i> <img class="svg insertar-debajo-sub" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                         <span class="sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover">${sEle.nombre}</span>
+                          <i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                         <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover">${sEle.nombre}</span>
                          ${RutinaElementoHTML.iconoNota(sEle.nota)}
                       </div>
                      </div>
@@ -2637,7 +2643,7 @@ RutinaElementoHTML = (function(){
                                 <span class="pull-left">
                                      ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
                                      ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
-                                     <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                                     <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub ele-add" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
                                      <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
                                 </span>
                                 <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
@@ -2650,7 +2656,7 @@ RutinaElementoHTML = (function(){
             return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
                         <span class="pull-left">
                              ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                             <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
+                             <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub ele-add" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
                              <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
                         </span>
                         <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${sEle.nombre}</span>

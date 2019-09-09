@@ -28,7 +28,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.net.www.protocol.http.AuthenticationInfo;
+//import sun.net.www.protocol.http.AuthenticationInfo;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

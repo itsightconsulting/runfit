@@ -1949,6 +1949,7 @@ function principalesEventosTabGrupoVideos(e){
         }
     }
     else if(clases.contains('cat-video')){
+        debugger
         e.preventDefault();
         const clase = '.cat-video'+ input.getAttribute('data-id');
         const div = document.querySelector(clase);
@@ -1994,6 +1995,7 @@ function principalesEventosTabGrupoVideos(e){
 }
 
 function principalesEventosTabGrupoAudios(e){
+    alert("meeeh");
     const input = e.target;
     const clases = input.classList;
 
@@ -2966,8 +2968,6 @@ function updateAudioFavoritos() {
         }
     })
 }
-
-
 
 async function obtenerObjetivosDiaBD() {
     return new Promise((res, rej)=>{

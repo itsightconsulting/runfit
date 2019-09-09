@@ -2,6 +2,7 @@ const rutinaData = JSON.parse($('#rutinaData').val());
 const editorRutinaContenido = document.querySelector('#editorContent');
 const $semActual = document.querySelector('#nroSemanaActual');
 const $semanario = document.querySelector('#rutinaSemana');
+const mainTabs = document.querySelector('#principalesTabs');
 let indexGlobal = 0;
 let $body = $("html,body");
 let $rutina;
@@ -70,10 +71,13 @@ function init(){
          $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         $semanario.addEventListener('click', principalesEventosClickRutina);
 
+        tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
+
+        mainTabs.addEventListener('click', principalesAlCambiarTab);
+
         /*   instanciarDatosFitnessCliente();
 
 
-           tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
            tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
            tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
            tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
@@ -87,7 +91,6 @@ function init(){
            btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
            btnActualizarMvz.addEventListener('click', actualizarMetricasVelocidadBD);
            shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
-           mainTabs.addEventListener('click', principalesAlCambiarTab);
            divEditor.addEventListener('click', principalesDivEditor);
            btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
            btnComprobarMacro.addEventListener('click', MacroCiclo.comprobar);
@@ -145,12 +148,12 @@ function principalesEventosFocusOutSemanario(e) {
     let input = e.target;
 
     if(clases.contains('in-ele-dia-1')){
-        debugger
+        
         e.preventDefault();
         const valor = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
         const diaIndex = input.getAttribute('data-dia-index');
-        debugger
+        
         if (valor.length > 1 && listaNoRepetida(ixs.diaIndex, valor)) {
             const nuevoIx = RutinaSeccion.newElementoSimple(ixs.diaIndex, ElementoTP.SIMPLE, valor);
             ixs.eleIndex = nuevoIx;
@@ -175,7 +178,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-ele-dia-2')){
         e.preventDefault();
-        debugger
+        
         const valor = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
         const diaIndex = input.getAttribute('data-dia-index');
@@ -203,10 +206,10 @@ function principalesEventosFocusOutSemanario(e) {
         }
         input.value = "";
     } else if(clases.contains('in-sub-elemento')) {
-        debugger
+        
         const valor = input.value.trim();
         if (valor.length >= 1) {
-            debugger
+            
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
 
@@ -223,7 +226,7 @@ function principalesEventosFocusOutSemanario(e) {
         }
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
-        debugger;
+        ;
         const valor = input.value.trim();
         if(valor.length > 1){
             let ixs = RutinaIx.getIxsForElemento(input);
@@ -246,7 +249,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
 
     else if(clases.contains('in-sub-ele-esp-pos')) {
-        debugger
+        
         const valor = input.value.trim();
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -271,7 +274,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
 
     else if(clases.contains('rf-dia-elemento-nombre')){
-        debugger
+        
         const valor = input.textContent.trim();
         if($nombreActualizar != valor){
             const ixs = RutinaIx.getIxsForElemento(input);
@@ -291,7 +294,7 @@ function principalesEventosFocusOutSemanario(e) {
 
     else if(clases.contains('agregar-tiempo')){
         //$tiempoActualizar: Sirve para comparar el valor inicial del elemento con el valor que retorna cuando se activa este evento(focusout) con el fin de evitar actualizaciones innecesarias
-        debugger
+        
         const tiempo = Number(e.target.value.trim());
         let gIx = e.target.getAttribute('data-index');
         if($tiempoActualizar != tiempo && gIx == $gIndex && !isNaN(tiempo)){
@@ -300,47 +303,34 @@ function principalesEventosFocusOutSemanario(e) {
         }
         $tiempoActualizar = tiempo;
     }
+
+
+    else if(clases.contains('rf-sub-elemento-nombre')){
+        
+        const valor = input.textContent.trim();
+        if($nombreActualizar != valor) {
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            if(valor.length == 0){
+                SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+            }else {
+                let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+                let initEle = tempElemento;
+                let i = 0, k = 0;
+                //
+                while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+                let tempSubElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
+
+                while ((tempSubElemento = tempSubElemento.previousElementSibling) != null) k++;
+                RutinaSet.setSubElementoNombre(ixs.numSem, ixs.diaIndex, i, k, valor);
+                DiaOpc.validPreActualizarFromNomSubEle2(initEle, valor, ixs, i, k);//Siempre va ser el primero por eso se deja la posicion como 0
+            }
+        }
+    }
     /*
 
 
-     else if(clases.contains('in-sub-elemento')) {
-         const valor = input.value.trim();
-         if (valor.length >= 1) {
-             let ixs = RutinaIx.getIxsForSubElemento(input);
-             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-             let initEle = tempElemento;
-             let i = 0;
-             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-             DiaOpc.validPreActualizarFromNomSubEle(initEle, valor, ixs, i, 0);//Siempre va ser el primero por eso se deja la posicion como 0
-             input.value = '';
-         } else {
-             if (valor.length == 0) {
-             } else {
-                 $.smallBox({color: "alert", content: "Debe ingresar más de 1 caracter..."})
-             }
-         }
-     }
 
-     else if(clases.contains('rf-sub-elemento-nombre')){
-         const valor = input.textContent.trim();
-         if($nombreActualizar != valor) {
-             let ixs = RutinaIx.getIxsForSubElemento(input);
-             if(valor.length == 0){
-                 SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
-             }else {
-                 let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-                 let initEle = tempElemento;
-                 let i = 0, k = 0;
-                 //
-                 while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-                 let tempSubElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
 
-                 while ((tempSubElemento = tempSubElemento.previousElementSibling) != null) k++;
-                 RutinaSet.setSubElementoNombre(ixs.numSem, ixs.diaIndex, i, k, valor);
-                 DiaOpc.validPreActualizarFromNomSubEle2(initEle, valor, ixs, i, k);//Siempre va ser el primero por eso se deja la posicion como 0
-             }
-         }
-     }
      else if(clases.contains('nueva-nota')){
          const nota = input.value.trim();
          const ixs = RutinaIx.getIxsForElemento(input);
@@ -411,6 +401,15 @@ function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
     let input = e.target;
     console.log(input);
+
+
+    if(clases.contains('in-ele-dia-1')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
+            const ixs = RutinaIx.getIxsForDia(input);
+            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
+        }
+    }
   /*
     if(e.ctrlKey){
         if(clases.contains('rf-dia-elemento-nombre')){
@@ -420,13 +419,7 @@ function principalesEventosClickRutina(e) {
         }
     }
 
-    if(clases.contains('in-ele-dia-1')){
-        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
-            const ixs = RutinaIx.getIxsForDia(input);
-            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
-        }
-    }
+
     else if(clases.contains('in-ele-dia-2')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
             input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
@@ -529,17 +522,7 @@ function principalesEventosClickRutina(e) {
         }
     }
 
-    else if(clases.contains('rf-sub-elemento-nombre')){
-        e.preventDefault();
-        e.stopPropagation();
-        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            const ixs = RutinaIx.getIxsForSubElemento(input);
-            SubEleOpc.agregarMediaToSubElemento2(ixs, input);
-        }
-        //Sirve para despues de guardar el valor del input en el onclick validar que este haya sido o no modificado para conforme a eso actualizar en el focusout
-        //o evitar actualizaciones innecesarias
-        $nombreActualizar = e.target.textContent.trim();
-    }
+
     else if(clases.contains('reprod-audio')){
         e.preventDefault();
         e.stopPropagation();
@@ -637,7 +620,7 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('insertar-debajo')) {
 
-         debugger
+         
          e.preventDefault();
          e.stopPropagation();
          let ixs = RutinaIx.getIxsForElemento(input);
@@ -670,7 +653,7 @@ function principalesEventosClickRutina(e) {
 
 
      else if(clases.contains('insertar-debajo-sub')){
-         debugger;
+         ;
          e.stopPropagation();
          let ixs = RutinaIx.getIxsForSubElemento(input);
          let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -713,12 +696,24 @@ function principalesEventosClickRutina(e) {
 
      else if(clases.contains('agregar-tiempo')){
          //Sirve para comparar el valor inicial del elemento con el valor que retorna en el evento focusout con el fin de evitar actualizaciones innecesarias
-         debugger
+         
          e.preventDefault();
          e.stopPropagation();
          e.target.select();
          $tiempoActualizar = Number(e.target.value.trim());
          $gIndex = e.target.getAttribute('data-index');
+     }
+
+     else if(clases.contains('rf-sub-elemento-nombre')){
+         e.preventDefault();
+         e.stopPropagation();
+         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+             const ixs = RutinaIx.getIxsForSubElemento(input);
+             SubEleOpc.agregarMediaToSubElemento2(ixs, input);
+         }
+         //Sirve para despues de guardar el valor del input en el onclick validar que este haya sido o no modificado para conforme a eso actualizar en el focusout
+         //o evitar actualizaciones innecesarias
+         $nombreActualizar = e.target.textContent.trim();
      }
     /*
 
@@ -864,6 +859,115 @@ function principalesEventosClickRutina(e) {
     }*/
 }
 
+function principalesAlCambiarTab(e){
+    const input = e.target;
+   /* if(e.target.classList.contains('main-tab')){
+        document.querySelector('#OpsAdic').classList.remove('hidden');
+        document.querySelector('#DivEditor').classList.remove('hidden');
+    }
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
+        e.preventDefault();
+        document.querySelector('#OpsAdic').classList.add('hidden');
+        document.querySelector('#DivEditor').classList.add('hidden');
+        $videosElegidos = [];
+        $subEleElegidos = [];
+        Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
+        if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
+            instanciarGrupoVideos();
+        }
+    }
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
+        document.querySelector('#DivEditor').classList.add('hidden');
+        if(document.querySelector('#ArbolRutinario').children.length == 0) {
+            instanciarMiniPlantillas();
+        }
+    }
+    else*/
+
+    console.log(input);
+    if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoAudios') {
+        e.preventDefault();
+      //  document.querySelector('#OpsAdic').classList.add('hidden');
+      //  document.querySelector('#DivEditor').classList.add('hidden');
+        if (document.querySelector('#ArbolGrupoAudio').children.length == 0) {
+            instanciarGrupoAudios();
+        }
+    }
+ /*   else if(e.target.tagName === "A"){
+        document.querySelector('#OpsAdic').classList.add('hidden');
+        document.querySelector('#DivEditor').classList.add('hidden');
+        if(input.getAttribute('href') == '#tabFichaTecnica'){
+            if($ruConsolidado == undefined){
+                obtenerRutinaConsolidadoBD();
+            }
+        }
+
+
+    }  */
+}
+
+function principalesEventosTabGrupoAudios(e){
+    const input = e.target;
+    const clases = input.classList;
+
+    if(clases.contains('reprod-audio')){
+        e.preventDefault();
+        if(clases.contains('fa-pause-circle')){
+            document.querySelector('#someaud').pause();
+            input.setAttribute('data-original-title','Reproducir');
+        }else{
+            const route = e.target.getAttribute('data-media');
+            $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
+            $("#AudioReproduccion").parent().get(0).load();
+            input.setAttribute('data-original-title','Pausar');
+        }
+        clases.toggle('fa-music');
+        clases.toggle('fa-pause-circle');
+    }
+    else if(clases.contains('elegir-audio')){
+        e.preventDefault();
+        e.stopPropagation();
+        $memoriaAudio != ''?$memoriaAudio.classList.remove('txt-color-greenIn'):'';
+        clases.add('txt-color-greenIn'); //cambiar
+        $memoriaAudio = input;
+        $mediaNombre = input.textContent.trim();
+        $mediaAudio = input.querySelector('.reprod-audio').getAttribute('data-media');
+        $mediaVideo = '';
+        $tipoMedia = TipoElemento.AUDIO;
+        cambiarATabRutina();
+    }
+    else if(clases.contains('ck')){
+        alert("eureka");
+        const li = input.parentElement;
+        const eleAudio = li.querySelector('.reprod-audio');
+        const ix = eleAudio.getAttribute('data-index');
+        const media = eleAudio.getAttribute('data-media');
+        const nombreMedia = li.textContent.trim();
+        $audiosElegidos.push([ix, media, nombreMedia]);
+    }
+    else if(clases.contains('ck-favorito-audio')){
+        e.preventDefault();
+        e.stopPropagation();
+        parent = input.parentElement;
+        var idAudio = parent.querySelector('.ck-favorito-audio').getAttribute('data-id');
+        //console.log(id);
+        var selected = $(parent.querySelector('.ck-favorito-audio')).attr("data-selected");
+        var editarAgregar = 0;
+        if(selected == "1"){
+            $(parent.querySelector('.ck-favorito-audio')).css("color","#3276b1");
+            $(parent.querySelector('.ck-favorito-audio')).attr("data-selected", "0");
+            editarAgregar = 0;
+        }else {
+            $(parent.querySelector('.ck-favorito-audio')).attr("data-selected", "1");
+            $(parent.querySelector('.ck-favorito-audio')).css("color","#d8d807");
+            editarAgregar = 1;
+        }
+
+       agregarEliminarFavorito(0,idAudio,editarAgregar);
+    }
+
+}
+
 
 function avanzarRetrocederSemana(numSem, action){
 
@@ -903,7 +1007,6 @@ function agregarElementoBD(numSem, diaIndex, tipoElemento){
         complete: function () {}
     })
 }
-
 
 function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIndex){
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaIndex].subElementos[elementoIndex];
@@ -1004,7 +1107,7 @@ function actualizarElementoStrategyBD2(numSem, diaIndex, eleIndex, tipoElemento)
 }
 
 function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElemento, postSubElemento) {
-    debugger
+    
     let params = {};
     params.nombre = nuevoNombre;
     params.numeroSemana = numSem;
@@ -1164,6 +1267,157 @@ function listaNoRepetida(ix, nombre) {
         }
     });
     return val;
+}
+
+
+function instanciarGrupoAudios(){
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/tipo-audio/obtener/arbol',
+        blockLoading: true,
+        noOne: false,
+        dataType: "json",
+        success: function (data, textStatus) {
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    let rawHTMLCabecera = '';
+                    rawHTMLCabecera +='<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                    data.forEach((grupoAudio, i) => {
+                        rawHTMLCabecera +=
+                            `${(i % 4) === 0 ? '<div><div class="row"></div></div>':''}                          
+                            <div class="padding-bottom-10 col col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <h6 class="font-lg">${grupoAudio.nombre}</h6>
+                                ${grupoAudio.lstAudio.map(a=>
+                                `<ul class="ul-audio">
+                                        <li class="font-md">
+                                            <a class="" href="javascript:void(0);">
+                                            <i data-placement="bottom" rel="tooltip" data-original-title="Favorito" class="ck-favorito-audio fa fa-star fa-fw"
+                                                data-id=${a.id} id='liaudio${a.id}' data-selected="0"></i>
+                                            </a>
+                                            <a class="elegir-audio" href="javascript:void(0);">
+                                            <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-music fa-fw" data-media=${a.rutaWeb} data-index=${a.id}></i>
+                                                ${a.nombre}
+                                            </a>
+                                        </li>
+                                    </ul>`).join('')}
+                            </div>`;
+                    });
+                    rawHTMLCabecera +='</div>';
+                    document.querySelector('#ArbolGrupoAudio').appendChild(htmlStringToElement(rawHTMLCabecera));
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+            updateAudioFavoritos();
+        }
+    });
+}
+
+function updateAudioFavoritos() {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/obtenermisfavoritos",
+        dataType: "json",
+        blockLoading: false,
+        noOne: true,
+        success: function (data) {
+            if(data != null){
+                let listaAudios = [];
+                let listaVideos = [];
+                $.each(data,function (i,item) {
+                    if(item.audio != null){
+                        listaAudios.push(item.audio);
+                    }else{
+                        listaVideos.push(item.video);
+                    }
+                });
+
+                $.each(listaAudios,function (i,item) {
+                    $("#liaudio"+item.id).attr("data-selected", "1");
+                    $("#liaudio"+item.id).css("color","#d8d807");
+                });
+
+                $.each(listaVideos,function (i,item) {
+                    $("#livideo"+item.id).attr("data-selected", "1");
+                    $("#livideo"+item.id).css("color","#d8d807");
+                });
+
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+        }
+    })
+}
+
+function agregarEliminarFavorito(idvideo,idaudio,selected) {
+    let params ={};
+    params.videoid = parseInt(idvideo);
+    params.audioid = parseInt(idaudio);
+    params.addedit = selected;
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/adddeletefavorito",
+        dataType: "json",
+        data: params,
+        success: function (data, textStatus) {
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
+function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia, nombre){
+    let params = {};
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaVideo;
+    }
+
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.tipoMedia = tipoMedia;
+    params.nombre = nombre;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/media/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
+function cambiarATabRutina(){
+    document.querySelector('a[href="#tabRutina"]').click();
 }
 
 

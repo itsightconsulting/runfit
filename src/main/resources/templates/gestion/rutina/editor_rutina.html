@@ -6,7 +6,6 @@
     <title>Mis clientes</title>
     <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
-
     <style>
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -22,25 +21,40 @@
 </head>
 <body style="background-color: #fff;">
 <input type="hidden" th:value="${rutina}" id="rutinaData"/>
+
+<div class="modal fade" id="myModalAudio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="">
+            <div class="text-align-center" style="padding-top: 200px;">
+                <audio id="someaud" controls="" controlslist="nodownload" autoplay="" width="100%" height="100%">
+                    <source id="AudioReproduccion" src="" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="wrapper">
     <header>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-pills" id="principalesTabs" role="tablist">
             <li class="icons">
                 <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_guardar.svg}"></a>
                 <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_enviarmsj.svg}"></a>
                 <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_trash.svg}"></a>
                 <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-left.svg}"></a>
                 <a href="#"><img class="svg" th:src="@{/img/iconos-trainers/icon_arrow-right.svg}"></a></li>
-            <li><a href="#">listado</a></li>
-            <li><a href="#">g. videos</a></li>
-            <li class="active"><a href="#">rutinario</a></li>
-            <li><a href="#">g. audios</a></li>
-            <li><a href="#">planes prediseñados</a></li>
-            <li><a href="#">macro</a></li>
-            <li><a href="#">ficha</a></li>
+            <li><a href="#v-pills-video-tab" data-toggle="pill"  role="tab" aria-controls="pruebaC" aria-selected="false">listado</a></li>
+            <li><a href="#v-pills-audio-tab" data-toggle="pill" role="tab" aria-controls="v-pills-audio-tab" aria-selected="false">g. videos</a></li>
+            <li class="active"><a href="#tabRutina" data-toggle="pill" role="tab" aria-controls="tabRutina" aria-selected="true">rutinario</a></li>
+            <li><a href="#tabGrupoAudios" data-toggle="pill" role="tab" aria-controls="tabGrupoAudios" aria-selected="false">g. audios</a></li>
+            <li><a href="#" data-toggle="pill">planes prediseñados</a></li>
+            <li><a href="#" data-toggle="pill">macro</a></li>
+            <li><a href="#" data-toggle="pill">ficha</a></li>
         </ul>
     </header>
-    <div class="editor_text"><img class="logo" th:src="@{/img/logo.png}">
+
+   <div class="tab-content"  id="v-pills-tabContent">
+    <div id="tabRutina"  class="tab-pane fade active in"  role="tabpanel" aria-labelledby="tabRutina">
+       <div class="editor_text"><img class="logo" th:src="@{/img/logo.png}">
         <section>
             <div class="block">
                 <select style="min-width: 170px;">
@@ -87,8 +101,7 @@
             </div>
         </section>
     </div>
-
-    <div id="editorContent">
+       <div id="editorContent">
       <div class="container-t">
         <h2 class="title_carousel">
             <button class="btn retroceder-semana"><img th:src="@{/img/arrow-left2.png}"></button> <span id="semanaTitulo" class="semana-num">semana </span><span id="nroSemanaActual" class="semana-num">1</span>  - <span id="mesSemanaTitulo"> enero</span>
@@ -108,6 +121,22 @@
          </div>
       </div>
     </div>
+    </div>
+
+    <div id="tabGrupoAudios" class="tab-pane fade"  role="tabpanel" aria-labelledby="tabGrupoAudios">
+         <fieldset>
+           <section class="" id="ArbolGrupoAudio">
+             </section>
+         </fieldset>
+
+    </div>
+
+    <div  id="v-pills-video-tab" class="tab-pane fade"  role="tabpanel" aria-labelledby="v-pills-video-tab">
+        <h1>Pruebaaaaaaaaaa 2 </h1>
+    </div>
+   </div>
+
+
 </div>
 <th:block th:insert="html-commons/tr/js :: fg-js"></th:block>
 <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
