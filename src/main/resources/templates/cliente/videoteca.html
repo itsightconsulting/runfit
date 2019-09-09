@@ -135,6 +135,8 @@
       contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
       url: _ctx + 'gestion/grupo-video/obtenerListado/0/1',
       dataType : 'json',
+      blockLoading: false,
+      noOne: true,
       success :  (result) => {
 
         console.log(result);
@@ -172,7 +174,7 @@
         noOne: false,
         dataType : 'json',
         success :  (result) => {
-            const data = result.rows
+            const data = result.rows;
             totalRows = result.total;
             poblarDvVideosxGrupo(data);
 
@@ -183,6 +185,7 @@
             }
         },
         error: (xhr) =>{
+          exception(xhr);
         },
         complete : () =>{
         }

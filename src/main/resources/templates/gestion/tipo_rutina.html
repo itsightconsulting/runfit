@@ -9,7 +9,7 @@
     <th:block th:insert="html-commons/css  :: fg-css"></th:block>
 </head>
 
-<body class="desktop-detected pace-done mobile-view-activated smart-style-2">
+<body class="desktop-detected pace-done mobile-view-activated smart-style-1">
 
 <!-- HEADER -->
 <div th:replace="html-commons/header :: fg-header"></div>
@@ -35,26 +35,8 @@
                                     <span>
 											<b>Tipos de Rutina</b>
 										</span>
-
-
-                                    <!--  Prueba Login FB
-
-                                    <div name="pruebaLoginFacebook">
-
-                                        <div class="container unauthenticated">
-                                            Login With Facebook:
-                                        </div>
-                                        <div class="container authenticated" style="display:none">
-                                            Logged into Facebook as: <span id="user"></span>
-                                        </div>
-
-                                        <input type="hidden" name="scope" value="public_profile" />
-                                        <a href="/login">INGRESA CON FACEBOOK</a>
-
-                                    </div>
-
-
-                                    -->
+                                </h1>
+                            </div>
                             <div class="col-sm-8 col-md-8 col-lg-8">
                                 <h1><a id="btnNuevo" href="#" class="btn btn-primary btn-circle btn-lg"
                                        style="float:right" title="Registrar"><i class="fa fa-plus"></i></a></h1>
@@ -225,24 +207,7 @@ you can add as many as you like
 
 <!-- OTRAS LIBRERIAS DISTINTAS AL TEMPLATE -->
 <script th:src="@{/js/bootstrap-table.min.js}+'?'+${version}"></script>
-
-
-
 <script th:src="@{/js/tipo-rutina.js}+'?'+${version}"> </script>
-
-
-<!--
-<script th:inline="javascript">
-    $.get("/user", function(data) {
-        $("#user").html(data.userAuthentication.details.name);
-        $(".unauthenticated").hide()
-        $(".authenticated").show()
-    });
-</script>
-
--->
-
-
 
 </body>
 

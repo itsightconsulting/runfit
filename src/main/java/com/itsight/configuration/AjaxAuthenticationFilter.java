@@ -23,6 +23,7 @@ public class AjaxAuthenticationFilter extends LoginUrlAuthenticationEntryPoint {
         String ajaxHeader = request.getHeader("X-Requested-With");
         boolean isAjax = "XMLHttpRequest".equals(ajaxHeader);
         if (isAjax) {
+            //Cuidado con el error message: Ajax Request Denied... ya que este valor es usado en el archivo jsfuente para devolver una alerta informativa
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ajax Request Denied (Session Expired)");
         } else {
             super.commence(request, response, authException);

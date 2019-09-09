@@ -282,16 +282,18 @@ function exception(xhr, errorName) {
                     timeout: 5000,
                 });
             }else{
-                if(xhr['status'] == 401){
-                    $.SmartMessageBox({
-                        title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
-                        content: "<div class='font-md'><i> Su sesión ha expirado, usted será redireccionado a la página de login...</div></i>",
-                        buttons: '[OK]'
-                    }, function (ButtonPressed) {
-                        if(ButtonPressed == 'OK'){
-                            window.location.href = _ctx+'login';
-                        }
-                    })
+                if(xhr['status'] == 401 && (xhr.responseJSON && xhr.responseJSON.message === "Ajax Request Denied (Session Expired)")){
+                    setTimeout(()=>{
+                        $.SmartMessageBox({
+                            title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+                            content: "<div class='font-md'><i> Su sesión ha expirado, usted será redireccionado a la página de login...</div></i>",
+                            buttons: '[OK]'
+                        }, function (ButtonPressed) {
+                            if(ButtonPressed == 'OK'){
+                                window.location.href = _ctx+'login';
+                            }
+                        })
+                    }, 1000);
                 }
                 else if(xhr['status'] == 403){
                     $.smallBox({

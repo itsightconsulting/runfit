@@ -1,5 +1,6 @@
 package com.itsight.advice;
 
+import com.itsight.domain.SecurityUser;
 import com.itsight.domain.pojo.ApiError;
 import com.itsight.domain.pojo.ApiSubError;
 import com.itsight.util.Utilitarios;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,5 +72,24 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Handle missing servlet request parameter";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Principal mainUser = request.getUserPrincipal();
+        if(mainUser == null){
+            String r = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\" id=\"extr-page\"\n" +
+                    "      xmlns:javascript=\"http://www.w3.org/1999/xhtml\">\n" +
+                    "    <head>\n" +
+                    "    </head>\n" +
+                    "    <body>\n" +
+                    "    \n" +
+                    "<script>window.location.href=\"/login?error=checkout\";</script>"+
+                    "</body>\n" +
+                    "</html>\n";
+            return super.handleExceptionInternal(ex, r, headers, status, request);
+        }
+        return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 }

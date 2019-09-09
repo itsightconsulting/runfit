@@ -684,7 +684,6 @@ a.star:hover .svg, a.star.selected .svg {
 
 .trash {
     position: absolute !important;
-    width: 15px !important;
     left: -23px;
     border: none !important; }
 
