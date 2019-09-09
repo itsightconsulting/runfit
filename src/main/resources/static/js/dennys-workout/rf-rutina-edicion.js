@@ -1951,7 +1951,8 @@ function principalesEventosTabGrupoVideos(e){
     else if(clases.contains('cat-video')){
         debugger
         e.preventDefault();
-        const clase = '.cat-video'+ input.getAttribute('data-id');
+        const clase = '' +
+            '.cat-video'+ input.getAttribute('data-id');
         const div = document.querySelector(clase);
         $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0}, 300);
         if(div != undefined){
