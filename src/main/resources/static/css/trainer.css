@@ -1501,7 +1501,6 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
     -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
     box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4); }
 .scroll_rut .days_week article .rt-elem .elem a {
-    font-family: Montserrat-Bold;
     text-decoration: none;
     color: #000;
     padding-left: 10px; }
