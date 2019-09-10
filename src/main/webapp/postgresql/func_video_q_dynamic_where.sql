@@ -12,6 +12,7 @@ CREATE OR REPLACE FUNCTION func_video_q_dynamic_where(
                   peso text,
                   duracion text,
                   uuid text,
+                  thumbnail text,
                   flagActivo boolean,
                   subCatId int,
                   nomSubCat text,
@@ -25,6 +26,7 @@ select v.video_id id,
        v.peso,
        v.duracion,
        cast(v.uuid as text),
+       v.thumbnail::text,
        v.flag_activo flagActivo,
        scv.sub_categoria_video_id subCatId,
        scv.nombre nomSubCat,
@@ -45,4 +47,3 @@ ORDER BY v.video_id desc
 LIMIT $6
     OFFSET $7
 $func$ LANGUAGE sql;
-

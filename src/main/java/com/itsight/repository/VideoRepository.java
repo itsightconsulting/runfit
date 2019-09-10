@@ -89,7 +89,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     List<Video> findAllActiveByGrupoVideoIdOrderById(Integer grupoVideoId);
 
 
-    @Query("SELECT new Video(E.id, E.nombre, CONCAT(E.rutaWeb, '?v', E.version), E.peso, E.duracion, E.uuid, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E "+
+    @Query("SELECT new Video(E.id, E.nombre, CONCAT(E.rutaWeb, '?v', E.version), E.peso, E.duracion, E.uuid, E.thumbnail, E.flagActivo, E.subCatVideo.id, E.subCatVideo.nombre) FROM Video E "+
            "JOIN  E.clientes C where C.id = ?1 AND E.flagActivo = true ORDER BY 1")
     List<Video> findVideosFavActivosByClienteId( Integer clienteId);
 }

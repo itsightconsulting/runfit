@@ -10,10 +10,7 @@ import com.itsight.domain.pojo.VideoPOJO;
 import com.itsight.service.GrupoVideoService;
 import com.itsight.service.VideoProcedureInvoker;
 import com.itsight.service.VideoService;
-import com.itsight.util.ClassId;
-import com.itsight.util.EntityGraphBuilder;
-import com.itsight.util.EntityVisitor;
-import com.itsight.util.Utilitarios;
+import com.itsight.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -127,7 +123,7 @@ public class VideoController {
         if (video.getId() == 0) {
             RefUpload refUpload = videoService.registrarConSubida(video);
             return jsonResponse(String.valueOf(refUpload.getId()),
-                    refUpload.getUuid().toString());
+                    refUpload.getUuid().toString() + "@" + refUpload.getAditionalUuid());
         }
         return videoService.actualizar(video, null);
     }
@@ -143,13 +139,16 @@ public class VideoController {
         }
     }
 
-    @RequestMapping(value = "/upload/{rdmUUID}", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
     String guardarArchivo(
             @RequestPart(value = "video", required = true) MultipartFile video,
-            @RequestParam(value = "videoId", required = true) Integer videoId,
-            @PathVariable(name = "rdmUUID") String uuid) throws CustomValidationException {
-        return Utilitarios.jsonResponse(videoService.subirFile(video, videoId, uuid, null));
+            @RequestPart(value = "thumnailVideo", required = true) MultipartFile thumbVideo,
+            @RequestPart(name = "randomUUIDs") String uuids,
+            @RequestParam(value = "videoId", required = true) Integer videoId) throws CustomValidationException {
+        MultipartFile[] files = new MultipartFile[]{video, thumbVideo};
+        //Enums.FileExt.JPEG.get() se usa para el thumbnail del video
+        return Utilitarios.jsonResponse(videoService.subirFiles(files, videoId, uuids, Enums.FileExt.JPEG.get()));
     }
 
     protected BagForest reconstructForest(List<Video> leaves, Integer forestId) {

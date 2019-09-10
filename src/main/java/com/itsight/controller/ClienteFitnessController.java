@@ -48,15 +48,6 @@ public class ClienteFitnessController {
         this.clienteFitnessProcedureInvoker = clienteFitnessProcedureInvoker;
     }
 
-    @GetMapping(value = "")
-    public ModelAndView principal(Model model) {
-        model.addAttribute("lstObjetivos", objetivosService.findAll());
-        model.addAttribute("lstMusculos", musculoService.findAll());
-        model.addAttribute("lstTd", tipoDocumentoService.findAll());
-        model.addAttribute("lstEntrenadores", trainerService.findAll());
-        return new ModelAndView(ViewConstant.MAIN_FICHA_INSCRIPCION_RUNNING);
-    }
-
     @GetMapping(value = "/obtener")
     public @ResponseBody
     ClienteFitness obtenerPorId(@RequestParam(value = "id") Integer clienteId) {

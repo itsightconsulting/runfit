@@ -46,6 +46,7 @@
             <column name="peso" class="java.lang.String"/>
             <column name="duracion" class="java.lang.String"/>
             <column name="uuid" class="java.lang.String"/>
+            <column name="thumbnail" class="java.lang.String"/>
             <column name="flagActivo" class="java.lang.Boolean"/>
             <column name="subCatId" class="java.lang.Integer"/>
             <column name="nomSubCat" class="java.lang.String"/>
