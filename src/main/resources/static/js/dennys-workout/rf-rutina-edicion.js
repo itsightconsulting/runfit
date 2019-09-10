@@ -967,7 +967,6 @@ function generandoVideosCuerpo(subCatVideo){
                           </i>${v.nombre}</a>`;
     })
     return rawVideosHTML;
-
 }
 
 function instanciarMiniPlantillas(){
@@ -1152,9 +1151,10 @@ function principalesEventosClickRutina(e) {
 
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
+            const inp = input.parentElement.parentElement.parentElement.parentElement;
+            inp.classList.toggle('hidden');
             const ixs = RutinaIx.getIxsForDia(input);
-            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
+           ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
         }
     }
     else if(clases.contains('in-ele-dia-2')){
@@ -1323,6 +1323,7 @@ function principalesEventosClickRutina(e) {
         instanciarEspecificosTooltip(input);
     }
     else if(clases.contains('agregar-nota')) {
+        debugger;
         e.stopPropagation();
         const ixs = RutinaIx.getIxsForElemento(input);
         let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
