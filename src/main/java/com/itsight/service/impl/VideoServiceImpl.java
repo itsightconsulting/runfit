@@ -13,6 +13,7 @@ import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.server.PathContainer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_GENERICA;
-import static com.itsight.util.Enums.Msg.SUCCESS_SUBIDA_IMG;
+import static com.itsight.util.Enums.Msg.*;
+import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_PERFIL;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
 
 @Service
@@ -154,9 +155,12 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
         entity.setExtFile(fileUpload.getExtFile());
         entity.setRutaWeb(fileUpload.getUuid()+fileUpload.getExtFile());
         entity.setVersion(1);
+        UUID thumbnail = UUID.randomUUID();
+        entity.setThumbnail(thumbnail);
         //Guardamos
         Video g = repository.save(entity);
         fileUpload.setId(g.getId());
+        fileUpload.setAditionalUuid(entity.getThumbnail().toString());
         return fileUpload;
     }
 
@@ -201,6 +205,20 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoRepository> implement
             return SUCCESS_SUBIDA_IMG.get();
         }
         throw new CustomValidationException(FAIL_SUBIDA_IMG_GENERICA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public String subirFiles(MultipartFile[] files, Integer id, String uuids, String extension) throws CustomValidationException {
+        boolean success = uploadMultipleToAws3(files, new AwsStresPOJO(
+                                                                aws3accessKey,
+                                                                aws3secretKey,
+                                                                aws3region,
+                                                                aws3RoutineBucket,
+                                                                "video/"+id+"/", uuids, extension), LOGGER);
+        if(success){
+            return POSTULANTE_ULTIMA_ETAPA.get();
+        }
+        throw new CustomValidationException(FAIL_SUBIDA_IMG_PERFIL.get(), EX_VALIDATION_FAILED.get());
     }
 
     @Override

@@ -1002,7 +1002,11 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             reader.close();
             for(int i=1; i<lines.length;i++){
                 String[] line = lines[i].split("\\|");
-                if (correoService.findOne(i) == null) correoService.save(new Correo(line[0].trim(), line[1].trim(), Integer.parseInt(line[2].trim())));
+                if (correoService.findOne(i) == null) correoService.save(
+                        new Correo(
+                                line[0].trim(),
+                                line[1].trim(),
+                                Integer.parseInt(line[2].trim())));
             }
         }catch (IOException ex){
             ex.printStackTrace();
@@ -1036,7 +1040,17 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
             reader.close();
             for(int i=1; i<lines.length;i++){
                 String[] line = lines[i].split(",");
-                if(videoService.findOne(index++) == null) videoService.save(new Video(line[0].trim(), line[1].trim(), line[2].trim(),line[3].trim(), UUID.fromString(line[4].trim()), Integer.parseInt(line[5].trim()), Integer.parseInt(line[6].trim()), Boolean.valueOf(line[7].trim())));
+                if(videoService.findOne(index++) == null) videoService.save(
+                        new Video(
+                                line[0].trim(),
+                                line[1].trim(),
+                                line[2].trim(),
+                                line[3].trim(),
+                                UUID.fromString(line[4].trim()),
+                                null,
+                                Integer.parseInt(line[5].trim()),
+                                Integer.parseInt(line[6].trim()),
+                                Boolean.valueOf(line[7].trim())));
             }
         } catch (IOException ex){
             ex.printStackTrace();

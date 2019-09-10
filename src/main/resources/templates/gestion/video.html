@@ -218,6 +218,19 @@
                                                         <i></i>Inactivo</label>
                                                 </div>
                                             </section>
+                                            <div class="row">
+                                                <section class="col col-6 text-align-center">
+                                                    <video width="80%" controls id="video_parent">
+                                                        <source src="" id="video_here">
+                                                    </video>
+                                                </section>
+                                                <section  class="col col-6 text-align-center">
+                                                    <div class="row text-center padding-bottom-10">
+                                                        <button type="button" onclick="capturarVideoThumbnail()" class="btn btn-info">Capturar thumbnail</button>
+                                                    </div>
+                                                    <canvas id="canvas"></canvas>
+                                                </section>
+                                            </div>
                                             <audio id="Tiempo"></audio>
                                             <section class="text-align-center">
                                             </section>
@@ -438,7 +451,17 @@
     }
 
     function registro() {
+        const canvas = document.getElementById('canvas');
+
         if ($(frm).valid()) {
+            if(canvas.toDataURL("image/jpeg").length < 2000){
+                $.smallBox({color: 'alert',
+                    content:
+                             '<span><i class="fa fa-exclamation-circle fa-fw"></i>' +
+                            'Debe capturar una miniatura del video mediante el botón "Capturar thumbnail"</span>',
+                    timeout: 10000});
+                return;
+            }
             $('#frm_registro input').attr('readonly', true);
             $('#frm_registro button').attr('disabled', true);
             var params = getFormData($(frm));
@@ -462,7 +485,7 @@
                         if(vId){
                             if (video.files[0] != null) {
                                 subirVideo(res);
-                            }else{
+                            } else {
                                 $.smallBox({content: 'Actualización exitosa'});
                                 irListado($index);
                                 listarRegistros();
@@ -606,17 +629,31 @@
     }
 
     function subirVideo(d) {
-        const rdmUUID = d.rdm;
+        const uuids = d.rdm.split("@");
+        const rdmUUID = uuids[0];
+        const thumbUuid = uuids[1];
+        const videoId = d.res;
         var video = $("#Video").get(0);
 
         var data = new FormData();
         data.append("video", video.files[0]);
         data.append("videoId", videoId);
-        data.append("randomUUID", rdmUUID);
+        data.append("randomUUIDs", rdmUUID + "|" + thumbUuid);
+
+        //Binded thumnail
+        const canvas = document.getElementById('canvas');
+        const jpegUrl = canvas.toDataURL("image/jpeg");
+        const blobBin = atob(jpegUrl.split(',')[1]);
+        var array = [];
+        for(var i = 0; i < blobBin.length; i++) {
+            array.push(blobBin.charCodeAt(i));
+        }
+        var thumbnailJPEGFile =new Blob([new Uint8Array(array)], {type: "type/jpeg"});
+        data.append("thumnailVideo", thumbnailJPEGFile);
 
         $.ajax({
             type: 'POST',
-            url: _ctx + 'gestion/video/upload/'+rdmUUID,
+            url: _ctx + 'gestion/video/upload',
             data: data,
             contentType: false,
             processData: false,
@@ -648,6 +685,7 @@
 
     function subirVideoChangeEvent() {
         $("#Video").change(function () {
+            var $source = $('#video_here');
             //submit the form here
             var file;
             if ((file = this.files[0])) {
@@ -664,6 +702,9 @@
                 document.getElementById('Tiempo').setAttribute('src', objUrl);
                 $('#Peso').val(formatBytes(file.size, 2));
                 $('#Peso').valid();
+                $source[0].src = objUrl;
+                $source.parent()[0].load();
+
             }else{
                 $('#Peso').val('');
                 $('#Duracion').val('');
@@ -756,6 +797,15 @@
         Object.keys(rules).filter(e=>rules[e].hasOwnProperty('rangelength')).forEach(e=>{
             document.getElementById(e).setAttribute('maxlength', rules[e].rangelength[1]);
         });
+    }
+
+    function capturarVideoThumbnail(){
+        var canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        var videoParent = document.getElementById('video_parent');
+        canvas.getContext('2d').drawImage(videoParent, 0, 0, videoParent.videoWidth, videoParent.videoHeight, 0, 0, 300, 150);
     }
 
     /*]]>*/

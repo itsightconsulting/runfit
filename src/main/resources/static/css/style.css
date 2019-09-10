@@ -1686,3 +1686,13 @@ section.consejos span.msj-no-data{
 }
 
 /* END SPINNER */
+
+/* CUSTOM FANCY BOX STYLE*/
+.fancybox-thumbs__list > a{
+  background-size: contain !important;
+}
+
+.fancybox-button--play{
+  display: none !important;
+}
+/* END FANCY BOX */

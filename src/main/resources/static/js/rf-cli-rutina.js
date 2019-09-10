@@ -2641,7 +2641,7 @@ RutinaDiaHTML = (function(){
                           <div class="panel-heading">
                             <h3>${elemento.nombre}<div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div></h3>
                             <div class="icons">
-                              <div class="svg-wrap" rel="tooltip" title="Vamos a realizar una pequeña prueba">
+                              <div class="svg-wrap" rel="tooltip" title="">
                                 <img class="svg" src="img/iconos/icon_microfono.svg">
                               </div>
                               <div class="svg-wrap" rel="tooltip" title="${elemento.nota}">
@@ -2657,7 +2657,7 @@ RutinaDiaHTML = (function(){
                             <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación</span>
                               <ul class="principal">
                                 <li>
-                                    ${RutinaDiaHTML.showSubElementos(elemento.subElementos, diaIndex)}
+                                    ${RutinaDiaHTML.showSubElementos(elemento.subElementos, diaIndex, eleIndex = ix)}
                                 </li>
                               </ul>
                             </div>
@@ -2665,7 +2665,7 @@ RutinaDiaHTML = (function(){
                         </div>`
             ).join('');
         },
-        showSubElementos: (subElementos, diaIndex) => {
+        showSubElementos: (subElementos, diaIndex, eleIndex) => {
             if (!subElementos || !subElementos.length) {
                 return '<h6>No tiene sub elementos</h6>';
             }
@@ -2673,20 +2673,23 @@ RutinaDiaHTML = (function(){
                 `${!subEle.mediaVideo && !subEle.mediaAudio ? 
                         `<li>
                             <a>
-                              <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
+                              <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
                             </a>
                         </li>` : subEle.mediaVideo ?
-                    `<li>
-                            <img data-fancybox="gallery${diaIndex}" href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${subEle.mediaVideo}" class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg">
+                        `<li>
+                            <img  data-width="640" data-height="360"
+                                data-fancybox="gallery-${diaIndex}-${eleIndex}" 
+                                href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${subEle.mediaVideo}" 
+                                class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg">
                             <a>
-                              <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
+                              <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
                             </a>
                         </li>`
                     : `<li>
-                        <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
-                      <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
-                    </li>`
-                    }`
+                            <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
+                            <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
+                       </li>`
+                }`
             ).join('');
         }
     }

@@ -6,9 +6,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.UsuarioRecover;
 import com.itsight.domain.dto.PasswordDTO;
 import com.itsight.repository.IdiomaRepository;
-import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.UsuarioRecoverRepository;
-import com.itsight.service.EmailService;
 import com.itsight.service.SecurityUserService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
@@ -104,23 +101,10 @@ public class AuthController extends BaseController {
         return ViewConstant.ERROR403;
     }
 
-    @GetMapping(value = "/session-expirada", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody
-    String expiredSession() {
-        return "{\"mensaje\": \"Su sessión ha expirado, por favor dirigirse a la pagina /login\"}";
-    }
-
-    @GetMapping(value = "/session-multiple")
-    public String expiredBySessionMultiple() {
-        return "lock";
-    }
-
     @GetMapping(value = "/p/recuperar/password")
     public String recuperarPassword(){
         return ViewConstant.RECUPERAR_PASSWORD;
     }
-
-
 
     @GetMapping(value = "/pagos/resumen-anual")
     public String resumenAnual(){
