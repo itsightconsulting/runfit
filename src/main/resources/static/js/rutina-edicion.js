@@ -3,6 +3,8 @@ const editorRutinaContenido = document.querySelector('#editorContent');
 const $semActual = document.querySelector('#nroSemanaActual');
 const $semanario = document.querySelector('#rutinaSemana');
 const mainTabs = document.querySelector('#principalesTabs');
+const $rMenuEleSubele = document.querySelector('#rMenuEleSubele');
+let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
 let $rutina;
@@ -43,7 +45,7 @@ let $idsComp = [];
 let $semanasEnviadas = [];
 let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
-
+let $menuEleSubEle  = document.querySelector('#rmenuEleSubele');
 
 $(function () {
     init();
@@ -52,6 +54,8 @@ $(function () {
 function init(){
 
     let uriParam = getParamFromURL("si");
+
+
 
 
     obtenerSemanaInicialRutina().then((semana)=>{
@@ -72,13 +76,26 @@ function init(){
         $semanario.addEventListener('click', principalesEventosClickRutina);
 
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
+        tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
 
         mainTabs.addEventListener('click', principalesAlCambiarTab);
 
-        /*   instanciarDatosFitnessCliente();
+        $semanario.addEventListener('contextmenu', eventosMenuSemanario);
+        $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
+
+        $(document).bind("click", function(event) {
+           $rMenuEleSubele.className = "hide";
+        });
 
 
-           tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
+
+
+/*
+
+
+          instanciarDatosFitnessCliente();
+
+
            tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
            tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
            $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
@@ -112,6 +129,106 @@ function init(){
           instanciarTooltips();
 
     });
+
+}
+
+
+function eventosMenuSemanario(e){
+
+    const input = e.target;
+    const inpClasses = input.classList;
+    if(inpClasses.contains("rf-dia-elemento-nombre") || inpClasses.contains("rf-sub-elemento-nombre")){
+
+        $menuTargetInput = input;
+        $rMenuEleSubele.classList.toggle("hide");
+        $($rMenuEleSubele).css(
+            {
+                position: "absolute",
+                top: e.pageY,
+                left: e.pageX
+            }
+        );
+
+        const inpDataIx = input.getAttribute('data-index');
+
+         e.preventDefault();
+
+
+    }
+}
+
+function eventosClickMenuOptElem(e){
+ debugger;
+ const input = e.target;
+ const inpClasses = input.classList;
+ if(inpClasses.contains('agregar-nota')){
+         e.stopPropagation();
+         const inpTargetClasses = $menuTargetInput.classList;
+
+         if(inpTargetClasses.contains("rf-dia-elemento-nombre")){
+
+             const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+             const type = elemento.getAttribute('data-type');
+             if(type == 2) {
+                 debugger;
+                 const collapsable = elemento.querySelector('a[data-toggle="collapse"]');
+                 const panelCollapsable = elemento.querySelector('.panel-collapse');
+                 collapsable.classList.add('collapsed');
+                 collapsable.setAttribute('aria-expanded', "false");
+                 panelCollapsable.classList.remove('in');
+                 panelCollapsable.setAttribute('aria-expanded', "false");
+             }
+
+             if(elemento.children.length != 3) {
+                 let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
+                 let notaInput = document.createElement('div');
+                 notaInput.className = 'panel-heading';
+                 notaInput.innerHTML = `
+                    <div class="dv-nota">
+                        <textarea class="nueva-nota w-100" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${elementoNota==undefined?'':elementoNota}</textarea>
+                    </div >`
+                 elemento.append(notaInput);
+             }
+
+             $rMenuEleSubele.classList.toggle("hide");
+
+         }
+         else if(inpTargetClasses.contains("rf-sub-elemento-nombre")){
+             const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+             let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
+             if(subEle.children.length != 1) {
+                 let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
+                 let notaInput = document.createElement('div');
+                 notaInput.className = 'panel-heading';
+                 notaInput.innerHTML = `
+                    <div class="dv-nota">
+                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota!=undefined?subEleNota:''}</textarea>
+                    </div >`
+                 subEle.append(notaInput);
+             }
+             $rMenuEleSubele.classList.toggle("hide");
+         }
+
+
+
+ }
+
+ else if(clases.contains('agregar-nota-sbe')) {
+     const ixs = RutinaIx.getIxsForSubElemento(input);
+     let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
+     if(subEle.children.length != 1) {
+         let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
+         let notaInput = document.createElement('div');
+         notaInput.className = 'panel-heading';
+         notaInput.backgroundColor = '#ebf1fd';
+         notaInput.innerHTML = `
+                    <div class="container-fluid">
+                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota!=undefined?subEleNota:''}</textarea>
+                    </div >`
+         subEle.append(notaInput);
+     }
+ }
 
 }
 
@@ -400,14 +517,102 @@ function principalesEventosFocusOutSemanario(e) {
 function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
     let input = e.target;
-    console.log(input);
 
 
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
+            const dvInputsInit = input.parentElement.parentElement.parentElement;
+            dvInputsInit.classList.toggle('hidden');
             const ixs = RutinaIx.getIxsForDia(input);
             ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
+        }
+    }
+
+    else if(clases.contains('in-ele-dia-2')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            const dvInputsInit = input.parentElement.parentElement.parentElement;
+            dvInputsInit.classList.toggle('hidden');
+            const ixs = RutinaIx.getIxsForDia(input);
+            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.COMPUESTO);
+        }
+    }
+    else if(clases.contains('in-ele-dia-esp-pos')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            
+            const valor = $mediaNombre;
+            let ixs = RutinaIx.getIxsForElemento(input);
+            let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
+            let tipo = input.getAttribute('data-ele-tipo');
+            let initTempElementoRef = tempElemento;
+            let i = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            const nuevoIx = RutinaSeccion.newElementoPosEspecifica(ixs.diaIndex, tipo, valor, 'afterend', initTempElementoRef);
+            ixs.eleIndex = nuevoIx;
+            const nuevoElemento = RutinaDOMQueries.getElementoByIxs(ixs).querySelector('.rf-dia-elemento-nombre');
+            ElementoOpc.agregarMediaElemento(ixs, nuevoElemento , tipo, (posEle = i));
+            initTempElementoRef.remove();
+        }
+    }
+
+
+    else if(clases.contains('in-sub-elemento')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+
+            clases.toggle('hidden');
+            const obj = {};
+            obj.nombre = $mediaNombre;
+            $tipoMedia == TipoElemento.AUDIO?obj.mediaAudio = $mediaAudio : obj.mediaVideo = $mediaVideo;
+            obj.tipo = $tipoMedia;
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, $tipoMedia, obj.nombre);
+            ixs.subEleIndex = nuevoIx;
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let initElemento = tempElemento;
+            let nSubEle = tempElemento.querySelector(`div[data-index="${nuevoIx}"]`);
+            let i = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
+            agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0); //Siempre va ser el primero por eso se deja la posicion como 0
+            const iconoAdd = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.ele-add');
+            const dvMediaElements =  RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.notes');;
+
+            debugger
+            if($tipoMedia == TipoElemento.AUDIO){
+                dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
+            }else{
+                iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
+            }
+
+
+            $(initElemento.querySelector(`.in-init-sub-ele`)).closest('li').remove();  //toggleClass('hidden');
+
+
+            //  instanciarSubElementoTooltip(nSubEle);
+          //  instanciarSubElementoPopover(nSubEle);
+
+            $mediaAudio = '';
+            $mediaVideo = '';
+        }
+    }
+
+
+
+    else if(clases.contains('in-sub-ele-esp-pos')){
+        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            debugger
+            const valor = $mediaNombre;
+            let ixs = RutinaIx.getIxsForSubElemento(input);
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
+            let initTempSubEleRef = tempSubEle.parentElement;
+
+            let i = 0, k=0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            while((tempSubEle = tempSubEle.previousElementSibling))k++;
+            const nuevoIx = RutinaSeccion.newSubElementoPosEspecifica(ixs.diaIndex, ixs.eleIndex, validUUID($mediaAudio) ? TipoElemento.AUDIO : TipoElemento.VIDEO, valor, 'afterend', initTempSubEleRef);
+            ixs.subEleIndex = nuevoIx;
+            SubEleOpc.agregarMediaSubElemento(ixs, RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.rf-sub-elemento-nombre'), i, k);
+            initTempSubEleRef.remove();
         }
     }
   /*
@@ -420,44 +625,6 @@ function principalesEventosClickRutina(e) {
     }
 
 
-    else if(clases.contains('in-ele-dia-2')){
-        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
-            const ixs = RutinaIx.getIxsForDia(input);
-            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.COMPUESTO);
-        }
-    }
-    else if(clases.contains('in-sub-elemento')){
-        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            clases.toggle('hidden');
-            const obj = {};
-            obj.nombre = $mediaNombre;
-            $tipoMedia == TipoElemento.AUDIO?obj.mediaAudio = $mediaAudio : obj.mediaVideo = $mediaVideo;
-            obj.tipo = $tipoMedia;
-            let ixs = RutinaIx.getIxsForSubElemento(input);
-            const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, $tipoMedia, obj.nombre);
-            ixs.subEleIndex = nuevoIx;
-            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            let nSubEle = tempElemento.querySelector(`div[data-index="${nuevoIx}"]`);
-            let i = 0;
-            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-            RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
-            agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0); //Siempre va ser el primero por eso se deja la posicion como 0
-
-            const iconoOpc = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.sub-ele-ops');
-            if($tipoMedia == TipoElemento.AUDIO){
-                iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
-            }else{
-                iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
-            }
-
-            instanciarSubElementoTooltip(nSubEle);
-            instanciarSubElementoPopover(nSubEle);
-
-            $mediaAudio = '';
-            $mediaVideo = '';
-        }
-    }
     else if (clases.contains('trash-elemento')) {
         e.preventDefault();
         e.stopPropagation();
@@ -552,47 +719,6 @@ function principalesEventosClickRutina(e) {
     else if(clases.contains('sub-ele-ops')){
         e.stopPropagation();
         instanciarEspecificosTooltip(input);
-    }
-    else if(clases.contains('agregar-nota')) {
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForElemento(input);
-        let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
-        const type = elemento.getAttribute('data-type');
-        if(type == 2) {
-            const collapsable = elemento.querySelector('a[data-toggle="collapse"]');
-            const panelCollapsable = elemento.querySelector('.panel-collapse');
-            collapsable.classList.add('collapsed');
-            collapsable.setAttribute('aria-expanded', "false");
-            panelCollapsable.classList.remove('in');
-            panelCollapsable.setAttribute('aria-expanded', "false");
-        }
-
-        if(elemento.children.length != 3) {
-            let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
-            let notaInput = document.createElement('div');
-            notaInput.className = 'panel-heading';
-            notaInput.backgroundColor = '#ebf1fd';
-            notaInput.innerHTML = `
-                    <div class="container-fluid">
-                        <textarea class="nueva-nota w-100" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${elementoNota==undefined?'':elementoNota}</textarea>
-                    </div >`
-            elemento.append(notaInput);
-        }
-    }
-    else if(clases.contains('agregar-nota-sbe')) {
-        const ixs = RutinaIx.getIxsForSubElemento(input);
-        let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
-        if(subEle.children.length != 1) {
-            let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
-            let notaInput = document.createElement('div');
-            notaInput.className = 'panel-heading';
-            notaInput.backgroundColor = '#ebf1fd';
-            notaInput.innerHTML = `
-                    <div class="container-fluid">
-                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota!=undefined?subEleNota:''}</textarea>
-                    </div >`
-            subEle.append(notaInput);
-        }
     }
 
     */
@@ -781,22 +907,6 @@ function principalesEventosClickRutina(e) {
         }
     }
 
-    else if(clases.contains('in-sub-ele-esp-pos')){
-        if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            const valor = $mediaNombre;
-            let ixs = RutinaIx.getIxsForSubElemento(input);
-            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
-            let initTempSubEleRef = tempSubEle;
-            let i = 0, k=0;
-            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-            while((tempSubEle = tempSubEle.previousElementSibling))k++;
-            const nuevoIx = RutinaSeccion.newSubElementoPosEspecifica(ixs.diaIndex, ixs.eleIndex, validUUID($mediaAudio) ? TipoElemento.AUDIO : TipoElemento.VIDEO, valor, 'afterend', initTempSubEleRef);
-            ixs.subEleIndex = nuevoIx;
-            SubEleOpc.agregarMediaSubElemento(ixs, RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.rf-sub-elemento-nombre'), i, k);
-            initTempSubEleRef.remove();
-        }
-    }
     else if(clases.contains('varios-media')){
         e.preventDefault();
         e.stopPropagation();
@@ -865,17 +975,7 @@ function principalesAlCambiarTab(e){
         document.querySelector('#OpsAdic').classList.remove('hidden');
         document.querySelector('#DivEditor').classList.remove('hidden');
     }
-    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
-        e.preventDefault();
-        document.querySelector('#OpsAdic').classList.add('hidden');
-        document.querySelector('#DivEditor').classList.add('hidden');
-        $videosElegidos = [];
-        $subEleElegidos = [];
-        Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
-        if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
-            instanciarGrupoVideos();
-        }
-    }
+
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
         document.querySelector('#DivEditor').classList.add('hidden');
         if(document.querySelector('#ArbolRutinario').children.length == 0) {
@@ -884,7 +984,6 @@ function principalesAlCambiarTab(e){
     }
     else*/
 
-    console.log(input);
     if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoAudios') {
         e.preventDefault();
       //  document.querySelector('#OpsAdic').classList.add('hidden');
@@ -892,19 +991,115 @@ function principalesAlCambiarTab(e){
         if (document.querySelector('#ArbolGrupoAudio').children.length == 0) {
             instanciarGrupoAudios();
         }
+
+
     }
- /*   else if(e.target.tagName === "A"){
-        document.querySelector('#OpsAdic').classList.add('hidden');
-        document.querySelector('#DivEditor').classList.add('hidden');
-        if(input.getAttribute('href') == '#tabFichaTecnica'){
-            if($ruConsolidado == undefined){
-                obtenerRutinaConsolidadoBD();
-            }
+
+    else if(input.nodeName == "A" && input.getAttribute('href') == '#tabGrupoVideos') {
+        e.preventDefault();
+     //   document.querySelector('#OpsAdic').classList.add('hidden');
+     //   document.querySelector('#DivEditor').classList.add('hidden');
+        $videosElegidos = [];
+        $subEleElegidos = [];
+        Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
+        if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
+            instanciarGrupoVideos();
         }
+    }
+    /*   else if(e.target.tagName === "A"){
+           document.querySelector('#OpsAdic').classList.add('hidden');
+           document.querySelector('#DivEditor').classList.add('hidden');
+           if(input.getAttribute('href') == '#tabFichaTecnica'){
+               if($ruConsolidado == undefined){
+                   obtenerRutinaConsolidadoBD();
+               }
+           }
 
 
-    }  */
+       }  */
 }
+
+function principalesEventosTabGrupoVideos(e){
+    const input = e.target;
+    const clases = input.classList;
+
+    if(clases.contains('reprod-video')){
+        e.preventDefault();
+        $('#myModalVideo').modal('show');
+        const route = input.getAttribute('data-media');
+        $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
+        $("#VideoReproduccion").parent().get(0).load();
+    }
+    else if(clases.contains('cat-video')){
+        
+        e.preventDefault();
+        const clase = '' +
+            '.cat-video'+ input.getAttribute('data-id');
+        const div = document.querySelector(clase);
+        $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0}, 300);
+        if(div != undefined){
+            div.classList.toggle('rut-ce-separador');
+            setTimeout(()=>{div.classList.toggle('rut-ce-separador');},4000)
+            $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0},300);
+        }else{
+
+        }
+    }
+
+    else if(clases.contains('ck-video')){
+        e.preventDefault();
+        e.stopPropagation();
+        parent = input.parentElement;
+        $memoriaVideo = input;
+        $mediaVideo = parent.querySelector('.reprod-video').getAttribute('data-media');
+        $mediaNombre = parent.textContent.trim();
+        $mediaAudio = '';
+        $tipoMedia = TipoElemento.VIDEO;
+        cambiarATabRutina();
+    }
+
+
+
+   /*
+   else if(clases.contains('elegir-video')){
+        e.stopPropagation();
+        const li = input;
+        const eleVideo = li.querySelector('.reprod-video');
+        const ix = eleVideo.getAttribute('data-index');
+        if(!clases.contains('txt-color-greenIn')){
+            clases.add('txt-color-greenIn');
+            const media = eleVideo.getAttribute('data-media');
+            const nombreMedia = li.textContent.trim();
+            $videosElegidos.push([ix, nombreMedia, media]);
+        }else{
+            clases.remove('txt-color-greenIn');
+            $videosElegidos = $videosElegidos.filter(e=>{return e[0]!=ix});
+        }
+    }
+
+
+    else if(clases.contains('ck-favorito-video')){
+        e.preventDefault();
+        e.stopPropagation();
+        parent = input.parentElement;
+        var idvideo = parent.querySelector('.ck-favorito-video').getAttribute('data-id');
+        //console.log(id);
+        var selected = $(parent.querySelector('.ck-favorito-video')).attr("data-selected");
+        var editaragregar = 0;
+        if(selected == "1"){
+            $(parent.querySelector('.ck-favorito-video')).css("color","#3276b1");
+            $(parent.querySelector('.ck-favorito-video')).attr("data-selected", "0");
+            editaragregar = 0;
+        }else {
+            $(parent.querySelector('.ck-favorito-video')).attr("data-selected", "1");
+            $(parent.querySelector('.ck-favorito-video')).css("color","#d8d807");
+            editaragregar = 1;
+        }
+        agregarEliminarFavorito(idvideo,0,editaragregar);
+    }*/
+}
+
+
 
 function principalesEventosTabGrupoAudios(e){
     const input = e.target;
@@ -1106,6 +1301,32 @@ function actualizarElementoStrategyBD2(numSem, diaIndex, eleIndex, tipoElemento)
     })
 }
 
+
+function actualizarMediaSubElementoBD2(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.tipo = 3;
+    params.tipoMedia = tipoMedia;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
 function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElemento, postSubElemento) {
     
     let params = {};
@@ -1270,6 +1491,69 @@ function listaNoRepetida(ix, nombre) {
 }
 
 
+function actualizarElementoStrategyBD(numSem, diaIndex, eleIndex, tipoMedia, tipoElemento){
+    let params = {};
+    params.nombre = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].nombre;
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].mediaVideo;
+    }
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.tipo = tipoElemento;
+    params.tipoMedia = tipoMedia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/media/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarSubElementoStrategyBD(numSem, diaIndex, eleIndex, subEleIndex, tipoMedia){
+    let params = {};
+    params.nombre = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].nombre;
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].subElementos[subEleIndex].mediaVideo;
+    }
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.subElementoIndice = subEleIndex;
+    params.tipo = tipoMedia;
+    params.tipoMedia = tipoMedia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
+
 function instanciarGrupoAudios(){
 
     $.ajax({
@@ -1280,6 +1564,7 @@ function instanciarGrupoAudios(){
         noOne: false,
         dataType: "json",
         success: function (data, textStatus) {
+            console.log("audio", data);
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -1323,6 +1608,119 @@ function instanciarGrupoAudios(){
         }
     });
 }
+
+
+function instanciarGrupoVideos(){
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + 'gestion/video/obtener/arbol',
+        blockLoading: true,
+        noOne: false,
+        dataType: "json",
+        success: function (data, textStatus) {
+
+         console.log("videoos",data);
+            if (textStatus == "success") {
+                if (data == "-9") {
+                    $.smallBox({
+                        content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
+                        timeout: 4500,
+                        color: "alert",
+                    });
+                }else{
+                    let rawHTMLCabecera = '';
+                    rawHTMLCabecera +='<div class="container-fluid padding-0">'
+                    data.forEach(grupoVideo => {
+                        const rrWeb = grupoVideo.id+"/"+grupoVideo.uuid + grupoVideo.extImg;
+                        rawHTMLCabecera +=
+                            `<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="container-fluid padding-0">
+                                        <h1 class="text-center txt-color-white padding-7 bg-color-blue-sl"><img class="pull-left" height="80px" src="https://s3-us-west-2.amazonaws.com/rf-media-rutina/grupo-video/${grupoVideo.id}/${grupoVideo.rutaWeb}">${grupoVideo.nombre}</h1>
+                                    </div>
+                                    ${generandoCategoriaVideos(grupoVideo)}
+                                 </div>`;
+
+
+                    });
+                    rawHTMLCabecera +='</div>';
+
+                    document.querySelector('#ArbolGrupoVideo').appendChild(htmlStringToElement(rawHTMLCabecera));
+                }
+            }
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+            updateAudioFavoritos();
+        }
+    });
+}
+
+function generandoCategoriaVideos(catsVideo){
+    let rawSubCategoriasHTML = '',
+        rawGruposAElegirHTML = '<div class="container-fluid">';
+
+    catsVideo.lstCategoriaVideo.forEach(catVideo=> {
+        rawSubCategoriasHTML += `<div class="col col-xs-6 col-sm-3 col-md-2 col-lg-2 padding-10">
+                                    <h6 class="txt-color-grayDark font-md"><a href="javascript:void(0);" class="cat-video" data-id="${catVideo.id}">${catVideo.nombre}</a></h6>
+                                    <div class="container-fluid padding-0">
+                                        ${generandoSubCategoriaVideos(catVideo)}
+                                    </div>  
+                                </div>`;
+
+        rawGruposAElegirHTML +=`<div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 cat-video${catVideo.id} padding-0">
+                                    <h1 class="text-center txt-color-white bg-color-blue-sl padding-10">${catVideo.nombre}</h1>
+                                    <div class="container-fluid">
+                                        ${generandoSubCategoriaVideosCuerpo(catVideo)}
+                                    </div>
+                                </div>`;
+
+    })
+
+    rawGruposAElegirHTML+='</div>';
+
+    document.querySelector('#ArbolGrupoVideoDetalle').appendChild(htmlStringToElement(rawGruposAElegirHTML));
+    return rawSubCategoriasHTML;
+}
+
+function generandoSubCategoriaVideos(catVideo){
+    let rawSubCategoriasHTML = '';
+    catVideo.subCategoriasVideo.forEach(subCatVideo=> {
+        rawSubCategoriasHTML += `<span style="display: block">${subCatVideo.nombre}</span>`;
+    })
+    return rawSubCategoriasHTML;
+}
+
+function generandoSubCategoriaVideosCuerpo(catVideo){
+    let rawHTML = ''
+
+    catVideo.subCategoriasVideo.forEach(subCatVideo=> {
+        rawHTML += `
+                   <div class="col col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                       <h6 class="txt-color-grayDark font-md" data-id="${subCatVideo.id}">${subCatVideo.nombre}</h6>
+                            ${generandoVideosCuerpo(subCatVideo)}
+                   </div>
+                  `;
+    })
+    return rawHTML;
+}
+
+function generandoVideosCuerpo(subCatVideo){
+    let rawVideosHTML = '';
+    subCatVideo.videos.forEach(v=> {
+        rawVideosHTML += `<a class="elegir-video padding-7-no-left" href="javascript:void(0);">
+                          <i id="livideo${v.id}" title="Agregar a favoritos" class="fa fa-star fa-fw ck-favorito-video padding-top-3" data-selected="0" data-id="${v.id}"></i>
+                          <i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i>
+                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb}" data-index="${v.id}">
+                          </i>${v.nombre}</a>`;
+    })
+    return rawVideosHTML;
+
+}
+
 
 function updateAudioFavoritos() {
     $.ajax({
@@ -1424,4 +1822,9 @@ function cambiarATabRutina(){
 
 function instanciarTooltips(){
     $('[rel="tooltip"]').tooltip();
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    $body.animate({scrollTop: 0},300);
 }

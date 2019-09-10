@@ -1915,14 +1915,76 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     padding: 12px;
 }
 .white {
-    color: #fff;
+  color: #fff;
 }
 
 h2.title_carousel span.semana-num {
-    font-family: GothamHTF-Bold;
-
+  font-family: GothamHTF-Bold;
 }
 
 .txt-color-greenIn {
-    color: #34ad34 !important;
+  color: #34ad34 !important;
 }
+
+.padding-0{
+  padding: 0;
+}
+
+.elegir-video {
+  display: block;
+}
+
+section#ArbolGrupoVideo h1, section#ArbolGrupoVideoDetalle h1{
+  font-size: 24px;
+}
+
+#btnGoTop{
+    position: fixed;
+    color: #f6f6ff;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    background-color: #a8fa00;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 3%;
+}
+
+/* context menu */
+#rMenuEleSubele {
+    border: 1px solid #a8fa00;
+    background-color: white;
+    border-radius: 5%;
+    font-size: 12px;
+    font-family: GothamHTF-Book;
+
+}
+
+.hide {
+    display: none;
+}
+
+
+#rMenuEleSubele ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+#rMenuEleSubele li{
+    list-style: none;
+    border-bottom : 1px solid #a8fa00 ;
+    background-color : white;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#rMenuEleSubele li:hover{
+    cursor:  pointer;
+    color : #28a905;
+}
+
+.dv-nota{
+    display: inline;
+    background-color: #a8fa0082;
+    padding: 33px 5px 2px;}
+

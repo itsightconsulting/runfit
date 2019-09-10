@@ -79,7 +79,7 @@ class Rutina {
                                                              <!-- smart-accordion-default -->
                                                              <div class="panel-group smart-accordion-default">
                                                              <!-- DIAS DE SEMANA -->
-                                                                 <h1 class="text-align-center">${sIndex != 0 ? `<img class="max-wd" src="${_ctx}img/finish_strong.png"/>` : `<img class="max-wd" src="${_ctx}img/empieza_reto.jpg"/>`}</h1>
+                                                                 <h1 class="text-center">${sIndex != 0 ? `<img class="max-wd" src="${_ctx}img/finish_strong.png"/>` : `<img class="max-wd" src="${_ctx}img/empieza_reto.jpg"/>`}</h1>
                                                                  <!-- END DIAS DE SEMANA -->
                                                              </div>													
                                                          </div>
@@ -397,16 +397,16 @@ RutinaOpc = (function(){
                 //Cuando la semana inicial no es completa y requiere crear dias iniciales para completarla
                 if(i==0 && v < 7) {
                     for (let z = 0; z < 7-v; z++) {
-                        calendarBody+=`<div class="col-md-1 col-sm-1 col-xs-1 col-lg-1  font-md mini txt-color-grayDark text-align-center">${diaAnteriorAlMes-(6-v)+z}</div>`
+                        calendarBody+=`<div class="col-md-1 col-sm-1 col-xs-1 col-lg-1  font-md mini txt-color-grayDark text-center">${diaAnteriorAlMes-(6-v)+z}</div>`
                     }
                 }
                 //Solo cumple para el primer mes/primeras semanas
                 if(semanasIxs[0] == 0){
                     for(let x=0; x < v; x++){
                         if(d>= min && d<=max) {
-                            calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar text-align-center" data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                            calendarBody += `<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini fechas-calendar text-center" data-dia="${d}" data-index="${primSem}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                         }else{
-                            calendarBody+=`<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini txt-color-grayDark text-align-center">${d++}</div>`;
+                            calendarBody+=`<div class="col-lg-1 col-md-1 col-xs-1 col-sm-1 font-md mini txt-color-grayDark text-center">${d++}</div>`;
                         }
                     }
                     if(d> min && d<=max)
@@ -415,16 +415,16 @@ RutinaOpc = (function(){
                 }else if(semanasIxs[semanasIxs.length-1] == $rutina.totalSemanas-1) {
                     for(let x=0; x < v; x++) {
                         if (d <= max) {
-                            calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-align-center" data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
+                            calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-center" data-dia="${d}" data-index="${i}">${d++}<i class="fa fa-circle event-calendar"></i></div>`;
                         } else {
-                            calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark text-align-center" data-index="${i}">${d++}</div>`;
+                            calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark text-center" data-index="${i}">${d++}</div>`;
                         }
                     }
                 }
                 //Los meses intermedios o full
                 else{
                     for (let x = 0; x < v; x++) {
-                        calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-align-center" data-dia="${d}" data-index="${i}">
+                        calendarBody += `<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini fechas-calendar text-center" data-dia="${d}" data-index="${i}">
                                             ${d++}
                                             <i class="fa fa-circle event-calendar"></i>
                                          </div>`;
@@ -434,7 +434,7 @@ RutinaOpc = (function(){
                 //Cuando la semana final no esta completa y requiere crear dias iniciales para completarla
                 if(i==calendarSem.length-1 && v < 7) {
                     for (let z = 0; z < 7-v; z++) {
-                        calendarBody+=`<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark text-align-center">${1+z}</div>`
+                        calendarBody+=`<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 font-md mini txt-color-grayDark text-center">${1+z}</div>`
                     }
                 }
                 calendarBody += `</div>`;
@@ -964,7 +964,7 @@ RutinaEditor = (function(){
             const raw = `
                     <div class="container-fluid padding-0 its-indicador-1">
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="row padding-5 text-align-center">
+                            <div class="row padding-5 text-center">
                                 <div class="btn-group">
                                     <div class="note-palette-title"><b>Color fuente</b></div>
                                         <div>
@@ -998,7 +998,7 @@ RutinaEditor = (function(){
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="row padding-5 text-align-center">
+                            <div class="row padding-5 text-center">
                                 <div class="btn-group">
                                     <div class="note-palette-title"><b>Color fondo</b></div>
                                         <div>
@@ -1787,7 +1787,7 @@ ElementoOpc = (function(){
         agregarMediaToElemento2: (ixs, input)=>{
             const assetsElemento = input.parentElement;
             const iconoAdd = assetsElemento.querySelector('.ele-add');
-            const iconoMedia = assetsElemento.querySelector('.rf-media');
+            const iconoVideo = assetsElemento.querySelector('.reprod-video');
             const iconoAudio = assetsElemento.querySelector('.notes .ong');
             const dvMediaElements =  assetsElemento.querySelector('.notes');
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
@@ -1806,10 +1806,10 @@ ElementoOpc = (function(){
                 $mediaAudio = '';
             }else if ($tipoMedia == TipoElemento.VIDEO) {
                 RutinaSet.setElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex=i), $mediaVideo, $mediaNombre);
-                if(iconoMedia != undefined && iconoMedia.className.includes('fa-video-camera')){//Primer if para actualizar
-                    iconoMedia.setAttribute('data-media', $mediaVideo);
+                if(iconoVideo != undefined){//Primer if para actualizar
+                    iconoVideo.setAttribute('data-media', $mediaVideo);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
+                    iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
                 }
                 actualizarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.VIDEO, $mediaNombre);
                 $mediaVideo = '';
@@ -1817,35 +1817,39 @@ ElementoOpc = (function(){
             initTempElemento.querySelector('.rf-dia-elemento-nombre').textContent = $mediaNombre;
         },
         agregarMediaElemento: (ixs, input, tipoEle, posEle)=>{
+            debugger
             const assetsElemento = input.parentElement;
             const iconoOpc = assetsElemento.querySelector('.ele-ops');
-            const iconoMedia = assetsElemento.querySelector('.rf-media');
+            const iconoAdd = assetsElemento.querySelector('.ele-add');
+            const iconoVideo = assetsElemento.querySelector('.reprod-video');
+            const iconoAudio = assetsElemento.querySelector('.notes .ong');
+            const dvMediaElements =  assetsElemento.querySelector('.notes');
 
             if($tipoMedia == TipoElemento.AUDIO){
                 RutinaSet.setElementoMediaAudio(ixs.numSem, ixs.diaIndex, posEle, $mediaAudio, $mediaNombre);
                 //Primer if para actualizar
-                if(iconoMedia != undefined && (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))){
-                    iconoMedia.setAttribute('data-media', $mediaAudio);
+                if(iconoAudio != undefined){
+                    iconoAudio.setAttribute('data-media', $mediaAudio);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
+                    dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
                 }
                 actualizarElementoStrategyBD(ixs.numSem, ixs.diaIndex, posEle, TipoElemento.AUDIO, tipoEle);
                 $mediaAudio = '';
             }else if ($tipoMedia == TipoElemento.VIDEO) {
                 RutinaSet.setElementoMediaVideo(ixs.numSem, ixs.diaIndex, posEle, $mediaVideo, $mediaNombre);
-                if(iconoMedia != undefined && iconoMedia.className.includes('fa-video-camera')){//Primer if para actualizar
-                    iconoMedia.setAttribute('data-media', $mediaVideo);
+                if(iconoVideo != undefined){//Primer if para actualizar
+                    iconoVideo.setAttribute('data-media', $mediaVideo);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
+                    iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
                 }
                 actualizarElementoStrategyBD(ixs.numSem, ixs.diaIndex, (posEle), TipoElemento.VIDEO, tipoEle);
                 $mediaVideo = '';
             }
-            instanciarEspecificosTooltip2(input);
-            instanciarElementoPopovers(assetsElemento);
+            //instanciarEspecificosTooltip2(input);
+            //instanciarElementoPopovers(assetsElemento);
         },
         agregarInitMediaElemento: (ixs, tipo)=>{
-            debugger
+
             const nuevoIx = ElementoTP.SIMPLE == tipo? RutinaSeccion.newElementoSimple(ixs.diaIndex, tipo, $mediaNombre) : RutinaSeccion.newElementoLista(ixs.diaIndex, tipo, $mediaNombre);
             ixs.eleIndex = nuevoIx;
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1856,7 +1860,7 @@ ElementoOpc = (function(){
             ele.nombre = $mediaNombre;
             if($tipoMedia == TipoElemento.AUDIO){
                 ele.mediaAudio = $mediaAudio;
-                dvIconosMedia.appendChild(`<div class="ong" rel="tooltip" data-original-title="Audio"></div>`);
+                dvIconosMedia.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-original-title="Audio"></div>`));
             }else{
                 ele.mediaVideo = $mediaVideo;
                 iconoAgregar.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
@@ -1865,8 +1869,8 @@ ElementoOpc = (function(){
             $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos.push(new Elemento(ele));
             agregarElementoBD(ixs.numSem, ixs.diaIndex, tipo);
             const nueEle = RutinaDOMQueries.getElementoByIxs(ixs);
-            instanciarElementoTooltips(nueEle);
-            instanciarElementoPopovers(nueEle);
+         // instanciarElementoTooltips(nueEle);
+         // instanciarElementoPopovers(nueEle);
             $mediaAudio = "";
             $mediaVideo = "";
         },
@@ -2035,10 +2039,13 @@ SubEleOpc = (function(){
                 $mediaVideo = '';
             }*/
         },
-        agregarMediaToSubElemento2: (ixs, input)=>{
+            agregarMediaToSubElemento2: (ixs, input)=>{
+            debugger
             const assetsElemento = input.parentElement;
-            const iconoOpc = assetsElemento.querySelector('.sub-ele-ops');
-            const iconoMedia = assetsElemento.querySelector('.rf-media');
+            const iconoVideo = assetsElemento.querySelector('.reprod-video');
+            const iconoAudio = assetsElemento.querySelector('.notes .ong');
+            const dvMediaElements = assetsElemento.querySelector('.notes');
+            const iconoAdd = assetsElemento.querySelector('.ele-add');
 
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0, k=0;
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
@@ -2048,53 +2055,56 @@ SubEleOpc = (function(){
             if($tipoMedia == TipoElemento.AUDIO){
                 RutinaSet.setSubElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex=i), (subEleIndex=k), $mediaAudio, $mediaNombre);
                 //Primer if para actualizar
-                if(iconoMedia != undefined && (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))){
-                    iconoMedia.setAttribute('data-media', $mediaAudio);
+                if(iconoAudio != undefined ){
+                    iconoAudio.setAttribute('data-media', $mediaAudio);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudio($mediaAudio));
+                    dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
                 }
                 actualizarMediaSubElementoBD2(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
                 $mediaAudio = '';
             }else if ($tipoMedia == TipoElemento.VIDEO) {
                 RutinaSet.setSubElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex=i), (subEleIndex=k), $mediaVideo, $mediaNombre);
-                if(iconoMedia != undefined && iconoMedia.className.includes('fa-video-camera')){//Primer if para actualizar
-                    iconoMedia.setAttribute('data-media', $mediaVideo);
+                if(iconoVideo != undefined){//Primer if para actualizar
+                    iconoVideo.setAttribute('data-media', $mediaVideo);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
+                    iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
                 }
                 actualizarMediaSubElementoBD2(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
                 $mediaVideo = '';
             }
             initTempSubElemento.querySelector('.rf-sub-elemento-nombre').textContent = $mediaNombre;
-            instanciarEspecificosTooltip2(input);
+        //    instanciarEspecificosTooltip2(input);
         },
         agregarMediaSubElemento: (ixs, input, eleIndex, subEleIndex)=>{
             const assetsElemento = input.parentElement;
-            const iconoOpc = assetsElemento.querySelector('.sub-ele-ops');
-            const iconoMedia = assetsElemento.querySelector('.rf-media');
+            const iconoAudio = assetsElemento.querySelector('.notes .ong');
+            const iconoAdd = assetsElemento.querySelector('.ele-add');
+            const dvMediaElements =  assetsElemento.querySelector('.notes');
+            const iconoVideo =  assetsElemento.querySelector('.reprod-video');
 
             if($tipoMedia == TipoElemento.AUDIO){
                 RutinaSet.setSubElementoMediaAudio(ixs.numSem, ixs.diaIndex, eleIndex, subEleIndex, $mediaAudio, $mediaNombre);
                 //Primer if para actualizar
-                if(iconoMedia != undefined && (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))){
-                    iconoMedia.setAttribute('data-media', $mediaAudio);
+                if(iconoAudio != undefined){
+                    iconoAdd.setAttribute('data-media', $mediaAudio);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoAudioLp($mediaAudio));
+                   dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
+
                 }
                 actualizarSubElementoStrategyBD(ixs.numSem, ixs.diaIndex,  eleIndex, subEleIndex, TipoElemento.AUDIO);
                 $mediaAudio = '';
             }else if ($tipoMedia == TipoElemento.VIDEO) {
                 RutinaSet.setSubElementoMediaVideo(ixs.numSem, ixs.diaIndex, eleIndex, subEleIndex, $mediaVideo, $mediaNombre);
-                if(iconoMedia != undefined && iconoMedia.className.includes('fa-video-camera')){//Primer if para actualizar
-                    iconoMedia.setAttribute('data-media', $mediaVideo);
+                if(iconoVideo != undefined){//Primer if para actualizar
+                    iconoVideo.setAttribute('data-media', $mediaVideo);
                 }else{//Para registrar
-                    iconoOpc.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideoLp($mediaVideo));
+                    iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
                 }
                 actualizarSubElementoStrategyBD(ixs.numSem, ixs.diaIndex, eleIndex, subEleIndex, TipoElemento.VIDEO);
                 $mediaVideo = '';
             }
-            instanciarSubElementoTooltip(assetsElemento);
-            instanciarSubElementoPopover(assetsElemento);
+            //instanciarSubElementoTooltip(assetsElemento);
+            //instanciarSubElementoPopover(assetsElemento);
         },
     }
 })();
@@ -2214,7 +2224,6 @@ RutinaSeccion = (function (){
                                 
                             </div> 
                            <i>  <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                           <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>                                          
                          </div>
                          <div class="col-xs-4">
@@ -2236,7 +2245,6 @@ RutinaSeccion = (function (){
                                            <div class="notes">  
                                            </div>  
                                          <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                                          <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
 
                                          </div>
@@ -2276,7 +2284,6 @@ RutinaSeccion = (function (){
                                <div class="notes">
                                </div>
                                <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                               <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
                                <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                              </div>
                              <div class="col-xs-4">
@@ -2294,8 +2301,7 @@ RutinaSeccion = (function (){
                       <div class="notes">
                       </div>
                      <i > <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                    <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
-                    <span data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
+                    <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                     </div>
                     <div class="col-xs-3"><a data-toggle="collapse" href="#collapse${ix}"><img class="svg arrow" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></div>
                 </div>
@@ -2359,7 +2365,7 @@ RutinaSeccion = (function (){
                       <article class="col-xs-12 col-sm-11 col-md-11 col-lg-11 padding-10" data-index="${ix}">         
                         <div class="jarviswidget jarviswidget-color-blueLight margin-bottom-0">
                             <header role="heading" class="header-visor-dia" style="background: #454d54;">
-                                <h2><span class="text-align-center badge bg-color-greenLight font-md txt-color-white padding-5">${objDia.arrIx}</span></h2>
+                                <h2><span class="text-center badge bg-color-greenLight font-md txt-color-white padding-5">${objDia.arrIx}</span></h2>
                                     <div class="widget-toolbar hidden-phone borderless">
                                         <div class="widget-toolbar borderless">
                                             <a href="javascript:void(0);" rel="tooltip" data-placement="bottom" data-original-title="Copiar mini plantilla"><i class="fa fa-paste text-primary fa-15x rf-pl-dia-copy padding-7" data-index="${ix}" data-pos="${posDia}"></i></a>
@@ -2429,10 +2435,10 @@ RutinaElementoHTML = (function(){
             return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-audio fa fa-play fa-fw padding-top-1 rf-media" data-media="${mediaAudio}"></i>`
         },
         iconoVideoPlay: (mediaVideo)=>{
-            return `<i><img class="svg" rel="tooltip" data-original-title="Reproducir" src="${_ctx}img/iconos-trainers/icon_videoteca.svg" data-media="${mediaVideo}"></i>`
+            return  `<i><img class="svg reprod-video padding-top-3 rf-media" data-placement="bottom"  rel="tooltip" data-original-title="Reproducir" src="${_ctx}img/iconos-trainers/icon_play.svg" data-media="${mediaVideo}"></i>`
         },
         iconoVideo: (mediaVideo)=>{
-            return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw padding-top-3 rf-media" data-media="${mediaVideo}"></i>`
+            return  `<i><img class="svg reprod-video padding-top-3 rf-media" data-placement="bottom"  rel="tooltip" data-original-title="Reproducir" src="${_ctx}img/iconos-trainers/icon_play.svg" data-media="${mediaVideo}"></i>`
         },
         iconoVideoLp: (mediaVideo)=>{
             return `<i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw padding-top-1 rf-media" data-media="${mediaVideo}"></i>`
@@ -2778,13 +2784,13 @@ Indicadores = (function(){
             const raw = `
                 <div class="container-fluid padding-0 its-indicador-1">
                     <div class="col-md-6 col-sm-6 col-xs-6">
-                        <div class="row padding-5 text-align-center">
+                        <div class="row padding-5 text-center">
                             <span class="txt-color-blue"><b>Paso</b></span>
                         </div>
                         ${Indicadores.indicador1Body(metricas, 1)}
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6">
-                        <div class="row padding-5 text-align-center">
+                        <div class="row padding-5 text-center">
                             <span class="txt-color-red"><b>Pulso</b></span>
                         </div>
                         ${Indicadores.indicador1Body(metricas, 2)}
@@ -2800,7 +2806,7 @@ Indicadores = (function(){
             const claseTipo = t == 2 ? 'txt-color-red':'';
             const bOpacidad = 1/iteraciones;
             for(let i=0; i<iteraciones;i++){
-                raw += `<div class="col-md-12 col-sm-12 col-xs-12 padding-o-bottom-5 text-align-center">
+                raw += `<div class="col-md-12 col-sm-12 col-xs-12 padding-o-bottom-5 text-center">
                             <div class="col-md-3 col-sm-3 col-xs-3 padding-0 rf-n">
                                 <a href="javascript:void(0);">${metricas[i].nombre}</a>
                             </div>
@@ -2859,7 +2865,7 @@ Indicadores = (function(){
             let raw = '<div class="col-md-12 col-sm-12 col-xs-12">';
             for(let i=0; i<metricas.length;i++){
                 raw += `<div class="col-md-3 col-sm-3 col-xs-3 padding-7">
-                            <div class="row padding-5 text-align-center">
+                            <div class="row padding-5 text-center">
                                 <span class="txt-color-blue font-md" style="border-bottom: 2px solid lightgrey; display: block;"><b>${BaseCalculo.ofMetricasBase[i].n}</b></span>
                                 <span class="font-md">${metricas[i].p}</span><br/>
                                 <span class="txt-color-orange font-md">${metricas[i].tt}</span><br/>
