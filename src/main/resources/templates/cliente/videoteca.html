@@ -111,7 +111,6 @@
     };
   }
 
-
   $(function(){
       onInit();
     })
@@ -135,9 +134,9 @@
       contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
       url: _ctx + 'gestion/grupo-video/obtenerListado/0/1',
       dataType : 'json',
-      success :  (result) => {
-
-        console.log(result);
+      blockLoading: false,
+      noOne: true,
+      success : (result) => {
 
         poblarCarouselCategorias(result);
 
@@ -154,8 +153,6 @@
     }
 
     function obtenerVideosxGrupo(tipo){
-
-      debugger;
 
       $.ajax({
         type: 'GET',
@@ -174,7 +171,7 @@
         noOne: false,
         dataType : 'json',
         success :  (result) => {
-            const data = result.rows
+            const data = result.rows;
             totalRows = result.total;
             poblarDvVideosxGrupo(data);
 
@@ -185,6 +182,7 @@
             }
         },
         error: (xhr) =>{
+          exception(xhr);
         },
         complete : () =>{
         }
@@ -234,12 +232,15 @@
       let favoritosId  = currentFavoritos.map( e => e.id);
 
       dataVideos.forEach( function(element){
-
+        const thumbnail = element.thumbnail ?
+                `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail+ ".jpg"}` :
+                "";
+        const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
         if(favoritosId.includes(element.id)){
           const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
-                                      <div class="video"><a data-fancybox="galleryGrupo" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
+                                      <div class="video" ${setThumbnailStyle}><a data-fancybox="galleryGrupo" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
                                       <div class="box_text">
                                         <h3 class="title-video">${element.nombre}
                                           <a class="fav selected" data-video-id ="${element.id}" ><img class="svg" src="/img/iconos/icon_heart.svg"></a>
@@ -253,7 +254,7 @@
           const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
-                                      <div class="video"><a data-fancybox="galleryGrupo" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
+                                      <div class="video" ${setThumbnailStyle}><a data-fancybox="galleryGrupo" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
                                       <div class="box_text">
                                        <h3>${element.nombre}<a class="fav" data-video-id ="${element.id}" ><img class="svg" src="/img/iconos/icon_heart.svg"></a></h3>
                                       </div>
@@ -276,16 +277,20 @@
     $('section.favoritos p').text("");
     if(dataVideos.length > 0){
       const videosFav =  dataVideos.reverse();
-
       if(dataVideos.length <= 6){
         dvArrowMoreFav.style.display = 'none';
         dvMoreFav.style.display = 'none';
       }
       dataVideos.forEach( function(element,index){
+        const thumbnail = element.thumbnail ?
+                `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${element.id + "/" + element.thumbnail + ".jpg"}` :
+                "";
+        const setThumbnailStyle = thumbnail ? `style="background: url(${thumbnail})"` : "";
+
         const videoElement = htmlStringToElement(`
                                  <li class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="card">
-                                      <div class="video"><a data-fancybox="galleryFavoritos" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
+                                      <div class="video" ${setThumbnailStyle}><a data-fancybox="galleryFavoritos" href="${urlAwsVideo}/${element.id}/${element.uuid}.mp4"><img class="svg" src="/img/iconos/icon_play.svg"></a></div>
                                       <div class="box_text">
                                         <h3>${element.nombre}<a class="fav selected" data-video-id ="${element.id}" ><img class="svg" src="/img/iconos/icon_heart.svg"></a></h3>
                                       </div>

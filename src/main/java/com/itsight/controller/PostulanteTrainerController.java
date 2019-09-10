@@ -1,23 +1,18 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.advice.SecCustomValidationException;
 import com.itsight.constants.ViewConstant;
-import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.PostulanteTrainer;
 import com.itsight.service.PostulanteTrainerService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
-import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +20,6 @@ import static com.itsight.util.Enums.Decision.APROBADO;
 import static com.itsight.util.Enums.Decision.DESAPROBADO;
 import static com.itsight.util.Enums.Msg.VALIDACION_FALLIDA;
 import static com.itsight.util.Enums.ResponseCode.EX_VALIDATION_FAILED;
-import static com.itsight.util.Enums.ResponseCode.NOT_FOUND_MATCHES;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 

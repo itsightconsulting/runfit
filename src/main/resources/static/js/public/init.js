@@ -462,6 +462,7 @@ function remarcarPaginaVisitada(){
     try {
         //Remarcar página visitada
         const pubMenu = document.querySelector(`a[href="${window.location.pathname}"]`);
+
         if(pubMenu != undefined){
             const menu = pubMenu.parentElement;
             if(menu.parentElement.classList.contains('dropdown-menu')){
@@ -585,4 +586,11 @@ function getCookiePb(cname) {
     return "";
 }
 
+
+var passField = $('#login-form input[type=password]');
+$('.show-pass').hover(function() {
+    passField.attr('type', 'text');
+}, function() {
+    passField.attr('type', 'password');
+});
 

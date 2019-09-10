@@ -31,8 +31,10 @@ let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
 let $gSemanaIx = 0;
 let $numSem = document.getElementById('NumSemana');
+let $galeriaVideosRutina = ["/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg", "/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg",
+                            "/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg", "/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg"];
 
-(function(){
+(function () {
     init();
 })();
 
@@ -51,6 +53,7 @@ function init(){
             vistaMes(sem);
             setTimeout(  () => {
                 imgToSvg();
+                document.querySelector('a[data-parent="#panel_days"]').click();
             }, 400);
         }).catch((xhr)=>{
             exception(xhr)
@@ -84,7 +87,6 @@ function init(){
 function principalesEventosClickRutina(e){
     const input = e.target;
     const clases = input.classList;
-    console.log(input.tagName);
     if(input.tagName === "path"){
         let svg = searchSvgTraversing(input);
         svgIconsEvents(svg);
@@ -299,6 +301,7 @@ function elementosWeek(dato) {
     return texto;
 }
 
+//@DEPRECATED
 function showSubElementos(dato) {
     var subElemento = dato.subElementos;
     var texto = "";
@@ -311,7 +314,7 @@ function showSubElementos(dato) {
                     <li>
                         <img class="svg" src="img/iconos/icon_videoteca.svg">
                       <a data-fancybox="gallery" href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${dato.mediaVideo}">
-                        <p class="title">${dato.nombre}<span>${dato.nota}</span></p>
+                        <p class="title">${dato.nombre}<span>${dato.nota ? dato.nota : ""}</span></p>
                       </a>
                     </li>
                 `);
@@ -319,7 +322,7 @@ function showSubElementos(dato) {
                 texto= texto.concat(`
                     <li>
                         <img class="svg" src="img/iconos/icon_microfono.svg">
-                      <p class="title">${dato.nombre}<span>${dato.nota}</span></p>
+                      <p class="title">${dato.nombre}<span>${dato.nota ? dato.nota : ""}</span></p>
                     </li>
                 `);
             }

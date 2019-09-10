@@ -33,25 +33,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // TODO Auto-generated method stub
         //http.csrf().disable();
-        http.authorizeRequests().antMatchers("/rest/**", "/oauth2/**","/p/**", "/postulacion/**").permitAll();
-        //http.addFilterAfter(new AjaxAuthenticationFilter(), BasicAuthenticationFilter.class);
+
         http.headers().frameOptions().sameOrigin();
+
         http.authorizeRequests()
-                .antMatchers("/gestion/cliente-fitness").permitAll()
-                .antMatchers("/gestion/cliente-fitness/agregar").permitAll()
-                .antMatchers("/gestion/cliente/validacion-correo").permitAll()
-                .antMatchers("/gestion/cliente/validacion-username").permitAll()
-                .antMatchers("/session-expirada").permitAll()
-                .antMatchers("/session-multiple").permitAll()
-                .antMatchers("/login*","/signin/**","/signup/**").permitAll();
+                .antMatchers(
+                        "/p/**",
+                                     "/postulacion/**",
+                                     "/gestion/cliente/validacion-correo",
+                                     "/gestion/cliente/validacion-username",
+                                     "/login*",
+                                     "/rest/**")
+                .permitAll();
 
         http.authorizeRequests()
                 .antMatchers(
                         "/css/**",
-                        "/js/**",
-                        "/img/**",
-                        "/fonts/**",
-                        "/sound/**"
+                                    "/js/**",
+                                    "/img/**",
+                                    "/fonts/**",
+                                    "/sound/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -71,11 +72,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/accesoDenegado")
-                .authenticationEntryPoint(new AjaxAuthenticationFilter("/login"))
+                .authenticationEntryPoint(new AjaxAuthenticationFilter("/login?error"))
                 .and()
                 .sessionManagement()
-                .maximumSessions(5)
-                .expiredUrl("/login?error=session-expired")
+                .maximumSessions(4)
+                //.expiredUrl("/login?error=maximum-sessions-has-been-reached")
                 .maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry());
     }
@@ -84,7 +85,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SessionRegistry sessionRegistry() {
         SessionRegistry sessionRegistry = new SessionRegistryImpl();
-
         return sessionRegistry;
     }
 

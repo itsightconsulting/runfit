@@ -100,6 +100,8 @@ function init(){
         validators();
         instanciarDatosFitnessCliente();
         tabRutina.addEventListener('click', principalesEventosTabRutina);
+
+
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
         tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
@@ -143,8 +145,6 @@ function init(){
 
 function avanzarRetrocederSemana(numSem, action, parentDiv){
 
-
-         console.log("ooh");
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
         if(semana != undefined) {
             $('#RutinaSemana').html(`<h1 style="padding-left: 18%; font-size: 5em;">Por favor espere... <i class="fa fa-spinner fa-spin"></i></h1>`);
@@ -154,7 +154,6 @@ function avanzarRetrocederSemana(numSem, action, parentDiv){
             instanciarTooltips();
             generarDiasEnviados();
             parentDiv.removeAttribute('hidden');
-            console.log("ss",action);
         }
     });
 }
@@ -705,6 +704,7 @@ function instanciarDatosFitnessCliente(){
                 } else {
                     if(data.id != 0) {
                         if($rutina.tipoRutina !== TipoRutina.GENERAL){
+
                             FichaSet.instanciarDatosFicha(data);
                         }else{
                             FichaSet.setTotalSemanas();
@@ -721,16 +721,17 @@ function instanciarDatosFitnessCliente(){
 }
 
 
-function instanciarGrupoVideos(effImg){
+function instanciarGrupoVideos(){
 
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/video/obtener/arbol',
+        blockLoading: true,
+        noOne: false,
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
-                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -759,7 +760,6 @@ function instanciarGrupoVideos(effImg){
             }
         },
         error: function (xhr) {
-            window.setInterval(effImg);
             exception(xhr);
         },
         complete: function () {
@@ -768,17 +768,17 @@ function instanciarGrupoVideos(effImg){
     });
 }
 
-function instanciarGrupoAudios(effImg){
+function instanciarGrupoAudios(){
 
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: _ctx + 'gestion/tipo-audio/obtener/arbol',
         blockLoading: true,
+        noOne: false,
         dataType: "json",
         success: function (data, textStatus) {
             if (textStatus == "success") {
-                window.setInterval(effImg);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -814,7 +814,6 @@ function instanciarGrupoAudios(effImg){
             }
         },
         error: function (xhr) {
-            window.setInterval(effImg);
             exception(xhr);
         },
         complete: function () {
@@ -964,11 +963,10 @@ function generandoVideosCuerpo(subCatVideo){
         rawVideosHTML += `<a class="elegir-video padding-7-no-left" href="javascript:void(0);">
                           <i id="livideo${v.id}" title="Agregar a favoritos" class="fa fa-star fa-fw ck-favorito-video padding-top-3" data-selected="0" data-id="${v.id}"></i>
                           <i class="fa fa-arrow-circle-left fa-fw ck-video padding-top-3"></i>
-                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb+'?v'+v.version}" data-index="${v.id}">
+                          <i data-placement="bottom" rel="tooltip" data-original-title="Reproducir" class="reprod-video fa fa-video-camera fa-fw" data-media="/${v.id+'/'+v.rutaWeb+'?v'+v.version +'&tn='+v.thumbnail+'.jpg'}" data-index="${v.id}">
                           </i>${v.nombre}</a>`;
     })
     return rawVideosHTML;
-
 }
 
 function instanciarMiniPlantillas(){
@@ -1153,9 +1151,10 @@ function principalesEventosClickRutina(e) {
 
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            input.parentElement.parentElement.parentElement.parentElement.classList.toggle('hidden');
+            const inp = input.parentElement.parentElement.parentElement.parentElement;
+            inp.classList.toggle('hidden');
             const ixs = RutinaIx.getIxsForDia(input);
-            ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
+           ElementoOpc.agregarInitMediaElemento(ixs, ElementoTP.SIMPLE);
         }
     }
     else if(clases.contains('in-ele-dia-2')){
@@ -1266,6 +1265,7 @@ function principalesEventosClickRutina(e) {
         }
     }
     else if(clases.contains('rf-dia-elemento-nombre')){
+        debugger;
         e.preventDefault();
         e.stopPropagation();
 
@@ -1323,6 +1323,7 @@ function principalesEventosClickRutina(e) {
         instanciarEspecificosTooltip(input);
     }
     else if(clases.contains('agregar-nota')) {
+        debugger;
         e.stopPropagation();
         const ixs = RutinaIx.getIxsForElemento(input);
         let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1475,6 +1476,7 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
+            alert("xd");
             const valor = $mediaNombre;
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
@@ -1644,6 +1646,7 @@ function principalesEventosFocusOutSemanario(e) {
         }
     }
     else if(clases.contains('in-sub-elemento')) {
+        debugger
         const valor = input.value.trim();
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -1797,6 +1800,7 @@ function principalEventoFocusIn(e){
 }
 
 function principalesEventosTabRutina(e){
+
     const input = e.target;
     const clases = input.classList;
 
@@ -1946,8 +1950,10 @@ function principalesEventosTabGrupoVideos(e){
         }
     }
     else if(clases.contains('cat-video')){
+        debugger
         e.preventDefault();
-        const clase = '.cat-video'+ input.getAttribute('data-id');
+        const clase = '' +
+            '.cat-video'+ input.getAttribute('data-id');
         const div = document.querySelector(clase);
         $body.animate({scrollTop: $(clase).offset().top - 40, scrollLeft: 0}, 300);
         if(div != undefined){
@@ -2714,6 +2720,7 @@ function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElement
     params.diaIndice = diaIndex;
     params.elementoIndice = posElemento;
     params.subElementoIndice = postSubElemento;
+    console.log("papu", params);
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -2797,24 +2804,6 @@ function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     })
 }
 
-function guardarRutina(rutina, btn){
-    $(btn).button('loading');
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: _ctx + "gestion/rutina/generar/rutina/macro/demo",
-        dataType: "json",
-        data: JSON.stringify(rutina),
-        success: function () {
-            window.location.href = _ctx;
-        },
-        error: function (xhr) {
-            exception(xhr);
-        },
-        complete: function () {}
-    })
-}
-
 function cambiarATabRutina(){
     document.querySelector('a[href="#tabRutina"]').click();
 }
@@ -2833,8 +2822,7 @@ function principalesAlCambiarTab(e){
         $subEleElegidos = [];
         Array.from(document.getElementById('ArbolGrupoVideoDetalle').querySelectorAll('.txt-color-greenIn')).forEach(e => e.classList.remove('txt-color-greenIn'));
         if (document.querySelector('#ArbolGrupoVideo').children.length == 0) {
-            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
-            instanciarGrupoVideos(effImg);
+            instanciarGrupoVideos();
         }
     }
     else if(input.nodeName == "A" && input.getAttribute('href') == '#tabRutinarioCe') {
@@ -2848,8 +2836,7 @@ function principalesAlCambiarTab(e){
         document.querySelector('#OpsAdic').classList.add('hidden');
         document.querySelector('#DivEditor').classList.add('hidden');
         if (document.querySelector('#ArbolGrupoAudio').children.length == 0) {
-            const effImg = spinnerSwitchTab(RutinaOpc.effectImage);
-            instanciarGrupoAudios(effImg);
+            instanciarGrupoAudios();
         }
     }
     else if(e.target.tagName === "A"){
@@ -2857,8 +2844,7 @@ function principalesAlCambiarTab(e){
         document.querySelector('#DivEditor').classList.add('hidden');
         if(input.getAttribute('href') == '#tabFichaTecnica'){
             if($ruConsolidado == undefined){
-                const effImg = spinnerSwitchTab(RutinaOpc.effectImage)
-                obtenerRutinaConsolidadoBD(effImg);
+                obtenerRutinaConsolidadoBD();
             }
         }
     }
@@ -2984,8 +2970,6 @@ function updateAudioFavoritos() {
     })
 }
 
-
-
 async function obtenerObjetivosDiaBD() {
     return new Promise((res, rej)=>{
         $.ajax({
@@ -3073,16 +3057,17 @@ function actualizarDiaObjetivoBD(a, b){
     })
 }
 
-function obtenerRutinaConsolidadoBD(effImg){
+function obtenerRutinaConsolidadoBD(){
     const id = getParamFromURL('key');
     const rn = getParamFromURL('rn');
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: _ctx + "rutina/obtenerConsolidado?key="+id + "&rn="+rn,
+        blockLoading: true,
+        noOne: false,
         dataType: "json",
         success: function (d) {
-            window.setInterval(effImg);
             notificacionesRutinaSegunResponseCode(d.responseCode);
             if(d.data !== null){
                 FichaSet.instanciarConsolidado(d.data);
@@ -3095,7 +3080,7 @@ function obtenerRutinaConsolidadoBD(effImg){
             exception(xhr);
         },
         complete: function () {
-            window.setInterval(effImg);
+
         }
     })
 }

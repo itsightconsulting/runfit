@@ -6,7 +6,7 @@ let $chartTemporadaKM = {};
 let $chartEsfuerzoSemanal = {};
 let $chartAvanceSemanal = {};
 let periodizacionRutina;
-
+let rutinaId;
 
 let $chartMiniPorc ={};
 
@@ -16,7 +16,7 @@ $(function() {
 
 function init(){
 
-    const favRutinaId = Number(getCookie("GLL_FAV_RUTINA"));
+   const favRutinaId = Number(getCookie("GLL_FAV_RUTINA"));
    obtenerRutinaConsolidado(favRutinaId);
 }
 
@@ -31,6 +31,7 @@ function obtenerRutinaConsolidado(rutinaId) {
     let hrefFinal = "";
 
     if (body.clienteId) {//Ruta para entrenadores from red fitness listado
+
         hrefFinal = _ctx + "cliente/rutina/consolidado/obtener/by";
     } else {//Ruta personal de clientes
         hrefFinal = _ctx + "cliente/rutina/consolidado/obtener";
@@ -41,6 +42,7 @@ function obtenerRutinaConsolidado(rutinaId) {
         data: body,
         url: hrefFinal,
         success: function (data) {
+
             cargarTablaVelocidad(data);
             cargarTablaCadencia(data);
             cargarTablaLongitudPaso(data);
@@ -57,7 +59,7 @@ function obtenerRutinaConsolidado(rutinaId) {
             cargarInfoKmEtapas(data);
             cargarProyeccionCompetencia(data);
 
-            const rutinaId = data.rutina.id;
+             rutinaId = data.rutina.id;
             const semTr = Number(data.general.distancia == 10 ? 1 : data.general.distancia == 21 ? 2 : 3);
             const totalSemanas = Number(data.rutina.totalSemanas);
             const semanaIx = totalSemanas - semTr;

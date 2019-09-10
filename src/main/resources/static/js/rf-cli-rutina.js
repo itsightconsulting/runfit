@@ -76,6 +76,7 @@ class Rutina {
         $('#MesAnio').text(meses[semana.dias[0].fecha.getMonth()] +" - "+ semana.dias[0].fecha.getFullYear());
 
         //Modificando selector de semana
+
         RutinaOpc.iniciarSemanas(this.totalSemanas);
         instanciarPopovers();
         instanciarTooltips();
@@ -87,7 +88,10 @@ class Rutina {
             Indicadores.instanciarIndicadores2();
             Indicadores.instanciarKilometrajes();
             Indicadores.instanciarPorcentajeAvance();
+
+
         }
+
     }
 
     agregarNuevaSemana() {
@@ -579,21 +583,6 @@ RutinaOpc = (function(){
 							</div>
                         </div>
                     </form>`;
-        },
-        effectImage: ()=>{
-            const imgEffect = document.querySelector('#ImgLoading');
-            imgEffect.style.position = 'relative';
-            let refOffSetWidth = imgEffect.parentElement.offsetWidth;
-            let s = 8, k = 1;
-            const intervalLoading = setInterval(function(){
-                imgEffect.style.right = (0 - (k*s)) + 'px';
-                k++;
-                if(Math.abs(k*s)>refOffSetWidth){
-                    k=1;
-                    imgEffect.style.right = (0 - (k*s)) + 'px';
-                }
-            }, 100);
-            return intervalLoading;
         },
         cambiarEstado: (e, flag)=>{
             cambiarEstadoBD(flag, e);
@@ -2652,8 +2641,15 @@ RutinaDiaHTML = (function(){
                           <div class="panel-heading">
                             <h3>${elemento.nombre}<div class="mas_menos"><img class="svg" src="img/iconos/icon_menos.svg"><img class="svg" src="img/iconos/icon_mas.svg"></div></h3>
                             <div class="icons">
-                              <div class="svg-wrap" rel="tooltip" title="Vamos a realizar una pequeña prueba"><img class="svg" src="img/iconos/icon_microfono.svg"></div><img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg">
-                              <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${elemento.minutos}</span>
+                              <div class="svg-wrap" rel="tooltip" title="">
+                                <img class="svg" src="img/iconos/icon_microfono.svg">
+                              </div>
+                              <div class="svg-wrap" rel="tooltip" title="${elemento.nota}">
+                                <img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg"/>
+                              </div>                            
+                              <span>
+                                <img class="svg" src="img/iconos/icon_tiempo2.svg">${elemento.minutos}
+                              </span>
                               <a data-toggle="collapse" href="#elemento-${ix+''+diaIndex}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
                             </div>
                           </div>
@@ -2661,7 +2657,7 @@ RutinaDiaHTML = (function(){
                             <div class="panel-body"><span class="text_green">1 serie x 20" de recuperación</span>
                               <ul class="principal">
                                 <li>
-                                    ${RutinaDiaHTML.showSubElementos(elemento.subElementos, diaIndex)}
+                                    ${RutinaDiaHTML.showSubElementos(elemento.subElementos, diaIndex, eleIndex = ix)}
                                 </li>
                               </ul>
                             </div>
@@ -2669,29 +2665,45 @@ RutinaDiaHTML = (function(){
                         </div>`
             ).join('');
         },
-        showSubElementos: (subElementos, diaIndex) => {
+        showSubElementos: (subElementos, diaIndex, eleIndex) => {
             if (!subElementos || !subElementos.length) {
                 return '<h6>No tiene sub elementos</h6>';
             }
-            return subElementos.map((subEle) =>
-                `${!subEle.mediaVideo && !subEle.mediaAudio ? 
-                        `<li>
-                            <a>
-                              <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
-                            </a>
-                        </li>` : subEle.mediaVideo ?
-                    `<li>
-                            <img data-fancybox="gallery${diaIndex}" href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${subEle.mediaVideo}" class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg">
-                            <a>
-                              <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
-                            </a>
-                        </li>`
-                    : `<li>
-                        <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
-                      <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
-                    </li>`
-                    }`
-            ).join('');
+            return subElementos.map((subEle) =>{
+                    const mediaVideo = subEle.mediaVideo;
+                    const checkMediaVideo = mediaVideo ? true : false;
+                    let thumbnail = "";
+                    let checkThumbnail = false;
+                    if(checkMediaVideo){
+                        thumbnail = mediaVideo.split("&tn=")[1];
+                        checkThumbnail = thumbnail.length > 36;
+                        if(checkThumbnail){
+                            thumbnail = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${mediaVideo.split("/")[1]+'/'+thumbnail}`
+                        }
+                    }
+
+                    return `${!checkMediaVideo && !subEle.mediaAudio ?
+                            `<li>
+                                <a>
+                                  <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
+                                </a>
+                            </li>` : checkMediaVideo ?
+                                `<li>
+                                <img  data-width="640" data-height="360"
+                                    data-fancybox="gallery-${diaIndex}-${eleIndex}" 
+                                    href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${mediaVideo}" 
+                                    class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg"
+                                    data-thumbnail-src="${checkThumbnail ? thumbnail : ""}"/>
+                                <a>
+                                  <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
+                                </a>
+                            </li>`
+                                : `<li>
+                                <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
+                                <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
+                           </li>`
+                            }`
+            }).join('');
         }
     }
 })();
@@ -2709,8 +2721,7 @@ RutinaPS = (function () {
                     <i rel='tooltip' data-original-title='Reemplazar elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-index='${eleIndex}'></i>
                     <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}'>KM</span>
                     <i rel='tooltip' data-original-title='Eliminar elemento' data-trigger='hover' class='fa fa-trash-o txt-color-redLight padding-5 trash-elemento' data-dia-index='${diaIndex}' data-index='${eleIndex}'></i>
-                </div>
-            `;
+                </div>`;
         },
         opsPopoverElemento2: (diaIndex, eleIndex)=>{
             return `

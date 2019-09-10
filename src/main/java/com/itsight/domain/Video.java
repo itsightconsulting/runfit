@@ -76,6 +76,9 @@ public class Video extends AuditingEntity implements Identifiable {
     private UUID uuid;
 
     @Column(updatable = false)
+    private UUID thumbnail;
+
+    @Column(updatable = false)
     private String extFile;
 
     @Column
@@ -100,6 +103,7 @@ public class Video extends AuditingEntity implements Identifiable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
     private List<VideoAudioFavorito> lstFavoritos;
 
+    @JsonBackReference
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "ClienteVideo",
             joinColumns =  @JoinColumn(name = "VideoId", referencedColumnName = "VideoId"),
@@ -153,6 +157,31 @@ public class Video extends AuditingEntity implements Identifiable {
         this.setFlagActivo(flagActivo);
         this.subCatVideoId = subCatVideoId;
         this.nombreSubCat = nombreSubCat;
+    }
+
+    public Video(Integer id, String nombre, String rutaWeb, String peso, String duracion, UUID uuid, UUID thumbnail, boolean flagActivo, int subCatVideoId, String nombreSubCat) {
+        this.id = id;
+        this.nombre = nombre;
+        this.rutaWeb = rutaWeb;
+        this.peso = peso;
+        this.duracion = duracion;
+        this.uuid = uuid;
+        this.thumbnail = thumbnail;
+        this.setFlagActivo(flagActivo);
+        this.subCatVideoId = subCatVideoId;
+        this.nombreSubCat = nombreSubCat;
+    }
+
+    public Video(String nombre, String rutaWeb, String peso, String duracion, UUID uuid, UUID thumbnail, int version, int subCatVideoId, boolean flagActivo) {
+        this.nombre = nombre;
+        this.rutaWeb = rutaWeb;
+        this.peso = peso;
+        this.duracion = duracion;
+        this.uuid = uuid;
+        this.thumbnail = thumbnail;
+        this.version = version;
+        this.subCatVideo = new SubCategoriaVideo(subCatVideoId);
+        this.setFlagActivo(flagActivo);
     }
 
     public void setSubCatVideo(Integer subCatId){

@@ -10,6 +10,7 @@ public class RefUpload {
     private Integer id;
     private UUID uuid;
     private String extFile;
+    private String aditionalUuid;
 
     public RefUpload(){}
 
@@ -17,6 +18,13 @@ public class RefUpload {
         this.id = id;
         this.uuid = uuid;
         this.extFile = extFile;
+    }
+
+    public RefUpload(Integer id, UUID uuid, String extFile, String aditionalUuid) {
+        this.id = id;
+        this.uuid = uuid;
+        this.extFile = extFile;
+        this.aditionalUuid = aditionalUuid;
     }
 
     public void setExtFile(String extFile) {

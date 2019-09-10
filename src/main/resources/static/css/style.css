@@ -1503,3 +1503,196 @@ section #moreFav {
 .menu-not-allowed:hover{
   color: #A8FA00 !important;
 }
+
+.dv-consejos-favs{
+  margin-top: 50px;
+}
+
+ul#ulMdlSubirConsejo {
+  display: flex;
+  padding:0px;
+}
+
+ul#ulMdlSubirConsejo span {
+  font-size: 1.1em;
+  color: #ffffff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+
+ul#ulMdlSubirConsejo li:first-of-type{
+  margin-left: auto !important;
+}
+
+ul#ulMdlSubirConsejo li{
+  padding: 0 15px !important;
+}
+
+ul#ulMdlSubirConsejo div#pills-tabConsejosContent{
+}
+
+div#mdlAgregarConsejo .modal-body{
+  padding:0px;
+}
+
+div#mdlAgregarConsejo .tab-content{
+  padding: 15px;
+}
+
+div#mdlAgregarConsejo .input-group input,  div#mdlVerConsejoAudio .input-group input {
+  background:none !important;
+  width: 25.1em;
+  border: 0.04em solid #c4c4c4 !important;
+
+}
+
+div#mdlAgregarConsejo .btn-choose{
+  float:left;
+}
+
+div#mdlAgregarConsejo span:before, div#mdlVerConsejoAudio span:before {
+  content:unset;
+}
+
+div#mdlAgregarConsejo .input-group button,
+div#mdlVerConsejoAudio .input-group button{
+  padding: 6.5px 12px;
+}
+
+div#mdlVerConsejoAudio  .input-group input{
+  padding-left: 1em;
+}
+
+
+div#mdlAgregarConsejo .modal-footer button , div#mdlVerConsejoTexto .modal-footer button,
+div#mdlVerConsejoAudio .modal-footer button
+{
+  margin-left: 12px;
+}
+
+div#mdlAgregarConsejo .modal-footer button.btn-dark:hover{
+  color: #ffffff!important;
+}
+
+
+div#mdlAgregarConsejo input#inpTitulo , div#registroTexto input , div#registroTexto textarea,
+div#mdlVerConsejoAudio input#mdlAudioTitulo{
+  border-radius: 15px;
+}
+
+
+div#mdlAgregarConsejo .input-group input, div#mdlAgregarConsejo .input-group input {
+  padding: 6px 12px;!important;
+}
+
+
+section.consejos .txt-descripcion, section.consejos-favs .txt-descripcion{
+  width: 300px;
+  word-break: break-word;
+  text-align: justify;
+  padding-left: 40px;
+  display: inline-block;
+}
+
+section.consejos .txt-descripcion span, section.consejos-favs .txt-descripcion span {
+  font-size: 0.8em;
+}
+
+
+section.consejos span:before , section.consejos-favs span:before{
+  content : unset;
+}
+
+section.consejos .resultados ul .material,
+section.consejos-favs .resultados ul .material{
+  cursor: pointer;
+}
+
+section.consejos .resultados ul .material:hover,
+section.consejos-favs .resultados ul .material:hover{
+  fill : #a8fa00;
+}
+
+section.consejos a.delete svg{
+  cursor: pointer;
+
+}
+
+section.consejos a.edit{
+  color:inherit;
+  cursor:pointer;
+}
+
+section.consejos-favs .resultados li a.fav .svg {
+  margin-left: 20px;
+}
+
+section.consejos span.msj-no-data{
+  text-align: center;
+  display: block;
+  margin-top: 80px;
+  color: #ffff;
+}
+
+/* SPINNER */
+.half-circle-spinner, .half-circle-spinner * {
+  box-sizing: border-box;
+}
+
+.half-circle-spinner {
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  position: relative;
+  left: 39.5%;
+}
+
+.half-circle-spinner .circle {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border: calc(60px / 10) solid transparent;
+}
+
+.half-circle-spinner .circle.circle-1 {
+  border-top-color: #a8fa00;
+  animation: half-circle-spinner-animation 1s infinite;
+}
+
+.half-circle-spinner .circle.circle-2 {
+  border-bottom-color: #a8fa00;
+  animation: half-circle-spinner-animation 1s infinite alternate;
+}
+
+@keyframes half-circle-spinner-animation {
+  0% {
+    transform: rotate(0deg);
+
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .half-circle-spinner {
+    left: 30.5%;
+  }
+}
+
+/* END SPINNER */
+
+/* CUSTOM FANCY BOX STYLE*/
+.fancybox-thumbs__list > a{
+  background-size: contain !important;
+}
+
+.fancybox-button--play{
+  display: none !important;
+}
+/* END FANCY BOX */

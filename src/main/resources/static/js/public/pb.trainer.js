@@ -539,8 +539,8 @@ function tycChangeEventListener(e, input, clases){
             }
             const btnSubirCondServicio = document.getElementById('btnSubirCondServicio');
             let nomFile = obj.file.name;
-            if(nomFile.trim().length>19){
-                nomFile = nomFile.substring(0, 16).trim()+"...";
+            if(nomFile.trim().length>17){
+                nomFile = nomFile.substring(0, 14).trim()+"...";
             }
             btnSubirCondServicio.innerHTML = "<i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
             document.querySelector('.del-tyc-svc').classList.remove('hidden');
@@ -884,8 +884,8 @@ function setFileTermCond(){
     const condSvcFile = termConSvc.find(v=>v.servicioId === selServicioId);
     if(condSvcFile !== undefined){
         let nomFile = condSvcFile.file.name;
-        if(nomFile.trim().length>19){
-            nomFile = nomFile.substring(0, 16).trim()+"...";
+        if(nomFile.trim().length>17){
+            nomFile = nomFile.substring(0, 14).trim()+"...";
         }
         btnSubirCondServicio.innerHTML = "<i class=\"fa fa-file-pdf-o fa-fw\" style='color: rgb(204, 77, 77);'></i>"+nomFile+"<span class=\"obligatorio\">*</span>";
         document.querySelector('.del-tyc-svc').classList.remove('hidden');

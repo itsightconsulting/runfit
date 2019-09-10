@@ -71,7 +71,7 @@ public class RuConsolidadoController extends BaseController {
         return ruConsolidado;
     }
 
-    @PreAuthorize("hasRole('ROLE_RUNNER')")
+    @PreAuthorize("hasRole('ROLE_RUNNER') or  hasRole('ROLE_TRAINER')")
     @GetMapping(value="/metricas-semanal/obtener")
     public @ResponseBody
     ResponseEntity<RuCliPOJO> obtenerDataSemanal(HttpSession session, Integer rutinaId){
@@ -81,16 +81,6 @@ public class RuConsolidadoController extends BaseController {
         RuCliPOJO ruCliente = rutinaProcedureInvoker.getDatosAvanceSemanalbyRutinaId(filteredRutinaId);
 
         return new ResponseEntity<>(ruCliente, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('ROLE_RUNNER')")
-    @GetMapping(value="/metricas-semanal/obtener/by")
-    public @ResponseBody
-    RuConsolidado obtenerDataSemanalById(HttpSession session, Integer rutinaId){
-        Integer clienteId = (Integer) session.getAttribute("id");
-        Integer filteredRutinaId = rutinaId == 0 ?   rutinaService.getMaxRutinaIdByClienteId(clienteId) : rutinaId ;
-        RuConsolidado ruConsolidado = ruConsolidadoService.findOne(filteredRutinaId);
-        return ruConsolidado;
     }
 
 

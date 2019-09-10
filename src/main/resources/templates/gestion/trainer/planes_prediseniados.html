@@ -484,11 +484,10 @@
         ocultarSeccionRutinas();
     }
     function eliminarCategoria(){
-        const obj ={
-            id :  Number(btnEliminarCat.getAttribute('data-categoria-id'))
-        }
+
+        const obj ={id :  Number(btnEliminarCat.getAttribute('data-categoria-id'))};
         const nombre = btnEliminarCat.getAttribute('data-nombre');
-        console.log(obj);
+
         $.SmartMessageBox({
             title: "<i class='fa fa-2x fa-trash' style='display:flex; align-items: center; margin-right:0.7em;'></i> ¿Está seguro que desea eliminar la categoría "+ nombre + " ( Se eliminarán todas las rutinas asociadas a esta )?",
             buttons: "[No][Si]"

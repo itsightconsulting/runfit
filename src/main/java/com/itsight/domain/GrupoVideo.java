@@ -80,12 +80,13 @@ public class GrupoVideo implements Identifiable {
         this.forest = new BagForest(forestId);
     }
 
-    public GrupoVideo(String nombre, Integer forestId, boolean flagActivo, String rutaWeb, UUID uuid) {
+    public GrupoVideo(String nombre, Integer forestId, boolean flagActivo, String rutaWeb, UUID uuid, String extImg) {
         this.nombre = nombre;
         this.forest = new BagForest(forestId);
         this.flagActivo = flagActivo;
         this.rutaWeb = rutaWeb;
         this.uuid = uuid;
+        this.extImg = extImg;
     }
 
     public GrupoVideo(Integer id, String nombre) {

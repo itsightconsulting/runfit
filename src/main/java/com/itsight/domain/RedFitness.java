@@ -17,6 +17,7 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,6 +29,12 @@ import java.util.Date;
                 }),
 })
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "ClienteId",
+                "TrainerId"
+        })
+})
 @Data
 @TypeDefs({
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class),
@@ -57,6 +64,16 @@ import java.util.Date;
                             )
 
                         })
+})
+
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "fn_validacion_exists_by_trainer_id_and_cliente_id",
+                procedureName = "check_red_fitness_exist_by_trainer_id_and_cliente_id",
+                parameters = {
+                        @StoredProcedureParameter(name = "_trainer_id", mode = ParameterMode.IN, type = Integer.class),
+                        @StoredProcedureParameter(name = "_cliente_id", mode = ParameterMode.IN, type = Integer.class),
+                        @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = Boolean.class)
+                })
 })
 public class RedFitness implements Serializable {
 

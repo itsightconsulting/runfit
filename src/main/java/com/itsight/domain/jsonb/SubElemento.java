@@ -36,6 +36,8 @@ public class SubElemento implements Serializable {
     private double distanciaDia;
     @JsonInclude(Include.NON_DEFAULT)
     private double calorias;
+    @JsonInclude(Include.NON_DEFAULT)
+    private int minutos;
 
     public SubElemento(){}
 

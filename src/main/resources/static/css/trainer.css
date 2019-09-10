@@ -684,7 +684,6 @@ a.star:hover .svg, a.star.selected .svg {
 
 .trash {
     position: absolute !important;
-    width: 15px !important;
     left: -23px;
     border: none !important; }
 
@@ -1386,6 +1385,239 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
     padding-top: 50px;
 }
 
+.resultado_material ul li {
+    display: inline-block;
+    margin-bottom: 24px;
+}
+.resultado_material ul li .card {
+    overflow: auto;
+    border-radius: 10px; }
+.resultado_material ul li .card .video {
+    width: 100%;
+    height: 148px;
+    background: url(../img/video.png) no-repeat center;
+    position: relative;
+    background-size: cover; }
+.resultado_material ul li .card .video .svg {
+    width: 65px;
+    height: 65px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto; }
+.resultado_material ul li .card .box_text {
+    background-color: #1e1a21;
+    padding: 38px 15px; }
+.resultado_material ul li .card .box_text h3 {
+    font-size: 14px;
+    font-family: GothamHTF-Light;
+    margin: 0;
+    color: #9d9d9d; }
+.resultado_material ul li .card .box_text h3 .svg {
+    width: 25px;
+    height: 25px;
+    float: right;
+    position: relative;
+    bottom: 5px; }
+
+.resultados {
+    display: inline-block;
+    width: 100%; }
+.resultados li {
+    color: #9d9d9d;
+    font-family: GothamHTF-Light;
+    font-size: 18px;
+    border-bottom: 1px solid #3d3f41;
+    padding: 28px 35px; }
+.resultados li .svg {
+    fill: #9d9d9d;
+    display: inline-block; }
+.resultados li .svg.material {
+    height: 55px;
+    max-width: 45px;
+    margin-right: 54px; }
+.resultados li a.delete .svg {
+    width: 26px;
+    height: 24px;
+    margin-left: 100px; }
+.resultados li a.fav .svg {
+    width: 26px;
+    height: 24px;
+    margin-left: 100px; }
+.resultados li .time {
+    display: inline-block; }
+.resultados li .time .svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 20px; }
+.resultados li > * {
+    vertical-align: middle; }
+.resultados li .pull-right {
+    float: right !important;
+    position: relative;
+    top: 9px; }
+.resultados li .pull-right .svg {
+    position: relative;
+    top: 5px; }
+
+.no_margin_top {
+    margin-top: 0; }
+
+.no_padding_top {
+    padding-top: 0 !important; }
+
+.no_padding {
+    padding: 0; }
+
+.container-consejos{
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 896px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.dv-consejos-favs{
+    margin-top: 50px;
+}
+
+ul#ulMdlSubirConsejo {
+  display: flex;
+  padding:0px;
+}
+
+ul#ulMdlSubirConsejo span {
+    font-size: 1.1em;
+    color: #ffffff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
+
+ul#ulMdlSubirConsejo li:first-of-type{
+    margin-left: auto !important;
+}
+
+ul#ulMdlSubirConsejo li{
+    padding: 0 15px !important;
+}
+
+ul#ulMdlSubirConsejo div#pills-tabConsejosContent{
+}
+
+div#mdlAgregarConsejo .modal-body{
+ padding:0px;
+}
+
+div#mdlAgregarConsejo .tab-content{
+ padding: 15px;
+}
+
+div#mdlAgregarConsejo .input-group input,  div#mdlVerConsejoAudio .input-group input {
+  background:none !important;
+  width: 25.1em;
+  border: 0.04em solid #c4c4c4 !important;
+
+}
+
+div#mdlAgregarConsejo .btn-choose{
+  float:left;
+}
+
+div#mdlAgregarConsejo span:before, div#mdlVerConsejoAudio span:before {
+  content:unset;
+}
+
+div#mdlAgregarConsejo .input-group button,
+div#mdlVerConsejoAudio .input-group button{
+    padding: 6.5px 12px;
+}
+
+div#mdlVerConsejoAudio  .input-group input{
+   padding-left: 1em;
+}
+
+
+div#mdlAgregarConsejo .modal-footer button , div#mdlVerConsejoTexto .modal-footer button,
+div#mdlVerConsejoAudio .modal-footer button
+{
+  margin-left: 12px;
+}
+
+div#mdlAgregarConsejo .modal-footer button.btn-dark:hover{
+   color: #ffffff!important;
+}
+
+
+div#mdlAgregarConsejo input#inpTitulo , div#registroTexto input , div#registroTexto textarea,
+div#mdlVerConsejoAudio input#mdlAudioTitulo{
+   border-radius: 15px;
+}
+
+
+div#mdlAgregarConsejo .input-group input, div#mdlAgregarConsejo .input-group input {
+   padding: 6px 12px;!important;
+}
+
+
+section.consejos .txt-descripcion, section.consejos-favs .txt-descripcion{
+    width: 300px;
+    word-break: break-word;
+    text-align: justify;
+    padding-left: 40px;
+    display: inline-block;
+}
+
+section.consejos .txt-descripcion span, section.consejos-favs .txt-descripcion span {
+    font-size: 0.8em;
+}
+
+
+section.consejos span:before , section.consejos-favs span:before{
+    content : unset;
+}
+
+section.consejos .resultados ul .material,
+section.consejos-favs .resultados ul .material{
+    cursor: pointer;
+}
+
+section.consejos .resultados ul .material:hover,
+section.consejos-favs .resultados ul .material:hover{
+    fill : #a8fa00;
+}
+
+section.consejos a.delete svg{
+    cursor: pointer;
+
+}
+
+section.consejos a.edit-audio, section.consejos a.edit-text{
+    color:inherit;
+    cursor:pointer;
+}
+
+
+section.consejos-favs .resultados li a.fav .svg {
+    margin-left: 20px;
+}
+
+section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
+    text-align: center;
+    display: block;
+    margin-top: 80px;
+    color: #ffff;
+}
+
+.btn-white{
+    color: #ffffff;
+    opacity: 0.8;
+}
 /*RUTINA PLATAFORMA*/
 
 .editor_text {
@@ -1527,10 +1759,47 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
     margin: 20px 0;
     padding-left: 14px;
     position: relative; }
-.scroll_rut .days_week article .rt-elem .elem ul li input {
+.scroll_rut .days_week article .rt-elem .elem ul li input  {
     width: 100%;
     border: none;
     border-bottom: 1px solid #ccc; }
+
+.scroll_rut .days_week article .rt-elem .elem input.item-inp{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin-top:20px;
+}
+.scroll_rut .days_week article .rt-elem .elem input.item-init,
+.scroll_rut .days_week article .rt-elem .elem input.in-sub-ele-esp-pos {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+   }
+.scroll_rut .days_week article .rt-elem .elem input.item-minutos{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+
+.scroll_rut .days_week article .inputs-init input.item-inp , .scroll_rut .days_week article .rf-dia-pre-elemento input{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.scroll_rut .days_week article .inputs-init, .scroll_rut .days_week article .rf-dia-pre-elemento {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    white-space: normal;
+    -webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+    box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+
+}
+
 .scroll_rut .days_week article .rt-elem .elem ul li .col-xs-4 {
     text-align: center; }
 .scroll_rut .days_week article .rt-elem .elem ul li .time {
@@ -1645,6 +1914,76 @@ section#seleccionCategoriasRutGen p.mensaje-no-data{
     padding: 12px;
 }
 .white {
-    color: #fff;
+  color: #fff;
 }
+
+h2.title_carousel span.semana-num {
+  font-family: GothamHTF-Bold;
+}
+
+.txt-color-greenIn {
+  color: #34ad34 !important;
+}
+
+.padding-0{
+  padding: 0;
+}
+
+.elegir-video {
+  display: block;
+}
+
+section#ArbolGrupoVideo h1, section#ArbolGrupoVideoDetalle h1{
+  font-size: 24px;
+}
+
+#btnGoTop{
+    position: fixed;
+    color: #f6f6ff;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    background-color: #a8fa00;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 3%;
+}
+
+/* context menu */
+#rMenuEleSubele {
+    border: 1px solid #a8fa00;
+    background-color: white;
+    border-radius: 5%;
+    font-size: 12px;
+    font-family: GothamHTF-Book;
+
+}
+
+.hide {
+    display: none;
+}
+
+
+#rMenuEleSubele ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+#rMenuEleSubele li{
+    list-style: none;
+    border-bottom : 1px solid #a8fa00 ;
+    background-color : white;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#rMenuEleSubele li:hover{
+    cursor:  pointer;
+    color : #28a905;
+}
+
+.dv-nota{
+    display: inline;
+    background-color: #a8fa0082;
+    padding: 33px 5px 2px;}
 

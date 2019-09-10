@@ -19,6 +19,7 @@ import com.itsight.util.Enums;
 import com.itsight.util.Enums.Msg;
 import com.itsight.util.Parseador;
 import com.itsight.util.RSA_Encryption;
+import com.itsight.util.Utilitarios;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Base64;
 import java.util.Date;
@@ -126,7 +128,7 @@ public class PublicoController extends BaseController {
     public ModelAndView fichaInscripcionRunner(
             @RequestParam(name="key", required=false) String hshTrainerId,
             @RequestParam(name="ml", required=false) String trainerMailDecode,
-            Model model) {
+            Model model, HttpSession session) {
         return getFichaApropiada(model,
                                 hshTrainerId,
                                 trainerMailDecode,
@@ -276,9 +278,11 @@ public class PublicoController extends BaseController {
         return condicionMejoraService.getAll();
     }
 
-    @PostMapping(value = "/cliente/fitness/agregar")
-    public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente) {
-        return clienteService.registroFull(cliente);
+    @PostMapping(value = "/cliente/fitness/agregar/{tipoTrainerId}")
+    public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente,
+                                      @PathVariable(name = "tipoTrainerId") String tipoTrainerId) {
+        Integer ttId = Integer.parseInt(Parseador.getDecodeBase64(tipoTrainerId));
+        return clienteService.registroFull(cliente, ttId);
     }
 
     @PostMapping(value = "/encryptar")
@@ -329,7 +333,7 @@ public class PublicoController extends BaseController {
             Model model,
             @PathVariable(name = "hashVisitanteId") String hashVisitanteId, @RequestParam String sc ) throws SecCustomValidationException{
 
-        Integer ViId = getDecodeHashIdSecCustom(new String(Base64.getDecoder().decode(sc.getBytes())), hashVisitanteId);
+        Integer ViId = getDecodeHashIdSecCustom(Parseador.getDecodeBase64(sc), hashVisitanteId);
 
         if(ViId == 0){
             return new ModelAndView(ViewConstant.P_ERROR404);

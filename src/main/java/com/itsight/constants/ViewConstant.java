@@ -47,6 +47,7 @@ public class ViewConstant {
     public static final String MAIN_RUTINA_NUEVO = "gestion/rutina/nueva_rutina";
     public static final String MAIN_TIPO_RUTINA = "gestion/tipo_rutina";
     public static final String MAIN_RUTINA_EDITOR = "gestion/rutina/editor_rutina";
+    public static final String MAIN_RUTINA_EDITOR_LEGACY = "gestion/rutina/editor_rutina_legacy";
     public static final String MAIN_PAQUETE = "gestion/paquete";
     public static final String MAIN_OBJETIVO = "gestion/objetivo";
     public static final String MAIN_PLAN = "gestion/plan";
@@ -76,6 +77,13 @@ public class ViewConstant {
     public static final String MAIN_ASSETS_CATEGORIA_VIDEO = "gestion/categoria_video";
     public static final String MAIN_ASSETS_SUB_CATEGORIA_VIDEO = "gestion/sub_categoria_video";
 
+    public static final String MAIN_CONSEJOS_TRAINER = "trainer/consejos";
+
+    //TEMPORAL
+    public static final String MAIN_CONSEJOS_TRAINER2 = "trainer/consejos_legacy";
+
+    public static final String MAIN_CONSEJOS_CLIENTE = "cliente/consejos";
+
     public static final String MAIN_MIS_RUTINAS_TRAINER = "trainer/mis_rutinas";
     public static final String MAIN_MIS_RUTINAS_CLIENTE = "cliente/mis_rutinas";
 
@@ -99,7 +107,6 @@ public class ViewConstant {
 
     public static final String MI_USUARIO = "cliente/micuenta";
     public static final String FACTURACION_MENSUAL = "portal/facturacion_mensual";
-    public static final String MAIN_CONSEJOS_TRAINER = "trainer/consejos";
 
     public static final int ACTIVO = 1;
     public static final int INACTIVO = 0;

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+  <head>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
+  </head>
+  <body>
+   <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+   <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+
+   <div id="main-content">
+      <div id="wrapper">
+        <div class="container">
+          <header>
+            <div class="text-center">
+              <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="/img/logo.png" alt=""></a>
+              <h4 class="user"><img class="svg" src="/img/iconos/icon_perfil.svg">Yasmine Andía H.<span>RUNNING</span></h4>
+            </div>
+          </header>
+        </div>
+        <div class="container no_padding_top">
+          <h3 class="title_section no_margin_top">mis consejos</h3>
+          <section class="consejos">
+
+            <input th:value="${postsFavoritos}" type="hidden"  id="arrPostsFavs"/>
+
+            <div class="search">
+              <div class="input-group">
+                <input class="form-control" type="text" id="inpSearch">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit" id="btnSearch">BUSCAR</button>
+                </div>
+              </div>
+              <div class="options">
+                <button class="btn" type="button" id="btnAudiosList"><img class="svg" src="/img/iconos/icon_microfono.svg"></button>
+                <button class="btn" type="button" id="btnPostsList"><img class="svg" src="/img/iconos/icon_edit_file.svg"></button>
+                <button class="btn" type="button" id="btnFavsList"><img class="svg" src="/img/iconos/icon_heart.svg"></button>
+              </div>
+            </div>
+            <div class="resultados">
+              <ul>
+                <li> <img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="fav"><img class="svg" src="/img/iconos/icon_heart.svg"></a>
+                  </div>
+                </li>
+                <li><img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="fav"><img class="svg" src="/img/iconos/icon_heart.svg"></a>
+                  </div>
+                </li>
+                <li><img class="material svg" src="/img/iconos/icon_microfono.svg"><span>Entrenamiento de fuerza</span>
+                  <div class="pull-right">
+                    <div class="time"><img class="svg" src="/img/iconos/icon_time.svg"><span>2' 48"</span></div><a class="fav"><img class="svg" src="/img/iconos/icon_heart.svg"></a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+   <!-- Modal ver consejo (texto)   -->
+
+   <div class="modal fade" id="mdlVerConsejoTexto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content" style="width: 100%;height: 100%;" >
+         <div class="modal-header" style="background: black">
+           <button type="button btn-white" class="close" data-dismiss="modal" title="Close" style="color: #ffffff; opacity: 0.8;"> <span class="glyphicon glyphicon-remove"></span></button>
+           <h4 class="modal-title text-align-center" ><strong> Consejo </strong></h4>
+         </div>
+         <div class="modal-body">
+           <form id="actualizar-texto-frm" method="post">
+
+             <div id="dvContenidoConsejoTexto">
+               <div class="form-group row">
+                 <div class="col-lg-2 col-md-2 col-sm-2">
+                   <label>Titulo</label>
+                 </div>
+                 <div class="col-lg-10 col-md-10 col-sm-10">
+                   <input id="mdlTxtTitulo" name="titulo" type="text" class="form-control" readonly="readonly"/>
+                 </div>
+               </div>
+
+               <div class="form-group row">
+                 <div class="col-lg-2 col-md-2 col-sm-2">
+                   <label>Descripción</label>
+                 </div>
+                 <div class="col-lg-10 col-md-10 col-sm-10">
+                   <textarea id="mdlTxtDescripcion" name="descripcion" rows="5" class="form-control" readonly="readonly"></textarea>
+                 </div>
+               </div>
+             </div>
+
+           </form>
+         </div>
+
+       </div>
+     </div>
+   </div>
+
+
+   <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+   <script th:src="@{/js/cliente-consejos.js}+'?'+${version}"></script>
+
+  </body>
+</html>

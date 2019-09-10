@@ -16,7 +16,6 @@ public class PostDetalle implements Serializable {
 
     private String nomFull;
 
-    private boolean flgLiked;
 
     private boolean flgFav;
 
@@ -31,10 +30,9 @@ public class PostDetalle implements Serializable {
     public PostDetalle() {
     }
 
-    public PostDetalle(Integer cliId, String nomFull, boolean flgLiked, boolean flgFav, Date feCreac, Date feModif) {
+    public PostDetalle(Integer cliId, String nomFull, boolean flgFav, Date feCreac, Date feModif) {
         this.cliId = cliId;
         this.nomFull = nomFull;
-        this.flgLiked = flgLiked;
         this.flgFav = flgFav;
         this.feCreac = feCreac;
         this.feModif = feModif;

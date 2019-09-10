@@ -54,7 +54,7 @@ public class RutinaHshController {
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")
     @RequestMapping(value = "/edicion")
-    public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) throws JsonProcessingException {
+    public ModelAndView editorRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) throws JsonProcessingException {
         int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
         int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
         if(redFitId > 0 && runneId > 0) {
@@ -77,6 +77,43 @@ public class RutinaHshController {
         }
         return new ModelAndView(ViewConstant.ERROR404);
     }
+
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @RequestMapping(value = "/editor")
+    public ModelAndView edicionRutina(@RequestParam(name = "key") String redFitnessId, @RequestParam(name = "rn") String runnerId, Model model, HttpSession session) throws JsonProcessingException {
+        int redFitId = Parseador.getDecodeHash32Id("rf-rutina", redFitnessId);
+        int runneId = Parseador.getDecodeHash16Id("rf-rutina", runnerId);
+        if(redFitId > 0 && runneId > 0) {
+            Integer trainerId = (Integer) session.getAttribute("id");
+            Integer qTrainerId = redFitnessService.findTrainerIdByIdAndRunnerId(redFitId, runneId);
+            if (trainerId.equals(qTrainerId)) {
+                //Se obtiene la última rutina del cliente
+                Rutina rutina = rutinaService.findLastByRedFitnessId(redFitId);
+                if (rutina.getId() != null) {
+                    //rutina.getSemanaIds()[0]:  Obtener el id de la primera semana de la rutina y la guardamos en session del entrenador
+                    session.setAttribute("edicionRutinaId", rutina.getId());
+                    session.setAttribute("edicionUsuarioId", runneId);
+                    session.setAttribute("semanaRutinaId", rutina.getSemanaIds()[0]);
+                    session.setAttribute("semanaIds", rutina.getSemanaIds());
+                    model.addAttribute("rutina", new ObjectMapper().writeValueAsString(new RutinaPOJO(rutina)));
+                    model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
+                    return new ModelAndView(ViewConstant.MAIN_RUTINA_EDITOR);
+                }
+            }
+        }
+        return new ModelAndView(ViewConstant.ERROR404);
+    }
+
+
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @RequestMapping(value = "/editor-legacy")
+    public ModelAndView editorRutinaDiseño() throws JsonProcessingException {
+
+
+      return new ModelAndView(ViewConstant.MAIN_RUTINA_EDITOR_LEGACY);
+      }
 
 
     @PreAuthorize("hasRole('ROLE_TRAINER')")

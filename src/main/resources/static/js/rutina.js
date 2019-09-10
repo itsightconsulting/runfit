@@ -650,21 +650,6 @@ RutinaOpc = (function(){
                         </div>
                     </form>`;
         },
-        effectImage: ()=>{
-            const imgEffect = document.querySelector('#ImgLoading');
-            imgEffect.style.position = 'relative';
-            let refOffSetWidth = imgEffect.parentElement.offsetWidth;
-            let s = 8, k = 1;
-            const intervalLoading = setInterval(function(){
-                imgEffect.style.right = (0 - (k*s)) + 'px';
-                k++;
-                if(Math.abs(k*s)>refOffSetWidth){
-                    k=1;
-                    imgEffect.style.right = (0 - (k*s)) + 'px';
-                }
-            }, 100);
-            return intervalLoading;
-        },
         cambiarEstado: (e, flag)=>{
             cambiarEstadoBD(flag, e);
         }
@@ -1139,6 +1124,7 @@ RutinaIx = (function(){
             return ixs;
         },
         getIxsForElemento: (e)=>{
+            debugger;
             let ixs = {};
             ixs.numSem = typeof $semActual === 'undefined' ? '0' : $semActual.textContent -1;
             ixs.diaIndex = e.getAttribute('data-dia-index');
@@ -2006,7 +1992,7 @@ SubEleOpc = (function(){
             }
         },
         agregarMediaToSubElemento: (ixs, input)=>{
-            console.log('deprecated...');
+            console.log('deprecated...SubEleOpc.agregarMediaToSubElemento');
             /*const assetsElemento = input.parentElement;
             const iconoOpc = assetsElemento.querySelector('.sub-ele-ops');
             const iconoMedia = assetsElemento.querySelector('.rf-media');
@@ -2354,6 +2340,7 @@ RutinaSeccion = (function (){
                         <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                     </li>
                     `;
+
             subEleRef.insertAdjacentHTML(strategy, subEleHTML);
             return ix;
         },

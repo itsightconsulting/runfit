@@ -1,5 +1,9 @@
 <div id="SideBar1" class="sidebar"  th:fragment="fg-menu-desk">
-    <div class="text-center no_mostrar_mobile"><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a></div>
+    <div class="text-center no_mostrar_mobile">
+        <a th:href="@{/}">
+            <img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt="">
+        </a>
+    </div>
     <div class="mobile">
         <div class="only_mobile text-center">
             <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}+'?'+${version}"></button><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
@@ -7,26 +11,26 @@
         <ul class="menu">
             <th:block sec:authorize="hasRole('GUEST')">
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
-                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
+                <li><a href="@{/cliente/rutina/consolidado}" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
-                <li><a th:href="@{/videoteca}" class="menu-allowed"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Mi videoteca</a></li>
+                <li><a th:href="@{/gestion/cliente/videoteca}" class="menu-allowed"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Mi videoteca</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
                 <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
-                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">Mi Perfil</a></li>
+                <li><a href="javascript:void(0)" class="menu-not-allowed"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('RUNNER')">
                 <li><a class="notif" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
-                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
-                <li><a class="notif" href="consejos.html"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
+                <li><a th:href="@{/cliente/rutina/consolidado}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
+                <li><a class="notif"  th:href="@{/cliente/consejos}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
-                <li><a class="notif" href="videoteca.html"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Mi videoteca</a></li>
+                <li><a class="notif" th:href="@{/gestion/cliente/videoteca}"><img class="svg" th:src="@{/img/iconos/icon_videoteca.svg}+'?'+${version}">Mi videoteca</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Leyenda</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_tienda.svg}+'?'+${version}">Tienda</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_chat.svg}+'?'+${version}">Chat</a></li>
-                <li><a th:href="@{/gestion/cliente-fitness/perfil}"><img class="svg" th:src="@{/img/iconos/icon_perfil.svg}+'?'+${version}">Mi Perfil</a></li>
+                <li><a th:href="@{/gestion/cliente-fitness/perfil}"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">
@@ -34,7 +38,7 @@
                 <li><a class="" th:href="@{/gestion/trainer/red/suspendidos}"><img class="svg" th:src="@{/img/iconos/iconos_RunFit_entrena copia 52.svg}+'?'+${version}">Suspendidos</a></li>
                 <li><a class="" th:href="@{/gestion/trainer/distribucion-mercado}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Estadísticas</a></li>
                 <li><a class="" th:href="@{/planes}"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>
-                <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
+                <li><a class="" th:href="@{/gestion/trainer/consejos}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
                 <li><a class="" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_leyenda.svg}+'?'+${version}">Mis contratos</a></li>
             </th:block>
             <li><a class="" href="javascript:void(0);" onclick="cerrarSesion();"><img class="svg" th:src="@{/img/iconos/icon_arrow-left.svg}+'?'+${version}">Salir</a></li>
@@ -53,10 +57,9 @@
                         <input type="checkbox" id="OptConfCliCtrlRepVideoMob" data-type="1"><span class="slider"></span>
                     </label>
                 </li>
-                <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
-                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
-                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">T&C de servicios</a></li>
+                <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de Runfit</a></li>
+                <li><a href="javascript:void(0)" onclick="verTycServicios()"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de servicios</a></li>
                 <li><a th:href="@{/p/preguntas-frecuentes}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
             </ul>
         </div>
@@ -77,9 +80,9 @@
                     <input type="checkbox" id="OptConfCliCtrlRepVideo" data-type="1"><span class="slider"></span>
                 </label>
             </li>
-            <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_ficha.svg}+'?'+${version}">Mi ficha de inscripción</a></li>
             <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_pago.svg}+'?'+${version}">Mis pagos</a></li>
-            <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones</a></li>
+            <li><a th:href="@{/p/terminos-y-condiciones}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de Runfit</a></li>
+            <li><a href="javascript:void(0)" onclick="verTycServicios()"><img class="svg" th:src="@{/img/iconos/icon_file2.svg}+'?'+${version}">Términos y condiciones de servicios</a></li>
             <li><a th:href="@{/p/preguntas-frecuentes}" target="_blank"><img class="svg" th:src="@{/img/iconos/icon_ayuda.svg}+'?'+${version}">Ayuda</a></li>
         </ul>
     </div>

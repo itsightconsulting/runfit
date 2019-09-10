@@ -125,4 +125,9 @@ public class ServicioServiceImpl extends BaseServiceImpl<ServicioRepository> imp
     public void addClienteServicio(Integer clienteId, Integer servicioId) {
         repository.addClienteServicio(clienteId, servicioId);
     }
+
+    @Override
+    public String getTrainerCorreoById(Integer servicioId) {
+        return repository.findTrainerCorreoById(servicioId);
+    }
 }

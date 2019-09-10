@@ -6,11 +6,10 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.UsuarioRecover;
 import com.itsight.domain.dto.PasswordDTO;
 import com.itsight.repository.IdiomaRepository;
-import com.itsight.repository.SecurityUserRepository;
 import com.itsight.repository.UsuarioRecoverRepository;
-import com.itsight.service.EmailService;
 import com.itsight.service.SecurityUserService;
 import com.itsight.util.Enums;
+import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
@@ -48,12 +46,25 @@ public class AuthController extends BaseController {
 
     @GetMapping(value = "/login")
     public String loginForm(@RequestParam(value = "error", required = false) String error,
-                            Model model
-    ) {
+                            Model model) {
         if (error != null) {
             if (error.equals("session-expired")) {
                 model.addAttribute("expired", "expired");
-            } else {
+            }
+
+            else if(error.equals("disabled")){
+                model.addAttribute("error", "disabled");
+            }
+
+            else if(error.equals("checkout")){
+                model.addAttribute("error", "checkout");
+            }
+
+            else if(error.equals("loggedin")){
+                model.addAttribute("error", "loggedin");
+            }
+
+            else {
                 model.addAttribute("error", "error");
             }
         }
@@ -90,25 +101,9 @@ public class AuthController extends BaseController {
         return ViewConstant.ERROR403;
     }
 
-    @GetMapping(value = "/session-expirada", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody
-    String expiredSession() {
-        return "{\"mensaje\": \"Su sessión ha expirado, por favor dirigirse a la pagina /login\"}";
-    }
-
-    @GetMapping(value = "/session-multiple")
-    public String expiredBySessionMultiple() {
-        return "lock";
-    }
-
     @GetMapping(value = "/p/recuperar/password")
     public String recuperarPassword(){
         return ViewConstant.RECUPERAR_PASSWORD;
-    }
-
-    @GetMapping(value = "/rutina/editor")
-    public String editorRutina(){
-        return ViewConstant.MAIN_RUTINA_EDITOR;
     }
 
     @GetMapping(value = "/pagos/resumen-anual")
@@ -126,7 +121,7 @@ public class AuthController extends BaseController {
 
     @GetMapping(value = "/p/cambiar/password/{hshId}")
     public String vistaCambiarPassword(@PathVariable String hshId, @RequestParam String sc, Model model) throws SecCustomValidationException {
-        Integer id = getDecodeHashIdSecCustom(new String(Base64.getDecoder().decode(sc.getBytes())), hshId);
+        Integer id = getDecodeHashIdSecCustom(Parseador.getDecodeBase64(sc), hshId);
         UsuarioRecover usurec = usuarioRecoverRepository.findById(id).orElse(null);
         if(usurec == null){
             return ViewConstant.P_ERROR404;
@@ -146,7 +141,7 @@ public class AuthController extends BaseController {
 
     @PostMapping(value = "/p/recuperacion/password/cambiar")
     public @ResponseBody String cambiarPassword(@ModelAttribute PasswordDTO passwordDTO) throws CustomValidationException {
-        Integer id = getDecodeHashId(new String(Base64.getDecoder().decode(passwordDTO.getSchema().getBytes())), passwordDTO.getUserId());
+        Integer id = getDecodeHashId(Parseador.getDecodeBase64(passwordDTO.getSchema()), passwordDTO.getUserId());
         return securityUserService.cambiarPassword(passwordDTO, id);
     }
 }

@@ -2,22 +2,35 @@ package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
+import com.itsight.controller.PostController;
 import com.itsight.domain.Post;
+import com.itsight.domain.dto.RefUpload;
 import com.itsight.domain.jsonb.PostDetalle;
+import com.itsight.domain.pojo.AwsStresPOJO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.PostRepository;
 import com.itsight.service.PostService;
 import com.itsight.util.Enums;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import static com.itsight.util.Enums.Msg.FAIL_SUBIDA_IMG_GENERICA;
+import static com.itsight.util.Enums.Msg.SUCCESS_SUBIDA_IMG;
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @Service
 @Transactional
 public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements PostService {
+
+    private static final Logger LOGGER = LogManager.getLogger(PostController.class);
 
     public PostServiceImpl(PostRepository repository) {
         super(repository);
@@ -116,24 +129,25 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     }
 
     @Override
+    public List<Post> findAllActivosByTrainerId(Integer trainerId) {
+
+        return repository.findAllActivosByTrainerId(trainerId);
+    }
+
+    @Override
     public List<Post> findAllByTrainerIdIn(List<Integer> lstTrainerId) {
         return repository.findAllByTrainerIdIn(lstTrainerId);
     }
 
     @Override
-    public void updatePostDetalle(Integer id, Integer clienteId, String cliNomFull, Boolean flagLiked, Boolean flagFav) throws JsonProcessingException {
-        PostDetalle postDetalle = new PostDetalle(clienteId, cliNomFull, flagLiked, flagFav, new Date(), null);
+    public void updatePostDetalle(Integer id, Integer clienteId, String cliNomFull, Boolean flagFav) throws JsonProcessingException {
+        PostDetalle postDetalle = new PostDetalle(clienteId, cliNomFull,flagFav, new Date(), null);
         repository.updatePostDetalle(id, new ObjectMapper().writeValueAsString(postDetalle));
     }
 
     @Override
-    public boolean verificarExisteLike(Integer id, Integer clienteId) {
-        return repository.checkLikeExists(id, clienteId).orElse(false);
-    }
-
-    @Override
-    public void actualizarFlagLiked(Integer id, Integer clienteId, boolean flgLiked) {
-        repository.actualizarPostDetalleFlag(id, clienteId, flgLiked, "flgLiked", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+    public boolean verificarExisteFav(Integer id, Integer clienteId) {
+        return repository.checkFavExists(id, clienteId).orElse(false);
     }
 
     @Override
@@ -144,5 +158,102 @@ public class PostServiceImpl extends BaseServiceImpl<PostRepository> implements 
     @Override
     public List<Post> obtenerPostFavoritos(Integer clienteId) {
         return repository.getPostFavoritos(clienteId);
+    }
+
+
+    @Override
+    public RefUpload guardarAudio(MultipartFile file, int id, Post post) {
+        if (!file.isEmpty()) {
+            try {
+                int trainerId = post.getTrainer().getId();
+
+                String[] splitNameFile = file.getOriginalFilename().split("\\.");
+                String extension = "." + splitNameFile[splitNameFile.length - 1];
+                RefUpload fileUpload = new RefUpload();
+
+                if(id == 0) {
+                    fileUpload.setExtFile(extension);
+                    post.setRutaWeb(fileUpload.getUuid() + fileUpload.getExtFile());
+                    post.setUuid(fileUpload.getUuid());
+                    post.setFlagActivo(true);
+                    post.setLstDetalle(new ArrayList<>());
+                    // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
+                    Post p = repository.save(post);
+                    fileUpload.setId(p.getId());
+                }else{
+                    Post currentPost = repository.findById(id).orElse(null);
+                    currentPost.setLstDetalle(new ArrayList<>());
+                    currentPost.setPeso(post.getPeso());
+                    currentPost.setDuracion(post.getDuracion());
+                    currentPost.setTitulo(post.getTitulo());
+                    currentPost.setDescripcion(post.getDescripcion());
+                    Post p = repository.saveAndFlush(currentPost);
+                    fileUpload.setId(p.getId());
+                    fileUpload.setUuid(p.getUuid());
+                }
+                return fileUpload;
+    /*            } else {
+                    Post qPost = repository.findById(id).orElse(null);
+                    //  Utilitarios.createDirectory(fullPath);
+                    //            fullPath += "/" + uuid + extension;
+
+                    //       File nuevoFile = new File(fullPath);
+
+                    // Agregando la ruta a la base de datos
+                    qPost.setRutaWeb("/" + trainerId + "/" + uuid + extension);
+                    //        qPost.setTitulo(nombrefile);
+                    qPost.setTipo(post.getTipo());
+                    qPost.setDuracion(post.getDuracion());
+                    qPost.setPeso(post.getPeso());
+
+                    // Pasando la imagen  o archivo desde la web hacia el servidor en donde se guardará en la ruta especificada en la instacia nueva de File creada
+                    //         file.transferTo(nuevoFile);
+                    repository.saveAndFlush(qPost);
+                }
+                //       LOGGER.info("> ROUTE: " + fullPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            LOGGER.info("> Isn't a file");
+        }
+
+    */
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public String subirAudioAws(MultipartFile file, Integer id, String uuid, String extension) throws CustomValidationException {
+        boolean success = uploadImageToAws3(file, new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3PostBucket, "audio/"+id+"/", uuid, extension), LOGGER);
+        if(success){
+            return SUCCESS_SUBIDA_IMG.get();
+        }
+        throw new CustomValidationException(FAIL_SUBIDA_IMG_GENERICA.get(), EX_VALIDATION_FAILED.get());
+    }
+
+    @Override
+    public String actualizarEstadoPost(Integer id) {
+
+        Post post = this.findOne(id);
+        boolean estadoActual = post.isFlagActivo();
+        post.setFlagActivo(!post.isFlagActivo());
+        this.update(post);
+        int tipo = post.getTipo();
+
+        if(tipo == 1){
+            String[] splitNameFile = post.getRutaWeb().split("\\.");
+            String extension = "." + splitNameFile[splitNameFile.length - 1];
+            boolean success = addTagStatusToAws3(new AwsStresPOJO(aws3accessKey, aws3secretKey, aws3region, aws3PostBucket, "audio/"+id+"/", post.getUuid().toString(),extension), estadoActual, LOGGER);
+            if(success){
+                return EXITO_GENERICA.get();
+            }
+            return EX_GENERIC.get();
+        }
+        return EXITO_GENERICA.get();
     }
 }

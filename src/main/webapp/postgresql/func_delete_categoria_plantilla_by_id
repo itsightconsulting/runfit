@@ -15,5 +15,5 @@ BEGIN
     RETURN TRUE;
 END
 $func$
- LANGUAGE
-    plpgsql;
+LANGUAGE
+plpgsql;
