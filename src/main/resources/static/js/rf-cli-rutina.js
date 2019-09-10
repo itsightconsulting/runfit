@@ -2669,28 +2669,41 @@ RutinaDiaHTML = (function(){
             if (!subElementos || !subElementos.length) {
                 return '<h6>No tiene sub elementos</h6>';
             }
-            return subElementos.map((subEle) =>
-                `${!subEle.mediaVideo && !subEle.mediaAudio ? 
-                        `<li>
-                            <a>
-                              <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
-                            </a>
-                        </li>` : subEle.mediaVideo ?
-                        `<li>
-                            <img  data-width="640" data-height="360"
-                                data-fancybox="gallery-${diaIndex}-${eleIndex}" 
-                                href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${subEle.mediaVideo}" 
-                                class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg">
-                            <a>
-                              <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
-                            </a>
-                        </li>`
-                    : `<li>
-                            <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
-                            <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
-                       </li>`
-                }`
-            ).join('');
+            return subElementos.map((subEle) =>{
+                    const mediaVideo = subEle.mediaVideo;
+                    const checkMediaVideo = mediaVideo ? true : false;
+                    let thumbnail = "";
+                    let checkThumbnail = false;
+                    if(checkMediaVideo){
+                        thumbnail = mediaVideo.split("&tn=")[1];
+                        checkThumbnail = thumbnail.length > 36;
+                        if(checkThumbnail){
+                            thumbnail = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/${mediaVideo.split("/")[1]+'/'+thumbnail}`
+                        }
+                    }
+
+                    return `${!checkMediaVideo && !subEle.mediaAudio ?
+                            `<li>
+                                <a>
+                                  <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
+                                </a>
+                            </li>` : checkMediaVideo ?
+                                `<li>
+                                <img  data-width="640" data-height="360"
+                                    data-fancybox="gallery-${diaIndex}-${eleIndex}" 
+                                    href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${mediaVideo}" 
+                                    class="svg ico-video ico" src="${_ctx}img/iconos/icon_videoteca.svg"
+                                    data-thumbnail-src="${checkThumbnail ? thumbnail : ""}"/>
+                                <a>
+                                  <p class="title">${subEle.nombre}<span>${subEle.nota ? subEle.nota : "&nbsp;"}</span></p>
+                                </a>
+                            </li>`
+                                : `<li>
+                                <img class="svg ico-video ico" src="img/iconos/icon_microfono.svg">
+                                <p class="title">${subEle.nombre}<span>${subEle.nota}</span></p>
+                           </li>`
+                            }`
+            }).join('');
         }
     }
 })();
@@ -2708,8 +2721,7 @@ RutinaPS = (function () {
                     <i rel='tooltip' data-original-title='Reemplazar elemento' data-trigger='hover' class='fa fa-refresh txt-color-green padding-5' data-index='${eleIndex}'></i>
                     <span rel='tooltip' data-original-title='Agregar KM's data-trigger='hover' class='txt-color-black padding-5 agregar-kms' data-index='${eleIndex}' data-dia-index='${diaIndex}'>KM</span>
                     <i rel='tooltip' data-original-title='Eliminar elemento' data-trigger='hover' class='fa fa-trash-o txt-color-redLight padding-5 trash-elemento' data-dia-index='${diaIndex}' data-index='${eleIndex}'></i>
-                </div>
-            `;
+                </div>`;
         },
         opsPopoverElemento2: (diaIndex, eleIndex)=>{
             return `

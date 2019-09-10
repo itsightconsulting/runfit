@@ -325,4 +325,10 @@ function setIndexTycFile(ix){
     $('#TycIndex').val(ix);
 }
 
+function fancyBoxCustomThumbnail(src){
+    const img = document.createElement('img');
+    img.src = src ? src : _ctx + 'img/video.png';
+    return $(img);
+}
+
 

@@ -1996,7 +1996,6 @@ function principalesEventosTabGrupoVideos(e){
 }
 
 function principalesEventosTabGrupoAudios(e){
-    alert("meeeh");
     const input = e.target;
     const clases = input.classList;
 

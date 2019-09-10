@@ -250,7 +250,7 @@
                                 preload: !1
                             }
                         }
-                    })) : "#" === r.charAt(0) && (a = "inline")), a ? l.type = a : o.trigger("objectNeedsType", l), l.contentType || (l.contentType = n.inArray(l.type, ["html", "inline", "ajax"]) > -1 ? "html" : l.type), l.index = o.group.length, "auto" == l.opts.smallBtn && (l.opts.smallBtn = n.inArray(l.type, ["html", "inline", "ajax"]) > -1), "auto" === l.opts.toolbar && (l.opts.toolbar = !l.opts.smallBtn), l.$thumb = l.opts.$thumb || null, l.opts.$trigger && l.index === o.opts.index && (l.$thumb = l.opts.$trigger.find("img:first"), l.$thumb.length && (l.opts.$orig = l.opts.$trigger)), l.$thumb && l.$thumb.length || !l.opts.$orig || (l.$thumb = l.opts.$orig.find("img:first")), l.$thumb && !l.$thumb.length && (l.$thumb = null), l.thumb = l.opts.thumb || (l.$thumb ? l.$thumb[0].src : null), "function" === n.type(l.opts.caption) && (l.opts.caption = l.opts.caption.apply(e, [o, l])), "function" === n.type(o.opts.caption) && (l.opts.caption = o.opts.caption.apply(e, [o, l])), l.opts.caption instanceof n || (l.opts.caption = void 0 === l.opts.caption ? "" : l.opts.caption + ""), "ajax" === l.type && (c = r.split(/\s+/, 2), c.length > 1 && (l.src = c.shift(), l.opts.filter = c.shift())), l.opts.modal && (l.opts = n.extend(!0, l.opts, {
+                    })) : "#" === r.charAt(0) && (a = "inline")), a ? l.type = a : o.trigger("objectNeedsType", l), l.contentType || (l.contentType = n.inArray(l.type, ["html", "inline", "ajax"]) > -1 ? "html" : l.type), l.index = o.group.length, "auto" == l.opts.smallBtn && (l.opts.smallBtn = n.inArray(l.type, ["html", "inline", "ajax"]) > -1), "auto" === l.opts.toolbar && (l.opts.toolbar = !l.opts.smallBtn), l.$thumb = l.opts.$thumb || null, l.opts.$trigger && l.index === o.opts.index && (l.$thumb = l.opts.$trigger.find("img:first")[0] ?  l.opts.$trigger.find("img:first") : fancyBoxCustomThumbnail(l.opts.$trigger.attr('data-thumbnail-src')), l.$thumb.length && (l.opts.$orig = l.opts.$trigger)), l.$thumb && l.$thumb.length || !l.opts.$orig || (l.$thumb = l.opts.$orig.find('img:first')[0] ? l.opts.$orig.find('img:first') : fancyBoxCustomThumbnail(l.opts.$orig.attr('data-thumbnail-src'))), l.$thumb && !l.$thumb.length && (l.$thumb = null), l.thumb = l.opts.thumb || (l.$thumb ? l.$thumb[0].src : null), "function" === n.type(l.opts.caption) && (l.opts.caption = l.opts.caption.apply(e, [o, l])), "function" === n.type(o.opts.caption) && (l.opts.caption = o.opts.caption.apply(e, [o, l])), l.opts.caption instanceof n || (l.opts.caption = void 0 === l.opts.caption ? "" : l.opts.caption + ""), "ajax" === l.type && (c = r.split(/\s+/, 2), c.length > 1 && (l.src = c.shift(), l.opts.filter = c.shift())), l.opts.modal && (l.opts = n.extend(!0, l.opts, {
                         trapFocus: !0,
                         infobar: 0,
                         toolbar: 0,
@@ -1497,42 +1497,21 @@
                 return e ? "\0" === t ? "�" : t.slice(0, -1) + "\\" + t.charCodeAt(t.length - 1).toString(16) + " " : "\\" + t
             })
         }), n(function() {
-            console.log('FANCYBOX...base events...');
             !1 !== n.fancybox.defaults.hash && (n(e).on({
                 "onInit.fb": function(t, e) {
-                    console.log('FANCYBOX...init...');
+                    /*CUSTOM*/
                     document.querySelector('.fancybox-button--thumbs').click();
-                    document.querySelector('.fancybox-button--thumbs').style = "";
-                    /* Custom*/
-                    const mainVisorContainer = document.querySelector('.fancybox-container');
-                    const div = document.createElement('div');
-                    div.className = "fancybox-thumbs fancybox-thumbs-y";
-                    const listForDiv = document.createElement('div');
-                    listForDiv.className = "fancybox-thumbs__list";
-                    //Agregando hijos a la lista-div
-                    for(let i=0; i < $galeriaVideosRutina.length; i++){
-                        const hijo = htmlStringToElement(`
-                            <a href="javascript:;" tabindex="${i}" data-index="${i}" style="background-image:url(https://rf-media-rutina.s3-us-west-2.amazonaws.com/video${$galeriaVideosRutina[i]})" class=""></a>
-                        `);
-                        listForDiv.appendChild(hijo);
-                    }
-                    div.appendChild(listForDiv);
-                    mainVisorContainer.appendChild(div);
-                    //Agregando la clase para mostrar la galería
-                    mainVisorContainer.classList.add('fancybox-show-thumbs');
-
+                    /*END CUSTOM*/
                     var n, i;
                     !1 !== e.group[e.currIndex].opts.hash && (n = o(), (i = a(e)) && n.gallery && i == n.gallery && (e.currIndex = n.index - 1))
                 },
                 "beforeShow.fb": function(n, o, i, s) {
-                    console.log('FANCYBOX...beforeShow...');
                     var r;
                     i && !1 !== i.opts.hash && (r = a(o)) && (o.currentHash = r + (o.group.length > 1 ? "-" + (i.index + 1) : ""), t.location.hash !== "#" + o.currentHash && (s && !o.origHash && (o.origHash = t.location.hash), o.hashTimer && clearTimeout(o.hashTimer), o.hashTimer = setTimeout(function() {
                         "replaceState" in t.history ? (t.history[s ? "pushState" : "replaceState"]({}, e.title, t.location.pathname + t.location.search + "#" + o.currentHash), s && (o.hasCreatedHistory = !0)) : t.location.hash = o.currentHash, o.hashTimer = null
                     }, 300)))
                 },
                 "beforeClose.fb": function(n, o, i) {
-                    console.log('FANCYBOX...beforeClose...');
                     i && !1 !== i.opts.hash && (clearTimeout(o.hashTimer), o.currentHash && o.hasCreatedHistory ? t.history.back() : o.currentHash && ("replaceState" in t.history ? t.history.replaceState({}, e.title, t.location.pathname + t.location.search + (o.origHash || "")) : t.location.hash = o.origHash), o.currentHash = null)
                 }
             }), n(t).on("hashchange.fb", function() {
