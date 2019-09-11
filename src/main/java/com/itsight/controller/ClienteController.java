@@ -23,10 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.Base64;
 import java.util.List;
 
-@PreAuthorize("hasRole('ROLE_RUNNER')")
 @Controller
 @RequestMapping("/gestion/cliente")
 public class ClienteController extends BaseController {
@@ -55,6 +53,7 @@ public class ClienteController extends BaseController {
         return new ModelAndView(ViewConstant.CLIENTE_VIDEOTECA);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
     ResPaginationDTO listarConFiltro(

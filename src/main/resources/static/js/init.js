@@ -22,15 +22,34 @@ function imgToSvg () {
     });
 }
 
-function datepicker_init () {
+function datepicker_init(minDate, maxDate) {
     try {
-        $('.datepicker_inline').datetimepicker({
-            locale: 'es',
-            inline: true,
-            sideBySide: true,
-            format: 'DD/MM/YYYY',
-            //defaultDate: date,
-        });
+        if(!$('.datepicker_inline').data("DateTimePicker")){
+            $('.datepicker_inline').datetimepicker({
+                locale: 'es',
+                inline: true,
+                sideBySide: true,
+                format: 'DD/MM/YYYY',
+                minDate: minDate,
+                maxDate: maxDate,
+                defaultDate: new Date()
+            });
+
+                $('.datepicker_inline').on('dp.change', function (e) {
+                    console.log(e.target);
+                    console.log('seleccion de día...');
+                });
+                $('.datepicker_inline').on('dp.update', function (e) {
+                    console.log(e);
+                    console.log('Actualizando calendario from selección...');
+                });
+
+        }
+
+        /*$(".datepicker_inline").datetimepicker().on('changeMonth', function(e){
+            var currMonth = new Date(e.date).getMonth() + 1;
+            console.log(currMonth);
+        });*/
     }catch (e) {
         console.info("/**** SIMPLE INFO WARNING ****/: ", e.message ? e.message : "$(...).datetimepicker is not a function");
     }
@@ -207,7 +226,7 @@ function leftPanelFocus(){
 
 $(function() {
     imgToSvg();
-    datepicker_init();
+    //datepicker_init();
     openNav();
     owlCarouselSemanal();
     owlCarouselVideoteca();

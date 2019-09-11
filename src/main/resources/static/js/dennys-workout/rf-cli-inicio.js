@@ -1,6 +1,6 @@
 //Variables requeridas
 let indexGlobal = 0;
-let $body = $("html,body");
+let $body = document.querySelector('body');
 let $rutina;
 let $inFocus;
 let $diaPlantilla;
@@ -47,8 +47,6 @@ function init(){
             //Importante mantener el orden para el correcto funcionamiento
             $rutina = new Rutina(rutina);
             $rutina.init(sem, ix);
-
-            $('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
             //vistaDia(sem);
             vistaMes(sem);
             setTimeout(  () => {
@@ -59,7 +57,8 @@ function init(){
             exception(xhr)
         });
 
-        $body[0].addEventListener('click', principalesEventosClickRutina);
+        $body.addEventListener('click', principalesEventosClickRutina);
+        $body.querySelector('.nav-tabs').addEventListener('click', clickEventListenerNavTabs);
         /*
         validators();
         instanciarDatosFitnessCliente();
@@ -93,6 +92,38 @@ function principalesEventosClickRutina(e){
     }
     else if(input.tagName === "svg"){
         svgIconsEvents(input);
+    }
+}
+
+function clickEventListenerNavTabs(e){
+
+    const input = e.target;
+    if(input.tagName === "path"){
+        e.stopPropagation();
+        let svg = searchSvgTraversing(input);
+        const ahref = svg.getAttribute('data-tab');
+        if(!ahref){
+            return;
+        }
+
+        if(ahref === "mensual"){
+            //$('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
+            datepicker_init($rutina.fechaInicio, $rutina.fechaFin);
+        }
+        svg.parentElement.click();
+    }
+    else if(input.tagName === "svg"){
+        e.stopPropagation();
+        const ahref = input.getAttribute('data-tab');
+        if(!ahref){
+            return;
+        }
+
+        if(ahref === "mensual"){
+            //$('.datepicker_inline').data("DateTimePicker").date(sem.fechaInicio);
+            datepicker_init($rutina.fechaInicio, $rutina.fechaFin);
+        }
+        input.parentElement.click();
     }
 }
 

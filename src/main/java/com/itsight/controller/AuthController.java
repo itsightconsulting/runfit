@@ -63,10 +63,6 @@ public class AuthController extends BaseController {
             else if(error.equals("loggedin")){
                 model.addAttribute("error", "loggedin");
             }
-
-            else {
-                model.addAttribute("error", "error");
-            }
         }
         return ViewConstant.LOGIN;
     }

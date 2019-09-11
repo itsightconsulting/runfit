@@ -2615,18 +2615,18 @@ RutinaDiaHTML = (function(){
                         <div class="panel-heading day ph-${prioridadNumber}"><a data-toggle="collapse" data-parent="#panel_days" href="#dia${diaIndex}">
                           <h3>${dia.diaLiteral}</h3></a>
                           <div class="icons">
-                            <img class="svg" src="img/iconos/icon_microfono.svg"><img class="svg" src="img/iconos/icon_leyenda.svg">
-                            <span><img class="svg" src="img/iconos/icon_tiempo2.svg">${dia.minutos}</span>
-                            <a data-toggle="collapse" data-parent="#panel_days" href="#dia${diaIndex}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
+                            <img class="svg" src="${_ctx}img/iconos/icon_microfono.svg"><img class="svg" src="${_ctx}img/iconos/icon_leyenda.svg">
+                            <span><img class="svg" src="${_ctx}img/iconos/icon_tiempo2.svg">${parseNumberToHoursNoExcedent(dia.minutos, true)}</span>
+                            <a data-toggle="collapse" data-parent="#panel_days" href="#dia${diaIndex}"><img class="svg arrow" src="${_ctx}img/iconos/icon_flecha2.svg"></a>
                           </div>
                         </div>
                         <div class="panel-collapse collapse" id="dia${diaIndex}">
                           <div class="panel-body">
                             <ul class="datos">
-                              <li><img class="svg" src="img/iconos/icon_programas.svg">Carrera<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                              <li><img class="svg" src="img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                              <li><img class="svg" src="img/iconos/icon_cronometro.svg">${dia.minutos}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
-                              <li><img class="svg" src="img/iconos/icon_km.svg">${dia.distancia}<img class="svg help" src="img/iconos/icon_ayuda.svg"></li>
+                              <li><img class="svg" src="${_ctx}img/iconos/icon_programas.svg">Carrera<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                              <li><img class="svg" src="${_ctx}img/iconos/icon_temporada.svg">Fuerza<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                              <li><img class="svg" src="${_ctx}img/iconos/icon_cronometro.svg">${parseNumberToHoursNoExcedent(dia.minutos)}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
+                              <li><img class="svg" src="${_ctx}img/iconos/icon_km.svg">${dia.distancia}<img class="svg help" src="${_ctx}img/iconos/icon_ayuda.svg"></li>
                             </ul>
                             <div class="panel-group elementos">
                               ${RutinaDiaHTML.setElementos(elementos, diaIndex)}
@@ -2644,11 +2644,11 @@ RutinaDiaHTML = (function(){
                               <div class="svg-wrap" rel="tooltip" title="">
                                 <img class="svg" src="img/iconos/icon_microfono.svg">
                               </div>
-                              <div class="svg-wrap" rel="tooltip" title="${elemento.nota}">
+                              <div class="svg-wrap" rel="tooltip" title="${elemento.nota ? elemento.nota : ""}">
                                 <img class="svg${elemento.nota ? ' svg-color-nota':''}" src="img/iconos/icon_leyenda.svg"/>
                               </div>                            
                               <span>
-                                <img class="svg" src="img/iconos/icon_tiempo2.svg">${elemento.minutos}
+                                <img class="svg" src="img/iconos/icon_tiempo2.svg">${"&nbsp;"+elemento.minutos}
                               </span>
                               <a data-toggle="collapse" href="#elemento-${ix+''+diaIndex}"><img class="svg arrow" src="img/iconos/icon_flecha2.svg"></a>
                             </div>
@@ -2881,15 +2881,15 @@ Indicadores = (function(){
             const raw = `<ul>
                             <li>
                               <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg" data-container="body" data-original-title="El kilometraje planificado por su asesor" rel="tooltip"><strong>KM</strong>semanal</label>
-                              <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_pasos.svg"><strong>${k.kmPlanificado}</strong>km</p>
+                              <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_pasos.svg"><strong>${Number(k.kmPlanificado)}</strong>km</p>
                             </li>
                             <li>
                               <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>hrs</strong>semanales</label>
-                              <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_ritmo-tiempo.svg"><strong>${k.horas}</strong>hrs</p>
+                              <p class="green"><img class="svg" src="${_ctx}img/iconos/icon_ritmo-tiempo.svg"><strong>${Number(k.horas)}</strong>hrs</p>
                             </li>
                             <li>
                               <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>kcl</strong></label>
-                              <p class="orange"><img class="svg" src="${_ctx}img/iconos/icon_fuego.svg"><strong>${kcalKm}</strong>km</p>
+                              <p class="orange"><img class="svg" src="${_ctx}img/iconos/icon_fuego.svg"><strong>${Number(kcalKm)}</strong>km</p>
                             </li>
                             <li>
                               <label><img class="svg" src="${_ctx}img/iconos/icon_ayuda.svg"><strong>kcl</strong>semanales</label>
