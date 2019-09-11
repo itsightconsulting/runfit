@@ -40,8 +40,10 @@ function datepicker_init(minDate, maxDate) {
                 console.log('seleccion de día...');
             });
             $('.datepicker_inline').on('dp.update', function (e) {
-                console.log(e.viewDate['_i']);
-                console.log(e.viewDate['_d']);
+                let defaultDate = e.viewDate['_i'];
+                let nwCalendarDate = e.viewDate['_d'];
+                console.log(getIndexCalendarWeeks(nwCalendarDate));
+
             });
 
         }
@@ -54,6 +56,37 @@ function datepicker_init(minDate, maxDate) {
         console.info("/**** SIMPLE INFO WARNING ****/: ", e.message ? e.message : "$(...).datetimepicker is not a function");
     }
 
+}
+
+function getIndexCalendarWeeks(dateRef){
+    dateRef.setHours(0,0,0,0);
+    const calMonth = dateRef.getMonth();
+    const calyear = dateRef.getFullYear();
+    let semanas = $rutina.semanas.map((e, ix)=>{
+        const month = e.fechaInicio.getMonth();
+        const year = e.fechaInicio.getFullYear();
+        if(calMonth === month && calyear === year){
+            e.numSem = ++ix;
+            return e;
+        }
+    }).filter(e=>e);
+
+    const firstWeek = semanas[0];
+    const numSemFirstElement = firstWeek.numSem;
+    if(numSemFirstElement == 1){
+        //continue without no more
+    }else{
+        const previousWeek = $rutina.semanas[numSemFirstElement-1];
+        const checktwoMonthsWeek = previousWeek.dias.find(
+                e=>e.fecha.getFullYear() === calyear &&
+                e.fecha.getMonth() === calMonth);
+        if(checktwoMonthsWeek){
+            const ns = $rutina.semanas[numSemFirstElement-1];
+            ns.numSem = numSemFirstElement-1;
+            semanas.push(ns);
+        }
+    }
+    return semanas;
 }
 
 function openNav() {
