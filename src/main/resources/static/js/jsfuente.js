@@ -399,14 +399,7 @@ function agregarModalParaVisualizacionImagen() {
 }
 
 function spinnerSwitchTab(effect){
-    const demo = [];
-    demo
-    const gifRunner = _ctx + "img/runner.gif";
     $.SmartMessageBox({
-        /*title: "<i style='color: #a8fa00'> RUNFIT</i>",*/
-        /*content: "" +
-            "<br/><i style='font-size: 1.2em;'>La acción solicitada ha iniciado. Por favor espere...</i><i class='fa fa-spinner fa-spin fa-15x pull-right'></i><br/>" +
-            "<div class='row'><img id='ImgLoading' class='pull-left' height='80px' src='"+gifRunner+"'><div class='row text-center'></div>",*/
         content: '<div class="text-center">' +
                      '<div class="half-circle-spinner">' +
                          '<div class="circle circle-1"></div>' +
@@ -426,10 +419,6 @@ function spinnerSwitchTab(effect){
 function spinnerUpload() {
     $.SmartMessageBox({
         title: "",
-        /*content: "" +
-            "<br/><i>La acción solicitada ha iniciado. Por favor espere...</i><br/>" +
-            "<div class='progress' style='width:100%;'><div id='ProgressUpload' class='progress-bar bg-color-teal' data-transitiongoal='0'>0%</div></div>" +
-            "<div class='row'><div class='row text-center'><i class='fa fa-spinner fa-spin fa-3x text-center'></i></div>",*/
         content: '<div class="text-center">' +
                      '<div class="half-circle-spinner">' +
                          '<div class="circle circle-1"></div>' +
@@ -1092,7 +1081,7 @@ function fromDateToString(d){
 }
 
 function cerrarSesion(){
-    let fullName = atob(document.cookie = getCookie("GLL_NOMBRE_COMPLETO"));
+    let fullName = getFullNameFromUser();
     fullName = fullName.toLowerCase().split().map(e=>capitalizeFirstLetter(e)).join(" ");
     $.SmartMessageBox({
         title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",

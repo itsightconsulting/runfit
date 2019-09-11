@@ -97,12 +97,6 @@ public class TrainerController extends BaseController{
         return new ResPaginationDTO(users, users.isEmpty() ? 0 : users.get(0).getRows());
     }
 
-    @GetMapping("/empresa/agregar/trainer")
-    public ModelAndView agregarTrainerAEmpresa(Model model){
-        model.addAttribute("distritos", ubPeruService.findPeDistByDepAndProv("15", "01"));
-        return new ModelAndView(ViewConstant.MAIN_REGISTRO_TRAINER_DE_EMPRESA);
-    }
-
     @GetMapping(value = "/consejos_legacy")
     public ModelAndView misConsejosLegacy() {
         return new ModelAndView(ViewConstant.MAIN_CONSEJOS_TRAINER2);

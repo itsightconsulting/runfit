@@ -148,10 +148,6 @@
                         <a th:href="@{/gestion/musculo}" title="Músculos"><i class="fa fa-male"></i><span
                                 class="menu-item-parent"> Músculos</span></a>
                     </li>
-                    <li>
-                        <a th:href="@{/gestion/trainer/empresa/agregar/trainer}" title="Agregar trainer"><i class="fa fa-male"></i><span
-                                class="menu-item-parent"> Agregar trainer</span></a>
-                    </li>
                 </ul>
             </li>
             <li class="top-menu-invisible" sec:authorize="hasRole('TRAINER') OR hasRole('ADMIN')">

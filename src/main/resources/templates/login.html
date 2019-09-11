@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" id="extr-page"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="version = ${#servletContext.getAttribute('version')}" xmlns:javascript="http://www.w3.org/1999/xhtml">
+      th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
     <meta name="_csrf" th:attr="content=${_csrf.token}"/>
     <!-- default header name is X-CSRF-TOKEN -->
@@ -67,7 +67,7 @@
                 <input type="password" th:value="${usso != null ? usso.secret : ''}" id="password" name="password" placeholder="Password" maxlength="30"/>
             </div>
             <div class="form-group text-right"><a th:href="@{/p/recuperar/password}">¿Olvido su contraseña?</a></div>
-            <div th:if="${error =='error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
+            <div th:if="${error == 'error'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i
                     class="fa fa-fw fa-warning"></i> Inválido username o password
             </div>
             <div th:if="${error =='disabled'}" class="alert alert-danger text-center" role="alert" style="padding-bottom: 13px;color:#f9382a"><i

@@ -719,7 +719,6 @@
         document.querySelector('#TipoDocumento').value = 1;
         $('#TipoDocumento').multiselect('refresh');
         document.querySelector('#NumeroDocumento').value = `23232323`;
-        document.querySelector('#NomPag').value = `pedro`+t1+t2;
         document.querySelector('input[name="FormaTrabajo"]').checked = true;
         //POPULATE UBIGEO LIMA - LIMA - LIMA
         populateUbigeo();
@@ -802,7 +801,6 @@
         obj.mediosPago = getValuesConcatInpCheckbox('MetodoPago');
         obj.servicios = servicios;
         obj.cuentas = ccBancarias;
-        obj.nomPag = document.getElementById('NomPag').value;
 
         obj.nota = document.getElementById('Nota').value;
         const redes = getRedesSociales();

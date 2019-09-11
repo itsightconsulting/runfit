@@ -35,14 +35,14 @@ function datepicker_init(minDate, maxDate) {
                 defaultDate: new Date()
             });
 
-                $('.datepicker_inline').on('dp.change', function (e) {
-                    console.log(e.target);
-                    console.log('seleccion de día...');
-                });
-                $('.datepicker_inline').on('dp.update', function (e) {
-                    console.log(e);
-                    console.log('Actualizando calendario from selección...');
-                });
+            $('.datepicker_inline').on('dp.change', function (e) {
+                console.log(e.target);
+                console.log('seleccion de día...');
+            });
+            $('.datepicker_inline').on('dp.update', function (e) {
+                console.log(e.viewDate['_i']);
+                console.log(e.viewDate['_d']);
+            });
 
         }
 
