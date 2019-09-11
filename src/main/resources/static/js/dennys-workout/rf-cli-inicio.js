@@ -31,8 +31,6 @@ let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
 let $gSemanaIx = 0;
 let $numSem = document.getElementById('NumSemana');
-let $galeriaVideosRutina = ["/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg", "/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg",
-                            "/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg", "/17/2cdc366f-9055-4aa8-9305-3c1aeafec870.jpg"];
 
 (function () {
     init();
