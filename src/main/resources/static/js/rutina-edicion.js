@@ -4,6 +4,7 @@ const $semActual = document.querySelector('#nroSemanaActual');
 const $semanario = document.querySelector('#rutinaSemana');
 const mainTabs = document.querySelector('#principalesTabs');
 const $rMenuEleSubele = document.querySelector('#rMenuEleSubele');
+const dvEditor = document.querySelector('.editor_text');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -55,13 +56,8 @@ function init(){
 
     let uriParam = getParamFromURL("si");
 
-
-
-
     obtenerSemanaInicialRutina().then((semana)=>{
-
         //Importante mantener el orden para el correcto funcionamiento
-
         $rutina = new Rutina(rutinaData);
         if(uriParam){
           let semanaIdx = atob(uriParam);
@@ -71,8 +67,8 @@ function init(){
              $rutina.init(semana);
         }
          //validators();
-         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
-         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
+        editorRutinaContenido.addEventListener('click', eventosEditorRutina);
+        $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         $semanario.addEventListener('click', principalesEventosClickRutina);
 
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
@@ -82,6 +78,10 @@ function init(){
 
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
+
+            $(dvEditor).on('click','.btn' , principalesDivEditor);
+
+
 
         $(document).bind("click", function(event) {
            $rMenuEleSubele.className = "hide";
@@ -133,7 +133,7 @@ function init(){
 }
 
 
-function eventosMenuSemanario(e){
+function  eventosMenuSemanario(e){
 
     const input = e.target;
     const inpClasses = input.classList;
@@ -157,78 +157,198 @@ function eventosMenuSemanario(e){
     }
 }
 
-function eventosClickMenuOptElem(e){
- debugger;
- const input = e.target;
- const inpClasses = input.classList;
- if(inpClasses.contains('agregar-nota')){
-         e.stopPropagation();
-         const inpTargetClasses = $menuTargetInput.classList;
+function eventosClickMenuOptElem(e) {
 
-         if(inpTargetClasses.contains("rf-dia-elemento-nombre")){
+    const input = e.target;
+    const inpClasses = input.classList;
+    const inpTargetClasses = $menuTargetInput.classList;
 
-             const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
-             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
-             const type = elemento.getAttribute('data-type');
-             if(type == 2) {
-                 debugger;
-                 const collapsable = elemento.querySelector('a[data-toggle="collapse"]');
-                 const panelCollapsable = elemento.querySelector('.panel-collapse');
-                 collapsable.classList.add('collapsed');
-                 collapsable.setAttribute('aria-expanded', "false");
-                 panelCollapsable.classList.remove('in');
-                 panelCollapsable.setAttribute('aria-expanded', "false");
-             }
+    e.preventDefault();
+    e.stopPropagation();
 
-             if(elemento.children.length != 3) {
-                 let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
-                 let notaInput = document.createElement('div');
-                 notaInput.className = 'panel-heading';
-                 notaInput.innerHTML = `
+    if (inpClasses.contains('agregar-nota')) {
+
+        if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
+
+            const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+            let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            const type = elemento.getAttribute('data-type');
+            if (type == 2) {
+                ;
+                const collapsable = elemento.querySelector('a[data-toggle="collapse"]');
+                const panelCollapsable = elemento.querySelector('.panel-collapse');
+                collapsable.classList.add('collapsed');
+                collapsable.setAttribute('aria-expanded', "false");
+                panelCollapsable.classList.remove('in');
+                panelCollapsable.setAttribute('aria-expanded', "false");
+            }
+
+            if (elemento.children.length != 3) {
+                let elementoNota = elemento.querySelector('.rf-dia-elemento-nombre').getAttribute('data-content');
+                let notaInput = document.createElement('div');
+                notaInput.className = 'panel-heading';
+                notaInput.innerHTML = `
                     <div class="dv-nota">
-                        <textarea class="nueva-nota w-100" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${elementoNota==undefined?'':elementoNota}</textarea>
+                        <textarea class="nueva-nota w-100" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${elementoNota == undefined ? '' : elementoNota}</textarea>
                     </div >`
-                 elemento.append(notaInput);
-             }
+                elemento.append(notaInput);
+            }
 
-             $rMenuEleSubele.classList.toggle("hide");
+            $rMenuEleSubele.classList.toggle("hide");
 
-         }
-         else if(inpTargetClasses.contains("rf-sub-elemento-nombre")){
-             const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
-             let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
-             if(subEle.children.length != 1) {
-                 let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
-                 let notaInput = document.createElement('div');
-                 notaInput.className = 'panel-heading';
-                 notaInput.innerHTML = `
+        } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+            
+            const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+            let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
+            //  if(subEle.children.length != 1) {
+            let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
+            let notaInput = document.createElement('div');
+            notaInput.className = 'panel-heading';
+            notaInput.style.marginTop = '15px';
+            notaInput.style.marginLeft = '15px';
+            notaInput.innerHTML = `
                     <div class="dv-nota">
-                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota!=undefined?subEleNota:''}</textarea>
-                    </div >`
-                 subEle.append(notaInput);
-             }
-             $rMenuEleSubele.classList.toggle("hide");
-         }
+                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota != undefined ? subEleNota : ''}</textarea>
+                    </div >`;
+            subEle.append(notaInput);
+            //    }
+            $rMenuEleSubele.classList.toggle("hide");
+        }
 
 
+    } else if (inpClasses.contains('trash-audio')) {
 
- }
+        if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
+            const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+            ElementoOpc.eliminarMediaAudio(ixs);
+        } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+            const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+            console.log(ixs);
+            SubEleOpc.eliminarMediaAudio(ixs);
+        }
+    }  else if(inpClasses.contains('trash-video')) {
 
- else if(clases.contains('agregar-nota-sbe')) {
-     const ixs = RutinaIx.getIxsForSubElemento(input);
-     let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
-     if(subEle.children.length != 1) {
-         let subEleNota = subEle.querySelector('.rf-sub-elemento-nombre').getAttribute('data-content');
-         let notaInput = document.createElement('div');
-         notaInput.className = 'panel-heading';
-         notaInput.backgroundColor = '#ebf1fd';
-         notaInput.innerHTML = `
-                    <div class="container-fluid">
-                        <textarea class="nueva-nota-sbe w-100" data-index="${ixs.subEleIndex}" data-ele-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}" type="text" rows="2">${subEleNota!=undefined?subEleNota:''}</textarea>
-                    </div >`
-         subEle.append(notaInput);
-     }
- }
+        if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
+            const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+            ElementoOpc.eliminarMediaVideo(ixs);
+        } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+            const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+            SubEleOpc.eliminarMediaVideo(ixs);
+        }
+
+    }
+
+     else if(inpClasses.contains('insertar-encima')) {
+
+        if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
+
+            let ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+            let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let ix = ++indexGlobal;
+            let refIndex = ixs.eleIndex;
+            if (elemento.nextElementSibling != undefined) {
+                if (elemento.nextElementSibling.classList.contains('ne-esp')) {
+                    elemento.nextElementSibling.remove();
+                }
+            }
+            if (elemento.previousElementSibling != undefined) {
+                if (elemento.previousElementSibling.classList.contains('ne-esp')) {
+
+                } else {
+                    elemento.insertAdjacentHTML('beforebegin', `
+                                                    <div class="panel-group elem ne-esp rf-dia-pre-elemento" data-dia-index="${ixs.diaIndex}"
+                                                           data-index="${ix}">
+                                                           <div class="row">
+                                                            <div class="col-xs-6">
+                                                                    <input type="text" class="cs-input in-ele-dia-esp-pos" maxlength="121" placeholder=""
+                                                                      data-dia-index="${ixs.diaIndex}" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}"
+                                                                      data-ele-ref-index="${refIndex}"  data-strategy="beforebegin"/>
+                                                            </div>
+                                                            <div class="col-xs-6" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}">
+                                                                      <input type="text" class="cs-input in-ele-dia-esp-pos" maxlength="121" placeholder="" data-dia-index="${ixs.diaIndex}"
+                                                                       data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-ele-ref-index="${refIndex}"
+                                                             data-strategy="beforebegin"/>
+                                                            </div>
+                                                           </div>
+                                                          </div> `);
+                }
+            } else {
+                elemento.insertAdjacentHTML('beforebegin', `
+                                                    <div class="panel-group elem ne-esp rf-dia-pre-elemento" data-dia-index="${ixs.diaIndex}"
+                                                           data-index="${ix}">
+                                                           <div class="row">
+                                                            <div class="col-xs-6">
+                                                                    <input type="text" class="cs-input in-ele-dia-esp-pos" maxlength="121" placeholder=""
+                                                                      data-dia-index="${ixs.diaIndex}" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}"
+                                                                      data-ele-ref-index="${refIndex}"  data-strategy="beforebegin"/>
+                                                            </div>
+                                                            <div class="col-xs-6" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}">
+                                                                      <input type="text" class="cs-input in-ele-dia-esp-pos" maxlength="121" placeholder="" data-dia-index="${ixs.diaIndex}"
+                                                                       data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-ele-ref-index="${refIndex}"
+                                                             data-strategy="beforebegin"/>
+                                                            </div>
+                                                           </div>
+                                                          </div>`);
+            }
+        } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+
+            let ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+            let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
+            let ix = ++indexGlobal;
+
+            if (subElemento.nextElementSibling != undefined) {
+                if (subElemento.nextElementSibling.classList.contains('ne-esp')) {
+                    subElemento.nextElementSibling.remove();
+                }
+            }
+
+            if (subElemento.previousElementSibling != undefined) {
+                if (subElemento.previousElementSibling.classList.contains('ne-esp')) {
+
+                } else {
+                    subElemento.insertAdjacentHTML('beforebegin', `
+                                                                  <li>
+                                                                      <div class="row rf-pre-sub-elemento" data-dia-index="${ixs.diaIndex}"
+                                                                            data-ele-index="${ixs.eleIndex}" data-index="${ix}">
+                                                                        <div class="col-xs-10">
+                                                                          <input type="text" class="cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}"
+                                                                            data-index="${ix}" data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}"  data-strategy="beforebegin"/>    
+                                                                        </div>
+                                                                      </div>  
+                                                                  </li>
+                      `);
+                }
+            } else {
+                subElemento.insertAdjacentHTML('beforebegin', `     <li>
+                                                                      <div class="row rf-pre-sub-elemento" data-dia-index="${ixs.diaIndex}"
+                                                                            data-ele-index="${ixs.eleIndex}" data-index="${ix}">
+                                                                        <div class="col-xs-10">
+                                                                          <input type="text" class="cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}"
+                                                                            data-index="${ix}" data-ele-index="${ixs.eleIndex}"  data-sub-ele-ref-index="${ixs.subEleIndex}" data-strategy="beforebegin"/>    
+                                                                        </div>
+                                                                      </div>  
+                                                                  </li>`);
+            }
+
+
+        }
+    }
+     else if (inpClasses.contains('trash-elemento')) {
+            
+            if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
+
+                const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+                console.log("xd", ixs);
+                ElementoOpc.eliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
+
+            } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+
+                const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+                RutinaDOMQueries.getSubElementoByIxs(ixs);
+                SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+            }
+
+        }
 
 }
 
@@ -343,7 +463,7 @@ function principalesEventosFocusOutSemanario(e) {
         }
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
-        ;
+
         const valor = input.value.trim();
         if(valor.length > 1){
             let ixs = RutinaIx.getIxsForElemento(input);
@@ -433,9 +553,9 @@ function principalesEventosFocusOutSemanario(e) {
                 let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
                 let initEle = tempElemento;
                 let i = 0, k = 0;
-                //
+
                 while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-                let tempSubElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
+                let tempSubElemento = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
 
                 while ((tempSubElemento = tempSubElemento.previousElementSibling) != null) k++;
                 RutinaSet.setSubElementoNombre(ixs.numSem, ixs.diaIndex, i, k, valor);
@@ -443,71 +563,79 @@ function principalesEventosFocusOutSemanario(e) {
             }
         }
     }
+
+
+    else if(clases.contains('nueva-nota')){
+
+        
+        const nota = input.value.trim();
+        const ixs = RutinaIx.getIxsForElemento(input);
+        let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+        const divNota = e.target.parentElement.parentElement;
+
+        let anteriorNota = tempElemento.querySelector(`.rf-dia-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
+        if(anteriorNota.trim() != nota){
+
+            if(tempElemento.querySelector('.notes .gr')==undefined){
+                tempElemento.querySelector('.notes').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT(nota)));
+            }else{
+                if(nota.length == 0){
+                    tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', '');
+                    tempElemento.querySelector(`.notes .gr`).setAttribute('data-content', '');
+
+                }
+            }
+            tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', nota);
+            let i=0;
+            ElementoOpc.descomprimirDetalle(tempElemento);
+            while((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            RutinaSet.setElementoNota(ixs.numSem, ixs.diaIndex, (posEle = i), nota);
+            actualizarNotaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i));
+            divNota.remove();
+        }else{
+            divNota.remove();
+            ElementoOpc.descomprimirDetalle(tempElemento);
+        }
+    }
+
+    else if(clases.contains('nueva-nota-sbe')){
+
+        const nota = input.value.trim();
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
+        const divNota = e.target.parentElement.parentElement;
+
+        let anteriorNota = tempSubEle.querySelector(`.rf-sub-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
+        if(anteriorNota.trim() != nota){
+
+            if(tempSubEle.querySelector('.notes .gr')==undefined){
+                tempSubEle.querySelector('.notes').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT(nota)));
+            }else{
+                if(nota.length == 0){
+                    tempSubEle.querySelector('.notes .gr').remove();
+                    tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', '');
+                    tempSubEle.querySelector(`.notes .gr`).setAttribute('data-content', '');
+                }
+            }
+            tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', nota);
+
+            let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
+            let i = 0, k = 0;
+            while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
+            while ((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
+            RutinaSet.setSubElementoNota(ixs.numSem, ixs.diaIndex, i, k, nota);
+
+            actualizarSubElementoNotaBD(nota, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
+         //   divNota.remove();
+        }else{
+        //    divNota.remove();
+        }
+    }
     /*
 
 
 
 
-     else if(clases.contains('nueva-nota')){
-         const nota = input.value.trim();
-         const ixs = RutinaIx.getIxsForElemento(input);
-         let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-         const divNota = e.target.parentElement.parentElement;
-
-         let anteriorNota = tempElemento.querySelector(`.rf-dia-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
-         if(anteriorNota.trim() != nota){
-
-             if(tempElemento.querySelector('i.check-nota')==undefined){
-                 tempElemento.querySelector('.panel-title').appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT()));
-             }else{
-                 if(nota.length == 0){
-                     tempElemento.querySelector('i.check-nota').remove();
-                     tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', '');
-                 }
-             }
-             tempElemento.querySelector(`.rf-dia-elemento-nombre`).setAttribute('data-content', nota);
-             let i=0;
-             ElementoOpc.descomprimirDetalle(tempElemento);
-             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
-             RutinaSet.setElementoNota(ixs.numSem, ixs.diaIndex, (posEle = i), nota);
-             actualizarNotaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i));
-             divNota.remove();
-         }else{
-             divNota.remove();
-             ElementoOpc.descomprimirDetalle(tempElemento);
-         }
-     }
-     else if(clases.contains('nueva-nota-sbe')){
-         const nota = input.value.trim();
-         const ixs = RutinaIx.getIxsForSubElemento(input);
-         let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
-         const divNota = e.target.parentElement.parentElement;
-
-         let anteriorNota = tempSubEle.querySelector(`.rf-sub-elemento-nombre`).getAttribute('data-content');anteriorNota = anteriorNota == undefined?'':anteriorNota;
-         if(anteriorNota.trim() != nota){
-
-             if(tempSubEle.querySelector('i.check-nota')==undefined){
-                 tempSubEle.appendChild(htmlStringToElement(RutinaElementoHTML.iconoNotaT()));
-             }else{
-                 if(nota.length == 0){
-                     tempSubEle.querySelector('i.check-nota').remove();
-                     tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', '');
-                 }
-             }
-             tempSubEle.querySelector(`.rf-sub-elemento-nombre`).setAttribute('data-content', nota);
-
-             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-             let i = 0, k = 0;
-             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
-
-             while ((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
-             RutinaSet.setSubElementoNota(ixs.numSem, ixs.diaIndex, i, k, nota);
-             actualizarSubElementoNotaBD(nota, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
-             divNota.remove();
-         }else{
-             divNota.remove();
-         }
-     }
      else if(clases.contains('agregar-kms')){}
 
  */
@@ -518,7 +646,7 @@ function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
     let input = e.target;
 
-
+    
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
             const dvInputsInit = input.parentElement.parentElement.parentElement;
@@ -572,11 +700,12 @@ function principalesEventosClickRutina(e) {
             let i = 0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
             RutinaAdd.nuevoSubElementoMedia(ixs.numSem, ixs.diaIndex, i, obj);
+            alert("cuack");
             agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, i, 0); //Siempre va ser el primero por eso se deja la posicion como 0
             const iconoAdd = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.ele-add');
             const dvMediaElements =  RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.notes');;
 
-            debugger
+            
             if($tipoMedia == TipoElemento.AUDIO){
                 dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
             }else{
@@ -599,7 +728,7 @@ function principalesEventosClickRutina(e) {
 
     else if(clases.contains('in-sub-ele-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            debugger
+            
             const valor = $mediaNombre;
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -625,12 +754,7 @@ function principalesEventosClickRutina(e) {
     }
 
 
-    else if (clases.contains('trash-elemento')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForElemento(input);
-        ElementoOpc.eliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
-    }
+
     else if(clases.contains('trash-audio')) {
         e.preventDefault();
         e.stopPropagation();
@@ -722,28 +846,6 @@ function principalesEventosClickRutina(e) {
     }
 
     */
-     if(clases.contains('insertar-encima')){
-        e.stopPropagation();
-        let ixs = RutinaIx.getIxsForElemento(input);
-        let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
-        let ix = ++indexGlobal;
-        let refIndex = ixs.eleIndex;
-        if(elemento.nextElementSibling != undefined){
-            if(elemento.nextElementSibling.classList.contains('ne-esp')){
-                elemento.nextElementSibling.remove();
-            }
-        }
-
-        if(elemento.previousElementSibling != undefined){
-            if(elemento.previousElementSibling.classList.contains('ne-esp')) {
-
-            }else{
-                elemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-6 padding-0"><input type="text" class="w-100 border-rg-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div><div class="col-md-6 padding-0"><input type="text" class="w-100 border-lf-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div></div>`);
-            }
-        }else{
-            elemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-6 padding-0"><input type="text" class="w-100 border-rg-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.SIMPLE}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div><div class="col-md-6 padding-0"><input type="text" class="w-100 border-lf-no cs-input in-ele-dia-esp-pos" data-ele-tipo="${ElementoTP.COMPUESTO}" data-index="${ix}" data-dia-index="${ixs.diaIndex}" data-ele-ref-index="${refIndex}" data-strategy="beforebegin"/></div></div>`);
-        }
-    }
     else if(clases.contains('insertar-debajo')) {
 
          
@@ -835,6 +937,7 @@ function principalesEventosClickRutina(e) {
          e.stopPropagation();
          if(validUUID($mediaAudio) || validUUID($mediaVideo)){
              const ixs = RutinaIx.getIxsForSubElemento(input);
+             alert("xdd");
              SubEleOpc.agregarMediaToSubElemento2(ixs, input);
          }
          //Sirve para despues de guardar el valor del input en el onclick validar que este haya sido o no modificado para conforme a eso actualizar en el focusout
@@ -1164,6 +1267,88 @@ function principalesEventosTabGrupoAudios(e){
 }
 
 
+function principalesDivEditor(e){
+    const input = e.currentTarget;
+    const clases = input.classList;
+
+    console.log(input);
+    const ix = input.getAttribute('data-index');
+    if(clases.contains('btn-bold')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 0);
+        }else{
+
+        }
+    }else if(clases.contains('btn-italic')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 0);
+        }else{
+
+        }
+    }else if(clases.contains('btn-underline')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 0);
+        }else{
+
+        }
+    }
+    else if(clases.contains('note-btn-copy-format')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.copiarFormato();
+        }else{}
+    }
+    else if(clases.contains('note-color-fuente')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 1);
+        }else{}
+    }else if(clases.contains('note-bg-color')){
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 2);
+        }else{}
+    }else if(clases.contains('note-alineacion')){
+        
+        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 3);
+        }else{}
+    }else if(clases.contains('note-btn-font')){
+        e.preventDefault();
+        e.stopPropagation();
+        RutinaEditor.instanciarPaletaColores(input);
+    }
+    else if(clases.contains('note-btn-alinea')){
+        e.preventDefault();
+        e.stopPropagation();
+        RutinaEditor.instanciarGrupoAlineacion(input);
+    }
+    else if(clases.contains('note-btn-margen')){
+        e.preventDefault();
+        e.stopPropagation();
+        RutinaEditor.agregarOeliminarEstiloToElemento(ix, 4);
+    }
+    else if(clases.contains('aumentar-zoom')){
+        e.stopPropagation();
+        let zm = window.parent.document.body.style.zoom;
+        window.parent.document.body.style.zoom = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1;
+        if(zm == "1.1") {
+            input.classList.add('disabled');
+        }else{
+            input.parentElement.querySelector('.reducir-zoom').classList.remove('disabled');
+            if(zm != "1.2") input.classList.remove('disabled');
+        }
+    }
+    else if(clases.contains('reducir-zoom')){
+        e.stopPropagation();
+        let zm = window.parent.document.body.style.zoom;
+        window.parent.document.body.style.zoom = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
+        if(zm == "0.9") {
+            input.classList.add('disabled');
+        }else{
+            input.parentElement.querySelector('.aumentar-zoom').classList.remove('disabled');
+            if(zm != "0.8") input.classList.remove('disabled');
+        }
+    }
+}
+
 function avanzarRetrocederSemana(numSem, action){
 
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
@@ -1204,11 +1389,13 @@ function agregarElementoBD(numSem, diaIndex, tipoElemento){
 }
 
 function agregarSubElementoAElementoBD(numSem, diaIndex, listaIndex , elementoIndex){
+   // alert("xd");
     let params = $rutina.semanas[numSem].dias[diaIndex].elementos[listaIndex].subElementos[elementoIndex];
     params.numeroSemana = numSem;
     params.diaIndice = diaIndex;
     params.elementoIndice = listaIndex;
     params.subElementoIndice = elementoIndex;
+
 
     $.ajax({
         type: "POST",
@@ -1812,6 +1999,257 @@ function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia, 
         complete: function () {}
     })
 }
+
+function actualizarNotaElementoBD(numSem, diaIndex, elementoIndice) {
+    let params = {};
+    params.nota = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].nota;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/nota/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarSubElementoNotaBD(nota, numSem, diaIndex, posElemento, postSubElemento) {
+    let params = {};
+    params.nota = nota;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = posElemento;
+    params.subElementoIndice = postSubElemento;
+
+    $.ajax({
+        type: "PUT",
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: _ctx + "gestion/rutina/sub-elemento/nota/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+        }
+    })
+}
+
+function actualizarNotaElementoBD(numSem, diaIndex, elementoIndice) {
+    let params = {};
+    params.nota = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].nota;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/nota/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function eliminarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia){
+    let params = {};
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaVideo;
+    }
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.tipoMedia = tipoMedia;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/media/eliminar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarMediaElementoBD(numSem, diaIndex, elementoIndice, tipoMedia, nombre){
+    let params = {};
+    if(tipoMedia == TipoElemento.AUDIO){
+        params.mediaAudio = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaAudio;
+    }else{//VIDEO
+        params.mediaVideo = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].mediaVideo;
+    }
+
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.tipoMedia = tipoMedia;
+    params.nombre = nombre;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/media/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function eliminarMediaSubElementoBD(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.tipoMedia = tipoMedia;
+    params.tipo = 3;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/media/eliminar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {
+            instanciarTooltips();
+        }
+    })
+}
+
+function actualizarMediaSubElementoBD2(numSem, diaIndex, elementoIndice, subEleIndice, tipoMedia){
+    let params = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.tipo = 3;
+    params.tipoMedia = tipoMedia;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/media/actualizar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function removerElementoBD(numSem, diaIndex, elementoIndex, minutos, distancia, calorias){
+    let params = {}
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndex;
+    params.minutos = minutos;
+    params.distancia = distancia;
+    params.calorias = calorias;
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/elemento/eliminar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function removerSubElementoBD(numSem, diaIndex, eleIndex, subEleIndex, distancia, calorias){
+    let params = {};
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.subElementoIndice = subEleIndex;
+    params.distancia = distancia;
+    params.calorias = calorias;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/sub-elemento/eliminar",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
+function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
+    let params = {};
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/elemento/estilos/actualizar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
 
 
 function cambiarATabRutina(){

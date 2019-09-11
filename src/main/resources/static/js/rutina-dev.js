@@ -931,6 +931,7 @@ RutinaEditor = (function(){
                 headerElemento.classList.add(objEditor.clase);
                 guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
             } else if(tipo == 3){
+                debugger;
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
@@ -1181,7 +1182,7 @@ RutinaDOMQueries = (function(){
             return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ixs.diaIndex}"] .rf-dia-elemento[data-index="${ixs.eleIndex}"] .rf-sub-elemento[data-index="${ixs.refSubEleIndex}"]`);
         },
         getPanelElementoByIxs: (ixs)=>{
-            return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ixs.diaIndex}"] .panel-default[data-index="${ixs.eleIndex}"]`);
+            return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ixs.diaIndex}"] .panel-group[data-index="${ixs.eleIndex}"]`);
         },
         getAllElementosCollapse: ()=>{
             return document.querySelectorAll('#myTabRutina #rutinaSemana a[data-toggle="collapse"]');
@@ -1386,7 +1387,9 @@ DiaOpc = (function(){
                         const caloriasNuevas = -DiaFunc.obtenerGastoCalorico(zonaNumAnterior, tiempoAsignado); //En caso de ser la diferencia negativa, al momento de acumular se solo se restará la diferencia y de igual forma el excedente
                         DiaOpc.actualizarFromSE(elemento, e, 0, caloriasNuevas, posEle, posSE, ixs);
                     } else
-                        agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, posSE);
+                        alert("2!!!!");
+
+                    agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, posSE);
                 }
             }else{
                 const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
@@ -1395,7 +1398,8 @@ DiaOpc = (function(){
                 $(elemento.querySelector(`.in-init-sub-ele`)).closest('li').remove();  //toggleClass('hidden');
             //    instanciarSubElementoTooltip(nSubEle);
             //    instanciarSubElementoPopover(nSubEle);
-                agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
+                alert("3!!!!");
+           agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
             }
         },
         validPreActualizarFromNomSubEle2: (elemento, valor, ixs, posEle, posSE)=>{
@@ -1434,6 +1438,7 @@ DiaOpc = (function(){
                 }
             } else {
           */
+          alert("1!!!!");
           agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
             //}
         },
@@ -1647,13 +1652,14 @@ ElementoOpc = (function(){
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
             const dia = RutinaGet.dia(numSem, diaIndex);
             const elemento = RutinaGet.elemento(numSem, diaIndex, (posEle=i));
-            let minutos = Number(elemento.minutos);dia.minutos -= minutos;
-            let distancia = Number(elemento.distancia);dia.distancia -= distancia;
+            let minutos =  0 //Number(elemento.minutos);dia.minutos -= minutos;
+            let distancia = 0 //Number(elemento.distancia);dia.distancia -= distancia;
             dia.elementos.splice(i, 1);
             const finalHTML = RutinaDOMQueries.getPanelElementoByIxs(ixs);
             //3. Eliminando de la BD
+
             let calorias = 0;
-            if(RutinaValidator.esZ($nombreActualizar.toUpperCase())){
+          /*   if(RutinaValidator.esZ($nombreActualizar.toUpperCase())){
                 calorias = DiaFunc.obtenerGastoCalorico(Number($nombreActualizar.substr(1)) - 1, minutos);
             }else if(ElementoTP.COMPUESTO == eleType){
                 const eleZ = RutinaValidator.getZFromSubEle(initEle);
@@ -1662,17 +1668,18 @@ ElementoOpc = (function(){
                 }
             }
             RutinaSet.subtractDiaCalorias(numSem, diaIndex, calorias);
-            Indicadores.actualizarKilometrajes();
+            Indicadores.actualizarKilometrajes(); */
             removerElementoBD(numSem, diaIndex, (eleIndex = i), minutos, distancia, calorias);
 
+            debugger
             $(finalHTML).slideUp('slow', ()=>{
                 finalHTML.remove();
                 const diaContainer = RutinaDOMQueries.getDiaByIx(diaIndex);
                 const containerElementosDia = diaContainer.querySelector(`.rf-listas`);
                 if(containerElementosDia.children.length == 0){
                     diaContainer.querySelector(`.inputs-init`).classList.toggle('hidden');
-                    diaContainer.querySelector(`.distancia-total`).textContent = parseNumberToDecimal(0, 2);
-                    diaContainer.querySelector(`.horas-totales`).textContent = parseNumberToHours(0);
+            //        diaContainer.querySelector(`.distancia-total`).textContent = parseNumberToDecimal(0, 2);
+            //        diaContainer.querySelector(`.horas-totales`).textContent = parseNumberToHours(0);
                     RutinaSet.setDiaClean(numSem, diaIndex);
                 }
                 //4. Totalizados
@@ -1681,23 +1688,23 @@ ElementoOpc = (function(){
         },
         eliminarMediaAudio: (ixs)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            const iconoMedia = tempElemento.querySelector('.rf-media');
-            if(iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause')){
+            const iconoAudio = tempElemento.querySelector('.notes .ong');
+            if(iconoAudio != undefined){
                 let i=0;
                 while((tempElemento = tempElemento.previousElementSibling) != null) i++;
                 RutinaSet.setElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex = i), '');
-                iconoMedia.remove();
+                iconoAudio.remove();
                 eliminarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.AUDIO);
             }
         },
         eliminarMediaVideo: (ixs)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            const iconoMedia = tempElemento.querySelector('.rf-media');
-            if(iconoMedia.className.includes('fa-video-camera')){
+            const iconoVideo = tempElemento.querySelector('.reprod-video');
+            if(iconoVideo != undefined){
                 let i=0;
                 while((tempElemento = tempElemento.previousElementSibling) != null) i++;
                 RutinaSet.setElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex = i), '');
-                iconoMedia.remove();
+                iconoVideo.remove();
                 eliminarMediaElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), TipoElemento.VIDEO);
             }
         },
@@ -1794,7 +1801,7 @@ ElementoOpc = (function(){
             let initTempElemento = tempElemento;
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
             if($tipoMedia == TipoElemento.AUDIO){
-                debugger
+                
                 RutinaSet.setElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex=i), $mediaAudio, $mediaNombre);
                 //Primer if para actualizar
                 if(iconoAudio != undefined /*&& (iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause'))*/){
@@ -1817,7 +1824,7 @@ ElementoOpc = (function(){
             initTempElemento.querySelector('.rf-dia-elemento-nombre').textContent = $mediaNombre;
         },
         agregarMediaElemento: (ixs, input, tipoEle, posEle)=>{
-            debugger
+            
             const assetsElemento = input.parentElement;
             const iconoOpc = assetsElemento.querySelector('.ele-ops');
             const iconoAdd = assetsElemento.querySelector('.ele-add');
@@ -1962,7 +1969,7 @@ SubEleOpc = (function(){
             $rutina.semanas[numSem].dias[diaIndex].elementos[i].subElementos.splice(k, 1);
             let distancia = 0;
             let calorias = 0;
-            const minutos = eleInit.querySelector('.agregar-tiempo').value;
+        /*    const minutos = eleInit.querySelector('.agregar-tiempo').value;
             if(RutinaValidator.esZ($nombreActualizar.toUpperCase()) && minutos > 0){
                 distancia = DiaFunc.obtenerKilometraje(numSem, Number($nombreActualizar.substr(1)) - 1, minutos);
                 dia.distancia -= distancia;
@@ -1971,6 +1978,7 @@ SubEleOpc = (function(){
                 Indicadores.actualizarKilometrajes();
                 eleInit.setAttribute('data-kms', '0');
             }
+          */
             removerSubElementoBD(numSem, diaIndex, (elemIndex = i), (subElemIndex = k), distancia, calorias);
             $(subEleInit).slideUp('fast', ()=>{
                 subEleInit.remove();
@@ -1984,27 +1992,30 @@ SubEleOpc = (function(){
         },
         eliminarMediaAudio: (ixs)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            const iconoMedia = tempElemento.querySelector('.rf-media');
-            if(iconoMedia.className.includes('fa-play') || iconoMedia.className.includes('fa-pause')){
+         //   if(iconoAudio != undefined){
                 let i=0, k=0;
                 while((tempElemento = tempElemento.previousElementSibling) != null) i++;
-                let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs)
-                while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
-                RutinaSet.setSubElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), '');
-                iconoMedia.remove();
-                eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
-            }
+                let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
+                const iconoAudio = tempSubEle.querySelector('.notes .ong');
+
+               if(iconoAudio != undefined) {
+                   while ((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
+                   RutinaSet.setSubElementoMediaAudio(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), '');
+                   iconoAudio.remove();
+                   eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.AUDIO);
+               }
+         //   }
         },
         eliminarMediaVideo: (ixs)=>{
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            const iconoMedia = tempElemento.querySelector('.rf-media');
-            if(iconoMedia.className.includes('fa-video-camera')){
+            const iconoVideo = tempElemento.querySelector('.reprod-video');
+            if(iconoVideo != undefined){
                 let i=0, k=0;
                 while((tempElemento = tempElemento.previousElementSibling) != null) i++;
-                let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs)
+                let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
                 while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
                 RutinaSet.setSubElementoMediaVideo(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), '');
-                iconoMedia.remove();
+                iconoVideo.remove();
                 eliminarMediaSubElementoBD(ixs.numSem, ixs.diaIndex, (eleIndex = i), (subEleIndex = k), TipoElemento.VIDEO);
             }
         },
@@ -2040,7 +2051,7 @@ SubEleOpc = (function(){
             }*/
         },
             agregarMediaToSubElemento2: (ixs, input)=>{
-            debugger
+            
             const assetsElemento = input.parentElement;
             const iconoVideo = assetsElemento.querySelector('.reprod-video');
             const iconoAudio = assetsElemento.querySelector('.notes .ong');
@@ -2049,7 +2060,7 @@ SubEleOpc = (function(){
 
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0, k=0;
             while((tempElemento = tempElemento.previousElementSibling) != null) i++;
-            let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs)
+            let tempSubEle = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
             let initTempSubElemento = tempSubEle;
             while((tempSubEle = tempSubEle.previousElementSibling) != null) k++;
             if($tipoMedia == TipoElemento.AUDIO){
@@ -2446,8 +2457,11 @@ RutinaElementoHTML = (function(){
         iconoNota: (nota)=>{
             return `${nota != '' && nota != undefined?'<i class="fa fa-minus check-nota agregar-nota" data-index="${ixs.eleIndex}" data-dia-index="${ixs.diaIndex}"></i>':''}`;
         },
-        iconoNotaT: ()=>{
-            return `<i class="fa fa-minus check-nota agregar-nota" data-index="ixs.eleIndex" data-dia-index="ixs.diaIndex"></i>`;
+        iconoNotaT: (nota)=>{
+            return `<div class="gr" rel="tooltip" data-content="${nota}" data-original-title="Nota"></div>`;
+        },
+        iconoAudioT: (mediaAudio)=>{
+            return `<div class="ong" rel="tooltip" data-media="${mediaAudio}" data-original-title="Audio"></div>`;
         },
         adjuntarElementos: (diaIndex, elementos)=>{
             const listaDiv = RutinaDOMQueries.getDivListaDiaByIxs({diaIndex: diaIndex});
