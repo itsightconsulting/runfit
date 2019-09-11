@@ -1656,7 +1656,7 @@ ElementoOpc = (function(){
             RutinaSet.subtractDiaCalorias(numSem, diaIndex, calorias);
             Indicadores.actualizarKilometrajes();
             removerElementoBD(numSem, diaIndex, (eleIndex = i), minutos, distancia, calorias);
-
+            debugger
             $(finalHTML).slideUp('slow', ()=>{
                 finalHTML.remove();
                 const diaContainer = RutinaDOMQueries.getDiaByIx(diaIndex);
@@ -1667,6 +1667,7 @@ ElementoOpc = (function(){
                     diaContainer.querySelector(`.horas-totales`).textContent = parseNumberToHours(0);
                     RutinaSet.setDiaClean(numSem, diaIndex);
                 }
+
                 //4. Totalizados
                 DiaOpc.actualizarTotalizadosDia(diaIndex);
             });
