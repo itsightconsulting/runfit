@@ -272,7 +272,7 @@ function exception(xhr, errorName) {
     if(typeof xhr == 'number' && xhr < 0){
         exception2(xhr, errorName);
     }else{
-        if (xhr["responseJSON"] != null || JSON.parse(xhr["responseText"])["status"] == "401" ) {
+        try {
 
             if(sCode != 401 && sCode != 403 && sCode != 400 && sCode !== 409){
                 $.smallBox({
@@ -345,7 +345,7 @@ function exception(xhr, errorName) {
                 }
             }
 
-        } else {
+        } catch(ex) {
             $.smallBox({
                 content: "<i> Comuníquese con el administrador <br/> Code error: " + xhr['status'] + " <br/> Detail: " + "Error" + "</i>",
                 color: "#8a6d3b",
@@ -613,6 +613,13 @@ function parseNumberToHours(minutos){
     let h = Math.floor(minutos/60);
     let m = minutos%60;
     return h+ "' "+ (m%60<10?"0"+String(m%60):m%60) + "\"";
+}
+
+function parseNumberToHoursNoExcedent(minutos, spaceBefore){
+    let h = Math.floor(minutos/60);
+    let m = minutos%60;
+    let final = h+ "' "+ (m%60<10?"0"+String(m%60):m%60) + "\"";
+    return (spaceBefore ? "&nbsp;" : "") + (minutos<60 ? final.slice(-3) : final);
 }
 function parseNumberToDecimal(num, decimals){
     return parseFloat(Number(num)).toFixed(decimals);
@@ -929,9 +936,14 @@ function getCookie(cname) {
 
 function b64DecodeUnicode(str) {
     // Going backwards: from bytestream, to percent-encoding, to original string.
-    return decodeURIComponent(atob(str).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    try {
+        return decodeURIComponent(atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    }catch (e) {
+        console.log('b64DecodeUnico..cth');
+        return atob(str);
+    }
 }
 
 

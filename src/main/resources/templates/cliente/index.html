@@ -32,9 +32,9 @@
             </div>
           </header>
           <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#diario"><img class="svg" src="img/iconos/icon_calendar-diario.svg"></a></li>
-            <li><a data-toggle="tab" href="#semanal"><img class="svg" src="img/iconos/ss.svg"></a></li>
-            <li><a data-toggle="tab" href="#mensual"><img class="svg" src="img/iconos/icon_calendar-mensual.svg"></a></li>
+            <li class="active"><a data-toggle="tab" href="#diario"><img class="svg" data-tab="diario" src="img/iconos/icon_calendar-diario.svg"></a></li>
+            <li><a data-toggle="tab" href="#semanal"><img class="svg" data-tab="semanal" src="img/iconos/ss.svg"></a></li>
+            <li><a data-toggle="tab" href="#mensual"><img class="svg" data-tab="mensual" src="img/iconos/icon_calendar-mensual.svg"></a></li>
           </ul>
           <div class="tab-content rutina-cli">
             <div class="tab-pane fade in active" id="diario">
@@ -82,11 +82,11 @@
                 <div class="row">
                   <div class="col col-md-6 col-xs-6">
                     <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">CUMPLIMIENTO</h3>
-                    <input style="color: indianred; !important;" data-thickness="0.05" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo1" type="text" value="15" class="dial dayAvance" />
+                    <input data-thickness="0.06" data-fgColorMid="#d6ff58" data-fgColorEnd="#d6ff58" data-width="56%" data-height="142" id="indicadorCirculo1" type="text" value="15" class="dial dayAvance"/>
                   </div>
                   <div class="col col-md-6 col-xs-6">
                     <h3 class="title_graphic no_margin_top"><img class="svg" src="img/iconos/icon_ayuda.svg">KM<i>RESTANTE</i></h3>
-                    <input style="color: darkslateblue;" data-thickness="0.05" data-fgColorMid="#cf3239" data-fgColorEnd="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo2" type="text" value="50" class="dial dayAvance" />
+                    <input data-thickness="0.06" data-fgcolor="#cf3239" data-width="56%" data-height="142" id="indicadorCirculo2" type="text" value="15" class="dial dayAvance"/>
                   </div>
                 </div>
               </div>
@@ -323,7 +323,9 @@
             <div class="tab-pane fade" id="mensual">
               <div class="row">
                 <div class="col-md-8">
-                  <div class="datepicker_inline"></div>
+                  <div class="datepicker_inline">
+                    <!-- DATETIMEPICKER-->
+                  </div>
                   <div class="ritmos_pulsos row">
                     <br>
                     <div class="col-xs-6">
@@ -498,24 +500,9 @@
           </div>
         </div>
       </div>
-      <div class="col col-md-12">
-        <hr class="my-5" />
-        <p class="imglist" >
-          <a href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/2/a2fecbaf-b92e-4673-b5bb-77fba738647e.mp4?v1" data-fancybox="images" data-caption="Backpackers following a dirt trail">
-            <img src="https://rf-media-rutina.s3-us-west-2.amazonaws.com/video/19/99bfdb2b-8572-4a8a-a17f-b3c287c313b2.jpg" />
-          </a>
-          <a href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/1/9eb007f0-5bb0-4495-a841-860fea3401fb.mp4?v1" data-fancybox="images" data-caption="Mallorca, Llubí, Spain">
-            <img src="https://rf-media-rutina.s3-us-west-2.amazonaws.com/video/19/99bfdb2b-8572-4a8a-a17f-b3c287c313b2.jpg" />
-          </a>
-          <a href="https://s3-us-west-2.amazonaws.com/rf-media-rutina/video/1/9eb007f0-5bb0-4495-a841-860fea3401fb.mp4?v1" data-fancybox="images" data-caption="Mallorca, Llubí, Spain">
-            <img src="https://rf-media-rutina.s3-us-west-2.amazonaws.com/video/19/99bfdb2b-8572-4a8a-a17f-b3c287c313b2.jpg" />
-          </a>
-        </p>
-      </div>
     </div>
 
     <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
-    <script th:src="@{/js/plugin/fancybox/fancybox.js}+'?'+${version}"></script>
     <script th:src="@{/js/plugin/moment/moment.min.js}+'?'+${version}"></script>
     <script th:src="@{/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js}+'?'+${version}"></script>
     <!-- CUSTOM NOTIFICATION -->

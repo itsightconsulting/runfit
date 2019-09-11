@@ -50,7 +50,7 @@ button {
   margin-left: 280px; }
 
 .container {
-  padding: 40px 20px;
+  padding: 40px 0px;
   width: 100%;
   max-width: 824px; }
 
@@ -502,7 +502,7 @@ a.fav:hover .svg, a.fav.selected .svg {
   padding-bottom: 15px; }
   .datepicker_inline .bootstrap-datetimepicker-widget table thead tr:first-child th {
     font-family: GothamHTF-Bold;
-    font-size: 50px; }
+    font-size: 38px; }
     .datepicker_inline .bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
       background-color: transparent; }
     .datepicker_inline .bootstrap-datetimepicker-widget table thead tr:first-child th span.glyphicon {
@@ -878,7 +878,7 @@ section.ritmos_tiempo .box_tiempo {
       .panel-group .panel .panel-body .panel {
         margin: 0 -15px 0 0; }
         .panel-group .panel .panel-body .panel .panel-heading {
-          padding: 20px 0;
+          padding: 20px 20px 20px 0px;
           background-color: transparent;
           border-top: 1px solid #3d3f41;
           border-radius: 0; }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.pojo.AwsStresPOJO;
 import com.itsight.util.Enums;
+import org.apache.http.entity.ContentType;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -100,6 +101,10 @@ public interface BaseService<T, V> {
                         .build();
 
                 ObjectMetadata metadata = new ObjectMetadata();
+
+                if(extension.equals(".pdf")){
+                    metadata.setContentType("application/pdf");
+                }
                 metadata.setContentLength(file.getSize());
                 /*metadata.setContentDisposition("attachment");*/
 
@@ -164,11 +169,16 @@ public interface BaseService<T, V> {
                         extension = "."+file.getContentType().split("/")[1];
                     }
                 }
+
                 String objectName = uuids[i]+extension;
                 String fullPath = credentials.getPrefix()+objectName;
                 try {
                     ObjectMetadata metadata = new ObjectMetadata();
                     metadata.setContentLength(file.getSize());
+
+                    if(extension.equals(".pdf")){
+                        metadata.setContentType("application/pdf");
+                    }
 
                     PutObjectRequest request = new PutObjectRequest(
                             credentials.getBucket(),

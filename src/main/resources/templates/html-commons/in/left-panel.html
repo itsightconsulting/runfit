@@ -6,7 +6,7 @@
     </div>
     <div class="mobile">
         <div class="only_mobile text-center">
-            <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}"></button><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
+            <button class="navbar-toggle" onclick="hideMenuMobile()"><img class="svg" th:src="@{/img/iconos/icon_hamburger.svg}+'?'+${version}"></button><a th:href="@{/}"><img class="logo" th:src="@{/img/logo.png}+'?'+${version}" alt=""></a>
         </div>
         <ul class="menu">
             <th:block sec:authorize="hasRole('GUEST')">

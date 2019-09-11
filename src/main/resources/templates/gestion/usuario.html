@@ -718,7 +718,6 @@
         var desactivar = '';
         const url = '/gestion/distribucion-mercado?trId='+row.id;
         const distrMercadoTrainer = row.tipoUsuario === 'Trainer' ? `<a href='${url}' ><i class='fa fa-bar-chart-o fa-2x txt-color-grayDark'></i></a>` : '';
-        console.log("aaah",row.tipoUsuario);
         if (row.id > 0) {
             desactivar = `<a href='#' onclick='javascript:desactivar(${row.id},${index},"${row.username}","${tipoUsuario}");' title='Actualizar estado'><i class='fa fa-refresh fa-2x'></i></a> &nbsp &nbsp
 									   <a href='#' data-toggle="modal" data-target="#CambioContrasena" onclick='javascript:cambiarContrasena(${row.id}, "${row.username}","${tipoUsuario}");' title='Cambiar contraseña'><i class='fa fa-lock fa-2x txt-color-greenLight'></i></a>
