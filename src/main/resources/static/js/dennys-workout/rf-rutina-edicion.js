@@ -1450,6 +1450,7 @@ function principalesEventosClickRutina(e) {
         DiaOpc.pegarElementosSeleccionados(diaIndex);
     }
     else if(clases.contains('agregar-objetivo')) {
+        debugger
         const parent = input.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
         if (parent.children.length < 2) {
             const diaIndex = input.getAttribute('data-index');
@@ -2854,6 +2855,7 @@ function principalesDivEditor(e){
     const input = e.target;
     const clases = input.classList;
     const ix = e.target.getAttribute('data-index');
+    debugger
 
     if(clases.contains('btn-bold')){
         if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){

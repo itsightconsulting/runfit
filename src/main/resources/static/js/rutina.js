@@ -2483,7 +2483,7 @@ RutinaElementoHTML = (function(){
                                 <a href="javascrip:void(0);" class="${ess.header}">
                                     <i class="fa fa-lg fa-angle-down pull-right invisible"></i>
                                     <i class="fa fa-lg fa-angle-up pull-right invisible"></i>
-                                    <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" data-placement="top" rel="tooltip" data-original-title="Tiempo en minutos"/> 
+                                       <input value="${ele.minutos}" readonly="readonly" type="number" maxlength="3" class="pull-right agregar-tiempo" data-index="${ix}" data-dia-index="" data-placement="top" rel="tooltip" data-original-title="Tiempo en minutos"/> 
                                     <span class="lista-title">
                                         <span class="pull-left">
                                             ${ele.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(ele.mediaVideo):''}

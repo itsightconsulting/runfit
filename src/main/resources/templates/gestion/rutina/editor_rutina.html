@@ -48,21 +48,42 @@
        <div class="editor_text"><img class="logo" th:src="@{/img/logo.png}">
         <section>
             <div class="block">
-                <select style="min-width: 170px;">
-                    <option>Calibri</option>
+                <select id="fntFmlyEditor" style="min-width: 170px;">
+                    <option value="216">Montserrat</option>
+                    <option value="217">Arial</option>
+                    <option value="218">Helvetica</option>
+                    <option value="219">Times News Roman</option>
+                    <option value="220">Georgia</option>
+                    <option value="221">Bookman</option>
+                    <option value="222">Impact</option>
+                    <option value="223">Trebuchet</option>
+                    <option value="224">Comic Sans MS</option>
+                    <option value="225">Jokerman</option>
+
                 </select>
-                <select>
-                    <option>11</option>
+                <select id="fntSzEditor">
+                    <option value="50">8</option>
+                    <option value="51">9</option>
+                    <option value="52">10</option>
+                    <option value="53">11</option>
+                    <option value="54" selected="selected">12</option>
+                    <option value="55">13</option>
+                    <option value="56">14</option>
+                    <option value="57">15</option>
+                    <option value="58">16</option>
+                    <option value="59">17</option>
+                    <option value="60">18</option>
                 </select>
                 <button class="btn note-alineacion" data-index="4"   ><img class="svg textAlign"  th:src="@{/img/iconos-trainers/icon_textLeft.svg}"></button>
                 <button class="btn note-alineacion" data-index="5"  ><img class="svg textAlign"  th:src="@{/img/iconos-trainers/icon_textCenter.svg}"></button>
                 <button class="btn note-alineacion" data-index="6"  ><img class="svg textAlign"  th:src="@{/img/iconos-trainers/icon_textRight.svg}"></button>
             </div>
             <div class="block">
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn white btn-bold" data-index="1">B</button>
+                <button class="btn white btn-italic" data-index="2">I</button>
+                <button class="btn white btn-underline" data-index="3">U</button>
                 <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></button>
+                <button class="btn note-btn-copy-format"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
                 <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
                 <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
                 <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
@@ -153,6 +174,15 @@
     </ul>
 </div>
 
+<div class="hide" id="rMenuDia">
+    <ul>
+        <li id="optAgregarObjetivo" data-option ="1" class="agregar-objetivo">Agregar objetivo</li>
+        <li id="optCopiarDia" data-option="2" class="copiar-dia">Copiar día</li>
+        <li id="optPegarPlantilla" data-option="3" class="pegar-mini">Pegar plantilla</li>
+        <li id="optLimpiarDia" data-option="4" class="limpiar-dia">Limpiar dia </li>
+    </ul>
+</div>
+
 
 
 <!-- MODALS -->
@@ -190,12 +220,30 @@
 <script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script th:inline="javascript">
     function rutScroll() {
+        $(".scroll_rut").mCustomScrollbar("destroy");
         $(".scroll_rut").mCustomScrollbar({
             theme:"3d",
             axis:"x",
             scrollButtons:{ enable: true }
         });
     }
+
+    function deactivateScroll(){
+        $(".scroll_rut").mCustomScrollbar("destroy");
+        $(".scroll_rut").mCustomScrollbar({
+            theme:"3d",
+            axis:"x",
+            mouseWheel:{ enable: 0 },
+            scrollButtons:{ enable: true }
+
+        });
+    }
+
+    function removeScrollbar(){
+        $(".scroll_rut").mCustomScrollbar("destroy");
+
+    }
+
 
     $(function() {
         rutScroll();

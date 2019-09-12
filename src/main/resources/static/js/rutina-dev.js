@@ -104,7 +104,7 @@ class Rutina {
                 `
                    <article class="rf-dia" data-index="${i}" data-fecha="${v.fechaCorta()}">
                 <header class="heading-dia" role="heading">
-                    <h2 class="titulo-dia ${arrCirculoFichaClass[i]}">${v.literal}<span>${v.dia}</span></h2>
+                    <h2 class="titulo-dia ${arrCirculoFichaClass[i]} ctx-menu-dia">${v.literal}<span class="ctx-menu-dia">${v.dia}</span></h2>
                 </header>
                 <div class="sub-header"     role="heading"><span class="distancia-total"><img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg">0.00</span><span class="horas-totales"><img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg">2'48"</span></div>
                       ${RutinaDiaHTML.full(v.elementos, i, val, flagDescanso)}
@@ -886,6 +886,10 @@ RutinaDelete = (function(){
             const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
             estilos.forEach((v,i,k)=>{if(v.id>49 && v.id<100){k.splice(i, 1)}});
         },
+        eliminarEstilosFamiliaFuente: (numSem, diaIndex, eleIndex)=>{
+            const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
+            estilos.forEach((v,i,k)=>{if(v.id>215 && v.id<226){k.splice(i, 1)}});
+        },
         eliminarEstiloMargen:  (numSem, diaIndex, eleIndex)=>{
             const estilos = $rutina.semanas[numSem].dias[diaIndex].elementos[eleIndex].estilos;
             estilos.forEach((v,i,k)=>{if(v.id>=8 && v.id<=10){k.splice(i, 1)}});
@@ -898,6 +902,7 @@ RutinaEditor = (function(){
         agregarOeliminarEstiloToElemento: (estiloId, tipo)=>{
             //1. Agregando a el objeto general de la rutina el nuevo estilo
             if(tipo == 0){
+               debugger
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
@@ -931,7 +936,6 @@ RutinaEditor = (function(){
                 headerElemento.classList.add(objEditor.clase);
                 guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
             } else if(tipo == 3){
-                debugger;
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
@@ -1086,8 +1090,8 @@ RutinaEditor = (function(){
             Array.from(input.classList).map((v,i)=>{
                 if(i>1)
                     return v;
-            }).forEach(v=>input.classList.remove(v));
-            input.parentElement.parentElement.className = "";
+            }).forEach(v=> input.classList.remove(v));
+            input.parentElement.parentElement.className = "row";
             let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
             tempEle.classList.contains('rf-mg-2') ? tempEle.classList.remove('rf-mg-2') : '';
 
@@ -1438,7 +1442,7 @@ DiaOpc = (function(){
                 }
             } else {
           */
-          alert("1!!!!");
+         // alert("1!!!!");
           agregarSubElementoAElementoBD(ixs.numSem, ixs.diaIndex, posEle, 0);
             //}
         },
@@ -1610,6 +1614,7 @@ DiaOpc = (function(){
             } else{
                 $(e.parentElement.parentElement.parentElement).slideUp('slow', ()=>{
                     e.parentElement.parentElement.parentElement.remove();
+                    rutScroll();
                     actualizarDiaObjetivoBD(diaIndex, e.parentElement.previousElementSibling.value);
                 });
             }
@@ -1671,7 +1676,6 @@ ElementoOpc = (function(){
             Indicadores.actualizarKilometrajes(); */
             removerElementoBD(numSem, diaIndex, (eleIndex = i), minutos, distancia, calorias);
 
-            debugger
             $(finalHTML).slideUp('slow', ()=>{
                 finalHTML.remove();
                 const diaContainer = RutinaDOMQueries.getDiaByIx(diaIndex);
@@ -2234,11 +2238,13 @@ RutinaSeccion = (function (){
                            <div class="notes">
                                 
                             </div> 
+                          <span class="pull-left"> 
                            <i>  <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                          </span>
                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>                                          
                          </div>
                          <div class="col-xs-4">
-                            <input  type="number" class="item-minutos agregar-tiempo" maxlength="3" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                            <input  type="number" class="item-minutos agregar-tiempo pull-left " maxlength="3" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                          </div>   
                       </div>
                      </div>                  
@@ -2255,12 +2261,14 @@ RutinaSeccion = (function (){
                                          <div class="col-xs-9">
                                            <div class="notes">  
                                            </div>  
-                                         <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                                          <span class="pull-left">
+                                           <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                                          </span>
                                           <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
 
                                          </div>
                                          <div class="col-xs-3">
-                                            <a data-toggle="collapse" href="#collapse${ix}">
+                                            <a data-toggle="collapse"  class="pull-left" href="#collapse${ix}">
                                                <img class="svg arrow" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a>
                                          </div>     
                                        </div> 
@@ -2294,11 +2302,13 @@ RutinaSeccion = (function (){
                              <div class="col-xs-8">
                                <div class="notes">
                                </div>
-                               <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                               <span class="pull-left">
+                                <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                               </span>
                                <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                              </div>
                              <div class="col-xs-4">
-                               <input  type="number" class="item-minutos agregar-tiempo" maxlength="3" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
+                               <input  type="number" class="item-minutos agregar-tiempo pull-left" maxlength="3" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/>
                              </div>
                            </div>  
                          </div>
@@ -2311,10 +2321,12 @@ RutinaSeccion = (function (){
                     <div class="col-xs-9">
                       <div class="notes">
                       </div>
+                    <span class="pull-left"> 
                      <i > <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                    </span>
                     <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${nombre}</span>
                     </div>
-                    <div class="col-xs-3"><a data-toggle="collapse" href="#collapse${ix}"><img class="svg arrow" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></div>
+                    <div class="col-xs-3"><a data-toggle="collapse" class="pull-left" href="#collapse${ix}"><img class="svg arrow" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></div>
                 </div>
                 <div class="panel-collapse collapse" id="collapse${ix}">
                     <ul class="dd-list detalle-lista">
@@ -2424,11 +2436,11 @@ RutinaSeccion = (function (){
         },
         newDiaObjetivo: (objetivos, diaIndex)=>{
             return `
-                <div class="col-sm-12 padding-o-bottom-10">
-                    <div class="input-group input-group-md">
-                        <select class="form-control list-desp-objetivo" style="border-bottom: 2px solid skyblue;border-radius: 10px 0px 0px 10px!important;"><option value="0">-- Objetivo del día -- </option>${objetivos}</select>
+                <div class="col-xs-12">
+                    <div class="input-group" style="width:unset;">
+                        <select class="form-control list-desp-objetivo"><option value="0">-- Objetivo del día -- </option>${objetivos}</select>
                         <div class="input-group-btn">
-                            <button onclick="DiaOpc.actualizarObjetivo(this)" class="btn btn-default" dia-index="${diaIndex}" type="button" style="border-bottom: 1px solid skyblue;border-radius: 0px 20px 20px 0px !important;"><strong><i class="fa fa-check text-success"></i></strong></button>
+                            <button onclick="DiaOpc.actualizarObjetivo(this)" class="btn btn-default btn-desp-objetivo" dia-index="${diaIndex}" type="button" style="border-bottom: 1px solid skyblue;border-radius: 0px 20px 20px 0px !important;"><strong><i class="fa fa-check text-success"></i></strong></button>
                         </div>
                     </div>
                 </div>`
@@ -2582,22 +2594,25 @@ RutinaElementoHTML = (function(){
         },
         elementoSimplePaste:(ele, diaIndex)=>{
             const ess = RutinaEditor.obtenerEstilos(ele.estilos);
+            console.log("ess", ess);
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             return `<div class="panel-group elem ${ess.margen} rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
-                        <div class="row">
+                        <div class="row" ${ess.header}>
                          <div class="col-xs-8">
                           <div class="notes">
                            ${ele.mediaAudio != undefined && ele.mediaAudio != '' ? `<div class="ong" rel="tooltip" data-original-title="Audio"></div>` : ''}
                            ${ele.nota != undefined && ele.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
                           </div>
                           ${ele.mediaVideo != undefined && ele.mediaVideo != ''?RutinaElementoHTML.iconoVideoPlay(ele.mediaVideo):''}
+                          <span class="pull-left">
                           <i> <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                          <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
-                          <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
+                          </span>                            
+                          
+                          <span class="rf-dia-elemento-nombre ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
                          </div>
                          <div class="col-xs-4">
-                          <input value="${ele.minutos}" type="number" class="item-minutos agregar-tiempo" maxlength="3" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/> 
+                          <input value="${ele.minutos}" type="number" class="item-minutos agregar-tiempo pull-left" maxlength="3" data-index="${ix}" data-dia-index="${diaIndex}" data-placement="top" rel="tooltip" data-original-title="Añadir tiempo en minutos"/> 
                          </div>
                       </div>
                      </div> 
@@ -2610,18 +2625,19 @@ RutinaElementoHTML = (function(){
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             return ` <div class="panel-group elem ${ess.margen} rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}"> 
-                        <div class="row">
+                        <div class="row ${ess.header}">
                             <div class="col-xs-9">
                              <div class="notes">
                                ${ele.mediaAudio != undefined && ele.mediaAudio != '' ? `<div class="ong" rel="tooltip" data-original-title="Audio"></div>` : ''}
                                ${ele.nota != undefined && ele.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
                              </div>
                                ${ele.mediaVideo != undefined && ele.mediaVideo != '' ? RutinaElementoHTML.iconoVideoPlay(ele.mediaVideo) : ''}
+                              <span class="pull-left"> 
                                <i > <img class="svg insertar-debajo ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-index="${ix}"></i>
-                               <i class="glyphicon glyphicon-option-horizontal" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverElemento(diaIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-index="${ix}" data-toggle="popover" ></i>
-                               <span class="rf-dia-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined ? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
+                              </span> 
+                               <span class="rf-dia-elemento-nombre ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined ? ele.nota : ''}" data-trigger="hover">${ele.nombre}</span>
                             </div>
-                            <div class="col-xs-3"><a data-toggle="collapse" href="#collapse${ix}"><img class="svg arrow" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></div>
+                            <div class="col-xs-3"><a data-toggle="collapse" class="pull-left" href="#collapse${ix}"><img class="svg arrow" src="${_ctx}img/iconos-trainers/icon_flecha2.svg"></a></div>
                         </div>
                         <div class="panel-collapse collapse" id="collapse${ix}">
                             <ul class="dd-list detalle-lista">
@@ -2646,7 +2662,9 @@ RutinaElementoHTML = (function(){
                           ${sEle.nota != undefined && sEle.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
                         </div>
                           ${sEle.mediaVideo != undefined && sEle.mediaVideo != '' ? RutinaElementoHTML.iconoVideoPlay(sEle.mediaVideo) : ''}
+                         <span class="pull-left"> 
                           <i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                         </span>
                          <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-index="${ix}" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover">${sEle.nombre}</span>
                          ${RutinaElementoHTML.iconoNota(sEle.nota)}
                       </div>

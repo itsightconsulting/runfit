@@ -4,7 +4,10 @@ const $semActual = document.querySelector('#nroSemanaActual');
 const $semanario = document.querySelector('#rutinaSemana');
 const mainTabs = document.querySelector('#principalesTabs');
 const $rMenuEleSubele = document.querySelector('#rMenuEleSubele');
+const $rMenuDia = document.querySelector('#rMenuDia');
 const dvEditor = document.querySelector('.editor_text');
+const fntSzEditor = document.querySelector('#fntSzEditor');
+const fntFmlyEditor = document.querySelector('#fntFmlyEditor');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -46,7 +49,8 @@ let $idsComp = [];
 let $semanasEnviadas = [];
 let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
-let $menuEleSubEle  = document.querySelector('#rmenuEleSubele');
+let $blnObjetivo = 1
+
 
 $(function () {
     init();
@@ -78,13 +82,20 @@ function init(){
 
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
+        $rMenuDia.addEventListener('click', eventosClickMenuOptDia);
+        fntSzEditor.addEventListener('change', ajustarFuenteElemento);
+        fntFmlyEditor.addEventListener('change', cambiarFamiliaFuenteElemento);
 
-            $(dvEditor).on('click','.btn' , principalesDivEditor);
-
-
+        $(dvEditor).on('click','.btn' , principalesDivEditor);
 
         $(document).bind("click", function(event) {
-           $rMenuEleSubele.className = "hide";
+            $rMenuDia.className = "hide";
+            $rMenuEleSubele.className = "hide";
+
+            if($blnObjetivo){
+                rutScroll();
+
+            }
         });
 
 
@@ -104,7 +115,6 @@ function init(){
            cboSubCategoriaId.addEventListener('change', cargarListaSubCategoriaEjercicio);
            cboSubCategoriaIdSec.addEventListener('change', cargarListaSubCategoriaEjercicio);
            cboEspSubCategoriaIdSec.addEventListener('change', cargarReferenciasMiniPlantilla);
-           selectorFzEditor.addEventListener('change', ajustarFuenteElemento);
            btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
            btnActualizarMvz.addEventListener('click', actualizarMetricasVelocidadBD);
            shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
@@ -134,13 +144,13 @@ function init(){
 
 
 function  eventosMenuSemanario(e){
-
     const input = e.target;
+    console.log(input);
+
     const inpClasses = input.classList;
     if(inpClasses.contains("rf-dia-elemento-nombre") || inpClasses.contains("rf-sub-elemento-nombre")){
 
         $menuTargetInput = input;
-        $rMenuEleSubele.classList.toggle("hide");
         $($rMenuEleSubele).css(
             {
                 position: "absolute",
@@ -148,10 +158,25 @@ function  eventosMenuSemanario(e){
                 left: e.pageX
             }
         );
+        $rMenuEleSubele.classList.toggle("hide");
 
         const inpDataIx = input.getAttribute('data-index');
-
+         deactivateScroll();
          e.preventDefault();
+    }
+    else if( inpClasses.contains("ctx-menu-dia")){
+
+        $menuTargetInput = input;
+        $($rMenuDia).css(
+            {   position: "absolute",
+                top: e.pageY,
+                left: e.pageX
+            }
+        );
+        $rMenuDia.classList.toggle("hide");
+
+        deactivateScroll();
+        e.preventDefault();
 
 
     }
@@ -351,6 +376,52 @@ function eventosClickMenuOptElem(e) {
         }
 
 }
+
+function eventosClickMenuOptDia(e) {
+
+    const input = e.target;
+    const inpClasses = input.classList;
+   // const inpTargetClasses = $menuTargetInput.parentElement.classList;
+    console.log(input);
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (inpClasses.contains('agregar-objetivo')) {
+        debugger
+        let dvDia = $($menuTargetInput).closest('.rf-dia');
+        console.log(dvDia);
+        const dvTiempoKm = $($menuTargetInput).closest('header').next();
+
+        if (dvDia.children().length < 5) {
+            const diaIndex = dvDia.attr('data-index');
+            const lastObjetivo = $rutina.semanas[Number($semActual.textContent) - 1].objetivos.split(",")[diaIndex];
+            if ($objetivos.length == 0) {
+                obtenerObjetivosDiaBD().then(objs => {
+                    const objetivos = objs.map(v => `<option value="${v.id}">${v.nombre}</option>`).join('');
+                    $(htmlStringToElement(RutinaSeccion.newDiaObjetivo(objetivos, diaIndex))).insertAfter(dvTiempoKm);
+                    dvDia.find('.list-desp-objetivo').val(lastObjetivo);
+                    $blnObjetivo = 0;
+                    removeScrollbar();
+                    $objetivos = objs;
+                })
+            } else {
+                $blnObjetivo = 0;
+                removeScrollbar();
+                const objetivos = $objetivos.map(v => `<option value="${v.id}">${v.nombre}</option>`).join('');
+                $(htmlStringToElement(RutinaSeccion.newDiaObjetivo(objetivos, diaIndex))).insertAfter(dvTiempoKm);
+                dvDia.find('.list-desp-objetivo').val(lastObjetivo);
+            }
+        } else {
+                rutScroll();
+               $(dvTiempoKm.next()).slideUp('slow', () => {
+                   dvTiempoKm.next().remove();
+                })
+
+        }
+    }
+
+}
+
 
 function eventosEditorRutina(e){
 
@@ -639,6 +710,39 @@ function principalesEventosFocusOutSemanario(e) {
      else if(clases.contains('agregar-kms')){}
 
  */
+}
+
+
+
+function ajustarFuenteElemento(e){
+   debugger
+    const input = e.target;
+    const estiloId = input.value;
+    const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+    let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+    while((tempEle = tempEle.previousElementSibling) != null) i++;
+    const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
+    RutinaDelete.eliminarEstilosFuente(ixs.numSem, ixs.diaIndex, (posEle = i), 1);
+    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
+    $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-fs')?k.remove(v):''});
+    $eleGenerico.classList.add(objEditor.clase);
+    guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
+}
+
+
+function cambiarFamiliaFuenteElemento(e){
+    debugger
+    const input = e.target;
+    const estiloId = input.value;
+    const ixs = RutinaIx.getIxsForElemento($eleGenerico);
+    let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
+    while((tempEle = tempEle.previousElementSibling) != null) i++;
+    const objEditor = RutinaEditor.obtenerEstiloById(estiloId);
+    RutinaDelete.eliminarEstilosFamiliaFuente(ixs.numSem, ixs.diaIndex, (posEle = i), 1);
+    RutinaAdd.nuevoEstilo(ixs.numSem, ixs.diaIndex, (posEle = i), estiloId, objEditor.clase, objEditor.tipo);
+    $eleGenerico.classList.forEach((v,i,k)=>{v.includes('rf-ff')?k.remove(v):''});
+    $eleGenerico.classList.add(objEditor.clase);
+    guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
 }
 
 
@@ -944,6 +1048,12 @@ function principalesEventosClickRutina(e) {
          //o evitar actualizaciones innecesarias
          $nombreActualizar = e.target.textContent.trim();
      }
+
+     else if(clases.contains('list-desp-objetivo')){
+        $blnObjetivo = 0;
+        removeScrollbar();
+
+     }
     /*
 
 
@@ -983,31 +1093,6 @@ function principalesEventosClickRutina(e) {
         const diaIndex = input.getAttribute('data-index');
         DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
         DiaOpc.pegarElementosSeleccionados(diaIndex);
-    }
-    else if(clases.contains('agregar-objetivo')) {
-        const parent = input.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
-        if (parent.children.length < 2) {
-            const diaIndex = input.getAttribute('data-index');
-            const lastObjetivo = $rutina.semanas[Number($semActual.textContent) - 1].objetivos.split(",")[diaIndex];
-            if($objetivos.length==0){
-                obtenerObjetivosDiaBD().then(objs=>{
-                    const objetivos = objs.map(v=>`<option value="${v.id}">${v.nombre}</option>`).join('');
-                    parent.insertBefore(htmlStringToElement(RutinaSeccion.newDiaObjetivo(objetivos,diaIndex)), parent.children[0]);
-                    parent.querySelector('.list-desp-objetivo').value = lastObjetivo;
-                    $objetivos = objs;
-                })
-            }else{
-                const objetivos = $objetivos.map(v=>`<option value="${v.id}">${v.nombre}</option>`).join('');
-                parent.insertBefore(htmlStringToElement(RutinaSeccion.newDiaObjetivo(objetivos,diaIndex)), parent.children[0]);
-                parent.querySelector('.list-desp-objetivo').value = lastObjetivo;
-            }
-        }else{
-            input.classList.toggle('hidden');
-            $(parent.children[0]).slideUp('slow', ()=>{
-                parent.children[0].remove();
-                input.classList.toggle('hidden');
-            })
-        }
     }
 
     else if(clases.contains('varios-media')){
@@ -2249,6 +2334,51 @@ function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     })
 }
 
+
+
+async function obtenerObjetivosDiaBD() {
+    return new Promise((res, rej)=>{
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: _ctx + "gestion/objetivo/obtenerListado/0/true",
+            dataType: "json",
+            success: function (data) {
+                if(data != null){
+                    res(data);
+                }
+            },
+            error: function (xhr) {
+                rej("fail");
+                exception(xhr);
+            },
+            complete: function () {
+            }
+        })
+    })
+}
+
+
+function actualizarDiaObjetivoBD(a, b){
+    const numSem = Number($semActual.textContent) -1;
+    const output = $rutina.semanas[numSem].objetivos.split(",");
+    output[a] = b;
+    $rutina.semanas[numSem].objetivos = output.toString();
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+        url: _ctx + "gestion/rutina/objetivo/dia/actualizar",
+        data: {objetivos: output.toString(), numSem: numSem},
+        dataType: "json",
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
 
 
 

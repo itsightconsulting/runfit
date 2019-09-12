@@ -63,6 +63,17 @@ const ClaseEditor = Object.freeze([
     {id: 213, clase: 'rf-bg-m-orange', tipo: 2},
     {id: 214, clase: 'rf-bg-m-yellow', tipo: 2},
     {id: 215, clase: 'rf-bg-m-green', tipo: 2},
+    {id: 216, clase: 'rf-ff-montserrat', tipo: 1},
+    {id: 217, clase: 'rf-ff-arial', tipo: 1},
+    {id: 218, clase: 'rf-ff-helvetica', tipo: 1},
+    {id: 219, clase: 'rf-ff-timesnewsroman', tipo: 1},
+    {id: 220, clase: 'rf-ff-georgia', tipo: 1},
+    {id: 221, clase: 'rf-ff-bookman', tipo: 1},
+    {id: 222, clase: 'rf-ff-impact', tipo: 1},
+    {id: 223, clase: 'rf-ff-trebuchet', tipo: 1},
+    {id: 224, clase: 'rf-ff-comicsans', tipo: 1},
+    {id: 225, clase: 'rf-ff-jokerman', tipo: 1}
+
 ]);
 const Estrategia = Object.freeze({
     INSERT_ANTES:   1,
