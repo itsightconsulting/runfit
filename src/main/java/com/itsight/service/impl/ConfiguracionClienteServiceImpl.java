@@ -1,6 +1,7 @@
 package com.itsight.service.impl;
 
 import com.itsight.domain.ConfiguracionCliente;
+import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ConfiguracionClienteRepository;
 import com.itsight.service.ConfiguracionClienteService;
@@ -124,4 +125,5 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
     public void actualizarById(Integer id, String clave, String valor) {
         repository.updateById(id, clave, valor);
     }
+
 }

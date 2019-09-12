@@ -1,5 +1,7 @@
 package com.itsight.component;
 
+import com.itsight.domain.ConfiguracionCliente;
+import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.domain.dto.UsuGenDTO;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 import static com.itsight.util.Enums.CfsCliente.*;
 import static com.itsight.util.Enums.Galletas.*;
@@ -44,9 +47,6 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
 
     @Autowired
     private ConfiguracionClienteService configuracionClienteService;
-
-    /*@Autowired
-    private SecurityUserRepository securityUserRepository;*/
 
     @Autowired(required = false)
     private HttpSession session;
@@ -88,8 +88,18 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                     response.addCookie(createCookie(GLL_FAV_RUTINA.name(), ""));
                 }
 
-                response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_ENTRENAMIENTO.name())));
-                response.addCookie(createCookie(GLL_CONTROL_REP_VIDEO.name(), configuracionClienteService.obtenerByIdAndClave(id, CONTROL_REP_VIDEO.name())));
+                ConfiguracionCliente confCli = configuracionClienteService.findOne(id);
+                confCli.getLstParametro().forEach(e->{
+                    if(e.getNombre().equals(CONTROL_ENTRENAMIENTO.name())) {
+                        response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), e.getValor()));
+                    }
+                    if(e.getNombre().equals(CONTROL_REP_VIDEO.name())){
+                        response.addCookie(createCookie(GLL_CONTROL_REP_VIDEO.name(), e.getValor()));
+                    }
+                    if(e.getNombre().equals(NOTIFICACION_CHAT.name())){
+                        response.addCookie(createCookie(GLL_NOTIFICACION_CHAT.name(), e.getValor()));
+                    }
+                });
             }
 
             //Fixing authentication object

@@ -1,11 +1,14 @@
 package com.itsight.repository;
 
 import com.itsight.domain.ConfiguracionCliente;
+import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ConfiguracionClienteRepository extends JpaRepository<ConfiguracionCliente, Integer> {
