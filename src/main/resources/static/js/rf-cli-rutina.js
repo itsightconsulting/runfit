@@ -1,9 +1,9 @@
 class Rutina {
 
     constructor(obj) {
-        this.fechaInicio = parseFromStringToDate2(obj.fechaInicio);
-        this.fechaFin = parseFromStringToDate2(obj.fechaFin);
-        this.fechaCliAcceso = parseFromStringToDate2(obj.fechaCliAcceso != null ? obj.fechaCliAcceso : "01/01/2000");
+        this.fechaInicio = obj.fechaInicio instanceof Date ? obj.fechaInicio : parseFromStringToDate2(obj.fechaInicio);
+        this.fechaFin = obj.fechaFin instanceof Date ? obj.fechaFin : parseFromStringToDate2(obj.fechaFin);
+        this.fechaCliAcceso = obj.fechaCliAcceso instanceof Date ? obj.fechaCliAcceso : parseFromStringToDate2(obj.fechaCliAcceso != null ? obj.fechaCliAcceso : "01/01/2000");
         this.meses = obj.meses;
         this.anios = obj.anios;
         this.totalSemanas = obj.totalSemanas;
@@ -21,8 +21,8 @@ class Rutina {
     }
 
     initEspecificoDesdeRutina(num){
-        this.mostrarSemana(this.semanas[num], num);
-        this.completarFechasSemanas(true, num);
+        $('#panel_days').html('');
+        this.mostrarVistaDia(this.semanas[num], num);
     }
 
     mostrarVistaDia(sem, semanaIx){
@@ -33,11 +33,6 @@ class Rutina {
         dias.forEach((dia, ix) => {
             $("#panel_days").append(RutinaDiaHTML.base(dia, ix));
         });
-
-        //instanciarPopovers();
-        //instanciarTooltips();
-        //RutinaOpc.instanciarCopiarSemanaCompleta();
-        //RutinaOpc.instanciarFlagActivo();
         if($rutina.tipoRutina !== TipoRutina.GENERAL){
             //Indicadores.instanciarIndicador0();
             Indicadores.instanciarPasoYpulso();
@@ -46,7 +41,9 @@ class Rutina {
             //Indicadores.instanciarPorcentajeAvance();
         }
         $('.svg-wrap').tooltip();
-
+        //Seteando el nombre del mes en la vista día
+        const titleMes = document.getElementById('MesSemana');
+        titleMes.textContent = meses[sem.dias[0].fecha.getMonth()];
     }
 
     mostrarSemana(sem, sIndex) {
@@ -88,8 +85,6 @@ class Rutina {
             Indicadores.instanciarIndicadores2();
             Indicadores.instanciarKilometrajes();
             Indicadores.instanciarPorcentajeAvance();
-
-
         }
 
     }

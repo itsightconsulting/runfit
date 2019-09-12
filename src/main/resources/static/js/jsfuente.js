@@ -3,7 +3,7 @@ let errorClass = 'invalid';
 let errorElement = 'em';
 // !- END var for jqueryValidation's styles
 let token = $("meta[name='_csrf']").attr("content");
-let header = $("meta[name='_csrf_header']").attr("content");
+let csrf_frk_header = $("meta[name='_csrf_header']").attr("content");
 var _ctx = $('meta[name="_ctx"]').attr('content');
 let $defaulTextButton = "";
 let $gbInterval = 0;
@@ -790,7 +790,7 @@ function generateRandomMail(){
 
 (function ajaxEvents(){
     $(document).ajaxSend(function (e, xhr, options) {
-        xhr.setRequestHeader(header, token);
+        xhr.setRequestHeader(csrf_frk_header, token);
         if(options.dataType === "xml") {
             return;
         }

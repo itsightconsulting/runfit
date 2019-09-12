@@ -518,8 +518,8 @@
 
       function nextTabButton() {
           $('.btnNextTab').click(function(){
-              const header = $(".navbar-inverse").height();
-              $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+              const headerHeight = $(".navbar-inverse").height();
+              $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - headerHeight - 20}, 'slow');
               setTimeout(() => {
                   document.querySelector('a[href="#service"]').click();
               }, 300);

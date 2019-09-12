@@ -82,14 +82,6 @@ public class RutinaPlantillaController {
         return new ModelAndView(ViewConstant.MAIN_TRAINER_RUTINA_PLANTILLA);
     }
 
-    @GetMapping("/nuevo")
-    public ModelAndView vistaNuevo(Model model) {
-        model.addAttribute("lstTipoAudioConHijos", tipoAudioService.findAllWithChildrens());
-        model.addAttribute("lstTipoAudio", tipoAudioService.findAll());
-        model.addAttribute("lstCategoriaEjercicio", categoriaEjercicioService.encontrarCategoriaConSusDepedencias());
-        return new ModelAndView(ViewConstant.MAIN_RUTINA_NUEVO);
-    }
-
     @GetMapping(value = "/obtenerListado/{comodin}/{estado}/{perfil}")
     public @ResponseBody
     List<RutinaPlantilla> listarConFiltro(

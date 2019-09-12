@@ -31,6 +31,7 @@ let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
 let $gSemanaIx = 0;
 let $numSem = document.getElementById('NumSemana');
+let $relativeCalendarDate;
 
 (function () {
     init();

@@ -1265,7 +1265,6 @@ function principalesEventosClickRutina(e) {
         }
     }
     else if(clases.contains('rf-dia-elemento-nombre')){
-        debugger;
         e.preventDefault();
         e.stopPropagation();
 
@@ -1323,7 +1322,6 @@ function principalesEventosClickRutina(e) {
         instanciarEspecificosTooltip(input);
     }
     else if(clases.contains('agregar-nota')) {
-        debugger;
         e.stopPropagation();
         const ixs = RutinaIx.getIxsForElemento(input);
         let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
