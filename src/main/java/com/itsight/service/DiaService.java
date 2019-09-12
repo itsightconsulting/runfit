@@ -15,6 +15,8 @@ public interface DiaService extends BaseService<Dia, Integer> {
 
     String actualizarFlagDescanso(int numSem, int diaIndice, boolean flagDescanso);
 
+    String limpiarElementosDia(int numSem, int diaIndice);
+
     String eliminarElementoById(ElementoDel elementoDel);
 
     String eliminarSubElementoById(ElementoDel elementoDel);

@@ -138,6 +138,19 @@ public class DiaServiceImpl extends BaseServiceImpl<DiaRepository> implements Di
     }
 
     @Override
+    public String limpiarElementosDia(int numSem, int diaIndice) {
+        Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
+        if(sessionValor.isPresent()){
+            Integer semanaId = ((Integer[]) sessionValor.get())[numSem];
+            Integer id = repository.findIdBySemanaId(semanaId).get(diaIndice);
+            repository.clearElementosDia(id);
+            return ACTUALIZACION.get();
+        }
+        return SESSION_VALUE_NOT_FOUND.get();
+    }
+
+
+    @Override
     public String eliminarElementoById(ElementoDel elementoDel) {
         Optional<Object> sessionValor = Optional.ofNullable(session.getAttribute("semanaIds"));
         if(sessionValor.isPresent()){

@@ -69,6 +69,11 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void updateFlagDescanso(Integer id, Boolean flagDescanso);
 
     @Modifying
+    @Query("UPDATE Dia D SET D.calorias = 0, D.distancia = 0, D.minutos = 0, D.flagDescanso = false, D.elementos = null WHERE D.id = ?1 ")
+    void clearElementosDia(Integer id);
+
+
+    @Modifying
     @Query(value = "UPDATE dia SET calorias =  calorias - ?5,distancia = distancia - ?4, minutos = minutos - ?3, elementos = (SELECT elementos-?2 FROM dia WHERE dia_id=?1) WHERE dia_id=?1", nativeQuery = true)
     void deleteElementoById(Integer id, int listaIndice, int minutos, double distancia, double calorias);
 

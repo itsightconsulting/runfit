@@ -95,11 +95,9 @@ class Rutina {
         console.log("pruebaaaa", semana.dias);
         semana.dias.forEach((v, i) => {
             const val = v.elementos.length > 0 ? undefined : 'showInputsInit';//La validacion requiere un null;
-            const flagDescanso = v.flagDescanso;
             const mes = v.fecha.getMonth() + 1;
             const checked = v.flagEnvioCliente ? "checked='checked'" : "";
 
-            console.log("pruebafull", v.elementos, i, val, flagDescanso)
             rawDias +=
                 `
                    <article class="rf-dia" data-index="${i}" data-fecha="${v.fechaCorta()}">
@@ -107,7 +105,7 @@ class Rutina {
                     <h2 class="titulo-dia ${arrCirculoFichaClass[i]} ctx-menu-dia">${v.literal}<span class="ctx-menu-dia">${v.dia}</span></h2>
                 </header>
                 <div class="sub-header"     role="heading"><span class="distancia-total"><img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg">0.00</span><span class="horas-totales"><img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg">2'48"</span></div>
-                      ${RutinaDiaHTML.full(v.elementos, i, val, flagDescanso)}
+                      ${RutinaDiaHTML.full(v.elementos, i, val)}
 
             </article>
                 `;
@@ -1207,61 +1205,32 @@ DiaOpc = (function(){
             return dIx == "0" ? "right" : "bottom";
         },
         cambiarFlagDescanso: (numSem, diaIndex) => {
-            const flagDescanso = $rutina.semanas[numSem].dias[diaIndex].flagDescanso ? false : true;
-            let temp = document.querySelector(`.rf-dia[data-index="${diaIndex}"] div[role="heading"]`);
-            if (!flagDescanso) {//1. Cuando el flag sea cambiado a false: Recrearemos la estructura base
-                let base = `
-                        <div class="widget-body padding-o-bottom-40">
-								                <div class="container-fluid form-group margin-bottom-10 padding-5 inputs-init">
-                                                    <div class="smart-form">
-                                                        <div class="form-group">
-                                                                <label class="input col-md-6 col-sm-12 col-xs-12">
-                                                                    <input class="in-ele-dia-1 in-init-ele" type="text" maxlength="121" placeholder="" data-dia-index="${diaIndex}">
-                                                                    </label>
-                                                                
-                                                                <label class="input col-md-6 col-sm-12 col-xs-12">
-                                                                    <input class="in-ele-dia-2 in-init-ele" type="text" maxlength="121" placeholder="" data-dia-index="${diaIndex}">
-                                                                    </label>
-                                                                <em class="txt-color-redLight" id="msg-val-${diaIndex}"></em>
-                                                        </div>
-                                                    </div>
-                                                </div>
-								                <!-- smart-accordion-default -->
-								                <div class="panel-group smart-accordion-default rf-listas padding-5">
-								                    <!-- LISTAS DEL DIA DE SEMANA -->
-								                    <!-- END LISTAS DEL DIA DE SEMANA -->
-								                </div>									
-								            </div>
-                        `
-                temp.nextElementSibling.innerHTML = base;
-                $rutina.semanas[numSem].dias[diaIndex].flagDescanso = false;
-                RutinaSet.setDiaClean(numSem, diaIndex);
-                modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso);
-            } else {
+
                 $.smallBox({
-                    content: "El siguiente procedimiento borrará toda la información ya ingresada del día. ¿Desea aún ajustar el día como día de descanso? <p class='text-align-right'><a href='javascript:DiaOpc.confirmarCambioFlagDescanso(" + numSem + "," + diaIndex + ",\"" + flagDescanso + "\");' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+                    content: "El siguiente procedimiento borrará toda la información ya ingresada del día. ¿Desea aún ajustar el día como día de descanso? <p class='text-align-right'><a href='javascript:DiaOpc.confirmarCambioFlagDescanso(" + numSem + "," + diaIndex + ");' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
                     color: "#296191",
                     timeout: 10000,
                     icon: "fa fa-bell swing animated",
                     iconSmall: "",
                 });
-            }
-        },
-        confirmarCambioFlagDescanso: (numSem, diaIndex, flagDescanso) => {
-            let img = document.createElement('img');
-            img.src = _ctx + 'img/dia-libre.png';
-            img.style.maxWidth = '90%';
-            img.style.textAlign = 'center';
-            const base = document.querySelector(`#rutinaSemana .rf-dia[data-index="${diaIndex}"]`);
-            base.querySelector('.horas-totales').textContent = '0\' 00"';
-            base.querySelector('.distancia-total').textContent = '0.00';
-            const temp = base.querySelector('.widget-body');
-            temp.innerHTML = '';
-            temp.appendChild(img);
-            $rutina.semanas[numSem].dias[diaIndex].flagDescanso = true;
-            $rutina.semanas[numSem].dias[diaIndex].elementos = [];
-            modificarDiaFlagDescanso(numSem, diaIndex, flagDescanso);
-            Indicadores.actualizarKilometrajesLessDiaIndex(diaIndex);
+            },
+        confirmarCambioFlagDescanso: (numSem, diaIndex) => {
+
+            debugger
+            let temp = document.querySelector(`.rf-dia[data-index="${diaIndex}"] div[role="heading"]`);
+            temp.nextElementSibling.classList.toggle('hidden');
+            temp.nextElementSibling.nextElementSibling.innerHTML = "";
+
+            $rutina.semanas[numSem].dias[diaIndex].flagDescanso = false;
+            RutinaSet.setDiaClean(numSem, diaIndex);
+
+            const baseDia = document.querySelector(`#rutinaSemana .rf-dia[data-index="${diaIndex}"]`);
+            baseDia.querySelector('.horas-totales').textContent = '0\' 00"';
+            baseDia.querySelector('.distancia-total').textContent = '0.00';
+
+           $rutina.semanas[numSem].dias[diaIndex].elementos = [];
+           // modificarDiaFlagDescansoBD(numSem, diaIndex);
+          //Indicadores.actualizarKilometrajesLessDiaIndex(diaIndex);
         },
         preGuardarDiaPlantilla: (ixs)=>{
             const numeroSemana = $semActual.textContent - 1;
@@ -2706,10 +2675,8 @@ RutinaElementoHTML = (function(){
 
 RutinaDiaHTML = (function(){
     return {
-        full: (elementos, diaIndex, init, flagDescanso)=>{//init se usa para cuando se recrea la semana desde la instancia del objeto Rutina
-            if(flagDescanso){
-                return `<div class="widget-body padding-o-bottom-40"><img src="${_ctx}img/dia-libre.png" style="max-width: 90%; text-align: center;"></div>`;
-            }else {
+        full: (elementos, diaIndex, init)=>{//init se usa para cuando se recrea la semana desde la instancia del objeto Rutina
+
                 return ` 
                       <div class="panel-group elem inputs-init ${init == undefined ?  'hidden' : ''}">
                            <div class="row">
@@ -2732,8 +2699,8 @@ RutinaDiaHTML = (function(){
                          </div>       
                         `
             }
-        },
-    }
+        }
+
 })();
 
 //RutinaParteSeccion

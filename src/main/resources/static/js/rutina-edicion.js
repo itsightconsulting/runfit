@@ -419,6 +419,12 @@ function eventosClickMenuOptDia(e) {
 
         }
     }
+    else if(inpClasses.contains('limpiar-dia')){
+
+        const dvDia = $menuTargetInput.parentElement.parentElement;
+        const ixs = RutinaIx.getIxsForDia(dvDia);
+        DiaOpc.cambiarFlagDescanso(ixs.numSem, ixs.diaIndex);
+    }
 
 }
 
@@ -900,10 +906,6 @@ function principalesEventosClickRutina(e) {
         e.stopPropagation();
         const ixs = RutinaIx.getIxsForDia(input);
         DiaOpc.preGuardarDiaPlantilla(ixs);
-    }
-    else if(clases.contains('marcar-descanso')){
-        const ixs = RutinaIx.getIxsForDia(input);
-        DiaOpc.cambiarFlagDescanso(ixs.numSem, ixs.diaIndex);
     }
     else if(clases.contains('rf-sub-elemento-media')){
         const route = e.target.getAttribute('data-id-uuid');
@@ -2377,6 +2379,26 @@ function actualizarDiaObjetivoBD(a, b){
             exception(xhr);
         },
         complete: function () {}
+    })
+}
+
+
+function modificarDiaFlagDescansoBD(numSem, diaIndex){
+    let params = {};
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+
+    $.ajax({
+        type: 'PUT',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: _ctx + 'gestion/rutina/dia/actualizar/limpiar-elementos',
+        data: params,
+        dataType: 'json',
+        success: function(data){
+            notificacionesRutinaSegunResponseCode(data);
+        }, error: function(xhr){
+            exception(xhr);
+        }, complete: function(){}
     })
 }
 

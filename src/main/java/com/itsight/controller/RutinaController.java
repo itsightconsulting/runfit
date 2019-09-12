@@ -347,6 +347,17 @@ public class RutinaController {
         return ResponseCode.EX_VALIDATION_FAILED.get();
     }
 
+    @PutMapping(value = "/dia/actualizar/limpiar-elementos")
+    public @ResponseBody String limpiarElementosDia(
+            @RequestParam String numeroSemana,
+            @RequestParam String diaIndice
+           ) {
+        boolean validation = numeroSemana.length()>0 && diaIndice.length()>0 && Utilitarios.parseInt(numeroSemana).isPresent() && Utilitarios.parseInt(diaIndice).isPresent() ? true : false;
+        if(validation)
+            return diaService.limpiarElementosDia(Integer.parseInt(numeroSemana), Integer.parseInt(diaIndice));
+        return ResponseCode.EX_VALIDATION_FAILED.get();
+    }
+
     @PutMapping(value = "/dia/from-plantilla/actualizar")
     public @ResponseBody String actualizarDiaDesdePlantillaDia(
             @RequestBody @Valid DiaDTO diaDto, BindingResult bindingResult) throws JsonProcessingException {
