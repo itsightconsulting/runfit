@@ -515,7 +515,7 @@
                                         <ul class="staff">
                                             <li>
                                                 <div class="avatar-form-min">
-                                                    <img onclick="irAformParaNuevoTrainerDeEmp();" class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
+                                                    <img onclick="javascript:irAformParaNuevoTrainerDeEmp();" class="img-asesor-emp" th:src="@{/img/add_staff.png}+'?'+${version}"/>
                                                 </div>
                                             </li>
                                         </ul>
@@ -542,6 +542,7 @@
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnQe-1f0b5KmTQXUMED0_n9-Vx3Y4ixc&libraries=places&amp;callback=initMap" type="text/javascript"></script>
 <script th:src="@{/js/cropper.min.js}+'?'+${version}" type="text/javascript"></script>
 <script>
+
     function sendForm(){
         $regTipo = TipoTrainer.EMPRESA;
         const arrURL = window.location.href.split("/");
@@ -553,7 +554,7 @@
             if(!exists){
                 termConSvc.push({servicioId: v.id});
             }
-        })
+        });
         const tycFiles = termConSvc.filter(t=>typeof t.file !== 'undefined');
         if(tycFiles.length>0){
             termConSvc.sort((a, b) => a.servicioId < b.servicioId ? -1 : 1);
@@ -696,16 +697,9 @@
         obj.centroTrabajo = getValuesByClass('inp-ct');
         //Al ser empresa no maneja fichas ya que estas las manejan sus trabajadores(asesores)
         obj.fichaClienteIds = "0";
-        const rdmNum = Math.floor(Math.random() * 100);
-        const nickNames = ["alberno.suarez", "linda.perez", "melissa.estrada", "jonhy.calindo", "jessy.alvarado"];
         obj.servicios = servicios;
         obj.cuentas = ccBancarias;
         obj.mediosPago = getValuesConcatInpCheckbox('MetodoPago');
-        if(flag_form_populate){
-            obj.nomPag = nickNames[Math.floor(Math.random() * 5)]+rdmNum;
-        }else{
-            obj.nomPag = document.getElementById('NomPag').value;
-        }
         obj.nota = document.getElementById('Nota').value;
         obj.horario = getValuesByClass('inp-horario');
         const redes = getRedesSociales();

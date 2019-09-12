@@ -47,10 +47,10 @@ public class TrainerDTO implements Serializable {
     @NotNull
     private Integer paisId;
     @Size(max = 10)
-    @NotBlank
+    @NotNull
     private String ubigeo;
     @Size(max = 255)
-    @NotBlank
+    @NotNull
     private String nomUbigeo;
     @Size(min = 80, max = 2000)
     @NotNull
@@ -80,9 +80,10 @@ public class TrainerDTO implements Serializable {
     private String formasTrabajo;
     @Size(min = 8, max = 150)
     private String horario;
-    @Size(min = 4, max = 40)
-    @NotNull
-    @Pattern(regexp = "^[a-z]{4,}[0-9\\w.\\w-]*$")
+    //@Size(min = 4, max = 40)
+    //@NotNull
+    //@Pattern(regexp = "^[a-z]{4,}[0-9\\w.\\w-]*$")
+    //Se usa en el beanUtils.copyPro...
     private String nomPag;
     @Size(max = 10)
     private String cantidadFiles;

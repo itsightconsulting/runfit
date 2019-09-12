@@ -32,28 +32,126 @@ function datepicker_init(minDate, maxDate) {
                 format: 'DD/MM/YYYY',
                 minDate: minDate,
                 maxDate: maxDate,
-                defaultDate: new Date()
             });
 
-                $('.datepicker_inline').on('dp.change', function (e) {
-                    console.log(e.target);
-                    console.log('seleccion de día...');
-                });
-                $('.datepicker_inline').on('dp.update', function (e) {
+            const weeks = getIndexCalendarWeeks(minDate);
+
+            let base = document.querySelector('.datepicker-days tbody').querySelectorAll('tr');
+            Array.from(base).filter(e=>
+                Array.from(e.children).filter(e=>!e.classList.contains('disabled')).length
+            ).forEach((e, ix)=>{
+                const td = e.firstElementChild;
+                const dayCalendar = td.innerHTML;
+                if(weeks.length > ix){
+                    td.innerHTML = `<i class="calendar-num-sem">S${weeks[ix].numSem}</i>${dayCalendar}`;
+                }
+            });
+
+                $('.datepicker_inline').on('dp.error', function (e) {
                     console.log(e);
-                    console.log('Actualizando calendario from selección...');
+                })
+
+                $('.datepicker_inline').on('dp.change', function (e) {
+                const daySelected = e.target.querySelector('.day.active');
+                const dayDate = parseFromStringToDate2(daySelected.getAttribute('data-day'));
+                const semanaIndex = $rutina.semanas.map((s,ix)=>dayDate>s.fechaInicio && dayDate<=s.fechaFin ? ix : "").join("");
+                getSemanasDeLaUltimaRutinaGenerada(semanaIndex)
+                    .then(sem=>{
+                        //Importante mantener el orden para el correcto funcionamiento
+                        $rutina.semanas[semanaIndex] = new Semana(sem);
+                        $rutina.initEspecificoDesdeRutina(semanaIndex);
+                        vistaMes(sem);
+                        setTimeout(  () => {
+                            imgToSvg();
+                            document.querySelector('a[data-parent="#panel_days"]').click();
+                        }, 400);
+                        const header = $(".main-content").height();
+                        $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+                        document.querySelector('.nav-tabs a[href="#diario"]').click();
+                    }).catch((xhr)=>{
+                    exception(xhr)
                 });
+            });
+            $('.datepicker_inline').on('dp.update', function (e) {
+                let nwCalendarDate = e.viewDate['_d'];
+                $relativeCalendarDate = nwCalendarDate;
+                const weeks = getIndexCalendarWeeks($relativeCalendarDate);
+                let base = document.querySelector('.datepicker-days tbody').querySelectorAll('tr');
+                Array.from(base).filter(e=>
+                    Array.from(e.children).filter(e=>!e.classList.contains('disabled')).length
+                ).forEach((e, ix)=>{
+                    const td = e.firstElementChild;
+                    const dayCalendar = td.innerHTML;
+                    if(weeks.length > ix){
+                        td.innerHTML = `<i class="calendar-num-sem">S${weeks[ix].numSem}</i>${dayCalendar}`;
+                    }
+                });
+            });
 
+        } else {
+            if(!$relativeCalendarDate){
+                return;
+            }
+            const weeks = getIndexCalendarWeeks($relativeCalendarDate);
+            let base = document.querySelector('.datepicker-days tbody').querySelectorAll('tr');
+            Array.from(base).filter(e=>
+                Array.from(e.children).filter(e=>!e.classList.contains('disabled')).length
+            ).forEach((e, ix)=>{
+                const td = e.firstElementChild;
+                const dayCalendar = td.innerHTML;
+                if(weeks.length > ix){
+                    td.innerHTML = `<i class="calendar-num-sem">S${weeks[ix].numSem}</i>${dayCalendar}`;
+                }
+            });
         }
-
-        /*$(".datepicker_inline").datetimepicker().on('changeMonth', function(e){
-            var currMonth = new Date(e.date).getMonth() + 1;
-            console.log(currMonth);
-        });*/
-    }catch (e) {
+    } catch (e) {
         console.info("/**** SIMPLE INFO WARNING ****/: ", e.message ? e.message : "$(...).datetimepicker is not a function");
     }
 
+}
+
+function getIndexCalendarWeeks(dateRef){
+    dateRef.setHours(0,0,0,0);
+    const calMonth = dateRef.getMonth();
+    const calYear = dateRef.getFullYear();
+    let semanas = $rutina.semanas.map((e, ix)=>{
+        const month = e.fechaInicio.getMonth();
+        const year = e.fechaInicio.getFullYear();
+        if(calMonth === month && calYear === year){
+            e.numSem = ix+1;
+            return e;
+        }
+    }).filter(e=>e);
+
+    if(semanas.length){
+        const firstWeek = semanas[0];
+        const numSemFirstElement = firstWeek.numSem;
+        if(numSemFirstElement == 1){
+            //continue without no more
+        }else{
+            const previousWeek = $rutina.semanas[numSemFirstElement-2];
+            const checktwoMonthsWeek = previousWeek.dias.find(
+                e=>e.fecha.getFullYear() === calYear &&
+                    e.fecha.getMonth() === calMonth);
+            if(checktwoMonthsWeek){
+                const ns = $rutina.semanas[numSemFirstElement-2];
+                ns.numSem = numSemFirstElement-1;
+                semanas.push(ns);
+            }
+        }
+    }
+
+    //Check if lastweeknd is involved y last calendar view
+    if(!semanas.length){
+        const lastWeek = $rutina.semanas.slice(-1)[0];
+        const checkLastWeekInvolved = lastWeek.dias.find(e=>e.fecha.getFullYear() === calYear && e.fecha.getMonth() === calMonth);
+        if(checkLastWeekInvolved){
+            lastWeek.numSem = $rutina.semanas.length;
+            semanas.push(lastWeek);
+        }
+    }
+    semanas = semanas.sort((a, b)=> a.numSem - b.numSem);
+    return semanas;
 }
 
 function openNav() {

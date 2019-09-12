@@ -213,41 +213,6 @@
                                           <label>DOCUMENTO DE IDENTIDAD<span class="obligatorio">*</span></label>
                                           <input class="form-control" type="text" id="NumeroDocumento" name="NumeroDocumento">
                                       </div>
-                                      <div class="form-group hidden">
-                                          <label>LUGAR DE RESIDENCIA<span class="obligatorio">*</span></label>
-                                          <div class="row">
-                                              <div class="col-md-12">
-                                                  <div class="col-md-5 col-sm-5">
-                                                      <label>DEPARTAMENTO:</label>
-                                                  </div>
-                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dep" name="Dep" data-aka="Ubigeo departamento" readonly="readonly">
-                                                          <option selected="selected" value="15">Lima</option>
-                                                      </select>
-                                                  </div>
-                                              </div>
-                                              <div class="col-md-12">
-                                                  <div class="col-md-5 col-sm-5">
-                                                      <label>PROVINCIA:</label>
-                                                  </div>
-                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Pro" name="Pro" data-aka="Ubigeo provincia">
-                                                          <option selected="selected" value="01">Lima</option>
-                                                      </select>
-                                                  </div>
-                                              </div>
-                                              <div class="col-md-12">
-                                                  <div class="col-md-5 col-sm-5">
-                                                      <label>DISTRITO:</label>
-                                                  </div>
-                                                  <div class="col-md-7 col-sm-7 col-xs-12 pad-0">
-                                                      <select class="form-control margin-o-bottom-10 ubigeo hidden" id="Dis" name="Dis" data-aka="Ubigeo distrito">
-                                                          <option th:each="z : ${distritos.lstDis} " th:value="${z.cod}" th:text="${z.ubNombre}"></option>
-                                                      </select>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
                                       <div class="form-group">
                                           <label for="Username">NOMBRE DE USUARIO<span class="obligatorio">*</span></label>
                                           <i class="fa fa-check fa-15px i-checked-verified hidden"></i>
@@ -661,7 +626,6 @@
         }
 
         function mainSeeders(){
-            getUbigeoPeruLim();
             getIdiomas();
         }
 
@@ -788,9 +752,6 @@
             const inpRes = document.querySelector('.inp-resultado');
             const abc = inpRes.nextElementSibling;
 
-            //POPULATE UBIGEO LIMA - LIMA - LIMA
-            populateUbigeo();
-
             ["Juan Pérez, campeón en natación 100 m libres (2017)",
                 "Rocío Flores, campeona sudamericana 4x100 m (2017)",
                 "Michael Barros, campeón en natación 4x200 (2016)",
@@ -828,14 +789,8 @@
 
             //Ubigeo
             obj.paisId = 604;
-            //Por ser entrenador staff de una empresa, no se le mostrará el campo
-            //para que elija su ubigeo y se le asignará por defecto el de Lima: 150101
-            obj.ubigeo = "150101";
-            //obj.ubigeo = $('#Dep').val() + $('#Pro').val() + $('#Dis').val();
-            const dep = document.getElementById('Dep').options[document.getElementById('Dep').selectedIndex].textContent;
-            const pro = document.getElementById('Pro').options[document.getElementById('Pro').selectedIndex].textContent;
-            const dis = document.getElementById('Dis').options[document.getElementById('Dis').selectedIndex].textContent;
-            obj.nomUbigeo = dep + "|" + pro + "|" + dis;
+            obj.nomUbigeo = "";
+            obj.ubigeo = "";
             obj.telefono = document.getElementById('Telefono').value;
             obj.movil = document.getElementById('Movil').value;
             obj.tipoDocumentoId = document.getElementById('TipoDocumento').value;
@@ -852,7 +807,6 @@
             obj.resultados = getValuesByClass('inp-resultado');
             obj.formasTrabajo = getValuesConcatInpCheckbox('FormaTrabajo');
             obj.fichaClienteIds = getValuesConcatInpCheckbox('FichaTrabajo');
-            obj.nomPag = document.getElementById('NomPag').value;
 
             if(!obj.horario){
                 delete obj.horario;
@@ -879,7 +833,6 @@
             document.querySelector('#Telefono').value = "";
             document.querySelector('#Movil').value = "";
             document.querySelector('#TipoDocumento').selectedIndex = 0;
-            document.querySelector('#Dis').selectedIndex = 0;
             document.querySelector('#Username').value = "";
             document.querySelector('#Password').value = "";
         }
@@ -1103,9 +1056,9 @@
 
         function nextTabButton() {
             $('.btnNextTab').click(function(){
-                var header = $(".navbar-inverse").height();
+                const headerHeight = $(".navbar-inverse").height();
                 $('.nav-tabs > .active').next('li').find('a').trigger('click');
-                $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+                $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - headerHeight - 20}, 'slow');
             });
         }
 

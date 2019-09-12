@@ -1218,7 +1218,7 @@ function uploadFotosPerfil(d){
             },
             complete: ()=> {
                 //Solo aplica para registro trainer como empresa
-                $('.step-04').click();
+                completeTrainerEmpresa();
                 $(window).scrollTop(0);
             }
         });

@@ -130,27 +130,11 @@
                                         class="menu-item-parent"> Tipo Documento</span></a>
                             </li>
                             <li>
-                                <a th:href="@{/gestion/cliente-fitness}" title="Ficha Inscripción"><i class="fa fa-facebook-square txt-color-blueLight"></i><span
-                                        class="menu-item-parent"> Ficha Inscripción</span></a>
-                            </li>
-                            <li>
-                                <a th:href="@{/gestion/cliente-fitness/planes}" title="Lista de Planes"><i class="fa fa-credit-card txt-color-blueLight"></i><span
-                                        class="menu-item-parent"> Planes</span></a>
-                            </li>
-                            <li>
                                 <a th:href="@{/portal/facturacion}" title="Facturación Mensual"><i class="fa fa-area-chart txt-color-blueLight"></i><span
                                         class="menu-item-parent"> Facturación Mensual</span></a>
                             </li>
 
                         </ul>
-                    </li>
-                    <li>
-                        <a th:href="@{/gestion/musculo}" title="Músculos"><i class="fa fa-male"></i><span
-                                class="menu-item-parent"> Músculos</span></a>
-                    </li>
-                    <li>
-                        <a th:href="@{/gestion/trainer/empresa/agregar/trainer}" title="Agregar trainer"><i class="fa fa-male"></i><span
-                                class="menu-item-parent"> Agregar trainer</span></a>
                     </li>
                 </ul>
             </li>
@@ -158,15 +142,6 @@
                 <a href="#" title="GestionRutinasRunFit"><i class="fa fa-lg fa-fw fa-child txt-color-orange"></i> <span
                         class="menu-item-parent">Entrenadores</span></a>
                 <ul>
-                    <li>
-                        <a th:href="@{/gestion/rutina-plantilla/nuevo}" title="Nueva rutina"><i class="fa fa-openid"></i><span class="menu-item-parent"> Generar Plantilla</span></a>
-                    </li>
-                    <li>
-                        <a th:href="@{/gestion/rutina-plantilla/trainer}" title="Mis Plantillas"><i class="fa fa-road"></i><span class="menu-item-parent"> Mis Plantillas </span></a>
-                    </li>
-                    <li>
-                        <a th:href="@{/gestion/trainer/red}" title="Gestión de Red"><i class="fa fa-group"></i><span class="menu-item-parent"> Red Fitness </span></a>
-                    </li>
                     <li>
                         <a th:href="@{/gestion/trainer/red/clientes/pagos}" title="Pagos"><i class="fa fa-money"></i><span class="menu-item-parent"> Pagos</span></a>
                     </li>
@@ -176,18 +151,9 @@
                     <li>
                         <a th:href="@{/gestion/trainer/micuenta}" title="Mi Cuenta"><i class="fa fa-user"></i><span class="menu-item-parent"> Mi Cuenta</span></a>
                     </li>
-                    <li>
-                        <a th:href="@{/gestion/trainer/mimediafavorito}" title="Mi audios/videos favoritos"><i class="fa fa-music"></i><span class="menu-item-parent"> Mi favoritos</span></a>
-                    </li>
-                    <li sec:authorize="hasRole('DG')">
-                        <a th:href="@{/gestion/mini-rutina}" title="Mis Rutinas"><i class="icofont-gym-alt-3"></i><span class="menu-item-parent"> Mis Rutinas</span></a>
-                    </li>
-                    <li>
-                        <a th:href="@{/gestion/trainer/consejos}" title="Consejos"><i class="fa fa-music"></i><span class="menu-item-parent"> Consejos</span></a>
-                    </li>
                 </ul>
             </li>
-            <li class="top-menu-invisible" sec:authorize="hasRole('RUNNER') OR hasRole('ADMIN')">
+            <!--<li class="top-menu-invisible" sec:authorize="hasRole('RUNNER') OR hasRole('ADMIN')">
                 <a href="#" title="GestionCliente"><i class="fa fa-lg fa-fw fa-user txt-color-redLight"></i> <span
                         class="menu-item-parent">Clientes</span></a>
                 <ul>
@@ -207,7 +173,7 @@
                         <a th:href="@{/gestion/distribucion-mercado}" title="Estadísticas"><i class="fa fa-bar-chart-o"></i><span class="menu-item-parent"> Estadísticas</span></a>
                     </li>
                 </ul>
-            </li>
+            </li>-->
         </ul>
     </nav>
     <span class="minifyme" data-action="minifyMenu">

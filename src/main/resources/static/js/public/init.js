@@ -106,8 +106,6 @@ function activeItems() {
 
 function carousel() {
 
-
-
     $('.owl-carousel').owlCarousel({
         loop: false,
         margin: 15,
@@ -126,9 +124,9 @@ function carousel() {
             }
         }
     })
-    $(".owl-prev").empty()
-    $(".owl-prev").append('<span class="fa fa-chevron-right"></span>')
-    $(".owl-next").empty()
+    $(".owl-prev").empty();
+    $(".owl-prev").append('<span class="fa fa-chevron-right"></span>');
+    $(".owl-next").empty();
     $(".owl-next").append('<span class="fa fa-chevron-left"></span>')
 }
 
@@ -249,7 +247,6 @@ function next_step(sheetNumber, toSheetNumber) {
             $(".ficha-02").addClass("active");
             $('.step-02').addClass("active");
             $(window).scrollTop(200);
-
             time_line();
         } else if ($(".ficha-02").hasClass("active")) {
             $(".ficha-02").removeClass("active");

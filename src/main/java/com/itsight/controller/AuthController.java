@@ -48,8 +48,11 @@ public class AuthController extends BaseController {
     public String loginForm(@RequestParam(value = "error", required = false) String error,
                             Model model) {
         if (error != null) {
-            if (error.equals("session-expired")) {
-                model.addAttribute("expired", "expired");
+            if (error.equals("true")) {
+                model.addAttribute("error", "error");
+            }
+            else if(error.equals("session-expired")){
+                model.addAttribute("error", "expired");
             }
 
             else if(error.equals("disabled")){

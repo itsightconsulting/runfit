@@ -350,6 +350,7 @@
   cursor: not-allowed;
   margin: 32px;
 }
+
 .bootstrap-datetimepicker-widget.usetwentyfour td.hour {
   height: 27px;
   line-height: 27px;
