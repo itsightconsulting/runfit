@@ -69,7 +69,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
 
             //Block development/qa
             if(profile.equals("qa-azure")){
-                receptor = "monica.diaz@itsight.pe";
+                receptor = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparator(asunto, receptor, contenido);
                 emailSender.send(preparator);
             }
@@ -127,7 +127,7 @@ public class EmailServiceImpl extends EmailGeneric implements EmailService {
 
             //Block development/qa
             if(profile.equals("qa-azure")){
-                String receptorDev = "monica.diaz@itsight.pe";
+                String receptorDev = "yoselin.rodriguez@itsight.pe";
                 preparator = mimeMessagePreparatorForRecepientsBbc(asunto, receptorDev, contenido);
                 emailSender.send(preparator);
             }

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ClienteFitnessProcedureInvokerImpl implements ClienteFitnessProcedureInvoker {
 
-   @Autowired
+    @Autowired
     private EntityManager entityManager;
 
     @Override

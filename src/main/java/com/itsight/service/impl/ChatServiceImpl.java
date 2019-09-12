@@ -107,4 +107,9 @@ public class ChatServiceImpl extends BaseServiceImpl<ChatRepository> implements 
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
     }
+
+    @Override
+    public boolean checkFlagLeidoById(Integer id) {
+        return repository.getFlagLeidoById(id);
+    }
 }

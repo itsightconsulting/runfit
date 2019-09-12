@@ -51,6 +51,9 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
     @Autowired(required = false)
     private HttpSession session;
 
+    @Autowired
+    private ConfiguracionClienteProcedureInvoker configuracionClienteProcedureInvoker;
+
     @Override
     public void onApplicationEvent(InteractiveAuthenticationSuccessEvent login) {
         // TODO Auto-generated method stub
@@ -87,9 +90,8 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                 }else{
                     response.addCookie(createCookie(GLL_FAV_RUTINA.name(), ""));
                 }
-
-                ConfiguracionCliente confCli = configuracionClienteService.findOne(id);
-                confCli.getLstParametro().forEach(e->{
+                List<ConfiguracionClienteDTO> lstConfCli = configuracionClienteProcedureInvoker.getAllById(id);
+                lstConfCli.forEach(e->{
                     if(e.getNombre().equals(CONTROL_ENTRENAMIENTO.name())) {
                         response.addCookie(createCookie(GLL_CONTROL_ENTRENAMIENTO.name(), e.getValor()));
                     }

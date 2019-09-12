@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION func_conf_cli_by_id(
     _cli_id       int)
     RETURNS TABLE(
-                     competencias text,
-                     condicionAnatomica text
+                     nombre text,
+                     valor text
 ) AS
 $func$
     select param->>'nombre' nombre, param->>'valor' valor from

@@ -57,11 +57,11 @@ public interface DiaRepository extends JpaRepository<Dia, Integer> {
     void updateDiaRootFromTemplate(@Param("id") Integer id, @Param("calorias") double calorias, @Param("distancia") double distancia, @Param("minutos") int minutos,@Param("elementos") String elementos);
 
     @Modifying
-    @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:elemento as jsonb), true) WHERE dia__id = :id", nativeQuery = true)
+    @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), CAST(:elemento as jsonb), true) WHERE dia_id = :id", nativeQuery = true)
     void saveElemento(@Param("id") Integer id, @Param("texto") String texto, @Param("elemento") String elemento);
 
     @Modifying
-    @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), COALESCE(elementos->:listaIx->'elementos', '[]') || CAST(:elementos as jsonb), true) WHERE dia__id = :id", nativeQuery = true)
+    @Query(value = "UPDATE dia SET elementos = jsonb_set(elementos, CAST(:texto as text[]), COALESCE(elementos->:listaIx->'elementos', '[]') || CAST(:elementos as jsonb), true) WHERE dia_id = :id", nativeQuery = true)
     void saveElementos(@Param("id") Integer id, @Param("listaIx") int listaIx, @Param("texto") String texto, @Param("elementos") String elementos);
 
     @Modifying

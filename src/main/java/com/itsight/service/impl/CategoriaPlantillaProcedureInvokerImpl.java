@@ -12,7 +12,6 @@ import javax.persistence.StoredProcedureQuery;
 
 @Repository
 @Transactional
-
 public class CategoriaPlantillaProcedureInvokerImpl implements CategoriaPlantillaProcedureInvoker {
 
     @Autowired

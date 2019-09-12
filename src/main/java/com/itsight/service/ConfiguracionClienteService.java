@@ -16,4 +16,5 @@ public interface ConfiguracionClienteService extends BaseService<ConfiguracionCl
 
     void actualizarById(Integer id, String clave, String valor);
 
+    void actualizarNotificacionChatById(Integer cliId);
 }
