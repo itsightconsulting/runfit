@@ -8,6 +8,10 @@ const $rMenuDia = document.querySelector('#rMenuDia');
 const dvEditor = document.querySelector('.editor_text');
 const fntSzEditor = document.querySelector('#fntSzEditor');
 const fntFmlyEditor = document.querySelector('#fntFmlyEditor');
+const $btnSeleccionColor = document.querySelector('.chosen-color');
+const $selectZoom = document.querySelector('#selectZoom');
+
+const chosenColorPathD = $('path[d="M20.756,22.117H9.048l-2.235,5.404H0.831l11.241-25.22h5.764l11.277,25.22h-6.125L20.756,22.117z      M18.92,17.684L14.918,8.03l-3.998,9.654H18.92z"]');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -49,7 +53,9 @@ let $idsComp = [];
 let $semanasEnviadas = [];
 let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
-let $blnObjetivo = 1
+let $blnObjetivo = 1;
+let $colorEscogido = '';
+
 
 
 $(function () {
@@ -74,6 +80,7 @@ function init(){
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         $semanario.addEventListener('click', principalesEventosClickRutina);
+        $selectZoom.addEventListener('change', eventoSelectZoom);
 
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
@@ -87,7 +94,6 @@ function init(){
         fntFmlyEditor.addEventListener('change', cambiarFamiliaFuenteElemento);
 
         $(dvEditor).on('click','.btn' , principalesDivEditor);
-
         $(document).bind("click", function(event) {
             $rMenuDia.className = "hide";
             $rMenuEleSubele.className = "hide";
@@ -266,11 +272,18 @@ function eventosClickMenuOptElem(e) {
      else if(inpClasses.contains('insertar-encima')) {
 
         if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
-
+            debugger
             let ixs = RutinaIx.getIxsForElemento($menuTargetInput);
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let ix = ++indexGlobal;
             let refIndex = ixs.eleIndex;
+            let temp = elemento;
+            let i=0;
+            while((temp = temp.previousElementSibling))i++;
+            RutinaAdd.nuevoElemento(ixs.numSem, ixs.diaIndex, i-1, '');
+            agregarElementoEnBlancoBD(ixs.numSem, ixs.diaIndex, ElementoTP.NO_DEFINIDO, (posRefElemento = i - 1), Estrategia.INSERT_DESPUES);
+         
+         
             if (elemento.nextElementSibling != undefined) {
                 if (elemento.nextElementSibling.classList.contains('ne-esp')) {
                     elemento.nextElementSibling.remove();
@@ -315,12 +328,19 @@ function eventosClickMenuOptElem(e) {
                                                            </div>
                                                           </div>`);
             }
-        } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
 
+        } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+            debugger
             let ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+            let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
             let ix = ++indexGlobal;
-
+            let temp = subElemento;
+            let i=0,k=0;
+            while((elemento = elemento.previousElementSibling))i++;
+            while((temp = temp.previousElementSibling))k++;
+            RutinaAdd.nuevoSubElemento(ixs.numSem, ixs.diaIndex, i, k - 1, '');
+            agregarSubElementoEnBlancoBD(ixs.numSem, ixs.diaIndex, ElementoTP.NO_DEFINIDO, i, (posRefSubEle = k - 1), Estrategia.INSERT_DESPUES);
             if (subElemento.nextElementSibling != undefined) {
                 if (subElemento.nextElementSibling.classList.contains('ne-esp')) {
                     subElemento.nextElementSibling.remove();
@@ -373,7 +393,20 @@ function eventosClickMenuOptElem(e) {
                 SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
             }
 
+     }
+     else if(inpClasses.contains('varios-media')){
+
+        if($videosElegidos != undefined && typeof $videosElegidos == 'object' && $videosElegidos.length >0){
+            debugger
+            const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+            RutinaElementoHTML.adjuntarSubElementos(ixs, 1);
         }
+
+        if($subEleElegidos != undefined && typeof $subEleElegidos == 'object' && $subEleElegidos.length >0){
+            const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
+            RutinaElementoHTML.adjuntarSubElementos(ixs, 2);
+        }
+    }
 
 }
 
@@ -420,10 +453,24 @@ function eventosClickMenuOptDia(e) {
         }
     }
     else if(inpClasses.contains('limpiar-dia')){
-
-        const dvDia = $menuTargetInput.parentElement.parentElement;
+        const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const ixs = RutinaIx.getIxsForDia(dvDia);
-        DiaOpc.cambiarFlagDescanso(ixs.numSem, ixs.diaIndex);
+        DiaOpc.limpiarElementosDia(ixs.numSem, ixs.diaIndex);
+    }
+    else if(inpClasses.contains('copiar-dia')){
+        const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
+        const ixs = RutinaIx.getIxsForDia(dvDia);
+        $diaPlantilla = $rutina.semanas[ixs.numSem].dias[ixs.diaIndex];
+    } else if(inpClasses.contains('pegar-mini')) {
+        const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
+        const diaIndex = dvDia.getAttribute('data-index');
+        DiaOpc.pegarMiniPlantillaDia(diaIndex);
+    }else if(inpClasses.contains('pegar-elementos')){
+        const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
+        const diaIndex = dvDia.getAttribute('data-index');
+        //  DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
+        DiaOpc.pegarElementosSeleccionados(diaIndex);
+
     }
 
 }
@@ -543,6 +590,7 @@ function principalesEventosFocusOutSemanario(e) {
 
         const valor = input.value.trim();
         if(valor.length > 1){
+            debugger
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
             let tipo = input.getAttribute('data-ele-tipo');
@@ -854,8 +902,8 @@ function principalesEventosClickRutina(e) {
             initTempSubEleRef.remove();
         }
     }
-  /*
-    if(e.ctrlKey){
+
+    else if(e.ctrlKey){
         if(clases.contains('rf-dia-elemento-nombre')){
             DiaOpc.seleccionarElementos(input);
         }else if(clases.contains('rf-sub-elemento-nombre')){
@@ -863,98 +911,97 @@ function principalesEventosClickRutina(e) {
         }
     }
 
+    /*
 
 
-    else if(clases.contains('trash-audio')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForElemento(input);
-        ElementoOpc.eliminarMediaAudio(ixs);
-    }
-    else if(clases.contains('trash-video')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForElemento(input);
-        ElementoOpc.eliminarMediaVideo(ixs);
-    }
-    else if(clases.contains('trash-audio-sub')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForSubElemento(input);
-        SubEleOpc.eliminarMediaAudio(ixs);
-    }
-    else if(clases.contains('trash-video-sub')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForSubElemento(input);
-        SubEleOpc.eliminarMediaVideo(ixs);
-    }
-    else if(clases.contains('trash-sub-elemento')){
-        const ixs = RutinaIx.getIxsForSubElemento(input);
-        RutinaDOMQueries.getSubElementoByIxs(ixs);
-        SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
-    }
-    else if(clases.contains('agregar-kms')){
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForElemento(input);
-        ElementoOpc.verDistanciaElemento(ixs, input);
-    }
+      else if(clases.contains('trash-audio')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const ixs = RutinaIx.getIxsForElemento(input);
+          ElementoOpc.eliminarMediaAudio(ixs);
+      }
+      else if(clases.contains('trash-video')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const ixs = RutinaIx.getIxsForElemento(input);
+          ElementoOpc.eliminarMediaVideo(ixs);
+      }
+      else if(clases.contains('trash-audio-sub')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const ixs = RutinaIx.getIxsForSubElemento(input);
+          SubEleOpc.eliminarMediaAudio(ixs);
+      }
+      else if(clases.contains('trash-video-sub')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const ixs = RutinaIx.getIxsForSubElemento(input);
+          SubEleOpc.eliminarMediaVideo(ixs);
+      }
+      else if(clases.contains('trash-sub-elemento')){
+          const ixs = RutinaIx.getIxsForSubElemento(input);
+          RutinaDOMQueries.getSubElementoByIxs(ixs);
+          SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+      }
+      else if(clases.contains('agregar-kms')){
+          e.preventDefault();
+          e.stopPropagation();
+          const ixs = RutinaIx.getIxsForElemento(input);
+          ElementoOpc.verDistanciaElemento(ixs, input);
+      }
 
 
-    else if(clases.contains('pre-guardar-dia')) {
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForDia(input);
-        DiaOpc.preGuardarDiaPlantilla(ixs);
-    }
-    else if(clases.contains('rf-sub-elemento-media')){
-        const route = e.target.getAttribute('data-id-uuid');
-        const tipoMedia = e.target.getAttribute('data-type');
-        if(tipoMedia == TipoElemento.VIDEO){
-            $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
-            $("#VideoReproduccion").parent().get(0).load();
-        }else{
-            $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
-            $("#AudioReproduccion").parent().get(0).load();
-        }
-    }
+      else if(clases.contains('pre-guardar-dia')) {
+          e.stopPropagation();
+          const ixs = RutinaIx.getIxsForDia(input);
+          DiaOpc.preGuardarDiaPlantilla(ixs);
+      }
+      else if(clases.contains('rf-sub-elemento-media')){
+          const route = e.target.getAttribute('data-id-uuid');
+          const tipoMedia = e.target.getAttribute('data-type');
+          if(tipoMedia == TipoElemento.VIDEO){
+              $('#VideoReproduccion').get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
+              $("#VideoReproduccion").parent().get(0).load();
+          }else{
+              $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
+              $("#AudioReproduccion").parent().get(0).load();
+          }
+      }
 
 
-    else if(clases.contains('reprod-audio')){
-        e.preventDefault();
-        e.stopPropagation();
-        if(clases.contains('fa-pause-circle')){
-            document.querySelector('#someaud').pause();
-            e.target.setAttribute('data-original-title','Reproducir');
-        }else{
-            const route = e.target.getAttribute('data-media');
-            $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
-            $("#AudioReproduccion").parent().get(0).load();
-            e.target.setAttribute('data-original-title','Pausar');
-        }
-        clases.toggle('fa-music');
-        clases.toggle('fa-pause-circle');
-    }
-    else if(clases.contains('reprod-video')){
-        e.stopPropagation();
-        e.preventDefault();
-        ElementoOpc.reproducirVideo(input);
-    }
-    else if(clases.contains('ele-ops')){
-        e.preventDefault();
-        e.stopPropagation();
-        instanciarEspecificosTooltip(input);
+      else if(clases.contains('reprod-audio')){
+          e.preventDefault();
+          e.stopPropagation();
+          if(clases.contains('fa-pause-circle')){
+              document.querySelector('#someaud').pause();
+              e.target.setAttribute('data-original-title','Reproducir');
+          }else{
+              const route = e.target.getAttribute('data-media');
+              $('#AudioReproduccion').get(0).src = `${_ctx}workout/media/audio${route}`;
+              $("#AudioReproduccion").parent().get(0).load();
+              e.target.setAttribute('data-original-title','Pausar');
+          }
+          clases.toggle('fa-music');
+          clases.toggle('fa-pause-circle');
+      }
+      else if(clases.contains('reprod-video')){
+          e.stopPropagation();
+          e.preventDefault();
+          ElementoOpc.reproducirVideo(input);
+      }
+      else if(clases.contains('ele-ops')){
+          e.preventDefault();
+          e.stopPropagation();
+          instanciarEspecificosTooltip(input);
 
-    }
-    else if(clases.contains('sub-ele-ops')){
-        e.stopPropagation();
-        instanciarEspecificosTooltip(input);
-    }
+      }
+      else if(clases.contains('sub-ele-ops')){
+          e.stopPropagation();
+          instanciarEspecificosTooltip(input);
+      }
 
-    */
+      */
     else if(clases.contains('insertar-debajo')) {
-
-         
          e.preventDefault();
          e.stopPropagation();
          let ixs = RutinaIx.getIxsForElemento(input);
@@ -1051,14 +1098,13 @@ function principalesEventosClickRutina(e) {
          $nombreActualizar = e.target.textContent.trim();
      }
 
-     else if(clases.contains('list-desp-objetivo')){
+    else if(clases.contains('list-desp-objetivo')){
         $blnObjetivo = 0;
         removeScrollbar();
 
      }
+
     /*
-
-
     else if(clases.contains('insertar-encima-sub')){
         e.stopPropagation();
         let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -1091,26 +1137,8 @@ function principalesEventosClickRutina(e) {
         const ixs = RutinaIx.getIxsForDia(input);
         $diaPlantilla = $rutina.semanas[ixs.numSem].dias[ixs.diaIndex];
     }
-    else if(clases.contains('pegar-mini-listas')) {
-        const diaIndex = input.getAttribute('data-index');
-        DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
-        DiaOpc.pegarElementosSeleccionados(diaIndex);
-    }
 
-    else if(clases.contains('varios-media')){
-        e.preventDefault();
-        e.stopPropagation();
 
-        if($videosElegidos != undefined && typeof $videosElegidos == 'object' && $videosElegidos.length >0){
-            const ixs = RutinaIx.getIxsForElemento(input);
-            RutinaElementoHTML.adjuntarSubElementos(ixs, 1);
-        }
-
-        if($subEleElegidos != undefined && typeof $subEleElegidos == 'object' && $subEleElegidos.length >0){
-            const ixs = RutinaIx.getIxsForElemento(input);
-            RutinaElementoHTML.adjuntarSubElementos(ixs, 2);
-        }
-    }
     else if(clases.contains('enviar-cliente')){
         e.preventDefault();
         e.stopPropagation();
@@ -1248,10 +1276,7 @@ function principalesEventosTabGrupoVideos(e){
         cambiarATabRutina();
     }
 
-
-
-   /*
-   else if(clases.contains('elegir-video')){
+    else if(clases.contains('elegir-video')){
         e.stopPropagation();
         const li = input;
         const eleVideo = li.querySelector('.reprod-video');
@@ -1266,6 +1291,10 @@ function principalesEventosTabGrupoVideos(e){
             $videosElegidos = $videosElegidos.filter(e=>{return e[0]!=ix});
         }
     }
+
+
+   /*
+
 
 
     else if(clases.contains('ck-favorito-video')){
@@ -1288,8 +1317,6 @@ function principalesEventosTabGrupoVideos(e){
         agregarEliminarFavorito(idvideo,0,editaragregar);
     }*/
 }
-
-
 
 function principalesEventosTabGrupoAudios(e){
     const input = e.target;
@@ -1353,11 +1380,10 @@ function principalesEventosTabGrupoAudios(e){
 
 }
 
-
 function principalesDivEditor(e){
     const input = e.currentTarget;
     const clases = input.classList;
-
+    debugger
     console.log(input);
     const ix = input.getAttribute('data-index');
     if(clases.contains('btn-bold')){
@@ -1385,10 +1411,31 @@ function principalesDivEditor(e){
         }else{}
     }
     else if(clases.contains('note-color-fuente')){
-        if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
-            RutinaEditor.agregarOeliminarEstiloToElemento(ix, 1);
-        }else{}
-    }else if(clases.contains('note-bg-color')){
+
+        $colorEscogido = $(input).css('background-color');
+        $btnSeleccionColor.setAttribute('data-index', ix);
+        $('path[d="M20.756,22.117H9.048l-2.235,5.404H0.831l11.241-25.22h5.764l11.277,25.22h-6.125L20.756,22.117z      M18.92,17.684L14.918,8.03l-3.998,9.654H18.92z"]').css('fill',$colorEscogido);
+        $('.note-btn-font').popover('destroy');
+        if($eleGenerico!= undefined){
+            if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+                RutinaEditor.agregarOeliminarEstiloToElemento(ix, 1);
+            }else{}
+        }
+
+
+    }
+    else if(clases.contains('chosen-color')){
+
+        if($eleGenerico!= undefined){
+            if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
+                RutinaEditor.agregarOeliminarEstiloToElemento(ix, 1);
+            }else{}
+        }
+
+
+    }
+
+    else if(clases.contains('note-bg-color')){
         if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
             RutinaEditor.agregarOeliminarEstiloToElemento(ix, 2);
         }else{}
@@ -1415,7 +1462,9 @@ function principalesDivEditor(e){
     else if(clases.contains('aumentar-zoom')){
         e.stopPropagation();
         let zm = window.parent.document.body.style.zoom;
-        window.parent.document.body.style.zoom = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1;
+        let newZm = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1
+        $selectZoom.value = (((Math.round(newZm*100))/100).toString());
+        window.parent.document.body.style.zoom = newZm ;
         if(zm == "1.1") {
             input.classList.add('disabled');
         }else{
@@ -1426,7 +1475,9 @@ function principalesDivEditor(e){
     else if(clases.contains('reducir-zoom')){
         e.stopPropagation();
         let zm = window.parent.document.body.style.zoom;
-        window.parent.document.body.style.zoom = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
+        let newZm = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
+        $selectZoom.value = (((Math.round(newZm*100))/100).toString());
+        window.parent.document.body.style.zoom = newZm;
         if(zm == "0.9") {
             input.classList.add('disabled');
         }else{
@@ -1436,6 +1487,13 @@ function principalesDivEditor(e){
     }
 }
 
+function eventoSelectZoom(e){
+
+    const input = e.target;
+    const zoomVal = input.value;
+    window.parent.document.body.style.zoom = zoomVal;
+
+}
 function avanzarRetrocederSemana(numSem, action){
 
     obtenerEspecificaSemana(numSem, action).then((semana)=> {
@@ -2336,6 +2394,26 @@ function guardarEstilosElementoBD(numSem, diaIndex, eleIndex){
     })
 }
 
+function actualizarDiaCompletoBD(numSem, diaIndex){
+    let params = RutinaGet.dia(numSem, diaIndex);
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/from-plantilla/actualizar/full",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
 
 
 async function obtenerObjetivosDiaBD() {
@@ -2402,6 +2480,54 @@ function modificarDiaFlagDescansoBD(numSem, diaIndex){
     })
 }
 
+function actualizarDiaParcialBD(numSem, diaIndex, cantUltimos){
+    let refDia = RutinaGet.dia(numSem, diaIndex);
+    let params = {};
+    params.calorias = refDia.calorias;
+    params.minutos = refDia.minutos;
+    params.distancia = refDia.distancia;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementos = refDia.elementos.filter((e,i,k)=>{return i>=k.length-cantUltimos});
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/from-plantilla/actualizar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+function actualizarElementoParcialBD(numSem, diaIndex, eleIndex, cantUltimos){
+    let refEle = RutinaGet.elemento(numSem, diaIndex, eleIndex);
+    let params = {};
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = eleIndex;
+    params.subElementos = refEle.subElementos.filter((e,i,k)=>{return i>=k.length-cantUltimos});
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/sub-elemento/multiple/agregar",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
 
 
 function cambiarATabRutina(){

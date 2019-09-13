@@ -2013,6 +2013,8 @@ section#ArbolGrupoVideo h1, section#ArbolGrupoVideoDetalle h1{
 
 button.note-color-fuente, button.note-bg-color {
     padding: 6px;
+    border: 1px solid grey;
+    margin-right: 2px;
 }
 
 .padding-left-20{
@@ -2107,4 +2109,14 @@ button.note-color-fuente, button.note-bg-color {
     font-size: 12px;
     height: 28px;
     display: inline;
+}
+
+.editor_text .note-btn-font {
+    color: #a7a7a7!important;
+    background-color: unset!important;
+}
+
+.editor_text .note-btn-font:hover {
+    color: #ffffff!important;
+    background-color: unset!important;
 }

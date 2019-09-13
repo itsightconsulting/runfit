@@ -689,6 +689,7 @@ RutinaSet = (function(){
             $rutina.semanas[numSem].dias[diaIndex].elementos[posEle].subElementos = $rutina.semanas[numSem].dias[diaIndex].elementos[posEle].subElementos.concat(nSubElementos);
         },
         setElementoNombre: (numSem, posDia, posEle, nombre)=>{
+            debugger
             $rutina.semanas[numSem].dias[posDia].elementos[posEle].nombre = nombre;
         },
         setElementoNota: (numSem, posDia, posEle, nota)=>{
@@ -900,7 +901,6 @@ RutinaEditor = (function(){
         agregarOeliminarEstiloToElemento: (estiloId, tipo)=>{
             //1. Agregando a el objeto general de la rutina el nuevo estilo
             if(tipo == 0){
-               debugger
                 const ixs = RutinaIx.getIxsForElemento($eleGenerico);
                 let tempEle = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
                 while((tempEle = tempEle.previousElementSibling) != null) i++;
@@ -966,68 +966,31 @@ RutinaEditor = (function(){
         instanciarPaletaColores: (input)=>{
             const raw = `
                     <div class="container-fluid padding-0 its-indicador-1">
-                        <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="row padding-5 text-center">
                                 <div class="btn-group">
                                     <div class="note-palette-title"><b>Color fuente</b></div>
-                                        <div>
-                                            <button type="button" class="note-color-reset btn btn-default" data-event="removeFormat" data-value="foreColor">Aplicar <i class="fa fa-check-circle-o txt-color-blue"></i></button>
-                                        </div>
                                         <div class="note-holder" data-event="foreColor">
                                             <div class="note-color-palette">
                                                 <div class="note-color-row">
-                                                    <button type="button" class="note-color-fuente" style="background-color:white" data-index="100" data-class="rf-ct-white"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:black" data-index="101" data-class="rf-ct-black"></button><!--
-        git l                                         --><button type="button" class="note-color-fuente" style="background-color:gray" data-index="102" data-class="rf-ct-gray"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#003366" data-index="103" data-class="rf-ct-navyblue"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:skyblue" data-index="104" data-class="rf-ct-skyblue"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:orange" data-index="105" data-class="rf-ct-orange"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:yellow" data-index="106" data-class="rf-ct-yellow"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:green" data-index="107" data-class="rf-ct-green"></button>
-                                                </div>
-                                                <div class="note-color-row">
-                                                    <button type="button" class="note-color-fuente" style="background-color:#F67280" data-index="108" data-class="rf-ct-m-pink"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#355C7D" data-index="109" data-class="rf-ct-m-blue"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#474747" data-index="110" data-class="rf-ct-m-gray"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#2A363B" data-index="111" data-class="rf-ct-m-navyblue"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#A8E6CE" data-index="112" data-class="rf-ct-m-skyblue"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#FC913A" data-index="113" data-class="rf-ct-m-orange"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#F9D423" data-index="114" data-class="rf-ct-m-yellow"></button><!--
-                                                 --><button type="button" class="note-color-fuente" style="background-color:#99B898" data-index="115" data-class="rf-ct-m-green"></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <div class="row padding-5 text-center">
-                                <div class="btn-group">
-                                    <div class="note-palette-title"><b>Color fondo</b></div>
-                                        <div>
-                                            <button type="button" class="note-color-reset btn btn-default" data-event="removeFormat" data-value="foreColor">Aplicar <i class="fa fa-check-circle-o txt-color-blue"></i></button>
-                                        </div>
-                                        <div class="note-holder" data-event="foreColor">
-                                            <div class="note-color-palette">
-                                                <div class="note-color-row">
-                                                    <button type="button" class="note-bg-color" style="background-color:white" data-index="200" data-class="rf-ct-white"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:black" data-index="201" data-class="rf-ct-black"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:gray" data-index="202" data-class="rf-ct-gray"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#003366" data-index="203" data-class="rf-ct-navyblue"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:skyblue" data-index="204" data-class="rf-ct-skyblue"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:orange" data-index="205" data-class="rf-ct-orange"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:yellow" data-index="206" data-class="rf-ct-yellow"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:green" data-index="207" data-class="rf-ct-green"></button>
-                                                </div>
-                                                <div class="note-color-row">
-                                                    <button type="button" class="note-bg-color" style="background-color:#F67280" data-index="208" data-class="rf-ct-m-pink"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#355C7D" data-index="209" data-class="rf-ct-m-blue"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#474747" data-index="210" data-class="rf-ct-m-gray"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#2A363B" data-index="211" data-class="rf-ct-m-navyblue"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#A8E6CE" data-index="212" data-class="rf-ct-m-skyblue"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#FC913A" data-index="213" data-class="rf-ct-m-orange"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#F9D423" data-index="214" data-class="rf-ct-m-yellow"></button><!--
-                                                 --><button type="button" class="note-bg-color" style="background-color:#99B898" data-index="215" data-class="rf-ct-m-green"></button>
+                                                    <button type="button" class="btn note-color-fuente" style="background-color:white" data-index="100" data-class="rf-ct-white"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:black" data-index="101" data-class="rf-ct-black"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:gray" data-index="102" data-class="rf-ct-gray"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#003366" data-index="103" data-class="rf-ct-navyblue"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:skyblue" data-index="104" data-class="rf-ct-skyblue"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:orange" data-index="105" data-class="rf-ct-orange"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:yellow" data-index="106" data-class="rf-ct-yellow"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:green" data-index="107" data-class="rf-ct-green"></button>
+                                                </div>                            
+                                                <div class="note-color-row">      
+                                                    <button type="button" class="btn note-color-fuente" style="background-color:#F67280" data-index="108" data-class="rf-ct-m-pink"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#355C7D" data-index="109" data-class="rf-ct-m-blue"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#474747" data-index="110" data-class="rf-ct-m-gray"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#2A363B" data-index="111" data-class="rf-ct-m-navyblue"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#A8E6CE" data-index="112" data-class="rf-ct-m-skyblue"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#FC913A" data-index="113" data-class="rf-ct-m-orange"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#F9D423" data-index="114" data-class="rf-ct-m-yellow"></button><!--
+                                                 --><button type="button" class="btn note-color-fuente" style="background-color:#99B898" data-index="115" data-class="rf-ct-m-green"></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1166,7 +1129,7 @@ RutinaDOMQueries = (function(){
             return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ix}"]`);
         },
         getDivListaDiaByIxs: (ixs)=>{
-            return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ixs.diaIndex}"] .rf-listas`);
+            return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ixs.diaIndex}"] .rt-elem`);
         },
         getPreElementoByIxs: (ixs)=>{
             return document.querySelector(`#editorContent #rutinaSemana .rf-dia[data-index="${ixs.diaIndex}"] .rf-dia-pre-elemento[data-index="${ixs.eleIndex}"]`);
@@ -1204,19 +1167,18 @@ DiaOpc = (function(){
         positionPopoverByDiaIndex: (dIx) => {
             return dIx == "0" ? "right" : "bottom";
         },
-        cambiarFlagDescanso: (numSem, diaIndex) => {
+        confirmarLimpiarElementosDía: (numSem, diaIndex) => {
 
                 $.smallBox({
-                    content: "El siguiente procedimiento borrará toda la información ya ingresada del día. ¿Desea aún ajustar el día como día de descanso? <p class='text-align-right'><a href='javascript:DiaOpc.confirmarCambioFlagDescanso(" + numSem + "," + diaIndex + ");' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+                    content: "El siguiente procedimiento borrará toda la información ya ingresada del día. ¿Desea aún ajustar el día como día de descanso? <p class='text-align-right'><a href='javascript:DiaOpc.limpiarElementosDia(" + numSem + "," + diaIndex + ");' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
                     color: "#296191",
                     timeout: 10000,
                     icon: "fa fa-bell swing animated",
                     iconSmall: "",
                 });
             },
-        confirmarCambioFlagDescanso: (numSem, diaIndex) => {
+        limpiarElementosDia: (numSem, diaIndex) => {
 
-            debugger
             let temp = document.querySelector(`.rf-dia[data-index="${diaIndex}"] div[role="heading"]`);
             temp.nextElementSibling.classList.toggle('hidden');
             temp.nextElementSibling.nextElementSibling.innerHTML = "";
@@ -1229,7 +1191,7 @@ DiaOpc = (function(){
             baseDia.querySelector('.distancia-total').textContent = '0.00';
 
            $rutina.semanas[numSem].dias[diaIndex].elementos = [];
-           // modificarDiaFlagDescansoBD(numSem, diaIndex);
+            modificarDiaFlagDescansoBD(numSem, diaIndex);
           //Indicadores.actualizarKilometrajesLessDiaIndex(diaIndex);
         },
         preGuardarDiaPlantilla: (ixs)=>{
@@ -1442,21 +1404,27 @@ DiaOpc = (function(){
             document.querySelector('#PrincipalesTabs a[href="#tabRutina"]').click();
         },
         pegarMiniPlantillaDia: (diaIndex)=>{
+            
             if($diaPlantilla != undefined && typeof $diaPlantilla == 'object' && $diaPlantilla.elementos != undefined && $diaPlantilla.elementos.length > 0){
                 const diaHTML =  RutinaDOMQueries.getDiaByIx(diaIndex);
                 diaHTML.querySelector(`.distancia-total`).textContent = parseNumberToDecimal($diaPlantilla.distancia, 2);
                 diaHTML.querySelector(`.horas-totales`).textContent = parseNumberToHours($diaPlantilla.minutos);
-                const diaBody = diaHTML.querySelector(`.widget-body`);
-                diaBody.parentElement.replaceChild(htmlStringToElement(RutinaDiaHTML.full($diaPlantilla.elementos, diaIndex, undefined, false)), diaBody);
+                const diaBody = diaHTML.querySelector(`.rt-elem`);
+
+                const wrapper= document.createElement('div');
+                wrapper.innerHTML= (RutinaDiaHTML.full($diaPlantilla.elementos, diaIndex, undefined, false)) ;
+                const dvDiaElementos= wrapper.children;
+                diaBody.parentElement.replaceChild(dvDiaElementos[1], diaBody); // dvDiaElementos[1] contiene el elemento .rt-elem que aloja a los elementos del día
+
                 const numSem = $semActual.textContent-1;
                 RutinaSet.setDiaDistanciaTotal(numSem, diaIndex, $diaPlantilla.distancia);
                 RutinaSet.setDiaTiempoTotal(numSem, diaIndex, $diaPlantilla.minutos);
                 RutinaSet.setElementos(numSem, diaIndex, $diaPlantilla.elementos);
                 RutinaSet.setCalorias(numSem, diaIndex, $diaPlantilla.calorias);
                 actualizarDiaCompletoBD(numSem, diaIndex);
-                instanciarElementosDiaTooltip(diaHTML);
-                instanciarElementosDiaPopover(diaHTML);
-                Indicadores.actualizarKilometrajes();
+                //instanciarElementosDiaTooltip(diaHTML);
+                //instanciarElementosDiaPopover(diaHTML);
+                //Indicadores.actualizarKilometrajes();
             }
             $diaPlantilla = {};
         },
@@ -1485,16 +1453,16 @@ DiaOpc = (function(){
                 const numSem = $semActual.textContent-1;
                 const totDis = DiaFunc.obtenerTotalKmsDia(diaIndex), totMin = DiaFunc.obtenerTotalMinutosDia(diaIndex);
                 const nuevasCalorias = DiaFunc.obtenerKilometrajeFromEleSeleccionados(eleFinales);
-                RutinaSet.setDiaDistanciaTotal(numSem, diaIndex, totDis);
-                RutinaSet.setDiaTiempoTotal(numSem, diaIndex, totMin);
-                RutinaSet.setAddDiaCalorias(numSem, diaIndex, nuevasCalorias);
+             //   RutinaSet.setDiaDistanciaTotal(numSem, diaIndex, totDis);
+             //   RutinaSet.setDiaTiempoTotal(numSem, diaIndex, totMin);
+             //   RutinaSet.setAddDiaCalorias(numSem, diaIndex, nuevasCalorias);
                 const diaHTML =  RutinaDOMQueries.getDiaByIx(diaIndex);
                 diaHTML.querySelector(`.distancia-total`).textContent = parseNumberToDecimal(totDis, 2);
                 diaHTML.querySelector(`.horas-totales`).textContent = parseNumberToHours(totMin);
                 RutinaSet.concatElementos(numSem, diaIndex, eleFinales);
                 actualizarDiaParcialBD(numSem, diaIndex,eleFinales.length);
                 document.querySelectorAll('#rutinaSemana .rf-dia-elemento-nombre').forEach(v=>{v.classList.remove('rf-semanario-sels');});
-                Indicadores.actualizarKilometrajes();
+            //    Indicadores.actualizarKilometrajes();
             }
             $eleElegidos = [];
         },
@@ -1567,9 +1535,9 @@ DiaOpc = (function(){
             if(clases.contains('rf-semanario-sels')){
                 $subEleElegidos = $subEleElegidos.filter(e=> {return !(e[0]==diaIndex && e[2]==subEleIndex)});
             }else{
-                const ops = e.previousElementSibling;
-                const mV = ops.querySelector('.reprod-video') != undefined ? ops.querySelector('.reprod-video').dataset.media : null;
-                const mA = ops.querySelector('.reprod-audio') != undefined ? ops.querySelector('.reprod-audio').dataset.media : null;
+                const dvParent = e.parentElement;
+                const mV = dvParent.querySelector('.reprod-video') != undefined ? dvParent.querySelector('.reprod-video').dataset.media : null;
+                const mA = dvParent.querySelector('.ong') != undefined ? dvParent.querySelector('.ong').dataset.media : null;
                 const t = e.parentElement.parentElement.dataset.type;
                 $subEleElegidos.push([diaIndex, eleIndex, subEleIndex, e.textContent.trim(), e.dataset.content, mV, mA, t]);
                 $subEleElegidos = $subEleElegidos.sort();
@@ -2405,7 +2373,7 @@ RutinaSeccion = (function (){
         },
         newDiaObjetivo: (objetivos, diaIndex)=>{
             return `
-                <div class="col-xs-12">
+                <div class="col-xs-12" style="padding-bottom: 12px;">
                     <div class="input-group" style="width:unset;">
                         <select class="form-control list-desp-objetivo"><option value="0">-- Objetivo del día -- </option>${objetivos}</select>
                         <div class="input-group-btn">
@@ -2445,15 +2413,17 @@ RutinaElementoHTML = (function(){
             return `<div class="ong" rel="tooltip" data-media="${mediaAudio}" data-original-title="Audio"></div>`;
         },
         adjuntarElementos: (diaIndex, elementos)=>{
+            debugger
             const listaDiv = RutinaDOMQueries.getDivListaDiaByIxs({diaIndex: diaIndex});
             listaDiv.children.length==0?listaDiv.parentElement.querySelector('.inputs-init').classList.toggle('hidden'):'';
             elementos.forEach(e=>{
                 listaDiv.appendChild(htmlStringToElement(e.tipo == 1 ? RutinaElementoHTML.elementoSimplePaste(e, diaIndex) : RutinaElementoHTML.elementoCompuestoPaste(e, diaIndex)));
             });
-            instanciarElementosDiaTooltip(listaDiv);
-            instanciarElementosDiaPopover(listaDiv);
+            //instanciarElementosDiaTooltip(listaDiv);
+            //instanciarElementosDiaPopover(listaDiv);
         },
         adjuntarSubElementos: (ixs, via)=>{
+            debugger
             const newSubEleS = [];
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const divSubEle = elemento.querySelector('.detalle-lista');
@@ -2644,30 +2614,45 @@ RutinaElementoHTML = (function(){
             return subElementosHTML;
         },
         subElementoPaste: (sEle, diaIndex, eleIndex)=>{
+            debugger
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-            return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
-                                <span class="pull-left">
-                                     ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                                     ${sEle.mediaAudio != undefined?RutinaElementoHTML.iconoAudio(sEle.mediaAudio):''}
-                                     <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub ele-add" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                                     <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
-                                </span>
-                                <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined? sEle.nota :''}" data-trigger="hover">${sEle.nombre}</span>
-                                ${RutinaElementoHTML.iconoNota(sEle.nota)}
-                            </div>`;
+            return `<li>
+                         <div class="row rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
+                          <div class="col-xs-12">
+                          <div class="notes">
+                             ${sEle.mediaAudio != undefined && sEle.mediaAudio != '' ? `<div class="ong" rel="tooltip" 
+                              data-original-title="Audio"></div>` : ''}
+                            ${sEle.nota != undefined && sEle.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
+                        </div>
+                            ${sEle.mediaVideo != undefined && sEle.mediaVideo != '' ? RutinaElementoHTML.iconoVideoPlay(sEle.mediaVideo) : ''}
+                         <span class="pull-left"> 
+                          <i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                         </span>
+                         <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"  contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover">${sEle.nombre}</span>
+                      </div>
+                     </div>
+                    </li>`;
         },
         subElementoMedia: (sEle, diaIndex, eleIndex)=>{
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
-            return `<div class="col-md-12 rf-sub-elemento pading-hz-6" data-index="${ix}" data-type="${sEle.tipo}">
-                        <span class="pull-left">
-                             ${sEle.mediaVideo != undefined?RutinaElementoHTML.iconoVideo(sEle.mediaVideo):''}
-                             <i class="fa fa-plus txt-color-blueLight padding-top-1 insertar-debajo-sub ele-add" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"></i>
-                             <i class="fa fa-angle-right txt-color-blue sub-ele-ops padding-top-1" rel="popover" data-placement="${posPopover}" data-content="${RutinaPS.opsPopoverSubElemento(diaIndex, eleIndex, ix)}" data-html="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-toggle="popover"></i> 
-                        </span>
-                        <span class="rf-sub-elemento-nombre" contenteditable="true" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}" data-placement="bottom" data-toggle="popover" data-content="" data-trigger="hover">${sEle.nombre}</span>
-                    </div>
+            return `    <li>
+                         <div class="row rf-sub-elemento" data-index="${ix}" data-type="${sEle.tipo}">
+                          <div class="col-xs-12">
+                          <div class="notes">
+                             ${sEle.mediaAudio != undefined && sEle.mediaAudio != '' ? `
+                                 <div class="ong" rel="tooltip" data-original-title="Audio"></div>` : ''}
+                             ${sEle.nota != undefined && sEle.nota != '' ? `<div class="gr" rel="tooltip" data-original-title="Nota"></div>` : ''}
+                        </div>
+                            ${sEle.mediaVideo != undefined && sEle.mediaVideo != '' ? RutinaElementoHTML.iconoVideoPlay(sEle.mediaVideo) : ''}
+                         <span class="pull-left"> 
+                          <i> <img class="svg insertar-debajo-sub ele-add" src="${_ctx}img/iconos-trainers/icon_add.svg" rel="tooltip" data-placement="bottom" data-original-title="Agregar pares" data-ele-index="${eleIndex}" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                         </span>
+                         <span class="sub-elemento-nombre rf-sub-elemento-nombre" data-dia-index="${diaIndex}" data-ele-index="${eleIndex}" data-index="${ix}"  contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${sEle.nota != undefined ? sEle.nota : ''}" data-trigger="hover">${sEle.nombre}</span>
+                      </div>
+                     </div>
+                    </li>
                     `;
         },
     }

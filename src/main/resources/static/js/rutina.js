@@ -1124,7 +1124,7 @@ RutinaIx = (function(){
             return ixs;
         },
         getIxsForElemento: (e)=>{
-            debugger;
+            
             let ixs = {};
             ixs.numSem = typeof $semActual === 'undefined' ? '0' : $semActual.textContent -1;
             ixs.diaIndex = e.getAttribute('data-dia-index');
@@ -1581,6 +1581,7 @@ DiaOpc = (function(){
             if(clases.contains('rf-semanario-sels')){
                 $subEleElegidos = $subEleElegidos.filter(e=> {return !(e[0]==diaIndex && e[2]==subEleIndex)});
             }else{
+                debugger
                 const ops = e.previousElementSibling;
                 const mV = ops.querySelector('.reprod-video') != undefined ? ops.querySelector('.reprod-video').dataset.media : null;
                 const mA = ops.querySelector('.reprod-audio') != undefined ? ops.querySelector('.reprod-audio').dataset.media : null;
@@ -1656,7 +1657,7 @@ ElementoOpc = (function(){
             RutinaSet.subtractDiaCalorias(numSem, diaIndex, calorias);
             Indicadores.actualizarKilometrajes();
             removerElementoBD(numSem, diaIndex, (eleIndex = i), minutos, distancia, calorias);
-            debugger
+            
             $(finalHTML).slideUp('slow', ()=>{
                 finalHTML.remove();
                 const diaContainer = RutinaDOMQueries.getDiaByIx(diaIndex);
@@ -2442,6 +2443,7 @@ RutinaElementoHTML = (function(){
             instanciarElementosDiaPopover(listaDiv);
         },
         adjuntarSubElementos: (ixs, via)=>{
+            debugger
             const newSubEleS = [];
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const divSubEle = elemento.querySelector('.detalle-lista');

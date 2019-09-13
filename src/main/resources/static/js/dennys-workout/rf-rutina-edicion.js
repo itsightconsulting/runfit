@@ -1448,7 +1448,7 @@ function principalesEventosClickRutina(e) {
         DiaOpc.pegarElementosSeleccionados(diaIndex);
     }
     else if(clases.contains('agregar-objetivo')) {
-        debugger
+        
         const parent = input.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
         if (parent.children.length < 2) {
             const diaIndex = input.getAttribute('data-index');
@@ -1645,7 +1645,7 @@ function principalesEventosFocusOutSemanario(e) {
         }
     }
     else if(clases.contains('in-sub-elemento')) {
-        debugger
+        
         const valor = input.value.trim();
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -1949,7 +1949,7 @@ function principalesEventosTabGrupoVideos(e){
         }
     }
     else if(clases.contains('cat-video')){
-        debugger
+        
         e.preventDefault();
         const clase = '' +
             '.cat-video'+ input.getAttribute('data-id');
@@ -2853,7 +2853,7 @@ function principalesDivEditor(e){
     const input = e.target;
     const clases = input.classList;
     const ix = e.target.getAttribute('data-index');
-    debugger
+    
 
     if(clases.contains('btn-bold')){
         if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){

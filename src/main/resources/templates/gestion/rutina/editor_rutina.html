@@ -79,14 +79,15 @@
                 <button class="btn note-alineacion" data-index="6"  ><img class="svg textAlign"  th:src="@{/img/iconos-trainers/icon_textRight.svg}"></button>
             </div>
             <div class="block">
-                <button class="btn white btn-bold" data-index="1">B</button>
-                <button class="btn white btn-italic" data-index="2">I</button>
-                <button class="btn white btn-underline" data-index="3">U</button>
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_abc.svg}"></button>
+                <button class="btn white btn-bold" data-index="1"><img class="svg"  th:src="@{/img/iconos-trainers/icon_negrita.svg}"></button>
+                <button class="btn white btn-italic" data-index="2"><img class="svg"  th:src="@{/img/iconos-trainers/icon_cursiva.svg}"></button>
+                <button class="btn white btn-underline" data-index="3"><img class="svg"  th:src="@{/img/iconos-trainers/icon_subrayado.svg}"></button>
                 <button class="btn note-btn-copy-format"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
                 <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
                 <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_brocha.svg}"></button>
+                <button class="btn chosen-color"><img class="svg" th:src="@{/img/iconos-trainers/icon_color_font.svg}"></button>
+                <button type="button" class="note-btn btn btn-default btn-sm note-btn-font" style="padding: 6px 5px 5px;" rel="popover" data-toggle="popover" data-placement="bottom" data-content="" data-html="true" data-original-title="" title=""><i class="fa fa-caret-down note-btn-font"></i></button>
+
             </div>
         </section>
         <section class="green">
@@ -103,13 +104,17 @@
         </section>
         <section>
             <div class="block">
-                <select>
-                    <option>100%</option>
+                <select id="selectZoom">
+                    <option value="0.8">80%</option>
+                    <option value="0.9">90%</option>
+                    <option value="1" selected="selected">100%</option>
+                    <option value="1.1">110%</option>
+                    <option value="1.2">120%</option>
                 </select>
             </div>
             <div class="block">
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_zoom-menos.svg}"></button>
-                <button class="btn"><img class="svg" th:src="@{/img/iconos-trainers/icon_zoom-mas.svg}"></button>
+                <button class="btn reducir-zoom"><img class="svg" th:src="@{/img/iconos-trainers/icon_zoom-menos.svg}"></button>
+                <button class="btn aumentar-zoom"><img class="svg" th:src="@{/img/iconos-trainers/icon_zoom-mas.svg}"></button>
             </div>
         </section>
     </div>
@@ -170,7 +175,8 @@
         <li id="optEliminarAudio" data-option="2" class="trash-audio">Eliminar audio</li>
         <li id="optEliminarVideo" data-option="3" class="trash-video">Eliminar video</li>
         <li id="optInsertarEncima" data-option="4" class="insertar-encima">Insertar encima del elemento</li>
-        <li id="optEliminarElemento" data-option="5" class="trash-elemento">Eliminar elemento</li>
+        <li id="optVariosMedia" data-option="5" class="varios-media">Agregar subelementos</li>
+        <li id="optEliminarElemento" data-option="6" class="trash-elemento">Eliminar elemento</li>
     </ul>
 </div>
 
@@ -179,7 +185,8 @@
         <li id="optAgregarObjetivo" data-option ="1" class="agregar-objetivo">Agregar objetivo</li>
         <li id="optCopiarDia" data-option="2" class="copiar-dia">Copiar día</li>
         <li id="optPegarPlantilla" data-option="3" class="pegar-mini">Pegar plantilla</li>
-        <li id="optLimpiarDia" data-option="4" class="limpiar-dia">Limpiar dia </li>
+        <li id="optPegarElementos" data-option="4" class="pegar-elementos">Pegar elementos seleccionados</li>
+        <li id="optLimpiarDia" data-option="5" class="limpiar-dia">Limpiar dia </li>
     </ul>
 </div>
 
@@ -220,7 +227,7 @@
 <script type="text/javascript" src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script th:inline="javascript">
     function rutScroll() {
-        $(".scroll_rut").mCustomScrollbar("destroy");
+    //    $(".scroll_rut").mCustomScrollbar("destroy");
         $(".scroll_rut").mCustomScrollbar({
             theme:"3d",
             axis:"x",
@@ -228,7 +235,7 @@
         });
     }
 
-    function deactivateScroll(){
+   function deactivateScroll(){
         $(".scroll_rut").mCustomScrollbar("destroy");
         $(".scroll_rut").mCustomScrollbar({
             theme:"3d",
