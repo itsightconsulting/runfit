@@ -31,12 +31,11 @@ public class SecurityServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
         SecurityUserDTO user = securityUserRepository.findByUsernameNative(username.toLowerCase());
-        return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
-        /*if (user != null) {*/
-//            return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
-        /*}
+        if (user != null) {
+            return buildUser(user, buildAuthorities(user.getRoles(), user.getPrivileges()));
+        }
         LOGGER.info("> UsernameException | (?): " + username.toUpperCase());
-        throw new UsernameNotFoundException("UsernameNotFoundException | (?): " + username.toUpperCase());*/
+        throw new UsernameNotFoundException("UsernameNotFoundException | (?): " + username.toUpperCase());
     }
 
     private User buildUser(SecurityUserDTO securityUser, Set<GrantedAuthority> lstRole) {

@@ -98,7 +98,7 @@ import java.util.UUID;
                               "\tCONCAT(t.nombres,' ' ,t.apellidos) nombreCompleto, \n" +
                               "\tf.especialidad, \n" +
                               "\tt.ubigeo, \n" +
-                              "\tt.nomUbigeo, \n" +
+                              "\tt.nom_ubigeo nomUbigeo, \n" +
                               "\tf.acerca, \n" +
                               "\tt.can_per_valoracion canPerValoracion, \n" +
                               "\tt.total_valoracion totalValoracion,\n" +

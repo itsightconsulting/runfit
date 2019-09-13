@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisitanteRepository extends JpaRepository<Visitante, Integer> {
 
-
     @Query(nativeQuery = true)
     UsuGenDTO getForCookieById(Integer id);
 }
