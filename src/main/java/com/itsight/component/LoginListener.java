@@ -114,8 +114,10 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             }else{
                 String fullName = usu.getNombres() + " " + usu.getApellidos();
                 response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
-                if(usu.getUuidFp().equals("")){
+                if(!usu.getUuidFp().equals("")){
                     response.addCookie(createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
+                }else{
+                    response.addCookie(createCookie(GLL_IMG_PERFIL.name(), ""));
                 }
             }
         } catch (Exception e){

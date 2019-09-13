@@ -323,6 +323,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setLstTrainerFicha(lstTf);
 
         //Img perfil
+//        obj.setUuidFp(Parseador.getEncodeBase64(trainer.getUsername()));
         obj.setUuidFp(refUpload.getUuidFp());
         obj.setExtFp(JPEG.get());
 
