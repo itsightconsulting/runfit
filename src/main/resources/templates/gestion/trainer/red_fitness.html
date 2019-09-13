@@ -390,7 +390,6 @@
     }
 
     function preNotificacionPersonal(rfId, cliId, cliCorreo){
-
         $.ajax({
             type: 'GET',
             url: _ctx+'gestion/chat/get/'+rfId,
@@ -400,8 +399,11 @@
                 reconstruirChat(res);
                 $('#RfId').val(rfId);
                 $('#CliNom').text(users.find(c => c.id == rfId).cliNombreCompleto);
+                $('#InpCliId').val(cliId);
             },
             error: ()=>{
+                //Cuando no se tiene ningún chat, el response será un 404, se setea esos datos para que en caso se envie el primer chat
+                //se sepa a quien se va a notificar
                 $('#mdlPrimerChat').modal('show');
                 $('#InpCliId').val(cliId);
                 $('#InpCliCorreo').val(cliCorreo);
@@ -417,12 +419,16 @@
         const rfId = Number($('#RfId').val());
         const msj = $('#ChatSms').val().replace(/\r?\n/g, '<br />');
         const dvChat = document.querySelector('#ChatBody');
+        const cliId = $('#InpCliId').val();
         $.ajax({
             type: 'PUT',
             url: _ctx+'gestion/chat/update/'+rfId,
             blockLoading: false,
             dataType: 'json',
-            data: {msg: msj},
+            data: {
+                   msg: msj,
+                   cliId: cliId
+            },
             success: ()=>{
                 dvChat.appendChild(htmlStringToElement(`
                     <div class="chat-rg">${msj}

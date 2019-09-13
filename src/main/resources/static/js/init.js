@@ -332,11 +332,23 @@ $(function() {
     miniPanelActive();
     //fancybox();
     select_fave();
+    checkAlertas();
     $('[rel="tooltip"]').tooltip();
     try{
         leftPanelFocus()
     }catch(e){}
 });
+
+function checkAlertas(){
+    //Check Chat Alerts
+    const notificacionChat = getCookie("GLL_NOTIFICACION_CHAT");
+    const sideBar = document.getElementById("SideBar1");
+    if(notificacionChat){
+        const chatHref = sideBar.querySelector("a[href='/gestion/chat/get/cliente']");
+        chatHref.classList.add('notif');
+        chatHref.style.setProperty("--content", `'${notificacionChat}'`);
+    }
+}
 
 function verTycServicios(){
 

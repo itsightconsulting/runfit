@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
-                 http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
-    <description>Extracted native queries for the project</description>
-    <!-- using Native SQL query -->
-    <!--<named-stored-procedure-query name="fn_actualizar_cliente_por_id" procedure-name="func_update_cliente_by_id"></named-stored-procedure-query>-->
-</entity-mappings>

@@ -274,7 +274,21 @@ function exception(xhr, errorName) {
     const sCode = xhr['status'];
 
     if(sCode === 405){
-        $.smallBox({content: "Request method 'G|PT|PS|D' not supported or denied permission",
+        if(xhr.responseText && xhr.responseText.startsWith("<!DOCTYPE html>")){
+            setTimeout(()=>{
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
+                    content: "<div class='font-md'><i> Su sesión ha expirado, usted será redireccionado a la página de login...</div></i>",
+                    buttons: '[OK]'
+                }, function (ButtonPressed) {
+                    if(ButtonPressed == 'OK'){
+                        window.location.href = _ctx+'login';
+                    }
+                });
+            }, 1000);
+            return;
+        }
+        $.smallBox({content: "Request method 'G|PT|PS|D' not supported or denied permissions",
                        color: "alert",
                        timeout: 10000});
         return;
@@ -899,25 +913,6 @@ function instanceAllTooltip(){
     })
 }
 
-function cerrarSesion(){
-    $.SmartMessageBox({
-        title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> ¿Está seguro que desea cerrar sesión <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span> ?",
-        buttons: "[No][Si]"
-    }, function(e) {
-        "Si" == e && $.ajax({
-            url: _ctx + "logout",
-            type: "POST",
-            success: function(e) {
-                document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
-                window.location = _ctx + "login";
-            },
-            error: function(e) {
-                console.log(e)
-            }
-        })
-    })
-}
-
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -1106,8 +1101,8 @@ function cerrarSesion(){
                 document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
                 window.location = _ctx + "login";
             },
-            error: function(e) {
-                console.log(e)
+            error: function(err) {
+                exception(err)
             }
         })
     })

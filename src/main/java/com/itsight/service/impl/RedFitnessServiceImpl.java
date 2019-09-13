@@ -9,10 +9,7 @@ import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.domain.jsonb.Mensaje;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
 import com.itsight.generic.BaseServiceImpl;
-import com.itsight.repository.ChatRepository;
-import com.itsight.repository.RedFitnessRepository;
-import com.itsight.repository.SecurityUserRepository;
-import com.itsight.repository.ServicioRepository;
+import com.itsight.repository.*;
 import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
@@ -47,6 +44,8 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
 
     private SecurityUserRepository securityUserRepository;
 
+    private ConfiguracionClienteRepository configuracionClienteRepository;
+
     @Value("${domain.name}")
     private String domainName;
 
@@ -58,7 +57,8 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
             AnuncioReceptorService anuncioReceptorService,
             ChatRepository chatRepository,
             ServicioRepository servicioRepository,
-            SecurityUserRepository securityUserRepository){
+            SecurityUserRepository securityUserRepository,
+            ConfiguracionClienteRepository configuracionClienteRepository){
         super(repository);
         this.emailService = emailService;
         this.anuncioTrainerService = anuncioTrainerService;
@@ -67,6 +67,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
         this.chatRepository = chatRepository;
         this.servicioRepository = servicioRepository;
         this.securityUserRepository = securityUserRepository;
+        this.configuracionClienteRepository = configuracionClienteRepository;
     }
 
     @Override
@@ -202,6 +203,7 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
                 ultimo,
                 msgs,
                 now);
+        configuracionClienteRepository.updateNotificacionChatById(runneId);
         emailService.enviarCorreoInformativo("Runfit Notificaciones", runneCorreo, cuerpo);
         return NOTIFICACION_RED_FIT_PERSONAL.get();
     }

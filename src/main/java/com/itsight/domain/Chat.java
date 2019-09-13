@@ -31,11 +31,6 @@ public class Chat implements Serializable {
     @Column(columnDefinition = "jsonb")
     private List<Mensaje> mensajes;
 
-    @JsonManagedReference
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "ChatId", referencedColumnName = "RedFitnessId")
-    private RedFitness redFitness;
     @Column(nullable = false)
     private boolean flagLeido;
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,5 +39,11 @@ public class Chat implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = true)
     private Date fechaModificacion;
+
+    @JsonManagedReference
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "ChatId", referencedColumnName = "RedFitnessId")
+    private RedFitness redFitness;
 
 }

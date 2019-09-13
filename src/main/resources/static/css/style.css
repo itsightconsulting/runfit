@@ -283,7 +283,7 @@ a.fav:hover .svg, a.fav.selected .svg {
         position: relative;
         top: 8px; }
       .sidebar li a.notif:after {
-        content: "1";
+        content: var(--content, "1");
         float: right;
         background-color: #cf3239;
         width: 25px;

@@ -4,14 +4,12 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.dto.ClienteDTO;
+import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
 import com.itsight.domain.pojo.TycClientePOJO;
 import com.itsight.domain.pojo.UsuarioPOJO;
-import com.itsight.service.ClienteProcedureInvoker;
-import com.itsight.service.ClienteService;
-import com.itsight.service.RedFitnessService;
-import com.itsight.service.SecUserProcedureInvoker;
+import com.itsight.service.*;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,4 +119,5 @@ public class ClienteController extends BaseController {
         return redFitnessService.registrarNuevaRedParaClienteAntiguo(
                 id, trainerId, Integer.parseInt(svcId), correoTrainer, Integer.parseInt(fichaId), ttId);
     }
+
 }

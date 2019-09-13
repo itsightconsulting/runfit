@@ -1,11 +1,14 @@
 package com.itsight.repository;
 
 import com.itsight.domain.ConfiguracionCliente;
+import com.itsight.domain.dto.ConfiguracionClienteDTO;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ConfiguracionClienteRepository extends JpaRepository<ConfiguracionCliente, Integer> {
@@ -29,4 +32,19 @@ public interface ConfiguracionClienteRepository extends JpaRepository<Configurac
             "where lower(nom) = lower(?2))" +
             ",to_jsonb(CAST(?3 as text))) WHERE cliente_id = ?1", nativeQuery = true)
     void updateById(Integer id, String clave, String valor);
+
+    @Modifying
+    @Query(value = "UPDATE configuracion_cliente\n" +
+            "SET parametros = jsonb_set(parametros, CAST('{5,\"valor\"}' as text[]),\n" +
+            "                                        CAST (\n" +
+            "                                            CAST((\n" +
+            "                                                CAST(\n" +
+            "                                                    COALESCE(\n" +
+            "                                                            NULLIF(parametros -> 5 ->> 'valor', ''), '0'\n" +
+            "                                                        ) as int\n" +
+            "                                                ) + 1) as text\n" +
+            "                                                ) as jsonb )\n" +
+            "                          )\n" +
+            "WHERE cliente_id = :cliId", nativeQuery = true)
+    void updateNotificacionChatById(Integer cliId);
 }

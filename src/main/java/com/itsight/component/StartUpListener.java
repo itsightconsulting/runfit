@@ -634,7 +634,9 @@ public class StartUpListener implements ApplicationListener<ContextRefreshedEven
         if(configuracionGeneralService.findOne(3) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_RUTINA_ID", "", true, 3));
         if(configuracionGeneralService.findOne(4) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAV_TRAINER_ID", "",true, 3));
         if(configuracionGeneralService.findOne(5) == null) configuracionGeneralService.save(new ConfiguracionGeneral("FAVS_POST_TRAINER", "",true, 3));
-        if(configuracionGeneralService.findOne(5) == null) configuracionGeneralService.save(new ConfiguracionGeneral("CONTROL_ENTRENAMIENTO", "DIARIA",true, 3));
+        if(configuracionGeneralService.findOne(6) == null) configuracionGeneralService.save(new ConfiguracionGeneral("CONTROL_ENTRENAMIENTO", "DIARIA",true, 3));
+        if(configuracionGeneralService.findOne(7) == null) configuracionGeneralService.save(new ConfiguracionGeneral("NOTIFICACION_CHAT", "",true, 3));
+
     }
 
     public void addingKilometrajeBase(){
