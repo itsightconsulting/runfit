@@ -2,6 +2,7 @@ package com.itsight.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.domain.RedFitness;
+import com.itsight.domain.dto.ChatDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.generic.BaseService;
 
@@ -20,7 +21,7 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
     List<Integer> findTrainerIdByUsuarioId(Integer id);
 
-    String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String cuerpo) throws JsonProcessingException;
+    String enviarNotificacionPersonal(ChatDTO chat, Integer trainerId) throws JsonProcessingException;
 
     String enviarNotificacionGeneral(Integer trainerId, String asunto, String cuerpo);
 

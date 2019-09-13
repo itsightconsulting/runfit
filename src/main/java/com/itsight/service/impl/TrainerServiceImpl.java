@@ -293,8 +293,9 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         obj.setTrainer(trainer);
         lstTf.add(obj);
         //Autogenerando uuids para imagenes que se registrarán after esta request
+        String uuidFp = Parseador.getEncodeBase64(trainer.getUsername()).replaceAll("\\=", "").toLowerCase();
         RefUploadIds refUpload = new RefUploadIds();
-        refUpload.setUuidFp(UUID.randomUUID());//imgPerfil
+        refUpload.setUuidFp(uuidFp);//imgPerfil
 
         List<Servicio> servicios = new ArrayList<>();
 
@@ -323,8 +324,7 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         trainer.setLstTrainerFicha(lstTf);
 
         //Img perfil
-        //obj.setUuidFp(Parseador.getEncodeBase64(trainer.getUsername()));
-        obj.setUuidFp(refUpload.getUuidFp());
+        obj.setUuidFp(uuidFp);
         obj.setExtFp(JPEG.get());
 
         //Registrando

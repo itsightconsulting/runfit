@@ -36,7 +36,7 @@ import java.util.UUID;
         @NamedNativeQuery(query = "SELECT U.security_user_id id, U.nombres, U.apellidos, U.tipo_documento_id tipoDocumento, U.numero_documento numeroDocumento, U.correo, U.telefono, U.movil, U.username, U.ubigeo, U.flag_activo flagActivo FROM cliente U WHERE U.security_user_id = ?1",
                 name = "Cliente.getById",
                 resultSetMapping = "findById"),
-        @NamedNativeQuery(query = "select nombres, apellidos, coalesce(cast(uuid_fp as text), '') uuidFp, ext_fp extFp from cliente c where c.security_user_id = ?1",
+        @NamedNativeQuery(query = "select nombres, apellidos, coalesce(uuid_fp, '') uuidFp, ext_fp extFp from cliente c where c.security_user_id = ?1",
                 name = "Cliente.getForCookieById",
                 resultSetMapping = "findForCookieById")
 })
@@ -125,7 +125,7 @@ public class Cliente extends AuditingEntity implements Serializable {
     private String ubigeo;
 
     @Column()
-    private UUID uuidFp;
+    private String uuidFp;
 
     @Column()
     private String extFp;

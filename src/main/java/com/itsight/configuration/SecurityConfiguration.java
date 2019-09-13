@@ -38,7 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(
-                        "/p/**",
+                        "/",
+                                     "/p/**",
                                      "/postulacion/**",
                                      "/gestion/cliente/validacion-correo",
                                      "/gestion/cliente/validacion-username",

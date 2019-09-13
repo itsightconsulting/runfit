@@ -32,6 +32,18 @@ public class Chat implements Serializable {
     private List<Mensaje> mensajes;
 
     @Column(nullable = false)
+    private String fpTrainer;
+
+    @Column(nullable = false)
+    private String nomTrainer;
+
+    @Column(nullable = true)
+    private String fpCliente;
+
+    @Column(nullable = true)
+    private String nomCliente;
+
+    @Column(nullable = false)
     private boolean flagLeido;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)

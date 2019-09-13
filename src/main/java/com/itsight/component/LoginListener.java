@@ -87,7 +87,7 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                             Parseador.getEncodeHash32Id(
                                         "rf-gallcoks",
                                                 Integer.parseInt(configuracionClienteService.obtenerByIdAndClave(id, FAV_RUTINA_ID.name())))));
-                }else{
+                } else {
                     response.addCookie(createCookie(GLL_FAV_RUTINA.name(), ""));
                 }
                 List<ConfiguracionClienteDTO> lstConfCli = configuracionClienteProcedureInvoker.getAllById(id);
@@ -111,12 +111,12 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             //Generando cookies
             if(usu == null){
                 response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
-            }else{
+            } else {
                 String fullName = usu.getNombres() + " " + usu.getApellidos();
                 response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
                 if(!usu.getUuidFp().equals("")){
-                    response.addCookie(createCookie(GLL_IMG_PERFIL.name(), usu.getUuidFp() + usu.getExtFp()));
-                }else{
+                    response.addCookie(createCookie(GLL_IMG_PERFIL.name(), id + "/" + usu.getUuidFp() + usu.getExtFp()));
+                } else {
                     response.addCookie(createCookie(GLL_IMG_PERFIL.name(), ""));
                 }
             }

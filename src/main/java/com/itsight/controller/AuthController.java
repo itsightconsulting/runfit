@@ -71,7 +71,7 @@ public class AuthController extends BaseController {
     }
 
     //	@PreAuthorize("hasAnyRole({'ADMIN','USER'}) or hasAuthority('READ_PRIVILEGE')")
-    @GetMapping(value = {"/bienvenido", "/"})
+    @GetMapping(value = {"/bienvenido"})
     public String welcome(Model model){
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for (GrantedAuthority authority: authorities){
@@ -90,10 +90,8 @@ public class AuthController extends BaseController {
         return ViewConstant.PRINCIPAL;
     }
 
-    @GetMapping(value = {"/inicio"})
-    public String indexCliente() {
-        return ViewConstant.CLIENTE_INDEX;
-    }
+    @GetMapping(value = "/")
+    public String index() { return ViewConstant.MAIN_INICIO;}
 
     @GetMapping(value = "/accesoDenegado", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String permisosInsuficientes() {

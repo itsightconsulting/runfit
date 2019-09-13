@@ -475,6 +475,8 @@
             data.cliId = $('#InpCliId').val();
             data.cliCorreo = $('#InpCliCorreo').val();
             data.cuerpo = $('#ChatPrimerMensaje').val().trim();
+            data.fpTrainer = getCookie("GLL_IMG_PERFIL");
+            data.nomTrainer = getFullNameFromUser();
             urlDiff = 'personal';
         }
 

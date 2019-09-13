@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es-ES">
+<html lang="es-ES" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
   <head>
     <title>Trainer complete | Fitness | Runfit</title>
     <th:block th:insert="html-commons/p/meta :: fg-meta"></th:block>

@@ -1,5 +1,6 @@
 package com.itsight.controller;
 
+import com.itsight.constants.ViewConstant;
 import com.itsight.domain.Chat;
 import com.itsight.domain.pojo.ChatPOJO;
 import com.itsight.service.ChatProcedureInvoker;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es-ES">
+<html lang="es-ES" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
   <head>
     <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>

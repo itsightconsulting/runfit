@@ -8,6 +8,7 @@ import com.itsight.constants.ViewConstant;
 import com.itsight.domain.CategoriaPlantilla;
 import com.itsight.domain.Rutina;
 import com.itsight.domain.Trainer;
+import com.itsight.domain.dto.ChatDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.domain.dto.ResPaginationDTO;
@@ -132,12 +133,10 @@ public class RedFitnessController {
     @PostMapping(value = "/enviar/correo/personal")
     public @ResponseBody
     String enviarCorreoARunnerEspecifico(
-            @RequestParam String cliId,
-            @RequestParam String cliCorreo,
-            @RequestParam String cuerpo,
+            ChatDTO chat,
             HttpSession session) throws JsonProcessingException {
         Integer trainerId = (Integer) session.getAttribute("id");
-        return Utilitarios.jsonResponse(redFitnessService.enviarNotificacionPersonal(Integer.parseInt(cliId), cliCorreo, trainerId, cuerpo));
+        return Utilitarios.jsonResponse(redFitnessService.enviarNotificacionPersonal(chat, trainerId));
     }
 
     @PostMapping(value = "/enviar/correo/general")

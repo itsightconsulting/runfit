@@ -129,6 +129,13 @@ public class ClienteFullController {
         return new ModelAndView(ViewConstant.MAIN_CONSEJOS_CLIENTE);
     }
 
+
+
+    @GetMapping(value = {"/mi-chat"})
+    public ModelAndView verChat() {
+        return new ModelAndView(ViewConstant.MAIN_CHAT_CLIENTE);
+    }
+
     @GetMapping(value = "/misRutinas")
     public ModelAndView pageMisRutinas() {
         return new ModelAndView(ViewConstant.CLIENTE_MIS_RUTINAS);

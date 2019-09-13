@@ -745,7 +745,6 @@
           dataType: 'json',
           blockLoading: false,
           success: function (res) {
-            console.log(res);
             $perfil = res;
             recrearPerfil(res);
             getServiciosAsync(res.id, res.tipoTrainerId);

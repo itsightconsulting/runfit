@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsight.domain.AnuncioTrainer;
 import com.itsight.domain.RedFitness;
 import com.itsight.domain.Trainer;
+import com.itsight.domain.dto.ChatDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
 import com.itsight.domain.jsonb.Mensaje;
 import com.itsight.domain.pojo.TrainerFichaPOJO;
@@ -23,7 +24,6 @@ import java.util.List;
 
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_GENERAL;
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_PERSONAL;
-import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Transactional
@@ -187,11 +187,11 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public String enviarNotificacionPersonal(int runneId, String runneCorreo, Integer trainerId, String cuerpo) throws JsonProcessingException {
+    public String enviarNotificacionPersonal(ChatDTO chat, Integer trainerId) throws JsonProcessingException {
         Date now = new Date();
         Mensaje mensaje = new Mensaje();
         mensaje.setFecha(now);
-        mensaje.setMsg(cuerpo);
+        mensaje.setMsg(chat.getCuerpo());
         mensaje.setEsSalida(false);
         List<Mensaje> mensajes = new ArrayList<>();
         mensajes.add(mensaje);
@@ -199,12 +199,13 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
         ObjectMapper objMapper = new ObjectMapper();
         String ultimo = objMapper.writeValueAsString(mensaje);
         String msgs = objMapper.writeValueAsString(mensajes);
-        chatRepository.registrar(repository.findIdByRunnerIdAndTrainerId(runneId, trainerId),
+        chatRepository.registrar(repository.findIdByRunnerIdAndTrainerId(chat.getCliId(), trainerId),
                 ultimo,
                 msgs,
-                now);
-        configuracionClienteRepository.updateNotificacionChatById(runneId);
-        emailService.enviarCorreoInformativo("Runfit Notificaciones", runneCorreo, cuerpo);
+                now,
+                chat.getFpTrainer());
+        configuracionClienteRepository.updateNotificacionChatById(chat.getCliId());
+        emailService.enviarCorreoInformativo("Runfit Notificaciones", chat.getCliCorreo(), chat.getCuerpo());
         return NOTIFICACION_RED_FIT_PERSONAL.get();
     }
 

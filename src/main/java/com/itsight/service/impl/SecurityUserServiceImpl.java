@@ -60,7 +60,7 @@ public class SecurityUserServiceImpl implements SecurityUserService {
         Integer secUserId =  Integer.parseInt(idAndEnabled.split("\\|")[0]);
 
         UsuarioRecover usuRec = usuarioRecoverRepository.findById(secUserId).orElse(null);
-        Date nowPlusOne = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+        Date nowPlusOne = Date.from(Instant.now().plus(30, ChronoUnit.SECONDS));
         String schema = Utilitarios.getRandomString(10);
         if(usuRec == null){
             usuarioRecoverRepository.save(new UsuarioRecover(secUserId, schema, true, nowPlusOne));

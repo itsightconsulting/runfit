@@ -254,7 +254,7 @@ public class TrainerFicha implements Serializable {
     private List<CuentaPago> cuentas;
 
     @Column(nullable = false)
-    private UUID uuidFp;
+    private String uuidFp;
 
     @Column(nullable = false, updatable = false)
     private String extFp;

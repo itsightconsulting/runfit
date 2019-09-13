@@ -69,6 +69,8 @@
             <column name="flagLeido" class="java.lang.Boolean"/>
             <column name="fechaCreacion" class="java.util.Date"/>
             <column name="fechaModificacion" class="java.util.Date"/>
+            <column name="fpTrainer" class="java.lang.String"/>
+            <column name="nomTrainer" class="java.lang.String"/>
         </constructor-result>
     </sql-result-set-mapping>
 </entity-mappings>

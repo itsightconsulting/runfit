@@ -72,6 +72,7 @@ public class ViewConstant {
     public static final String MAIN_SUSPENDIDO= "gestion/trainer/suspendido";
     public static final String MAIN_HISTORIAL_RUTINA_ELEGIDA= "gestion/trainer/historial_rutina";
     public static final String MAIN_PAGOS_RESUMEN_ANUAL = "gestion/resumen_anual";
+    public static final String MAIN_CHAT_CLIENTE= "cliente/chat";
 
     public static final String MAIN_ASSETS_GRUPO_VIDEO = "gestion/grupo_video";
     public static final String MAIN_ASSETS_CATEGORIA_VIDEO = "gestion/categoria_video";

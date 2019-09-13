@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="es-ES">
+<html lang="es-ES" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
   <head>
+    <title>Mis consejos</title>
     <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
@@ -16,7 +19,9 @@
           <header>
             <div class="text-center">
               <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="/img/logo.png" alt=""></a>
-              <h4 class="user"><img class="svg" src="/img/iconos/icon_perfil.svg">Yasmine Andía H.<span>RUNNING</span></h4>
+              <h4 class="user">
+                <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
+              </h4>
             </div>
           </header>
         </div>

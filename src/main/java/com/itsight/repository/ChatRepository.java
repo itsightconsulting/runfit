@@ -12,8 +12,10 @@ import java.util.Date;
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
     @Modifying
-    @Query(value = "INSERT INTO chat(chat_id, ultimo, mensajes, fecha_creacion, flag_leido) values (?1, cast(?2 as jsonb), cast(?3 as jsonb), ?4, false)", nativeQuery = true)
-    void registrar(Integer id, String ultimo, String msgs, Date fechaCreacion);
+    @Query(value = "INSERT INTO chat(chat_id, ultimo, mensajes, fecha_creacion, flag_leido, fp_trainer) " +
+                    "values (?1, cast(?2 as jsonb), cast(?3 as jsonb), ?4, false, ?5)",
+            nativeQuery = true)
+    void registrar(Integer id, String ultimo, String msgs, Date fechaCreacion, String fpTrainer);
 
     @Query(value = "SELECT C.flagLeido from Chat C where C.id = ?1")
     Boolean getFlagLeidoById(Integer id);

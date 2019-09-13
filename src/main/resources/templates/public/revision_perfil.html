@@ -916,12 +916,17 @@
             bridgeMultipart: true,
             success: function (data, textStatus) {
                 if (textStatus == "success") {
-                    if ($galeria.length || document.getElementById('FinalImagenRecortada').src.startsWith("https")) {
-                        if(document.getElementById('FinalImagenRecortada').src.startsWith("https")){
+                    const profileImgChanged = !document.getElementById('FinalImagenRecortada').src.startsWith("https");
+                    if ($galeria.length || profileImgChanged) {
+                        if(profileImgChanged && !$galeria.length){
                             uploadFotoPerfil(data);
                         }
-                        if($galeria.length){
+                        if($galeria.length && !profileImgChanged){
                             uploadFotosGaleria(data);
+                        }
+
+                        if($galeria.length && profileImgChanged){
+                            uploadFotosGaleria(data, uploadFotoPerfil);
                         }
                     } else {
                         if($perfil.tipoTrainerId === TipoTrainer.DE_EMPRESA){
@@ -1022,7 +1027,7 @@
         }
     }
 
-    function uploadFotosGaleria(d){
+    function uploadFotosGaleria(d, upProfileImgCallback){
         //submit the form here
         const hshId = d.res;
         const data = new FormData();
@@ -1047,9 +1052,16 @@
                 return myXhr;
             },
             success: function () {
-                reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. " +
-                                "Le estaremos notificando los resultados. Gracias"},
-                    3600000);
+                if(upProfileImgCallback){
+                    setTimeout(()=>{//Se coloca el timeout para que los spinner no se crucen entre los momentos de instancia y eliminación
+                        upProfileImgCallback(d);
+                    }, 500);
+                }else{
+                    reqSuccess({res: "Éxito, usted actualizó su ficha correctamente, pronto esta volverá a ser revisada. " +
+                            "Le estaremos notificando los resultados. Gracias"},
+                        3600000);
+                }
+
             },
             error: (xhr)=>{
                 exception(xhr);

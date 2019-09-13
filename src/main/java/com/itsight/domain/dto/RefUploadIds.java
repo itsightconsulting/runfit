@@ -13,7 +13,7 @@ import static com.itsight.util.Enums.FileExt.PDF;
 public class RefUploadIds {
 
     private Integer trainerId;
-    private UUID uuidFp;
+    private String uuidFp;
     private String nombresImgsGaleria;
     private String nombresCondSvcs;
 

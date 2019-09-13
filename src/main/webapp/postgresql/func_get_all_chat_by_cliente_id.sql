@@ -5,11 +5,13 @@ CREATE OR REPLACE FUNCTION func_get_all_chat_by_cliente_id(_cli_id int)
                 mensajes          text,
                 flagLeido         boolean,
                 fechaCreacion     timestamp,
-                fechaModificacion timestamp
+                fechaModificacion timestamp,
+                fpTrainer         text,
+                nomTrainer        text
             )
 AS
 $func$
-select ultimo::text, mensajes::text, flag_leido, fecha_creacion, fecha_modificacion
+select ultimo::text, mensajes::text, flag_leido, fecha_creacion, fecha_modificacion, fp_trainer, nom_trainer
 from chat
 where chat_id IN (
     select red_fitness_id
@@ -18,4 +20,3 @@ where chat_id IN (
 )
 $func$ LANGUAGE sql;
 
-select func_get_all_chat_by_cliente_id(18)
