@@ -17,4 +17,5 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
     @Query(value = "SELECT C.flagLeido from Chat C where C.id = ?1")
     Boolean getFlagLeidoById(Integer id);
+
 }

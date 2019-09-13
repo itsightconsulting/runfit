@@ -1,6 +1,8 @@
 package com.itsight.controller;
 
 import com.itsight.domain.Chat;
+import com.itsight.domain.pojo.ChatPOJO;
+import com.itsight.service.ChatProcedureInvoker;
 import com.itsight.service.ChatService;
 import com.itsight.service.ConfiguracionClienteService;
 import com.itsight.util.Enums;
@@ -26,10 +28,15 @@ public class ChatController {
 
     private ConfiguracionClienteService configuracionClienteService;
 
+    private ChatProcedureInvoker chatProcedureInvoker;
+
     @Autowired
-    public ChatController(ChatService chatService, ConfiguracionClienteService configuracionClienteService) {
+    public ChatController(ChatService chatService,
+                          ConfiguracionClienteService configuracionClienteService,
+                          ChatProcedureInvoker chatProcedureInvoker) {
         this.chatService = chatService;
         this.configuracionClienteService = configuracionClienteService;
+        this.chatProcedureInvoker = chatProcedureInvoker;
     }
 
     @GetMapping("/get/{id}")
@@ -42,12 +49,12 @@ public class ChatController {
     }
 
     @GetMapping("/get/cliente")
-    public @ResponseBody ResponseEntity<List<Chat>> obtenerChatBySessionId(HttpSession session){
-        /*Integer clienteId = (Integer) session.getAttribute("id");
-        chatService.findBy
-        if(chat != null){
-            return new ResponseEntity<>(chat, HttpStatus.OK);
-        }*/
+    public @ResponseBody ResponseEntity<List<ChatPOJO>> obtenerChatBySessionId(HttpSession session){
+        Integer clienteId = (Integer) session.getAttribute("id");
+        List<ChatPOJO> lstChat = chatProcedureInvoker.getAllByClienteId(clienteId);
+        if(!lstChat.isEmpty()){
+            return new ResponseEntity<>(lstChat, HttpStatus.OK);
+        }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
