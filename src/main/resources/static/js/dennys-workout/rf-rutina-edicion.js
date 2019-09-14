@@ -100,8 +100,6 @@ function init(){
         validators();
         instanciarDatosFitnessCliente();
         tabRutina.addEventListener('click', principalesEventosTabRutina);
-
-
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
         tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
@@ -135,7 +133,7 @@ function init(){
         modalEventos();
         //setFechaActual(document.querySelectorAll('input[type="date"]'));
         //obtenerSemanasEnviadas();
-        calendarioTmp();
+       // calendarioTmp();
 
 
     });
@@ -1229,13 +1227,6 @@ function principalesEventosClickRutina(e) {
         RutinaDOMQueries.getSubElementoByIxs(ixs);
         SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
     }
-    else if(clases.contains('agregar-kms')){
-        e.preventDefault();
-        e.stopPropagation();
-        const ixs = RutinaIx.getIxsForElemento(input);
-        ElementoOpc.verDistanciaElemento(ixs, input);
-    }
-
     else if(clases.contains('agregar-tiempo')){
         //Sirve para comparar el valor inicial del elemento con el valor que retorna en el evento focusout con el fin de evitar actualizaciones innecesarias
         e.preventDefault();
@@ -1780,7 +1771,6 @@ function principalesEventosFocusOutSemanario(e) {
             divNota.remove();
         }
     }
-    else if(clases.contains('agregar-kms')){}
     else if(clases.contains('agregar-tiempo')){
         //$tiempoActualizar: Sirve para comparar el valor inicial del elemento con el valor que retorna cuando se activa este evento(focusout) con el fin de evitar actualizaciones innecesarias
         const tiempo = Number(e.target.value.trim());

@@ -1658,10 +1658,14 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     padding-right: 55px;
     display: inline-block;
     margin-bottom: 18px; }
-.editor_text span i {
+.editor_text span i.indicador {
     font-family: GothamHTF-Book;
-    color: #a8fa00;
     font-style: normal; }
+
+.editor_text span i{
+    color: #a8fa00;
+}
+
 .editor_text span:last-child {
     padding-right: 10px; }
 
@@ -1777,7 +1781,7 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     border-bottom: 1px solid #ccc;
    }
 .scroll_rut .days_week article .rt-elem .elem input.item-minutos{
-    width: 100%;
+    width: 70%;
     border: none;
     border-bottom: 1px solid #ccc;
     text-align: center;
@@ -2120,3 +2124,125 @@ button.note-color-fuente, button.note-bg-color {
     color: #ffffff!important;
     background-color: unset!important;
 }
+
+
+#rutinaSemana .rf-dia .flecha-elem-comp{
+    display: flex!important;
+}
+
+#rutinaSemana .rf-dia .dv-tiempo-elem-comp{
+    display:  inline-flex!important;
+}
+
+.editor_text .dv-copia-semana{
+    width:unset;
+    padding-bottom: 10px;
+}
+
+.editor_text .select-copia-semana{
+    border: 1px solid #ccc;
+}
+
+.editor_text .its-calendar {
+    width: 220px !important;
+    font-size: 0.75em !important;
+}
+
+
+.editor_text .its-calendar-hoy{
+    background: #73f194;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+.editor_text .rf-semanario-sels{
+    color: #34ad34 !important;
+}
+
+.editor_text .its-indicador-1{
+    width: 300px !important;
+    font-size: 0.85em !important;
+}
+
+
+.editor_text .its-calendar h6{
+    font-size: 1.5em !important;
+}
+.editor_text .its-calendar .container-fluid .row .a{
+    width: 14% !important;
+    padding: 5px !important;
+}
+.editor_text .its-calendar .container-fluid .row .a .span{
+    text-align: center;
+    width: 100%  !important;
+    padding: 5px !important;
+}
+
+.editor_text .event-calendar{
+    font-size: 0.35em;
+    position: absolute;
+    right: 0px;top: 3px;
+    display: -webkit-box;
+    color: #31373A;
+    /*clip-path: polygon(0 0, 100% 0, 100% 100%);*/
+}
+
+.editor_text .event-calendar-c{
+    font-size: 0.35em;
+    position: absolute;
+    right: 0px;top: 3px;
+    display: -webkit-box;
+    color: #e4e01c;
+    /*clip-path: polygon(0 0, 100% 0, 100% 100%);*/
+}
+
+
+.editor_text  .seven-cols .col-md-1, .seven-cols .col-sm-1, .seven-cols .col-lg-1, .seven-cols .col-xs-1 {
+    width: 11.285714285714285714285714285714% !important;
+
+}
+
+.mini{
+    padding: 0px 5px!important;
+    margin: 0px 3px!important;
+}
+
+.mini-header{
+    padding: 0px 5px!important;
+    margin: 0px 3px 6px!important;
+    color: #70A400!important;
+}
+
+.mini:hover {
+    background: #89AD45 !important;
+    background-image: initial !important;
+    background-position-x: initial !important;
+    background-position-y: initial !important;
+    background-size: initial !important;
+    background-repeat-x: initial !important;
+    background-repeat-y: initial !important;
+    background-attachment: initial !important;
+    background-origin: initial !important;
+    background-clip: initial !important;
+    background-color: #a8fa00 !important;
+}
+
+
+.mes-calendario,.mes-calendario span{
+  margin-bottom: 7px!important;
+  color: #70A400!important;
+  cursor: pointer;
+  padding-right: unset!important;
+}
+
+.seven-cols .mini{
+  cursor: pointer;
+}
+
+.selector-mes{
+  cursor: pointer;
+}
+
+.editor_text span i.calendario {
+    font-family: !important;
+}
+
