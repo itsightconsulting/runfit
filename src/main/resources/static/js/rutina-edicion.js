@@ -11,7 +11,6 @@ const fntFmlyEditor = document.querySelector('#fntFmlyEditor');
 const $btnSeleccionColor = document.querySelector('.chosen-color');
 const $selectZoom = document.querySelector('#selectZoom');
 
-const chosenColorPathD = $('path[d="M20.756,22.117H9.048l-2.235,5.404H0.831l11.241-25.22h5.764l11.277,25.22h-6.125L20.756,22.117z      M18.92,17.684L14.918,8.03l-3.998,9.654H18.92z"]');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -71,14 +70,14 @@ function init(){
         $rutina = new Rutina(rutinaData);
         if(uriParam){
           let semanaIdx = atob(uriParam);
-            $('#SemanaActual').text(Number(semanaIdx)+1);
+            $('#nroSemanaActual').text(Number(semanaIdx)+1);
             $rutina.initEspecifico(semana,semanaIdx)
         }else{
              $rutina.init(semana);
         }
-         //validators();
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
+        $semanario.addEventListener('focusin', principalEventoFocusIn);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $selectZoom.addEventListener('change', eventoSelectZoom);
 
@@ -94,29 +93,26 @@ function init(){
         fntFmlyEditor.addEventListener('change', cambiarFamiliaFuenteElemento);
 
         $(dvEditor).on('click','.btn' , principalesDivEditor);
+        $(dvEditor).click(eventosCalendario);
         $(document).bind("click", function(event) {
             $rMenuDia.className = "hide";
             $rMenuEleSubele.className = "hide";
 
             if($blnObjetivo){
                 rutScroll();
-
             }
+
+
         });
 
-
-
-
 /*
-
+           calendarioTmp();
 
           instanciarDatosFitnessCliente();
 
 
            tabFichaTecnica.addEventListener('click', principalesEventosTabFichaTecnica);
            tabFichaTecnica.addEventListener('focusout', principalesEventosFocusOutTabFichaTecnica);
-           $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
-           $semanario.addEventListener('focusin', principalEventoFocusIn);
            rutinarioCe.addEventListener('click', genericoRutinarioCe);
            cboSubCategoriaId.addEventListener('change', cargarListaSubCategoriaEjercicio);
            cboSubCategoriaIdSec.addEventListener('change', cargarListaSubCategoriaEjercicio);
@@ -124,7 +120,6 @@ function init(){
            btnGuardarMini.addEventListener('click', guardarMiniPlantilla);
            btnActualizarMvz.addEventListener('click', actualizarMetricasVelocidadBD);
            shortcutRutinario.addEventListener('click', abrirAtajoRutinario);
-           divEditor.addEventListener('click', principalesDivEditor);
            btnVerDetSemanas.addEventListener('click', FichaSeccion.newAlertaInfoSemanas);
            btnComprobarMacro.addEventListener('click', MacroCiclo.comprobar);
            btnGenerarRutinaCompleta.addEventListener('click', MacroCiclo.generarRutinaCompleta);
@@ -140,7 +135,6 @@ function init(){
            modalEventos();
            //setFechaActual(document.querySelectorAll('input[type="date"]'));
            //obtenerSemanasEnviadas();
-           calendarioTmp();
  */
           instanciarTooltips();
 
@@ -408,6 +402,8 @@ function eventosClickMenuOptElem(e) {
         }
     }
 
+     $rMenuEleSubele.className = "hide";
+
 }
 
 function eventosClickMenuOptDia(e) {
@@ -455,23 +451,27 @@ function eventosClickMenuOptDia(e) {
     else if(inpClasses.contains('limpiar-dia')){
         const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const ixs = RutinaIx.getIxsForDia(dvDia);
-        DiaOpc.limpiarElementosDia(ixs.numSem, ixs.diaIndex);
+        DiaOpc.confirmarLimpiarElementosDía(ixs.numSem, ixs.diaIndex);
     }
     else if(inpClasses.contains('copiar-dia')){
         const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const ixs = RutinaIx.getIxsForDia(dvDia);
         $diaPlantilla = $rutina.semanas[ixs.numSem].dias[ixs.diaIndex];
     } else if(inpClasses.contains('pegar-mini')) {
+        debugger
         const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const diaIndex = dvDia.getAttribute('data-index');
         DiaOpc.pegarMiniPlantillaDia(diaIndex);
     }else if(inpClasses.contains('pegar-elementos')){
         const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const diaIndex = dvDia.getAttribute('data-index');
-        //  DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
+        //- DiaOpc.pegarMiniPlantillaDiaListas(diaIndex);
         DiaOpc.pegarElementosSeleccionados(diaIndex);
 
     }
+
+    $rMenuDia.className = "hide";
+
 
 }
 
@@ -492,8 +492,7 @@ function eventosEditorRutina(e){
         e.preventDefault();
         let numSem = Number($semActual.textContent);
         if(numSem != 1){
-          //  const parentDiv = input.tagName == "I" ? input.parentElement.parentElement : input.parentElement;
-          //  parentDiv.setAttribute('hidden','hidden');
+
             avanzarRetrocederSemana(numSem-2, 2);
         }else{
             $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
@@ -522,8 +521,7 @@ function principalesEventosFocusOutSemanario(e) {
             agregarElementoBD(ixs.numSem, ixs.diaIndex, ElementoTP.SIMPLE);
             RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector('.inputs-init').classList.toggle('hidden');
             const nuevoEle = RutinaDOMQueries.getElementoByIxs(ixs);
-           // instanciarElementoTooltips(nuevoEle);
-         //   instanciarElementoPopovers(nuevoEle);
+
         } else {
             if (e.target.value.length == 0) {
             } else {
@@ -550,8 +548,7 @@ function principalesEventosFocusOutSemanario(e) {
             agregarElementoBD(ixs.numSem, ixs.diaIndex, ElementoTP.COMPUESTO);
             RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector('.inputs-init').classList.toggle('hidden');
             const nuevoEle = RutinaDOMQueries.getElementoByIxs(ixs);
-         //   instanciarElementoTooltips(nuevoEle);
-         //   instanciarElementoPopovers(nuevoEle);
+
 
         } else {
 
@@ -603,10 +600,6 @@ function principalesEventosFocusOutSemanario(e) {
             actualizarElementoStrategyBD2(ixs.numSem, ixs.diaIndex, (posEle = i), tipo);
             initTempElementoRef.remove();
 
-           /* const nueEle = RutinaDOMQueries.getElementoByIxs(ixs).querySelector('.panel-heading').children[0];
-            instanciarElementoTooltips(nueEle);
-            instanciarElementoPopovers(nueEle);
-           */
         }
     }
 
@@ -656,7 +649,7 @@ function principalesEventosFocusOutSemanario(e) {
 
     else if(clases.contains('agregar-tiempo')){
         //$tiempoActualizar: Sirve para comparar el valor inicial del elemento con el valor que retorna cuando se activa este evento(focusout) con el fin de evitar actualizaciones innecesarias
-        
+        debugger
         const tiempo = Number(e.target.value.trim());
         let gIx = e.target.getAttribute('data-index');
         if($tiempoActualizar != tiempo && gIx == $gIndex && !isNaN(tiempo)){
@@ -751,22 +744,51 @@ function principalesEventosFocusOutSemanario(e) {
             RutinaSet.setSubElementoNota(ixs.numSem, ixs.diaIndex, i, k, nota);
 
             actualizarSubElementoNotaBD(nota, ixs.numSem, ixs.diaIndex, (posElemento = i), (postSubElemento = k));
-         //   divNota.remove();
+            divNota.remove();
         }else{
-        //    divNota.remove();
+           divNota.remove();
         }
     }
-    /*
-
-
-
-
-     else if(clases.contains('agregar-kms')){}
-
- */
 }
 
+function eventosCalendario(e){
 
+    const input = e.target;
+    const clases = input.classList;
+
+    debugger
+
+    if(clases.contains('mes-calendar')){
+        const mes = input.getAttribute('data-mes');
+        const anio = input.parentElement.getAttribute('data-anio');
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(anio, mes), true);
+    }
+    else if(clases.contains('cal-retroceder-sem')){
+        const qFechaInicio = RutinaGet.getFechaInicioSemanaEspecifica($refIxsSemCalendar[0] - 1);
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
+    }
+    else if(clases.contains('cal-adelantar-sem')){
+        debugger;
+        const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length-1];
+        let qFecha;
+        if($rutina.semanas[semIxRef+1] != undefined)
+            qFecha = RutinaGet.getFechaInicioSemanaEspecifica(semIxRef + 1);
+        else
+            qFecha = RutinaGet.getFechaFinSemanaEspecifica(semIxRef);
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFecha.anio, qFecha.mes), true, qFecha.mes);
+    }
+    else if(clases.contains('fechas-calendar')){
+        const semActual = Number(document.querySelector('#nroSemanaActual').textContent)-1;
+        if(semActual != $refIxsSemCalendar[input.getAttribute('data-index')])
+            avanzarRetrocederSemana($refIxsSemCalendar[input.getAttribute('data-index')], 2);
+        else
+            $.smallBox({color: "grey", content: "<i>El día que acaba de seleccionar pertenece a la semana<br/> que ya esta visualizando...</i>"});
+        $('#CalendarioRf').popover('show');
+    }
+
+
+
+}
 
 function ajustarFuenteElemento(e){
    debugger
@@ -798,7 +820,6 @@ function cambiarFamiliaFuenteElemento(e){
     $eleGenerico.classList.add(objEditor.clase);
     guardarEstilosElementoBD(ixs.numSem, ixs.diaIndex, (posEle = i));
 }
-
 
 function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
@@ -872,11 +893,6 @@ function principalesEventosClickRutina(e) {
 
 
             $(initElemento.querySelector(`.in-init-sub-ele`)).closest('li').remove();  //toggleClass('hidden');
-
-
-            //  instanciarSubElementoTooltip(nSubEle);
-          //  instanciarSubElementoPopover(nSubEle);
-
             $mediaAudio = '';
             $mediaVideo = '';
         }
@@ -913,49 +929,6 @@ function principalesEventosClickRutina(e) {
 
     /*
 
-
-      else if(clases.contains('trash-audio')) {
-          e.preventDefault();
-          e.stopPropagation();
-          const ixs = RutinaIx.getIxsForElemento(input);
-          ElementoOpc.eliminarMediaAudio(ixs);
-      }
-      else if(clases.contains('trash-video')) {
-          e.preventDefault();
-          e.stopPropagation();
-          const ixs = RutinaIx.getIxsForElemento(input);
-          ElementoOpc.eliminarMediaVideo(ixs);
-      }
-      else if(clases.contains('trash-audio-sub')) {
-          e.preventDefault();
-          e.stopPropagation();
-          const ixs = RutinaIx.getIxsForSubElemento(input);
-          SubEleOpc.eliminarMediaAudio(ixs);
-      }
-      else if(clases.contains('trash-video-sub')) {
-          e.preventDefault();
-          e.stopPropagation();
-          const ixs = RutinaIx.getIxsForSubElemento(input);
-          SubEleOpc.eliminarMediaVideo(ixs);
-      }
-      else if(clases.contains('trash-sub-elemento')){
-          const ixs = RutinaIx.getIxsForSubElemento(input);
-          RutinaDOMQueries.getSubElementoByIxs(ixs);
-          SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
-      }
-      else if(clases.contains('agregar-kms')){
-          e.preventDefault();
-          e.stopPropagation();
-          const ixs = RutinaIx.getIxsForElemento(input);
-          ElementoOpc.verDistanciaElemento(ixs, input);
-      }
-
-
-      else if(clases.contains('pre-guardar-dia')) {
-          e.stopPropagation();
-          const ixs = RutinaIx.getIxsForDia(input);
-          DiaOpc.preGuardarDiaPlantilla(ixs);
-      }
       else if(clases.contains('rf-sub-elemento-media')){
           const route = e.target.getAttribute('data-id-uuid');
           const tipoMedia = e.target.getAttribute('data-type');
@@ -988,16 +961,6 @@ function principalesEventosClickRutina(e) {
           e.stopPropagation();
           e.preventDefault();
           ElementoOpc.reproducirVideo(input);
-      }
-      else if(clases.contains('ele-ops')){
-          e.preventDefault();
-          e.stopPropagation();
-          instanciarEspecificosTooltip(input);
-
-      }
-      else if(clases.contains('sub-ele-ops')){
-          e.stopPropagation();
-          instanciarEspecificosTooltip(input);
       }
 
       */
@@ -1104,29 +1067,6 @@ function principalesEventosClickRutina(e) {
 
      }
 
-    /*
-    else if(clases.contains('insertar-encima-sub')){
-        e.stopPropagation();
-        let ixs = RutinaIx.getIxsForSubElemento(input);
-        let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs);
-
-        if(subElemento.nextElementSibling != undefined){
-            if(subElemento.nextElementSibling.classList.contains('ne-esp')){
-                subElemento.nextElementSibling.remove();
-            }
-        }
-
-        if(subElemento.previousElementSibling != undefined){
-            if(subElemento.previousElementSibling.classList.contains('ne-esp')) {
-
-            }else{
-                subElemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-12 padding-0"><input type="text" class="w-100 cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}" data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}" data-strategy="beforebegin"/></div></div>`);
-            }
-        }else{
-            subElemento.insertAdjacentHTML('beforebegin', `<div class="container-fluid padding-o-bottom-10 ne-esp"><div class="col-md-12 padding-0"><input type="text" class="w-100 cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}" data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}" data-strategy="beforebegin"/></div></div>`);
-        }
-
-    }
 
   /*  else if(clases.contains('pegar-mini')) {
         const diaIndex = input.getAttribute('data-index');
@@ -1185,6 +1125,10 @@ function principalesEventosClickRutina(e) {
         }
 
     }*/
+}
+
+function principalEventoFocusIn(e){
+    $nombreActualizar = e.target.textContent;
 }
 
 function principalesAlCambiarTab(e){
@@ -1485,6 +1429,19 @@ function principalesDivEditor(e){
             if(zm != "0.8") input.classList.remove('disabled');
         }
     }
+    else if(clases.contains('copiar-full-semana')) {
+        e.preventDefault();
+        RutinaOpc.abrirCopiadorSemana(input);
+
+    }
+    else if(clases.contains('abrir-calendario')){
+        debugger
+        e.preventDefault();
+        e.stopPropagation();
+        const qFechaInicio = RutinaGet.getFechaInicioSemanaEdicion();
+        RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), false, qFechaInicio.mes);
+    }
+
 }
 
 function eventoSelectZoom(e){
@@ -2528,6 +2485,29 @@ function actualizarElementoParcialBD(numSem, diaIndex, eleIndex, cantUltimos){
         complete: function () {}
     })
 }
+
+function copiarSemanaBD(e){
+    const sA = Number($semActual.textContent) - 1;
+    const sP = Number(e.parentElement.parentElement.children[0].value);
+    e.setAttribute('disabled', 'disabled');
+    $.ajax({
+        type: 'PUT',
+        contentType: "application/json",
+        url: _ctx + 'gestion/rutina/semana-completa/actualizar/'+sA+'/'+sP,
+        dataType: "json",
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+            if(data == "-2") $.smallBox({content: "<i>La semana ha sido copiada correctamente</i>"});
+            setTimeout(()=>{e.removeAttribute('disabled', 'disabled')}, 1000)
+        },
+        error: function (xhr) {
+            setTimeout(()=>{e.removeAttribute('disabled', 'disabled')}, 1000)
+            exception(xhr);
+        },
+        complete: function () {}
+    });
+}
+
 
 
 function cambiarATabRutina(){
