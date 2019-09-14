@@ -344,6 +344,9 @@ function checkAlertas(){
     const notificacionChat = getCookie("GLL_NOTIFICACION_CHAT");
     const sideBar = document.getElementById("SideBar1");
     if(notificacionChat){
+        if(isNaN(notificacionChat) || notificacionChat <= 0){
+            return;
+        }
         const chatHref = sideBar.querySelector("a[href='/cliente/mi-chat']");
         chatHref.classList.add('notif');
         chatHref.style.setProperty("--content", `'${notificacionChat}'`);

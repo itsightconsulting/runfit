@@ -5,6 +5,7 @@ import com.itsight.domain.Chat;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ChatRepository;
 import com.itsight.service.ChatService;
+import com.itsight.util.Utilitarios;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,5 +112,11 @@ public class ChatServiceImpl extends BaseServiceImpl<ChatRepository> implements 
     @Override
     public boolean checkFlagLeidoById(Integer id) {
         return repository.getFlagLeidoById(id);
+    }
+
+    @Override
+    public String updateFlagById(Integer id) {
+        repository.updateFlagById(id);
+        return Utilitarios.jsonResponse(ACTUALIZACION.get());
     }
 }

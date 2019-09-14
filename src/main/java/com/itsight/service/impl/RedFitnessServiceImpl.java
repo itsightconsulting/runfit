@@ -203,7 +203,8 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
                 ultimo,
                 msgs,
                 now,
-                chat.getFpTrainer());
+                chat.getFpTrainer(),
+                chat.getNomTrainer());
         configuracionClienteRepository.updateNotificacionChatById(chat.getCliId());
         emailService.enviarCorreoInformativo("Runfit Notificaciones", chat.getCliCorreo(), chat.getCuerpo());
         return NOTIFICACION_RED_FIT_PERSONAL.get();
