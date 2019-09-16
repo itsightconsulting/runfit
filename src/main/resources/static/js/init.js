@@ -348,6 +348,9 @@ function checkAlertas(){
             return;
         }
         const chatHref = sideBar.querySelector("a[href='/cliente/mi-chat']");
+        if(!chatHref){
+            return;
+        }
         chatHref.classList.add('notif');
         chatHref.style.setProperty("--content", `'${notificacionChat}'`);
     }
