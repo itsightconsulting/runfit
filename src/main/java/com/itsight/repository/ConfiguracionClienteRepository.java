@@ -34,17 +34,17 @@ public interface ConfiguracionClienteRepository extends JpaRepository<Configurac
     void updateById(Integer id, String clave, String valor);
 
     @Modifying
-    @Query(value = "UPDATE configuracion_cliente\n" +
-            "SET parametros = jsonb_set(parametros, CAST('{5,\"valor\"}' as text[]),\n" +
-            "                                        CAST (\n" +
-            "                                            CAST((\n" +
-            "                                                CAST(\n" +
-            "                                                    COALESCE(\n" +
-            "                                                            NULLIF(parametros -> 5 ->> 'valor', ''), '0'\n" +
-            "                                                        ) as int\n" +
-            "                                                ) + 1) as text\n" +
-            "                                                ) as jsonb )\n" +
-            "                          )\n" +
+    @Query(value = "UPDATE configuracion_cliente " +
+            "SET parametros = jsonb_set(parametros, CAST('{5,\"valor\"}' as text[]), " +
+            "                                        CAST (" +
+            "                                            CAST(( " +
+            "                                                CAST( " +
+            "                                                    COALESCE( " +
+            "                                                            NULLIF(parametros -> 5 ->> 'valor', ''), '0' " +
+            "                                                        ) as int" +
+            "                                                ) + :sustractOrPlusNumber) as text" +
+            "                                                ) as jsonb)" +
+            "                          )" +
             "WHERE cliente_id = :cliId", nativeQuery = true)
-    void updateNotificacionChatById(Integer cliId);
+    void updateNotificacionChatById(Integer cliId, Integer sustractOrPlusNumber);
 }

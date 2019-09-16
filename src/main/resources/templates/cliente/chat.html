@@ -201,11 +201,12 @@
     function actualizarFlagChat(chatId, input){
         $.ajax({
             type: 'PUT',
-            url: _ctx + 'gestion/chat/update/flag/'+chatId,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/chat/update/flag/'+chatId,
             dataType: 'json',
             success: function(){
                 updateCookie("GLL_NOTIFICACION_CHAT", Number(getCookie("GLL_NOTIFICACION_CHAT"))-1);
+                updateChatNotificaciones();
                 input.classList.remove('chat-unread');
                 input.classList.add('chat-read');
             },

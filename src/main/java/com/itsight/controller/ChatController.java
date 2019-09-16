@@ -75,8 +75,9 @@ public class ChatController {
     }
 
     @PutMapping("/update/flag/{id}")
-    public @ResponseBody String updateFlag(@PathVariable String id){
+    public @ResponseBody String updateFlag(@PathVariable String id, HttpSession session){
         Integer chatId = Integer.parseInt(id);
-        return chatService.updateFlagById(chatId);
+        Integer cliId = (Integer) session.getAttribute("id");
+        return chatService.updateFlagById(chatId, cliId);
     }
 }

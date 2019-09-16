@@ -4,6 +4,7 @@ import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Chat;
 import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.ChatRepository;
+import com.itsight.repository.ConfiguracionClienteRepository;
 import com.itsight.service.ChatService;
 import com.itsight.util.Utilitarios;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,12 @@ import static com.itsight.util.Enums.ResponseCode.REGISTRO;
 @Service
 public class ChatServiceImpl extends BaseServiceImpl<ChatRepository> implements ChatService {
 
-    public ChatServiceImpl(ChatRepository repository) {
+    private ConfiguracionClienteRepository configuracionClienteRepository;
+
+    public ChatServiceImpl(ChatRepository repository,
+                           ConfiguracionClienteRepository configuracionClienteRepository) {
         super(repository);
+        this.configuracionClienteRepository = configuracionClienteRepository;
     }
 
     @Override
@@ -115,8 +120,10 @@ public class ChatServiceImpl extends BaseServiceImpl<ChatRepository> implements 
     }
 
     @Override
-    public String updateFlagById(Integer id) {
+    public String updateFlagById(Integer id, Integer clienteId) {
         repository.updateFlagById(id);
+        Integer sustractOrPlusNumber = -1;
+        configuracionClienteRepository.updateNotificacionChatById(clienteId, sustractOrPlusNumber);
         return Utilitarios.jsonResponse(ACTUALIZACION.get());
     }
 }
