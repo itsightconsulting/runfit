@@ -105,6 +105,10 @@ function init(){
 
         });
 
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $('video').trigger('pause');
+            $('audio').trigger('pause');
+        });
 /*
            calendarioTmp();
 
@@ -143,12 +147,12 @@ function init(){
 }
 
 
-function  eventosMenuSemanario(e){
+function  eventosMenuSemanario(e) {
     const input = e.target;
     console.log(input);
 
     const inpClasses = input.classList;
-    if(inpClasses.contains("rf-dia-elemento-nombre") || inpClasses.contains("rf-sub-elemento-nombre")){
+    if (inpClasses.contains("rf-dia-elemento-nombre") || inpClasses.contains("rf-sub-elemento-nombre")) {
 
         $menuTargetInput = input;
         $($rMenuEleSubele).css(
@@ -161,14 +165,14 @@ function  eventosMenuSemanario(e){
         $rMenuEleSubele.classList.toggle("hide");
 
         const inpDataIx = input.getAttribute('data-index');
-         deactivateScroll();
-         e.preventDefault();
-    }
-    else if( inpClasses.contains("ctx-menu-dia")){
+        deactivateScroll();
+        e.preventDefault();
+    } else if (inpClasses.contains("ctx-menu-dia")) {
 
         $menuTargetInput = input;
         $($rMenuDia).css(
-            {   position: "absolute",
+            {
+                position: "absolute",
                 top: e.pageY,
                 left: e.pageX
             }
@@ -178,10 +182,12 @@ function  eventosMenuSemanario(e){
         deactivateScroll();
         e.preventDefault();
 
+        $('#myModalAudioVideo').on("hidden.bs.modal", function () {
+            audioR
+        });
 
     }
 }
-
 function eventosClickMenuOptElem(e) {
 
     const input = e.target;
@@ -222,7 +228,7 @@ function eventosClickMenuOptElem(e) {
             $rMenuEleSubele.classList.toggle("hide");
 
         } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
-            
+
             const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
             let subEle = RutinaDOMQueries.getSubElementoByIxs(ixs);
             //  if(subEle.children.length != 1) {
@@ -276,8 +282,8 @@ function eventosClickMenuOptElem(e) {
             while((temp = temp.previousElementSibling))i++;
             RutinaAdd.nuevoElemento(ixs.numSem, ixs.diaIndex, i-1, '');
             agregarElementoEnBlancoBD(ixs.numSem, ixs.diaIndex, ElementoTP.NO_DEFINIDO, (posRefElemento = i - 1), Estrategia.INSERT_DESPUES);
-         
-         
+
+
             if (elemento.nextElementSibling != undefined) {
                 if (elemento.nextElementSibling.classList.contains('ne-esp')) {
                     elemento.nextElementSibling.remove();
@@ -373,7 +379,7 @@ function eventosClickMenuOptElem(e) {
         }
     }
      else if (inpClasses.contains('trash-elemento')) {
-            
+
             if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
 
                 const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
@@ -508,12 +514,12 @@ function principalesEventosFocusOutSemanario(e) {
     let input = e.target;
 
     if(clases.contains('in-ele-dia-1')){
-        
+
         e.preventDefault();
         const valor = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
         const diaIndex = input.getAttribute('data-dia-index');
-        
+
         if (valor.length > 1 && listaNoRepetida(ixs.diaIndex, valor)) {
             const nuevoIx = RutinaSeccion.newElementoSimple(ixs.diaIndex, ElementoTP.SIMPLE, valor);
             ixs.eleIndex = nuevoIx;
@@ -537,7 +543,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-ele-dia-2')){
         e.preventDefault();
-        
+
         const valor = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
         const diaIndex = input.getAttribute('data-dia-index');
@@ -564,10 +570,10 @@ function principalesEventosFocusOutSemanario(e) {
         }
         input.value = "";
     } else if(clases.contains('in-sub-elemento')) {
-        
+
         const valor = input.value.trim();
         if (valor.length >= 1) {
-            
+
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
 
@@ -604,7 +610,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
 
     else if(clases.contains('in-sub-ele-esp-pos')) {
-        
+
         const valor = input.value.trim();
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -629,7 +635,7 @@ function principalesEventosFocusOutSemanario(e) {
     }
 
     else if(clases.contains('rf-dia-elemento-nombre')){
-        
+
         const valor = input.textContent.trim();
         if($nombreActualizar != valor){
             const ixs = RutinaIx.getIxsForElemento(input);
@@ -661,7 +667,7 @@ function principalesEventosFocusOutSemanario(e) {
 
 
     else if(clases.contains('rf-sub-elemento-nombre')){
-        
+
         const valor = input.textContent.trim();
         if($nombreActualizar != valor) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
@@ -685,7 +691,7 @@ function principalesEventosFocusOutSemanario(e) {
 
     else if(clases.contains('nueva-nota')){
 
-        
+
         const nota = input.value.trim();
         const ixs = RutinaIx.getIxsForElemento(input);
         let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -825,7 +831,7 @@ function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
     let input = e.target;
 
-    
+
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
             const dvInputsInit = input.parentElement.parentElement.parentElement;
@@ -845,7 +851,7 @@ function principalesEventosClickRutina(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            
+
             const valor = $mediaNombre;
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
@@ -884,7 +890,7 @@ function principalesEventosClickRutina(e) {
             const iconoAdd = RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.ele-add');
             const dvMediaElements =  RutinaDOMQueries.getSubElementoByIxs(ixs).querySelector('.notes');;
 
-            
+
             if($tipoMedia == TipoElemento.AUDIO){
                 dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
             }else{
@@ -902,7 +908,7 @@ function principalesEventosClickRutina(e) {
 
     else if(clases.contains('in-sub-ele-esp-pos')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
-            
+
             const valor = $mediaNombre;
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1040,7 +1046,7 @@ function principalesEventosClickRutina(e) {
 
      else if(clases.contains('agregar-tiempo')){
          //Sirve para comparar el valor inicial del elemento con el valor que retorna en el evento focusout con el fin de evitar actualizaciones innecesarias
-         
+
          e.preventDefault();
          e.stopPropagation();
          e.target.select();
@@ -1066,6 +1072,72 @@ function principalesEventosClickRutina(e) {
         removeScrollbar();
 
      }
+    else if(clases.contains('reprod-video')){
+        e.preventDefault();
+        $('#myModalAudioVideo').modal('show');
+        const route = input.getAttribute('data-media');
+        const videoReproduccion =   $('#videoRutinaReproduccion');
+        const audioReproduccion =   $('#audioRutinaReproduccion');
+        const videoMedia =  document.getElementById('VideoMedia');
+        const audioMedia  =  document.getElementById('AudioMedia');
+        videoReproduccion.get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
+        audioReproduccion.get(0).src = 'http://www.alexkatz.me/codepen/music/interlude.mp3';
+        videoReproduccion.parent().get(0).load();
+        audioReproduccion.parent().get(0).load();
+
+        videoMedia.onloadeddata = function() {
+            videoMedia.play();
+            audioMedia.play();
+
+        };
+
+        audioMedia.onpause = function(){
+            videoMedia.pause();
+        };
+
+        audioMedia.onplay = function(){
+            videoMedia.play();
+        };
+
+      audioMedia.addEventListener("timeupdate",
+            function (ev) {
+            const vid =    document.getElementById('VideoMedia');
+            const currentTime =  ev.target.currentTime;
+
+              if(currentTime <= vid.duration){
+                    vid.currentTime = currentTime;
+              }else{
+                    vid.currentTime = currentTime % vid.duration;
+              }
+            });
+
+        $('#AudioMedia').width('600');
+
+        //  $('#VideoMedia').width('600');
+
+
+
+    }
+
+   else if(clases.contains('eliminar-ele-vacio')) {
+        debugger
+        const ixs = RutinaIx.getIxsForElemento(input);
+        // console.log("xd", ixs);
+        ElementoOpc.confirmarEliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
+    }
+
+    else if(clases.contains('eliminar-subele-vacio')) {
+        const ixs = RutinaIx.getIxsForSubElemento(input);
+        RutinaDOMQueries.getSubElementoByIxs(ixs);
+        SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+    }
+    /*} else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
+
+        const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
+        RutinaDOMQueries.getSubElementoByIxs(ixs);
+        SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+    }*/
+
 
 
   /*  else if(clases.contains('pegar-mini')) {
@@ -1193,7 +1265,7 @@ function principalesEventosTabGrupoVideos(e){
         $("#VideoReproduccion").parent().get(0).load();
     }
     else if(clases.contains('cat-video')){
-        
+
         e.preventDefault();
         const clase = '' +
             '.cat-video'+ input.getAttribute('data-id');
@@ -1384,7 +1456,7 @@ function principalesDivEditor(e){
             RutinaEditor.agregarOeliminarEstiloToElemento(ix, 2);
         }else{}
     }else if(clases.contains('note-alineacion')){
-        
+
         if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
             RutinaEditor.agregarOeliminarEstiloToElemento(ix, 3);
         }else{}
@@ -1617,7 +1689,7 @@ function actualizarMediaSubElementoBD2(numSem, diaIndex, elementoIndice, subEleI
 
 
 function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElemento, postSubElemento) {
-    
+
     let params = {};
     params.nombre = nuevoNombre;
     params.numeroSemana = numSem;
