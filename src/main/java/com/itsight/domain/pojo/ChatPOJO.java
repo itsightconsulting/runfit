@@ -9,6 +9,8 @@ import java.util.Date;
 @Data
 public class ChatPOJO {
 
+    private Integer id;
+
     private String ultimo;
 
     private String mensajes;
@@ -31,7 +33,8 @@ public class ChatPOJO {
 
     public ChatPOJO() {}
 
-    public ChatPOJO(String ultimo, String mensajes, boolean flagLeido, Date fechaCreacion, Date fechaModificacion, String fpTrainer, String nomTrainer) {
+    public ChatPOJO(Integer id, String ultimo, String mensajes, boolean flagLeido, Date fechaCreacion, Date fechaModificacion, String fpTrainer, String nomTrainer) {
+        this.id = id;
         this.ultimo = ultimo;
         this.mensajes = mensajes;
         this.flagLeido = flagLeido;

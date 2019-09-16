@@ -1,6 +1,7 @@
 CREATE OR REPLACE FUNCTION func_get_all_chat_by_cliente_id(_cli_id int)
     RETURNS TABLE
             (
+                id           int,
                 ultimo            text,
                 mensajes          text,
                 flagLeido         boolean,
@@ -11,7 +12,7 @@ CREATE OR REPLACE FUNCTION func_get_all_chat_by_cliente_id(_cli_id int)
             )
 AS
 $func$
-select ultimo::text, mensajes::text, flag_leido, fecha_creacion, fecha_modificacion, fp_trainer, nom_trainer
+select chat_id, ultimo::text, mensajes::text, flag_leido, fecha_creacion, fecha_modificacion, fp_trainer, nom_trainer
 from chat
 where chat_id IN (
     select red_fitness_id

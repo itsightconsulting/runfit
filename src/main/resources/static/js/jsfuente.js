@@ -929,6 +929,10 @@ function getCookie(cname) {
     return "";
 }
 
+function updateCookie(cookieName, nuevoValor){
+    document.cookie = `${cookieName+'='+nuevoValor}; path=/`
+}
+
 function b64DecodeUnicode(str) {
     // Going backwards: from bytestream, to percent-encoding, to original string.
     try {

@@ -34,6 +34,10 @@
             padding-top: 8px;
         }
 
+        .chat-mensaje h5{
+            word-break: break-word;
+        }
+
         .chat-fecha{
             font-size: 0.9em;
             color: white;
@@ -50,10 +54,25 @@
 
         .chat-trainer-mini{
             padding: 15px 0px;
+            margin: 8px 0px;
         }
 
         .par-chat-fecha{
             float: right;
+        }
+
+        .chat-read{
+            border-radius: 20px;
+            border: 1px solid gray;
+        }
+
+        .chat-unread{
+            border-radius: 20px;
+            border: 1px solid deepskyblue;
+        }
+
+        .chat-read:hover, .chat-unread:hover{
+            cursor: pointer;
         }
     </style>
 </head>
@@ -92,7 +111,7 @@
                         <button class="btn" type="button" id="btnFavsList"><img class="svg" src="/img/iconos/icon_heart.svg"></button>
                     </div>
                 </div>
-                <div class="item row">
+                <div class="item row" id="ChatContainer">
                     <div class="col-md-12 col-xs-12">
                         <div class="col-md-5 col-xs-12" id="TrainerProfiles">
 
@@ -150,14 +169,51 @@
 <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
 <script>
 
-    (function(){
-        const trainerChats = [];
+    const body = document.querySelector('body');
+    const chatContainer = document.getElementById('ChatContainer');
+    let $chats = [];
 
+    (function () {
+        const trainerChats = [];
         init();
     })();
 
     function init(){
-        recrearChats()
+        recrearChats();
+        eventos();
+    }
+
+    function eventos(){
+        chatContainer.addEventListener('click', clickEventListenerChat);
+    }
+
+    function clickEventListenerChat(e){
+        const input = e.target;
+        const clases = input.classList;
+        if (clases.contains('chat-unread')) {
+            const chatId = input.getAttribute('data-id');
+            actualizarFlagChat(chatId, input);
+        } else if (clases.contains('chat-read')) {
+            const chatId = input.getAttribute('data-id');
+        }
+    }
+
+    function actualizarFlagChat(chatId, input){
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/chat/update/flag/'+chatId,
+            dataType: 'json',
+            success: function(){
+                updateCookie("GLL_NOTIFICACION_CHAT", Number(getCookie("GLL_NOTIFICACION_CHAT"))-1);
+                updateChatNotificaciones();
+                input.classList.remove('chat-unread');
+                input.classList.add('chat-read');
+            },
+            error: function(err){
+                exception(err);
+            }
+        })
     }
 
     function recrearChats(){
@@ -168,12 +224,13 @@
             url: _ctx+ 'gestion/chat/get/cliente',
             dataType: 'json',
             success: function(data){
-                data = data.concat(data);
+                $chats = data;
                 data.forEach(e=>{
                     const ultimo = JSON.parse(e.ultimo);
-                    const ultimoMensaje = ultimo.msg.length > 87 ? ultimo.msg.substr(0, 87) + "..." : ultimo.msg;
+                    const checkRead = e.flagLeido;
+                    const ultimoMensaje = ultimo.msg.length > 77 ? ultimo.msg.substr(0, 77) + "..." : ultimo.msg;
                     trainerProfiles.appendChild(htmlStringToElement(`
-                        <div class="row chat-trainer-mini">
+                        <div class="row chat-trainer-mini ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
                             <div class="col-md-12 col-sm-12">
                                 <div class="col-md-3 chat-foto">
                                     <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}">
@@ -181,13 +238,13 @@
                                 <div class="col-md-9 chat-nombre">
                                     <div class="row col-md-12">
                                         <div class="row col-md-10 padding-0">
-                                            <h4>${ultimo.nomTrainer}</h4>
+                                            <h4>${e.nomTrainer}</h4>
                                         </div>
                                         <div class="row col-md-2 par-chat-fecha">
                                             <span class="chat-fecha">${'10/9'}</span>
                                         </div>
                                     </div>
-                                    <div class="row chat-mensaje">
+                                    <div class="row col-md-12 chat-mensaje padding-0">
                                         <h5>${ultimoMensaje}</h5>
                                     </div>
                                 </div>

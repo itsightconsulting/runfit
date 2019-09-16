@@ -306,7 +306,6 @@
 
     let $table = $('#tblRegistros');
     let $index = $('#Id');
-    let $nota = '';
     let objForRutina = {};
     const modalPlantillas = document.querySelector('#myModalPlantillas');
     $countSinPlan = 0;
@@ -526,7 +525,7 @@
             if(nueIn.classList.contains('ico-nota')){
                 $(mdlNota).modal('show');
                 const nota = mdlNota.querySelector('textarea');
-                nota.value = nueIn.getAttribute('data-content');
+                nota.value = nueIn.getAttribute('data-full-content');
                 nota.setAttribute('data-redfit-id', nueIn.getAttribute('data-redfit-id'));
             }
         }
@@ -534,7 +533,7 @@
             $mnEle = input;
             $(mdlNota).modal('show');
             const nota = mdlNota.querySelector('textarea');
-            nota.value = input.getAttribute('data-content');
+            nota.value = input.getAttribute('data-full-content');
             nota.setAttribute('data-redfit-id', input.getAttribute('data-redfit-id'));
         }
 
@@ -582,48 +581,6 @@
         const totDias = moment(fechaFin).diff(fechaInicio, 'days') + 1;
         const diasPrimeraSemana = fechaInicio.getDay() == 0 ? 1 : 7 - fechaInicio.getDay() + 1;
         document.querySelector('#MacroTotalSemanas').textContent = diasPrimeraSemana == 7 ? Math.floor(totDias / 7) : 1 + Math.ceil((totDias - diasPrimeraSemana) / 7);
-    }
-
-    function eventosGeneralesFocusOut(e){
-
-        if(e.target.classList.contains('nota-cliente')){
-            let id = e.target.getAttribute('data-id');
-            let nota = e.target.value.trim();
-            let params = {};
-            params.id = id;
-            params.nota = nota;
-            if($nota != nota){
-                $.ajax({
-                    type: 'PUT',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    url: _ctx+'gestion/trainer/red/anadir-nota',
-                    data: params,
-                    dataType: 'json',
-                    success: (d)=>{
-                        if(d=="-2"){
-
-                            if($nota != ""){
-                                if(nota == ""){
-                                    e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-grayDark');
-                                    e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-yellow');
-                                }
-                            }else{
-                                e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-grayDark');
-                                e.target.parentElement.parentElement.querySelector('.ico-nota').children[0].classList.toggle('txt-color-yellow');
-                            }
-                            //Actualizando campo nota popover
-                            e.target.parentElement.parentElement.querySelector('.ico-nota').setAttribute('data-content', nota);
-                            e.target.parentElement.remove();
-                        }
-                    },error: (xhr)=>{
-                        exception(xhr);
-                    }
-                    ,complete: ()=>{}
-                })
-            }else{
-                e.target.parentElement.remove();
-            }
-        }
     }
 
     function actualizarNota(){
@@ -735,11 +692,12 @@
 
     function fttNota(v, row, ix){
         let opciones = '';
+        const originalNota = row.nota;
         let nota = row.nota == null?"":row.nota.length>100 ? row.nota.substr(0,100).trim()+"..." : row.nota;
         if(nota == ""){
-            opciones = `<img data-redfit-id="${row.id}" style="fill:#9d9d9d !important;" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
+            opciones = `<img data-redfit-id="${row.id}" style="fill:#9d9d9d !important;" data-placement="top" data-toggle="popover" data-content="${nota}" data-full-content="${originalNota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_edit.svg"/>`;
         }else{
-            opciones = `<img data-redfit-id="${row.id}" data-placement="top" data-toggle="popover" data-content="${nota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_leyenda.svg"/>`;
+            opciones = `<img data-redfit-id="${row.id}" data-placement="top" data-toggle="popover" data-content="${nota}" data-full-content="${originalNota}" data-trigger="hover" class="svg ico-nota" id="svg${ix}" data-ix="${ix}" src="${_ctx}img/iconos/icon_leyenda.svg"/>`;
         }
         return opciones;
     }
