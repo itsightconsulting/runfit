@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es-ES" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Messenger</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
+</head>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+
+<div class="row" id="main-content">
+    <div class="container chat">
+    <div class="col-md-4 no_padding">
+        <h3>Chat<span>Recientes</span></h3>
+        <div class="contacts">
+            <div class="cnt">
+                <div class="perfil"></div>
+                <div class="datos">
+                    <h4>Sujeto 1<span>16:30</span></h4>
+                    <span>Usted: bla bla bla</span>
+                </div>
+            </div>
+            <div class="cnt">
+                <div class="perfil"></div>
+                <div class="datos">
+                    <h4>Sujeto 1<span>16:30</span></h4>
+                    <span>Usted: bla bla bla</span>
+                </div>
+            </div>
+            <div class="cnt">
+                <div class="perfil"></div>
+                <div class="datos">
+                    <h4>Sujeto 1<span>16:30</span></h4>
+                    <span>Usted: bla bla bla</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 no_padding">
+        <div class="cnt name-cvs">
+            <div class="perfil"></div>
+            <div class="datos">
+                <h4>Sujeto 1</h4>
+            </div>
+        </div>
+        <div class="cvs">
+            <ul>
+                <li class="received">
+                    <div class="perfil"></div>
+                    <div class="messages message-received">
+                        <p class="name">Peter Paul Carranza Camino<span>13/9</span><span>18:17</span></p>
+                        <div class="message">This codepen is an exemple of how to create the Facebook thumb up</div>
+                    </div>
+                </li>
+                <li class="sent">
+                    <div class="perfil"></div>
+                    <div class="messages message-sent">
+                        <p class="name"><span>13/9</span><span>18:20</span></p>
+                        <div class="message">Try to type or click the thumb up! ;)</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <input class="form-control" placeholder="Escribe un mensaje nuevo">
+    </div>
+    </div>
+</div>
+
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+</body>
+</html>

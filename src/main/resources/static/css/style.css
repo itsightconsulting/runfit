@@ -1696,3 +1696,138 @@ section.consejos span.msj-no-data{
   display: none !important;
 }
 /* END FANCY BOX */
+
+/*----CHAT----*/
+.chat.container {
+  color: #ccc;
+  padding: 0;
+  background: #423750;
+  margin-top: 60px;
+  min-height: 550px;
+  max-height: 550px;
+}
+.chat h3 {
+  padding: 20px 10px;
+  margin: 0;
+  font-size: 20px;
+  text-transform: none;
+}
+.chat h3 span {
+  font-size: 13px;
+  font-family: "Montserrat-Light";
+  float: right;
+  margin-top: 5px;
+}
+.chat .contacts {
+  border-top: 1px solid #ccc;
+  overflow: auto;
+  max-height: 489px;
+}
+.chat .cnt {
+  padding: 10px;
+  display: flex;
+}
+.chat .perfil {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.chat .cnt .datos {
+  display: inline-block;
+  margin-left: 10px;
+  width: 78%;
+}
+.chat .cnt .datos h4 {
+  font-size: 16px;
+  text-transform: none !important;
+  font-family: GothamHTF-Light;
+  margin: 0;
+}
+.chat .cnt .datos h4 span {
+  float: right;
+  font-size: 12px;
+  margin-top: 3px;
+}
+.chat .cvs {
+  background-color: #ccc;
+  overflow: auto;
+  min-height: 454px;
+  max-height: 454px;
+}
+.chat .name-cvs {
+  background-color: #ccc;
+  padding: 14px 10px;
+}
+.chat .name-cvs h4 {
+  font-size: 24px !important;
+  font-family: GothamHTF-Bold !important;
+  margin-top: 4px !important;
+  color: #423750;
+}
+
+.cvs ul li {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.cvs ul li .perfil {
+  margin: 0 10px;
+}
+.cvs ul li.received .message-received,
+.cvs ul li.received .perfil
+{
+  float: left;
+}
+.cvs ul li.sent .message-sent,
+.cvs ul li.sent .perfil
+{
+  float: right;
+}
+.message-received {
+  background-color: #ddd;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  color: #423750;
+}
+.message-received:last-child{
+   border-bottom-left-radius: 15px;
+ }
+.message-sent {
+  color: #fff;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #423750;
+}
+.message-sent:last-child{
+   border-bottom-right-radius: 15px;
+ }
+.messages {
+  max-width: 300px;
+  display: inline-block;
+  padding: 7px 13px;
+}
+.messages p{
+  font-size: 11px;
+  color: #717171;
+  margin-bottom: 5px;
+}
+.messages p span {
+  margin-left: 12px;
+}
+.message-sent p span {
+  margin-left: 0;
+  margin-right: 12px;
+  color: #b7b7b7;
+}
+.message{
+  clear: both;
+  font-size: 12px;
+  border-radius: 15px;
+  line-height: 1.4;
+}
+.chat input {
+  border-radius: 0;
+  box-shadow: none;
+}
