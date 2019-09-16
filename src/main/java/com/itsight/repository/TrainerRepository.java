@@ -32,8 +32,8 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     UsuGenDTO getById(Integer id);
 
     @Modifying
-    @Query(value = "UPDATE Trainer T SET T.flagActivo =?2 WHERE T.id = ?1")
-    void updateFlagActivoById(Integer id, boolean flagActivo);
+    @Query(value = "UPDATE Trainer T SET T.flagActivo =?2, T.fechaModificacion = ?3, T.modificadoPor = ?4 WHERE T.id = ?1")
+    void updateFlagActivoById(Integer id, boolean flagActivo, Date fechaModificacion, String modificadoPor);
 
     @Modifying
     @Query(value = "UPDATE Trainer T SET T.flagRutinarioCe =?2 WHERE T.id = ?1")

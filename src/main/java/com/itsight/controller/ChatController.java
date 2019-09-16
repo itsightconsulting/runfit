@@ -70,6 +70,7 @@ public class ChatController {
         chat.getUltimo().setFecha(new Date());
         chat.getMensajes().add(chat.getUltimo());
         chat.setFlagLeido(false);
+        chat.setFechaModificacion(new Date());
         chatService.save(chat);
         return Utilitarios.jsonResponse(ACTUALIZACION.get());
     }

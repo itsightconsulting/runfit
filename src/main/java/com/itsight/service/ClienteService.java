@@ -1,5 +1,6 @@
 package com.itsight.service;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Cliente;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
@@ -26,7 +27,7 @@ public interface ClienteService extends BaseService<Cliente, Integer> {
 
     String findNombreCompletoById(Integer id);
 
-    String registroFull(ClienteDTO cliente, Integer tipoTrainerId);
+    String registroFull(ClienteDTO cliente, Integer tipoTrainerId) throws CustomValidationException;
 
     List<UsuarioPOJO> listarPorFiltroDto(String comodin, String estado, QueryParamsDTO queryParams);
 

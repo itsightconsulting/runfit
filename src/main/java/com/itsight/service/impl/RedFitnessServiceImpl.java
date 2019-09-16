@@ -2,6 +2,7 @@ package com.itsight.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.AnuncioTrainer;
 import com.itsight.domain.RedFitness;
 import com.itsight.domain.Trainer;
@@ -252,12 +253,12 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     @Override
     public String registrarNuevaRedParaClienteAntiguo(
             Integer clienteId, Integer trainerId, Integer servicioId,
-            String correoTrainer, Integer fichaId, Integer ttId) {
+            String correoTrainer, Integer fichaId, Integer ttId) throws CustomValidationException {
         //Relacionando servicio con el nuevo cliente
         if(trainerId != null && clienteId > 0){
             Boolean suserActive = securityUserRepository.findEnabledById(trainerId);
             if(suserActive == null || !suserActive ){
-                return Enums.ResponseCode.NOT_FOUND_MATCHES.get();
+                throw new CustomValidationException(Enums.Msg.TRAINER_INACTIVO.get(), Enums.ResponseCode.EX_GENERIC.get());
             } else {
                 //Continue with normal flow
             }

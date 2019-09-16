@@ -1,6 +1,7 @@
 package com.itsight.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.RedFitness;
 import com.itsight.domain.dto.ChatDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
@@ -38,5 +39,5 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
                                                Integer servicioId,
                                                String correoTrainer,
                                                Integer fichaId,
-                                               Integer ttId);
+                                               Integer ttId) throws CustomValidationException;
 }

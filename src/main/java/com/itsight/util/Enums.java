@@ -199,6 +199,7 @@ public class Enums {
         TRAINER_DE_EMPRESA_OBS_YA_ACTUALIZADAS("Usted ya ha actualizado el perfil de este entrenador, si ya corrigió todas las observaciones vuelva al perfil de su empresa y envíe la confirmación desde allí para finalizar el proceso."),
         USUARIO_NO_EXISTE("El usuario que ha ingresado no existe."),
         USUARIO_INACTIVO("El usuario que ha ingresado se encuentra inactivo."),
+        TRAINER_INACTIVO("El entrenador que ha elegido se encuentra inactivo. Disculpe los inconvenientes."),
         ENLACE_CADUCADO("El enlace ha caducado"),
         CAMBIO_PASSWORD_PASADO("Usted ya ha cambiado su contraseña anteriormente por lo que este link ya no funciona."),
         ENLACE_RECUPERACION_PASS_UTILIZADO("El enlace ha ya sido utilizado"),

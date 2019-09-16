@@ -28,8 +28,8 @@ public interface AdministradorRepository extends JpaRepository<Administrador, In
     UsuGenDTO getById(Integer id);
 
     @Modifying
-    @Query(value = "UPDATE Administrador A SET A.flagActivo =?2 WHERE A.id = ?1")
-    void updateFlagActivoById(Integer id, boolean flagActivo);
+    @Query(value = "UPDATE Administrador A SET A.flagActivo =?2, A.fechaModificacion = ?3, A.modificadoPor = ?4 WHERE A.id = ?1")
+    void updateFlagActivoById(Integer id, boolean flagActivo, Date fechaModificacion, String modificadoPor);
 
     @Modifying
     @Query(value = "UPDATE Administrador A SET A.fechaUltimoAcceso =?1 WHERE A.id = ?2")

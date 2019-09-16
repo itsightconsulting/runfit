@@ -1698,11 +1698,15 @@ section.consejos span.msj-no-data{
 /* END FANCY BOX */
 
 /*----CHAT----*/
-.chat.container {
+.container-chat{
+  padding: 40px 0px;
+  width: 100%;
+}
+
+.container-chat {
   color: #ccc;
   padding: 0;
   background: #423750;
-  margin-top: 60px;
   min-height: 550px;
   max-height: 550px;
 }
@@ -1727,6 +1731,7 @@ section.consejos span.msj-no-data{
   padding: 10px;
   display: flex;
 }
+
 .chat .perfil {
   display: inline-block;
   width: 35px;
@@ -1734,6 +1739,12 @@ section.consejos span.msj-no-data{
   background-color: #fff;
   border-radius: 50%;
 }
+
+.perfil > img {
+  height: 100%;
+  border-radius: 50%;
+}
+
 .chat .cnt .datos {
   display: inline-block;
   margin-left: 10px;
@@ -1749,6 +1760,12 @@ section.consejos span.msj-no-data{
   float: right;
   font-size: 12px;
   margin-top: 3px;
+}
+
+.chat .contacts .cnt:hover{
+  cursor: pointer;
+  opacity: 0.8;
+  background: #161824;
 }
 .chat .cvs {
   background-color: #ccc;
@@ -1826,8 +1843,22 @@ section.consejos span.msj-no-data{
   font-size: 12px;
   border-radius: 15px;
   line-height: 1.4;
+  word-break: break-word;
+}
+
+.message-lateral{
+  word-break: break-word;
 }
 .chat input {
   border-radius: 0;
   box-shadow: none;
 }
+
+.chat-unread img{
+  border: 2px solid #a8fa00;
+}
+
+.chat-unread h4{
+  font-weight: bold;
+}
+
