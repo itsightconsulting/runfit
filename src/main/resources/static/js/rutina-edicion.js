@@ -86,7 +86,9 @@ function init(){
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
 
         mainTabs.addEventListener('click', principalesAlCambiarTab);
-        dvMesActual.addEventListener('contextmenu', eventoMenuDvMesActual);
+        dvMesActual.addEventListener('contextmenu', eventoMenuDvMesActualContextMenu);
+        dvMesActual.addEventListener('click', eventoMenuDvMesActualClick);
+
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
         $rMenuDia.addEventListener('click', eventosClickMenuOptDia);
@@ -139,7 +141,6 @@ function init(){
            instanciarMarcoEditor();
            instanciaMediaBD();
            instanciaPerfectScrollBar();
-           modalEventos();
            //setFechaActual(document.querySelectorAll('input[type="date"]'));
            //obtenerSemanasEnviadas();
  */
@@ -149,7 +150,7 @@ function init(){
 
 }
 
-function eventoMenuDvMesActual(e){
+function eventoMenuDvMesActualContextMenu(e){
     //const input= e.currentTarget;
  //   cop.innerHTML = RutinaOpc.bodyCopiarSemana($rutina.totalSemanas);
     $($rMenuSemana).css(
@@ -160,6 +161,22 @@ function eventoMenuDvMesActual(e){
     );
     $rMenuSemana.classList.toggle("hide");
     e.preventDefault();
+}
+
+function eventoMenuDvMesActualClick(e){
+
+    debugger
+    const input= e.currentTarget;
+    const clases = input.classList;
+
+    e.preventDefault();
+
+    if(clases.contains('cerrar-copiar-semana')){
+
+        $('#dvCopiarSemana').remove();
+
+    }
+
 }
 
 function  eventosMenuSemanario(e) {
@@ -511,19 +528,17 @@ function eventosClickMenuOptSemana(e) {
     // const inpTargetClasses = $menuTargetInput.parentElement.classList;
     e.preventDefault();
     e.stopPropagation();
-
+    debugger
     if (inpClasses.contains('abrir-copiar-semana')) {
+        if(dvMesActual.parentElement.children.length >= 4){
+            // do nothing
+        }else{
 
-        let html =htmlStringToElement(`<div> <h4> Copiar semana</h4> ${RutinaOpc.bodyCopiarSemana($rutina.totalSemanas)} </div>`);
-
-        $(dvMesActual).parent().prepend(html);
-
-    //    var y = $(dvMesActual).position().top;
-    //    var x = $(dvMesActual).position().left;
-
-
-
-
+            let html =htmlStringToElement(`<div id="dvCopiarSemana"> <div> <h4 style="color:black"> Copiar semana a</h4>     
+                                                <button id="btnCerrarCopiarSemana" class="cerrar-copiar-semana close" type="button" style="opacity: .8;" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button> </div>
+            ${RutinaOpc.bodyCopiarSemana($rutina.totalSemanas)} </div>`);
+            $(dvMesActual).parent().append(html);
+       }
     }
 }
 

@@ -2143,12 +2143,16 @@ button.note-color-fuente, button.note-bg-color {
     display:  inline-flex!important;
 }
 
-.editor_text .dv-copia-semana{
+#editorContent .dv-copia-semana{
     width:unset;
+    display: inline-flex;
     padding-bottom: 10px;
+    position: relative;
+    left: -15px;
 }
 
-.editor_text .select-copia-semana{
+
+#editorContent .select-copia-semana{
     border: 1px solid #ccc;
 }
 
@@ -2269,6 +2273,14 @@ button.note-color-fuente, button.note-bg-color {
 .dv-mes-actual{
   display: inline;
 }
+
+#editorContent .close{
+    float:inherit;
+    padding-left: 250px;
+    position: relative;
+    top: -35px;
+}
+
 
 /* SPINNER */
 .half-circle-spinner, .half-circle-spinner * {
