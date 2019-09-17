@@ -128,7 +128,8 @@ public class ConfiguracionClienteServiceImpl extends BaseServiceImpl<Configuraci
 
     @Override
     public void actualizarNotificacionChatById(Integer cliId) {
-        repository.updateNotificacionChatById(cliId);
+        Integer sustractOrPlusNumber = 1;
+        repository.updateNotificacionChatById(cliId, sustractOrPlusNumber);
 
     }
 }

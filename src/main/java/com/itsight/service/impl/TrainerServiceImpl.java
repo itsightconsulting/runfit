@@ -28,6 +28,7 @@ import org.hashids.Hashids;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -471,12 +472,17 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
 
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
-        repository.updateFlagActivoById(id, flagActivo);
+        Date fechaModificacion = new Date();
+        String modificadoPor = SecurityContextHolder.getContext().getAuthentication().getName();
+        repository.updateFlagActivoById(id, flagActivo, fechaModificacion, modificadoPor);
     }
 
     @Override
     public void actualizarFlagActivoByIdAndNotificacion(Integer id, boolean flag, String destinatario, Integer ttId) {
-        repository.updateFlagActivoById(id, flag);
+        Date fechaModificacion = new Date();
+        String modificadoPor = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        repository.updateFlagActivoById(id, flag, fechaModificacion, modificadoPor);
         securityUserRepository.updateEstadoById(id, flag);
         if(ttId == EMPRESA.get()){
             repository.updateMultipleEstadoByTrEmpId(id);
@@ -503,7 +509,11 @@ public class TrainerServiceImpl extends BaseServiceImpl<TrainerRepository> imple
         if(Boolean.valueOf(usernameAndEnable.split("\\|")[1])){
             return new ModelAndView(MAIN_INF_N, "msg", APROBACION_FINAL_PERFIL_TRAINER_RE.get());
         }
-        repository.updateFlagActivoById(id, flag);
+
+        Date fechaModificacion = new Date();
+        String modificadoPor = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        repository.updateFlagActivoById(id, flag, fechaModificacion, modificadoPor);
         securityUserRepository.updateEstadoById(id, flag);
         if(aprob.getTtId() == EMPRESA.get()){
             repository.updateMultipleEstadoByTrEmpId(id);

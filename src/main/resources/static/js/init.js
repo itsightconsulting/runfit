@@ -341,13 +341,23 @@ $(function() {
 
 function checkAlertas(){
     //Check Chat Alerts
+    updateChatNotificaciones();
+}
+
+function updateChatNotificaciones(){
     const notificacionChat = getCookie("GLL_NOTIFICACION_CHAT");
     const sideBar = document.getElementById("SideBar1");
+    const chatHref = sideBar.querySelector("a[href='/cliente/mi-chat']");
     if(notificacionChat){
         if(isNaN(notificacionChat) || notificacionChat <= 0){
+            if(chatHref){
+                chatHref.classList.remove('notif');
+            }
             return;
         }
-        const chatHref = sideBar.querySelector("a[href='/cliente/mi-chat']");
+        if(!chatHref){
+            return;
+        }
         chatHref.classList.add('notif');
         chatHref.style.setProperty("--content", `'${notificacionChat}'`);
     }

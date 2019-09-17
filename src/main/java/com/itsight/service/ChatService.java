@@ -7,5 +7,5 @@ public interface ChatService extends BaseService<Chat, Integer> {
 
     boolean checkFlagLeidoById(Integer id);
 
-    String updateFlagById(Integer id);
+    String updateFlagById(Integer id, Integer clienteId);
 }

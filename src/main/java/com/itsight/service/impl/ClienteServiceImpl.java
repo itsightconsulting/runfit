@@ -1,5 +1,6 @@
 package com.itsight.service.impl;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.*;
 import com.itsight.domain.dto.ClienteDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
@@ -242,11 +243,11 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
     }
 
     @Override
-    public String registroFull(ClienteDTO cliente, Integer ttId) {
+    public String registroFull(ClienteDTO cliente, Integer ttId) throws CustomValidationException {
         if(cliente.getTrainerId() != null && cliente.getTrainerId() > 0){
             Boolean suserActive = securityUserRepository.findEnabledById(cliente.getTrainerId());
             if(suserActive == null || !suserActive){
-                return ResponseCode.NOT_FOUND_MATCHES.get();
+                throw new CustomValidationException(Enums.Msg.TRAINER_INACTIVO.get(), ResponseCode.EX_GENERIC.get());
             } else {
                 //Continue with normal flow
             }
@@ -419,8 +420,9 @@ public class ClienteServiceImpl extends BaseServiceImpl<ClienteRepository> imple
 
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
-        // TODO Auto-generated method stub
-        repository.updateFlagActivoById(id, flagActivo);
+        Date fechaModificacion = new Date();
+        String modificadoPor = SecurityContextHolder.getContext().getAuthentication().getName();
+        repository.updateFlagActivoById(id, flagActivo, fechaModificacion, modificadoPor);
     }
 
     @Override

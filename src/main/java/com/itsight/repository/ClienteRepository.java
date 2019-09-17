@@ -30,8 +30,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>, JpaS
     UsuGenDTO getById(Integer id);
 
     @Modifying
-    @Query(value = "UPDATE Cliente U SET U.flagActivo =?2 WHERE U.id = ?1")
-    void updateFlagActivoById(Integer id, boolean flagActivo);
+    @Query(value = "UPDATE Cliente U SET U.flagActivo =?2, U.fechaModificacion = ?3, U.modificadoPor = ?4 WHERE U.id = ?1")
+    void updateFlagActivoById(Integer id, boolean flagActivo, Date fechaModificacion, String modificadoPor);
 
     @Modifying
     @Query(value = "UPDATE Cliente U SET U.fechaUltimoAcceso =?1 WHERE U.id = ?2")

@@ -1175,7 +1175,7 @@
           if(document.getElementById('Username')){
             $('input[name="username"]').val(body.username);
             $('input[name="password"]').val(body.password);
-            document.querySelector('.login_link').click();
+            inicializarLoginForm();
             setTimeout(() => {
               $('#btn-login').click();
             }, 1000);

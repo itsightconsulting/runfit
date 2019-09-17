@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es-ES" id="extr-page"
+      xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <title>Messenger</title>
+    <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
+</head>
+<body>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
+<th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
+
+<div class="row" id="main-content">
+    <div class="container-chat chat" id="ChatContainer">
+        <div class="col-md-4 no_padding">
+            <h3>Chat<span>Recientes</span></h3>
+            <div class="contacts" id="TrainerProfiles">
+            </div>
+        </div>
+        <div class="col-md-8 no_padding" id="ShowedChat">
+
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="html-commons/in/js :: fg-js"></th:block>
+<script>
+
+    const body = document.querySelector('body');
+    const chatContainer = document.getElementById('ChatContainer');
+    let $chats = [];
+
+    (function () {
+        const trainerChats = [];
+        init();
+    })();
+
+    function init(){
+        recrearChats();
+        eventos();
+
+        //
+        const windowHeight = $(window).height();
+        $('#ChatContainer')[0].style.height = windowHeight + "px";
+        $('#ShowedChat')[0].style.height = windowHeight + "px";
+        // const heightExcedent = windowHeight - document.querySelector('.name-cvs').clientHeight;
+        // $('.cvs')[0].style.height = heightExcedent + "px";
+    }
+
+    function eventos(){
+        chatContainer.addEventListener('click', clickEventListenerChat);
+    }
+
+    function clickEventListenerChat(e){
+        const input = e.target;
+        const clases = input.classList;
+        if (clases.contains('chat-unread')) {
+            const chatId = input.getAttribute('data-id');
+            actualizarFlagChat(chatId, input);
+        } else if (clases.contains('chat-read')) {
+            const chatId = input.getAttribute('data-id');
+            mostrarChatPorDefecto($chats.find(e=>e.id===Number(chatId)));
+        }
+    }
+
+    function actualizarFlagChat(chatId, input){
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx + 'gestion/chat/update/flag/'+chatId,
+            dataType: 'json',
+            success: function(){
+                updateCookie("GLL_NOTIFICACION_CHAT", Number(getCookie("GLL_NOTIFICACION_CHAT"))-1);
+                updateChatNotificaciones();
+                input.classList.remove('chat-unread');
+                input.classList.add('chat-read');
+            },
+            error: function(err){
+                exception(err);
+            }
+        })
+    }
+
+    function recrearChats(){
+        const trainerProfiles = document.getElementById('TrainerProfiles');
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx+ 'gestion/chat/get/cliente',
+            dataType: 'json',
+            success: function(data){
+                data = data.sort((a, b) =>
+                    (b.fechaModificacion ? parseFromStringToDateTime(b.fechaModificacion) : parseFromStringToDateTime(b.fechaCreacion)) -
+                    (a.fechaModificacion ? parseFromStringToDateTime(a.fechaModificacion).getTime() : parseFromStringToDateTime(a.fechaCreacion))
+                );
+                $chats = data;
+                data.forEach(e=>{
+                    const ultimo = JSON.parse(e.ultimo);
+                    const checkRead = e.flagLeido;
+                    const ultimoMensaje = ultimo.msg.length > 58 ? ultimo.msg.substr(0, 58) + "..." : ultimo.msg;
+                    trainerProfiles.appendChild(htmlStringToElement(`
+                        <div class="cnt ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
+                            <div class="perfil">
+                                <img src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}"/></div>
+                            <div class="datos">
+                                <h4>${e.nomTrainer}<span>16:30</span></h4>
+                                <span class="message-lateral">${ultimoMensaje}</span>
+                            </div>
+                        </div>
+                        `
+                    ));
+                });
+
+                mostrarChatPorDefecto($chats[0]);
+
+            }, error: (err)=>{
+                /*`<div class="row chat-trainer-mini ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="col-md-3 chat-foto">
+                                    <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}">
+                                </div>
+                                <div class="col-md-9 chat-nombre">
+                                    <div class="row col-md-12">
+                                        <div class="row col-md-10 padding-0">
+                                            <h4>${e.nomTrainer}</h4>
+                                        </div>
+                                        <div class="row col-md-2 par-chat-fecha">
+                                            <span class="chat-fecha">${'10/9'}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-12 chat-mensaje padding-0">
+                                        <h5>${ultimoMensaje}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`*/
+                exception(err);
+            }
+        })
+    }
+
+    function mostrarChatPorDefecto(chat){
+        const chatDefecto = document.getElementById('ShowedChat');
+        const ultimo = JSON.parse(chat.ultimo);
+        chatDefecto.innerHTML = `
+            <div class="cnt name-cvs">
+                <div class="perfil">
+                    <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${chat.fpTrainer}">
+                </div>
+                <div class="datos">
+                    <h4>${chat.nomTrainer}</h4>
+                </div>
+            </div>
+            <div class="cvs">
+                <ul>
+                    <li class="received">
+                        <div class="perfil">
+                            <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${chat.fpTrainer}">
+                        </div>
+                        <div class="messages message-received">
+                            <p class="name">${chat.nomTrainer}<span>13/9</span><span>18:17</span></p>
+                            <div class="message">${ultimo.msg}</div>
+                        </div>
+                    </li>
+                    <li class="sent">
+                        <div class="perfil">
+                            <img src="${_ctx}img/user_avatar.png" />
+                        </div>
+                        <div class="messages message-sent">
+                            <p class="name"><span>13/9</span><span>18:20</span></p>
+                            <div class="message">Try to type or click the thumb up! ;)</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <input id="ChatMensaje" class="form-control" placeholder="Escribe un mensaje nuevo">
+        `;
+        const windowHeight = $(window).height();
+        const heightExcedent = windowHeight -
+            document.querySelector('.name-cvs').clientHeight -
+            document.getElementById('ChatMensaje').clientHeight - 2;
+        $('.cvs')[0].style.height = heightExcedent + "px";
+    }
+</script>
+</body>
+</html>

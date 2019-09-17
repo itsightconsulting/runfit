@@ -19,6 +19,7 @@ import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -232,8 +233,9 @@ public class AdministradorServiceImpl extends BaseServiceImpl<AdministradorRepos
 
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
-        // TODO Auto-generated method stub
-        repository.updateFlagActivoById(id, flagActivo);
+        Date fechaModificacion = new Date();
+        String modificadoPor = SecurityContextHolder.getContext().getAuthentication().getName();
+        repository.updateFlagActivoById(id, flagActivo, fechaModificacion, modificadoPor);
     }
 
     @Override

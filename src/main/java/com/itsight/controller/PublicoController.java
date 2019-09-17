@@ -280,7 +280,7 @@ public class PublicoController extends BaseController {
 
     @PostMapping(value = "/cliente/fitness/agregar/{tipoTrainerId}")
     public @ResponseBody String nuevo(@RequestBody @Valid ClienteDTO cliente,
-                                      @PathVariable(name = "tipoTrainerId") String tipoTrainerId) {
+                                      @PathVariable(name = "tipoTrainerId") String tipoTrainerId) throws CustomValidationException {
         Integer ttId = Integer.parseInt(Parseador.getDecodeBase64(tipoTrainerId));
         return clienteService.registroFull(cliente, ttId);
     }
