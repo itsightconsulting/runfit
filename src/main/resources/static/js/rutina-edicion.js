@@ -5,12 +5,13 @@ const $semanario = document.querySelector('#rutinaSemana');
 const mainTabs = document.querySelector('#principalesTabs');
 const $rMenuEleSubele = document.querySelector('#rMenuEleSubele');
 const $rMenuDia = document.querySelector('#rMenuDia');
+const $rMenuSemana = document.querySelector('#rMenuSemana');
 const dvEditor = document.querySelector('.editor_text');
 const fntSzEditor = document.querySelector('#fntSzEditor');
 const fntFmlyEditor = document.querySelector('#fntFmlyEditor');
 const $btnSeleccionColor = document.querySelector('.chosen-color');
 const $selectZoom = document.querySelector('#selectZoom');
-
+const dvMesActual = document.querySelector('.dv-mes-actual');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -85,23 +86,25 @@ function init(){
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
 
         mainTabs.addEventListener('click', principalesAlCambiarTab);
-
+        dvMesActual.addEventListener('contextmenu', eventoMenuDvMesActual);
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
         $rMenuDia.addEventListener('click', eventosClickMenuOptDia);
+        $rMenuSemana.addEventListener('click', eventosClickMenuOptSemana);
         fntSzEditor.addEventListener('change', ajustarFuenteElemento);
         fntFmlyEditor.addEventListener('change', cambiarFamiliaFuenteElemento);
 
         $(dvEditor).on('click','.btn' , principalesDivEditor);
         $(dvEditor).click(eventosCalendario);
         $(document).bind("click", function(event) {
-            $rMenuDia.className = "hide";
-            $rMenuEleSubele.className = "hide";
+            debugger
+            $(".context-menu").each(function(index,value){
+                $(this).attr('class', 'hide context-menu')
 
+            })
             if($blnObjetivo){
-                rutScroll();
+                $(".scroll_rut").mCustomScrollbar("update");
             }
-
 
         });
 
@@ -146,18 +149,39 @@ function init(){
 
 }
 
+function eventoMenuDvMesActual(e){
+    //const input= e.currentTarget;
+ //   cop.innerHTML = RutinaOpc.bodyCopiarSemana($rutina.totalSemanas);
+    $($rMenuSemana).css(
+        {   position: "absolute",
+            top: e.pageY + 20,
+            left: e.pageX
+        }
+    );
+    $rMenuSemana.classList.toggle("hide");
+    e.preventDefault();
+}
 
 function  eventosMenuSemanario(e) {
     const input = e.target;
-    console.log(input);
-
     const inpClasses = input.classList;
+
+      $(".context-menu").each(function(index,value){
+
+        if(!$(this).hasClass("hide")){
+            $(this).addClass("hide");
+        }
+      })
+
     if (inpClasses.contains("rf-dia-elemento-nombre") || inpClasses.contains("rf-sub-elemento-nombre")) {
 
+      //  debugger
         $menuTargetInput = input;
+
+      //  $menuTargetInput.parentElement.appendChild($rMenuEleSubele);
+
         $($rMenuEleSubele).css(
-            {
-                position: "absolute",
+            {   position: "absolute",
                 top: e.pageY,
                 left: e.pageX
             }
@@ -165,8 +189,11 @@ function  eventosMenuSemanario(e) {
         $rMenuEleSubele.classList.toggle("hide");
 
         const inpDataIx = input.getAttribute('data-index');
-        deactivateScroll();
+    //   deactivateScroll();
+        $(".scroll_rut").mCustomScrollbar("disable");
+
         e.preventDefault();
+
     } else if (inpClasses.contains("ctx-menu-dia")) {
 
         $menuTargetInput = input;
@@ -179,7 +206,7 @@ function  eventosMenuSemanario(e) {
         );
         $rMenuDia.classList.toggle("hide");
 
-        deactivateScroll();
+        //deactivateScroll();
         e.preventDefault();
 
         $('#myModalAudioVideo').on("hidden.bs.modal", function () {
@@ -254,7 +281,6 @@ function eventosClickMenuOptElem(e) {
             ElementoOpc.eliminarMediaAudio(ixs);
         } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
             const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
-            console.log(ixs);
             SubEleOpc.eliminarMediaAudio(ixs);
         }
     }  else if(inpClasses.contains('trash-video')) {
@@ -355,10 +381,10 @@ function eventosClickMenuOptElem(e) {
                                                                   <li>
                                                                       <div class="row rf-pre-sub-elemento" data-dia-index="${ixs.diaIndex}"
                                                                             data-ele-index="${ixs.eleIndex}" data-index="${ix}">
-                                                                        <div class="col-xs-10">
+                                                                       <label class="lbl-sub-ele-pos">
                                                                           <input type="text" class="cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}"
-                                                                            data-index="${ix}" data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}"  data-strategy="beforebegin"/>    
-                                                                        </div>
+                                                                            data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}"  data-index="${ix}" data-strategy="afterend"/>    
+                                                                       </label>
                                                                       </div>  
                                                                   </li>
                       `);
@@ -367,10 +393,10 @@ function eventosClickMenuOptElem(e) {
                 subElemento.insertAdjacentHTML('beforebegin', `     <li>
                                                                       <div class="row rf-pre-sub-elemento" data-dia-index="${ixs.diaIndex}"
                                                                             data-ele-index="${ixs.eleIndex}" data-index="${ix}">
-                                                                        <div class="col-xs-10">
+                                                                          <label class="lbl-sub-ele-pos">
                                                                           <input type="text" class="cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}"
-                                                                            data-index="${ix}" data-ele-index="${ixs.eleIndex}"  data-sub-ele-ref-index="${ixs.subEleIndex}" data-strategy="beforebegin"/>    
-                                                                        </div>
+                                                                            data-ele-index="${ixs.eleIndex}" data-sub-ele-ref-index="${ixs.subEleIndex}"  data-index="${ix}" data-strategy="afterend"/>    
+                                                                       </label>
                                                                       </div>  
                                                                   </li>`);
             }
@@ -383,11 +409,10 @@ function eventosClickMenuOptElem(e) {
             if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
 
                 const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
-                console.log("xd", ixs);
                 ElementoOpc.eliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
 
             } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
-
+                debugger
                 const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
                 RutinaDOMQueries.getSubElementoByIxs(ixs);
                 SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
@@ -417,14 +442,12 @@ function eventosClickMenuOptDia(e) {
     const input = e.target;
     const inpClasses = input.classList;
    // const inpTargetClasses = $menuTargetInput.parentElement.classList;
-    console.log(input);
     e.preventDefault();
     e.stopPropagation();
 
     if (inpClasses.contains('agregar-objetivo')) {
         debugger
         let dvDia = $($menuTargetInput).closest('.rf-dia');
-        console.log(dvDia);
         const dvTiempoKm = $($menuTargetInput).closest('header').next();
 
         if (dvDia.children().length < 5) {
@@ -481,6 +504,28 @@ function eventosClickMenuOptDia(e) {
 
 }
 
+function eventosClickMenuOptSemana(e) {
+
+    const input = e.target;
+    const inpClasses = input.classList;
+    // const inpTargetClasses = $menuTargetInput.parentElement.classList;
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (inpClasses.contains('abrir-copiar-semana')) {
+
+        let html =htmlStringToElement(`<div> <h4> Copiar semana</h4> ${RutinaOpc.bodyCopiarSemana($rutina.totalSemanas)} </div>`);
+
+        $(dvMesActual).parent().prepend(html);
+
+    //    var y = $(dvMesActual).position().top;
+    //    var x = $(dvMesActual).position().left;
+
+
+
+
+    }
+}
 
 function eventosEditorRutina(e){
 
@@ -555,7 +600,6 @@ function principalesEventosFocusOutSemanario(e) {
             RutinaDOMQueries.getDiaByIx(ixs.diaIndex).querySelector('.inputs-init').classList.toggle('hidden');
             const nuevoEle = RutinaDOMQueries.getElementoByIxs(ixs);
 
-
         } else {
 
             if (valor.length == 0) {
@@ -570,7 +614,6 @@ function principalesEventosFocusOutSemanario(e) {
         }
         input.value = "";
     } else if(clases.contains('in-sub-elemento')) {
-
         const valor = input.value.trim();
         if (valor.length >= 1) {
 
@@ -615,10 +658,8 @@ function principalesEventosFocusOutSemanario(e) {
         if (valor.length >= 1) {
             let ixs = RutinaIx.getIxsForSubElemento(input);
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            console.log("elemento", tempElemento);
             let tempSubEle = RutinaDOMQueries.getPreSubElementoByIxs(ixs);
             tempSubEle = tempSubEle.parentElement;
-            console.log("subelemento" , tempSubEle);
             let initTempSubEleRef = tempSubEle;
             let i = 0, k=0;
             while ((tempElemento = tempElemento.previousElementSibling) != null) i++;
@@ -892,7 +933,7 @@ function principalesEventosClickRutina(e) {
 
 
             if($tipoMedia == TipoElemento.AUDIO){
-                dvMediaElements.appendChild(htmlStringToElement(`<div class="ong" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
+                dvMediaElements.appendChild(htmlStringToElement(`<div class="ong reprod-audio" rel="tooltip" data-media="${$mediaAudio}" data-original-title="Audio"></div>`));
             }else{
                 iconoAdd.insertAdjacentHTML('beforebegin', RutinaElementoHTML.iconoVideo($mediaVideo));
             }
@@ -1003,17 +1044,16 @@ function principalesEventosClickRutina(e) {
 
 
      else if(clases.contains('insertar-debajo-sub')){
-         ;
+         debugger
          e.stopPropagation();
          let ixs = RutinaIx.getIxsForSubElemento(input);
          let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
          let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
          let ix = ++indexGlobal;
-         console.log("subelemento",subElemento);
          subElemento.insertAdjacentHTML('afterend', `<li>
                                                                       <div class="row rf-pre-sub-elemento" data-dia-index="${ixs.diaIndex}"
                                                                             data-ele-index="${ixs.eleIndex}" data-index="${ix}">
-                                                                        <div class="col-xs-10">
+                                                                        <label class="lbl-sub-ele-pos">
                                                                           <input type="text" class="cs-input in-sub-ele-esp-pos" data-dia-index="${ixs.diaIndex}"
                                                                             data-ele-index="${ixs.eleIndex}" data-index="${ix}" data-strategy="afterend"/>    
                                                                         </div>
@@ -1122,7 +1162,6 @@ function principalesEventosClickRutina(e) {
    else if(clases.contains('eliminar-ele-vacio')) {
         debugger
         const ixs = RutinaIx.getIxsForElemento(input);
-        // console.log("xd", ixs);
         ElementoOpc.confirmarEliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
     }
 
@@ -1130,6 +1169,34 @@ function principalesEventosClickRutina(e) {
         const ixs = RutinaIx.getIxsForSubElemento(input);
         RutinaDOMQueries.getSubElementoByIxs(ixs);
         SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
+    }
+
+    else if(clases.contains('reprod-audio') ){
+
+        debugger
+        $(".mediaAudio").remove();
+        //const audioFileName = input.getAttribute('data-media');
+        const rutinaElement = $(input).closest('.rf-sub-elemento')[0] !== undefined ?  $(input).closest('.rf-sub-elemento')[0] : $(input).closest('.rf-dia-elemento')[0];
+        const dataIndex = rutinaElement.getAttribute('data-index');
+        const ruta = 'http://www.alexkatz.me/codepen/music/interlude.mp3';
+        let html =htmlStringToElement(`<div id="dvMediaAudio${dataIndex}" class="mediaAudio"  style="text-align: center;  padding-left: unset;position: absolute;z-index: 9;">
+               <button id="btnCerrarAudio" type="button" style="opacity: .8;" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                       <audio id="audioReprod" preload="none" controls="" controlsList="nodownload" autoplay="" >
+                       <source id="AudioReproduccion" src="${ruta}" type="audio/mpeg"/></audio>
+                </div>`);
+
+        rutinaElement.prepend(html);
+
+        var y = $(rutinaElement).position().top;
+        var x = $(rutinaElement).position().left;
+
+        $('.mediaAudio').css({'top' : (y-30 ) + 'px', 'left': (x+20) + 'px'});
+        $('#audioReprod').css({'height': '30px', 'width':'220'} );
+
+        $("#btnCerrarAudio").click(function (){
+            $(".mediaAudio").remove();
+        });
+
     }
     /*} else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
 
@@ -1378,7 +1445,6 @@ function principalesEventosTabGrupoAudios(e){
         e.stopPropagation();
         parent = input.parentElement;
         var idAudio = parent.querySelector('.ck-favorito-audio').getAttribute('data-id');
-        //console.log(id);
         var selected = $(parent.querySelector('.ck-favorito-audio')).attr("data-selected");
         var editarAgregar = 0;
         if(selected == "1"){
@@ -1399,8 +1465,6 @@ function principalesEventosTabGrupoAudios(e){
 function principalesDivEditor(e){
     const input = e.currentTarget;
     const clases = input.classList;
-    debugger
-    console.log(input);
     const ix = input.getAttribute('data-index');
     if(clases.contains('btn-bold')){
         if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
@@ -1697,7 +1761,6 @@ function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElement
     params.elementoIndice = posElemento;
     params.subElementoIndice = postSubElemento;
 
-    console.log("papu",params);
     $.ajax({
         type: "PUT",
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -1705,12 +1768,10 @@ function actualizarSubElementoNombreBD(nuevoNombre, numSem, diaIndex, posElement
         dataType: "json",
         data: params,
         success: function (data) {
-           console.log("success",data);
             notificacionesRutinaSegunResponseCode(data);
         },
         error: function (xhr) {
             exception(xhr);
-            console.log("xhr",xhr);
         },
         complete: function () {}
     })
@@ -1803,7 +1864,6 @@ async function obtenerEspecificaSemana(semanaIndex, action){
             dataType: "json",
             success: function (data) {
 
-                 console.log("especifica",data);
                 if (data == "-9") {
                     $.smallBox({
                         content: "<i> La operación ha fallado, comuníquese con el administrador...</i>",
@@ -1925,7 +1985,6 @@ function instanciarGrupoAudios(){
         noOne: false,
         dataType: "json",
         success: function (data, textStatus) {
-            console.log("audio", data);
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({
@@ -1982,7 +2041,6 @@ function instanciarGrupoVideos(){
         dataType: "json",
         success: function (data, textStatus) {
 
-         console.log("videoos",data);
             if (textStatus == "success") {
                 if (data == "-9") {
                     $.smallBox({

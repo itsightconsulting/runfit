@@ -133,7 +133,7 @@
        <div id="editorContent">
       <div class="container-t">
         <h2 class="title_carousel">
-            <button class="btn retroceder-semana"><img th:src="@{/img/arrow-left2.png}"></button> <span id="semanaTitulo" class="semana-num">semana </span><span id="nroSemanaActual" class="semana-num">1</span>  - <span id="mesSemanaTitulo"> enero</span>
+            <button class="btn retroceder-semana"><img th:src="@{/img/arrow-left2.png}"></button> <a class="dv-mes-actual"> <span id="semanaTitulo" class="semana-num">semana </span><span id="nroSemanaActual" class="semana-num">1</span>  - <span id="mesSemanaTitulo"> enero</span> </a>
             <button class="btn adelantar-semana"><img th:src="@{/img/arrow-right2.png}"></button>
         </h2>
         <div class="rut-dots">
@@ -181,7 +181,7 @@
 <!-- CONTEXT MENU -->
  <!-- CONTEXT MENU OPCIONES -->
 
-<div class="hide" id="rMenuEleSubele">
+<div id="rMenuEleSubele" class="hide context-menu">
     <ul>
         <li id="optAñadirNota" data-option ="1" class="agregar-nota">Agregar nota</li>
         <li id="optEliminarAudio" data-option="2" class="trash-audio">Eliminar audio</li>
@@ -192,13 +192,20 @@
     </ul>
 </div>
 
-<div class="hide" id="rMenuDia">
+<div id="rMenuDia" class="hide context-menu">
     <ul>
         <li id="optAgregarObjetivo" data-option ="1" class="agregar-objetivo">Agregar objetivo</li>
         <li id="optCopiarDia" data-option="2" class="copiar-dia">Copiar día</li>
         <li id="optPegarPlantilla" data-option="3" class="pegar-mini">Pegar plantilla</li>
         <li id="optPegarElementos" data-option="4" class="pegar-elementos">Pegar elementos seleccionados</li>
         <li id="optLimpiarDia" data-option="5" class="limpiar-dia">Limpiar dia </li>
+    </ul>
+</div>
+
+
+<div id="rMenuSemana" class="hide context-menu">
+    <ul>
+      <li id="optCopiarSemana" class="abrir-copiar-semana" >  Copiar semana </li>
     </ul>
 </div>
 
