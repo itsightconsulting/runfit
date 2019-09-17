@@ -1253,19 +1253,28 @@ section.ritmos_tiempo .box_tiempo {
         bottom: 0;
         margin: auto; }
     .resultado_material ul li .card .box_text {
-      background-color: #1e1a21;
-      padding: 38px 15px; }
+        background-color: #1e1a21;
+        padding: 15px;
+        height: 94px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; }
       .resultado_material ul li .card .box_text h3 {
-        font-size: 14px;
-        font-family: GothamHTF-Light;
-        margin: 0;
-        color: #9d9d9d; }
+          font-size: 14px;
+          font-family: GothamHTF-Light;
+          margin: 0;
+          color: #9d9d9d;
+          padding-right: 35px;
+          position: relative; }
         .resultado_material ul li .card .box_text h3 .svg {
-          width: 25px;
-          height: 25px;
-          float: right;
-          position: relative;
-          bottom: 5px; }
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            right: 0;
+            margin: auto;
+            cursor: pointer;}
 
 .resultados {
   display: inline-block;
@@ -1364,23 +1373,28 @@ section.ritmos_tiempo .box_tiempo {
   .content-videoteca .owl-carousel .owl-item {
     width: 212px;
     height: 162px;
-    position: relative; }
+    position: relative;
+      overflow: hidden;
+      border-radius: 9px;}
     .content-videoteca .owl-carousel .owl-item .item {
       width: 100%;
       height: 100%;
       background: url(../img/videoteca.png) no-repeat center;
-      border-radius: 9px;
       background-size: cover;
-      opacity: 0.2;
-      position: absolute;
-      overflow: hidden; }
+        -webkit-box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
+        -moz-box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
+        box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
+      position: absolute; }
       .content-videoteca .owl-carousel .owl-item .item .title {
         position: absolute;
         background-color: #4a474e;
-        color: #fff;
+          color: #575759;
         width: 100%;
         text-align: center;
         bottom: 0;
+          -webkit-box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
+          -moz-box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
+          box-shadow: inset 0px 0px 300px 200px rgba(0,0,0,0.7);
         text-transform: uppercase;
         font-family: GothamHTF-Light;
         padding: 5px 10px; }
@@ -1391,9 +1405,11 @@ section.ritmos_tiempo .box_tiempo {
       box-shadow: 0px 0px 26px 0px rgba(0, 0, 0, 0.8);
       top: -22px; }
       .content-videoteca .owl-carousel .owl-item.center .item {
-        opacity: 1; }
+        box-shadow: none; }
         .content-videoteca .owl-carousel .owl-item.center .item .title {
-          padding: 16px 10px; }
+          padding: 16px 10px;
+            color:#fff;
+            box-shadow: none;}
   .content-videoteca .owl-carousel .owl-nav {
     position: absolute;
     top: -106px;
@@ -1403,7 +1419,7 @@ section.ritmos_tiempo .box_tiempo {
     text-align: center; }
     .content-videoteca .owl-carousel .owl-nav .owl-prev {
       outline: none;
-      background: url(../img/arrow-left2.png) no-repeat center;
+      background: url(../img/arrow-left.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;
@@ -1411,7 +1427,7 @@ section.ritmos_tiempo .box_tiempo {
       background-size: contain; }
     .content-videoteca .owl-carousel .owl-nav .owl-next {
       outline: none;
-      background: url(../img/arrow-right2.png) no-repeat center;
+      background: url(../img/arrow-right.png) no-repeat center;
       font-size: 0;
       width: 44px;
       height: 44px;

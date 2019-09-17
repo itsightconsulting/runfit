@@ -1028,7 +1028,7 @@ section#suspendidos .owl-nav {
     top: -112px; }
 section#suspendidos .owl-nav .owl-prev {
     background: url(../img/arrow-left.png) no-repeat center;
-    margin-right: 44%; }
+    margin-right: 47%; }
 section#suspendidos .owl-nav .owl-next {
     background: url(../img/arrow-right.png) no-repeat center; }
 
@@ -1043,7 +1043,8 @@ section#suspendidos .owl-dots span {
 
 section#suspendidos h3.date {
     font-family: GothamHTF-Book;
-    font-size: 21px; }
+    font-size: 21px;
+    margin-bottom: 20px;}
 
 section#suspendidos ul.users li {
     background-image: linear-gradient(to right top, #1f1d22, #1b1a1f, #17161c, #131219, #0e0e16);
