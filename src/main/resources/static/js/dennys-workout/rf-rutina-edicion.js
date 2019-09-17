@@ -376,6 +376,7 @@ function instanciarElementoPopovers(input){
 }
 
 function instanciarEspecificosTooltip(input){
+
     input.nextElementSibling.querySelectorAll('i[rel="tooltip"]').forEach(v=>$(v).tooltip());
 }
 

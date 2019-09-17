@@ -119,13 +119,10 @@ function ejecutarContenidoMultimediaEvent(e){
     }else if(inpClasses.contains("text")){
       abrirMdlVerConsejoTxt(e);
     }
-
-
 }
 
 
 function guardarConsejoEvent(){
-
   if(tipoConsejoRegistro === 1){
      if($('#registrar-texto-frm').valid()){
          registrarMultimedia(0);
@@ -138,14 +135,12 @@ function guardarConsejoEvent(){
 }
 
 function desactivarConsejoEvent(e){
-
     const input = e.currentTarget;
     const id = parseInt(input.getAttribute("data-id"));
     desactivarConsejo(id);
 }
 
 function editarConsejoTxtEvent(e){
-
     btnEditarConsejoTxt.addClass('hidden');
     $('#dvBtnsActualizar').removeClass('hidden');
     $('#mdlTxtTitulo').prop('readonly',false);

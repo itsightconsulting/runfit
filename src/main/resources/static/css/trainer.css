@@ -1028,7 +1028,7 @@ section#suspendidos .owl-nav {
     top: -112px; }
 section#suspendidos .owl-nav .owl-prev {
     background: url(../img/arrow-left.png) no-repeat center;
-    margin-right: 44%; }
+    margin-right: 47%; }
 section#suspendidos .owl-nav .owl-next {
     background: url(../img/arrow-right.png) no-repeat center; }
 
@@ -1043,7 +1043,8 @@ section#suspendidos .owl-dots span {
 
 section#suspendidos h3.date {
     font-family: GothamHTF-Book;
-    font-size: 21px; }
+    font-size: 21px;
+    margin-bottom: 20px;}
 
 section#suspendidos ul.users li {
     background-image: linear-gradient(to right top, #1f1d22, #1b1a1f, #17161c, #131219, #0e0e16);
@@ -1774,12 +1775,21 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     border-bottom: 1px solid #ccc;
     margin-top:20px;
 }
-.scroll_rut .days_week article .rt-elem .elem input.item-init,
-.scroll_rut .days_week article .rt-elem .elem input.in-sub-ele-esp-pos {
+.scroll_rut .days_week article .rt-elem .elem input.item-init{
     width: 100%;
     border: none;
     border-bottom: 1px solid #ccc;
    }
+
+
+.scroll_rut .days_week article .rt-elem .elem input.in-sub-ele-esp-pos {
+    width: 80%;
+    display: block;
+    margin: auto;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
 .scroll_rut .days_week article .rt-elem .elem input.item-minutos{
     width: 70%;
     border: none;
@@ -1967,24 +1977,24 @@ section#ArbolGrupoVideo h1, section#ArbolGrupoVideoDetalle h1{
     display: none;
 }
 
-#rMenuEleSubele , #rMenuDia {
+.context-menu {
    z-index: 9999;
 }
 
-#rMenuEleSubele ul, #rMenuDia ul {
+.context-menu ul {
     padding: 0;
     list-style: none;
     margin: 0;
 }
-#rMenuEleSubele li , #rMenuDia li{
+.context-menu li{
     list-style: none;
-    border-bottom : 1px solid #a8fa00 ;
+    border : 1px solid #a8fa00 ;
     background-color : white;
     padding-left: 5px;
     padding-right: 5px;
 }
 
-#rMenuEleSubele li:hover, #rMenuDia li:hover{
+.context-menu li:hover{
     cursor:  pointer;
     color : #28a905;
 }
@@ -2134,12 +2144,16 @@ button.note-color-fuente, button.note-bg-color {
     display:  inline-flex!important;
 }
 
-.editor_text .dv-copia-semana{
+#editorContent .dv-copia-semana{
     width:unset;
+    display: inline-flex;
     padding-bottom: 10px;
+    position: relative;
+    left: -15px;
 }
 
-.editor_text .select-copia-semana{
+
+#editorContent .select-copia-semana{
     border: 1px solid #ccc;
 }
 
@@ -2242,8 +2256,30 @@ button.note-color-fuente, button.note-bg-color {
   cursor: pointer;
 }
 
-.editor_text span i.calendario {
-    font-family: !important;
+.lbl-sub-ele{
+  display: block;
+  padding-top:10px;
+}
+
+.lbl-sub-ele-pos{
+    display: block;
+}
+
+.in-sub-elemento {
+  width: 80%!important;
+  display: block;
+  margin: auto;
+}
+
+.dv-mes-actual{
+  display: inline;
+}
+
+#editorContent .close{
+    float:inherit;
+    padding-left: 250px;
+    position: relative;
+    top: -35px;
 }
 
 
@@ -2301,4 +2337,3 @@ button.note-color-fuente, button.note-bg-color {
 .botTempo-hd{
     display: none;
 }
-

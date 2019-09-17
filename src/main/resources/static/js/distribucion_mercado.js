@@ -438,7 +438,7 @@ function graficoCondFisicaBasicaMasc(arr) {
             labels: ["Básica","Otros"],
             datasets: [{
                 data: [arr[0] , total - arr[0]],
-                backgroundColor: ['#00b5f7', '#c2ccac'],
+                backgroundColor: ['#00b5f7', '#756d77'],
                 borderColor: 'transparent',
             }],
         },
@@ -574,7 +574,7 @@ function graficoCondFisicaMedioMasc(arr){
             labels: ["Medio","Otros"],
             datasets: [{
                 data: [arr[1] , total - arr[1]],
-                backgroundColor: ['#00b5f7', '#c2ccac'],
+                backgroundColor: ['#00b5f7', '#756d77'],
                 hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                 borderColor: 'transparent',
             }],
@@ -711,7 +711,7 @@ function graficoCondFisicaAvanzadoMasc(arr){
             labels: ["Avanzado","Otros"],
             datasets: [{
                 data: [arr[2] , total - arr[2]],
-                backgroundColor: ['#00b5f7', '#c2ccac'],
+                backgroundColor: ['#00b5f7', '#756d77'],
                 hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
                 borderColor: 'transparent',
             }],
@@ -848,7 +848,7 @@ function graficoCondFisicaBasicaFem(arr){
             labels: ["Básica","Otros"],
             datasets: [{
                 data: [arr[0] , total - arr[0]],
-                backgroundColor: ['#FF00EB', '#c2ccac'],
+                backgroundColor: ['#FF00EB', '#756d77'],
                 hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
                 borderColor: 'transparent',
             }],
@@ -988,7 +988,7 @@ function graficoCondFisicaMedioFem(arr){
             labels: ["Medio","Otros"],
             datasets: [{
                 data: [arr[1] , total - arr[1]],
-                backgroundColor: ['#FF00EB', '#c2ccac'],
+                backgroundColor: ['#FF00EB', '#756d77'],
                 hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
                 borderColor: 'transparent',
             }],
@@ -1128,7 +1128,7 @@ function graficoCondFisicaAvanzadoFem(arr){
             labels: ["Avanzado","Otros"],
             datasets: [{
                 data: [arr[2] , total - arr[2]],
-                backgroundColor: ['#FF00EB', '#c2ccac'],
+                backgroundColor: ['#FF00EB', '#756d77'],
                 hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
                 borderColor: 'transparent',
             }],
@@ -2042,7 +2042,7 @@ function graficoDistribucionDepartamento(dataDepartamento){
                     barThickness : 15,
                     ticks:{
                         fontSize: 13,
-                        fontColor: "#c2ccac",
+                        fontColor: "#756d77",
                         fontFamily: "GothamHTF-Book"
                     },
                     gridLines: {

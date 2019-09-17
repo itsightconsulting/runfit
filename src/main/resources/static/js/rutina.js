@@ -2600,7 +2600,6 @@ RutinaElementoHTML = (function(){
                                             <span class="rf-dia-elemento-nombre padding-10 ${ess.base}" data-index="${ix}" data-dia-index="${diaIndex}" contenteditable="true" data-placement="bottom" data-toggle="popover" data-content="${ele.nota != undefined? ele.nota :''}" data-trigger="hover">${ele.nombre}</span>
                                         </span>
                                     </a>
-                                    ${RutinaElementoHTML.iconoNota(ele.nota)}
                             </h4>
                         </div>
                         <div id="collapse${ix}" class="panel-collapse collapse in">
