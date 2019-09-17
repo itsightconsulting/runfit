@@ -243,7 +243,7 @@
                 <input id="RfId" name="RfId" type="hidden">
             </div>
             <div class="modal-footer">
-                <textarea name="ChatSms" id="ChatSms" cols="8" rows="2" class="form-control"></textarea><br>
+                <textarea name="ChatSms" id="ChatSms" cols="8" rows="2" class="form-control" maxlength="255"></textarea><br>
                 <button class="btn btn-md" onclick="enviarChatMensaje()"><i class="fa fa-paper-plane fa-fw"></i>ENVIAR</button>
             </div>
         </div>
@@ -417,29 +417,36 @@
 
     function enviarChatMensaje(){
         const rfId = Number($('#RfId').val());
-        const msj = $('#ChatSms').val().replace(/\r?\n/g, '<br />');
+        const msj = $('#ChatSms').val().replace(/\r?\n/g, '<br />').trim();
         const dvChat = document.querySelector('#ChatBody');
         const cliId = $('#InpCliId').val();
+        if (!(msj.length > 0 && msj.length <= 255)) {
+            $('#ChatSms').focus();
+            $.smallBox({color: 'alert',
+                content: '<i class="fa fa-exclamation-triangle fa-fw"></i>No puede enviar mensajes vacíos, además su mensaje no debe exceder los 255 caracteres'});
+            return;
+        }
         $.ajax({
             type: 'PUT',
-            url: _ctx+'gestion/chat/update/'+rfId,
+            url: _ctx + 'gestion/chat/update/' + rfId,
             blockLoading: false,
             dataType: 'json',
             data: {
-                   msg: msj,
-                   cliId: cliId
+                msg: msj,
+                cliId: cliId
             },
-            success: ()=>{
+            success: () => {
                 dvChat.appendChild(htmlStringToElement(`
                     <div class="chat-rg">${msj}
                         <i class="fa fa-check pull-right"></i>
                     </div>`));
                 $('#ChatSms').val('');
             },
-            error: (err)=>{
+            error: (err) => {
                 exception(err)
             },
-            complete: ()=>{ }
+            complete: () => {
+            }
         })
     }
 

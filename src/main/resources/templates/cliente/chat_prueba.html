@@ -41,6 +41,13 @@
     function init(){
         recrearChats();
         eventos();
+
+        //
+        const windowHeight = $(window).height();
+        $('#ChatContainer')[0].style.height = windowHeight + "px";
+        $('#ShowedChat')[0].style.height = windowHeight + "px";
+        // const heightExcedent = windowHeight - document.querySelector('.name-cvs').clientHeight;
+        // $('.cvs')[0].style.height = heightExcedent + "px";
     }
 
     function eventos(){
@@ -55,6 +62,7 @@
             actualizarFlagChat(chatId, input);
         } else if (clases.contains('chat-read')) {
             const chatId = input.getAttribute('data-id');
+            mostrarChatPorDefecto($chats.find(e=>e.id===Number(chatId)));
         }
     }
 
@@ -84,15 +92,17 @@
             url: _ctx+ 'gestion/chat/get/cliente',
             dataType: 'json',
             success: function(data){
-                console.log(data);
-                data = data.sort((a, b) => parseFromStringToDateTime(b.fechaModificacion).getTime() - parseFromStringToDateTime(a.fechaModificacion).getTime());
+                data = data.sort((a, b) =>
+                    (b.fechaModificacion ? parseFromStringToDateTime(b.fechaModificacion) : parseFromStringToDateTime(b.fechaCreacion)) -
+                    (a.fechaModificacion ? parseFromStringToDateTime(a.fechaModificacion).getTime() : parseFromStringToDateTime(a.fechaCreacion))
+                );
                 $chats = data;
                 data.forEach(e=>{
                     const ultimo = JSON.parse(e.ultimo);
                     const checkRead = e.flagLeido;
                     const ultimoMensaje = ultimo.msg.length > 58 ? ultimo.msg.substr(0, 58) + "..." : ultimo.msg;
                     trainerProfiles.appendChild(htmlStringToElement(`
-                        <div class="cnt ${checkRead ? 'chat-read' : 'chat-unread'}">
+                        <div class="cnt ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
                             <div class="perfil">
                                 <img src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}"/></div>
                             <div class="datos">
@@ -106,7 +116,7 @@
 
                 mostrarChatPorDefecto($chats[0]);
 
-            },error: (err)=>{
+            }, error: (err)=>{
                 /*`<div class="row chat-trainer-mini ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
                             <div class="col-md-12 col-sm-12">
                                 <div class="col-md-3 chat-foto">
@@ -156,7 +166,9 @@
                         </div>
                     </li>
                     <li class="sent">
-                        <div class="perfil"></div>
+                        <div class="perfil">
+                            <img src="${_ctx}img/user_avatar.png" />
+                        </div>
                         <div class="messages message-sent">
                             <p class="name"><span>13/9</span><span>18:20</span></p>
                             <div class="message">Try to type or click the thumb up! ;)</div>
@@ -164,8 +176,13 @@
                     </li>
                 </ul>
             </div>
-            <input class="form-control" placeholder="Escribe un mensaje nuevo">
+            <input id="ChatMensaje" class="form-control" placeholder="Escribe un mensaje nuevo">
         `;
+        const windowHeight = $(window).height();
+        const heightExcedent = windowHeight -
+            document.querySelector('.name-cvs').clientHeight -
+            document.getElementById('ChatMensaje').clientHeight - 2;
+        $('.cvs')[0].style.height = heightExcedent + "px";
     }
 </script>
 </body>

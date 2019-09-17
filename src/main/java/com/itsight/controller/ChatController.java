@@ -1,10 +1,12 @@
 package com.itsight.controller;
 
+import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Chat;
 import com.itsight.domain.pojo.ChatPOJO;
 import com.itsight.service.ChatProcedureInvoker;
 import com.itsight.service.ChatService;
 import com.itsight.service.ConfiguracionClienteService;
+import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,7 +61,10 @@ public class ChatController {
     @PutMapping("/update/{id}")
     public @ResponseBody String actualizarChatSegundId(@RequestParam String msg,
                                                        @RequestParam String cliId,
-                                                       @PathVariable String id){
+                                                       @PathVariable String id) throws CustomValidationException {
+        if(msg.length()== 0 || msg.length()>255){
+            throw new CustomValidationException(Enums.Msg.VALIDACION_FALLIDA.get(), Enums.ResponseCode.EX_VALIDATION_FAILED.get());
+        }
         Integer chatId = Integer.parseInt(id);
         Boolean flagLeido = chatService.checkFlagLeidoById(chatId);
         if(flagLeido){
