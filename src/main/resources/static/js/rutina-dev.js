@@ -102,7 +102,7 @@ class Rutina {
                 <header class="heading-dia" role="heading">
                     <h2 class="titulo-dia ${arrCirculoFichaClass[i]} ctx-menu-dia">${v.literal}<span class="ctx-menu-dia">${v.dia}</span></h2>
                 </header>
-                <div class="sub-header" role="heading"><span><img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg"><span class="distancia-total">${parseNumberToHours(v.distancia, 2)}</span></span> <span> <img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg"><span class="horas-totales">${parseNumberToHours(v.minutos)}</span> </span></div>
+                <div class="sub-header" role="heading"><span><img class="svg" src="${_ctx}img/iconos-trainers/icon_km.svg"><span class="distancia-total">${parseNumberToDecimal(v.distancia, 2)}</span></span> <span> <img class="svg" src="${_ctx}img/iconos-trainers/icon_time.svg"><span class="horas-totales">${parseNumberToHours(v.minutos)}</span> </span></div>
                       ${RutinaDiaHTML.full(v.elementos, i, val)}
             </article>
                 `;
@@ -693,7 +693,7 @@ RutinaSet = (function(){
             $rutina.semanas[numSem].dias[diaIndex].elementos[posEle].subElementos = $rutina.semanas[numSem].dias[diaIndex].elementos[posEle].subElementos.concat(nSubElementos);
         },
         setElementoNombre: (numSem, posDia, posEle, nombre)=>{
-            debugger
+            
             $rutina.semanas[numSem].dias[posDia].elementos[posEle].nombre = nombre;
         },
         setElementoNota: (numSem, posDia, posEle, nota)=>{
@@ -1173,9 +1173,9 @@ DiaOpc = (function(){
             return dIx == "0" ? "right" : "bottom";
         },
         confirmarLimpiarElementosDía: (numSem, diaIndex) => {
-
+            
                 $.smallBox({
-                    content: "El siguiente procedimiento borrará toda la información ya ingresada del día. ¿Desea aún ajustar el día como día de descanso? <p class='text-align-right'><a href='javascript:DiaOpc.limpiarElementosDia(" + numSem + "," + diaIndex + ");' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
+                    content: "El siguiente procedimiento borrará toda la información ya ingresada del día. ¿Desea aún ajustar el día como día de descanso? <p class='text-align-right'><a onclick='DiaOpc.limpiarElementosDia(" + numSem + "," + diaIndex + ")' href='javascript:void(0);' class='btn btn-primary btn-sm'>Si</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a></p>",
                     color: "#296191",
                     timeout: 10000,
                     icon: "fa fa-bell swing animated",
@@ -1183,7 +1183,7 @@ DiaOpc = (function(){
                 });
             },
         limpiarElementosDia: (numSem, diaIndex) => {
-            debugger
+            
             let temp = document.querySelector(`.rf-dia[data-index="${diaIndex}"] div[role="heading"]`);
             temp.nextElementSibling.classList.toggle('hidden');
             temp.nextElementSibling.nextElementSibling.innerHTML = "";
@@ -1255,9 +1255,10 @@ DiaOpc = (function(){
             }
         },
         validPreActualizarFromNomEle: (e, ixs, posEle)=>{
+            debugger
             const nombreOZonaCardiaca = e.toUpperCase();
             const elemento = RutinaDOMQueries.getElementoByIxs(ixs);
-            const tiempoAsignado =  0; // elemento.querySelector('.agregar-tiempo').value;
+            const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
             if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
                 if (RutinaValidator.esZ(nombreOZonaCardiaca)) {
                     if(elemento.getAttribute('data-type') == ElementoTP.COMPUESTO && RutinaValidator.hayZFromEle(elemento)){
@@ -1295,7 +1296,7 @@ DiaOpc = (function(){
         },
         validPreActualizarFromNomSubEle: (elemento, valor, ixs, posEle, posSE)=>{
             const nombreOZonaCardiaca = valor.toUpperCase();
-            const tiempoAsignado = 0 //elemento.querySelector('.agregar-tiempo').value;
+            const tiempoAsignado = elemento.querySelector('.agregar-tiempo').value;
             if(!isNaN(tiempoAsignado) && tiempoAsignado > 0) {
                 if (RutinaValidator.esZ(nombreOZonaCardiaca)) {
                     if(RutinaValidator.hayZFromSubEle(elemento)){
@@ -1305,8 +1306,8 @@ DiaOpc = (function(){
                         const nSubEle = elemento.querySelector(`div[data-index="${nuevoIx}"]`);
                         $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
                         elemento.querySelector(`.in-init-sub-ele`).parentElement.classList.toggle('hidden');
-                        instanciarSubElementoTooltip(nSubEle);
-                        instanciarSubElementoPopover(nSubEle);
+                       // instanciarSubElementoTooltip(nSubEle);
+                       // instanciarSubElementoPopover(nSubEle);
 
                         const zonaNum = Number(nombreOZonaCardiaca.substr(1)) - 1;
                         let caloriasNuevas = DiaFunc.obtenerGastoCalorico(zonaNum, tiempoAsignado);
@@ -1315,7 +1316,7 @@ DiaOpc = (function(){
                         DiaOpc.actualizarFromSE(elemento, nombreOZonaCardiaca, kilometraje, caloriasNuevas, posEle, posSE, ixs);
                     }
                 }else {
-                    debugger
+                    
                     const nuevoIx = RutinaSeccion.newSubElemento(ixs.diaIndex, ixs.eleIndex, TipoElemento.TEXTO, valor);
                     const nSubEle = elemento.querySelector(`div[data-index="${nuevoIx}"]`);
                     $rutina.semanas[ixs.numSem].dias[ixs.diaIndex].elementos[posEle].subElementos.push(new SubElemento({nombre: valor, tipo: TipoElemento.TEXTO}));
@@ -1412,7 +1413,7 @@ DiaOpc = (function(){
         pegarMiniPlantillaDia: (diaIndex)=>{
 
             if($diaPlantilla != undefined && typeof $diaPlantilla == 'object' && $diaPlantilla.elementos != undefined && $diaPlantilla.elementos.length > 0){
-                debugger
+                
                 const diaHTML =  RutinaDOMQueries.getDiaByIx(diaIndex);
                 diaHTML.querySelector(`.distancia-total`).textContent = parseNumberToDecimal($diaPlantilla.distancia, 2);
                 diaHTML.querySelector(`.horas-totales`).textContent = parseNumberToHours($diaPlantilla.minutos);
@@ -1626,7 +1627,17 @@ ElementoOpc = (function(){
                 const containerElementosDia = diaContainer.querySelector(`.rt-elem`);
                 if(containerElementosDia.children.length == 0){
                     diaContainer.querySelector(`.inputs-init`).classList.toggle('hidden');
-            //        diaContainer.querySelector(`.distancia-total`).textContent = parseNumberToDecimal(0, 2);
+                    const dvAddInit =  diaContainer.querySelector('#dvAddInitElement');
+                    const dvInputInit =  diaContainer.querySelector('#dvInputsInit');
+                    if(dvAddInit.classList.contains("hidden")){
+                       dvAddInit.classList.remove("hidden");
+                    }
+
+                    if(!dvInputInit.classList.contains("hidden")){
+                        dvInputInit.classList.add("hidden");
+                    }
+
+                    //        diaContainer.querySelector(`.distancia-total`).textContent = parseNumberToDecimal(0, 2);
             //        diaContainer.querySelector(`.horas-totales`).textContent = parseNumberToHours(0);
                     RutinaSet.setDiaClean(numSem, diaIndex);
                 }
@@ -1662,8 +1673,8 @@ ElementoOpc = (function(){
             $kmsActualizar = input.textContent.trim();
         },
         actualizarTiempoElemento: (ixs, minutos)=>{
+            debugger
             let tempElemento = RutinaDOMQueries.getElementoByIxs(ixs), i=0;
-
             let initTempElemento = tempElemento;
             const eleType = initTempElemento.getAttribute('data-type');
             const nombreEle = initTempElemento.querySelector('.rf-dia-elemento-nombre').textContent.trim().toUpperCase();
@@ -1905,7 +1916,7 @@ ElementoOpc = (function(){
 SubEleOpc = (function(){
     return {
         eliminarSubElemento: (numSem, diaIndex, eleIndex, subEleIndex)=>{
-            debugger
+            
             const dia = RutinaGet.dia(numSem, diaIndex);
             const ixs = RutinaParsers.constructorIndexObject(diaIndex, eleIndex, subEleIndex);
             let i=0, k=0;
@@ -1933,7 +1944,22 @@ SubEleOpc = (function(){
             $(subEleInit).slideUp('fast', ()=>{
                 subEleInit.remove();
                 if(eleInit.querySelector(`.detalle-lista`).children.length==0){
-                    eleInit.querySelector(`.in-init-sub-ele`).parentElement.classList.toggle('hidden');
+                    
+                    const dvSubInit = eleInit.querySelector(`.dv-sub-ele-init`);
+                    if(dvSubInit.classList.contains("hidden")){
+                        dvSubInit.classList.remove("hidden");
+                    }
+
+                    const dvAddInit =  eleInit.querySelector('#dvAddInitElement');
+                    const lblSubEleInitInput =  eleInit.querySelector('.lbl-sub-ele');
+                    if(dvAddInit.classList.contains("hidden")){
+                        dvAddInit.classList.remove("hidden");
+                    }
+
+                    if(!lblSubEleInitInput.classList.contains("hidden")){
+                        lblSubEleInitInput.classList.add("hidden");
+                    }
+
                    //RutinaSet.setDiaClean(numSem, diaIndex);
                 }
             });
@@ -2091,7 +2117,7 @@ DiaFunc = (function(){
             return new Date(y, m+1, 0).getDate();
         },
         obtenerGastoCalorico: (nivelZIndex, tiempoMinutos)=>{
-            debugger
+            
             const semActualIx = Number($('#nroSemanaActual').text())-1;
             let factorTiempo;
             if(nivelZIndex == 0){
@@ -2284,9 +2310,14 @@ RutinaSeccion = (function (){
                 <div class="panel-collapse collapse in" id="collapse${ix}">
                            <div class="row">
                              <div class="col-xs-12">
-                               <label class="lbl-sub-ele">                                                            
-                                  <input data-ele-index="${ix}" data-dia-index="${diaIndex}" class="in-sub-elemento in-init-sub-ele item-init"  type="text" maxlength="44" placeholder="">
-                               </label>
+                               <div class="dv-sub-ele-init">
+                             <div class="panel-group elem" id="dvAddInitElement">
+                              <button class="btn add add-init-element" type="button"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</button>
+                             </div>  
+                             <label class="lbl-sub-ele hidden">                                                            
+                              <input data-ele-index="${ix}" data-dia-index="${diaIndex}" class="in-sub-elemento in-init-sub-ele item-init"  type="text" maxlength="44" placeholder="">
+                             </label>
+                            </div>
                            </div>                                                                       
                            </div>
                    <ul class="dd-list detalle-lista">
@@ -2313,7 +2344,7 @@ RutinaSeccion = (function (){
                       </div> 
                     </li>
                    `
-            debugger
+            
             document.querySelector(`#rutinaSemana .rf-dia[data-index="${diaIndex}"] #collapse${eleIndex} .dd-list`).appendChild(htmlStringToElement(subEleHTML));
             return ix;
         },
@@ -2383,8 +2414,9 @@ RutinaSeccion = (function (){
         newElementosFromMiniPlantilla: (elementos, diaIndex)=>{
             let elementosHTML = '';
             elementos.forEach(ele=>{
-                elementosHTML+=ele.tipo==1?RutinaElementoHTML.elementoSimplePaste(ele, diaIndex) : RutinaElementoHTML.elementoCompuestoPaste(ele, diaIndex);
+                elementosHTML+=ele.tipo==1 ?RutinaElementoHTML.elementoSimplePaste(ele, diaIndex) : (ele.tipo==2  ? RutinaElementoHTML.elementoCompuestoPaste(ele, diaIndex) : RutinaElementoHTML.elementoVacioPaste(ele, diaIndex)  );
             });
+
             return elementosHTML;
         },
         newDiaObjetivo: (objetivos, diaIndex)=>{
@@ -2429,7 +2461,7 @@ RutinaElementoHTML = (function(){
             return `<div class="ong reprod-audio" rel="tooltip" data-media="${mediaAudio}" data-original-title="Audio"></div>`;
         },
         adjuntarElementos: (diaIndex, elementos)=>{
-            debugger
+            
             const listaDiv = RutinaDOMQueries.getDivListaDiaByIxs({diaIndex: diaIndex});
             listaDiv.children.length==0?listaDiv.parentElement.querySelector('.inputs-init').classList.toggle('hidden'):'';
             elementos.forEach(e=>{
@@ -2439,7 +2471,7 @@ RutinaElementoHTML = (function(){
             //instanciarElementosDiaPopover(listaDiv);
         },
         adjuntarSubElementos: (ixs, via)=>{
-            debugger
+            
             const newSubEleS = [];
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             const divSubEle = elemento.querySelector('.detalle-lista');
@@ -2603,9 +2635,14 @@ RutinaElementoHTML = (function(){
                         <div class="panel-collapse collapse in" id="collapse${ix}">
                           <div class="row">
                             <div class="col-xs-12">
-                             <label class="lbl-sub-ele  ${val == undefined ?  'hidden' : ''}">                                                            
+                             <div class="dv-sub-ele-init ${val == undefined ?  'hidden' : ''}">
+                             <div class="panel-group elem" id="dvAddInitElement">
+                              <button class="btn add add-init-element" type="button"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</button>
+                             </div>  
+                             <label class="lbl-sub-ele hidden">                                                            
                               <input data-ele-index="${ix}" data-dia-index="${diaIndex}" class="in-sub-elemento in-init-sub-ele item-init"  type="text" maxlength="44" placeholder="">
                              </label>
+                            </div> 
                           </div>                                                                       
                          </div>
                             <ul class="dd-list detalle-lista">
@@ -2615,6 +2652,24 @@ RutinaElementoHTML = (function(){
                         </div>
                       </div>  
           `;
+        },  elementoVacioPaste:(ele, diaIndex)=>{
+            const ess = RutinaEditor.obtenerEstilos(ele.estilos);
+            let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
+            let ix = ++indexGlobal;
+            return `<div class="panel-group elem ${ess.margen} rf-dia-elemento" data-index="${ix}" data-type="${ele.tipo}" data-kms="${ele.distancia}">
+                        <div class="row" ${ess.header}>
+                         <div class="col-xs-12">
+                          <div class="notes">
+                          </div>
+                          <span class="pull-left">
+                           <i> <img class="svg eliminar-ele-vacio  ele-delete" src="${_ctx}img/iconos-trainers/icon_trash.svg" rel="tooltip" data-placement="bottom" data-original-title="Eliminar" data-dia-index="${diaIndex}" data-index="${ix}"></i>
+                            </span>  
+                           <span  data-index="${ix}" data-dia-index="${diaIndex}">Elemento sin nombre </span>
+                           </div>
+                           
+                      </div>
+                     </div> 
+                   `;
         },
         subElementosPaste: (subElementos, diaIndex, eleIndex)=>{
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
@@ -2644,7 +2699,7 @@ RutinaElementoHTML = (function(){
             return subElementosHTML;
         },
         subElementoPaste: (sEle, diaIndex, eleIndex)=>{
-            debugger
+            
             let posPopover = CabeceraOpc.positionPopoverByDiaIndex(diaIndex);
             let ix = ++indexGlobal;
             return `<li>
@@ -2694,7 +2749,11 @@ RutinaDiaHTML = (function(){
 
                 return ` 
                       <div class="panel-group elem inputs-init ${init == undefined ?  'hidden' : ''}">
-                           <div class="row">
+                          <div class="panel-group elem" id="dvAddInitElement">
+                           <button class="btn add add-init-element" type="button"><img class="svg" src="/img/iconos-trainers/icon_add.svg">Agregar</button>
+                          </div>  
+                          
+                           <div class="row hidden" id="dvInputsInit" >
                             <div class="col-xs-6">
                              <input type="text" class="in-ele-dia-1 in-init-ele item-inp" maxlength="121" placeholder="" data-dia-index="${diaIndex}"/>
                             </div>
@@ -2795,7 +2854,7 @@ Indicadores = (function(){
             document.querySelector('#Indicadores1').innerHTML = raw;
         },
         abrirIndicador1: (metricas)=>{
-            const iconIndi1 = document.querySelector('#IconIndicador1');
+            const iconIndi1 = document.querySelector('#IndicadorPulso');
             const raw = `
                 <div class="container-fluid padding-0 its-indicador-1">
                     <div class="col-md-6 col-sm-6 col-xs-6">
@@ -2813,12 +2872,12 @@ Indicadores = (function(){
                 </div>
             `
             iconIndi1.setAttribute('data-content', raw);
-            $('#IconIndicador1').popover('show');
+            $('#IndicadorPulso').popover('show');
         },
         indicador1Body: (metricas, t)=>{
             const iteraciones = metricas.length;
             let raw = '';
-            const claseTipo = t == 2 ? 'txt-color-red':'';
+            const claseTipo = t == 2 ? 'txt-color-red':'txt-color-blue';
             const bOpacidad = 1/iteraciones;
             for(let i=0; i<iteraciones;i++){
                 raw += `<div class="col-md-12 col-sm-12 col-xs-12 padding-o-bottom-5 text-center">
