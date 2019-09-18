@@ -83,6 +83,7 @@ p{
 
 .distribucion-edad canvas{
     padding: 20px 25px 10px;
+    margin-bottom: 14px;
 }
 
 p.fem-age-prom, strong.fem-porc,p.fem-porc-age, .svg.fem{

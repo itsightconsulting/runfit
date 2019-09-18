@@ -83,48 +83,49 @@ function sendMainForm(e){
 }
 
 function finalSendForm(){
-    const existsTarifario = servicios.filter(e=>e.tarifarios && e.tarifarios.length).length>0;
-    if(existsTarifario){
-        sendForm();
+    //No alterar el orden
+    const header = $(".navbar-inverse").height();
+    if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
     }else{
-        const header = $(".navbar-inverse").height();
-
-        if(!$('#FinalImagenRecortada').attr('src').includes('/img/')){
-        }else{
-            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
-            $.smallBox({color: 'alert',
-                content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
-                timeout: 5000});
-            return;
-        }
-        if(servicios.length === 0){
-            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
-            $.smallBox({content: "<i class='fa fa-fw fa-exclamation-circle'></i>Debe agregar por lo menos un servicio mediante el botón 'AGREGAR SERVICIO'", color: "alert"});
-            return;
-        }
-
-        $.SmartMessageBox({
-            title: "<i class='fa fa-exclamation-triangle' style='color: yellow'></i> RUNFIT",
-            content: "" +
-                "<br/><h4>Antes de proceder con el registro, se ha detectado que usted no ha registrado ningún tarifario a su(s) servicio(s). " +
-                "¿Deseas seguir sin agregar tarifarios para su(s) servicio(s)?</h4>",
-            buttons: '[NO][SI]'
-        }, function (ButtonPressed) {
-            if (ButtonPressed === "NO") {
-                //Ir a la parte de arriba de la página
-                const header = $(".navbar-inverse").height();
-                $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
-                setTimeout(() => {
-                    document.querySelector('.sub-menu[data-op="2"]').click();
-                }, 700);
-            } else {
-                setTimeout(() => {
-                    sendForm();
-                }, 500);
-            }
-        });
+        $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+        $.smallBox({color: 'alert',
+            content: "<i>Es obligatorio para el registro agregar una foto de perfil</i>",
+            timeout: 5000});
+        return;
+    }
+    if(servicios.length === 0){
+        $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+        $.smallBox({content: "<i class='fa fa-fw fa-exclamation-circle'></i>Debe agregar por lo menos un servicio mediante el botón 'AGREGAR SERVICIO'", color: "alert"});
+        return;
     }
 
+    const existsTarifario = servicios.filter(e=>e.tarifarios && e.tarifarios.length).length>0;
+
+    if(existsTarifario){
+        sendForm();
+        return;
+    }
+
+    $.SmartMessageBox({
+        title: "<i class='fa fa-exclamation-triangle' style='color: yellow'></i> RUNFIT",
+        content: "" +
+            "<br/><h4>Antes de proceder con el registro, se ha detectado que usted no ha registrado ningún tarifario a su(s) servicio(s). " +
+            "¿Deseas seguir sin agregar tarifarios para su(s) servicio(s)?</h4>",
+        buttons: '[NO][SI]'
+    }, function (ButtonPressed) {
+        if (ButtonPressed === "NO") {
+            //Ir a la parte de arriba de la página
+            const header = $(".navbar-inverse").height();
+            $('html, body').animate({scrollTop: $('.nav-tabs').offset().top - header - 20}, 'slow');
+            setTimeout(() => {
+                document.querySelector('.sub-menu[data-op="2"]').click();
+            }, 700);
+        } else {
+            setTimeout(() => {
+                sendForm();
+            }, 500);
+        }
+    });
 
 }
 

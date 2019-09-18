@@ -255,6 +255,7 @@ public class RutinaServiceImpl extends BaseServiceImpl<RutinaRepository> impleme
         nueRutina.setCliente(runneId);
         nueRutina.setRedFitness(redFitId);
         nueRutina.setControl(rc);
+        nueRutina.setNombre("");
         //Instanciando lista de semanas
         List<Semana> semanas = rutina.getSemanas().stream().map(x->obtenerSemanasRutina(x, nueRutina)).collect(Collectors.toList());
         //Agregando las semanas a la instancia de rutina que hará que se inserten mediante cascade strategy

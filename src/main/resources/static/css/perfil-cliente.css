@@ -191,14 +191,13 @@
 
 .steps h1 {
     font-family: Gotham-HTF-Black-Italic, 'system-ui';
-    font-size: 72.25px;
+    font-size: 60px;
     color: #fff;
     text-transform: uppercase
 }
 
 .steps h1 span {
     font-family: Gotham-HTF-Black-Italic, 'system-ui';
-    font-size: 72.25px;
     color: #fff
 }
 
@@ -291,17 +290,34 @@
     margin: 12px 0;
     font-size: 16px;
     font-family: Gotham-HTF-Bold, 'system-ui';
-    color: #fff;
+    color: #9d9d9d;
     padding-right: 25px
 }
 
 .steps .form-group input,
 .steps .form-group select {
-    background-color: #fafafa;
+    background-color: #161824;
     border-radius: 15px;
     border: 0;
     height: 40px;
-    box-shadow: 0 0 0
+    box-shadow: 0 0 0;
+    color: #9d9d9d;
+}
+
+.steps input.form-control.multiselect-search {
+    background-color: #fff;
+    height: auto;
+}
+
+.multiselect-item span.input-group-btn {
+    display: table-cell !important;
+}
+.multiselect-item .input-group {
+    width: auto;
+}
+
+button.btn.btn-default.multiselect-clear-filter {
+    border-radius: 0;
 }
 
 .steps .form-group input.price,
@@ -315,12 +331,13 @@
 }
 
 .steps .form-group textarea {
-    background-color: #fafafa;
+    background-color: #161824;
     border-radius: 15px;
     border: 0;
     resize: none;
     box-shadow: 0 0 0;
-    height: 100px
+    height: 100px;
+    color: #9d9d9d;
 }
 
 .steps ol {
@@ -337,7 +354,7 @@
     left: 26px;
     position: absolute;
     top: 25px;
-    border-left: 1px solid #d3d3d3
+    border-left: 1px solid #53485a;
 }
 
 .steps ol>li {
@@ -351,22 +368,20 @@
 }
 
 .steps ol>li::before {
-    /*content: counter(item);
-    counter-increment: item;*/
     width: 33px;
     height: 33px;
     padding: 4px;
-    background-color: #fff;
+    background-color: #161824;
     text-align: center;
     display: inline-block;
     font-size: 17px;
     border-radius: 50%;
-    color: #303030;
+    color: #9d9d9d;
     position: absolute;
     left: 10px;
     top: 10px;
-    border: 1px solid #303030;
-    font-family: Gotham-HTF-Bold, 'system-ui'
+    border: 1px solid #161824;
+    font-family: Gotham-HTF-Bold, 'system-ui';
 }
 
 .steps .days-of-week {
@@ -402,7 +417,6 @@
 #DivSvgSkeleton{
     padding-right: 0px;
     position: absolute;
-    background: white;
     border-radius: 20px;
     width: 90%;
 }
@@ -518,10 +532,6 @@
     padding: 40px 0
 }
 
-.steps .btn {
-    margin-bottom: 25px
-}
-
 .steps .btn-bg-black {
     border: 1px solid #fff;
     color: #fff;
@@ -531,7 +541,7 @@
     text-transform: uppercase;
     font-size: 17px;
     border-radius: 5px;
-    background-color: #303030;
+    background-color: transparent;
     font-family: Gotham-HTF-Bold, 'system-ui'
 }
 
@@ -901,7 +911,7 @@ input[type=range]:focus::-ms-fill-upper {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    color: #666666;
+    color: #9d9d9d;
     font-size: 18px
 }
 

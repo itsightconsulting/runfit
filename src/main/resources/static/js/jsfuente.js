@@ -529,6 +529,11 @@ String.prototype.replaceAt=function(index, replacement) {
 
 Number.prototype.toPercentage = function(){ return this/100;};
 
+function getDateAsDateTimeString(){
+    const d = new Date();
+    return `${d.getDate()+'/'+('0' + (d.getMonth() + 1)).slice(-2)+'/'+d.getFullYear()+' '+ ('0' +d.getHours()).slice(-2) +':'+ ('0' + d.getMinutes()).slice(-2)+':'+('0' +d.getSeconds()).slice(-2)}`
+}
+
 function getFechaFormatoString(d) {
     return `${d.getFullYear()}-${('00' + (d.getMonth() + 1)).slice(-2)}-${('00' + d.getDate()).slice(-2)}`;
 }
@@ -959,7 +964,7 @@ function b64DecodeUnicode(str) {
     }
 })();
 function getFullNameFromUser(){
-    return b64DecodeUnicode(getCookie("GLL_NOMBRE_COMPLETO")).trim();
+    return b64DecodeUnicode(getCookie("GLL_NOMBRE_COMPLETO")).trim().replace(" xxx", "");
 }
 
 function getImgUrlFromUser(){
@@ -1098,10 +1103,12 @@ function fromDateToString(d){
 
 function cerrarSesion(){
     let fullName = getFullNameFromUser();
-    fullName = fullName.toLowerCase().split().map(e=>capitalizeFirstLetter(e)).join(" ");
+    const arrFullName = fullName.split(" ");
+    arrFullName.map(e=>e.toLowerCase().split().map(zz=>capitalizeFirstLetter(zz)).join("")).join(" ");
+
     $.SmartMessageBox({
         title: "<i class='fa fa-exclamation-triangle fa-fw' style='color:yellow;'></i> <b>RUNFIT</b>",
-        content: "¿Estás seguro que desea cerrar sesión "+fullName+" <span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span>?",
+        content: "¿Estás seguro que desea cerrar sesión "+fullName+"<span class='txt-color-orangeDark'><strong>" + $("#show-shortcut").text() + "</strong></span>?",
         buttons: "[No][Si]"
     }, function(e) {
         "Si" == e && $.ajax({
@@ -1116,4 +1123,27 @@ function cerrarSesion(){
             }
         })
     })
+}
+
+function setFechaChat(fecha){
+    const hoy = new Date();
+    const fechaChat = parseFromStringToDate2(fecha);
+    const areEqualsYear = checkDateAreEqualsYear(hoy, fechaChat);
+    const fechaSplit = fecha.split(" ");
+    const date = fechaSplit[0];
+    const time = fechaSplit[1];
+    if(areEqualsYear){
+        const areEquals = checkDateAreEquals(hoy, fechaChat);
+        return areEquals ? time.slice(0, time.lastIndexOf(':')) : date.substr(0, 5);
+    }else{
+        return date.trim();
+    }
+}
+
+function checkDateAreEquals(f1, f2){
+    return f1.getFullYear() === f2.getFullYear() && f1.getMonth() === f2.getMonth() && f1.getDate() === f2.getDate();
+}
+
+function checkDateAreEqualsYear(f1, f2){
+    return f1.getFullYear() === f2.getFullYear();
 }
