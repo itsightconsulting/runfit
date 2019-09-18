@@ -230,6 +230,10 @@
   border: 0
 }
 
+.login .btn-face:hover{
+  cursor: pointer;
+}
+
 .login .btn-nuevo {
   display: block;
   text-transform: uppercase;

@@ -94,7 +94,7 @@
                             <img src="${_ctx}img/user_avatar.png" />
                         </div>
                         <div class="messages message-sent">
-                            <p class="name"><span>13/9</span><span>18:20</span></p>
+                            <p class="name"><span>${setFechaChat(getDateAsDateTimeString())}</span></p>
                             <div class="message">${msj}</div>
                         </div>
                     </li>
@@ -183,29 +183,6 @@
         })
     }
 
-    function setFechaChat(fecha){
-        const hoy = new Date();
-        const fechaChat = parseFromStringToDate2(fecha);
-        const areEqualsYear = checkDateAreEqualsYear(hoy, fechaChat);
-        const fechaSplit = fecha.split(" ");
-        const date = fechaSplit[0];
-        const time = fechaSplit[1];
-        if(areEqualsYear){
-            const areEquals = checkDateAreEquals(hoy, fechaChat);
-            return areEquals ? time.slice(0, time.lastIndexOf(':')) : date.substr(0, 5);
-        }else{
-            return date.trim();
-        }
-    }
-
-    function checkDateAreEquals(f1, f2){
-        return f1.getFullYear() === f2.getFullYear() && f1.getMonth() === f2.getMonth() && f1.getDate() === f2.getDate();
-    }
-
-    function checkDateAreEqualsYear(f1, f2){
-        return f1.getFullYear() === f2.getFullYear();
-    }
-
     function mostrarChatPorDefecto(chat){
         const chatDefecto = document.getElementById('ShowedChat');
         const mensajes = JSON.parse(chat.mensajes);
@@ -228,7 +205,7 @@
                                 `<img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${chat.fpTrainer}">`}
                             </div>
                             <div class="messages ${c.esSalida ? 'message-sent':'message-received'}">
-                                <p class="name">${chat.nomTrainer} <span>${setFechaChat(c.fecha)}</span></p>
+                                <p class="name">${c.esSalida ? '': chat.nomTrainer} <span>${setFechaChat(c.fecha)}</span></p>
                                 <div class="message">${c.msg}</div>
                             </div>
                         </li>`
