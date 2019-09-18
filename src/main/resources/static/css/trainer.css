@@ -1748,15 +1748,27 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
 .scroll_rut .days_week article .rt-elem .elem a[aria-expanded="true"] svg.arrow {
     transform: rotate(180deg);
     transition: all .5s; }
-.scroll_rut .days_week article .rt-elem .elem .svg {
+.scroll_rut .days_week article .rt-elem .elem .svg{
     height: 20px;
     position: relative;
-    top: 4px;
+    max-width: 20px;
+    width: 20px;
+
+}
+
+.scroll_rut .days_week article .inputs-init .svg,
+.scroll_rut .days_week article .rt-elem .elem .add-init-element .svg   {
+    height: 20px;
+    position: relative;
+    top: 6px;
     max-width: 20px; }
-.scroll_rut .days_week article .rt-elem .elem button.btn.add {
+.scroll_rut .days_week article .inputs-init .elem button.btn.add ,
+.scroll_rut .days_week article .rt-elem .elem button.add-init-element
+{
     background-color: transparent;
     color: #b3b3b3; }
-.scroll_rut .days_week article .rt-elem .elem button.btn.add .svg {
+.scroll_rut .days_week article .inputs-init .elem button.btn.add .svg ,
+.scroll_rut .days_week article .rt-elem .elem button.add-init-element .svg{
     fill: #b3b3b3; }
 .scroll_rut .days_week article .rt-elem .elem ul li {
     font-family: Montserrat-Regular;
@@ -1807,10 +1819,14 @@ section.consejos span.msj-no-data , section.consejos-favs span.msj-no-data{
     padding: 10px;
     font-size: 12px;
     white-space: normal;
-    -webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
-    box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
 
+
+}
+.scroll_rut .days_week article .rf-dia-pre-elemento
+{
+-webkit-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+-moz-box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
+box-shadow: 6px 15px 35px -20px rgba(0, 0, 0, 0.4);
 }
 
 .scroll_rut .days_week article .rt-elem .elem ul li .col-xs-4 {
@@ -2172,7 +2188,7 @@ button.note-color-fuente, button.note-bg-color {
 }
 
 .editor_text .its-indicador-1{
-    width: 300px !important;
+    width: 380px !important;
     font-size: 0.85em !important;
 }
 
@@ -2275,12 +2291,38 @@ button.note-color-fuente, button.note-bg-color {
 }
 
 #editorContent .close{
-    float:inherit;
-    padding-left: 250px;
-    position: relative;
-    top: -35px;
+  float:inherit;
+  padding-left: 250px;
+  position: relative;
+  top: -35px;
 }
 
+.scroll_rut article.rf-dia .add-init-element{
+  padding-top: 0!important;
+}
+
+.txt-color-red {
+  color: #a90329!important;
+}
+
+.txt-color-blue{
+  color: #133770!important;
+}
+.popover {
+  max-width: 600px !important;
+}
+
+.popover a:hover{
+  text-decoration:unset
+}
+
+.popover a{
+  color: #000000;
+}
+
+.scroll_rut .days_week article .rt-elem .elem .svg.ele-delete {
+    height: 17px;
+}
 
 /* SPINNER */
 .half-circle-spinner, .half-circle-spinner * {

@@ -12,6 +12,7 @@ const fntFmlyEditor = document.querySelector('#fntFmlyEditor');
 const $btnSeleccionColor = document.querySelector('.chosen-color');
 const $selectZoom = document.querySelector('#selectZoom');
 const dvMesActual = document.querySelector('.dv-mes-actual');
+const dvSeleccionMesDots = document.querySelector('.rut-dots');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -56,8 +57,6 @@ let isDg = "n";//Importante iniciarlo con n
 let $blnObjetivo = 1;
 let $colorEscogido = '';
 
-
-
 $(function () {
     init();
 })
@@ -65,7 +64,6 @@ $(function () {
 function init(){
 
     let uriParam = getParamFromURL("si");
-
     obtenerSemanaInicialRutina().then((semana)=>{
         //Importante mantener el orden para el correcto funcionamiento
         $rutina = new Rutina(rutinaData);
@@ -87,7 +85,6 @@ function init(){
 
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         dvMesActual.addEventListener('contextmenu', eventoMenuDvMesActualContextMenu);
-        dvMesActual.addEventListener('click', eventoMenuDvMesActualClick);
 
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
@@ -98,11 +95,18 @@ function init(){
 
         $(dvEditor).on('click','.btn' , principalesDivEditor);
         $(dvEditor).click(eventosCalendario);
-        $(document).bind("click", function(event) {
-            debugger
+        dvSeleccionMesDots.addEventListener('click' , eventoClickSeleccionMesDots);
+        imgtoSvgEvent();
+        $(document).bind("click", function(e) {
+
+           // 
+            const input= e.target;
+            const clases = input.classList;
+
+            e.preventDefault();
+
             $(".context-menu").each(function(index,value){
                 $(this).attr('class', 'hide context-menu')
-
             })
             if($blnObjetivo){
                 $(".scroll_rut").mCustomScrollbar("update");
@@ -163,21 +167,6 @@ function eventoMenuDvMesActualContextMenu(e){
     e.preventDefault();
 }
 
-function eventoMenuDvMesActualClick(e){
-
-    debugger
-    const input= e.currentTarget;
-    const clases = input.classList;
-
-    e.preventDefault();
-
-    if(clases.contains('cerrar-copiar-semana')){
-
-        $('#dvCopiarSemana').remove();
-
-    }
-
-}
 
 function  eventosMenuSemanario(e) {
     const input = e.target;
@@ -192,7 +181,7 @@ function  eventosMenuSemanario(e) {
 
     if (inpClasses.contains("rf-dia-elemento-nombre") || inpClasses.contains("rf-sub-elemento-nombre")) {
 
-      //  debugger
+      //  
         $menuTargetInput = input;
 
       //  $menuTargetInput.parentElement.appendChild($rMenuEleSubele);
@@ -315,7 +304,7 @@ function eventosClickMenuOptElem(e) {
      else if(inpClasses.contains('insertar-encima')) {
 
         if (inpTargetClasses.contains("rf-dia-elemento-nombre")) {
-            debugger
+            
             let ixs = RutinaIx.getIxsForElemento($menuTargetInput);
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let ix = ++indexGlobal;
@@ -373,7 +362,7 @@ function eventosClickMenuOptElem(e) {
             }
 
         } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
-            debugger
+            
             let ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
             let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
             let subElemento = RutinaDOMQueries.getSubElementoByIxs(ixs).parentElement;
@@ -429,7 +418,7 @@ function eventosClickMenuOptElem(e) {
                 ElementoOpc.eliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
 
             } else if (inpTargetClasses.contains("rf-sub-elemento-nombre")) {
-                debugger
+                
                 const ixs = RutinaIx.getIxsForSubElemento($menuTargetInput);
                 RutinaDOMQueries.getSubElementoByIxs(ixs);
                 SubEleOpc.eliminarSubElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex, ixs.subEleIndex);
@@ -439,7 +428,7 @@ function eventosClickMenuOptElem(e) {
      else if(inpClasses.contains('varios-media')){
 
         if($videosElegidos != undefined && typeof $videosElegidos == 'object' && $videosElegidos.length >0){
-            debugger
+            
             const ixs = RutinaIx.getIxsForElemento($menuTargetInput);
             RutinaElementoHTML.adjuntarSubElementos(ixs, 1);
         }
@@ -450,7 +439,7 @@ function eventosClickMenuOptElem(e) {
         }
     }
 
-     $rMenuEleSubele.className = "hide";
+    $rMenuEleSubele.classList.toggle("hide");
 
 }
 
@@ -463,7 +452,7 @@ function eventosClickMenuOptDia(e) {
     e.stopPropagation();
 
     if (inpClasses.contains('agregar-objetivo')) {
-        debugger
+        
         let dvDia = $($menuTargetInput).closest('.rf-dia');
         const dvTiempoKm = $($menuTargetInput).closest('header').next();
 
@@ -504,7 +493,7 @@ function eventosClickMenuOptDia(e) {
         const ixs = RutinaIx.getIxsForDia(dvDia);
         $diaPlantilla = $rutina.semanas[ixs.numSem].dias[ixs.diaIndex];
     } else if(inpClasses.contains('pegar-mini')) {
-        debugger
+        
         const dvDia = $menuTargetInput.parentElement.parentElement; //dvDia aloja el atributo data-index
         const diaIndex = dvDia.getAttribute('data-index');
         DiaOpc.pegarMiniPlantillaDia(diaIndex);
@@ -516,7 +505,7 @@ function eventosClickMenuOptDia(e) {
 
     }
 
-    $rMenuDia.className = "hide";
+    $rMenuDia.classList.toggle("hide");
 
 
 }
@@ -528,18 +517,24 @@ function eventosClickMenuOptSemana(e) {
     // const inpTargetClasses = $menuTargetInput.parentElement.classList;
     e.preventDefault();
     e.stopPropagation();
-    debugger
     if (inpClasses.contains('abrir-copiar-semana')) {
         if(dvMesActual.parentElement.children.length >= 4){
             // do nothing
         }else{
 
             let html =htmlStringToElement(`<div id="dvCopiarSemana"> <div> <h4 style="color:black"> Copiar semana a</h4>     
-                                                <button id="btnCerrarCopiarSemana" class="cerrar-copiar-semana close" type="button" style="opacity: .8;" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button> </div>
+                                                <button id="btnCerrarCopiarSemana" class="cerrar-copiar-semana close" type="button" style="opacity: .8;" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true" class="close-span" >&times;</span></button> </div>
             ${RutinaOpc.bodyCopiarSemana($rutina.totalSemanas)} </div>`);
             $(dvMesActual).parent().append(html);
-       }
+
+            $("#btnCerrarCopiarSemana").click(function (){
+               $('#dvCopiarSemana').remove();
+            });
+
+        }
     }
+
+    $rMenuSemana.classList.toggle("hide");
 }
 
 function eventosEditorRutina(e){
@@ -548,21 +543,61 @@ function eventosEditorRutina(e){
     const inputParent =  input.parentElement;
     const clases = input.classList;
     const parentClases = inputParent ? inputParent.classList : '';
+    const dvDots = $('.rut-dots');
     if(clases.contains('adelantar-semana') || parentClases.contains('adelantar-semana')){
         e.preventDefault();
         const numSem = Number($semActual.textContent);
+        const dots = dvDots.find('div');
+        const divActivo = dvDots.find('.active')[0];
+        const divProx = dvDots.find('.prox')[0];
+        divProx !== undefined ?  divProx.classList.remove('prox') : '';
+        const valorActivo = Number(divActivo.getAttribute('data-value'));
+        divActivo.classList.remove('active');
+
+        if(valorActivo == 3){
+            dots[0].classList.add('active');
+            dots[1].classList.add('prox');
+        }else if(valorActivo == 2) {
+            dots[valorActivo + 1].classList.add('active');
+        }else
+        {   dots[valorActivo + 1].classList.add('active');
+            dots[valorActivo + 2].classList.add('prox');
+        }
+
+
+
         avanzarRetrocederSemana(numSem, 1);
     }
     else if(clases.contains('retroceder-semana') || parentClases.contains('retroceder-semana')){
-
         e.preventDefault();
         let numSem = Number($semActual.textContent);
+
+        const dots = dvDots.find('div');
+
         if(numSem != 1){
+            const divActivo = dvDots.find('.active')[0];
+            const divProx = dvDots.find('.prox')[0];
+            divProx !== undefined ?  divProx.classList.remove('prox') : '';
+            const valorActivo = Number(divActivo.getAttribute('data-value'));
+            divActivo.classList.remove('active');
+
+            if(valorActivo == 0){
+                dots[3].classList.add('active');
+                dots[2].classList.add('prox');
+            }else if(valorActivo == 1) {
+                dots[0].classList.add('active');
+            }else
+            {   dots[valorActivo - 1].classList.add('active');
+                dots[valorActivo ].classList.add('prox');
+            }
 
             avanzarRetrocederSemana(numSem-2, 2);
         }else{
             $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
         }
+
+
+
 
     }
 
@@ -649,9 +684,10 @@ function principalesEventosFocusOutSemanario(e) {
     }
     else if(clases.contains('in-ele-dia-esp-pos')){
 
+        debugger
         const valor = input.value.trim();
         if(valor.length > 1){
-            debugger
+            
             let ixs = RutinaIx.getIxsForElemento(input);
             let tempElemento = RutinaDOMQueries.getPreElementoByIxs(ixs);
             let tipo = input.getAttribute('data-ele-tipo');
@@ -711,7 +747,7 @@ function principalesEventosFocusOutSemanario(e) {
 
     else if(clases.contains('agregar-tiempo')){
         //$tiempoActualizar: Sirve para comparar el valor inicial del elemento con el valor que retorna cuando se activa este evento(focusout) con el fin de evitar actualizaciones innecesarias
-        debugger
+        
         const tiempo = Number(e.target.value.trim());
         let gIx = e.target.getAttribute('data-index');
         if($tiempoActualizar != tiempo && gIx == $gIndex && !isNaN(tiempo)){
@@ -818,7 +854,7 @@ function eventosCalendario(e){
     const input = e.target;
     const clases = input.classList;
 
-    debugger
+    
 
     if(clases.contains('mes-calendar')){
         const mes = input.getAttribute('data-mes');
@@ -830,7 +866,7 @@ function eventosCalendario(e){
         RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), true, qFechaInicio.mes);
     }
     else if(clases.contains('cal-adelantar-sem')){
-        debugger;
+        ;
         const semIxRef = $refIxsSemCalendar[$refIxsSemCalendar.length-1];
         let qFecha;
         if($rutina.semanas[semIxRef+1] != undefined)
@@ -841,11 +877,33 @@ function eventosCalendario(e){
     }
     else if(clases.contains('fechas-calendar')){
         const semActual = Number(document.querySelector('#nroSemanaActual').textContent)-1;
-        if(semActual != $refIxsSemCalendar[input.getAttribute('data-index')])
+
+        if(semActual != $refIxsSemCalendar[input.getAttribute('data-index')]) {
+             debugger
+            const semana = $refIxsSemCalendar[input.getAttribute('data-index')];
+            const dvDots = $('.rut-dots');
+            const dots = dvDots.find('div');
+            const ordenDot = semana % 4;
+            const divActivo = dvDots.find('.active')[0];
+            const divProx = dvDots.find('.prox')[0];
+            const valorActivo = Number(divActivo.getAttribute('data-value'));
+
+            if(valorActivo !== ordenDot){
+
+                divProx !== undefined ? divProx.classList.remove('prox') : '';
+                divActivo.classList.remove('active');
+                dots[ordenDot].classList.add('active');
+
+                ordenDot !== 3  ? dots[ordenDot + 1].classList.add('prox') : '';
+                }
             avanzarRetrocederSemana($refIxsSemCalendar[input.getAttribute('data-index')], 2);
-        else
+
+        }
+
+        else{
             $.smallBox({color: "grey", content: "<i>El día que acaba de seleccionar pertenece a la semana<br/> que ya esta visualizando...</i>"});
-        $('#CalendarioRf').popover('show');
+            $('#CalendarioRf').popover('show');
+        }
     }
 
 
@@ -853,7 +911,7 @@ function eventosCalendario(e){
 }
 
 function ajustarFuenteElemento(e){
-   debugger
+   
     const input = e.target;
     const estiloId = input.value;
     const ixs = RutinaIx.getIxsForElemento($eleGenerico);
@@ -869,7 +927,7 @@ function ajustarFuenteElemento(e){
 
 
 function cambiarFamiliaFuenteElemento(e){
-    debugger
+    
     const input = e.target;
     const estiloId = input.value;
     const ixs = RutinaIx.getIxsForElemento($eleGenerico);
@@ -887,6 +945,12 @@ function principalesEventosClickRutina(e) {
     const clases = e.target.classList;
     let input = e.target;
 
+    if($(input).closest('button').hasClass('add-init-element')){
+        const btnAgregar = $(input).closest('button')[0];
+        const dvAgregarInit = btnAgregar.parentElement;
+        dvAgregarInit.classList.toggle("hidden");
+        dvAgregarInit.nextElementSibling.classList.toggle("hidden");
+    }
 
     if(clases.contains('in-ele-dia-1')){
         if(validUUID($mediaAudio) || validUUID($mediaVideo)){
@@ -1059,7 +1123,7 @@ function principalesEventosClickRutina(e) {
 
 
      else if(clases.contains('insertar-debajo-sub')){
-         debugger
+         
          e.stopPropagation();
          let ixs = RutinaIx.getIxsForSubElemento(input);
          let elemento = RutinaDOMQueries.getElementoByIxs(ixs);
@@ -1175,7 +1239,7 @@ function principalesEventosClickRutina(e) {
     }
 
    else if(clases.contains('eliminar-ele-vacio')) {
-        debugger
+        
         const ixs = RutinaIx.getIxsForElemento(input);
         ElementoOpc.confirmarEliminarElemento(ixs.numSem, ixs.diaIndex, ixs.eleIndex);
     }
@@ -1188,7 +1252,7 @@ function principalesEventosClickRutina(e) {
 
     else if(clases.contains('reprod-audio') ){
 
-        debugger
+        
         $(".mediaAudio").remove();
         //const audioFileName = input.getAttribute('data-media');
         const rutinaElement = $(input).closest('.rf-sub-elemento')[0] !== undefined ?  $(input).closest('.rf-sub-elemento')[0] : $(input).closest('.rf-dia-elemento')[0];
@@ -1279,6 +1343,51 @@ function principalesEventosClickRutina(e) {
         }
 
     }*/
+}
+
+function eventoClickSeleccionMesDots(e){
+
+   const input = e.target;
+   const classes = input.classList;
+    const numSem = Number($semActual.textContent);
+   if(!classes.contains('active') && classes.contains('dot')){
+        const dvPadre =  $(input.parentElement);
+        const valorInput = Number(input.getAttribute('data-value'));
+        const divActivo = dvPadre.find('.active')[0];
+        const valorActivo = Number(divActivo.getAttribute('data-value'));
+        divActivo.classList.remove('active');
+        const proxDv = dvPadre.find('.prox')[0];
+        valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
+        input.classList.toggle('active');
+
+        if(input.nextElementSibling.tagName.toLowerCase() !== 'button') {
+            input.nextElementSibling.classList.toggle('prox');
+        }
+
+        const incrementadorSem = (valorInput - valorActivo);
+        const nuevoNumSem =  numSem + incrementadorSem;
+
+        if(nuevoNumSem < 1){
+            $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
+        }else{
+            avanzarRetrocederSemana((nuevoNumSem - 1), 2);
+        }
+    }
+    else if($(input).closest('svg').parent().hasClass('pagination-control')){
+       debugger
+       const dvPadre =  $(input).closest('div.rut-dots');
+       const nextPage = numSem   % 4 === 0 ?  numSem    :   ( Math.ceil((numSem )/4)*4 );
+       const divActivo =dvPadre.find('.active')[0];
+       divActivo.classList.remove('active');
+       const valorActivo = Number(divActivo.getAttribute('data-value'));
+       const proxDv =     dvPadre.find('.prox')[0];
+       valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
+       dvPadre.find('div[data-value="0"]').toggleClass('active');
+       dvPadre.find('div[data-value="1"]').toggleClass('prox');
+       avanzarRetrocederSemana(nextPage, 2);
+   }
+
+
 }
 
 function principalEventoFocusIn(e){
@@ -1481,6 +1590,10 @@ function principalesDivEditor(e){
     const input = e.currentTarget;
     const clases = input.classList;
     const ix = input.getAttribute('data-index');
+
+    e.preventDefault();
+    e.stopPropagation();
+
     if(clases.contains('btn-bold')){
         if($eleGenerico.classList.contains('rf-dia-elemento-nombre')){
             RutinaEditor.agregarOeliminarEstiloToElemento(ix, 0);
@@ -1540,22 +1653,15 @@ function principalesDivEditor(e){
             RutinaEditor.agregarOeliminarEstiloToElemento(ix, 3);
         }else{}
     }else if(clases.contains('note-btn-font')){
-        e.preventDefault();
-        e.stopPropagation();
         RutinaEditor.instanciarPaletaColores(input);
     }
     else if(clases.contains('note-btn-alinea')){
-        e.preventDefault();
-        e.stopPropagation();
         RutinaEditor.instanciarGrupoAlineacion(input);
     }
     else if(clases.contains('note-btn-margen')){
-        e.preventDefault();
-        e.stopPropagation();
         RutinaEditor.agregarOeliminarEstiloToElemento(ix, 4);
     }
     else if(clases.contains('aumentar-zoom')){
-        e.stopPropagation();
         let zm = window.parent.document.body.style.zoom;
         let newZm = zm == "" ? 1.1 : zm == "1.2" ? 1.2 : Number(zm) + 0.1
         $selectZoom.value = (((Math.round(newZm*100))/100).toString());
@@ -1568,7 +1674,6 @@ function principalesDivEditor(e){
         }
     }
     else if(clases.contains('reducir-zoom')){
-        e.stopPropagation();
         let zm = window.parent.document.body.style.zoom;
         let newZm = zm == "" ? 0.9 : zm == "0.8" ? 0.8 : Number(zm) - 0.1;
         $selectZoom.value = (((Math.round(newZm*100))/100).toString());
@@ -1581,16 +1686,18 @@ function principalesDivEditor(e){
         }
     }
     else if(clases.contains('copiar-full-semana')) {
-        e.preventDefault();
         RutinaOpc.abrirCopiadorSemana(input);
 
     }
     else if(clases.contains('abrir-calendario')){
-        debugger
-        e.preventDefault();
-        e.stopPropagation();
         const qFechaInicio = RutinaGet.getFechaInicioSemanaEdicion();
         RutinaOpc.abrirCalendario(RutinaGet.getCalendarioSemanaIxs(qFechaInicio.anio, qFechaInicio.mes), false, qFechaInicio.mes);
+    }
+    else if(clases.contains('abrir-indicador-pulso')){
+        const semIndex = Number(document.querySelector('#nroSemanaActual').textContent)-1;
+        const metricas = $rutina.semanas[semIndex].metricas;
+        Indicadores.abrirIndicador1(metricas);
+
     }
 
 }
@@ -2516,6 +2623,64 @@ function actualizarDiaCompletoBD(numSem, diaIndex){
     })
 }
 
+function actualizarDiaBD2(numSem, diaIndex, elementoIndice, totalKms, calorias, totalMinutos) {
+    const ele = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice];
+    let params = {};
+    params.nombre = ele.nombre;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.distancia = ele.distancia;
+    params.distanciaDia = totalKms;
+    params.calorias = calorias;
+    params.minutos = ele.minutos;
+    params.minutosDia = totalMinutos;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: _ctx + "gestion/rutina/dia/actualizar2",
+        dataType: "json",
+        data: params,
+        success: function (data) {
+            const resWithErrors = getResponseCodeWithErrors(data);
+            resWithErrors != false ? notificacionesRutinaSegunResponseCode(resWithErrors.code, RutinaParsers.obtenerErroresValidacion(resWithErrors.errors)) : notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
+
+function actualizarDiaBD3(numSem, diaIndex, elementoIndice, subEleIndice, kms, totalKms, calorias) {
+    const ele = $rutina.semanas[numSem].dias[diaIndex].elementos[elementoIndice].subElementos[subEleIndice];
+    let params = {};
+    params.nombre = ele.nombre;
+    params.numeroSemana = numSem;
+    params.diaIndice = diaIndex;
+    params.elementoIndice = elementoIndice;
+    params.subElementoIndice = subEleIndice;
+    params.distancia = kms;
+    params.distanciaDia = totalKms;
+    params.calorias = calorias;
+    params.tipo = ele.tipo;
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: _ctx + "gestion/rutina/dia/actualizar3",
+        dataType: "json",
+        data: JSON.stringify(params),
+        success: function (data) {
+            notificacionesRutinaSegunResponseCode(data);
+        },
+        error: function (xhr) {
+            exception(xhr);
+        },
+        complete: function () {}
+    })
+}
+
 
 
 async function obtenerObjetivosDiaBD() {
@@ -2669,3 +2834,4 @@ function instanciarTooltips(){
 function topFunction() {
     $body.animate({scrollTop: 0},300);
 }
+
