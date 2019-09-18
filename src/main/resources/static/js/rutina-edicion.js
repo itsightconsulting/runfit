@@ -56,6 +56,8 @@ let $diasSeleccionados = [];
 let isDg = "n";//Importante iniciarlo con n
 let $blnObjetivo = 1;
 let $colorEscogido = '';
+let audioDuracion;
+let videoDuracion;
 
 $(function () {
     init();
@@ -1191,49 +1193,110 @@ function principalesEventosClickRutina(e) {
         removeScrollbar();
 
      }
-    else if(clases.contains('reprod-video')){
+    else if(clases.contains('reprod-video')) {
         e.preventDefault();
         $('#myModalAudioVideo').modal('show');
         const route = input.getAttribute('data-media');
-        const videoReproduccion =   $('#videoRutinaReproduccion');
-        const audioReproduccion =   $('#audioRutinaReproduccion');
-        const videoMedia =  document.getElementById('VideoMedia');
-        const audioMedia  =  document.getElementById('AudioMedia');
+        const videoReproduccion = $('#videoRutinaReproduccion');
+        const audioReproduccion = $('#audioRutinaReproduccion');
+        const videoMedia = document.getElementById('VideoMedia');
+        const audioMedia = document.getElementById('AudioMedia');
+
+        audioParentDivClasses = audioMedia.parentElement.classList;
+
         videoReproduccion.get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
+        //audioReproduccion.get(0).src = '/sound/audio_corto.mp3';
         audioReproduccion.get(0).src = 'http://www.alexkatz.me/codepen/music/interlude.mp3';
         videoReproduccion.parent().get(0).load();
         audioReproduccion.parent().get(0).load();
 
-        videoMedia.onloadeddata = function() {
-            videoMedia.play();
-            audioMedia.play();
+       /* setDurationsMedia().then(function(){
 
-        };
+            console.log(audioDuracion,videoDuracion);
 
-        audioMedia.onpause = function(){
-            videoMedia.pause();
-        };
+        })*/
+/*
+        if(this.audioDuracion > this.videoDuracion) {
 
-        audioMedia.onplay = function(){
-            videoMedia.play();
-        };
+            alert("yeah");
 
-      audioMedia.addEventListener("timeupdate",
-            function (ev) {
-            const vid =    document.getElementById('VideoMedia');
-            const currentTime =  ev.target.currentTime;
 
-              if(currentTime <= vid.duration){
-                    vid.currentTime = currentTime;
-              }else{
-                    vid.currentTime = currentTime % vid.duration;
-              }
-            });
+            videoMedia.controls = '';
+            audioMedia.controls = 'controls';
 
-        $('#AudioMedia').width('600');
+            $('.media-canvas').css('background-color' , 'rgb(241, 243, 244)')
 
-        //  $('#VideoMedia').width('600');
+            videoMedia.onloadeddata = function() {
+                videoMedia.play();
+                audioMedia.play();
 
+            };
+
+            audioMedia.onpause = function(){
+                videoMedia.pause();
+            };
+
+            audioMedia.onplay = function(){
+                videoMedia.play();
+            };
+
+            audioMedia.addEventListener("timeupdate",
+                function (ev) {
+                    const vid =    document.getElementById('VideoMedia');
+                    const currentTime =  ev.target.currentTime;
+
+                    if(currentTime <= vid.duration){
+                        vid.currentTime = currentTime;
+                    }else{
+                        vid.currentTime = currentTime % vid.duration;
+                    }
+                });
+
+            $('#AudioMedia').width('600');
+
+        }else{
+            videoMedia.controls = 'controls';
+            audioMedia.controls = '';
+
+             $('.media-canvas').css('background-color' , 'unset')
+
+            videoMedia.onloadeddata = function() {
+                videoMedia.play();
+                audioMedia.play();
+
+            };
+
+            videoMedia.onpause = function(){
+                audioMedia.pause();
+            };
+
+            videoMedia.onplay = function(){
+                audioMedia.play();
+            };
+
+            videoMedia.addEventListener("timeupdate",
+                function (ev) {
+                    const currentTime =  ev.target.currentTime;
+
+                    if(currentTime <= audioMedia.duration){
+                        audioMedia.muted = false;
+                        audioMedia.currentTime = currentTime;
+                    }else{
+                        audioMedia.muted = true
+                        audioMedia.pause();
+                        audioMedia.currentTime = 0;
+                    }
+                });
+
+            $('#AudioMedia').width('600');
+
+*/
+            /*    if(!audioParentDivClasses.contains('hide')) {
+                    audioParentDivClasses.add('hide');
+                }
+
+        }
+*/
 
 
     }
@@ -2835,3 +2898,18 @@ function topFunction() {
     $body.animate({scrollTop: 0},300);
 }
 
+
+function setDurationsMedia(){
+
+    const videoMedia = document.getElementById('VideoMedia');
+    const audioMedia = document.getElementById('AudioMedia');
+    audioMedia.onloadedmetadata = function() {
+        audioDuracion = audioMedia.duration;
+    };
+
+    videoMedia.onloadedmetadata = function() {
+        videoDuracion = videoMedia.duration;
+    };
+
+
+}

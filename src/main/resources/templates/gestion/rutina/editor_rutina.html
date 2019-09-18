@@ -245,14 +245,14 @@
 <div class="modal fade" id="myModalAudioVideo" tabindex="-1" role="dialog" aria-labelledby="myModalAudioVideoLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="">
-            <div  style="display:inline-block; width:600px; background-color: rgb(241, 243, 244) " >
-               <div> <video id="VideoMedia" preload="none"  loop="loop" controlsList="nodownload" width="100%" height="100%">
+            <div class="media-canvas"  style="display:inline-block; width:600px; background-color: rgb(241, 243, 244) " >
+               <div> <video id="VideoMedia"   loop="loop" controlsList="nodownload" width="100%" height="100%" preload="metadata">
                     <source id="videoRutinaReproduccion"  type="video/mp4"/>
                 </video>
                </div>
                <div class="child">
                 <div>
-                <audio  id="AudioMedia" preload="none" controls="controls"  controlsList="nodownload" width="100%" height="100%">
+                <audio  id="AudioMedia" controls="controls"  controlsList="nodownload" width="100%" height="100%" preload="metadata">
                     <source id="audioRutinaReproduccion"  type="audio/mp3"/>
                 </audio>
                 </div>
