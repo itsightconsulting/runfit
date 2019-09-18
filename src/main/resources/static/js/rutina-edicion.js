@@ -78,18 +78,16 @@ function init(){
         }else{
              $rutina.init(semana);
         }
+
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         $semanario.addEventListener('focusin', principalEventoFocusIn);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $selectZoom.addEventListener('change', eventoSelectZoom);
-
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
-
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         dvMesActual.addEventListener('contextmenu', eventoMenuDvMesActualContextMenu);
-
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
         $rMenuDia.addEventListener('click', eventosClickMenuOptDia);
@@ -101,9 +99,8 @@ function init(){
         $(dvEditor).click(eventosCalendario);
         dvSeleccionMesDots.addEventListener('click' , eventoClickSeleccionMesDots);
         imgtoSvgEvent();
-        $(document).bind("click", function(e) {
 
-           // 
+        $(document).bind("click", function(e) {
             const input= e.target;
             const clases = input.classList;
 
@@ -551,25 +548,27 @@ function eventosEditorRutina(e){
     if(clases.contains('adelantar-semana') || parentClases.contains('adelantar-semana')){
         e.preventDefault();
         const numSem = Number($semActual.textContent);
+        const totalSem = $rutina.totalSemanas;
         const dots = dvDots.find('div');
         const divActivo = dvDots.find('.active')[0];
         const divProx = dvDots.find('.prox')[0];
-        divProx !== undefined ?  divProx.classList.remove('prox') : '';
         const valorActivo = Number(divActivo.getAttribute('data-value'));
-        divActivo.classList.remove('active');
+        divProx !== undefined ?  divProx.classList.remove('prox') : '';
 
-        if(valorActivo == 3){
-            dots[0].classList.add('active');
-            dots[1].classList.add('prox');
-        }else if(valorActivo == 2) {
-            dots[valorActivo + 1].classList.add('active');
-        }else
-        {   dots[valorActivo + 1].classList.add('active');
-            dots[valorActivo + 2].classList.add('prox');
+        if(numSem !== totalSem) {
+            divActivo.classList.remove('active');
+
+            if (valorActivo == 2 ||  totalSem - numSem === 1 ) {
+                dots[valorActivo + 1].classList.add('active');
+            }
+            else if (valorActivo == 3) {
+                dots[0].classList.add('active');
+                dots[1].classList.add('prox');
+            }  else {
+                dots[valorActivo + 1].classList.add('active');
+                dots[valorActivo + 2].classList.add('prox');
+            }
         }
-
-
-
         avanzarRetrocederSemana(numSem, 1);
     }
     else if(clases.contains('retroceder-semana') || parentClases.contains('retroceder-semana')){
@@ -1406,30 +1405,31 @@ function eventoClickSeleccionMesDots(e){
    const classes = input.classList;
     const numSem = Number($semActual.textContent);
    if(!classes.contains('active') && classes.contains('dot')){
-        const dvPadre =  $(input.parentElement);
-        const valorInput = Number(input.getAttribute('data-value'));
-        const divActivo = dvPadre.find('.active')[0];
-        const valorActivo = Number(divActivo.getAttribute('data-value'));
-        divActivo.classList.remove('active');
-        const proxDv = dvPadre.find('.prox')[0];
-        valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
-        input.classList.toggle('active');
+       const dvPadre =  $(input.parentElement);
+       const valorInput = Number(input.getAttribute('data-value'));
+       const divActivo = dvPadre.find('.active')[0];
+       const valorActivo = Number(divActivo.getAttribute('data-value'));
+       const incrementadorSem = (valorInput - valorActivo);
+       const nuevoNumSem =  numSem + incrementadorSem;
 
-        if(input.nextElementSibling.tagName.toLowerCase() !== 'button') {
-            input.nextElementSibling.classList.toggle('prox');
-        }
+       if(nuevoNumSem < 1){
+         $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
+       }else if(!(nuevoNumSem > $rutina.totalSemanas)){
+           divActivo.classList.remove('active');
+           const proxDv = dvPadre.find('.prox')[0];
+           valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
+           input.classList.toggle('active');
 
-        const incrementadorSem = (valorInput - valorActivo);
-        const nuevoNumSem =  numSem + incrementadorSem;
-
-        if(nuevoNumSem < 1){
-            $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
-        }else{
-            avanzarRetrocederSemana((nuevoNumSem - 1), 2);
-        }
+           if(input.nextElementSibling.tagName.toLowerCase() !== 'button' || nuevoNumSem !== $rutina.totalSemanas) {
+               input.nextElementSibling.classList.toggle('prox');
+           }
+         avanzarRetrocederSemana((nuevoNumSem - 1), 2);
+       }
     }
     else if($(input).closest('svg').parent().hasClass('pagination-control')){
        debugger
+
+
        const dvPadre =  $(input).closest('div.rut-dots');
        const nextPage = numSem   % 4 === 0 ?  numSem    :   ( Math.ceil((numSem )/4)*4 );
        const divActivo =dvPadre.find('.active')[0];
@@ -1439,7 +1439,17 @@ function eventoClickSeleccionMesDots(e){
        valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
        dvPadre.find('div[data-value="0"]').toggleClass('active');
        dvPadre.find('div[data-value="1"]').toggleClass('prox');
-       avanzarRetrocederSemana(nextPage, 2);
+
+
+       if(nextPage >= $rutina.totalSemanas){
+
+           $.smallBox({color: "alert", content: "<i>No resultados. Se llegó al final de la rutina.<i>"})
+       }else{
+
+           avanzarRetrocederSemana(nextPage, 2);
+
+       }
+
    }
 
 
