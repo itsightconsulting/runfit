@@ -2,12 +2,9 @@ package com.itsight.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.constants.ViewConstant;
-import com.itsight.domain.CategoriaPlantilla;
 import com.itsight.domain.Rutina;
-import com.itsight.domain.Trainer;
 import com.itsight.domain.dto.ChatDTO;
 import com.itsight.domain.dto.QueryParamsDTO;
 import com.itsight.domain.dto.RedFitCliDTO;
@@ -27,10 +24,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.itsight.util.Enums.ResponseCode.EXITO_GENERICA;
+import static com.itsight.util.Enums.TipoUsuario.ENTRENADOR;
 
 @Controller
 @RequestMapping("/gestion/trainer/red")
@@ -136,7 +133,7 @@ public class RedFitnessController {
             ChatDTO chat,
             HttpSession session) throws JsonProcessingException {
         Integer trainerId = (Integer) session.getAttribute("id");
-        return Utilitarios.jsonResponse(redFitnessService.enviarNotificacionPersonal(chat, trainerId));
+        return redFitnessService.enviarNotificacionPersonal(chat, trainerId, ENTRENADOR.ordinal());
     }
 
     @PostMapping(value = "/enviar/correo/general")

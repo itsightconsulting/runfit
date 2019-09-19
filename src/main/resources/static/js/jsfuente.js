@@ -300,11 +300,12 @@ function exception(xhr, errorName) {
         try {
 
             if(sCode != 401 && sCode != 403 && sCode != 400 && sCode !== 409){
+                const msg = xhr['responseJSON']['error'] ? xhr['responseJSON']['error'] : xhr['responseJSON']['message'] ? xhr['responseJSON']['message'] : 'Indefinido';
                 $.smallBox({
-                    content: "<i> Comuníquese con el administrador <br/> Code error: " + xhr['status'] + " <br/> Detail: " + xhr['responseJSON']['error'] + "</i>",
+                    content: "<i> Comuníquese con el administrador <br/> Code error: " + xhr['status'] + " <br/> Detail: " + msg + "</i>",
                     color: "#8a6d3b",
                     iconSmall: "fa fa-warning fa-2x fadeInRight animated",
-                    timeout: 5000,
+                    timeout: 10000,
                 });
             }else{
                 if(xhr['status'] == 401 && (xhr.responseJSON && xhr.responseJSON.message === "Ajax Request Denied (Session Expired)")){
@@ -567,12 +568,6 @@ function obtenerSemanasEntreFechas(d1, d2) {
     return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
 }
 
-function parseFromStringToDateTime(dateString) {
-    var dt = dateString.split("/");
-    var time = dateString.split(" ")[1].split(":");
-    return new Date(Number(dt[2].substr(0,4)), Number(dt[1]) - 1, dt[0], time[0], time[1], time[2]);
-}
-
 function parseFromStringToDate(dateString) {
     var dt = dateString.split("-");
     return new Date(dt[0], Number(dt[1]) - 1, dt[2]);
@@ -584,6 +579,9 @@ function parseFromStringToDate2(dateString) {
 }
 
 function parseFromStringToDateTime(dateString) {
+    if(!dateString){
+        return "";
+    }
     var dt = dateString.split("/");
     var time = dt[2].substr(4).split(":");
     return new Date(dt[2].substr(0, 4), Number(dt[1]) - 1, dt[0], time[0], time[1], time[2]);

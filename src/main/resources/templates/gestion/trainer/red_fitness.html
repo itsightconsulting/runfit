@@ -413,6 +413,7 @@
                 //se sepa a quien se va a notificar
                 $('#mdlPrimerChat').modal('show');
                 $('#InpCliId').val(cliId);
+                $('#RfId').val(rfId);
                 $('#InpCliCorreo').val(cliCorreo);
                 document.querySelector('#InpTipoNotificacion').value = TipoNotificacion.PERSONAL;
             },
@@ -493,6 +494,7 @@
             data.cuerpo = $('#ChatPrimerMensaje').val().trim();
             data.fpTrainer = getCookie("GLL_IMG_PERFIL");
             data.nomTrainer = getFullNameFromUser();
+            data.redFitId = $('#RfId').val();
             urlDiff = 'personal';
         }
 

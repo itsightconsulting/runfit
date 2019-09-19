@@ -1,11 +1,14 @@
 package com.itsight.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itsight.advice.CustomValidationException;
 import com.itsight.domain.Chat;
+import com.itsight.domain.dto.ChatDTO;
 import com.itsight.domain.pojo.ChatPOJO;
 import com.itsight.service.ChatProcedureInvoker;
 import com.itsight.service.ChatService;
 import com.itsight.service.ConfiguracionClienteService;
+import com.itsight.service.RedFitnessService;
 import com.itsight.util.Enums;
 import com.itsight.util.Utilitarios;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.itsight.util.Enums.ResponseCode.ACTUALIZACION;
+import static com.itsight.util.Enums.TipoUsuario.CLIENTE;
 
 @Controller
 @RequestMapping("/gestion/chat")
@@ -33,13 +37,17 @@ public class ChatController {
 
     private ChatProcedureInvoker chatProcedureInvoker;
 
+    private RedFitnessService redFitnessService;
+
     @Autowired
     public ChatController(ChatService chatService,
                           ConfiguracionClienteService configuracionClienteService,
-                          ChatProcedureInvoker chatProcedureInvoker) {
+                          ChatProcedureInvoker chatProcedureInvoker,
+                          RedFitnessService redFitnessService) {
         this.chatService = chatService;
         this.configuracionClienteService = configuracionClienteService;
         this.chatProcedureInvoker = chatProcedureInvoker;
+        this.redFitnessService = redFitnessService;
     }
 
     @GetMapping("/get/{id}")
@@ -98,5 +106,14 @@ public class ChatController {
         Integer chatId = Integer.parseInt(id);
         Integer cliId = (Integer) session.getAttribute("id");
         return chatService.updateFlagById(chatId, cliId);
+    }
+
+    @PostMapping(value = "/primer/mensaje")
+    public @ResponseBody
+    String enviarCorreoATrainerByPrimerChat(
+            ChatDTO chat,
+            HttpSession session) throws JsonProcessingException {
+        Integer clienteId = (Integer) session.getAttribute("id");
+        return redFitnessService.enviarNotificacionPersonal(chat, clienteId, CLIENTE.ordinal());
     }
 }
