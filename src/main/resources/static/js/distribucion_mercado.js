@@ -1460,7 +1460,7 @@ function generarInfoDistribucionEdadMascDOM(dataMasc){
     $('.masc-porc').text(`${dataMasc.porcentajeMasc}%`);
 
     dataMasc.edadPromedioMasc > 0 ?  $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`)
-        :  $('.masc-age-prom').text(`NA`);
+        :  $('.masc-age-prom').html(`<i class="fa fa-bars"></i>`);
 
     $('.graph-porc .masc-range-porc').each( function(index) {$(this).html(`${dataMasc.porcentajeRangosMasc[index] }%`)
         $(this).css("color", arrColorMasc[index])});
@@ -1476,7 +1476,7 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
     $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`);
 
     dataFem.edadPromedioFem > 0 ?  $('.fem-age-prom').text(`${dataFem.edadPromedioFem} años`)
-        :  $('.fem-age-prom').text(`NA`);
+        :  $('.fem-age-prom').html(`<i class="fa fa-bars"></i>`);
 
     $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`);
         $(this).css("color", arrColorFem[index])});

@@ -97,7 +97,7 @@
                                         data-width="10%">Teléfono
                                     </th>
                                 </tr>
-                                </thead>
+                              </thead>
                             </table>
                         </div>
                     </div>
@@ -644,6 +644,7 @@
                     return res;
                 },
                 onLoadSuccess: d => {
+
                     users = d.rows;
                     //Activando los popover y tooltips
                     users.forEach(r=>{
@@ -655,6 +656,8 @@
                     $('.total-pe').text($countPendientesEnvio);
                     $('.total-pp').text($countSinPlan);
                     instanceSvgAndPopovers();
+                    tblRegistros.classList.remove("table-hover"); // quita evento hover de tabla
+
                 },
                 onLoadError: function (xhr) {
                     exception(xhr);

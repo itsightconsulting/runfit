@@ -26,7 +26,8 @@
           <header>
             <div class="text-center">
               <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="../../../../../../../Downloads/clientes/dist/index.html"><img class="logo" src="/img/logo.png" alt=""/></a>
-              <h4 class="user"><img class="svg" src="/img/iconos/icon_perfil.svg">Yasmine Andía H.<span>RUNING</span></h4>
+              <h4 class="user">
+                <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp</span></h4>
             </div>
           </header>
         </div>
@@ -58,7 +59,7 @@
             <hr>
           </section>
           <section class="busqueda">
-            <h4 class="text-left" id="grupoVideoTitle">estiramientos<img class="svg" src="/img/iconos/icon_flecha2.svg">
+            <h4 class="text-left" id="grupoVideoTitle"> <span > estiramientos</span> <img class="svg" src="/img/iconos/icon_flecha2.svg">
               <div class="input-group">
                 <input class="form-control" type="text" id="inpBuscador">
                 <div class="input-group-btn">
@@ -117,11 +118,11 @@
 
     function onInit(){
 
-     obtenerVideosFavoritos();
-     obtenerGrupoVideos();
+       obtenerVideosFavoritos();
+       obtenerGrupoVideos();
    //  obtenerVideosxGrupo(0) //tipo 0 => Nuevo grupo video
    //  $(dvCarousel).on('click', '.item', grupoVideoClickEvent);
-     inpBuscador.addEventListener("input", buscadorEvent);
+       inpBuscador.addEventListener("input", buscadorEvent);
       $(dvCarousel).on('changed.owl.carousel', seleccionGrupoEvent);
       $(body).on('click','.fav',favoritoEvent);
 
@@ -268,17 +269,18 @@
 
     }
 
-
-
   function poblarDvVideosFavoritosxCliente(dataVideos){
 
     ulFavoritosGrupo.innerHTML ="";
     $('section.favoritos p').text("");
     if(dataVideos.length > 0){
       const videosFav =  dataVideos.reverse();
-      if(dataVideos.length <= 6){
+
+      if(dataVideos.length <= 3){
         dvArrowMoreFav.style.display = 'none';
         dvMoreFav.style.display = 'none';
+      }else{
+        dvArrowMoreFav.style.display = 'block';
       }
       dataVideos.forEach( function(element,index){
         const thumbnail = element.thumbnail ?
@@ -297,7 +299,7 @@
                                  </li>
                              `);
 
-        if (index <= 5) {
+        if (index <= 2) {
           ulFavoritosGrupo.appendChild(videoElement);
 
         }  else {
@@ -339,9 +341,8 @@
       if(filterInp.data) {
         let filterText = inpBuscador.value.toUpperCase();
         const filteredData = currentVideosxGrupo.filter( (el) => el.nombre.toUpperCase().indexOf(filterText) > -1);
-
-         ulVideosGrupo.innerHTML ="";
-         poblarDvVideosxGrupo(filteredData);
+        ulVideosGrupo.innerHTML ="";
+        poblarDvVideosxGrupo(filteredData);
       }else{
         ulVideosGrupo.innerHTML ="";
         poblarDvVideosxGrupo(currentVideosxGrupo);
@@ -442,6 +443,10 @@
      }
       poblarDvVideosFavoritosxCliente(currentFavoritos);
 
+      //
+      ulVideosGrupo.innerHTML = '';
+      poblarDvVideosxGrupo(currentVideosxGrupo)
+
     }
 
     function scrollEventBusquedaAutomatica(){
@@ -460,37 +465,10 @@
       });
     }
 
-    function bodyClickEventListener(e){
-
-      const favElement = ($(e.target).parent().closest('.fav'))[0];
-
-      if(favElement){
-        const videoId = (favElement.getAttribute('data-video-id'));
-        const favClasses = favElement.classList;
-
-        if(favClasses.contains('selected')){
-          favElement.classList.remove('selected');
-          quitarVideoDeFavoritos(videoId);
-          const index = currentFavoritos.findIndex( e => e.id === Number(videoId));
-          index > -1 ? currentFavoritos.splice(index, 1) : null;
-
-        }else{
-          console.log(favElement);
-          favElement.classList.add('selected');
-          const videoInfo = currentVideosxGrupo.find( e  => e.id === Number(videoId));
-          currentFavoritos.push(videoInfo);
-          agregarVideoAFavoritos(videoId);
-        }
-
-        poblarDvVideosFavoritosxCliente(currentFavoritos);
-      }
-
-    }
 
 
     function seleccionGrupoEvent(event){
 
-      console.log("xd");
 
       const grupoSeleccionado  = document.querySelectorAll('.item')[event.item.index];
 
@@ -499,9 +477,11 @@
         currentGrupoVideoId = grupoVideoId;
         ulVideosGrupo.innerHTML ="";
         obtenerVideosxGrupo(0); // tipo O => nuevo grupo de video
-        const titulo = document.getElementById('grupoVideoTitle');
-        titulo.textContent = grupoSeleccionado.firstElementChild.textContent;
+       const titulo = document.querySelector('#grupoVideoTitle span ');
+       titulo.textContent = grupoSeleccionado.firstElementChild.textContent;
+
       }
+
 
     }
 
