@@ -13,6 +13,8 @@ const $btnSeleccionColor = document.querySelector('.chosen-color');
 const $selectZoom = document.querySelector('#selectZoom');
 const dvMesActual = document.querySelector('.dv-mes-actual');
 const dvSeleccionMesDots = document.querySelector('.rut-dots');
+const videoMedia = document.querySelector('#VideoMedia');
+const audioMedia = document.querySelector('#AudioMedia');
 let $menuTargetInput = '';
 let indexGlobal = 0;
 let $body = $("html,body");
@@ -76,18 +78,16 @@ function init(){
         }else{
              $rutina.init(semana);
         }
+
         editorRutinaContenido.addEventListener('click', eventosEditorRutina);
         $semanario.addEventListener('focusout', principalesEventosFocusOutSemanario);
         $semanario.addEventListener('focusin', principalEventoFocusIn);
         $semanario.addEventListener('click', principalesEventosClickRutina);
         $selectZoom.addEventListener('change', eventoSelectZoom);
-
         tabGrupoAudios.addEventListener('click', principalesEventosTabGrupoAudios);
         tabGrupoVideos.addEventListener('click', principalesEventosTabGrupoVideos);
-
         mainTabs.addEventListener('click', principalesAlCambiarTab);
         dvMesActual.addEventListener('contextmenu', eventoMenuDvMesActualContextMenu);
-
         $semanario.addEventListener('contextmenu', eventosMenuSemanario);
         $rMenuEleSubele.addEventListener('click', eventosClickMenuOptElem);
         $rMenuDia.addEventListener('click', eventosClickMenuOptDia);
@@ -99,9 +99,8 @@ function init(){
         $(dvEditor).click(eventosCalendario);
         dvSeleccionMesDots.addEventListener('click' , eventoClickSeleccionMesDots);
         imgtoSvgEvent();
-        $(document).bind("click", function(e) {
 
-           // 
+        $(document).bind("click", function(e) {
             const input= e.target;
             const clases = input.classList;
 
@@ -549,25 +548,27 @@ function eventosEditorRutina(e){
     if(clases.contains('adelantar-semana') || parentClases.contains('adelantar-semana')){
         e.preventDefault();
         const numSem = Number($semActual.textContent);
+        const totalSem = $rutina.totalSemanas;
         const dots = dvDots.find('div');
         const divActivo = dvDots.find('.active')[0];
         const divProx = dvDots.find('.prox')[0];
-        divProx !== undefined ?  divProx.classList.remove('prox') : '';
         const valorActivo = Number(divActivo.getAttribute('data-value'));
-        divActivo.classList.remove('active');
+        divProx !== undefined ?  divProx.classList.remove('prox') : '';
 
-        if(valorActivo == 3){
-            dots[0].classList.add('active');
-            dots[1].classList.add('prox');
-        }else if(valorActivo == 2) {
-            dots[valorActivo + 1].classList.add('active');
-        }else
-        {   dots[valorActivo + 1].classList.add('active');
-            dots[valorActivo + 2].classList.add('prox');
+        if(numSem !== totalSem) {
+            divActivo.classList.remove('active');
+
+            if (valorActivo == 2 ||  totalSem - numSem === 1 ) {
+                dots[valorActivo + 1].classList.add('active');
+            }
+            else if (valorActivo == 3) {
+                dots[0].classList.add('active');
+                dots[1].classList.add('prox');
+            }  else {
+                dots[valorActivo + 1].classList.add('active');
+                dots[valorActivo + 2].classList.add('prox');
+            }
         }
-
-
-
         avanzarRetrocederSemana(numSem, 1);
     }
     else if(clases.contains('retroceder-semana') || parentClases.contains('retroceder-semana')){
@@ -1199,106 +1200,96 @@ function principalesEventosClickRutina(e) {
         const route = input.getAttribute('data-media');
         const videoReproduccion = $('#videoRutinaReproduccion');
         const audioReproduccion = $('#audioRutinaReproduccion');
-        const videoMedia = document.getElementById('VideoMedia');
-        const audioMedia = document.getElementById('AudioMedia');
 
         audioParentDivClasses = audioMedia.parentElement.classList;
 
         videoReproduccion.get(0).src = `https://s3-us-west-2.amazonaws.com/rf-media-rutina/video${route}`;
-        //audioReproduccion.get(0).src = '/sound/audio_corto.mp3';
-        audioReproduccion.get(0).src = 'http://www.alexkatz.me/codepen/music/interlude.mp3';
+        audioReproduccion.get(0).src = '/sound/audio_corto.mp3';
+     // audioReproduccion.get(0).src = 'http://www.alexkatz.me/codepen/music/interlude.mp3';
         videoReproduccion.parent().get(0).load();
         audioReproduccion.parent().get(0).load();
 
-       /* setDurationsMedia().then(function(){
+        Promise.all([getAudioDuracion(),getVideoDuracion()]).then(function(arrDuracion) {
 
-            console.log(audioDuracion,videoDuracion);
-
-        })*/
-/*
-        if(this.audioDuracion > this.videoDuracion) {
-
-            alert("yeah");
+            const audioDuracion = arrDuracion[0];
+            const videoDuracion = arrDuracion[1];
 
 
-            videoMedia.controls = '';
-            audioMedia.controls = 'controls';
-
-            $('.media-canvas').css('background-color' , 'rgb(241, 243, 244)')
-
-            videoMedia.onloadeddata = function() {
-                videoMedia.play();
-                audioMedia.play();
-
-            };
-
-            audioMedia.onpause = function(){
-                videoMedia.pause();
-            };
-
-            audioMedia.onplay = function(){
-                videoMedia.play();
-            };
-
-            audioMedia.addEventListener("timeupdate",
-                function (ev) {
-                    const vid =    document.getElementById('VideoMedia');
-                    const currentTime =  ev.target.currentTime;
-
-                    if(currentTime <= vid.duration){
-                        vid.currentTime = currentTime;
-                    }else{
-                        vid.currentTime = currentTime % vid.duration;
-                    }
-                });
-
-            $('#AudioMedia').width('600');
-
-        }else{
-            videoMedia.controls = 'controls';
-            audioMedia.controls = '';
-
-             $('.media-canvas').css('background-color' , 'unset')
-
-            videoMedia.onloadeddata = function() {
-                videoMedia.play();
-                audioMedia.play();
-
-            };
-
-            videoMedia.onpause = function(){
-                audioMedia.pause();
-            };
-
-            videoMedia.onplay = function(){
-                audioMedia.play();
-            };
-
-            videoMedia.addEventListener("timeupdate",
-                function (ev) {
-                    const currentTime =  ev.target.currentTime;
-
-                    if(currentTime <= audioMedia.duration){
-                        audioMedia.muted = false;
-                        audioMedia.currentTime = currentTime;
-                    }else{
-                        audioMedia.muted = true
-                        audioMedia.pause();
-                        audioMedia.currentTime = 0;
-                    }
-                });
-
-            $('#AudioMedia').width('600');
-
-*/
-            /*    if(!audioParentDivClasses.contains('hide')) {
-                    audioParentDivClasses.add('hide');
-                }
-
-        }
-*/
+            if (audioDuracion > videoDuracion) {
 
 
+                videoMedia.controls = '';
+                audioMedia.controls = 'controls';
+
+                $('.media-canvas').css('background-color', 'rgb(241, 243, 244)')
+
+                videoMedia.onloadeddata = function () {
+                    videoMedia.play();
+                    audioMedia.play();
+
+                };
+
+                audioMedia.onpause = function () {
+                    videoMedia.pause();
+                };
+
+                audioMedia.onplay = function () {
+                    videoMedia.play();
+                };
+
+                audioMedia.addEventListener("timeupdate",
+                    function (ev) {
+                        const vid = document.getElementById('VideoMedia');
+                        const currentTime = ev.target.currentTime;
+
+                        if (currentTime <= vid.duration) {
+                            vid.currentTime = currentTime;
+                        } else {
+                            vid.currentTime = currentTime % vid.duration;
+                        }
+                    });
+
+                $('#AudioMedia').width('600');
+
+            } else {
+                videoMedia.controls = 'controls';
+                videoMedia.loop = '';
+                audioMedia.controls = '';
+                $('.media-canvas').css('background-color', 'unset')
+
+                videoMedia.onloadeddata = function () {
+                    videoMedia.play();
+                    audioMedia.play();
+
+                };
+
+                videoMedia.onpause = function () {
+                    audioMedia.pause();
+                };
+
+                videoMedia.onplay = function () {
+                    audioMedia.play();
+                };
+
+                videoMedia.addEventListener("timeupdate",
+                    function (ev) {
+                        const currentTime = ev.target.currentTime;
+
+                        if (currentTime <= audioMedia.duration) {
+                            audioMedia.muted = false;
+                            audioMedia.currentTime = currentTime;
+                        } else {
+                            audioMedia.muted = true
+                            audioMedia.pause();
+                            audioMedia.currentTime = 0;
+                        }
+                    });
+
+                $('#AudioMedia').width('600');
+
+            }
+
+        });
     }
 
    else if(clases.contains('eliminar-ele-vacio')) {
@@ -1414,30 +1405,31 @@ function eventoClickSeleccionMesDots(e){
    const classes = input.classList;
     const numSem = Number($semActual.textContent);
    if(!classes.contains('active') && classes.contains('dot')){
-        const dvPadre =  $(input.parentElement);
-        const valorInput = Number(input.getAttribute('data-value'));
-        const divActivo = dvPadre.find('.active')[0];
-        const valorActivo = Number(divActivo.getAttribute('data-value'));
-        divActivo.classList.remove('active');
-        const proxDv = dvPadre.find('.prox')[0];
-        valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
-        input.classList.toggle('active');
+       const dvPadre =  $(input.parentElement);
+       const valorInput = Number(input.getAttribute('data-value'));
+       const divActivo = dvPadre.find('.active')[0];
+       const valorActivo = Number(divActivo.getAttribute('data-value'));
+       const incrementadorSem = (valorInput - valorActivo);
+       const nuevoNumSem =  numSem + incrementadorSem;
 
-        if(input.nextElementSibling.tagName.toLowerCase() !== 'button') {
-            input.nextElementSibling.classList.toggle('prox');
-        }
+       if(nuevoNumSem < 1){
+         $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
+       }else if(!(nuevoNumSem > $rutina.totalSemanas)){
+           divActivo.classList.remove('active');
+           const proxDv = dvPadre.find('.prox')[0];
+           valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
+           input.classList.toggle('active');
 
-        const incrementadorSem = (valorInput - valorActivo);
-        const nuevoNumSem =  numSem + incrementadorSem;
-
-        if(nuevoNumSem < 1){
-            $.smallBox({color: "alert", content: "<i>No existe semana anterior a la actual...<i>"})
-        }else{
-            avanzarRetrocederSemana((nuevoNumSem - 1), 2);
-        }
+           if(input.nextElementSibling.tagName.toLowerCase() !== 'button' || nuevoNumSem !== $rutina.totalSemanas) {
+               input.nextElementSibling.classList.toggle('prox');
+           }
+         avanzarRetrocederSemana((nuevoNumSem - 1), 2);
+       }
     }
     else if($(input).closest('svg').parent().hasClass('pagination-control')){
        debugger
+
+
        const dvPadre =  $(input).closest('div.rut-dots');
        const nextPage = numSem   % 4 === 0 ?  numSem    :   ( Math.ceil((numSem )/4)*4 );
        const divActivo =dvPadre.find('.active')[0];
@@ -1447,7 +1439,17 @@ function eventoClickSeleccionMesDots(e){
        valorActivo !== 3 ?  proxDv.classList.remove('prox') : '';
        dvPadre.find('div[data-value="0"]').toggleClass('active');
        dvPadre.find('div[data-value="1"]').toggleClass('prox');
-       avanzarRetrocederSemana(nextPage, 2);
+
+
+       if(nextPage >= $rutina.totalSemanas){
+
+           $.smallBox({color: "alert", content: "<i>No resultados. Se llegó al final de la rutina.<i>"})
+       }else{
+
+           avanzarRetrocederSemana(nextPage, 2);
+
+       }
+
    }
 
 
@@ -2899,17 +2901,22 @@ function topFunction() {
 }
 
 
-function setDurationsMedia(){
-
-    const videoMedia = document.getElementById('VideoMedia');
-    const audioMedia = document.getElementById('AudioMedia');
-    audioMedia.onloadedmetadata = function() {
-        audioDuracion = audioMedia.duration;
-    };
-
-    videoMedia.onloadedmetadata = function() {
-        videoDuracion = videoMedia.duration;
-    };
-
-
+function getAudioDuracion() {
+   return new Promise(function(resolve) {
+       audioMedia.onloadedmetadata = function () {
+           resolve(audioMedia.duration);
+       };
+     })
 }
+
+function getVideoDuracion() {
+    return new Promise(function(resolve) {
+        videoMedia.onloadedmetadata = function () {
+            resolve(videoMedia.duration);
+        };
+    })
+}
+
+
+
+

@@ -1466,6 +1466,9 @@ section h4 {
     margin-right: 14px;
     position: relative;
     top: 4px; }
+  section h4 span {
+    font-family: GothamHTF-Bold;
+  }
   section h4 .input-group {
     float: right; }
 

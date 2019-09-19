@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-    <title>Mis clientes</title>
+    <title>Selección - Planes Prediseñados</title>
     <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/smartadmin-production-plugins.min.css}+'?'+${version}" media="screen"/>
@@ -106,8 +106,11 @@
 </section>
 
   <section id="seleccionCategoriasRutGen">
-     <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
+     <div class="container-t">
 
+         <a th:href="@{/bienvenido}">
+             <img class="logoBlack"  th:src="@{/img/logo_black.png}">
+         </a>
 
         <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
 

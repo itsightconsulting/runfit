@@ -138,17 +138,17 @@
                 lang: "en",
                 i18n: {
                     en: {
-                        CLOSE: "Close",
-                        NEXT: "Next",
-                        PREV: "Previous",
-                        ERROR: "The requested content cannot be loaded. <br/> Please try again later.",
-                        PLAY_START: "Start slideshow",
-                        PLAY_STOP: "Pause slideshow",
-                        FULL_SCREEN: "Full screen",
-                        THUMBS: "Thumbnails",
-                        DOWNLOAD: "Download",
-                        SHARE: "Share",
-                        ZOOM: "Zoom"
+                        CLOSE: "Cerrar",
+                        NEXT: "Siguiente",
+                        PREV: "Anterior",
+                        ERROR: "El contenido requerido no pudo ser cargado.<br/> Intente de nuevo en unos momentos.",
+                        PLAY_START: "Iniciar galeria",
+                        PLAY_STOP: "Pausar galeria",
+                        FULL_SCREEN: "Pantalla completa",
+                        THUMBS: "Miniaturas",
+                        DOWNLOAD: "Descargar",
+                        SHARE: "Compartir",
+                        ZOOM: "Zoom "
                     },
                     de: {
                         CLOSE: "Schlie&szlig;en",

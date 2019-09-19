@@ -2903,9 +2903,9 @@ Indicadores = (function(){
         },
         instanciarKilometrajes: ()=>{
             const k = RutinaGet.getKilometrajes();
-            document.querySelector("#kmc").textContent = '- '+k.kcal;
-            document.querySelector("#kmm").textContent = '- '+k.kmMacro;
-            document.querySelector("#kmp").textContent = '- '+k.kmPlanificado;
+            document.querySelector("#kmc").textContent = k.kcal;
+            document.querySelector("#kmm").textContent = k.kmMacro;
+            document.querySelector("#kmp").textContent = k.kmPlanificado;
 
         },
         instanciarPorcentajeAvance: ()=>{

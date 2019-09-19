@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-    <title>Mis clientes</title>
+    <title>Gestión - Planes prediseñados</title>
     <th:block th:insert="html-commons/tr/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/tr/css  :: fg-css"></th:block>
 </head>
@@ -19,7 +19,7 @@
         right: 220px;
     }
     .btn-dark{
-        color:#ffffff;
+        color:#ffffff!important;
         background-color: #000000;
     }
     .title-categoria
@@ -73,19 +73,20 @@
                                 </div>
                                 <div class="form-group form-alt">
                                     <label> TIPO DE RUTINA </label>
-
+                                   <div class="text-center">
                                     <ul class="checks text-center">
                                         <li>
                                             <label class="chk-content">PLANTILLA ESTÁNDAR
-                                                <input type="radio" name="cbNuevaCategoria" value="2" checked><span class="checkmark"></span>
+                                                <input type="checkbox" name="cbNuevaCategoria" value="2"><span class="checkmark"></span>
                                             </label>
                                         </li>
                                         <li>
                                             <label class="chk-content">PLANTILLA RUNNING
-                                                <input type="radio" name="cbNuevaCategoria" value="1"><span class="checkmark"></span>
+                                                <input type="checkbox" name="cbNuevaCategoria" value="1"><span class="checkmark"></span>
                                             </label>
                                         </li>
                                     </ul>
+                                   </div>
 
 
                                 </div>
@@ -119,20 +120,20 @@
                                 </div>
                                 <div class="form-group form-alt">
                                     <label> TIPO DE RUTINA </label>
-
+                                  <div class="text-center">
                                     <ul class="checks text-center">
                                         <li>
                                             <label class="chk-content">PLANTILLA ESTÁNDAR
-                                                <input type="radio" name="cbEditarCategoria" value="2"  checked><span class="checkmark"></span>
+                                                <input type="checkbox" name="cbEditarCategoria" value="2"  checked><span class="checkmark"></span>
                                             </label>
                                         </li>
                                         <li>
                                             <label class="chk-content">PLANTILLA RUNNING
-                                                <input type="radio" name="cbEditarCategoria" value="1"><span class="checkmark"></span>
+                                                <input type="checkbox" name="cbEditarCategoria" value="1"><span class="checkmark"></span>
                                             </label>
                                         </li>
                                     </ul>
-
+                                  </div>
 
                                 </div>
                             </form>
@@ -226,7 +227,10 @@
     </header>
 
     <section id="listaCategoria">
-        <div class="container-t"><img class="logoBlack" th:src="@{/img/logo_black.png}">
+        <div class="container-t">
+            <a th:href="@{/bienvenido}">
+               <img class="logoBlack"  th:src="@{/img/logo_black.png}">
+            </a>
             <h2 class="title_carousel dots">planes<span>- pre diseñados</span></h2>
 
             <a data-toggle="modal" data-target="#modalNuevaCategoria" type="button" class="btn btn-circle btn-lg"  title="Registrar">
@@ -395,6 +399,13 @@
             dataType: 'json',
             success: (data) =>  {
                 dataCategorias = data;
+                if(dataCategorias.length <= 5){
+                    const dvSlider = document.querySelector('.range-slider').parentElement;
+                    const clasesSlider = dvSlider.classList;
+                    if(!clasesSlider.contains('hidden')){
+                        clasesSlider.add('hidden');
+                    }
+                }
                 obtenerCategoriasPlantillas(dataCategorias);
             } ,
             error: (d) =>{
@@ -564,7 +575,7 @@
         });
     }
     function checkBoxTipoChangeEvent() {
-        $("input:checkbox").on('change', function () {
+        $("section#listaCategoria input:checkbox").on('change', function () {
             let cbSeleccionado = $(this)[0].value;
             if($("input:checkbox[name='cbSeleccionTipo']:checked").length === 0){
                 obtenerCategoriasPlantillas(dataCategorias);
@@ -790,31 +801,54 @@
             rules:{
                 nombreCategoria : {
                     required: true,
-                    rangelength: [1, 30]
+                    rangelength: [1, 30],
+                    alphanumeric : true
+                },
+                cbNuevaCategoria :{
+                    required: true
                 }
             },
             messages: {
+                nombreCategoria :{
+                   alphanumeric: 'No se encontró ningún carácter válido en el campo'
+                }
             }
+
+
         });
         $('#editar_categoria_frm').validate({
             rules:{
                 nombreCategoriaEdit : {
                     required: true,
-                    rangelength: [1, 30]
+                    rangelength: [1, 30],
+                    alphanumeric : true
+
+                } , cbEditarCategoria :{
+                    required: true
                 }
             },
             messages: {
+                nombreCategoriaEdit :{
+                    alphanumeric: 'No se encontró ningún carácter válido en el campo'
+                }
             }
         });
         $('#nueva_rutina_pred_frm').validate({
             rules:{
                 nombreRutina : {
                     required: true,
-                    maxlength : 30
+                    maxlength : 30,
+                    alphanumeric : true
+
                 },
                 semanasRutina : {
                     required: true,
                     range: [6, 84]
+                }
+            },
+            messages: {
+                nombreCategoria :{
+                    alphanumeric: 'No se encontró ningún carácter válido en el campo'
                 }
             }
         });
@@ -822,9 +856,18 @@
             rules:{
                 nombreRutinaEdit :{
                     required: true,
-                    maxlength : 30
+                    maxlength : 30,
+                    alphanumeric : true
+
+                }
+            },
+            messages: {
+                nombreCategoria :{
+                    alphanumeric: 'No se encontró ningún carácter válido en el campo'
                 }
             }
+
+
         });
     }
     function searchRutinaEvent(filterInp){
@@ -836,6 +879,8 @@
             generarRutinasCategoriaDOM(currentRutinasData);
         }
     }
+
+
 </script>
 </body>
 </html>

@@ -164,6 +164,7 @@ function goLogin() {
     $(".login-register-alt").fadeOut();
     $(".login-sesion-alt").fadeIn();
     $(".login.active .help-block").remove();
+    $('#register-form')[0].reset();
 
 }
 
