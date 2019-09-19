@@ -14,6 +14,6 @@ public interface ParametroRepository extends JpaRepository<Parametro, Integer> {
 
     Parametro findByClave(String clave);
 
-    @Query(nativeQuery = true, value = "SELECT clave FROM parametro WHERE clave = ?1")
+    @Query(nativeQuery = true, value = "SELECT valor FROM parametro WHERE clave = ?1")
     String getValorByClave(String clave);
 }

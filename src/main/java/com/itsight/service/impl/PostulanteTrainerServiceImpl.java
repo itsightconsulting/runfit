@@ -8,10 +8,12 @@ import com.itsight.generic.BaseServiceImpl;
 import com.itsight.repository.PostulanteTrainerRepository;
 import com.itsight.service.CorreoService;
 import com.itsight.service.EmailService;
+import com.itsight.service.ParametroService;
 import com.itsight.service.PostulanteTrainerService;
 import com.itsight.util.Enums;
 import com.itsight.util.Parseador;
 import com.itsight.util.Utilitarios;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -49,12 +51,17 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
 
     private CorreoService correoService;
 
+    private ParametroService parametroService;
+
+    @Autowired
     public PostulanteTrainerServiceImpl(PostulanteTrainerRepository repository,
                                         EmailService emailService,
-                                        CorreoService correoService) {
+                                        CorreoService correoService,
+                                        ParametroService parametroService) {
         super(repository);
         this.emailService = emailService;
         this.correoService = correoService;
+        this.parametroService = parametroService;
     }
 
     @Override
@@ -321,7 +328,8 @@ public class PostulanteTrainerServiceImpl extends BaseServiceImpl<PostulanteTrai
                                         post.getCorreo(),
                                         post.getMensaje(),
                                         post.getTipoTrainerId() == 1 ? "Independiente" : "Empresa");
-        emailService.enviarCorreoInformativo(correo.getAsunto(), post.getCorreo(), cuerpo);
+        String runfitCorreo = parametroService.getValorByClave("EMAIL_RECEPTOR_CONSULTAS");
+        emailService.enviarCorreoInformativo(correo.getAsunto(), runfitCorreo, cuerpo);
     }
 
     @Override

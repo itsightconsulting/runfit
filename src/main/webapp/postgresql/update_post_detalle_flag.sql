@@ -1,7 +1,3 @@
--- FUNCTION: public.update_post_detalle_flag(integer, integer, boolean, text, timestamp without time zone)
-
--- DROP FUNCTION public.update_post_detalle_flag(integer, integer, boolean, text, timestamp without time zone);
-
 CREATE OR REPLACE FUNCTION public.update_post_detalle_flag(
 	_post_id integer,
 	_cli_id integer,
