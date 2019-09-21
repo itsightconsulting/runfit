@@ -47,8 +47,6 @@
         </header>
         <section id="historial">
             <div class="container">
-
-
                <input type="text"  th:value="${rutinas}" class="hidden" id="pruebaData"></input>
                <input type="text"  th:value="${nombreCliente}" class="hidden" id="pruebaData2"></input>
 
@@ -64,32 +62,20 @@
                  <p class="fecha-nacimiento">  </p>
 
              </div>
-
-                <div class="row-rutina" th:each="rutina, iter: ${rutinas}">
+               <div class="row-rutina" th:each="rutina, iter: ${rutinas}">
                   <div class="panel-group">
-                     <div class="panel panel-default rutina" th:id="'dvRutinas' + ${iter.index}" th:attr="data-value=${rutina.totalSemanas}">
-
+                   <div class="panel panel-default rutina" th:id="'dvRutinas' + ${iter.index}" th:attr="data-value=${rutina.totalSemanas}">
                     <div class="panel-heading">
-                        <h3 class="panel-title" ><img class="svg" th:src="@{/img/iconos-trainers/icon_calendar2.svg}">  [[${rutina.nombre}]]  <p class="periodo-rutina">( De [[${rutina.fechaInicio}]]  a  [[${rutina.fechaFin}]]    ) </p>  <a data-toggle="collapse" th:href="@{'#collapse'+${iter.index}}"><img class="arrow svg" th:src="@{/img/iconos-trainers/icon_flecha2.svg}"/></a></h3>
+                     <h3 class="panel-title" ><img class="svg" th:src="@{/img/iconos-trainers/icon_calendar2.svg}">  [[${rutina.nombre}]]  <p class="periodo-rutina">( De [[${rutina.fechaInicio}]]  a  [[${rutina.fechaFin}]]    ) </p>  <a data-toggle="collapse" th:href="@{'#collapse'+${iter.index}}"><img class="arrow svg" th:src="@{/img/iconos-trainers/icon_flecha2.svg}"/></a></h3>
                     </div>
-
                     <div class="panel-collapse collapse" th:id="'collapse' + ${iter.index}">
-                        <ul class="list-group">
-
-
-
-                        </ul>
-
+                      <ul class="list-group">
+                      </ul>
                     </div>
-
-
-
                 </div>
                </div>
-
             </div>
-        </section>
-
+       </section>
     </div>
 </div>
 <th:block th:insert="html-commons/tr/js :: fg-js"></th:block>

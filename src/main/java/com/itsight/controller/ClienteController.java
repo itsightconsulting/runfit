@@ -96,6 +96,44 @@ public class ClienteController extends BaseController {
         return lstDistribucionCliente;
     }
 
+    @GetMapping(value = "/distribucion-provincia/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionProvinciaCliente(){
+
+        Integer trainerId = null;
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionProvinciaCliente(trainerId);
+
+        return lstDistribucionCliente;
+
+    }
+
+    @GetMapping(value = "/distribucion-provincia/trainer/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionProvinciaClientexTrainer(@RequestParam Integer id){
+
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionProvinciaCliente(id);
+
+        return lstDistribucionCliente;
+    }
+
+    @GetMapping(value = "/distribucion-distrito/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionDistritoLimaCliente(){
+
+        Integer trainerId = null;
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDistritoCliente(trainerId);
+
+        return lstDistribucionCliente;
+
+    }
+
+    @GetMapping(value = "/distribucion-distrito/trainer/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionDistritoLimaClientexTrainer(@RequestParam Integer id){
+
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDistritoCliente(id);
+
+        return lstDistribucionCliente;
+    }
+
+
+
     @GetMapping(value = "/get/tyc/servicios")
     public @ResponseBody List<TycClientePOJO> getTycServiciosById(HttpSession session){
         Integer id = (Integer) session.getAttribute("id");

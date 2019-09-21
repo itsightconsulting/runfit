@@ -11,6 +11,11 @@
 
   List<ClienteDTO> getDistribucionDepartamentoCliente(Integer trainerId);
 
+  List<ClienteDTO> getDistribucionDistritoCliente(Integer trainerId);
+
+  List<ClienteDTO> getDistribucionProvinciaCliente(Integer trainerId);
+
+
   boolean actualizarClienteById(ClienteDTO cliente, Integer clienteId) throws JsonProcessingException;
 
   List<TycClientePOJO> getTycServiciosById(Integer clienteId);
