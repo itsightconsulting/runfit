@@ -2456,6 +2456,20 @@ button.note-color-fuente, button.note-bg-color {
     overflow: auto;
     padding-right: 10px;
 }
+
+.chat .cvs .continuo {
+    margin-top: -13px;
+    margin-bottom: 5px;
+}
+
+.chat .cvs .continuo .perfil{
+    visibility: hidden;
+}
+
+.chat .cvs .continuo .name{
+    display: none;
+}
+
 .chat .name-cvs {
     background-color: #ccc;
     padding: 14px 10px;

@@ -18,4 +18,5 @@ public class Mensaje implements Serializable {
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     private Date fecha;
     private boolean esSalida;
+    private boolean esContinuo;
 }

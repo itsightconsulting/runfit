@@ -32,6 +32,7 @@
     const body = document.querySelector('body');
     const chatContainer = document.getElementById('ChatContainer');
     const trainerProfiles = document.getElementById('TrainerProfiles');
+    const inputChat = document.getElementById('ChatMensaje');
 
     let $chats = [];
 
@@ -51,22 +52,41 @@
 
     function eventos(){
         chatContainer.addEventListener('click', clickEventListenerChat);
+        body.addEventListener('keyup', keyUpEventListener);
     }
 
     function clickEventListenerChat(e){
         const input = e.target;
         const clases = input.classList;
         if (clases.contains('chat-unread')) {
-            const chatId = input.getAttribute('data-id');
-            actualizarFlagChat(chatId, input);
+            let chatId = input.getAttribute('data-id');
+            let tmpInput = input;
+            while(!chatId){
+                tmpInput = tmpInput.parentElement;
+                chatId = tmpInput.getAttribute('data-id');
+            }
+            actualizarFlagChat(chatId, tmpInput);
+            mostrarChatPorDefecto($chats.find(e=>e.id===Number(chatId)));
             inputChatMessage();
         } else if (clases.contains('chat-read')) {
-            const chatId = input.getAttribute('data-id');
+            let chatId = input.getAttribute('data-id');
+            let tmpInput = input;
+            while(!chatId){
+                tmpInput = tmpInput.parentElement;
+                chatId = tmpInput.getAttribute('data-id');
+            }
             mostrarChatPorDefecto($chats.find(e=>e.id===Number(chatId)));
             inputChatMessage();
         } else if(clases.contains('send-message') || clases.contains('i-send-message')) {
             const chatId = input.getAttribute('data-id');
             enviarChatMensaje(chatId)
+        }
+    }
+
+    function keyUpEventListener(e) {
+        const input = e.target;
+        if(input.id === 'ChatMensaje' && e.keyCode === 13){
+            document.querySelector('button.send-message').click();
         }
     }
 
@@ -93,10 +113,12 @@
             data: {
                 msg: msj,
             },
-            success: () => {
+            success: (data) => {
+                const esContinuo = data.esContinuo;
+                const esSalida = data.esSalida;
                 const htmlChats = document.querySelector('.cvs ul');
                 htmlChats.appendChild(htmlStringToElement(`
-                    <li class="sent">
+                    <li class="sent ${esContinuo && esSalida ? 'continuo':''}">
                         <div class="perfil">
                             <img src="${_ctx}img/user_avatar.png" />
                         </div>
@@ -117,6 +139,18 @@
                 //MainChat
                 $('#ChatMensaje').val("");
                 scrollChatBody();
+
+                const currentChat = $chats.find(e => e.id === Number(chatId));
+                const latest = {
+                    esSalida: true,
+                    fecha: getDateAsDateTimeString(),
+                    msg: msj,
+                    esContinuo: esContinuo
+                };
+                const allMessages = JSON.parse(currentChat.mensajes);
+                allMessages.push(latest);
+                currentChat.mensajes = JSON.stringify(allMessages);
+                currentChat.ultimo = JSON.stringify(latest);
             },
             error: (err) => {
                 exception(err)
@@ -154,6 +188,25 @@
                         </div>
                     </li>
                 `));
+
+                //Updating lateral panel
+                const divChat = trainerProfiles.querySelector(`.cnt[data-id="${chat.id}"]`);
+                const finalMsg = nueMsg.length > 58 ? nueMsg.substr(0, 58) + "..." : nueMsg;
+                divChat.querySelector(`.message-lateral`).textContent = `Usted: ${finalMsg}`;
+                divChat.querySelector('.fecha-o-time').textContent = setFechaChat(getDateAsDateTimeString());
+                trainerProfiles.insertBefore(divChat, trainerProfiles.firstElementChild);
+
+                //MainChat
+                $('#ChatMensaje').val("");
+
+                const currentChat = $chats.find(e => e.id === chat.id);
+                currentChat.mensajes = JSON.stringify(
+                    [{
+                        esSalida: true,
+                        fecha: getDateAsDateTimeString(),
+                        msg: nueMsg
+                    }]
+                )
             },
             error: (err)=>{
                 exception(err);
@@ -165,7 +218,6 @@
 
 
     function inputChatMessage(){
-
         const chatMessage = document.getElementById('ChatMensaje');
         chatMessage.value = "";
         chatMessage.focus();
@@ -181,6 +233,10 @@
                 const GLL_NOT_CHAT_VALUE = Number(getCookie("GLL_NOTIFICACION_CHAT"))-1 <= 0 ? 0 : Number(getCookie("GLL_NOTIFICACION_CHAT"))-1
                 updateCookie("GLL_NOTIFICACION_CHAT", GLL_NOT_CHAT_VALUE);
                 updateChatNotificaciones();
+                input.querySelectorAll('.chat-unread').forEach(e=>{
+                    e.classList.remove('chat-unread');
+                    e.classList.add('chat-read');
+                });
                 input.classList.remove('chat-unread');
                 input.classList.add('chat-read');
             },
@@ -211,13 +267,14 @@
                     const ultimoMensaje = !ultimo ? 'Aún no han iniciado conversación' : ultimo.msg.length > 58 ? ultimo.msg.substr(0, 58) + "..." : ultimo.msg;
                     const chatIsMine = !ultimo ? false : ultimo.esSalida;
                     const checkRead = !ultimo ? true : chatIsMine ? true : e.flagLeido;
+                    const fnlClass = checkRead ? 'chat-read' : 'chat-unread';
                     trainerProfiles.appendChild(htmlStringToElement(`
-                        <div class="cnt ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
-                            <div class="perfil">
-                                <img src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}"/></div>
-                            <div class="datos">
-                                <h4>${e.nomTrainer}<span class="fecha-o-time">${!ultimo ? '' : setFechaChat(ultimo.fecha)}</span></h4>
-                                <span class="message-lateral" data-id="${e.id}">${chatIsMine ? 'Usted: ' : ''}${ultimoMensaje}</span>
+                        <div class="cnt ${fnlClass}" data-id="${e.id}">
+                            <div class="perfil ${fnlClass}">
+                                <img class="${fnlClass}" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}"/></div>
+                            <div class="datos ${fnlClass}">
+                                <h4 class="${fnlClass}">${e.nomTrainer}<span class="fecha-o-time ${fnlClass}">${!ultimo ? '' : setFechaChat(ultimo.fecha)}</span></h4>
+                                <span class="message-lateral ${fnlClass}">${chatIsMine ? 'Usted: ' : ''}${ultimoMensaje}</span>
                             </div>
                         </div>
                         `
@@ -269,7 +326,7 @@
             <div class="cvs">
                 <ul>
                     ${mensajes.map(c=>
-                `<li class="${c.esSalida ? 'sent':'received'}">
+                `<li class="${c.esSalida ? 'sent':'received'} ${c.esContinuo ? 'continuo' : ''}">
                             <div class="perfil">
                                 ${c.esSalida ?
                     `<img class="user" src="${_ctx}img/user_avatar.png">`:
