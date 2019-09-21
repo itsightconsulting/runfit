@@ -1156,7 +1156,7 @@ ul.tabs {
   border-radius: 15px;
   border: 0;
   height: 40px;
-  box-shadow: 0 0 0
+  box-shadow: none;
 }
 
 .trainers-form .form-group .add {
@@ -1213,7 +1213,7 @@ ul.tabs {
   border-radius: 15px;
   border: 0;
   resize: none;
-  box-shadow: 0 0 0;
+  box-shadow: none;
   height: 92px
 }
 
@@ -2135,7 +2135,7 @@ ul.tabs {
   border-radius: 15px;
   border: 0;
   height: 40px;
-  box-shadow: 0 0 0
+  box-shadow: none;
 }
 
 .encuentra-tu-coach .form-group input.price,
@@ -2153,7 +2153,7 @@ ul.tabs {
   border-radius: 15px;
   border: 0;
   resize: none;
-  box-shadow: 0 0 0;
+  box-shadow: none;
   height: 92px
 }
 
@@ -2654,7 +2654,7 @@ ul.tabs {
   border-radius: 15px;
   border: 0;
   height: 40px;
-  box-shadow: 0 0 0
+  box-shadow: none
 }
 
 .steps .form-group input.price,
@@ -2672,7 +2672,7 @@ ul.tabs {
   border-radius: 15px;
   border: 0;
   resize: none;
-  box-shadow: 0 0 0;
+  box-shadow: none;
   height: 100px
 }
 

@@ -490,7 +490,7 @@ function guardarEnMisRutinas(e){
     if(!isNaN(valId) && valId > 0){
         $('#modalCategoriasRutinas').modal('hide');
         $.SmartMessageBox({
-            title : "Notificación",
+            title : '<i class="fa fa-exclamation-triangle" style="color: yellow"></i>',
             content : "Por favor ingrese un título para la mini rutina",
             buttons : "[Cancelar][Guardar]",
             input : "text",

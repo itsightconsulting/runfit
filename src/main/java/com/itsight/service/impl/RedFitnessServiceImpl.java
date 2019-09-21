@@ -25,6 +25,7 @@ import java.util.List;
 
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_GENERAL;
 import static com.itsight.util.Enums.Msg.NOTIFICACION_RED_FIT_PERSONAL;
+import static com.itsight.util.Enums.TipoUsuario.ENTRENADOR;
 import static com.itsight.util.Utilitarios.jsonResponse;
 
 @Transactional
@@ -188,28 +189,37 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
     }
 
     @Override
-    public String enviarNotificacionPersonal(ChatDTO chat, Integer trainerId) throws JsonProcessingException {
+    public String enviarNotificacionPersonal(ChatDTO chat, Integer userId, Integer tipoUsuario) throws JsonProcessingException {
+        Boolean isTrainer = tipoUsuario == ENTRENADOR.ordinal();
         Date now = new Date();
         Mensaje mensaje = new Mensaje();
         mensaje.setFecha(now);
         mensaje.setMsg(chat.getCuerpo());
-        mensaje.setEsSalida(false);
+        mensaje.setEsSalida(!isTrainer);
         List<Mensaje> mensajes = new ArrayList<>();
         mensajes.add(mensaje);
 
         ObjectMapper objMapper = new ObjectMapper();
         String ultimo = objMapper.writeValueAsString(mensaje);
         String msgs = objMapper.writeValueAsString(mensajes);
-        chatRepository.registrar(repository.findIdByRunnerIdAndTrainerId(chat.getCliId(), trainerId),
+        chatRepository.registrar(chat.getRedFitId(),
                 ultimo,
                 msgs,
                 now,
                 chat.getFpTrainer(),
                 chat.getNomTrainer());
-        Integer sustractOrPlusNumber = 1;
-        configuracionClienteRepository.updateNotificacionChatById(chat.getCliId(), sustractOrPlusNumber);
-        emailService.enviarCorreoInformativo("Runfit Notificaciones", chat.getCliCorreo(), chat.getCuerpo());
-        return NOTIFICACION_RED_FIT_PERSONAL.get();
+        if(isTrainer){
+            Integer sustractOrPlusNumber = 1;
+            configuracionClienteRepository.updateNotificacionChatById(chat.getCliId(), sustractOrPlusNumber);
+        }
+        //Correo puede ser de Trainer o Cliente
+        if (isTrainer) {
+            emailService.enviarCorreoInformativo("Runfit Notificaciones", chat.getCorreo(), chat.getCuerpo());
+        }else{
+            String trainerCorreo = repository.getCorreoTrainerByRedFitnessId(chat.getRedFitId());
+            emailService.enviarCorreoInformativo("Runfit Notificaciones", trainerCorreo, chat.getCuerpo());
+        }
+        return Utilitarios.jsonResponse(NOTIFICACION_RED_FIT_PERSONAL.get());
     }
 
     @Override

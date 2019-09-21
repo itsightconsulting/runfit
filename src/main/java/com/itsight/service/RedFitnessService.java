@@ -22,7 +22,7 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
 
     List<Integer> findTrainerIdByUsuarioId(Integer id);
 
-    String enviarNotificacionPersonal(ChatDTO chat, Integer trainerId) throws JsonProcessingException;
+    String enviarNotificacionPersonal(ChatDTO chat, Integer userId, Integer tipoUsuario) throws JsonProcessingException;
 
     String enviarNotificacionGeneral(Integer trainerId, String asunto, String cuerpo);
 
@@ -40,4 +40,5 @@ public interface RedFitnessService extends BaseService<RedFitness, Integer> {
                                                String correoTrainer,
                                                Integer fichaId,
                                                Integer ttId) throws CustomValidationException;
+
 }

@@ -38,7 +38,7 @@ function promptInit(validacion, status){
     let dia = hoy.getDate()<10?"0"+hoy.getDate():hoy.getDate();
     let fechaString = hoy.getFullYear() + '-' + mes + '-' + dia;
     $.SmartMessageBox({
-        title: "<i class='fa fa-bullhorn'></i> Notificación",
+        title: '<i class="fa fa-exclamation-triangle" style="color: yellow"></i> RUNFIT',
         content: "" +
         "<br/><h6 style=\"border: 2px solid"+validacion+"\">Debe seleccionar un plan de entrenamiento:</h6><br/>" +
         "<div class='row txt-color-blueDark prompt-init'><div class='smart-form'><fieldset><section class='col col-2'></section><section class='col col-8'><div class='col col-6'><label class='label'><b>Plan:</b></label><label class=\"input "+status+"\"><select class='prompt-meses' style='width: 100% !important;'><option value=''> --Seleccione-- </option><option selected='selected' value='1'> 1 Mes </option><option value='3'> 3 Mes </option><option value='6'> 6 Mes </option><option value='12'> 12 Mes </option></select></label></div><div class='col col-6'><label class='label'><b>Fecha Inicial:</b></label><label class='input'><i style='color: #67d1ff !important;' class=\"icon-append fa fa-calendar\" for='PromptFecha'></i><input id='PromptFecha' class='prompt-fecha' type='date' name='Demo' min=\""+fechaString+"\" value=\"\"></label></div></section><section class='col col-2'></section></fieldset></div></div>",

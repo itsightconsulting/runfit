@@ -3,196 +3,224 @@
       xmlns:th="http://www.thymeleaf.org"
       th:with="version = ${#servletContext.getAttribute('version')}">
 <head>
-    <title>Messenger</title>
+    <title>Runfit Messenger</title>
     <th:block th:insert="html-commons/in/meta :: fg-meta"></th:block>
     <th:block th:insert="html-commons/in/css  :: fg-css"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/public/owl.carousel.min.css}+'?'+${version}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.fancybox.min.css}+'?'+${version}">
-    <style>
-        .chat-foto > img{
-            border-radius: 50%;
-            border: 1px solid white;
-            height: 50px;
-            width: 50px;
-        }
-
-        .chat-nombre{
-
-        }
-
-        .chat-nombre h4{
-            margin: 0px !important;
-        }
-
-        .chat-nombre h5{
-            margin: 15px 0px 0px !important;
-            color: white;
-            font-size: 0.9em;
-        }
-
-        .chat-mensaje{
-            padding-top: 8px;
-        }
-
-        .chat-mensaje h5{
-            word-break: break-word;
-        }
-
-        .chat-fecha{
-            font-size: 0.9em;
-            color: white;
-            color: deepskyblue;
-        }
-
-        .container{
-            max-width: 1024px !important;
-        }
-
-        .padding-0{
-            padding: 0px !important;
-        }
-
-        .chat-trainer-mini{
-            padding: 15px 0px;
-            margin: 8px 0px;
-        }
-
-        .par-chat-fecha{
-            float: right;
-        }
-
-        .chat-read{
-            border-radius: 20px;
-            border: 1px solid gray;
-        }
-
-        .chat-unread{
-            border-radius: 20px;
-            border: 1px solid deepskyblue;
-        }
-
-        .chat-read:hover, .chat-unread:hover{
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-desk"></th:block>
 <th:block th:insert="html-commons/in/left-panel::fg-menu-mob"></th:block>
 
-<div id="main-content">
-    <div id="wrapper">
-        <div class="container">
-            <header>
-                <div class="text-center">
-                    <button class="navbar-toggle only_mobile" onclick="showMenuMobile()"><img class="svg" src="/img/iconos/icon_programas.svg"></button><a class="only_mobile" href="index.html"><img class="logo" src="/img/logo.png" alt=""></a>
-                    <h4 class="user">
-                        <img class="svg" th:src="@{/img/iconos/icon_perfil.svg}"><span class="user-full-name"></span><span id="TipoRutina">&nbsp;</span></h4>
-                    </h4>
-                </div>
-            </header>
-        </div>
-        <div class="container no_padding_top">
-            <h3 class="title_section no_margin_top">CHAT</h3>
-            <section class="consejos">
-
-                <input th:value="${postsFavoritos}" type="hidden"  id="arrPostsFavs"/>
-
-                <div class="search">
-                    <div class="input-group">
-                        <input class="form-control" type="text" id="inpSearch">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit" id="btnSearch">BUSCAR</button>
-                        </div>
-                    </div>
-                    <div class="options">
-                        <button class="btn" type="button" id="btnAudiosList"><img class="svg" src="/img/iconos/icon_microfono.svg"></button>
-                        <button class="btn" type="button" id="btnPostsList"><img class="svg" src="/img/iconos/icon_edit_file.svg"></button>
-                        <button class="btn" type="button" id="btnFavsList"><img class="svg" src="/img/iconos/icon_heart.svg"></button>
-                    </div>
-                </div>
-                <div class="item row" id="ChatContainer">
-                    <div class="col-md-12 col-xs-12">
-                        <div class="col-md-5 col-xs-12" id="TrainerProfiles">
-
-                        </div>
-                        <div class="col-md-7 col-xs-12" id="ContentChat">
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-</div>
-
-<!-- Modal ver consejo (texto)   -->
-
-<div class="modal fade" id="mdlVerConsejoTexto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width: 100%;height: 100%;" >
-            <div class="modal-header" style="background: black">
-                <button type="button btn-white" class="close" data-dismiss="modal" title="Close" style="color: #ffffff; opacity: 0.8;"> <span class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title text-align-center" ><strong> Consejo </strong></h4>
+<div class="row" id="main-content">
+    <div class="container-chat chat" id="ChatContainer">
+        <div class="col-md-4 no_padding">
+            <h3>Chat<span style="padding-right: 10px">Recientes</span></h3>
+            <div class="contacts" id="TrainerProfiles">
             </div>
-            <div class="modal-body">
-                <form id="actualizar-texto-frm" method="post">
-                    <div id="dvContenidoConsejoTexto">
-                        <div class="form-group row">
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <label>Titulo</label>
-                            </div>
-                            <div class="col-lg-10 col-md-10 col-sm-10">
-                                <input id="mdlTxtTitulo" name="titulo" type="text" class="form-control" readonly="readonly"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <label>Descripción</label>
-                            </div>
-                            <div class="col-lg-10 col-md-10 col-sm-10">
-                                <textarea id="mdlTxtDescripcion" name="descripcion" rows="5" class="form-control" readonly="readonly"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+        </div>
+        <div class="col-md-8 no_padding" id="ShowedChat">
 
         </div>
     </div>
 </div>
-
 
 <th:block th:insert="html-commons/in/js :: fg-js"></th:block>
 <script>
 
     const body = document.querySelector('body');
     const chatContainer = document.getElementById('ChatContainer');
+    const trainerProfiles = document.getElementById('TrainerProfiles');
+    const inputChat = document.getElementById('ChatMensaje');
+
     let $chats = [];
 
     (function () {
-        const trainerChats = [];
         init();
     })();
 
     function init(){
         recrearChats();
         eventos();
+
+        //
+        const windowHeight = $(window).height();
+        $('#ChatContainer')[0].style.height = windowHeight + "px";
+        $('#ShowedChat')[0].style.height = windowHeight + "px";
     }
 
     function eventos(){
         chatContainer.addEventListener('click', clickEventListenerChat);
+        body.addEventListener('keyup', keyUpEventListener);
     }
 
     function clickEventListenerChat(e){
         const input = e.target;
         const clases = input.classList;
         if (clases.contains('chat-unread')) {
-            const chatId = input.getAttribute('data-id');
-            actualizarFlagChat(chatId, input);
+            let chatId = input.getAttribute('data-id');
+            let tmpInput = input;
+            while(!chatId){
+                tmpInput = tmpInput.parentElement;
+                chatId = tmpInput.getAttribute('data-id');
+            }
+            actualizarFlagChat(chatId, tmpInput);
+            mostrarChatPorDefecto($chats.find(e=>e.id===Number(chatId)));
+            inputChatMessage();
         } else if (clases.contains('chat-read')) {
+            let chatId = input.getAttribute('data-id');
+            let tmpInput = input;
+            while(!chatId){
+                tmpInput = tmpInput.parentElement;
+                chatId = tmpInput.getAttribute('data-id');
+            }
+            mostrarChatPorDefecto($chats.find(e=>e.id===Number(chatId)));
+            inputChatMessage();
+        } else if(clases.contains('send-message') || clases.contains('i-send-message')) {
             const chatId = input.getAttribute('data-id');
+            enviarChatMensaje(chatId)
         }
+    }
+
+    function keyUpEventListener(e) {
+        const input = e.target;
+        if(input.id === 'ChatMensaje' && e.keyCode === 13){
+            document.querySelector('button.send-message').click();
+        }
+    }
+
+    function enviarChatMensaje(chatId){
+        const msj = $('#ChatMensaje').val().replace(/\r?\n/g, '<br />').trim();
+        //ELSE Continua el flujo normal
+        if (!(msj.length > 0 && msj.length <= 255)) {
+            $('#ChatSms').focus();
+            $.smallBox({color: 'alert',
+                content: '<i class="fa fa-exclamation-triangle fa-fw"></i>No puede enviar mensajes vacíos, además su mensaje no debe exceder los 255 caracteres'});
+            return;
+        }
+
+        const chat = $chats.find(e=>e.id === Number(chatId));
+        if(!chat.mensajes){
+            enviarPrimerChat(chat, msj);
+            return;
+        }
+        $.ajax({
+            type: 'PUT',
+            url: _ctx + 'gestion/chat/update/' + chatId,
+            blockLoading: false,
+            dataType: 'json',
+            data: {
+                msg: msj,
+            },
+            success: (data) => {
+                const esContinuo = data.esContinuo;
+                const esSalida = data.esSalida;
+                const htmlChats = document.querySelector('.cvs ul');
+                htmlChats.appendChild(htmlStringToElement(`
+                    <li class="sent ${esContinuo && esSalida ? 'continuo':''}">
+                        <div class="perfil">
+                            <img src="${_ctx}img/user_avatar.png" />
+                        </div>
+                        <div class="messages message-sent">
+                            <p class="name"><span>${setFechaChat(getDateAsDateTimeString())}</span></p>
+                            <div class="message">${msj}</div>
+                        </div>
+                    </li>
+                `));
+
+                //Updating lateral panel
+                const divChat = trainerProfiles.querySelector(`.cnt[data-id="${chatId}"]`);
+                const finalMsg = msj.length > 58 ? msj.substr(0, 58) + "..." : msj;
+                divChat.querySelector(`.message-lateral`).textContent = `Usted: ${finalMsg}`;
+                divChat.querySelector('.fecha-o-time').textContent = setFechaChat(getDateAsDateTimeString());
+                trainerProfiles.insertBefore(divChat, trainerProfiles.firstElementChild);
+
+                //MainChat
+                $('#ChatMensaje').val("");
+                scrollChatBody();
+
+                const currentChat = $chats.find(e => e.id === Number(chatId));
+                const latest = {
+                    esSalida: true,
+                    fecha: getDateAsDateTimeString(),
+                    msg: msj,
+                    esContinuo: esContinuo
+                };
+                const allMessages = JSON.parse(currentChat.mensajes);
+                allMessages.push(latest);
+                currentChat.mensajes = JSON.stringify(allMessages);
+                currentChat.ultimo = JSON.stringify(latest);
+            },
+            error: (err) => {
+                exception(err)
+            },
+            complete: () => {
+            }
+        })
+    }
+
+    function enviarPrimerChat(chat, nueMsg){
+        const data = {};
+        data.cliCorreo = "peter.carranza@itsight.pe";
+        data.cuerpo = nueMsg;
+        data.nomTrainer = chat.nomTrainer;
+        data.fpTrainer = chat.fpTrainer;
+        data.redFitId = chat.id;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: _ctx+'gestion/chat/primer/mensaje',
+            data: data,
+            blockLoading: true,
+            dataType: 'json',
+            success: (res)=>{
+                const htmlChats = document.querySelector('.cvs ul');
+                htmlChats.appendChild(htmlStringToElement(`
+                    <li class="sent">
+                        <div class="perfil">
+                            <img src="${_ctx}img/user_avatar.png" />
+                        </div>
+                        <div class="messages message-sent">
+                            <p class="name"><span>${setFechaChat(getDateAsDateTimeString())}</span></p>
+                            <div class="message">${nueMsg}</div>
+                        </div>
+                    </li>
+                `));
+
+                //Updating lateral panel
+                const divChat = trainerProfiles.querySelector(`.cnt[data-id="${chat.id}"]`);
+                const finalMsg = nueMsg.length > 58 ? nueMsg.substr(0, 58) + "..." : nueMsg;
+                divChat.querySelector(`.message-lateral`).textContent = `Usted: ${finalMsg}`;
+                divChat.querySelector('.fecha-o-time').textContent = setFechaChat(getDateAsDateTimeString());
+                trainerProfiles.insertBefore(divChat, trainerProfiles.firstElementChild);
+
+                //MainChat
+                $('#ChatMensaje').val("");
+
+                const currentChat = $chats.find(e => e.id === chat.id);
+                currentChat.mensajes = JSON.stringify(
+                    [{
+                        esSalida: true,
+                        fecha: getDateAsDateTimeString(),
+                        msg: nueMsg
+                    }]
+                )
+            },
+            error: (err)=>{
+                exception(err);
+            },
+            complete: ()=>{}
+        })
+    }
+
+
+
+    function inputChatMessage(){
+        const chatMessage = document.getElementById('ChatMensaje');
+        chatMessage.value = "";
+        chatMessage.focus();
     }
 
     function actualizarFlagChat(chatId, input){
@@ -202,8 +230,13 @@
             url: _ctx + 'gestion/chat/update/flag/'+chatId,
             dataType: 'json',
             success: function(){
-                updateCookie("GLL_NOTIFICACION_CHAT", Number(getCookie("GLL_NOTIFICACION_CHAT"))-1);
+                const GLL_NOT_CHAT_VALUE = Number(getCookie("GLL_NOTIFICACION_CHAT"))-1 <= 0 ? 0 : Number(getCookie("GLL_NOTIFICACION_CHAT"))-1
+                updateCookie("GLL_NOTIFICACION_CHAT", GLL_NOT_CHAT_VALUE);
                 updateChatNotificaciones();
+                input.querySelectorAll('.chat-unread').forEach(e=>{
+                    e.classList.remove('chat-unread');
+                    e.classList.add('chat-read');
+                });
                 input.classList.remove('chat-unread');
                 input.classList.add('chat-read');
             },
@@ -214,47 +247,126 @@
     }
 
     function recrearChats(){
-        const trainerProfiles = document.getElementById('TrainerProfiles');
         $.ajax({
             type: 'GET',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             url: _ctx+ 'gestion/chat/get/cliente',
             dataType: 'json',
             success: function(data){
+                //F1
+                if(!data.length){
+                    return;
+                }
+                data = data.sort((a, b) =>
+                    (b.fechaModificacion ? parseFromStringToDateTime(b.fechaModificacion) : parseFromStringToDateTime(b.fechaCreacion)) -
+                    (a.fechaModificacion ? parseFromStringToDateTime(a.fechaModificacion).getTime() : parseFromStringToDateTime(a.fechaCreacion))
+                );
                 $chats = data;
                 data.forEach(e=>{
                     const ultimo = JSON.parse(e.ultimo);
-                    const checkRead = e.flagLeido;
-                    const ultimoMensaje = ultimo.msg.length > 77 ? ultimo.msg.substr(0, 77) + "..." : ultimo.msg;
+                    const ultimoMensaje = !ultimo ? 'Aún no han iniciado conversación' : ultimo.msg.length > 58 ? ultimo.msg.substr(0, 58) + "..." : ultimo.msg;
+                    const chatIsMine = !ultimo ? false : ultimo.esSalida;
+                    const checkRead = !ultimo ? true : chatIsMine ? true : e.flagLeido;
+                    const fnlClass = checkRead ? 'chat-read' : 'chat-unread';
                     trainerProfiles.appendChild(htmlStringToElement(`
-                        <div class="row chat-trainer-mini ${checkRead ? 'chat-read' : 'chat-unread'}" data-id="${e.id}">
-                            <div class="col-md-12 col-sm-12">
-                                <div class="col-md-3 chat-foto">
-                                    <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}">
-                                </div>
-                                <div class="col-md-9 chat-nombre">
-                                    <div class="row col-md-12">
-                                        <div class="row col-md-10 padding-0">
-                                            <h4>${e.nomTrainer}</h4>
-                                        </div>
-                                        <div class="row col-md-2 par-chat-fecha">
-                                            <span class="chat-fecha">${'10/9'}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row col-md-12 chat-mensaje padding-0">
-                                        <h5>${ultimoMensaje}</h5>
-                                    </div>
-                                </div>
+                        <div class="cnt ${fnlClass}" data-id="${e.id}">
+                            <div class="perfil ${fnlClass}">
+                                <img class="${fnlClass}" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${e.fpTrainer}"/></div>
+                            <div class="datos ${fnlClass}">
+                                <h4 class="${fnlClass}">${e.nomTrainer}<span class="fecha-o-time ${fnlClass}">${!ultimo ? '' : setFechaChat(ultimo.fecha)}</span></h4>
+                                <span class="message-lateral ${fnlClass}">${chatIsMine ? 'Usted: ' : ''}${ultimoMensaje}</span>
                             </div>
                         </div>
                         `
-                        ));
+                    ));
                 });
 
-            },error: (err)=>{
+                mostrarChatPorDefecto($chats[0]);
+
+            }, error: (err)=>{
                 exception(err);
             }
         })
+    }
+
+    function mostrarChatPorDefecto(chat){
+        const chatDefecto = document.getElementById('ShowedChat');
+        if(!chat.mensajes){
+            chatDefecto.innerHTML = `
+            <div class="cnt name-cvs">
+                <div class="perfil">
+                    <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${chat.fpTrainer}">
+                </div>
+                <div class="datos">
+                    <h4>${chat.nomTrainer}</h4>
+                </div>
+            </div>
+            <div class="cvs">
+                <ul>
+                </ul>
+            </div>
+            <div class="chat-footer">
+                <input id="ChatMensaje" class="form-control" placeholder="Escribe un mensaje nuevo">
+                <button type="button" class="send-message" data-id="${chat.id}">
+                    <i class="fa fa-paper-plane-o i-send-message" data-id="${chat.id}"
+                        style="color: #423750; padding-right: 15px"></i>
+                </button>
+            </div>`;
+        }else{
+            const mensajes = JSON.parse(chat.mensajes);
+            chatDefecto.innerHTML = `
+            <div class="cnt name-cvs">
+                <div class="perfil">
+                    <img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${chat.fpTrainer}">
+                </div>
+                <div class="datos">
+                    <h4>${chat.nomTrainer}</h4>
+                </div>
+            </div>
+            <div class="cvs">
+                <ul>
+                    ${mensajes.map(c=>
+                `<li class="${c.esSalida ? 'sent':'received'} ${c.esContinuo ? 'continuo' : ''}">
+                            <div class="perfil">
+                                ${c.esSalida ?
+                    `<img class="user" src="${_ctx}img/user_avatar.png">`:
+                    `<img class="user" src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${chat.fpTrainer}">`}
+                            </div>
+                            <div class="messages ${c.esSalida ? 'message-sent':'message-received'}">
+                                <p class="name">${c.esSalida ? '': chat.nomTrainer} <span>${setFechaChat(c.fecha)}</span></p>
+                                <div class="message">${c.msg}</div>
+                            </div>
+                        </li>`
+            ).join('')}
+                </ul>
+            </div>
+            <div class="chat-footer">
+                <input id="ChatMensaje" class="form-control" placeholder="Escribe un mensaje nuevo">
+                <button type="button" class="send-message" data-id="${chat.id}">
+                    <i class="fa fa-paper-plane-o i-send-message" data-id="${chat.id}"
+                        style="color: #423750; padding-right: 15px"></i>
+                </button>
+            </div>
+        `;
+        }
+
+        const inputChatMessage = document.getElementById('ChatMensaje');
+        const windowHeight = $(window).height();
+        const heightExcedent = windowHeight -
+            document.querySelector('.name-cvs').clientHeight -
+            inputChatMessage.clientHeight - 2;
+        $('.cvs')[0].style.height = heightExcedent + "px";
+
+        const sendButton = document.querySelector('.send-message');
+        sendButton.style.height = (inputChatMessage.clientHeight+2) + "px";
+
+        $('#ChatMensaje').val("");
+        scrollChatBody();
+    }
+
+    function scrollChatBody(){
+        const content = document.querySelector(".cvs");
+        content.scrollTop = content.scrollHeight;
     }
 </script>
 </body>

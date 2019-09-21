@@ -15,7 +15,7 @@ public class ChatPOJO {
 
     private String mensajes;
 
-    private boolean flagLeido;
+    private Boolean flagLeido;
 
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     private Date fechaCreacion;
@@ -33,7 +33,7 @@ public class ChatPOJO {
 
     public ChatPOJO() {}
 
-    public ChatPOJO(Integer id, String ultimo, String mensajes, boolean flagLeido, Date fechaCreacion, Date fechaModificacion, String fpTrainer, String nomTrainer) {
+    public ChatPOJO(Integer id, String ultimo, String mensajes, Boolean flagLeido, Date fechaCreacion, Date fechaModificacion, String fpTrainer, String nomTrainer) {
         this.id = id;
         this.ultimo = ultimo;
         this.mensajes = mensajes;

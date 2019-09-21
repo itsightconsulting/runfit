@@ -31,7 +31,7 @@ class Rutina {
         $numSem.textContent = Number(semanaIx)+1;
         //Inicialmente generamos solo la primera semana de todo el plan de entrenamiento
         dias.forEach((dia, ix) => {
-            $("#panel_days").append(RutinaDiaHTML.base(dia, ix));
+            $("#panel_days").append(RutinaDiaHTML.basemn(dia, ix));
         });
         if($rutina.tipoRutina !== TipoRutina.GENERAL){
             //Indicadores.instanciarIndicador0();
@@ -2597,7 +2597,7 @@ RutinaElementoHTML = (function(){
 
 RutinaDiaHTML = (function(){
     return {
-        base: (dia, diaIndex) => {
+        basemn: (dia, diaIndex) => {
             const flagDescanso = dia.flagDescanso;
             if (flagDescanso) {
                 return '<h1>Flag descanso true</h1>';

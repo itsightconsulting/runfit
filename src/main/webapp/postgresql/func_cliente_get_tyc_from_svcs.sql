@@ -16,5 +16,3 @@ where s.servicio_id
           in (select servicio_id from cliente_servicio where cliente_id= $1)
     AND s.tycuuid IS NOT NULL;
 $func$ LANGUAGE sql;
-
-

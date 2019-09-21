@@ -50,14 +50,14 @@ public class ExceptionControllerAdvice {
         return new ModelAndView(ViewConstant.MAIN_INF_P, "msg", ex.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(NumberFormatException.class)
-    public @ResponseBody
-    ResponseEntity<String> handlerNumberFormatoExcception(NumberFormatException ex) {
+    public @ResponseBody ErrorResponse handlerNumberFormatoExcception(NumberFormatException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return new ResponseEntity<>(EX_NUMBER_FORMAT.get(), HttpStatus.BAD_REQUEST);
+        return new ErrorResponse("Ha ocurrido un error de calculo interno", EX_NUMBER_FORMAT.get());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -108,14 +108,15 @@ public class ExceptionControllerAdvice {
         return new ErrorResponse("2 El archivo que ha intentado subir excede al límite permitido, por favor suba un archivo menor a.... 3", EX_MAX_SIZE_MULTIPART.get());
     }*/
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(NullPointerException.class)
     public @ResponseBody
-    String handleErrorByNullPointerException(NullPointerException ex) {
+    ErrorResponse handleErrorByNullPointerException(NullPointerException ex) {
         LOGGER.warn(ex.getMessage());
         for(int i = 0; i<10;i++){
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
-        return EX_NULL_POINTER.get();
+        return new ErrorResponse("Ha ocurrido un error de apuntador", EX_NULL_POINTER.get());
     }
 
     @ExceptionHandler(InvalidFormatException.class)
