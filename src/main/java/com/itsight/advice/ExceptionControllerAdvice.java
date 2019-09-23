@@ -3,6 +3,7 @@ package com.itsight.advice;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itsight.constants.ViewConstant;
 import com.itsight.domain.dto.ErrorResponse;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
@@ -136,6 +137,15 @@ public class ExceptionControllerAdvice {
             LOGGER.warn(ex.getStackTrace()[i].toString());
         }
         return new ModelAndView(ViewConstant.ERROR404PARAMEXCEP);
+    }
+
+    @ExceptionHandler(HttpHostConnectException.class)
+    public ModelAndView handleHttpHostConnectException(HttpHostConnectException ex) {
+        LOGGER.warn(ex.getMessage());
+        for(int i = 0; i<10;i++){
+            LOGGER.warn(ex.getStackTrace()[i].toString());
+        }
+        return new ModelAndView(ViewConstant.ERROR500);
     }
     /*@ExceptionHandler(MethodArgumentNotValidException.class)
     public @ResponseBody String handlerMethodArgumentNotValidException(HttpServletRequest req, Exception ex) {

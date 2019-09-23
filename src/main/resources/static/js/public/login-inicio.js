@@ -350,3 +350,9 @@ function keyupLoginEventListener(e){
         submitReuseLogin();
     }
 }
+
+function loginByFacebook(){
+    const base = document.location.origin;
+    window.location.href = `${base.replace('http:','https:')+':8081'}/oauth2/authorize/facebook?redirect_uri=${base}/oauth2/redirect`;
+}
+
