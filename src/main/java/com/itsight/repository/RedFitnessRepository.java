@@ -83,4 +83,7 @@ public interface RedFitnessRepository extends JpaRepository<RedFitness, Integer>
     Boolean checkExistsByTrainerIdAndClienteId(@Param(value = "_trainer_id") Integer trainerId,
                                                @Param(value = "_cliente_id") Integer clienteId);
 
+    @Query("SELECT T.correo FROM Trainer T WHERE T.id = (SELECT RF.trainer.id FROM RedFitness RF WHERE RF.id = ?1)")
+    String getCorreoTrainerByRedFitnessId(Integer rfId);
+
 }

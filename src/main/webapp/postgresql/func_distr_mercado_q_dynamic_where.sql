@@ -26,4 +26,3 @@ select
       where
       ($1 is null or rf.trainer_id = $1);
 $func$ LANGUAGE sql;
-

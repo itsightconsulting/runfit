@@ -86,8 +86,12 @@ p{
     margin-bottom: 18px;
 }
 
-p.fem-age-prom, strong.fem-porc,p.fem-porc-age, .svg.fem{
+p.fem-age-prom, strong.fem-porc,p.fem-porc-age{
     color: #FF00EB;
+}
+
+.svg.fem{
+    fill: #FF00EB
 }
 
 p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
@@ -99,13 +103,17 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .graph-porc .svg{
-    height: 28px;
+    height: 37px;
     position: relative;
-    top: 8px;
+    top: 6px;
 }
 
 .graph-porc{
     padding-top: 25px;
+}
+
+.graph-porc .ds-block{
+    display: block !important;
 }
 
 .graph-porc p{
@@ -116,8 +124,9 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .graph-porc div{
-    display: inline-block;
+    display: flex;
     margin-bottom: 10px;
+    align-items: center;
 }
 
 .graph-porc .svg{
@@ -138,7 +147,11 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 
 .graph-porc div p{
     font-size:14px;
-    top: 12px;
+    top: 8px;
+}
+.graph-porc .pad-0{
+    padding-left: 15px;
+    padding-right: 0;
 }
 
 .canal-venta .col-md-5{
@@ -153,8 +166,8 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .nombre-canal p{
-  margin-bottom: 16.5px;
-  font-size: 13px;
+    margin-bottom: 15px;
+    font-size: 12.5px;
 }
 
 
@@ -163,7 +176,8 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .canal-porc-sexo p{
-  font-size: 13px
+  font-size: 12.5px;
+  color: #c2ccac;
 }
 
 .canal-porc-sexo svg , .tipo-servicio-porc svg{
@@ -180,7 +194,7 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 }
 
 .canal-porc-fem p, .canal-porc-masc p{
-    margin-bottom: 13.2px;
+    margin-bottom: 14.8px;
 }
 
 .servicio-porc-fem, .servicio-porc-masc{
@@ -194,7 +208,6 @@ p.masc-age-prom, strong.masc-porc, p.masc-porc-age, .svg.masc{
 
 .canal-porc-masc,.canal-porc-fem{
   padding-top: 2px;
-  line-height: 1.65;
 }
 
 .div-graf-row-2{
@@ -300,8 +313,10 @@ select{
 .distr-dpto-title{
     margin-bottom: 20px;
     padding-left: 15px;
+    padding-top: 20px;
     color: #ffffff;
     font-size: 18px;
+    display: inline-block;
     font-family: GothamHTF-Bold;
     width: 350px;
 }
@@ -359,16 +374,85 @@ canvas{
 
 
 .graph-distr-departamento{
-    padding-left: 25px;
+    padding-right: 40px;
+    max-height: 600px;
 }
-
-.dv-distr-dpto{
-    border-right: 1px solid #565a4d;
+.svg.mapa {
+    fill: #ffffff;
+    height: 80px;
+    float:right;
+    display:inline-block;
+    padding-right:40px;
+}
+.separador-col{
+    border-left: 1px solid #565a4d;
 }
 
 .hr-servicios{
      border-color: #565a4d;
      margin: 30px 2px 50px 25px;
+}
+
+.chk-content {
+    display: block;
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: GothamHTF-Book;
+}
+
+.chk-content input:checked ~ .checkmark::after {
+    display: block;
+}
+
+.chk-content .checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.chk-content input:checked ~ .checkmark {
+    background-color: #a8fa00;
+    border-color: #a8fa00;
+}
+
+.chk-content .checkmark {
+    position: absolute;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: 1px solid rgba(141, 141, 141, 0.59);
+    border-radius: 4px;
+}
+
+.chk-content input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checks li {
+    display: inline-block;
+    margin-right: 25px;
 }
 
 @media only screen and (max-width: 500px) {
@@ -418,6 +502,7 @@ canvas{
     }
     .distr-dpto-title {
         padding-left: 0;
+        display: inline-block;
         font-size: 14px;
     }
     .canal-venta-title, .tipo-servicio-title {

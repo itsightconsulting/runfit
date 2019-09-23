@@ -5,54 +5,47 @@ let dvCanalVenta = document.querySelector('.canal-venta');
 const selectElemYear = document.getElementById('graphYearFilter');
 let $chartMiniPorc = {};
 var dataClientes;
-
 let canalesVenta = ["Recomendación", "Vía correo", "Google", "Facebook", "Twitter", "Instagram", "Otro"];
 let serviciosTipos = ["Running", "General"];
 let arrColorFem = ['#FF00EB', '#c42bba', '#bc49b3', '#8c4b86', '#6b5269','#665e5e'];
 let arrColorMasc = ['#00b5f7','#358dea','#0667ce','#537daa','#6c84b2','#665e5e'];
 const selectYear = document.getElementById('graphYearFilter');
 let cantidadUsuarios;
+let distribucionDepartamento = [];
+let distribucionDistritos = [];
 
 $( function(){
-
     init();
-
-
 })
-
 
 function init(){
 
-    obtenerDataEstadisticas();
+    checkBoxasRadioButtons();
+    checkBoxLocalizacionChangeEvent();
 
+    obtenerDataEstadisticas();
 
     if(selectYear) {
         selectYear.addEventListener('change', selectYearEventListener);
     }
-
 }
-
 
 function selectYearEventListener(){
 
     const dataFechaTemporadaFem = (dataClientes.filter(e => e.sexo === 2).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
     const dataFechaTemporadaMasc = (dataClientes.filter(e => e.sexo === 1).map( ({fechaCreacion}) =>  moment(parseFromStringToDate2(fechaCreacion)).format("MM/YYYY")));
-
     const dataGraficoFem = getDataServicioPorTemporada(dataFechaTemporadaFem,this.value);
     const dataGraficoMasc = getDataServicioPorTemporada(dataFechaTemporadaMasc,this.value);
-
-    // console.log(dataGraficoFem, dataGraficoMasc);
-
     graficoBarraVentaServiciosTemporada(dataGraficoFem,dataGraficoMasc);
 }
 
 function obtenerDataEstadisticas(){
 
     let id;
-    id =  perfil != 1 ?  getParamFromURL('trId') : null;
+    id =  perfil == 1 ? null :  getParamFromURL('trId');
 
     let url = perfil === 1 ? "gestion/trainer/distribucion-mercado/obtener"
-        : (id ? "gestion/distribucion-mercado/trainer/obtener?id="+id : "gestion/trainer/distribucion-mercado/obtener");
+                            : (id ? "gestion/distribucion-mercado/trainer/obtener?id="+id : "gestion/distribucion-mercado/obtener");
 
     $.ajax({
         type: "GET",
@@ -91,7 +84,9 @@ function obtenerDataEstadisticas(){
                 setGraficosCondFisFem(dataNoDuplFem);
 
                 setGraficosServiciosVentaTemporada(data)
+                obtenerInformacionDistribucionDistritosLima();
                 obtenerInformacionDistribucionDepartamentos();
+
 
             }else{
 
@@ -127,7 +122,6 @@ function obtenerInformacionDistribucionDepartamentos(){
     let id;
     id =  perfil != 1 ?  getParamFromURL('trId') : null;
 
-
     let url = perfil === 1 ? "gestion/trainer/distribucion-departamento/obtener"
         : ( id ? "gestion/cliente/distribucion-departamento/trainer/obtener?id="+id  : "gestion/cliente/distribucion-departamento/obtener");
 
@@ -137,23 +131,24 @@ function obtenerInformacionDistribucionDepartamentos(){
         success: function(data){
             let arrGraf= [];
             let arrGraf2= [];
-            data.forEach( element => arrGraf.push({id: Number(element.departamentoUb) , qty : element.qtyClientesByDepartamento , dpto :""}) );
+            data.forEach( element => arrGraf.push({id: Number(element.departamentoUb) , qty : element.qtyClientesByDepartamento , nombre :""}) );
+
             const arrDep = new Array(25);
             const arrIdDeps = arrGraf.map(({id}) => id);
 
             for(let i = 1 ; i<= arrDep.length; i++){
                 if(!arrIdDeps.includes(i)) {
-                    arrGraf2.push({id: i, qty: 0, dpto: _departamentos[i - 1]})
+                    arrGraf2.push({id: i, qty: 0, nombre: _departamentos[i - 1]})
                 }
             }
             for( let i = 1; i <= arrGraf.length; i++ ){
-                arrGraf[i-1].dpto = _departamentos[arrGraf[i-1].id - 1]  ;
+                arrGraf[i-1].nombre = _departamentos[arrGraf[i-1].id - 1]  ;
             }
 
             let dataGrafico = arrGraf.concat(arrGraf2);
             dataGrafico = dataGrafico.sort( (a,b) => b.qty - a.qty);
-            graficoDistribucionDepartamento(dataGrafico);
-            generarPorcentajesDepartamentoDOM(dataGrafico);
+
+            distribucionDepartamento = dataGrafico;
         },
         error : (xhr) => {
 
@@ -164,6 +159,65 @@ function obtenerInformacionDistribucionDepartamentos(){
     });
 }
 
+function obtenerInformacionDistribucionDistritosLima(){
+
+    let id;
+    id =  perfil != 1 ?  getParamFromURL('trId') : null;
+
+
+    let url = perfil === 1 ? "gestion/trainer/distribucion-distrito/obtener"
+        : ( id ? "gestion/cliente/distribucion-distrito/trainer/obtener?id="+id  : "gestion/cliente/distribucion-distrito/obtener");
+
+    $.ajax({
+        type: "GET",
+        url: _ctx + url,
+        success: function(data){
+
+         data.forEach( element => distribucionDistritos.push({id: Number(element.distritoUb) , nombre : element.distritoNombre,qty : element.qtyClientesByDistrito }) );
+      },
+        error : (xhr) => {
+
+        },
+        complete: ()=>{
+            let porcentajes = generarPorcentajes(distribucionDistritos);
+            graficoDistribucionLocalizacion(distribucionDistritos , porcentajes, 1);
+        }
+    });
+}
+
+function checkBoxasRadioButtons(){
+
+
+    $("input:checkbox").on('click', function() {
+        let $box = $(this);
+        if ($box.is(":checked")) {
+            let group = "input:checkbox[name='" + $box.attr("name") + "']";
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+}
+
+function checkBoxLocalizacionChangeEvent() {
+
+    $(".dv-distr-dpto input:radio").on('change', function () {
+
+        let cbSeleccionado = $(this)[0].value;
+
+        if(cbSeleccionado ==='1') {
+            let porcentajes = generarPorcentajes(distribucionDistritos);
+            graficoDistribucionLocalizacion(distribucionDistritos , porcentajes, 1);
+
+        }else
+        {
+            let porcentajes = generarPorcentajes(distribucionDepartamento);
+            graficoDistribucionLocalizacion(distribucionDepartamento , porcentajes, 2);
+        }
+    })
+}
+
 function getEdad(fechaNacimiento){
 
     console.log(fechaNacimiento);
@@ -172,15 +226,12 @@ function getEdad(fechaNacimiento){
 }
 
 
-
 function quitarDuplicados(arr, attribute){
-
 
     const uniqueArr = arr
         .map(e => e[attribute])
         .map((e, i, final) => final.indexOf(e) === i && i)
         .filter(e => arr[e]).map(e => arr[e]);
-
 
     return uniqueArr;
 }
@@ -190,8 +241,6 @@ function setGraficosCondFisMasc(dataNoDuplMasc){
     const condAnatomicaMasc = dataNoDuplMasc.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));  //.condicionAnatomica);
     let arrCondFisicMasc =  getDataGraficoCondFisica(condAnatomicaMasc);
     arrCondFisicMasc.length > 0 ? null : arrCondFisicMasc = [0,0,0];
-
-
     graficoCondFisicaBasicaMasc(arrCondFisicMasc);
     graficoCondFisicaMedioMasc(arrCondFisicMasc);
     graficoCondFisicaAvanzadoMasc(arrCondFisicMasc);
@@ -207,7 +256,6 @@ function setGraficosCondFisFem(dataNoDuplFem){
     const condAnatomicaFem =  dataNoDuplFem.map( ({condicionAnatomica}) => JSON.parse(condicionAnatomica));
     let arrCondFisicFem =    getDataGraficoCondFisica(condAnatomicaFem);
     arrCondFisicFem.length > 0 ? null : arrCondFisicFem = [0,0,0];
-
     graficoCondFisicaBasicaFem(arrCondFisicFem);
     graficoCondFisicaMedioFem(arrCondFisicFem);
     graficoCondFisicaAvanzadoFem(arrCondFisicFem);
@@ -332,7 +380,6 @@ function getDataGraficoCondFisica(arr){
 
 function graficoCondFisicaBasicaMasc(arr) {
 
-    console.log("jejeje",arr);
     let total = arr.reduce((a, b) => a + b);
     let canvas = document.getElementById('GraficoCondFisMascBas');
     let ctx = document.getElementById('GraficoCondFisMascBas').getContext('2d');
@@ -431,36 +478,87 @@ function graficoCondFisicaBasicaMasc(arr) {
         }
     });
 
-
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["Básica","Otros"],
-            datasets: [{
-                data: [arr[0] , total - arr[0]],
-                backgroundColor: ['#00b5f7', '#756d77'],
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive: false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white',
-                    fontFamily: 'GothamHTF-Book',
-                }
+    if(total === 0){
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Básica"],
+                datasets: [{
+                    data: [-1],
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
             },
-            title: {
-                display: false
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
+
             }
+        };
 
-        }
-    };
+        new Chart(ctx, config);
 
-    new Chart(ctx, config);
+
+    }else{
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Básica","Otros"],
+                datasets: [{
+                    data: [arr[0] , total - arr[0]],
+                    backgroundColor: ['#00b5f7', '#756d77'],
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    filter: function(tooltipItem, data){
+                       const label = data.labels[tooltipItem.index];
+                       if(label === 'Otros') {
+                           return false;
+                       }else{
+                           return true;
+                       }
+
+
+                    }
+                }
+
+            }
+        };
+
+        new Chart(ctx, config);
+
+
+    }
+
 
 
 
@@ -567,38 +665,86 @@ function graficoCondFisicaMedioMasc(arr){
         }
     });
 
-
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["Medio","Otros"],
-            datasets: [{
-                data: [arr[1] , total - arr[1]],
-                backgroundColor: ['#00b5f7', '#756d77'],
-                hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive: false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white',
-                    fontFamily: 'GothamHTF-Book',
-                }
+    if(total === 0){
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Medio"],
+                datasets: [{
+                    data: [-1],
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
             },
-            title: {
-                display: false
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
+
             }
+        };
 
-        }
-    };
+        new Chart(ctx, config);
 
-    new Chart(ctx, config);
 
+    }else {
+
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Medio", "Otros"],
+                datasets: [{
+                    data: [arr[1], total - arr[1]],
+                    backgroundColor: ['#00b5f7', '#756d77'],
+                    hoverBackgroundColor: ["#2C42CA", "#7A6D64"],
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    filter: function(tooltipItem, data){
+                        const label = data.labels[tooltipItem.index];
+                        if(label === 'Otros') {
+                            return false;
+                        }else{
+                            return true;
+                        }
+
+
+                    }
+                }
+
+            }
+        };
+
+        new Chart(ctx, config);
+    }
 
 }
 
@@ -704,37 +850,83 @@ function graficoCondFisicaAvanzadoMasc(arr){
         }
     });
 
-
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["Avanzado","Otros"],
-            datasets: [{
-                data: [arr[2] , total - arr[2]],
-                backgroundColor: ['#00b5f7', '#756d77'],
-                hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive: false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white',
-                    fontFamily: 'GothamHTF-Book',
-                }
+    if(total === 0){
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Avanzado"],
+                datasets: [{
+                    data: [-1],
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
             },
-            title: {
-                display: false
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
             }
+        };
 
-        }
-    };
+        new Chart(ctx, config);
+    }else{
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Avanzado","Otros"],
+                datasets: [{
+                    data: [arr[2] , total - arr[2]],
+                    backgroundColor: ['#00b5f7', '#756d77'],
+                    hoverBackgroundColor:  ["#2C42CA", "#7A6D64"],
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    filter: function(tooltipItem, data){
+                        const label = data.labels[tooltipItem.index];
+                        if(label === 'Otros') {
+                            return false;
+                        }else{
+                            return true;
+                        }
 
-    new Chart(ctx, config);
+
+                    }
+                }
+
+            }
+        };
+
+        new Chart(ctx, config);
+    }
+
 }
 
 
@@ -842,37 +1034,88 @@ function graficoCondFisicaBasicaFem(arr){
         }
     });
 
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["Básica","Otros"],
-            datasets: [{
-                data: [arr[0] , total - arr[0]],
-                backgroundColor: ['#FF00EB', '#756d77'],
-                hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive: false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white',
-                    fontFamily: 'GothamHTF-Book',
-                }
+    if(total === 0){
+
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Básica"],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
             },
-            title: {
-                display: false
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips:{
+                    enabled: false
+                }
+
             }
+        };
 
-        }
-    };
+        new Chart(ctx, config);
 
-    new Chart(ctx, config);
 
+
+    }
+    else{
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Básica", "Otros"],
+                datasets: [{
+                    data: [arr[0], total - arr[0]],
+                    backgroundColor: ['#FF00EB', '#756d77'],
+                    hoverBackgroundColor: ["#EB0955", "#7A6D64"],
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    filter: function(tooltipItem, data){
+                        const label = data.labels[tooltipItem.index];
+                        if(label === 'Otros') {
+                            return false;
+                        }else{
+                            return true;
+                        }
+
+
+                    }
+                }
+
+            }
+        };
+
+        new Chart(ctx, config);
+    }
 
 }
 
@@ -982,36 +1225,87 @@ function graficoCondFisicaMedioFem(arr){
         }
     });
 
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["Medio","Otros"],
-            datasets: [{
-                data: [arr[1] , total - arr[1]],
-                backgroundColor: ['#FF00EB', '#756d77'],
-                hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive: false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white',
-                    fontFamily: 'GothamHTF-Book',
-                }
+    if(total === 0){
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Medio"],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
             },
-            title: {
-                display: false
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
+
             }
+        };
 
-        }
-    };
+        new Chart(ctx, config);
 
-    new Chart(ctx, config);
+    }else{
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Medio","Otros"],
+                datasets: [{
+                    data: [arr[1] , total - arr[1]],
+                    backgroundColor: ['#FF00EB', '#756d77'],
+                    hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    filter: function(tooltipItem, data){
+                        const label = data.labels[tooltipItem.index];
+                        if(label === 'Otros') {
+                            return false;
+                        }else{
+                            return true;
+                        }
+
+
+                    }
+                }
+
+            }
+        };
+
+        new Chart(ctx, config);
+
+
+
+    }
 
 
 
@@ -1122,36 +1416,83 @@ function graficoCondFisicaAvanzadoFem(arr){
         }
     });
 
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["Avanzado","Otros"],
-            datasets: [{
-                data: [arr[2] , total - arr[2]],
-                backgroundColor: ['#FF00EB', '#756d77'],
-                hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive: false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white',
-                    fontFamily: 'GothamHTF-Book',
-                }
+    if(total === 0){
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Avanzado"],
+                datasets: [{
+                    data: [-1],
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
             },
-            title: {
-                display: false
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
+
             }
+        };
 
-        }
-    };
+        new Chart(ctx, config);
+    }else{
+        var config = {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["Avanzado","Otros"],
+                datasets: [{
+                    data: [arr[2] , total - arr[2]],
+                    backgroundColor: ['#FF00EB', '#756d77'],
+                    hoverBackgroundColor:  ["#EB0955", "#7A6D64"],
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: 'white',
+                        fontFamily: 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    filter: function(tooltipItem, data){
+                        const label = data.labels[tooltipItem.index];
+                        if(label === 'Otros') {
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    }
+                }
 
-    new Chart(ctx, config);
+            }
+        };
+
+        new Chart(ctx, config);
+
+    }
+
 
 
 
@@ -1220,7 +1561,7 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
 
 
                     var img = new Image();
-                    img.src = '/img/iconos/icon_female.svg';
+                    img.src = '/img/iconos-trainers/icon_female_body.svg';
                     ctx.drawImage(img,centerX -15,centerY - 25, 30,50);
 
                     ctx.beginPath();
@@ -1235,12 +1576,12 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
                     ctx.fillStyle = vm.backgroundColor;
 
                     ctx.fill();
-                    ctx.lineJoin = 'bevel';
+                   /* ctx.lineJoin = 'bevel';
 
                     if (vm.borderWidth) {
                         ctx.stroke();
                     }
-
+                     */
                 }
             });
 
@@ -1265,45 +1606,86 @@ function graficoDistribucionEdadFemenino(ageRangesValues){
         }
     });
 
-
-    var config = {
-        type: 'doughnutCenterElement',
-        data: {
-            labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
-            datasets: [{
-                data: ageRangesValues,
-                backgroundColor: arrColorFem,
-                borderColor: 'transparent',
-            }],
-        },
-        options: {
-            responsive:false,
-            cutoutPercentage: 95,
-            legend: {
-                display: false,
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor : 'white',
-                    fontFamily : 'GothamHTF-Book',
+    if(ageRangesValues[0] === -1){
+        let config =  {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
+                datasets: [{
+                    data: ageRangesValues,
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive:false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor : 'white',
+                        fontFamily : 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
                 }
-            },
-            title: {
-                display: false
-            },
-            tooltips: {
-                bodyFontSize: 15
+                /*segmentShowStroke: false*/
+                //Boolean - Whether we should show a stroke on each segment
+                // set to false to hide the space/line between segments
+
             }
-            /*segmentShowStroke: false*/
-            //Boolean - Whether we should show a stroke on each segment
-            // set to false to hide the space/line between segments
+
 
         }
 
+        new Chart(ctx,config);
+
+
+    }else{
+
+        let config =  {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
+                datasets: [{
+                    data: ageRangesValues,
+                    backgroundColor: arrColorFem,
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive:false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor : 'white',
+                        fontFamily : 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    bodyFontSize: 15
+                }
+                /*segmentShowStroke: false*/
+                //Boolean - Whether we should show a stroke on each segment
+                // set to false to hide the space/line between segments
+
+            }
+
+
+        }
+        new Chart(ctx,config);
 
     }
-
-    new Chart(ctx,config);
-
 
 }
 
@@ -1362,7 +1744,6 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
                         eA = vm.endAngle,
                         opts = this._chart.config.options;
 
-
                     var img = new Image();
                     img.src = '/img/iconos/icon_male.svg';
                     ctx.drawImage(img,centerX -10,centerY - 25, 25,50);
@@ -1409,9 +1790,49 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
         }
     });
 
+    if(ageRangesValues[0] === -1){
+        let config =  {
+            type: 'doughnutCenterElement',
+            data: {
+                labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
+                datasets: [{
+                    data: ageRangesValues,
+                    backgroundColor: 'grey',
+                    borderColor: 'transparent',
+                }],
+            },
+            options: {
+                responsive:false,
+                cutoutPercentage: 95,
+                legend: {
+                    display: false,
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor : 'white',
+                        fontFamily : 'GothamHTF-Book',
+                    }
+                },
+                title: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
+                /*segmentShowStroke: false*/
+                //Boolean - Whether we should show a stroke on each segment
+                // set to false to hide the space/line between segments
+
+            }
 
 
-    let config =  {
+        }
+
+        new Chart(ctx,config);
+
+
+    }else{
+
+      let config =  {
         type: 'doughnutCenterElement',
         data: {
             labels: ["18-24 edad" , "25-29 edad","30-39 edad","40-49 edad","50-59 edad","Mayor de 60 edad" ],
@@ -1445,27 +1866,32 @@ function graficoDistribucionEdadMasculino(ageRangesValues){
         }
 
 
+     }
+        new Chart(ctx,config);
+
     }
 
-    new Chart(ctx,config);
 
 
 }
 
 
-function generarInfoDistribucionEdadMascDOM(dataMasc){
+function generarInfoDistribucionEdadMascDOM(dataMasc) {
 
-    console.log(dataMasc);
 
     $('.masc-porc').text(`${dataMasc.porcentajeMasc}%`);
 
-    dataMasc.edadPromedioMasc > 0 ?  $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`)
-        :  $('.masc-age-prom').html(`<i class="fa fa-bars"></i>`);
+    dataMasc.edadPromedioMasc > 0 ? $('.masc-age-prom').text(`${dataMasc.edadPromedioMasc} años`)
+        : $('.masc-age-prom').html(`<i class="fa fa-bars"></i>`);
 
-    $('.graph-porc .masc-range-porc').each( function(index) {$(this).html(`${dataMasc.porcentajeRangosMasc[index] }%`)
-        $(this).css("color", arrColorMasc[index])});
+    $('.graph-porc .masc-range-porc').each(function (index) {
+        $(this).html(`${dataMasc.porcentajeRangosMasc[index]}%`)
+        $(this).css("color", arrColorMasc[index])
+    });
 
-    $('.graph-porc svg.masc').each( function(index) {$(this).css("color", arrColorMasc[index])});
+    $('.graph-porc.masc-graph img.svg').each(function (index) {
+        $(this).css("fill", arrColorMasc[index])
+    });
 
 
 }
@@ -1481,14 +1907,13 @@ function generarInfoDistribucionEdadFemDOM(dataFem){
     $('.graph-porc .fem-range-porc').each( function(index) {$(this).html(`${dataFem.porcentajeRangosFem[index] }%`);
         $(this).css("color", arrColorFem[index])});
 
-    $('.graph-porc svg.fem').each( function(index) {$(this).css("color", arrColorFem[index])});
+    $('.graph-porc.fem-graph img.svg').each( function(index) {$(this).css("fill", arrColorFem[index])});
 
 
 }
 
 
 function setGraficosEdadMasc(data){
-
     let dataMasc ={} , dataGraphMasculino;
     const edadClientesMasc = data.filter(element => element.sexo === 1)
         .map(({fechaNacimiento}) => getEdad(fechaNacimiento));
@@ -1501,7 +1926,7 @@ function setGraficosEdadMasc(data){
         dataMasc.porcentajeRangosMasc = roundedPercentage(dataMasc.porcentajeRangosMasc , 100);
 
     }else{
-        dataGraphMasculino = [0,0,0,0,0,0];
+        dataGraphMasculino = [-1,0,0,0,0,0];
         dataMasc= {edadPromedioMasc: [0] ,porcentajeRangosMasc : [0,0,0,0,0,0] , porcentajeMasc : [0]}
     }
 
@@ -1527,7 +1952,7 @@ function setGraficosEdadFem(data){
         dataFem.porcentajeRangosFem = dataGraphFemenino.map(e => Math.round((e / edadClientesFem.length) * 100));
 
     }else{
-        dataGraphFemenino = [0,0,0,0,0,0];
+        dataGraphFemenino = [-1,0,0,0,0,0];
         dataFem= {edadPromedioFem: [0] ,porcentajeRangosFem : [0,0,0,0,0,0] , porcentajeFem : [0]}
     }
     graficoDistribucionEdadFemenino(dataGraphFemenino);
@@ -1856,6 +2281,10 @@ function graficoServiciosUsados(dataServicio){
             },
             tooltips: {
                 mode: 'nearest'
+            },  layout: {
+                padding: {
+                    right: 15  //set that fits the best
+                }
             },
             legend:{
                 position: 'bottom',
@@ -2004,14 +2433,36 @@ function graficoServiciosUsados(dataServicio){
 
 }
 
-function graficoDistribucionDepartamento(dataDepartamento){
+function graficoDistribucionLocalizacion(dataLocalizacion, porcentajes, tipo){
 
-    //let dataLength = dataDepartamento.reduce( (a,b) => a+b);
-    let qtyData = dataDepartamento.map( e => e.qty);
-    let labelsData = dataDepartamento.map( e => e.dpto);
+    //let dataLength = dataLocalizacion.reduce( (a,b) => a+b);
+    let qtyData = dataLocalizacion.map( e => e.qty);
+    let labelsData = dataLocalizacion.map( e => e.nombre);
 
-    //GraficoCanalesUsados
-    var ctx = document.getElementById("GraficoDistribucionDepartamento").getContext("2d");
+    let oldcanv = document.getElementById('graficoDistribucionLocalizacion');
+    let parentDv = oldcanv.parentElement;
+    parentDv.removeChild(oldcanv)
+
+
+
+    let canv = document.createElement('canvas');
+    canv.id = 'graficoDistribucionLocalizacion';
+
+    if(porcentajes.length < 12){
+        canv.height= 200;
+    }else{
+        canv.height= 400;
+    }
+
+    parentDv.appendChild(canv)
+
+    let canvas = document.getElementById('graficoDistribucionLocalizacion');
+
+
+
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     var data = {
         labels: labelsData,
         datasets: [
@@ -2026,17 +2477,20 @@ function graficoDistribucionDepartamento(dataDepartamento){
         type: 'horizontalBar',
         data: data,
         options: {
-            barValueSpacing: 20,
+            responsive: true,
+            barValueSpacing: 5,
+            barDatasetSpacing: 5,
             scales: {
                 xAxes: [{
                     ticks: {
-                        display: false,
-                        drawBorder: false
+                        display: false
                     },
                     gridLines: {
                         display:false,
                         drawBorder: false
                     },
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
                 }],
                 yAxes: [{
                     barThickness : 15,
@@ -2049,6 +2503,25 @@ function graficoDistribucionDepartamento(dataDepartamento){
                         display:false,
                         drawBorder: false
                     },
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                }, {
+                    type: 'category',
+                    offset: true,
+                    position: 'right',
+                    ticks: {
+                        fontColor: '#a8fa00',
+                        fontSize:13,
+                        fontFamily: "GothamHTF-Bold",
+                        padding: 65,
+                        callback: function (value, index, values) {
+                            return porcentajes[index] + '%'
+                        }
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    }
                 }]
             },
             hover: {
@@ -2057,6 +2530,10 @@ function graficoDistribucionDepartamento(dataDepartamento){
             },
             tooltips: {
                 mode: 'nearest'
+            },  layout: {
+                padding: {
+                    right: 15  //set that fits the best
+                }
             },
             legend:{
                 position: 'bottom',
@@ -2065,6 +2542,80 @@ function graficoDistribucionDepartamento(dataDepartamento){
 
         }
     });
+
+    /*   const myBarChartHoriz = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: data,
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        display: false,
+                        drawBorder: false,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    }
+                }
+                ],
+                yAxes: [{
+                    barThickness: 15,
+                    ticks: {
+                        fontSize: 13,
+                        fontColor: "#756d77",
+                        fontFamily: "GothamHTF-Book"
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    }
+                },
+                    {
+                        type: 'category',
+                        offset: true,
+                        position: 'right',
+                        ticks: {
+                            fontColor: 'green',
+                            padding: 30,
+                            callback: function (value, index, values) {
+                                return 'prueba'
+                            }
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    }],
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    enabled: true,
+                    displayColors:false
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        right: 55
+                    }
+                },
+                legend: {
+                    display: false,
+                    labels: {
+                        display: false
+                    }
+                }
+            }
+        }});
+*/
+
+
+
     Chart.elements.Rectangle.prototype.draw = function() {
 
         var ctx = this._chart.ctx;
@@ -2253,7 +2804,6 @@ function generarPorcentajeSexoCanalDOM(arr, index){
 function generarPorcentajeTipoServicioSexoDOM(arr, index){
 
     const dvPorcServicioxSexo =   $('.tipo-servicio-porc div div')[index];
-    console.log(dvPorcServicioxSexo);
     arr.map( function(element) {
             let porcServicio  = htmlStringToElement(`<p class="text-left">${element} %</p>`)  ;
             dvPorcServicioxSexo.append(porcServicio);
@@ -2517,19 +3067,13 @@ function roundedPercentage( l , target){
     value();
 }
 
-function generarPorcentajesDepartamentoDOM(dataGrafico){
-
+function generarPorcentajes(dataGrafico){
     let dataValores= dataGrafico.map( e => e.qty).sort( (a,b) => b-a);
     const clientesLength =  dataValores.reduce( (a,b) => a+b );
     let porcentajes = dataValores.map( e => ((e/clientesLength)*100).toFixed(2));
-//  porcentajes = roundedPercentage(porcentajes , 100);
-    const dvDepartamentosPorc = $('.distr-dpto-porcentajes');
-    const porcentajesDOM =  porcentajes.map( function(element) {
-            let porcDepto  = htmlStringToElement(`<p>${element}%</p>`)  ;
-            dvDepartamentosPorc.append(porcDepto);
 
-        }
-    );
+
+    return porcentajes;
 
 }
 

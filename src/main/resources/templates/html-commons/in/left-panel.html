@@ -22,7 +22,7 @@
                 <li><a class="button-slide-menu" href="javascript:void(0)"><img class="svg" th:src="@{/img/iconos/icon_configuracion.svg}+'?'+${version}">Configuración</a></li>
             </th:block>
             <th:block sec:authorize="hasRole('RUNNER')">
-                <li><a class="notif" th:href="@{/}"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
+                <li><a class="notif" th:href="@{/bienvenido}"><img class="svg" th:src="@{/img/iconos/icon_programas.svg}+'?'+${version}">Mis programas</a></li>
                 <li><a th:href="@{/cliente/rutina/consolidado}"><img class="svg" th:src="@{/img/iconos/icon_temporada.svg}+'?'+${version}">Mi temporada</a></li>
                 <li><a class="notif"  th:href="@{/cliente/consejos}"><img class="svg" th:src="@{/img/iconos/icon_foco.svg}+'?'+${version}">Mis consejos</a></li>
                 <li><a href="#"><img class="svg" th:src="@{/img/iconos/icon_rutinas.svg}+'?'+${version}">Mis rutinas</a></li>

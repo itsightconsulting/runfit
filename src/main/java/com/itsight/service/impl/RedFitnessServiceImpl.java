@@ -213,7 +213,12 @@ public class RedFitnessServiceImpl extends BaseServiceImpl<RedFitnessRepository>
             configuracionClienteRepository.updateNotificacionChatById(chat.getCliId(), sustractOrPlusNumber);
         }
         //Correo puede ser de Trainer o Cliente
-        emailService.enviarCorreoInformativo("Runfit Notificaciones", chat.getCorreo(), chat.getCuerpo());
+        if (isTrainer) {
+            emailService.enviarCorreoInformativo("Runfit Notificaciones", chat.getCorreo(), chat.getCuerpo());
+        }else{
+            String trainerCorreo = repository.getCorreoTrainerByRedFitnessId(chat.getRedFitId());
+            emailService.enviarCorreoInformativo("Runfit Notificaciones", trainerCorreo, chat.getCuerpo());
+        }
         return Utilitarios.jsonResponse(NOTIFICACION_RED_FIT_PERSONAL.get());
     }
 

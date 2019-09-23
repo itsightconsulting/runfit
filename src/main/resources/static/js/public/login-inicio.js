@@ -6,6 +6,7 @@ const btnRegistrar = document.getElementById('btn-register');
 const btnNuevo = document.getElementById('btn-nuevo');
 const btnStartUpIniciarSesion = document.getElementById('login_link');
 const btnHideIniciarSesion = document.getElementById('hide_login_link');
+const loginForm = document.getElementById('login-form');
 
 
 (function () {
@@ -42,6 +43,10 @@ function eventos(){
 
     if(btnHideIniciarSesion){// Disparar login
         btnHideIniciarSesion.addEventListener('click', ocultarLoginForm);
+    }
+
+    if(loginForm){
+        loginForm.addEventListener('keyup', keyupLoginEventListener);
     }
 
     body_.querySelector('.login').addEventListener('focusout', bodyFocusOutEventListener);
@@ -333,4 +338,15 @@ function inicializarLoginForm(){
 function ocultarLoginForm(){
     $('.login').removeClass('active');
     $('html, body').css('overflowY', 'auto');
+}
+
+function keyupLoginEventListener(e){
+    const input = e.target;
+
+    if(input.name === 'username' || input.name === 'password'){
+        if(e.keyCode !== 13){
+            return;
+        }
+        submitReuseLogin();
+    }
 }

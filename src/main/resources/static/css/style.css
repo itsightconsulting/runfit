@@ -1760,6 +1760,7 @@ section.consejos span.msj-no-data{
 .perfil > img {
   height: 100%;
   border-radius: 50%;
+  border: 1px solid white;
 }
 
 .chat .cnt .datos {
@@ -1789,6 +1790,20 @@ section.consejos span.msj-no-data{
   overflow: auto;
   padding-right: 10px;
 }
+
+.chat .cvs .continuo {
+  margin-top: -13px;
+  margin-bottom: 5px;
+}
+
+.chat .cvs .continuo .perfil{
+  visibility: hidden;
+}
+
+.chat .cvs .continuo .name{
+  display: none;
+}
+
 .chat .name-cvs {
   background-color: #ccc;
   padding: 14px 10px;

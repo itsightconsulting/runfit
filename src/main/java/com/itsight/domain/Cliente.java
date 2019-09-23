@@ -52,6 +52,28 @@ import java.util.UUID;
                                 }
                         )
                 }),
+        @SqlResultSetMapping(name = "resultMappingClienteDistribucionDistrito",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ClientePOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "distritoUb"),
+                                        @ColumnResult(name = "distritoNombre"),
+                                        @ColumnResult(name = "qtyClientesByDistrito")
+                                }
+                        )
+                }),
+        @SqlResultSetMapping(name = "resultMappingClienteDistribucionProvincia", // pendiente de utilización en el sistema
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ClientePOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "provinciaUb"),
+                                        @ColumnResult(name = "provinciaNombre"),
+                                        @ColumnResult(name = "qtyClientesByProvincia")
+                                }
+                        )
+                }),
         @SqlResultSetMapping(name = "resultMappingGetTycServiciosById",
                 classes = {
                         @ConstructorResult(

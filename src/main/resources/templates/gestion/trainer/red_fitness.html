@@ -444,11 +444,12 @@
                 msg: msj,
                 cliId: cliId
             },
-            success: () => {
-                const now = new Date();
+            success: (data) => {
+                const esContinuo = data.esContinuo;
+                const esSalida = data.esSalida;
                 const htmlChats = document.querySelector('.cvs ul');
                 htmlChats.appendChild(htmlStringToElement(`
-                    <li class="sent">
+                    <li class="sent ${esContinuo && !esSalida ? 'continuo':''}">
                         <div class="perfil">
                             <img src="https://s3-us-west-2.amazonaws.com/rf-profile-imgs/trainer/${fpTrainer}" />
                         </div>
@@ -670,7 +671,7 @@
 
     function actualizarFlag(rfId){
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Notificación",
+            title: '<i class="fa fa-exclamation-triangle" style="color: yellow"></i> RUNFIT',
             content: "" +
                 "<br/><h6>Confirmar baja de atleta:</h6>",
             buttons: '[NO][SI]'
@@ -954,7 +955,7 @@
         id = getHash32Id('rf-rutina', id);
         clienteId = getHash16Id('rf-rutina', clienteId);
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Notificación",
+            title: '<i class="fa fa-exclamation-triangle" style="color: yellow"></i> RUNFIT',
             content: "" +
                 "<br/><h6>Confirmar:</h6>",
             buttons: '[NO][SI]'
@@ -1379,14 +1380,13 @@
 
     function instanceMensajesChat(chat){
         const fpTrainer = getCookie("GLL_IMG_PERFIL");
-        const nomTrainer = getFullNameFromUser();
 
         const bodyChats = document.getElementById('ChatMensajes');
         const mensajes = chat.mensajes;
         bodyChats.innerHTML = "";
         mensajes.forEach(c=>{
             bodyChats.appendChild(htmlStringToElement(
-                        `<li class="${!c.esSalida ? 'sent':'received'}">
+                        `<li class="${!c.esSalida ? 'sent':'received'} ${c.esContinuo ? 'continuo' : ''}">
                             <div class="perfil">
                                 ${c.esSalida ?
                                     `<img class="user" src="${_ctx}img/user_avatar.png">`:

@@ -203,7 +203,7 @@
         var actualStatus = document.querySelector('#tblRegistros tbody tr[data-index=\'' + ix + '\'] .td-status').textContent;
 
         $.SmartMessageBox({
-            title: "<i class='fa fa-bullhorn'></i> Notificación",
+            title: '<i class="fa fa-exclamation-triangle" style="color: yellow"></i> RUNFIT',
             content: "<br/>¿Quieres activar o desactivar el registro?",
             buttons: '[No][Si]'
         }, function (ButtonPressed) {

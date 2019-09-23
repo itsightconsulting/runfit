@@ -153,6 +153,23 @@ public class TrainerController extends BaseController{
 
     }
 
+    @GetMapping(value = "/distribucion-provincia/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionProvinciaClientexTrainer(HttpSession session){
+
+        Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionProvinciaCliente(trainerId);
+
+        return lstDistribucionCliente;
+    }
+
+    @GetMapping(value = "/distribucion-distrito/obtener")
+    public @ResponseBody List<ClienteDTO> getDistribucionDistritoLimaClientexTrainer(HttpSession session){
+
+        Integer trainerId = Integer.parseInt(session.getAttribute("id").toString());
+        List<ClienteDTO> lstDistribucionCliente =clienteProcedureInvoker.getDistribucionDistritoCliente(trainerId);
+
+        return lstDistribucionCliente;
+    }
 
     @GetMapping(value = "/consolidado-cliente/obtener")
     public @ResponseBody String getKeyConsolidadoCliente( @RequestParam int  cliId,  HttpSession session){
